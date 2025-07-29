@@ -3,18 +3,22 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const morgan = require('morgan');
-require('dotenv').config();
+const config = require('./config');
+const BaserowClient = require('./baserow');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
+    origin: config.cors.origin,
+    methods: config.cors.methods
   }
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = config.port;
+
+// Initialize Baserow client
+const baserowClient = new BaserowClient();
 
 // Middleware
 app.use(cors());
@@ -285,6 +289,74 @@ setInterval(() => {
   // Broadcast updated prices to all connected clients
   io.emit('priceUpdate', petrolStations);
 }, 15000); // Update every 15 seconds
+
+// Baserow API endpoints
+app.get('/api/baserow/databases', async (req, res) => {
+  try {
+    const databases = await baserowClient.getDatabases();
+    res.json({
+      success: true,
+      data: databases
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+app.get('/api/baserow/tables/:databaseId', async (req, res) => {
+  try {
+    const { databaseId } = req.params;
+    const tables = await baserowClient.getTables(databaseId);
+    res.json({
+      success: true,
+      data: tables
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+app.get('/api/baserow/rows/:tableId', async (req, res) => {
+  try {
+    const { tableId } = req.params;
+    const rows = await baserowClient.getRows(tableId, req.query);
+    res.json({
+      success: true,
+      data: rows
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+app.get('/api/baserow/test', async (req, res) => {
+  try {
+    const isConnected = await baserowClient.testConnection();
+    res.json({
+      success: true,
+      connected: isConnected,
+      mcpServerUrl: baserowClient.getMCPServerUrl(),
+      config: {
+        apiUrl: config.baserow.apiUrl,
+        hasToken: !!config.baserow.token
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

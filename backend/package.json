@@ -8,16 +8,23 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.6.1",
+    "axios": "^1.11.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "morgan": "^1.10.0"
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.6.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
   },
-  "keywords": ["petrol", "fuel", "prices", "melbourne", "api"],
+  "keywords": [
+    "petrol",
+    "fuel",
+    "prices",
+    "melbourne",
+    "api"
+  ],
   "author": "Melbourne Fuel Tracker",
   "license": "MIT"
-} 
+}
