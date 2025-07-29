@@ -21,9 +21,33 @@ const PORT = config.port;
 const baserowClient = new BaserowClient();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: config.cors.origin,
+  methods: config.cors.methods,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+// Log CORS configuration for debugging
+console.log('🌐 CORS Configuration:');
+console.log(`   Origin: ${config.cors.origin}`);
+console.log(`   Methods: ${config.cors.methods.join(', ')}`);
+
 app.use(morgan('combined'));
 app.use(express.json());
+
+// Health check endpoint for testing CORS
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Server is running',
+    timestamp: new Date().toISOString(),
+    cors: {
+      origin: req.headers.origin,
+      allowedOrigin: config.cors.origin
+    }
+  });
+});
 
 // Sample petrol station data
 let petrolStations = [

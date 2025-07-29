@@ -96,6 +96,29 @@ export const baserowAPI = {
       console.error('Error testing connection:', error.message);
       throw error;
     }
+  },
+
+  // Test backend health and CORS
+  async testBackendHealth() {
+    try {
+      const response = await fetch(`${config.api.baseUrl}/api/health`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Backend health check successful:', data);
+      return data;
+    } catch (error) {
+      console.error('❌ Backend health check failed:', error.message);
+      throw error;
+    }
   }
 };
 
