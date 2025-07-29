@@ -50,6 +50,49 @@ class BaserowClient {
     }
   }
 
+  // Fetch all rows from a table using cursor-based pagination
+  async getAllRows(tableId, params = {}) {
+    try {
+      let allRows = [];
+      let next = null;
+      const baseParams = {
+        user_field_names: true,
+        size: 100,
+        ...params
+      };
+
+      do {
+        const requestParams = { ...baseParams };
+        if (next) {
+          requestParams.offset = next;
+        }
+
+        const response = await this.client.get(`/database/table/${tableId}/row/`, { 
+          params: requestParams 
+        });
+        
+        const data = response.data;
+        allRows = allRows.concat(data.results);
+        
+        // Extract offset from next URL if it exists
+        if (data.next) {
+          const nextUrl = new URL(data.next);
+          next = nextUrl.searchParams.get('offset');
+        } else {
+          next = null;
+        }
+
+        console.log(`Fetched ${data.results.length} rows, total: ${allRows.length}`);
+      } while (next);
+
+      console.log(`✅ Successfully fetched all ${allRows.length} rows from table ${tableId}`);
+      return allRows;
+    } catch (error) {
+      console.error('Error fetching all rows:', error.response?.data || error.message);
+      throw error;
+    }
+  }
+
   // Create a new row
   async createRow(tableId, data) {
     try {

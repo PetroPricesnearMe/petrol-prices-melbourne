@@ -338,6 +338,23 @@ app.get('/api/baserow/rows/:tableId', async (req, res) => {
   }
 });
 
+app.get('/api/baserow/all-rows/:tableId', async (req, res) => {
+  try {
+    const { tableId } = req.params;
+    const allRows = await baserowClient.getAllRows(tableId, req.query);
+    res.json({
+      success: true,
+      data: allRows,
+      count: allRows.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 app.get('/api/baserow/test', async (req, res) => {
   try {
     const isConnected = await baserowClient.testConnection();
