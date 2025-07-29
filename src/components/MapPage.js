@@ -72,8 +72,12 @@ const MapPage = () => {
           address: station.address || station.Address || station.location || `${station.suburb || 'Melbourne'}, VIC`
         }));
 
-        setPetrolStations(transformedStations);
-        console.log(`✅ Loaded ${transformedStations.length} stations for map from Baserow`);
+        // Limit markers to prevent performance issues
+        const maxMarkers = 100;
+        const limitedStations = transformedStations.slice(0, maxMarkers);
+        
+        setPetrolStations(limitedStations);
+        console.log(`✅ Loaded ${limitedStations.length} stations for map from Baserow${transformedStations.length > maxMarkers ? ` (limited from ${transformedStations.length})` : ''}`);
         
         // Set up price update simulation
         const priceUpdateInterval = setInterval(() => {
