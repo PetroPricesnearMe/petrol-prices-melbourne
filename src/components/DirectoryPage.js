@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import './DirectoryPage.css';
 
@@ -11,7 +11,7 @@ const DirectoryPage = () => {
   const [loading, setLoading] = useState(true);
 
   // Sample petrol station data for Melbourne
-  const sampleStations = [
+  const sampleStations = useMemo(() => [
     { id: 1, name: 'Shell Melbourne CBD', brand: 'Shell', suburb: 'Melbourne', prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne', phone: '(03) 9999 1111', hours: '24/7' },
     { id: 2, name: 'BP South Yarra', brand: 'BP', suburb: 'South Yarra', prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra', phone: '(03) 9999 2222', hours: '6:00 AM - 10:00 PM' },
     { id: 3, name: 'Caltex Richmond', brand: 'Caltex', suburb: 'Richmond', prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond', phone: '(03) 9999 3333', hours: '24/7' },
@@ -24,7 +24,7 @@ const DirectoryPage = () => {
     { id: 10, name: 'BP Southbank', brand: 'BP', suburb: 'Southbank', prices: { unleaded: 185.5, premium: 195.5, diesel: 180.8 }, address: '135 City Road, Southbank', phone: '(03) 9999 0000', hours: '6:00 AM - 10:00 PM' },
     { id: 11, name: 'Caltex Port Melbourne', brand: 'Caltex', suburb: 'Port Melbourne', prices: { unleaded: 183.9, premium: 193.9, diesel: 178.2 }, address: '678 Bay Street, Port Melbourne', phone: '(03) 9999 1234', hours: '24/7' },
     { id: 12, name: '7-Eleven Collingwood', brand: '7-Eleven', suburb: 'Collingwood', prices: { unleaded: 181.9, premium: 191.9, diesel: 177.5 }, address: '456 Smith Street, Collingwood', phone: '(03) 9999 5678', hours: '24/7' },
-  ];
+  ], []);
 
   useEffect(() => {
     // Simulate loading data
@@ -33,7 +33,7 @@ const DirectoryPage = () => {
       setFilteredStations(sampleStations);
       setLoading(false);
     }, 800);
-  }, []);
+  }, [sampleStations]);
 
   useEffect(() => {
     let filtered = petrolStations.filter(station => {

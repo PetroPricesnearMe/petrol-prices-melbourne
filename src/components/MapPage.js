@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { motion } from 'framer-motion';
@@ -45,7 +45,7 @@ const MapPage = () => {
   const [selectedFuelType, setSelectedFuelType] = useState('unleaded');
 
   // Sample petrol station data for Melbourne
-  const sampleStations = [
+  const sampleStations = useMemo(() => [
     { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne' },
     { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra' },
     { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond' },
@@ -54,7 +54,7 @@ const MapPage = () => {
     { id: 6, name: 'Shell St Kilda', lat: -37.8688, lng: 144.9842, prices: { unleaded: 183.9, premium: 193.9, diesel: 178.5 }, address: '987 Acland Street, St Kilda' },
     { id: 7, name: 'BP Hawthorn', lat: -37.8208, lng: 145.0290, prices: { unleaded: 186.9, premium: 196.9, diesel: 181.3 }, address: '159 Burke Road, Hawthorn' },
     { id: 8, name: 'Ampol Prahran', lat: -37.8468, lng: 144.9896, prices: { unleaded: 184.5, premium: 194.5, diesel: 179.8 }, address: '753 High Street, Prahran' },
-  ];
+  ], []);
 
   useEffect(() => {
     // Simulate loading data
@@ -86,7 +86,7 @@ const MapPage = () => {
       clearInterval(priceUpdateInterval);
       socket.disconnect();
     };
-  }, []);
+  }, [sampleStations]);
 
   const fuelTypes = [
     { key: 'unleaded', label: 'Unleaded 91', icon: '⛽' },
