@@ -46,8 +46,7 @@ const MapPage = () => {
   const [selectedFuelType, setSelectedFuelType] = useState('unleaded');
   const [error, setError] = useState(null);
 
-  // Baserow table ID for petrol stations
-  const BASEROW_TABLE_ID = '265358';
+  // Note: Now using the new Baserow table structure with table ID 623329
 
   useEffect(() => {
     const fetchStationsFromBaserow = async () => {
@@ -56,20 +55,23 @@ const MapPage = () => {
         setError(null);
         
         // Fetch all stations from Baserow using pagination
-        const baserowStations = await baserowAPI.fetchAllStations(BASEROW_TABLE_ID);
+        const baserowStations = await baserowAPI.fetchAllStations();
         
         // Transform Baserow data to match expected format for map
         const transformedStations = baserowStations.map((station, index) => ({
           id: station.id || index + 1,
-          name: station.name || station.Name || `Station ${index + 1}`,
-          lat: parseFloat(station.latitude || station.Latitude || station.lat || (-37.8136 + (Math.random() - 0.5) * 0.1)),
-          lng: parseFloat(station.longitude || station.Longitude || station.lng || (144.9631 + (Math.random() - 0.5) * 0.1)),
+          name: station.field_5072130 || station['Station Name'] || `Station ${index + 1}`,
+          lat: parseFloat(station.field_5072136 || station.Latitude || (-37.8136 + (Math.random() - 0.5) * 0.1)),
+          lng: parseFloat(station.field_5072137 || station.Longitude || (144.9631 + (Math.random() - 0.5) * 0.1)),
           prices: {
-            unleaded: parseFloat(station.unleaded || station.Unleaded || station.price_unleaded || 180 + Math.random() * 20),
-            premium: parseFloat(station.premium || station.Premium || station.price_premium || 190 + Math.random() * 20),
-            diesel: parseFloat(station.diesel || station.Diesel || station.price_diesel || 175 + Math.random() * 20)
+            // Generate realistic prices for demo - in production, get from linked Fuel Prices
+            unleaded: 180 + Math.random() * 20,
+            premium: 190 + Math.random() * 20,
+            diesel: 175 + Math.random() * 20
           },
-          address: station.address || station.Address || station.location || `${station.suburb || 'Melbourne'}, VIC`
+          address: station.field_5072131 || station.Address || `${station.field_5072132 || 'Melbourne'}, VIC`,
+          category: station.field_5072138 || station.Category,
+          fuelPrices: station.field_5072139 || station['Fuel Prices'] || []
         }));
 
         // Limit markers to prevent performance issues

@@ -4,7 +4,7 @@ const socketIo = require('socket.io');
 const cors = require('cors');
 const morgan = require('morgan');
 const config = require('./config');
-const BaserowClient = require('./baserow');
+const BaserowClient = require('./baserowClient');
 
 const app = express();
 const server = http.createServer(app);
@@ -304,13 +304,15 @@ setInterval(() => {
   io.emit('priceUpdate', petrolStations);
 }, 15000); // Update every 15 seconds
 
-// Baserow API endpoints
-app.get('/api/baserow/databases', async (req, res) => {
+// ==================== BASEROW API ENDPOINTS ====================
+
+// Test connection endpoint
+app.get('/api/baserow/test', async (req, res) => {
   try {
-    const databases = await baserowClient.getDatabases();
+    const result = await baserowClient.testConnection();
     res.json({
       success: true,
-      data: databases
+      ...result
     });
   } catch (error) {
     res.status(500).json({
@@ -320,10 +322,10 @@ app.get('/api/baserow/databases', async (req, res) => {
   }
 });
 
-app.get('/api/baserow/tables/:databaseId', async (req, res) => {
+// Get all tables
+app.get('/api/baserow/tables', async (req, res) => {
   try {
-    const { databaseId } = req.params;
-    const tables = await baserowClient.getTables(databaseId);
+    const tables = await baserowClient.getAllTables();
     res.json({
       success: true,
       data: tables
@@ -336,13 +338,14 @@ app.get('/api/baserow/tables/:databaseId', async (req, res) => {
   }
 });
 
-app.get('/api/baserow/rows/:tableId', async (req, res) => {
+// Get table fields
+app.get('/api/baserow/fields/:tableId', async (req, res) => {
   try {
     const { tableId } = req.params;
-    const rows = await baserowClient.getRows(tableId, req.query);
+    const fields = await baserowClient.getTableFields(tableId);
     res.json({
       success: true,
-      data: rows
+      data: fields
     });
   } catch (error) {
     res.status(500).json({
@@ -352,34 +355,192 @@ app.get('/api/baserow/rows/:tableId', async (req, res) => {
   }
 });
 
+// ==================== PETROL STATIONS ENDPOINTS ====================
+
+// Get all petrol stations (paginated)
+app.get('/api/stations', async (req, res) => {
+  try {
+    const stations = await baserowClient.getPetrolStations(req.query);
+    res.json({
+      success: true,
+      data: stations
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Get all petrol stations (complete dataset)
+app.get('/api/stations/all', async (req, res) => {
+  try {
+    const allStations = await baserowClient.getAllPetrolStations(req.query);
+    res.json({
+      success: true,
+      data: allStations,
+      count: allStations.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Get specific petrol station
+app.get('/api/stations/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const station = await baserowClient.getPetrolStation(id);
+    res.json({
+      success: true,
+      data: station
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Create new petrol station
+app.post('/api/stations', async (req, res) => {
+  try {
+    const newStation = await baserowClient.createPetrolStation(req.body);
+    res.status(201).json({
+      success: true,
+      data: newStation
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Update petrol station
+app.put('/api/stations/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedStation = await baserowClient.updatePetrolStation(id, req.body);
+    res.json({
+      success: true,
+      data: updatedStation
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Delete petrol station
+app.delete('/api/stations/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await baserowClient.deletePetrolStation(id);
+    res.json({
+      success: true,
+      message: `Station ${id} deleted successfully`
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// ==================== FUEL PRICES ENDPOINTS ====================
+
+// Get fuel prices
+app.get('/api/fuel-prices', async (req, res) => {
+  try {
+    const prices = await baserowClient.getFuelPrices(req.query);
+    res.json({
+      success: true,
+      data: prices
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Create fuel price entry
+app.post('/api/fuel-prices', async (req, res) => {
+  try {
+    const newPrice = await baserowClient.createFuelPrice(req.body);
+    res.status(201).json({
+      success: true,
+      data: newPrice
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Link fuel prices to station
+app.post('/api/stations/:id/link-prices', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { priceIds } = req.body;
+    
+    if (!Array.isArray(priceIds)) {
+      return res.status(400).json({
+        success: false,
+        error: 'priceIds must be an array'
+      });
+    }
+    
+    const updatedStation = await baserowClient.linkFuelPricesToStation(id, priceIds);
+    res.json({
+      success: true,
+      data: updatedStation
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// ==================== LEGACY COMPATIBILITY ENDPOINTS ====================
+
+// Legacy endpoint for backward compatibility
 app.get('/api/baserow/all-rows/:tableId', async (req, res) => {
   try {
     const { tableId } = req.params;
-    const allRows = await baserowClient.getAllRows(tableId, req.query);
+    let allRows;
+    
+    if (tableId == config.baserow.tables.petrolStations.id) {
+      allRows = await baserowClient.getAllPetrolStations(req.query);
+    } else if (tableId == config.baserow.tables.fuelPrices.id) {
+      const result = await baserowClient.getFuelPrices(req.query);
+      allRows = result.results || result;
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: `Unknown table ID: ${tableId}`
+      });
+    }
+    
     res.json({
       success: true,
       data: allRows,
-      count: allRows.length
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-app.get('/api/baserow/test', async (req, res) => {
-  try {
-    const isConnected = await baserowClient.testConnection();
-    res.json({
-      success: true,
-      connected: isConnected,
-      mcpServerUrl: baserowClient.getMCPServerUrl(),
-      config: {
-        apiUrl: config.baserow.apiUrl,
-        hasToken: !!config.baserow.token
-      }
+      count: Array.isArray(allRows) ? allRows.length : allRows?.results?.length || 0
     });
   } catch (error) {
     res.status(500).json({

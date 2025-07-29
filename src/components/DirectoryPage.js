@@ -12,8 +12,7 @@ const DirectoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Baserow table ID for petrol stations
-  const BASEROW_TABLE_ID = '265358';
+  // Note: Now using the new Baserow table structure with table ID 623329
 
   useEffect(() => {
     const fetchStationsFromBaserow = async () => {
@@ -22,22 +21,29 @@ const DirectoryPage = () => {
         setError(null);
         
         // Fetch all stations from Baserow using pagination
-        const baserowStations = await baserowAPI.fetchAllStations(BASEROW_TABLE_ID);
+        const baserowStations = await baserowAPI.fetchAllStations();
         
         // Transform Baserow data to match expected format
         const transformedStations = baserowStations.map((station, index) => ({
           id: station.id || index + 1,
-          name: station.name || station.Name || `Station ${index + 1}`,
+          name: station.field_5072130 || station['Station Name'] || `Station ${index + 1}`,
           brand: station.brand || station.Brand || 'Unknown',
-          suburb: station.suburb || station.Suburb || station.Location || 'Melbourne',
+          suburb: station.field_5072132 || station.City || 'Melbourne',
           prices: {
-            unleaded: parseFloat(station.unleaded || station.Unleaded || station.price_unleaded || 180 + Math.random() * 20),
-            premium: parseFloat(station.premium || station.Premium || station.price_premium || 190 + Math.random() * 20),
-            diesel: parseFloat(station.diesel || station.Diesel || station.price_diesel || 175 + Math.random() * 20)
+            // Generate realistic prices for demo - in production, get from linked Fuel Prices
+            unleaded: 180 + Math.random() * 20,
+            premium: 190 + Math.random() * 20,
+            diesel: 175 + Math.random() * 20
           },
-          address: station.address || station.Address || station.location || `${station.suburb || 'Melbourne'}, VIC`,
-          phone: station.phone || station.Phone || station.contact || '(03) 0000 0000',
-          hours: station.hours || station.Hours || station.operating_hours || '24/7'
+          address: station.field_5072131 || station.Address || `${station.field_5072132 || 'Melbourne'}, VIC`,
+          phone: '(03) 0000 0000', // Could be added as a field later
+          hours: '24/7', // Could be added as a field later
+          category: station.field_5072138 || station.Category,
+          region: station.field_5072134 || station.Region,
+          country: station.field_5072135 || station.Country || 'Australia',
+          postalCode: station.field_5072133 || station['Postal Code'],
+          locationDetails: station.field_5072140 || station['Location Details'],
+          fuelPrices: station.field_5072139 || station['Fuel Prices'] || []
         }));
 
         setPetrolStations(transformedStations);

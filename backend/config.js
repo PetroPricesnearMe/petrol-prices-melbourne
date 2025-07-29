@@ -10,7 +10,36 @@ const config = {
   baserow: {
     token: process.env.BASEROW_TOKEN || 'WXGOdiCeNmvdj5NszzAdvIug3InwQQXP',
     apiUrl: process.env.BASEROW_API_URL || 'https://api.baserow.io/api',
-    mcpServerUrl: process.env.MCP_SERVER_URL || 'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse'
+    mcpServerUrl: process.env.MCP_SERVER_URL || 'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse',
+    tables: {
+      petrolStations: {
+        id: 623329,
+        name: 'Petrol Stations'
+      },
+      fuelPrices: {
+        id: 623330,
+        name: 'Fuel Prices'
+      },
+      airtableImport: {
+        id: 623331,
+        name: 'Airtable import report'
+      }
+    },
+    fieldIds: {
+      petrolStations: {
+        stationName: 'field_5072130',
+        address: 'field_5072131',
+        city: 'field_5072132',
+        postalCode: 'field_5072133',
+        region: 'field_5072134',
+        country: 'field_5072135',
+        latitude: 'field_5072136',
+        longitude: 'field_5072137',
+        category: 'field_5072138',
+        fuelPrices: 'field_5072139',
+        locationDetails: 'field_5072140'
+      }
+    }
   },
   
   // CORS Configuration
