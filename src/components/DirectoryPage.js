@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { baserowAPI } from '../config';
 import './DirectoryPage.css';
 
 const DirectoryPage = () => {
@@ -9,31 +10,58 @@ const DirectoryPage = () => {
   const [sortBy, setSortBy] = useState('name');
   const [filterBy, setFilterBy] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Sample petrol station data for Melbourne
-  const sampleStations = useMemo(() => [
-    { id: 1, name: 'Shell Melbourne CBD', brand: 'Shell', suburb: 'Melbourne', prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne', phone: '(03) 9999 1111', hours: '24/7' },
-    { id: 2, name: 'BP South Yarra', brand: 'BP', suburb: 'South Yarra', prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra', phone: '(03) 9999 2222', hours: '6:00 AM - 10:00 PM' },
-    { id: 3, name: 'Caltex Richmond', brand: 'Caltex', suburb: 'Richmond', prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond', phone: '(03) 9999 3333', hours: '24/7' },
-    { id: 4, name: '7-Eleven Carlton', brand: '7-Eleven', suburb: 'Carlton', prices: { unleaded: 179.9, premium: 189.9, diesel: 175.5 }, address: '321 Lygon Street, Carlton', phone: '(03) 9999 4444', hours: '24/7' },
-    { id: 5, name: 'United Petroleum Fitzroy', brand: 'United', suburb: 'Fitzroy', prices: { unleaded: 177.5, premium: 187.5, diesel: 173.9 }, address: '654 Brunswick Street, Fitzroy', phone: '(03) 9999 5555', hours: '5:00 AM - 11:00 PM' },
-    { id: 6, name: 'Shell St Kilda', brand: 'Shell', suburb: 'St Kilda', prices: { unleaded: 183.9, premium: 193.9, diesel: 178.5 }, address: '987 Acland Street, St Kilda', phone: '(03) 9999 6666', hours: '24/7' },
-    { id: 7, name: 'BP Hawthorn', brand: 'BP', suburb: 'Hawthorn', prices: { unleaded: 186.9, premium: 196.9, diesel: 181.3 }, address: '159 Burke Road, Hawthorn', phone: '(03) 9999 7777', hours: '6:00 AM - 10:00 PM' },
-    { id: 8, name: 'Ampol Prahran', brand: 'Ampol', suburb: 'Prahran', prices: { unleaded: 184.5, premium: 194.5, diesel: 179.8 }, address: '753 High Street, Prahran', phone: '(03) 9999 8888', hours: '24/7' },
-    { id: 9, name: 'Shell Docklands', brand: 'Shell', suburb: 'Docklands', prices: { unleaded: 187.9, premium: 197.9, diesel: 182.5 }, address: '246 Collins Street, Docklands', phone: '(03) 9999 9999', hours: '24/7' },
-    { id: 10, name: 'BP Southbank', brand: 'BP', suburb: 'Southbank', prices: { unleaded: 185.5, premium: 195.5, diesel: 180.8 }, address: '135 City Road, Southbank', phone: '(03) 9999 0000', hours: '6:00 AM - 10:00 PM' },
-    { id: 11, name: 'Caltex Port Melbourne', brand: 'Caltex', suburb: 'Port Melbourne', prices: { unleaded: 183.9, premium: 193.9, diesel: 178.2 }, address: '678 Bay Street, Port Melbourne', phone: '(03) 9999 1234', hours: '24/7' },
-    { id: 12, name: '7-Eleven Collingwood', brand: '7-Eleven', suburb: 'Collingwood', prices: { unleaded: 181.9, premium: 191.9, diesel: 177.5 }, address: '456 Smith Street, Collingwood', phone: '(03) 9999 5678', hours: '24/7' },
-  ], []);
+  // Baserow table ID for petrol stations
+  const BASEROW_TABLE_ID = '265358';
 
   useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setPetrolStations(sampleStations);
-      setFilteredStations(sampleStations);
-      setLoading(false);
-    }, 800);
-  }, [sampleStations]);
+    const fetchStationsFromBaserow = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch all stations from Baserow using pagination
+        const baserowStations = await baserowAPI.fetchAllStations(BASEROW_TABLE_ID);
+        
+        // Transform Baserow data to match expected format
+        const transformedStations = baserowStations.map((station, index) => ({
+          id: station.id || index + 1,
+          name: station.name || station.Name || `Station ${index + 1}`,
+          brand: station.brand || station.Brand || 'Unknown',
+          suburb: station.suburb || station.Suburb || station.Location || 'Melbourne',
+          prices: {
+            unleaded: parseFloat(station.unleaded || station.Unleaded || station.price_unleaded || 180 + Math.random() * 20),
+            premium: parseFloat(station.premium || station.Premium || station.price_premium || 190 + Math.random() * 20),
+            diesel: parseFloat(station.diesel || station.Diesel || station.price_diesel || 175 + Math.random() * 20)
+          },
+          address: station.address || station.Address || station.location || `${station.suburb || 'Melbourne'}, VIC`,
+          phone: station.phone || station.Phone || station.contact || '(03) 0000 0000',
+          hours: station.hours || station.Hours || station.operating_hours || '24/7'
+        }));
+
+        setPetrolStations(transformedStations);
+        setFilteredStations(transformedStations);
+        console.log(`✅ Loaded ${transformedStations.length} stations from Baserow`);
+      } catch (err) {
+        console.error('Error fetching stations from Baserow:', err);
+        setError(`Failed to load stations: ${err.message}`);
+        
+        // Fallback to sample data if Baserow fails
+        const fallbackStations = [
+          { id: 1, name: 'Shell Melbourne CBD', brand: 'Shell', suburb: 'Melbourne', prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne', phone: '(03) 9999 1111', hours: '24/7' },
+          { id: 2, name: 'BP South Yarra', brand: 'BP', suburb: 'South Yarra', prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra', phone: '(03) 9999 2222', hours: '6:00 AM - 10:00 PM' },
+          { id: 3, name: 'Caltex Richmond', brand: 'Caltex', suburb: 'Richmond', prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond', phone: '(03) 9999 3333', hours: '24/7' }
+        ];
+        setPetrolStations(fallbackStations);
+        setFilteredStations(fallbackStations);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStationsFromBaserow();
+  }, []);
 
   useEffect(() => {
     let filtered = petrolStations.filter(station => {
@@ -87,7 +115,7 @@ const DirectoryPage = () => {
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <h2>Loading Petrol Station Directory...</h2>
-          <p>Gathering latest information from Melbourne stations</p>
+          <p>Fetching latest data from Baserow database...</p>
         </div>
       </div>
     );
@@ -110,6 +138,18 @@ const DirectoryPage = () => {
           >
             <h1>Petrol Station Directory</h1>
             <p>Browse all petrol stations in Melbourne with current fuel prices</p>
+            {error && (
+              <div style={{ 
+                backgroundColor: '#fff3cd', 
+                border: '1px solid #ffeaa7', 
+                borderRadius: '5px', 
+                padding: '10px', 
+                marginTop: '10px',
+                color: '#856404'
+              }}>
+                <strong>⚠️ Warning:</strong> {error}. Showing fallback data.
+              </div>
+            )}
           </motion.div>
 
           <motion.div 

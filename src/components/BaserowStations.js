@@ -6,7 +6,7 @@ const BaserowStations = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState(null);
-  const [tableId, setTableId] = useState(''); // You'll need to set your actual table ID
+  const [tableId, setTableId] = useState('265358'); // Baserow table ID for petrol stations
 
   // Test Baserow connection
   const testConnection = async () => {

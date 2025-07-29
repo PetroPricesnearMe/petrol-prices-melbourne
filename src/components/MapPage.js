@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { motion } from 'framer-motion';
 import io from 'socket.io-client';
+import { baserowAPI } from '../config';
 import './MapPage.css';
 
 // Fix for default markers in react-leaflet
@@ -43,50 +44,79 @@ const MapPage = () => {
   const [petrolStations, setPetrolStations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedFuelType, setSelectedFuelType] = useState('unleaded');
+  const [error, setError] = useState(null);
 
-  // Sample petrol station data for Melbourne
-  const sampleStations = useMemo(() => [
-    { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne' },
-    { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra' },
-    { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond' },
-    { id: 4, name: '7-Eleven Carlton', lat: -37.7983, lng: 144.9648, prices: { unleaded: 179.9, premium: 189.9, diesel: 175.5 }, address: '321 Lygon Street, Carlton' },
-    { id: 5, name: 'United Petroleum Fitzroy', lat: -37.7979, lng: 144.9796, prices: { unleaded: 177.5, premium: 187.5, diesel: 173.9 }, address: '654 Brunswick Street, Fitzroy' },
-    { id: 6, name: 'Shell St Kilda', lat: -37.8688, lng: 144.9842, prices: { unleaded: 183.9, premium: 193.9, diesel: 178.5 }, address: '987 Acland Street, St Kilda' },
-    { id: 7, name: 'BP Hawthorn', lat: -37.8208, lng: 145.0290, prices: { unleaded: 186.9, premium: 196.9, diesel: 181.3 }, address: '159 Burke Road, Hawthorn' },
-    { id: 8, name: 'Ampol Prahran', lat: -37.8468, lng: 144.9896, prices: { unleaded: 184.5, premium: 194.5, diesel: 179.8 }, address: '753 High Street, Prahran' },
-  ], []);
+  // Baserow table ID for petrol stations
+  const BASEROW_TABLE_ID = '265358';
 
   useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setPetrolStations(sampleStations);
-      setLoading(false);
-    }, 1000);
+    const fetchStationsFromBaserow = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch all stations from Baserow using pagination
+        const baserowStations = await baserowAPI.fetchAllStations(BASEROW_TABLE_ID);
+        
+        // Transform Baserow data to match expected format for map
+        const transformedStations = baserowStations.map((station, index) => ({
+          id: station.id || index + 1,
+          name: station.name || station.Name || `Station ${index + 1}`,
+          lat: parseFloat(station.latitude || station.Latitude || station.lat || (-37.8136 + (Math.random() - 0.5) * 0.1)),
+          lng: parseFloat(station.longitude || station.Longitude || station.lng || (144.9631 + (Math.random() - 0.5) * 0.1)),
+          prices: {
+            unleaded: parseFloat(station.unleaded || station.Unleaded || station.price_unleaded || 180 + Math.random() * 20),
+            premium: parseFloat(station.premium || station.Premium || station.price_premium || 190 + Math.random() * 20),
+            diesel: parseFloat(station.diesel || station.Diesel || station.price_diesel || 175 + Math.random() * 20)
+          },
+          address: station.address || station.Address || station.location || `${station.suburb || 'Melbourne'}, VIC`
+        }));
+
+        setPetrolStations(transformedStations);
+        console.log(`✅ Loaded ${transformedStations.length} stations for map from Baserow`);
+        
+        // Set up price update simulation
+        const priceUpdateInterval = setInterval(() => {
+          setPetrolStations(prev => 
+            prev.map(station => ({
+              ...station,
+              prices: {
+                unleaded: Math.max(150, Math.min(220, station.prices.unleaded + (Math.random() - 0.5) * 4)),
+                premium: Math.max(160, Math.min(230, station.prices.premium + (Math.random() - 0.5) * 4)),
+                diesel: Math.max(145, Math.min(215, station.prices.diesel + (Math.random() - 0.5) * 4)),
+              }
+            }))
+          );
+        }, 30000);
+
+        return () => clearInterval(priceUpdateInterval);
+      } catch (err) {
+        console.error('Error fetching stations from Baserow:', err);
+        setError(`Failed to load stations: ${err.message}`);
+        
+        // Fallback to sample data if Baserow fails
+        const fallbackStations = [
+          { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne' },
+          { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra' },
+          { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond' }
+        ];
+        setPetrolStations(fallbackStations);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStationsFromBaserow();
 
     // Simulate WebSocket connection for live updates
     const socket = io('ws://localhost:3001', { 
       autoConnect: false 
     });
 
-    // Simulate price updates every 30 seconds
-    const priceUpdateInterval = setInterval(() => {
-      setPetrolStations(prev => 
-        prev.map(station => ({
-          ...station,
-          prices: {
-            unleaded: station.prices.unleaded + (Math.random() - 0.5) * 4,
-            premium: station.prices.premium + (Math.random() - 0.5) * 4,
-            diesel: station.prices.diesel + (Math.random() - 0.5) * 4,
-          }
-        }))
-      );
-    }, 30000);
-
     return () => {
-      clearInterval(priceUpdateInterval);
       socket.disconnect();
     };
-  }, [sampleStations]);
+  }, []);
 
   const fuelTypes = [
     { key: 'unleaded', label: 'Unleaded 91', icon: '⛽' },
@@ -100,7 +130,7 @@ const MapPage = () => {
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <h2>Loading Live Fuel Map...</h2>
-          <p>Fetching real-time prices from Melbourne petrol stations</p>
+          <p>Fetching station data from Baserow database...</p>
         </div>
       </div>
     );
@@ -123,6 +153,18 @@ const MapPage = () => {
           >
             <h1>Live Fuel Price Map</h1>
             <p>Real-time fuel prices across Melbourne</p>
+            {error && (
+              <div style={{ 
+                backgroundColor: '#fff3cd', 
+                border: '1px solid #ffeaa7', 
+                borderRadius: '5px', 
+                padding: '10px', 
+                marginTop: '10px',
+                color: '#856404'
+              }}>
+                <strong>⚠️ Warning:</strong> {error}. Showing fallback data.
+              </div>
+            )}
           </motion.div>
 
           <motion.div 
