@@ -33,149 +33,18 @@ const config = {
 
 // Utility functions for Baserow API calls
 export const baserowAPI = {
-  // Fetch all stations using the new API endpoints
+  // Fetch all stations directly from Baserow API
   async fetchAllStations() {
-    try {
-      console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
-      
-      const response = await fetch(`${config.api.baseUrl}/api/stations/all`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        signal: AbortSignal.timeout(15000) // 15 second timeout
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to fetch stations');
-      }
-      
-      console.log(`✅ Successfully fetched ${data.data.length} stations from backend`);
-      return data.data;
-    } catch (error) {
-      console.error('❌ Error fetching all stations:', error.message);
-      
-      // If backend is not available, try direct API call as fallback
-      if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
-        console.log('🔄 Backend unavailable, trying direct Baserow API...');
-        try {
-          return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
-        } catch (directError) {
-          console.error('❌ Direct API also failed:', directError.message);
-        }
-      }
-      
-      throw error;
-    }
+    return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
   },
 
-  // Create a new petrol station
-  async createStation(stationData) {
-    try {
-      console.log(`🔄 Creating new station: ${stationData.stationName}`);
-      
-      const response = await fetch(`${config.api.baseUrl}/api/stations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(stationData),
-        signal: AbortSignal.timeout(10000)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to create station');
-      }
-      
-      console.log(`✅ Successfully created station: ${stationData.stationName}`);
-      return data.data;
-    } catch (error) {
-      console.error('❌ Error creating station:', error.message);
-      throw error;
-    }
-  },
-
-  // Update a petrol station
-  async updateStation(stationId, updateData) {
-    try {
-      console.log(`🔄 Updating station ${stationId}`);
-      
-      const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateData),
-        signal: AbortSignal.timeout(10000)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to update station');
-      }
-      
-      console.log(`✅ Successfully updated station ${stationId}`);
-      return data.data;
-    } catch (error) {
-      console.error(`❌ Error updating station ${stationId}:`, error.message);
-      throw error;
-    }
-  },
-
-  // Delete a petrol station
-  async deleteStation(stationId) {
-    try {
-      console.log(`🔄 Deleting station ${stationId}`);
-      
-      const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        signal: AbortSignal.timeout(10000)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to delete station');
-      }
-      
-      console.log(`✅ Successfully deleted station ${stationId}`);
-      return true;
-    } catch (error) {
-      console.error(`❌ Error deleting station ${stationId}:`, error.message);
-      throw error;
-    }
-  },
-
-  // Get table field metadata
+  // Get table field metadata directly from Baserow
   async getTableFields(tableId) {
     try {
-      const response = await fetch(`${config.api.baseUrl}/api/baserow/fields/${tableId}`, {
+      const response = await fetch(`${config.baserow.apiUrl}/database/fields/table/${tableId}/`, {
         method: 'GET',
         headers: {
+          'Authorization': `Token ${config.baserow.token}`,
           'Content-Type': 'application/json',
         },
         signal: AbortSignal.timeout(10000)
@@ -187,12 +56,8 @@ export const baserowAPI = {
       
       const data = await response.json();
       
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to fetch table fields');
-      }
-      
       console.log(`✅ Successfully fetched fields for table ${tableId}`);
-      return data.data;
+      return data;
     } catch (error) {
       console.error(`❌ Error fetching table fields:`, error.message);
       throw error;
@@ -275,12 +140,41 @@ export const baserowAPI = {
   // Test connection to Baserow
   async testConnection() {
     try {
-      const response = await fetch(`${config.api.baseUrl}/api/baserow/test`);
-      const data = await response.json();
-      return data;
+      const response = await fetch(`${config.baserow.apiUrl}/database/tables/all-tables/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Token ${config.baserow.token}`,
+          'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(10000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const tables = await response.json();
+      
+      console.log('✅ Baserow connection successful');
+      return {
+        connected: true,
+        tablesCount: tables.length || 0,
+        config: {
+          apiUrl: config.baserow.apiUrl,
+          hasToken: !!config.baserow.token,
+          mcpServerUrl: config.baserow.mcpServerUrl
+        }
+      };
     } catch (error) {
-      console.error('Error testing connection:', error.message);
-      throw error;
+      console.error('❌ Baserow connection failed:', error.message);
+      return {
+        connected: false,
+        error: error.message,
+        config: {
+          apiUrl: config.baserow.apiUrl,
+          hasToken: !!config.baserow.token
+        }
+      };
     }
   }
 };
