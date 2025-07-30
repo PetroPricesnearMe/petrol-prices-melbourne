@@ -76,9 +76,12 @@ const MapPage = () => {
           fuelPrices: station.field_5072139 || station['Fuel Prices'] || []
         }));
 
-        // Use all stations from API - no artificial limit
-        setPetrolStations(transformedStations);
-        console.log(`✅ Loaded ${transformedStations.length} stations for map from Baserow`);
+        // Limit markers to prevent performance issues
+        const maxMarkers = 100;
+        const limitedStations = transformedStations.slice(0, maxMarkers);
+        
+        setPetrolStations(limitedStations);
+        console.log(`✅ Loaded ${limitedStations.length} stations for map from Baserow${transformedStations.length > maxMarkers ? ` (limited from ${transformedStations.length})` : ''}`);
         
         // Set up price update simulation
         const priceUpdateInterval = setInterval(() => {
@@ -98,19 +101,16 @@ const MapPage = () => {
 
         return () => clearInterval(priceUpdateInterval);
       } catch (err) {
-        console.error('❌ Error fetching stations from Baserow:', err);
+        console.error('Error fetching stations from Baserow:', err);
         setError(`Failed to load stations: ${err.message}`);
         
-        // Only use fallback if we have no stations at all
-        if (petrolStations.length === 0) {
-          console.log('⚠️ Using fallback data due to API failure');
-          const fallbackStations = [
-            { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 }, address: '123 Collins Street, Melbourne' },
-            { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 }, address: '456 Toorak Road, South Yarra' },
-            { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 }, address: '789 Swan Street, Richmond' }
-          ];
-          setPetrolStations(fallbackStations);
-        }
+        // Fallback to sample data if Baserow fails
+        const fallbackStations = [
+          { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 }, address: '123 Collins Street, Melbourne' },
+          { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 }, address: '456 Toorak Road, South Yarra' },
+          { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 }, address: '789 Swan Street, Richmond' }
+        ];
+        setPetrolStations(fallbackStations);
       } finally {
         setLoading(false);
       }

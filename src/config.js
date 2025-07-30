@@ -43,50 +43,31 @@ export const baserowAPI = {
         headers: {
           'Content-Type': 'application/json',
         },
-        signal: AbortSignal.timeout(30000) // Increased timeout to 30 seconds
+        signal: AbortSignal.timeout(15000) // 15 second timeout
       });
       
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`❌ HTTP ${response.status}: ${response.statusText}`);
-        console.error(`❌ Response body: ${errorText}`);
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
       const data = await response.json();
       
       if (!data.success) {
-        console.error(`❌ API returned error: ${data.error || 'Unknown error'}`);
         throw new Error(data.error || 'Failed to fetch stations');
       }
       
-      if (!data.data || !Array.isArray(data.data)) {
-        console.error(`❌ Invalid data format received:`, data);
-        throw new Error('Invalid data format received from API');
-      }
-      
       console.log(`✅ Successfully fetched ${data.data.length} stations from backend`);
-      console.log(`📊 Data summary:`, {
-        totalStations: data.data.length,
-        count: data.count,
-        hasData: !!data.data,
-        isArray: Array.isArray(data.data)
-      });
-      
       return data.data;
     } catch (error) {
       console.error('❌ Error fetching all stations:', error.message);
       
       // If backend is not available, try direct API call as fallback
-      if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch') || error.message.includes('timeout')) {
+      if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
         console.log('🔄 Backend unavailable, trying direct Baserow API...');
         try {
-          const directData = await this.fetchAllStationsDirect(config.tables.petrolStations.id);
-          console.log(`✅ Direct API call successful, got ${directData.length} stations`);
-          return directData;
+          return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
         } catch (directError) {
           console.error('❌ Direct API also failed:', directError.message);
-          throw new Error(`Both backend and direct API failed. Backend: ${error.message}, Direct: ${directError.message}`);
         }
       }
       
@@ -224,27 +205,17 @@ export const baserowAPI = {
     let next = null;
     const baseUrl = `${config.baserow.apiUrl}/database/table/${tableId}/row/`;
     const maxRetries = 3;
-    const maxPages = 50; // Safety limit
-    let pageCount = 0;
 
     console.log(`🔄 Fetching directly from Baserow API: ${baseUrl}`);
 
     try {
       do {
-        pageCount++;
-        if (pageCount > maxPages) {
-          console.warn(`⚠️ Reached maximum page limit (${maxPages}), stopping pagination`);
-          break;
-        }
-        
         const url = new URL(baseUrl);
         url.searchParams.set('user_field_names', 'true');
-        url.searchParams.set('size', '100'); // Increased size to reduce requests
+        url.searchParams.set('size', '50'); // Reduced size to avoid rate limits
         if (next) {
           url.searchParams.set('offset', next);
         }
-
-        console.log(`📄 Fetching page ${pageCount}${next ? ` (offset: ${next})` : ''}...`);
 
         let response;
         for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -266,9 +237,6 @@ export const baserowAPI = {
               continue;
             }
             
-            const errorText = await response.text();
-            console.error(`❌ HTTP ${response.status}: ${response.statusText}`);
-            console.error(`❌ Response body: ${errorText}`);
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           } catch (fetchError) {
             if (attempt === maxRetries) throw fetchError;
@@ -278,12 +246,6 @@ export const baserowAPI = {
         }
 
         const data = await response.json();
-        
-        if (!data.results || !Array.isArray(data.results)) {
-          console.error('❌ Invalid response format from Baserow API:', data);
-          throw new Error('Invalid response format from Baserow API');
-        }
-        
         allRows = allRows.concat(data.results);
         
         // Extract offset from next URL if it exists
@@ -294,20 +256,15 @@ export const baserowAPI = {
           next = null;
         }
 
-        console.log(`📥 Fetched ${data.results.length} rows from page ${pageCount}, total: ${allRows.length}`);
+        console.log(`📥 Fetched ${data.results.length} rows, total: ${allRows.length}`);
         
         // Add small delay between requests to be nice to the API
         if (next) {
-          await new Promise(resolve => setTimeout(resolve, 200));
+          await new Promise(resolve => setTimeout(resolve, 100));
         }
       } while (next);
 
-      console.log(`✅ Successfully fetched all ${allRows.length} stations directly from Baserow in ${pageCount} pages`);
-      
-      if (allRows.length === 0) {
-        console.warn('⚠️ No stations found in Baserow database');
-      }
-      
+      console.log(`✅ Successfully fetched all ${allRows.length} stations directly from Baserow`);
       return allRows;
     } catch (error) {
       console.error('❌ Error fetching stations directly:', error.message);

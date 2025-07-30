@@ -114,20 +114,17 @@ class BaserowClient {
       let allStations = [];
       let next = null;
       let pageCount = 0;
-      const maxPages = 50; // Safety limit to prevent infinite loops
+      const maxRetries = 3;
       
-      console.log(`🔄 Starting to fetch all petrol stations from Baserow...`);
+      // Baserow API max size is 200 per request
+      const pageSize = 200;
+      
+      console.log('🔄 Starting to fetch all petrol stations from Baserow...');
       
       do {
-        pageCount++;
-        if (pageCount > maxPages) {
-          console.warn(`⚠️ Reached maximum page limit (${maxPages}), stopping pagination`);
-          break;
-        }
-        
         const requestParams = {
           user_field_names: true,
-          size: 100, // Increased page size to reduce number of requests
+          size: pageSize,
           ...params
         };
         
@@ -135,17 +132,32 @@ class BaserowClient {
           requestParams.offset = next;
         }
 
-        console.log(`📄 Fetching page ${pageCount}${next ? ` (offset: ${next})` : ''}...`);
-
-        const response = await this.client.get(
-          `/database/rows/table/${this.config.tables.petrolStations.id}/`,
-          { params: requestParams }
-        );
+        let response;
+        let retryCount = 0;
+        
+        // Retry logic for resilience
+        while (retryCount < maxRetries) {
+          try {
+            response = await this.client.get(
+              `/database/rows/table/${this.config.tables.petrolStations.id}/`,
+              { params: requestParams }
+            );
+            break; // Success, exit retry loop
+          } catch (error) {
+            retryCount++;
+            if (retryCount >= maxRetries) throw error;
+            
+            console.log(`⚠️ Request failed, retry ${retryCount}/${maxRetries}...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+          }
+        }
         
         const data = response.data;
+        pageCount++;
         
+        // Validate response data
         if (!data.results || !Array.isArray(data.results)) {
-          console.error('❌ Invalid response format from Baserow API:', data);
+          console.error('⚠️ Invalid response format:', data);
           throw new Error('Invalid response format from Baserow API');
         }
         
@@ -159,24 +171,27 @@ class BaserowClient {
           next = null;
         }
 
-        console.log(`📥 Fetched ${data.results.length} stations from page ${pageCount}, total: ${allStations.length}`);
+        console.log(`📥 Page ${pageCount}: Fetched ${data.results.length} stations, total: ${allStations.length}${next ? ', continuing...' : ', done!'}`);
         
-        // Add delay between requests to be nice to the API
+        // Add small delay between requests to avoid rate limiting
         if (next) {
-          await new Promise(resolve => setTimeout(resolve, 200));
+          await new Promise(resolve => setTimeout(resolve, 50));
         }
       } while (next);
 
-      console.log(`✅ Successfully fetched all ${allStations.length} petrol stations from ${pageCount} pages`);
+      console.log(`✅ Successfully fetched all ${allStations.length} petrol stations in ${pageCount} pages`);
       
-      // Validate that we have stations
+      // Validate we got a reasonable number of stations
       if (allStations.length === 0) {
-        console.warn('⚠️ No stations found in Baserow database');
+        console.warn('⚠️ No stations found in Baserow table');
+      } else if (allStations.length < 100) {
+        console.warn(`⚠️ Only ${allStations.length} stations found - expected more (e.g., 650)`);
       }
       
       return allStations;
     } catch (error) {
       console.error('❌ Error fetching all petrol stations:', error.message);
+      console.error('Stack trace:', error.stack);
       throw this.handleError(error);
     }
   }
