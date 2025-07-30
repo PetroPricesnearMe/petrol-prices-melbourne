@@ -33,18 +33,139 @@ const config = {
 
 // Utility functions for Baserow API calls
 export const baserowAPI = {
-  // Fetch all stations directly from Baserow API
+  // Fetch all stations using the new API endpoints
   async fetchAllStations() {
-    return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
-  },
-
-  // Get table field metadata directly from Baserow
-  async getTableFields(tableId) {
     try {
-      const response = await fetch(`${config.baserow.apiUrl}/database/fields/table/${tableId}/`, {
+      console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
+      
+      const response = await fetch(`${config.api.baseUrl}/api/stations/all`, {
         method: 'GET',
         headers: {
-          'Authorization': `Token ${config.baserow.token}`,
+          'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(30000) // Increased timeout to 30 seconds
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ HTTP ${response.status}: ${response.statusText}`);
+        console.error(`❌ Response body: ${errorText}`);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        console.error(`❌ API returned error: ${data.error || 'Unknown error'}`);
+        throw new Error(data.error || 'Failed to fetch stations');
+      }
+      
+      if (!data.data || !Array.isArray(data.data)) {
+        console.error(`❌ Invalid data format received:`, data);
+        throw new Error('Invalid data format received from API');
+      }
+      
+      console.log(`✅ Successfully fetched ${data.data.length} stations from backend`);
+      console.log(`📊 Data summary:`, {
+        totalStations: data.data.length,
+        count: data.count,
+        hasData: !!data.data,
+        isArray: Array.isArray(data.data)
+      });
+      
+      return data.data;
+    } catch (error) {
+      console.error('❌ Error fetching all stations:', error.message);
+      
+      // If backend is not available, try direct API call as fallback
+      if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch') || error.message.includes('timeout')) {
+        console.log('🔄 Backend unavailable, trying direct Baserow API...');
+        try {
+          const directData = await this.fetchAllStationsDirect(config.tables.petrolStations.id);
+          console.log(`✅ Direct API call successful, got ${directData.length} stations`);
+          return directData;
+        } catch (directError) {
+          console.error('❌ Direct API also failed:', directError.message);
+          throw new Error(`Both backend and direct API failed. Backend: ${error.message}, Direct: ${directError.message}`);
+        }
+      }
+      
+      throw error;
+    }
+  },
+
+  // Create a new petrol station
+  async createStation(stationData) {
+    try {
+      console.log(`🔄 Creating new station: ${stationData.stationName}`);
+      
+      const response = await fetch(`${config.api.baseUrl}/api/stations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(stationData),
+        signal: AbortSignal.timeout(10000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to create station');
+      }
+      
+      console.log(`✅ Successfully created station: ${stationData.stationName}`);
+      return data.data;
+    } catch (error) {
+      console.error('❌ Error creating station:', error.message);
+      throw error;
+    }
+  },
+
+  // Update a petrol station
+  async updateStation(stationId, updateData) {
+    try {
+      console.log(`🔄 Updating station ${stationId}`);
+      
+      const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData),
+        signal: AbortSignal.timeout(10000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to update station');
+      }
+      
+      console.log(`✅ Successfully updated station ${stationId}`);
+      return data.data;
+    } catch (error) {
+      console.error(`❌ Error updating station ${stationId}:`, error.message);
+      throw error;
+    }
+  },
+
+  // Delete a petrol station
+  async deleteStation(stationId) {
+    try {
+      console.log(`🔄 Deleting station ${stationId}`);
+      
+      const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
+        method: 'DELETE',
+        headers: {
           'Content-Type': 'application/json',
         },
         signal: AbortSignal.timeout(10000)
@@ -56,8 +177,41 @@ export const baserowAPI = {
       
       const data = await response.json();
       
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to delete station');
+      }
+      
+      console.log(`✅ Successfully deleted station ${stationId}`);
+      return true;
+    } catch (error) {
+      console.error(`❌ Error deleting station ${stationId}:`, error.message);
+      throw error;
+    }
+  },
+
+  // Get table field metadata
+  async getTableFields(tableId) {
+    try {
+      const response = await fetch(`${config.api.baseUrl}/api/baserow/fields/${tableId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(10000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch table fields');
+      }
+      
       console.log(`✅ Successfully fetched fields for table ${tableId}`);
-      return data;
+      return data.data;
     } catch (error) {
       console.error(`❌ Error fetching table fields:`, error.message);
       throw error;
@@ -70,17 +224,27 @@ export const baserowAPI = {
     let next = null;
     const baseUrl = `${config.baserow.apiUrl}/database/table/${tableId}/row/`;
     const maxRetries = 3;
+    const maxPages = 50; // Safety limit
+    let pageCount = 0;
 
     console.log(`🔄 Fetching directly from Baserow API: ${baseUrl}`);
 
     try {
       do {
+        pageCount++;
+        if (pageCount > maxPages) {
+          console.warn(`⚠️ Reached maximum page limit (${maxPages}), stopping pagination`);
+          break;
+        }
+        
         const url = new URL(baseUrl);
         url.searchParams.set('user_field_names', 'true');
-        url.searchParams.set('size', '50'); // Reduced size to avoid rate limits
+        url.searchParams.set('size', '100'); // Increased size to reduce requests
         if (next) {
           url.searchParams.set('offset', next);
         }
+
+        console.log(`📄 Fetching page ${pageCount}${next ? ` (offset: ${next})` : ''}...`);
 
         let response;
         for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -102,6 +266,9 @@ export const baserowAPI = {
               continue;
             }
             
+            const errorText = await response.text();
+            console.error(`❌ HTTP ${response.status}: ${response.statusText}`);
+            console.error(`❌ Response body: ${errorText}`);
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           } catch (fetchError) {
             if (attempt === maxRetries) throw fetchError;
@@ -111,6 +278,12 @@ export const baserowAPI = {
         }
 
         const data = await response.json();
+        
+        if (!data.results || !Array.isArray(data.results)) {
+          console.error('❌ Invalid response format from Baserow API:', data);
+          throw new Error('Invalid response format from Baserow API');
+        }
+        
         allRows = allRows.concat(data.results);
         
         // Extract offset from next URL if it exists
@@ -121,15 +294,20 @@ export const baserowAPI = {
           next = null;
         }
 
-        console.log(`📥 Fetched ${data.results.length} rows, total: ${allRows.length}`);
+        console.log(`📥 Fetched ${data.results.length} rows from page ${pageCount}, total: ${allRows.length}`);
         
         // Add small delay between requests to be nice to the API
         if (next) {
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise(resolve => setTimeout(resolve, 200));
         }
       } while (next);
 
-      console.log(`✅ Successfully fetched all ${allRows.length} stations directly from Baserow`);
+      console.log(`✅ Successfully fetched all ${allRows.length} stations directly from Baserow in ${pageCount} pages`);
+      
+      if (allRows.length === 0) {
+        console.warn('⚠️ No stations found in Baserow database');
+      }
+      
       return allRows;
     } catch (error) {
       console.error('❌ Error fetching stations directly:', error.message);
@@ -140,41 +318,12 @@ export const baserowAPI = {
   // Test connection to Baserow
   async testConnection() {
     try {
-      const response = await fetch(`${config.baserow.apiUrl}/database/tables/all-tables/`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Token ${config.baserow.token}`,
-          'Content-Type': 'application/json',
-        },
-        signal: AbortSignal.timeout(10000)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const tables = await response.json();
-      
-      console.log('✅ Baserow connection successful');
-      return {
-        connected: true,
-        tablesCount: tables.length || 0,
-        config: {
-          apiUrl: config.baserow.apiUrl,
-          hasToken: !!config.baserow.token,
-          mcpServerUrl: config.baserow.mcpServerUrl
-        }
-      };
+      const response = await fetch(`${config.api.baseUrl}/api/baserow/test`);
+      const data = await response.json();
+      return data;
     } catch (error) {
-      console.error('❌ Baserow connection failed:', error.message);
-      return {
-        connected: false,
-        error: error.message,
-        config: {
-          apiUrl: config.baserow.apiUrl,
-          hasToken: !!config.baserow.token
-        }
-      };
+      console.error('Error testing connection:', error.message);
+      throw error;
     }
   }
 };

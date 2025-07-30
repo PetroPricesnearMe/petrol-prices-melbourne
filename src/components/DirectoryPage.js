@@ -33,7 +33,9 @@ const DirectoryPage = () => {
             // Generate realistic prices for demo - in production, get from linked Fuel Prices
             unleaded: 180 + Math.random() * 20,
             premium: 190 + Math.random() * 20,
-            diesel: 175 + Math.random() * 20
+            premium98: 200 + Math.random() * 25,
+            diesel: 175 + Math.random() * 20,
+            gas: 85 + Math.random() * 15
           },
           address: station.field_5072131 || station.Address || `${station.field_5072132 || 'Melbourne'}, VIC`,
           phone: '(03) 0000 0000', // Could be added as a field later
@@ -55,9 +57,9 @@ const DirectoryPage = () => {
         
         // Fallback to sample data if Baserow fails
         const fallbackStations = [
-          { id: 1, name: 'Shell Melbourne CBD', brand: 'Shell', suburb: 'Melbourne', prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne', phone: '(03) 9999 1111', hours: '24/7' },
-          { id: 2, name: 'BP South Yarra', brand: 'BP', suburb: 'South Yarra', prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra', phone: '(03) 9999 2222', hours: '6:00 AM - 10:00 PM' },
-          { id: 3, name: 'Caltex Richmond', brand: 'Caltex', suburb: 'Richmond', prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond', phone: '(03) 9999 3333', hours: '24/7' }
+          { id: 1, name: 'Shell Melbourne CBD', brand: 'Shell', suburb: 'Melbourne', prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 }, address: '123 Collins Street, Melbourne', phone: '(03) 9999 1111', hours: '24/7' },
+          { id: 2, name: 'BP South Yarra', brand: 'BP', suburb: 'South Yarra', prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 }, address: '456 Toorak Road, South Yarra', phone: '(03) 9999 2222', hours: '6:00 AM - 10:00 PM' },
+          { id: 3, name: 'Caltex Richmond', brand: 'Caltex', suburb: 'Richmond', prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 }, address: '789 Swan Street, Richmond', phone: '(03) 9999 3333', hours: '24/7' }
         ];
         setPetrolStations(fallbackStations);
         setFilteredStations(fallbackStations);
@@ -112,7 +114,7 @@ const DirectoryPage = () => {
   };
 
   const getLowestPrice = (prices) => {
-    return Math.min(prices.unleaded, prices.premium, prices.diesel);
+    return Math.min(prices.unleaded, prices.premium, prices.premium98, prices.diesel, prices.gas);
   };
 
   if (loading) {
@@ -269,8 +271,16 @@ const DirectoryPage = () => {
                       <span className="price">{station.prices.premium.toFixed(1)}¢</span>
                     </div>
                     <div className="price-item">
+                      <span className="fuel-type">⚡ Premium 98</span>
+                      <span className="price">{station.prices.premium98.toFixed(1)}¢</span>
+                    </div>
+                    <div className="price-item">
                       <span className="fuel-type">🚛 Diesel</span>
                       <span className="price">{station.prices.diesel.toFixed(1)}¢</span>
+                    </div>
+                    <div className="price-item">
+                      <span className="fuel-type">🔥 Gas</span>
+                      <span className="price">{station.prices.gas.toFixed(1)}¢</span>
                     </div>
                   </div>
                 </div>

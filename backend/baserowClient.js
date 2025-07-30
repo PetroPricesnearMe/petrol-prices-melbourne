@@ -113,11 +113,21 @@ class BaserowClient {
     try {
       let allStations = [];
       let next = null;
+      let pageCount = 0;
+      const maxPages = 50; // Safety limit to prevent infinite loops
+      
+      console.log(`🔄 Starting to fetch all petrol stations from Baserow...`);
       
       do {
+        pageCount++;
+        if (pageCount > maxPages) {
+          console.warn(`⚠️ Reached maximum page limit (${maxPages}), stopping pagination`);
+          break;
+        }
+        
         const requestParams = {
           user_field_names: true,
-          size: 50,
+          size: 100, // Increased page size to reduce number of requests
           ...params
         };
         
@@ -125,12 +135,20 @@ class BaserowClient {
           requestParams.offset = next;
         }
 
+        console.log(`📄 Fetching page ${pageCount}${next ? ` (offset: ${next})` : ''}...`);
+
         const response = await this.client.get(
           `/database/rows/table/${this.config.tables.petrolStations.id}/`,
           { params: requestParams }
         );
         
         const data = response.data;
+        
+        if (!data.results || !Array.isArray(data.results)) {
+          console.error('❌ Invalid response format from Baserow API:', data);
+          throw new Error('Invalid response format from Baserow API');
+        }
+        
         allStations = allStations.concat(data.results);
         
         // Extract offset from next URL if it exists
@@ -141,18 +159,24 @@ class BaserowClient {
           next = null;
         }
 
-        console.log(`📥 Fetched ${data.results.length} stations, total: ${allStations.length}`);
+        console.log(`📥 Fetched ${data.results.length} stations from page ${pageCount}, total: ${allStations.length}`);
         
         // Add delay between requests to be nice to the API
         if (next) {
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise(resolve => setTimeout(resolve, 200));
         }
       } while (next);
 
-      console.log(`✅ Fetched all ${allStations.length} petrol stations`);
+      console.log(`✅ Successfully fetched all ${allStations.length} petrol stations from ${pageCount} pages`);
+      
+      // Validate that we have stations
+      if (allStations.length === 0) {
+        console.warn('⚠️ No stations found in Baserow database');
+      }
+      
       return allStations;
     } catch (error) {
-      console.error('Error fetching all petrol stations:', error.message);
+      console.error('❌ Error fetching all petrol stations:', error.message);
       throw this.handleError(error);
     }
   }

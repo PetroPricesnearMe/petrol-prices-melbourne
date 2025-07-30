@@ -67,19 +67,18 @@ const MapPage = () => {
             // Generate realistic prices for demo - in production, get from linked Fuel Prices
             unleaded: 180 + Math.random() * 20,
             premium: 190 + Math.random() * 20,
-            diesel: 175 + Math.random() * 20
+            premium98: 200 + Math.random() * 25,
+            diesel: 175 + Math.random() * 20,
+            gas: 85 + Math.random() * 15
           },
           address: station.field_5072131 || station.Address || `${station.field_5072132 || 'Melbourne'}, VIC`,
           category: station.field_5072138 || station.Category,
           fuelPrices: station.field_5072139 || station['Fuel Prices'] || []
         }));
 
-        // Limit markers to prevent performance issues
-        const maxMarkers = 100;
-        const limitedStations = transformedStations.slice(0, maxMarkers);
-        
-        setPetrolStations(limitedStations);
-        console.log(`✅ Loaded ${limitedStations.length} stations for map from Baserow${transformedStations.length > maxMarkers ? ` (limited from ${transformedStations.length})` : ''}`);
+        // Use all stations from API - no artificial limit
+        setPetrolStations(transformedStations);
+        console.log(`✅ Loaded ${transformedStations.length} stations for map from Baserow`);
         
         // Set up price update simulation
         const priceUpdateInterval = setInterval(() => {
@@ -89,7 +88,9 @@ const MapPage = () => {
               prices: {
                 unleaded: Math.max(150, Math.min(220, station.prices.unleaded + (Math.random() - 0.5) * 4)),
                 premium: Math.max(160, Math.min(230, station.prices.premium + (Math.random() - 0.5) * 4)),
+                premium98: Math.max(170, Math.min(240, station.prices.premium98 + (Math.random() - 0.5) * 4)),
                 diesel: Math.max(145, Math.min(215, station.prices.diesel + (Math.random() - 0.5) * 4)),
+                gas: Math.max(70, Math.min(110, station.prices.gas + (Math.random() - 0.5) * 3)),
               }
             }))
           );
@@ -97,16 +98,19 @@ const MapPage = () => {
 
         return () => clearInterval(priceUpdateInterval);
       } catch (err) {
-        console.error('Error fetching stations from Baserow:', err);
+        console.error('❌ Error fetching stations from Baserow:', err);
         setError(`Failed to load stations: ${err.message}`);
         
-        // Fallback to sample data if Baserow fails
-        const fallbackStations = [
-          { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }, address: '123 Collins Street, Melbourne' },
-          { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }, address: '456 Toorak Road, South Yarra' },
-          { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }, address: '789 Swan Street, Richmond' }
-        ];
-        setPetrolStations(fallbackStations);
+        // Only use fallback if we have no stations at all
+        if (petrolStations.length === 0) {
+          console.log('⚠️ Using fallback data due to API failure');
+          const fallbackStations = [
+            { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 }, address: '123 Collins Street, Melbourne' },
+            { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 }, address: '456 Toorak Road, South Yarra' },
+            { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 }, address: '789 Swan Street, Richmond' }
+          ];
+          setPetrolStations(fallbackStations);
+        }
       } finally {
         setLoading(false);
       }
@@ -127,7 +131,9 @@ const MapPage = () => {
   const fuelTypes = [
     { key: 'unleaded', label: 'Unleaded 91', icon: '⛽' },
     { key: 'premium', label: 'Premium 95', icon: '🔋' },
-    { key: 'diesel', label: 'Diesel', icon: '🚛' }
+    { key: 'premium98', label: 'Premium 98', icon: '⚡' },
+    { key: 'diesel', label: 'Diesel', icon: '🚛' },
+    { key: 'gas', label: 'Gas', icon: '🔥' }
   ];
 
   if (loading) {
