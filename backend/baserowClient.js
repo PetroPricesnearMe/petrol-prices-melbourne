@@ -106,42 +106,47 @@ class BaserowClient {
 
   /**
    * Get all petrol stations using pagination (fetches all pages)
-   * @param {Object} params - Query parameters
+   * @param {Object} params - Query parameters for the initial request
    * @returns {Promise<Array>} All petrol stations
    */
   async getAllPetrolStations(params = {}) {
     try {
       let allStations = [];
-      let next = null;
       let pageCount = 0;
       const maxRetries = 3;
       
-      // Baserow API max size is 200 per request
-      const pageSize = 200;
+      // Initial URL with parameters
+      let nextUrl = `/database/rows/table/${this.config.tables.petrolStations.id}/?user_field_names=true&size=50`;
+      
+      // Add any additional params to the initial request
+      if (Object.keys(params).length > 0) {
+        const searchParams = new URLSearchParams({ user_field_names: true, size: 50, ...params });
+        nextUrl = `/database/rows/table/${this.config.tables.petrolStations.id}/?${searchParams.toString()}`;
+      }
       
       console.log('🔄 Starting to fetch all petrol stations from Baserow...');
       
-      do {
-        const requestParams = {
-          user_field_names: true,
-          size: pageSize,
-          ...params
-        };
-        
-        if (next) {
-          requestParams.offset = next;
-        }
-
+      while (nextUrl) {
         let response;
         let retryCount = 0;
         
         // Retry logic for resilience
         while (retryCount < maxRetries) {
           try {
-            response = await this.client.get(
-              `/database/rows/table/${this.config.tables.petrolStations.id}/`,
-              { params: requestParams }
-            );
+            // For subsequent requests, use the full URL from the 'next' field
+            if (nextUrl.startsWith('http')) {
+              // Full URL from pagination
+              response = await axios.get(nextUrl, {
+                headers: {
+                  'Authorization': `Token ${this.config.token}`,
+                  'Content-Type': 'application/json'
+                },
+                timeout: 15000
+              });
+            } else {
+              // Initial request or relative URL
+              response = await this.client.get(nextUrl);
+            }
             break; // Success, exit retry loop
           } catch (error) {
             retryCount++;
@@ -163,21 +168,16 @@ class BaserowClient {
         
         allStations = allStations.concat(data.results);
         
-        // Extract offset from next URL if it exists
-        if (data.next) {
-          const nextUrl = new URL(data.next);
-          next = nextUrl.searchParams.get('offset');
-        } else {
-          next = null;
-        }
+        // Use the next URL directly for cursor-based pagination
+        nextUrl = data.next;
 
-        console.log(`📥 Page ${pageCount}: Fetched ${data.results.length} stations, total: ${allStations.length}${next ? ', continuing...' : ', done!'}`);
+        console.log(`📥 Page ${pageCount}: Fetched ${data.results.length} stations, total: ${allStations.length}${nextUrl ? ', continuing...' : ', done!'}`);
         
         // Add small delay between requests to avoid rate limiting
-        if (next) {
+        if (nextUrl) {
           await new Promise(resolve => setTimeout(resolve, 50));
         }
-      } while (next);
+      }
 
       console.log(`✅ Successfully fetched all ${allStations.length} petrol stations in ${pageCount} pages`);
       

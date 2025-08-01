@@ -199,28 +199,20 @@ export const baserowAPI = {
     }
   },
 
-  // Direct Baserow API call with pagination
+  // Direct Baserow API call with cursor-based pagination
   async fetchAllStationsDirect(tableId) {
     let allRows = [];
-    let next = null;
-    const baseUrl = `${config.baserow.apiUrl}/database/table/${tableId}/row/`;
+    let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=50`;
     const maxRetries = 3;
 
-    console.log(`🔄 Fetching directly from Baserow API: ${baseUrl}`);
+    console.log(`🔄 Fetching directly from Baserow API with cursor-based pagination`);
 
     try {
-      do {
-        const url = new URL(baseUrl);
-        url.searchParams.set('user_field_names', 'true');
-        url.searchParams.set('size', '50'); // Reduced size to avoid rate limits
-        if (next) {
-          url.searchParams.set('offset', next);
-        }
-
+      while (nextUrl) {
         let response;
         for (let attempt = 0; attempt <= maxRetries; attempt++) {
           try {
-            response = await fetch(url.toString(), {
+            response = await fetch(nextUrl, {
               headers: {
                 'Authorization': `Token ${config.baserow.token}`,
                 'Content-Type': 'application/json'
@@ -246,23 +238,25 @@ export const baserowAPI = {
         }
 
         const data = await response.json();
+        
+        // Validate response structure
+        if (!data.results || !Array.isArray(data.results)) {
+          console.error('⚠️ Invalid response format:', data);
+          throw new Error('Invalid response format from Baserow API');
+        }
+        
         allRows = allRows.concat(data.results);
         
-        // Extract offset from next URL if it exists
-        if (data.next) {
-          const nextUrl = new URL(data.next);
-          next = nextUrl.searchParams.get('offset');
-        } else {
-          next = null;
-        }
+        // Use the next URL directly for cursor-based pagination
+        nextUrl = data.next;
 
-        console.log(`📥 Fetched ${data.results.length} rows, total: ${allRows.length}`);
+        console.log(`📥 Fetched ${data.results.length} rows, total: ${allRows.length}${nextUrl ? ', continuing...' : ', done!'}`);
         
         // Add small delay between requests to be nice to the API
-        if (next) {
+        if (nextUrl) {
           await new Promise(resolve => setTimeout(resolve, 100));
         }
-      } while (next);
+      }
 
       console.log(`✅ Successfully fetched all ${allRows.length} stations directly from Baserow`);
       return allRows;
