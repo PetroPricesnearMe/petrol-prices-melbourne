@@ -199,69 +199,42 @@ export const baserowAPI = {
     }
   },
 
-  // Direct Baserow API call with cursor-based pagination
+  /**
+   * Fetch all stations from Baserow, handling cursor-based pagination.
+   * @param {number|string} tableId
+   * @returns {Promise<Array>} All station rows
+   */
   async fetchAllStationsDirect(tableId) {
-    let allRows = [];
-    let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=50`;
-    const maxRetries = 3;
-
-    console.log(`🔄 Fetching directly from Baserow API with cursor-based pagination`);
-
+    let rows = [];
+    let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
+    
     try {
       while (nextUrl) {
-        let response;
-        for (let attempt = 0; attempt <= maxRetries; attempt++) {
-          try {
-            response = await fetch(nextUrl, {
-              headers: {
-                'Authorization': `Token ${config.baserow.token}`,
-                'Content-Type': 'application/json'
-              },
-              signal: AbortSignal.timeout(15000) // 15 second timeout
-            });
-
-            if (response.ok) break;
-            
-            if (response.status === 429) { // Rate limited
-              const waitTime = Math.pow(2, attempt) * 1000; // Exponential backoff
-              console.log(`⏳ Rate limited, waiting ${waitTime}ms before retry ${attempt + 1}/${maxRetries + 1}`);
-              await new Promise(resolve => setTimeout(resolve, waitTime));
-              continue;
-            }
-            
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          } catch (fetchError) {
-            if (attempt === maxRetries) throw fetchError;
-            console.log(`⚠️ Attempt ${attempt + 1} failed, retrying...`);
-            await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
-          }
+        const response = await fetch(nextUrl, {
+          headers: {
+            'Authorization': `Token ${config.baserow.token}`
+          },
+          signal: AbortSignal.timeout(10000)
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-
+        
         const data = await response.json();
         
-        // Validate response structure
-        if (!data.results || !Array.isArray(data.results)) {
-          console.error('⚠️ Invalid response format:', data);
-          throw new Error('Invalid response format from Baserow API');
+        if (!Array.isArray(data.results)) {
+          throw new Error('Unexpected API response structure');
         }
         
-        allRows = allRows.concat(data.results);
-        
-        // Use the next URL directly for cursor-based pagination
-        nextUrl = data.next;
-
-        console.log(`📥 Fetched ${data.results.length} rows, total: ${allRows.length}${nextUrl ? ', continuing...' : ', done!'}`);
-        
-        // Add small delay between requests to be nice to the API
-        if (nextUrl) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-        }
+        rows.push(...data.results);
+        nextUrl = data.next; // Will be null when done
       }
-
-      console.log(`✅ Successfully fetched all ${allRows.length} stations directly from Baserow`);
-      return allRows;
+      
+      console.log(`✅ Successfully fetched ${rows.length} stations from Baserow`);
+      return rows;
     } catch (error) {
-      console.error('❌ Error fetching stations directly:', error.message);
+      console.error('❌ Error fetching stations from Baserow:', error.message);
       throw error;
     }
   },

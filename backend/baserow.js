@@ -42,7 +42,7 @@ class BaserowClient {
   // Get rows from a table
   async getRows(tableId, params = {}) {
     try {
-      const response = await this.client.get(`/database/table/${tableId}/row/`, { params });
+      const response = await this.client.get(`/database/rows/table/${tableId}/`, { params });
       return response.data;
     } catch (error) {
       console.error('Error fetching rows:', error.response?.data || error.message);
@@ -54,36 +54,44 @@ class BaserowClient {
   async getAllRows(tableId, params = {}) {
     try {
       let allRows = [];
-      let next = null;
-      const baseParams = {
-        user_field_names: true,
-        size: 100,
-        ...params
-      };
+      let nextUrl = `/database/rows/table/${tableId}/?user_field_names=true&size=100`;
+      
+      // Add any additional params to the initial request
+      if (Object.keys(params).length > 0) {
+        const searchParams = new URLSearchParams({ user_field_names: true, size: 100, ...params });
+        nextUrl = `/database/rows/table/${tableId}/?${searchParams.toString()}`;
+      }
 
-      do {
-        const requestParams = { ...baseParams };
-        if (next) {
-          requestParams.offset = next;
+      while (nextUrl) {
+        let response;
+        
+        // For subsequent requests, use the full URL from the 'next' field
+        if (nextUrl.startsWith('http')) {
+          // Full URL from pagination
+          response = await axios.get(nextUrl, {
+            headers: {
+              'Authorization': `Token ${this.token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+        } else {
+          // Initial request or relative URL
+          response = await this.client.get(nextUrl);
         }
-
-        const response = await this.client.get(`/database/table/${tableId}/row/`, { 
-          params: requestParams 
-        });
         
         const data = response.data;
+        
+        if (!Array.isArray(data.results)) {
+          throw new Error('Unexpected API response structure');
+        }
+        
         allRows = allRows.concat(data.results);
         
-        // Extract offset from next URL if it exists
-        if (data.next) {
-          const nextUrl = new URL(data.next);
-          next = nextUrl.searchParams.get('offset');
-        } else {
-          next = null;
-        }
+        // Use the next URL directly for cursor-based pagination
+        nextUrl = data.next;
 
-        console.log(`Fetched ${data.results.length} rows, total: ${allRows.length}`);
-      } while (next);
+        console.log(`Fetched ${data.results.length} rows, total: ${allRows.length}${nextUrl ? ', continuing...' : ', done!'}`);
+      }
 
       console.log(`✅ Successfully fetched all ${allRows.length} rows from table ${tableId}`);
       return allRows;
@@ -96,7 +104,7 @@ class BaserowClient {
   // Create a new row
   async createRow(tableId, data) {
     try {
-      const response = await this.client.post(`/database/table/${tableId}/row/`, data);
+      const response = await this.client.post(`/database/rows/table/${tableId}/`, data);
       return response.data;
     } catch (error) {
       console.error('Error creating row:', error.response?.data || error.message);
@@ -107,7 +115,7 @@ class BaserowClient {
   // Update a row
   async updateRow(tableId, rowId, data) {
     try {
-      const response = await this.client.patch(`/database/table/${tableId}/row/${rowId}/`, data);
+      const response = await this.client.patch(`/database/rows/table/${tableId}/${rowId}/`, data);
       return response.data;
     } catch (error) {
       console.error('Error updating row:', error.response?.data || error.message);
@@ -118,7 +126,7 @@ class BaserowClient {
   // Delete a row
   async deleteRow(tableId, rowId) {
     try {
-      await this.client.delete(`/database/table/${tableId}/row/${rowId}/`);
+      await this.client.delete(`/database/rows/table/${tableId}/${rowId}/`);
       return true;
     } catch (error) {
       console.error('Error deleting row:', error.response?.data || error.message);
