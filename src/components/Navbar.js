@@ -4,6 +4,8 @@ import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
   const location = useLocation();
 
   const isActive = (path) => {
@@ -41,6 +43,127 @@ const Navbar = () => {
             >
               Directory
             </Link>
+            
+            {/* Services Dropdown */}
+            <div className="nav-dropdown">
+              <button 
+                className={`nav-link dropdown-toggle ${servicesOpen ? 'active' : ''}`}
+                onClick={() => setServicesOpen(!servicesOpen)}
+              >
+                Services
+                <span className="dropdown-arrow">▼</span>
+              </button>
+              <div className={`dropdown-menu ${servicesOpen ? 'show' : ''}`}>
+                <Link 
+                  to="/roadside-assistance" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setServicesOpen(false);
+                  }}
+                >
+                  🚗 Roadside Assistance
+                </Link>
+                <Link 
+                  to="/traffic" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setServicesOpen(false);
+                  }}
+                >
+                  🚦 Traffic
+                </Link>
+                <Link 
+                  to="/car-washes" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setServicesOpen(false);
+                  }}
+                >
+                  🚿 Car Washes
+                </Link>
+                <Link 
+                  to="/truck-stops" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setServicesOpen(false);
+                  }}
+                >
+                  🚛 Truck Stops
+                </Link>
+                <Link 
+                  to="/service-stations" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setServicesOpen(false);
+                  }}
+                >
+                  ⏰ 24 Hour Service Stations
+                </Link>
+              </div>
+            </div>
+            
+            <Link 
+              to="/news" 
+              className={`nav-link ${isActive('/news')}`}
+              onClick={() => setIsOpen(false)}
+            >
+              News
+            </Link>
+            <Link 
+              to="/station-brands" 
+              className={`nav-link ${isActive('/station-brands')}`}
+              onClick={() => setIsOpen(false)}
+            >
+              Station Brands
+            </Link>
+            
+            {/* User Dropdown */}
+            <div className="nav-dropdown">
+              <button 
+                className={`nav-link dropdown-toggle ${userOpen ? 'active' : ''}`}
+                onClick={() => setUserOpen(!userOpen)}
+              >
+                Account
+                <span className="dropdown-arrow">▼</span>
+              </button>
+              <div className={`dropdown-menu ${userOpen ? 'show' : ''}`}>
+                <Link 
+                  to="/sign-in" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setUserOpen(false);
+                  }}
+                >
+                  🔐 Sign In
+                </Link>
+                <Link 
+                  to="/account" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setUserOpen(false);
+                  }}
+                >
+                  👤 My Account
+                </Link>
+                <Link 
+                  to="/become-member" 
+                  className="dropdown-item"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setUserOpen(false);
+                  }}
+                >
+                  👥 Become a Member
+                </Link>
+              </div>
+            </div>
           </div>
 
           <button 
