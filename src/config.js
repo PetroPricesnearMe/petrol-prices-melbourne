@@ -4,7 +4,7 @@ const config = {
   baserow: {
     token: process.env.REACT_APP_BASEROW_TOKEN || 'WXGOdiCeNmvdj5NszzAdvIug3InwQQXP',
     apiUrl: process.env.REACT_APP_BASEROW_API_URL || 'https://api.baserow.io/api',
-    mcpServerUrl: process.env.REACT_APP_MCP_SERVER_URL || 'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse'
+    databaseId: 265358
   },
   
   // Backend API Configuration
@@ -21,6 +21,10 @@ const config = {
     fuelPrices: {
       id: 623330,
       name: 'Fuel Prices'  
+    },
+    airtableImport: {
+      id: 623331,
+      name: 'Airtable import report'
     }
   },
   
@@ -220,6 +224,8 @@ export const baserowAPI = {
     let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
     
     console.log(`🔄 Fetching directly from Baserow API: ${nextUrl}`);
+    console.log(`📊 Database ID: ${config.baserow.databaseId}`);
+    console.log(`🔑 Using token: ${config.baserow.token.substring(0, 8)}...`);
     
     try {
       while (nextUrl) {
@@ -233,7 +239,8 @@ export const baserowAPI = {
           try {
             response = await fetch(nextUrl, {
               headers: {
-                'Authorization': `Token ${config.baserow.token}`
+                'Authorization': `Token ${config.baserow.token}`,
+                'Content-Type': 'application/json'
               },
               signal: AbortSignal.timeout(10000)
             });

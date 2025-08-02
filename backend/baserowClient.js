@@ -415,17 +415,19 @@ class BaserowClient {
       const petrolStationsFields = await this.getTableFields(this.config.tables.petrolStations.id);
       
       console.log('✅ Baserow connection successful');
+      console.log(`📊 Database ID: ${this.config.databaseId}`);
       console.log(`📊 Found ${tables.length || 0} tables`);
       console.log(`🏪 Petrol Stations table has ${petrolStationsFields.length || 0} fields`);
       
       return {
         connected: true,
+        databaseId: this.config.databaseId,
         tablesCount: tables.length || 0,
         petrolStationsFields: petrolStationsFields.length || 0,
         config: {
           apiUrl: this.config.apiUrl,
           hasToken: !!this.config.token,
-          mcpServerUrl: this.config.mcpServerUrl
+          databaseId: this.config.databaseId
         }
       };
     } catch (error) {
@@ -435,7 +437,8 @@ class BaserowClient {
         error: error.message,
         config: {
           apiUrl: this.config.apiUrl,
-          hasToken: !!this.config.token
+          hasToken: !!this.config.token,
+          databaseId: this.config.databaseId
         }
       };
     }

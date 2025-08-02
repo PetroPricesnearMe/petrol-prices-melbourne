@@ -10,7 +10,7 @@ const config = {
   baserow: {
     token: process.env.BASEROW_TOKEN || 'WXGOdiCeNmvdj5NszzAdvIug3InwQQXP',
     apiUrl: process.env.BASEROW_API_URL || 'https://api.baserow.io/api',
-    mcpServerUrl: process.env.MCP_SERVER_URL || 'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse',
+    databaseId: 265358,
     tables: {
       petrolStations: {
         id: 623329,
