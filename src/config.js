@@ -208,17 +208,39 @@ export const baserowAPI = {
     let rows = [];
     let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
     
+    console.log(`🔄 Fetching directly from Baserow API: ${nextUrl}`);
+    
     try {
       while (nextUrl) {
-        const response = await fetch(nextUrl, {
-          headers: {
-            'Authorization': `Token ${config.baserow.token}`
-          },
-          signal: AbortSignal.timeout(10000)
-        });
+        console.log(`📡 Making request to: ${nextUrl}`);
         
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        let retryCount = 0;
+        const maxRetries = 3;
+        let response;
+        
+        while (retryCount < maxRetries) {
+          try {
+            response = await fetch(nextUrl, {
+              headers: {
+                'Authorization': `Token ${config.baserow.token}`
+              },
+              signal: AbortSignal.timeout(10000)
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            break; // Success, exit retry loop
+          } catch (error) {
+            retryCount++;
+            if (retryCount >= maxRetries) {
+              console.error(`❌ Failed after ${maxRetries} attempts:`, error.message);
+              throw error;
+            }
+            console.log(`⚠️ Attempt ${retryCount} failed, retrying...`);
+            // eslint-disable-next-line no-loop-func
+            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+          }
         }
         
         const data = await response.json();

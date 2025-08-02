@@ -7,7 +7,11 @@ import DirectoryPage from './components/DirectoryPage';
 
 function App() {
   return (
-    <Router>
+    <Router
+      future={{
+        v7_startTransition: true,
+      }}
+    >
       <div className="App">
         <Navbar />
         <Routes>
