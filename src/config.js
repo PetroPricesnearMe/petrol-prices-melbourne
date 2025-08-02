@@ -9,7 +9,7 @@ const config = {
   
   // Backend API Configuration
   api: {
-    baseUrl: process.env.REACT_APP_API_URL || 'http://localhost:3001'
+    baseUrl: process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:3001' : null)
   },
 
   // Baserow Table Configuration
@@ -35,6 +35,17 @@ const config = {
 export const baserowAPI = {
   // Fetch all stations using the new API endpoints
   async fetchAllStations() {
+    // In production (no backend), use direct Baserow API
+    if (!config.api.baseUrl) {
+      console.log('🔄 Production mode: Using direct Baserow API...');
+      try {
+        return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
+      } catch (error) {
+        console.error('❌ Direct API failed:', error.message);
+        throw error;
+      }
+    }
+
     try {
       console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
       
