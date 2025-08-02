@@ -31,12 +31,91 @@
   z-index: -1;
 }
 
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  gap: 3rem;
+}
+
 .hero-content {
   text-align: center;
   color: white;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 0;
+  max-width: 600px;
+  flex: 1;
+}
+
+.hero-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fuel-nozzles-image {
+  position: relative;
+  max-width: 400px;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nozzles-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 1rem;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 1rem;
+}
+
+.fuel-types {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fuel-type {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.fuel-type.diesel {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.fuel-type.octane-98 {
+  background: rgba(220, 53, 69, 0.8);
+}
+
+.fuel-type.octane-95 {
+  background: rgba(255, 193, 7, 0.8);
+}
+
+.fuel-type.unleaded {
+  background: rgba(40, 167, 69, 0.8);
+}
+
+.fuel-type.octane-91 {
+  background: rgba(102, 16, 242, 0.8);
 }
 
 .hero-badge {
@@ -221,8 +300,24 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
   .hero-content {
     padding: 1rem;
+    order: 1;
+  }
+
+  .hero-image-container {
+    order: 2;
+    max-width: 300px;
+  }
+
+  .fuel-nozzles-image {
+    max-width: 100%;
   }
 
   .hero-buttons {
@@ -257,5 +352,9 @@
   .hero-stats {
     flex-direction: column;
     gap: 1.5rem;
+  }
+
+  .fuel-types {
+    font-size: 0.6rem;
   }
 } 

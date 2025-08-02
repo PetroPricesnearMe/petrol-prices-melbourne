@@ -81,6 +81,32 @@ const HomePage = () => {
               </div>
             </motion.div>
           </div>
+          
+          {/* Fuel Nozzle Image */}
+          <motion.div 
+            className="hero-image-container"
+            variants={itemVariants}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <div className="fuel-nozzles-image">
+              <img 
+                src="/images/fuel-nozzles.jpg" 
+                alt="Fuel nozzles at petrol station showing different fuel types - Diesel, 98 Octane, 95 Octane, Unleaded, and 91 Octane"
+                className="nozzles-img"
+              />
+              <div className="image-overlay">
+                <div className="fuel-types">
+                  <span className="fuel-type diesel">Diesel</span>
+                  <span className="fuel-type octane-98">98 Octane</span>
+                  <span className="fuel-type octane-95">95 Octane</span>
+                  <span className="fuel-type unleaded">Unleaded</span>
+                  <span className="fuel-type octane-91">91 Octane</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
         
         <div className="hero-scroll-indicator">

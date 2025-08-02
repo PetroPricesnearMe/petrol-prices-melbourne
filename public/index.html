@@ -4,18 +4,74 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Find petrol stations and fuel prices in Melbourne - Live updates and interactive map"
-    />
+    <meta name="theme-color" content="#667eea" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Petrol Prices Melbourne - Live Fuel Prices & Interactive Map | Petrol Prices Near Me</title>
+    <meta name="title" content="Petrol Prices Melbourne - Live Fuel Prices & Interactive Map | Petrol Prices Near Me" />
+    <meta name="description" content="Find the cheapest petrol prices in Melbourne with our live interactive map. Compare fuel prices from 250+ petrol stations. Real-time updates for unleaded, diesel, and premium fuels." />
+    <meta name="keywords" content="petrol prices melbourne, fuel prices near me, cheapest petrol melbourne, live fuel prices, petrol stations melbourne, diesel prices melbourne, fuel price map melbourne, petrol price comparison melbourne" />
+    <meta name="author" content="Petrol Prices Near Me" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://petrolpricesnearme.com/" />
+    <meta property="og:title" content="Petrol Prices Melbourne - Live Fuel Prices & Interactive Map" />
+    <meta property="og:description" content="Find the cheapest petrol prices in Melbourne with our live interactive map. Compare fuel prices from 250+ petrol stations." />
+    <meta property="og:image" content="%PUBLIC_URL%/images/fuel-nozzles.jpg" />
+    <meta property="og:site_name" content="Petrol Prices Near Me" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://petrolpricesnearme.com/" />
+    <meta property="twitter:title" content="Petrol Prices Melbourne - Live Fuel Prices & Interactive Map" />
+    <meta property="twitter:description" content="Find the cheapest petrol prices in Melbourne with our live interactive map. Compare fuel prices from 250+ petrol stations." />
+    <meta property="twitter:image" content="%PUBLIC_URL%/images/fuel-nozzles.jpg" />
+    
+    <!-- Structured Data for Local Business -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Petrol Prices Near Me",
+      "url": "https://petrolpricesnearme.com/",
+      "description": "Find the cheapest petrol prices in Melbourne with live interactive map and real-time updates",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://petrolpricesnearme.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID', {
+        page_title: 'Petrol Prices Melbourne - Live Fuel Prices',
+        custom_map: {
+          'dimension1': 'fuel_type',
+          'dimension2': 'station_brand'
+        }
+      });
+    </script>
+    
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
           integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
           crossorigin=""/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <title>Melbourne Petrol Stations - Live Fuel Prices</title>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="%PUBLIC_URL%/images/fuel-nozzles.jpg" as="image" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
