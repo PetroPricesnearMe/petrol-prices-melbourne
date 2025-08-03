@@ -14,7 +14,6 @@ import NewsPage from './components/NewsPage';
 import StationBrandsPage from './components/StationBrandsPage';
 import SignInPage from './components/SignInPage';
 import BecomeMemberPage from './components/BecomeMemberPage';
-import RealTimeUpdates from './components/RealTimeUpdates';
 
 function App() {
   return (
@@ -39,7 +38,6 @@ function App() {
           <Route path="/station-brands" element={<StationBrandsPage />} />
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/become-member" element={<BecomeMemberPage />} />
-          <Route path="/real-time" element={<RealTimeUpdates />} />
         </Routes>
       </div>
     </Router>

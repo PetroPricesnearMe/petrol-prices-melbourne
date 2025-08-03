@@ -4,9 +4,7 @@ const config = {
   baserow: {
     token: process.env.REACT_APP_BASEROW_TOKEN || 'WXGOdiCeNmvdj5NszzAdvIug3InwQQXP',
     apiUrl: process.env.REACT_APP_BASEROW_API_URL || 'https://api.baserow.io/api',
-    databaseId: 265358,
-    // Add SSE endpoint for real-time updates
-    sseUrl: process.env.REACT_APP_BASEROW_SSE_URL || 'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse'
+    databaseId: 265358
   },
   
   // Backend API Configuration
@@ -290,58 +288,6 @@ export const baserowAPI = {
     } catch (error) {
       console.error('Error testing connection:', error.message);
       throw error;
-    }
-  }
-};
-
-// Real-time updates using Server-Sent Events
-export const baserowSSE = {
-  /**
-   * Connect to Baserow SSE endpoint for real-time updates
-   * @param {Function} onMessage - Callback for handling messages
-   * @param {Function} onError - Callback for handling errors
-   * @returns {EventSource} The EventSource instance
-   */
-  connect(onMessage, onError) {
-    console.log(`🔄 Connecting to Baserow SSE: ${config.baserow.sseUrl}`);
-    
-    const eventSource = new EventSource(config.baserow.sseUrl, {
-      headers: {
-        'Authorization': `Token ${config.baserow.token}`,
-        'Content-Type': 'text/event-stream'
-      }
-    });
-
-    eventSource.onopen = () => {
-      console.log('✅ SSE connection established');
-    };
-
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        console.log('📡 SSE message received:', data);
-        onMessage(data);
-      } catch (error) {
-        console.error('❌ Error parsing SSE message:', error);
-      }
-    };
-
-    eventSource.onerror = (error) => {
-      console.error('❌ SSE connection error:', error);
-      onError(error);
-    };
-
-    return eventSource;
-  },
-
-  /**
-   * Disconnect from SSE endpoint
-   * @param {EventSource} eventSource - The EventSource instance to disconnect
-   */
-  disconnect(eventSource) {
-    if (eventSource) {
-      eventSource.close();
-      console.log('🔌 SSE connection closed');
     }
   }
 };
