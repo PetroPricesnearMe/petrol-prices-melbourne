@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#667eea" />
     
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    
     <!-- Primary Meta Tags -->
     <title>Petrol Prices Melbourne - Live Fuel Prices & Interactive Map | Petrol Prices Near Me</title>
     <meta name="title" content="Petrol Prices Melbourne - Live Fuel Prices & Interactive Map | Petrol Prices Near Me" />
@@ -49,13 +55,16 @@
     
     <!-- Critical CSS Inlined -->
     <style>
-      *{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#2563eb;--primary-dark:#1d4ed8;--secondary-color:#10b981;--accent-color:#f59e0b;--text-primary:#1f2937;--text-secondary:#6b7280;--text-light:#9ca3af;--background:#ffffff;--background-gray:#f9fafb;--border-color:#e5e7eb;--shadow:0 4px 6px -1px rgba(0,0,0,0.1);--shadow-lg:0 20px 25px -5px rgba(0,0,0,0.1);--gradient:linear-gradient(135deg,var(--primary-color) 0%,var(--secondary-color) 100%)}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-color:var(--background);color:var(--text-primary);line-height:1.6}.container{max-width:1200px;margin:0 auto;padding:0 1rem}@media (min-width:640px){.container{padding:0 2rem}}.btn{padding:.75rem 1.5rem;border-radius:.5rem;font-weight:600;text-decoration:none;display:inline-block;transition:all .3s ease;cursor:pointer;border:none;font-size:1rem}.btn-primary{background:var(--gradient);color:white;box-shadow:var(--shadow)}.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}.btn-secondary{background:white;color:var(--primary-color);border:2px solid var(--primary-color)}.btn-secondary:hover{background:var(--primary-color);color:white;transform:translateY(-2px)}.fade-up{animation:fadeUp .8s ease-out}@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}.leaflet-container{border-radius:1rem;box-shadow:var(--shadow-lg)}#root{min-height:100vh}
+      *{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#2563eb;--primary-dark:#1d4ed8;--secondary-color:#10b981;--accent-color:#f59e0b;--text-primary:#1f2937;--text-secondary:#6b7280;--text-light:#9ca3af;--background:#ffffff;--background-gray:#f9fafb;--border-color:#e5e7eb;--shadow:0 4px 6px -1px rgba(0,0,0,0.1);--shadow-lg:0 20px 25px -5px rgba(0,0,0,0.1);--gradient:linear-gradient(135deg,var(--primary-color) 0%,var(--secondary-color) 100%)}@font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2')}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-color:var(--background);color:var(--text-primary);line-height:1.6}.container{max-width:1200px;margin:0 auto;padding:0 1rem}@media (min-width:640px){.container{padding:0 2rem}}.btn{padding:.75rem 1.5rem;border-radius:.5rem;font-weight:600;text-decoration:none;display:inline-block;transition:all .3s ease;cursor:pointer;border:none;font-size:1rem}.btn-primary{background:var(--gradient);color:white;box-shadow:var(--shadow)}.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}.btn-secondary{background:white;color:var(--primary-color);border:2px solid var(--primary-color)}.btn-secondary:hover{background:var(--primary-color);color:white;transform:translateY(-2px)}.fade-up{animation:fadeUp .8s ease-out}@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}.leaflet-container{border-radius:1rem;box-shadow:var(--shadow-lg)}#root{min-height:100vh}
     </style>
     
     <!-- Preload Critical Resources -->
     <link rel="preload" href="%PUBLIC_URL%/images/fuel-nozzles.jpg" as="image" />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" /></noscript>
+    
+    <!-- Preload most critical font file -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" as="font" type="font/woff2" crossorigin />
     
     <!-- Defer Non-Critical CSS -->
     <link rel="preload" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
