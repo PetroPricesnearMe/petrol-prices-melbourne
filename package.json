@@ -27,7 +27,8 @@
     "eject": "react-scripts eject",
     "dev": "node start-dev.js",
     "backend": "cd backend && npm start",
-    "frontend": "npm start"
+    "frontend": "npm start",
+    "analyze": "npm run build && npx serve -s build"
   },
   "eslintConfig": {
     "extends": [

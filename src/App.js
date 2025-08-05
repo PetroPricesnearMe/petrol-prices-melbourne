@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
-import MapPage from './components/MapPage';
-import DirectoryPage from './components/DirectoryPage';
-import RoadsideAssistancePage from './components/RoadsideAssistancePage';
-import TrafficPage from './components/TrafficPage';
-import AccountPage from './components/AccountPage';
-import CarWashesPage from './components/CarWashesPage';
-import TruckStopsPage from './components/TruckStopsPage';
-import ServiceStationsPage from './components/ServiceStationsPage';
-import NewsPage from './components/NewsPage';
-import StationBrandsPage from './components/StationBrandsPage';
-import SignInPage from './components/SignInPage';
-import BecomeMemberPage from './components/BecomeMemberPage';
+
+// Lazy load non-critical pages to reduce initial bundle size
+const MapPage = React.lazy(() => import('./components/MapPage'));
+const DirectoryPage = React.lazy(() => import('./components/DirectoryPage'));
+const RoadsideAssistancePage = React.lazy(() => import('./components/RoadsideAssistancePage'));
+const TrafficPage = React.lazy(() => import('./components/TrafficPage'));
+const AccountPage = React.lazy(() => import('./components/AccountPage'));
+const CarWashesPage = React.lazy(() => import('./components/CarWashesPage'));
+const TruckStopsPage = React.lazy(() => import('./components/TruckStopsPage'));
+const ServiceStationsPage = React.lazy(() => import('./components/ServiceStationsPage'));
+const NewsPage = React.lazy(() => import('./components/NewsPage'));
+const StationBrandsPage = React.lazy(() => import('./components/StationBrandsPage'));
+const SignInPage = React.lazy(() => import('./components/SignInPage'));
+const BecomeMemberPage = React.lazy(() => import('./components/BecomeMemberPage'));
+
+// Loading component for lazy-loaded pages
+const PageLoader = () => (
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '60vh',
+    fontSize: '1.1rem',
+    color: '#6b7280'
+  }}>
+    Loading...
+  </div>
+);
 
 function App() {
   return (
@@ -24,21 +40,23 @@ function App() {
     >
       <div className="App">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/directory" element={<DirectoryPage />} />
-          <Route path="/roadside-assistance" element={<RoadsideAssistancePage />} />
-          <Route path="/traffic" element={<TrafficPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/car-washes" element={<CarWashesPage />} />
-          <Route path="/truck-stops" element={<TruckStopsPage />} />
-          <Route path="/service-stations" element={<ServiceStationsPage />} />
-          <Route path="/news" element={<NewsPage />} />
-          <Route path="/station-brands" element={<StationBrandsPage />} />
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/become-member" element={<BecomeMemberPage />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="/directory" element={<DirectoryPage />} />
+            <Route path="/roadside-assistance" element={<RoadsideAssistancePage />} />
+            <Route path="/traffic" element={<TrafficPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/car-washes" element={<CarWashesPage />} />
+            <Route path="/truck-stops" element={<TruckStopsPage />} />
+            <Route path="/service-stations" element={<ServiceStationsPage />} />
+            <Route path="/news" element={<NewsPage />} />
+            <Route path="/station-brands" element={<StationBrandsPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/become-member" element={<BecomeMemberPage />} />
+          </Routes>
+        </Suspense>
       </div>
     </Router>
   );
