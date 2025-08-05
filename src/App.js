@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import MapPage from './components/MapPage';
@@ -40,7 +39,6 @@ function App() {
           <Route path="/sign-in" element={<SignInPage />} />
           <Route path="/become-member" element={<BecomeMemberPage />} />
         </Routes>
-        <Analytics />
       </div>
     </Router>
   );
