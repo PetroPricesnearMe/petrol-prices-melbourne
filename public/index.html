@@ -6,7 +6,6 @@
     <!-- Preconnect to external domains - MUST be early -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://unpkg.com" />
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -111,20 +110,7 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
-    <!-- Google Analytics - Deferred -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID', {
-        page_title: 'Petrol Prices Melbourne - Live Fuel Prices',
-        custom_map: {
-          'dimension1': 'fuel_type',
-          'dimension2': 'station_brand'
-        }
-      });
-    </script>
+    <!-- Analytics handled by Vercel Analytics React component -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
