@@ -5,7 +5,7 @@
     
     <!-- Preconnect to external domains - MUST be early -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="preconnect" href="https://api.mapbox.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -66,9 +66,7 @@
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7SUc.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2" as="font" type="font/woff2" crossorigin />
     
-    <!-- Defer Non-Critical CSS -->
-    <link rel="preload" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" /></noscript>
+    <!-- Mapbox CSS is loaded automatically by react-map-gl -->
     
     <!-- Script to defer main CSS bundle -->
     <script>
