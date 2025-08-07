@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Map, { Marker, Popup, Source, Layer } from 'react-map-gl';
+import { Map, Marker, Popup, Source, Layer } from 'react-map-gl/mapbox';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { MotionDiv } from './MotionComponents';
 import { baserowAPI } from '../config';
 import './MapPage.css';
