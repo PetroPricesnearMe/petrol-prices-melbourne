@@ -1,5 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/LoadingSpinner';
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 
@@ -19,46 +21,43 @@ const BecomeMemberPage = React.lazy(() => import('./components/BecomeMemberPage'
 
 // Loading component for lazy-loaded pages
 const PageLoader = () => (
-  <div style={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '60vh',
-    fontSize: '1.1rem',
-    color: '#6b7280'
-  }}>
-    Loading...
-  </div>
+  <LoadingSpinner 
+    message="Loading page..." 
+    showTips={true}
+    size="medium"
+  />
 );
 
 function App() {
   return (
-    <Router
-      future={{
-        v7_startTransition: true,
-      }}
-    >
-      <div className="App">
-        <Navbar />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/map" element={<MapPage />} />
-            <Route path="/directory" element={<DirectoryPage />} />
-            <Route path="/roadside-assistance" element={<RoadsideAssistancePage />} />
-            <Route path="/traffic" element={<TrafficPage />} />
-            <Route path="/account" element={<AccountPage />} />
-            <Route path="/car-washes" element={<CarWashesPage />} />
-            <Route path="/truck-stops" element={<TruckStopsPage />} />
-            <Route path="/service-stations" element={<ServiceStationsPage />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/station-brands" element={<StationBrandsPage />} />
-            <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/become-member" element={<BecomeMemberPage />} />
-          </Routes>
-        </Suspense>
-      </div>
-    </Router>
+    <ErrorBoundary>
+      <Router
+        future={{
+          v7_startTransition: true,
+        }}
+      >
+        <div className="App">
+          <Navbar />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/map" element={<MapPage />} />
+              <Route path="/directory" element={<DirectoryPage />} />
+              <Route path="/roadside-assistance" element={<RoadsideAssistancePage />} />
+              <Route path="/traffic" element={<TrafficPage />} />
+              <Route path="/account" element={<AccountPage />} />
+              <Route path="/car-washes" element={<CarWashesPage />} />
+              <Route path="/truck-stops" element={<TruckStopsPage />} />
+              <Route path="/service-stations" element={<ServiceStationsPage />} />
+              <Route path="/news" element={<NewsPage />} />
+              <Route path="/station-brands" element={<StationBrandsPage />} />
+              <Route path="/sign-in" element={<SignInPage />} />
+              <Route path="/become-member" element={<BecomeMemberPage />} />
+            </Routes>
+          </Suspense>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
 

@@ -35,7 +35,7 @@ const HomePage = () => {
             </MotionDiv>
             
             <MotionH1 className="hero-title" variants={itemVariants}>
-              Petrol Prices Near Me
+              Petrol Prices Monitoring
             </MotionH1>
             
             <MotionP className="hero-subtitle" variants={itemVariants}>

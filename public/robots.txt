@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://petrolpricesnearme.com/sitemap.xml
+Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1

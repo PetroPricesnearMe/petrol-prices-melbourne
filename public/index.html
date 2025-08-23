@@ -22,6 +22,15 @@
     <meta name="language" content="English" />
     <meta name="revisit-after" content="7 days" />
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://petrolpricesnearme.com.au/" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="AU-VIC" />
+    <meta name="geo.placename" content="Melbourne" />
+    <meta name="geo.position" content="-37.8136;144.9631" />
+    <meta name="ICBM" content="-37.8136, 144.9631" />
+    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://petrolpricesnearme.com.au/" />
@@ -37,7 +46,34 @@
     <meta property="twitter:description" content="Find the cheapest petrol prices in Melbourne with our live interactive map. Compare fuel prices from 250+ petrol stations." />
     <meta property="twitter:image" content="%PUBLIC_URL%/images/fuel-nozzles.jpg" />
     
-    <!-- Structured Data for Local Business -->
+    <!-- Structured Data for Organization and WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Petrol Prices Near Me",
+      "alternateName": "Petrol Prices Monitoring",
+      "url": "https://petrolpricesnearme.com.au/",
+      "logo": "https://petrolpricesnearme.com.au/images/fuel-nozzles.jpg",
+      "description": "Australia's leading petrol price monitoring service providing real-time fuel prices across Melbourne. We help drivers save money by comparing petrol prices from 250+ stations.",
+      "sameAs": [
+        "https://www.facebook.com/petrolpricesnearme",
+        "https://twitter.com/petrolpricesau"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+61-3-xxxx-xxxx",
+        "contactType": "customer service",
+        "availableLanguage": "English"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Melbourne, Victoria, Australia"
+      },
+      "serviceType": "Fuel Price Monitoring Service"
+    }
+    </script>
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
