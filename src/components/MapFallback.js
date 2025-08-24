@@ -8,34 +8,41 @@ const MapFallback = ({ error }) => {
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const loadStations = async () => {
+    try {
+      setLoading(true);
+      setShowError(false);
+      const stationsData = await baserowAPI.fetchAllStations();
+      const transformedStations = stationsData.slice(0, 10).map((station, index) => ({
+        id: station.id || index + 1,
+        name: station['Station Name'] || station.field_5072130 || `Station ${index + 1}`,
+        address: station.Address || station.field_5072131 || 'Melbourne, VIC',
+        city: station.City || station.field_5072132 || 'Melbourne',
+        prices: {
+          unleaded: 180 + Math.random() * 20,
+          premium: 190 + Math.random() * 20,
+          diesel: 175 + Math.random() * 20,
+        }
+      }));
+      setStations(transformedStations);
+    } catch (err) {
+      console.error('Failed to load stations for fallback:', err);
+      setShowError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Try to load station data even if map fails
-    const loadStations = async () => {
-      try {
-        const stationsData = await baserowAPI.fetchAllStations();
-        const transformedStations = stationsData.slice(0, 10).map((station, index) => ({
-          id: station.id || index + 1,
-          name: station['Station Name'] || station.field_5072130 || `Station ${index + 1}`,
-          address: station.Address || station.field_5072131 || 'Melbourne, VIC',
-          city: station.City || station.field_5072132 || 'Melbourne',
-          prices: {
-            unleaded: 180 + Math.random() * 20,
-            premium: 190 + Math.random() * 20,
-            diesel: 175 + Math.random() * 20,
-          }
-        }));
-        setStations(transformedStations);
-      } catch (err) {
-        console.error('Failed to load stations for fallback:', err);
-        setShowError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadStations();
   }, []);
+
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
+    loadStations();
+  };
 
   if (loading) {
     return (
@@ -66,10 +73,20 @@ const MapFallback = ({ error }) => {
         </Link>
         <button 
           className="btn btn-secondary" 
-          onClick={() => window.location.reload()}
+          onClick={handleRetry}
+          disabled={retryCount >= 3}
         >
-          <span>🔄 Retry Map</span>
+          <span>{retryCount >= 3 ? 'Max Retries Reached' : '🔄 Retry Map'}</span>
         </button>
+        {retryCount >= 3 && (
+          <button 
+            className="btn btn-primary" 
+            onClick={() => window.location.reload()}
+            style={{ marginLeft: '1rem' }}
+          >
+            <span>🔄 Refresh Page</span>
+          </button>
+        )}
       </div>
 
       {!showError && stations.length > 0 && (
@@ -127,6 +144,25 @@ const MapFallback = ({ error }) => {
             </ul>
           </div>
         </div>
+        
+        {error?.includes('Mapbox') && (
+          <div className="mapbox-help" style={{ 
+            backgroundColor: '#f0f9ff', 
+            border: '1px solid #0ea5e9', 
+            borderRadius: '8px', 
+            padding: '1rem', 
+            marginTop: '1rem' 
+          }}>
+            <h4>🚨 Mapbox Token Issue Detected</h4>
+            <p>Your Mapbox access token appears to be missing or invalid. To fix this:</p>
+            <ol style={{ marginLeft: '1rem', marginTop: '0.5rem' }}>
+              <li>Get a free token from <a href="https://account.mapbox.com/access-tokens/" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb' }}>Mapbox</a></li>
+              <li>Create a <code>.env</code> file in your project root</li>
+              <li>Add: <code>REACT_APP_MAPBOX_ACCESS_TOKEN=your_token_here</code></li>
+              <li>Restart your development server</li>
+            </ol>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { baserowAPI } from '../config';
 import './DirectoryPage.css';
+import { Link } from 'react-router-dom'; // Added Link import
 
 const DirectoryPage = () => {
   const [petrolStations, setPetrolStations] = useState([]);
@@ -11,65 +12,71 @@ const DirectoryPage = () => {
   const [filterBy, setFilterBy] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   // Note: Now using the new Baserow table structure with table ID 623329
 
+  const fetchStationsFromBaserow = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Fetch all stations from Baserow using pagination
+      const baserowStations = await baserowAPI.fetchAllStations();
+      
+      // Transform Baserow data to match expected format
+      const transformedStations = baserowStations.map((station, index) => ({
+        id: station.id || index + 1,
+        name: station.field_5072130 || station['Station Name'] || `Station ${index + 1}`,
+        brand: station.brand || station.Brand || 'Unknown',
+        suburb: station.field_5072132 || station.City || 'Melbourne',
+        prices: {
+          // Generate realistic prices for demo - in production, get from linked Fuel Prices
+          unleaded: 180 + Math.random() * 20,
+          premium: 190 + Math.random() * 20,
+          premium98: 200 + Math.random() * 25,
+          diesel: 175 + Math.random() * 20,
+          gas: 85 + Math.random() * 15
+        },
+        address: station.field_5072131 || station.Address || `${station.field_5072132 || 'Melbourne'}, VIC`,
+        phone: '(03) 0000 0000', // Could be added as a field later
+        hours: '24/7', // Could be added as a field later
+        category: station.field_5072138 || station.Category,
+        region: station.field_5072134 || station.Region,
+        country: station.field_5072135 || station.Country || 'Australia',
+        postalCode: station.field_5072133 || station['Postal Code'],
+        locationDetails: station.field_5072140 || station['Location Details'],
+        fuelPrices: station.field_5072139 || station['Fuel Prices'] || []
+      }));
+
+      setPetrolStations(transformedStations);
+      setFilteredStations(transformedStations);
+      console.log(`✅ Loaded ${transformedStations.length} stations from Baserow`);
+    } catch (err) {
+      console.error('Error fetching stations from Baserow:', err);
+      setError(`Failed to load stations: ${err.message}`);
+      
+      // Fallback to sample data if Baserow fails
+      const fallbackStations = [
+        { id: 1, name: 'Shell Melbourne CBD', brand: 'Shell', suburb: 'Melbourne', prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 }, address: '123 Collins Street, Melbourne', phone: '(03) 9999 1111', hours: '24/7' },
+        { id: 2, name: 'BP South Yarra', brand: 'BP', suburb: 'South Yarra', prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 }, address: '456 Toorak Road, South Yarra', phone: '(03) 9999 2222', hours: '6:00 AM - 10:00 PM' },
+        { id: 3, name: 'Caltex Richmond', brand: 'Caltex', suburb: 'Richmond', prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 }, address: '789 Swan Street, Richmond', phone: '(03) 9999 3333', hours: '24/7' }
+      ];
+      setPetrolStations(fallbackStations);
+      setFilteredStations(fallbackStations);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchStationsFromBaserow = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Fetch all stations from Baserow using pagination
-        const baserowStations = await baserowAPI.fetchAllStations();
-        
-        // Transform Baserow data to match expected format
-        const transformedStations = baserowStations.map((station, index) => ({
-          id: station.id || index + 1,
-          name: station.field_5072130 || station['Station Name'] || `Station ${index + 1}`,
-          brand: station.brand || station.Brand || 'Unknown',
-          suburb: station.field_5072132 || station.City || 'Melbourne',
-          prices: {
-            // Generate realistic prices for demo - in production, get from linked Fuel Prices
-            unleaded: 180 + Math.random() * 20,
-            premium: 190 + Math.random() * 20,
-            premium98: 200 + Math.random() * 25,
-            diesel: 175 + Math.random() * 20,
-            gas: 85 + Math.random() * 15
-          },
-          address: station.field_5072131 || station.Address || `${station.field_5072132 || 'Melbourne'}, VIC`,
-          phone: '(03) 0000 0000', // Could be added as a field later
-          hours: '24/7', // Could be added as a field later
-          category: station.field_5072138 || station.Category,
-          region: station.field_5072134 || station.Region,
-          country: station.field_5072135 || station.Country || 'Australia',
-          postalCode: station.field_5072133 || station['Postal Code'],
-          locationDetails: station.field_5072140 || station['Location Details'],
-          fuelPrices: station.field_5072139 || station['Fuel Prices'] || []
-        }));
-
-        setPetrolStations(transformedStations);
-        setFilteredStations(transformedStations);
-        console.log(`✅ Loaded ${transformedStations.length} stations from Baserow`);
-      } catch (err) {
-        console.error('Error fetching stations from Baserow:', err);
-        setError(`Failed to load stations: ${err.message}`);
-        
-        // Fallback to sample data if Baserow fails
-        const fallbackStations = [
-          { id: 1, name: 'Shell Melbourne CBD', brand: 'Shell', suburb: 'Melbourne', prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 }, address: '123 Collins Street, Melbourne', phone: '(03) 9999 1111', hours: '24/7' },
-          { id: 2, name: 'BP South Yarra', brand: 'BP', suburb: 'South Yarra', prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 }, address: '456 Toorak Road, South Yarra', phone: '(03) 9999 2222', hours: '6:00 AM - 10:00 PM' },
-          { id: 3, name: 'Caltex Richmond', brand: 'Caltex', suburb: 'Richmond', prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 }, address: '789 Swan Street, Richmond', phone: '(03) 9999 3333', hours: '24/7' }
-        ];
-        setPetrolStations(fallbackStations);
-        setFilteredStations(fallbackStations);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchStationsFromBaserow();
   }, []);
+
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
+    fetchStationsFromBaserow();
+  };
 
   useEffect(() => {
     let filtered = petrolStations.filter(station => {
@@ -140,23 +147,54 @@ const DirectoryPage = () => {
         <div className="container">
           <motion.div 
             className="header-content"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
             <h1>Petrol Station Directory</h1>
-            <p>Browse all petrol stations in Melbourne with current fuel prices</p>
+            <p>Find and compare fuel prices across Melbourne's petrol stations</p>
+            
+            {/* Error Display */}
             {error && (
-              <div style={{ 
-                backgroundColor: '#fff3cd', 
-                border: '1px solid #ffeaa7', 
-                borderRadius: '5px', 
-                padding: '10px', 
-                marginTop: '10px',
-                color: '#856404'
-              }}>
-                <strong>⚠️ Warning:</strong> {error}. Showing fallback data.
-              </div>
+              <motion.div 
+                className="error-banner"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                style={{
+                  backgroundColor: '#fef2f2',
+                  border: '1px solid #fecaca',
+                  borderRadius: '8px',
+                  padding: '1rem',
+                  marginTop: '1rem',
+                  color: '#dc2626'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <span>⚠️</span>
+                  <strong>Error Loading Stations</strong>
+                </div>
+                <p style={{ marginBottom: '1rem' }}>{error}</p>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <button 
+                    className="btn btn-primary btn-sm"
+                    onClick={handleRetry}
+                    disabled={retryCount >= 3}
+                  >
+                    {retryCount >= 3 ? 'Max Retries Reached' : '🔄 Retry'}
+                  </button>
+                  {retryCount >= 3 && (
+                    <button 
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => window.location.reload()}
+                    >
+                      🔄 Refresh Page
+                    </button>
+                  )}
+                  <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                    Showing fallback data
+                  </span>
+                </div>
+              </motion.div>
             )}
           </motion.div>
 
@@ -286,12 +324,23 @@ const DirectoryPage = () => {
                 </div>
 
                 <div className="card-actions">
-                  <button className="btn btn-primary btn-sm">
-                    Get Directions
+                  <button 
+                    className="btn btn-primary btn-sm"
+                    onClick={() => {
+                      const url = `https://www.google.com/maps/dir/?api=1&destination=${station.address}`;
+                      window.open(url, '_blank');
+                    }}
+                    aria-label={`Get directions to ${station.name}`}
+                  >
+                    🗺️ Get Directions
                   </button>
-                  <button className="btn btn-secondary btn-sm">
-                    View on Map
-                  </button>
+                  <Link 
+                    to="/map" 
+                    className="btn btn-secondary btn-sm"
+                    aria-label={`View ${station.name} on map`}
+                  >
+                    📍 View on Map
+                  </Link>
                 </div>
               </motion.div>
             ))}

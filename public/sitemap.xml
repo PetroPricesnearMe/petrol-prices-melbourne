@@ -26,7 +26,7 @@
   
   <!-- Blog/News -->
   <url>
-    <loc>https://petrolpricesnearme.com.au/blog</loc>
+    <loc>https://petrolpricesnearme.com.au/news</loc>
     <lastmod>2024-12-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -73,5 +73,27 @@
     <lastmod>2024-12-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
+  </url>
+  
+  <!-- User Account Pages -->
+  <url>
+    <loc>https://petrolpricesnearme.com.au/sign-in</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <url>
+    <loc>https://petrolpricesnearme.com.au/account</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <url>
+    <loc>https://petrolpricesnearme.com.au/become-member</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
   </url>
 </urlset> 

@@ -84,6 +84,15 @@ const HomePage = () => {
                 src="/images/fuel-nozzles.jpg" 
                 alt="Fuel nozzles at petrol station showing different fuel types - Diesel, 98 Octane, 95 Octane, Unleaded, and 91 Octane"
                 className="nozzles-img"
+                loading="lazy"
+                decoding="async"
+                onLoad={(e) => {
+                  e.target.style.opacity = '1';
+                }}
+                style={{
+                  opacity: 0,
+                  transition: 'opacity 0.3s ease-in-out'
+                }}
               />
               <div className="image-overlay">
                 <div className="fuel-types">

@@ -8,6 +8,11 @@ import './MapPage.css';
 // Mapbox access token - you'll need to set this
 const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoieW91ci11c2VybmFtZSIsImEiOiJjbGV0ZXN0In0.test'; // Replace with your token
 
+// Check if we have a valid Mapbox token
+const hasValidMapboxToken = MAPBOX_TOKEN && 
+  MAPBOX_TOKEN !== 'pk.eyJ1IjoieW91ci11c2VybmFtZSIsImEiOiJjbGV0ZXN0In0.test' &&
+  MAPBOX_TOKEN.length > 50;
+
 const MapboxMap = () => {
   const [petrolStations, setPetrolStations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,8 +27,19 @@ const MapboxMap = () => {
 
   const mapRef = useRef();
 
+  // Check Mapbox token availability
+  useEffect(() => {
+    if (!hasValidMapboxToken) {
+      setError('Mapbox access token not configured. Please set REACT_APP_MAPBOX_ACCESS_TOKEN environment variable.');
+      setLoading(false);
+      return;
+    }
+  }, []);
+
   // Fetch stations without the 100 station limit
   useEffect(() => {
+    if (!hasValidMapboxToken) return; // Don't fetch if no valid token
+    
     const fetchStationsFromBaserow = async () => {
       try {
         setLoading(true);
@@ -198,6 +214,52 @@ const MapboxMap = () => {
       'circle-stroke-color': '#fff'
     }
   };
+
+  // Early return if no valid Mapbox token
+  if (!hasValidMapboxToken) {
+    return (
+      <div className="map-page">
+        <div className="map-header">
+          <div className="container">
+            <div className="map-title-section">
+              <h1>Map Configuration Required</h1>
+              <div style={{ 
+                backgroundColor: '#fef2f2', 
+                border: '1px solid #fecaca', 
+                borderRadius: '8px', 
+                padding: '1rem',
+                marginTop: '1rem',
+                color: '#dc2626'
+              }}>
+                <h3>⚠️ Mapbox Access Token Missing</h3>
+                <p>To display the interactive map, you need to configure a valid Mapbox access token.</p>
+                <div style={{ marginTop: '1rem' }}>
+                  <h4>Setup Instructions:</h4>
+                  <ol style={{ marginLeft: '1rem', marginTop: '0.5rem' }}>
+                    <li>Get a free Mapbox access token from <a href="https://account.mapbox.com/access-tokens/" target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>Mapbox</a></li>
+                    <li>Create a <code>.env</code> file in your project root</li>
+                    <li>Add: <code>REACT_APP_MAPBOX_ACCESS_TOKEN=your_token_here</code></li>
+                    <li>Restart your development server</li>
+                  </ol>
+                </div>
+                <div style={{ marginTop: '1rem' }}>
+                  <a href="/directory" className="btn btn-primary" style={{ marginRight: '1rem' }}>
+                    View Station Directory Instead
+                  </a>
+                  <button 
+                    className="btn btn-secondary"
+                    onClick={() => window.location.reload()}
+                  >
+                    Retry After Configuration
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
