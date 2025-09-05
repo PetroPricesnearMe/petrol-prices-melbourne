@@ -38,7 +38,6 @@ const Navbar = () => {
       <div className="container">
         <div className="nav-content">
           <Link to="/" className="nav-logo" aria-label="Home - Melbourne Fuel">
-            <span className="logo-icon" aria-hidden="true">⛽</span>
             <span className="logo-text">Melbourne Fuel</span>
           </Link>
           
@@ -95,7 +94,7 @@ const Navbar = () => {
                     setServicesOpen(false);
                   }}
                 >
-                  🚗 Roadside Assistance
+                  Roadside Assistance
                 </Link>
                 <Link 
                   to="/traffic" 
@@ -106,7 +105,7 @@ const Navbar = () => {
                     setServicesOpen(false);
                   }}
                 >
-                  🚦 Traffic
+                  Traffic Information
                 </Link>
                 <Link 
                   to="/car-washes" 
@@ -117,7 +116,7 @@ const Navbar = () => {
                     setServicesOpen(false);
                   }}
                 >
-                  🚿 Car Washes
+                  Car Washes
                 </Link>
                 <Link 
                   to="/truck-stops" 
@@ -128,7 +127,7 @@ const Navbar = () => {
                     setServicesOpen(false);
                   }}
                 >
-                  🚛 Truck Stops
+                  Truck Stops
                 </Link>
                 <Link 
                   to="/service-stations" 
@@ -139,7 +138,7 @@ const Navbar = () => {
                     setServicesOpen(false);
                   }}
                 >
-                  ⏰ 24 Hour Service Stations
+                  24 Hour Service Stations
                 </Link>
               </div>
             </div>
@@ -196,7 +195,7 @@ const Navbar = () => {
                     setUserOpen(false);
                   }}
                 >
-                  🔐 Sign In
+                  Sign In
                 </Link>
                 <Link 
                   to="/account" 
@@ -207,7 +206,7 @@ const Navbar = () => {
                     setUserOpen(false);
                   }}
                 >
-                  👤 My Account
+                  My Account
                 </Link>
                 <Link 
                   to="/become-member" 
@@ -218,7 +217,7 @@ const Navbar = () => {
                     setUserOpen(false);
                   }}
                 >
-                  👥 Become a Member
+                  Become a Member
                 </Link>
               </div>
             </div>

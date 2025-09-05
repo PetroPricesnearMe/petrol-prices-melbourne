@@ -30,7 +30,6 @@ const HomePage = () => {
         <div className="container">
           <div className="hero-content">
             <MotionDiv className="hero-badge" variants={itemVariants}>
-              <span className="badge-icon">🚗</span>
               <span>Live Fuel Prices</span>
             </MotionDiv>
             
@@ -46,12 +45,10 @@ const HomePage = () => {
             <MotionDiv className="hero-buttons" variants={itemVariants}>
               <Link to="/map" className="btn btn-primary hero-btn">
                 <span className="btn-text">Preview Live Map</span>
-                <span className="btn-icon">🗺️</span>
               </Link>
               
               <Link to="/directory" className="btn btn-secondary hero-btn">
                 <span className="btn-text">Latest Fuel Prices in Melbourne</span>
-                <span className="btn-icon">⛽</span>
               </Link>
             </MotionDiv>
             
