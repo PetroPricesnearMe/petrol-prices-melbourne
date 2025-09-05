@@ -8,9 +8,11 @@ const config = {
   
   // Baserow API Configuration
   baserow: {
-    token: process.env.BASEROW_TOKEN || 'WXGOdiCeNmvdj5NszzAdvIug3InwQQXP',
+    token: process.env.BASEROW_TOKEN || 'LuwYYOFxLFuBkzSMZJ9XTvE9OgnIsiuXI',
     apiUrl: process.env.BASEROW_API_URL || 'https://api.baserow.io/api',
     databaseId: 265358,
+    // MCP SSE URL for real-time updates
+    mcpSseUrl: 'https://api.baserow.io/mcp/Anoz1pnwOGAZb7wHqKGwJIxPmu6jbbNN/sse',
     tables: {
       petrolStations: {
         id: 623329,
@@ -18,7 +20,7 @@ const config = {
       },
       fuelPrices: {
         id: 623330,
-        name: 'Fuel Prices'
+        name: 'Fuel Prices'  
       },
       airtableImport: {
         id: 623331,

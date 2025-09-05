@@ -2,9 +2,11 @@
 const config = {
   // Baserow API Configuration
   baserow: {
-    token: process.env.REACT_APP_BASEROW_TOKEN || 'WXGOdiCeNmvdj5NszzAdvIug3InwQQXP',
+    token: process.env.REACT_APP_BASEROW_TOKEN || 'LuwYYOFxLFuBkzSMZJ9XTvE9OgnIsiuXI',
     apiUrl: process.env.REACT_APP_BASEROW_API_URL || 'https://api.baserow.io/api',
     databaseId: 265358,
+    // MCP SSE URL for real-time updates
+    mcpSseUrl: 'https://api.baserow.io/mcp/Anoz1pnwOGAZb7wHqKGwJIxPmu6jbbNN/sse',
     // CORS proxy for development
     corsProxy: process.env.REACT_APP_CORS_PROXY || 'https://cors-anywhere.herokuapp.com/'
   },
