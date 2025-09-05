@@ -145,20 +145,28 @@ const Navbar = () => {
             </div>
             
             <Link 
-              to="/news" 
-              className={`nav-link ${isActive('/news')}`}
+              to="/fuel-price-trends" 
+              className={`nav-link ${isActive('/fuel-price-trends')}`}
               onClick={() => setIsOpen(false)}
-              aria-current={location.pathname === '/news' ? 'page' : undefined}
+              aria-current={location.pathname === '/fuel-price-trends' ? 'page' : undefined}
             >
-              News
+              Price Trends
             </Link>
             <Link 
-              to="/station-brands" 
-              className={`nav-link ${isActive('/station-brands')}`}
+              to="/station-amenities" 
+              className={`nav-link ${isActive('/station-amenities')}`}
               onClick={() => setIsOpen(false)}
-              aria-current={location.pathname === '/station-brands' ? 'page' : undefined}
+              aria-current={location.pathname === '/station-amenities' ? 'page' : undefined}
             >
-              Station Brands
+              Amenities
+            </Link>
+            <Link 
+              to="/how-pricing-works" 
+              className={`nav-link ${isActive('/how-pricing-works')}`}
+              onClick={() => setIsOpen(false)}
+              aria-current={location.pathname === '/how-pricing-works' ? 'page' : undefined}
+            >
+              How It Works
             </Link>
             
             {/* User Dropdown */}

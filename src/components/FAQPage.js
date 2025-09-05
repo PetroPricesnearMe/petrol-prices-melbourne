@@ -1,51 +1,171 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const faqs = [
   {
     q: 'How do you get petrol prices?',
-    a: 'We aggregate prices from public sources and community reports, then validate and surface them in a user-friendly directory and map.'
+    a: 'We aggregate prices from public sources and community reports, then validate and surface them in a user-friendly directory and map. Our data comes from multiple sources including government APIs, station websites, and user submissions.',
+    category: 'Data Sources'
   },
   {
     q: 'How often are prices updated?',
-    a: 'Continuously. The directory sorts by most recently updated by default so you see fresh data first.'
+    a: 'Continuously. The directory sorts by most recently updated by default so you see fresh data first. Prices are typically updated every few hours during business hours.',
+    category: 'Data Sources'
   },
   {
     q: 'Which areas are covered?',
-    a: 'We focus on Melbourne and surrounding suburbs, with broader coverage growing over time.'
+    a: 'We focus on Melbourne and surrounding suburbs, with broader coverage growing over time. Currently covering 250+ stations across Greater Melbourne.',
+    category: 'Coverage'
   },
   {
     q: 'Can I report a new price?',
-    a: 'Yes. Use the “Report price” button on station cards to submit updates.'
+    a: 'Yes. Use the "Report price" button on station cards to submit updates. All submissions are verified before being published.',
+    category: 'User Input'
+  },
+  {
+    q: 'Are the prices accurate?',
+    a: 'We strive for accuracy by cross-referencing multiple sources and validating user submissions. However, prices can change frequently, so we recommend calling ahead for critical trips.',
+    category: 'Accuracy'
+  },
+  {
+    q: 'Why do prices vary so much between stations?',
+    a: 'Prices vary due to location, competition, operating costs, and the weekly price cycle. Stations in high-rent areas or near highways often charge more due to convenience premiums.',
+    category: 'Pricing'
+  },
+  {
+    q: 'What is the fuel price cycle?',
+    a: 'Australia has a weekly price cycle where prices typically start low on Sunday/Monday, rise through the week, peak on Friday/Saturday, then drop again. This varies by city and can be used to your advantage.',
+    category: 'Pricing'
+  },
+  {
+    q: 'How can I save money on fuel?',
+    a: 'Fill up on Sunday/Monday when prices are lowest, use our price comparison tools, maintain your vehicle properly, drive efficiently, and consider alternative transport for short trips.',
+    category: 'Saving Tips'
+  },
+  {
+    q: 'Do you have a mobile app?',
+    a: 'Our website is fully mobile-responsive and works like an app when added to your home screen. We\'re also developing a dedicated mobile app for even better functionality.',
+    category: 'Mobile'
+  },
+  {
+    q: 'Is this service free?',
+    a: 'Yes, our basic price comparison service is completely free. We may introduce premium features in the future, but core functionality will always remain free.',
+    category: 'Cost'
+  },
+  {
+    q: 'How do I contact support?',
+    a: 'You can reach us through our contact form, email support@petrolpricesnearme.com.au, or follow us on social media for updates and support.',
+    category: 'Support'
+  },
+  {
+    q: 'Can I use this for business purposes?',
+    a: 'Yes, our data can be used for business purposes. Please contact us for API access and commercial licensing options.',
+    category: 'Business'
   }
 ];
 
 const FAQPage = () => {
-  return (
-    <div className="container" style={{ padding: '2rem 0' }}>
-      <header style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 800 }}>Frequently Asked Questions</h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Answers about Melbourne petrol prices and how to use the site.</p>
-      </header>
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchTerm, setSearchTerm] = useState('');
 
-      <div style={{ display: 'grid', gap: '1rem' }}>
-        {faqs.map((item, idx) => (
-          <details key={idx} style={{
-            background: 'white',
-            border: '1px solid var(--border-color)',
-            borderRadius: '0.75rem',
-            padding: '1rem',
-            boxShadow: 'var(--shadow)'
-          }}>
-            <summary style={{
-              cursor: 'pointer',
-              fontWeight: 700,
-              outline: 'none'
-            }}>
-              {item.q}
-            </summary>
-            <p style={{ marginTop: '0.75rem', color: 'var(--text-secondary)' }}>{item.a}</p>
-          </details>
-        ))}
+  // Get unique categories
+  const categories = ['All', ...new Set(faqs.map(faq => faq.category))];
+
+  // Filter FAQs based on category and search term
+  const filteredFaqs = faqs.filter(faq => {
+    const matchesCategory = selectedCategory === 'All' || faq.category === selectedCategory;
+    const matchesSearch = faq.q.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         faq.a.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  return (
+    <div className="faq-page">
+      <div className="faq-header">
+        <div className="container">
+          <header>
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about fuel prices, our service, and how to save money</p>
+          </header>
+
+          <div className="faq-controls">
+            <div className="search-box">
+              <span className="search-icon">🔍</span>
+              <input
+                type="text"
+                placeholder="Search FAQs..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-input"
+              />
+            </div>
+
+            <div className="category-filter">
+              <label>Filter by category:</label>
+              <select 
+                value={selectedCategory} 
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="category-select"
+              >
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="faq-content">
+        <div className="container">
+          <div className="faq-grid">
+            {filteredFaqs.map((item, idx) => (
+              <div key={idx} className="faq-item">
+                <div className="faq-question">
+                  <span className="faq-category">{item.category}</span>
+                  <h3>{item.q}</h3>
+                </div>
+                <div className="faq-answer">
+                  <p>{item.a}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {filteredFaqs.length === 0 && (
+            <div className="no-results">
+              <div className="no-results-icon">🔍</div>
+              <h3>No FAQs found</h3>
+              <p>Try adjusting your search terms or category filter</p>
+            </div>
+          )}
+
+          {/* Additional Help Section */}
+          <div className="help-section">
+            <h2>Still need help?</h2>
+            <div className="help-options">
+              <div className="help-option">
+                <span className="help-icon">📧</span>
+                <h3>Email Support</h3>
+                <p>Get personalized help from our support team</p>
+                <a href="mailto:support@petrolpricesnearme.com.au" className="help-link">
+                  support@petrolpricesnearme.com.au
+                </a>
+              </div>
+              <div className="help-option">
+                <span className="help-icon">💬</span>
+                <h3>Live Chat</h3>
+                <p>Chat with us in real-time during business hours</p>
+                <button className="help-link">Start Chat</button>
+              </div>
+              <div className="help-option">
+                <span className="help-icon">📚</span>
+                <h3>Learn More</h3>
+                <p>Explore our comprehensive guides and resources</p>
+                <a href="/how-pricing-works" className="help-link">View Guides</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

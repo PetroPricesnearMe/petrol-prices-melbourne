@@ -6,7 +6,7 @@ import { baserowAPI } from '../config';
 import './MapPage.css';
 
 // Mapbox access token - you'll need to set this
-const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoieW91ci11c2VybmFtZSIsImEiOiJjbGV0ZXN0In0.test'; // Replace with your token
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoicGV0cm9scHJpY2VzIiwiYSI6ImNtZW82a2ZkbzEzZzEycHB4bnN2a3d6MWYifQ.hOEEwKVHFhA2_IAxvj59SA'; // Replace with your token
 
 // Check if we have a valid Mapbox token
 const hasValidMapboxToken = MAPBOX_TOKEN && 
@@ -48,20 +48,35 @@ const MapboxMap = () => {
         console.log('🚀 Fetching ALL stations from Baserow (no limit)...');
         const baserowStations = await baserowAPI.fetchAllStations();
         
+        console.log(`📊 Raw Baserow data received: ${baserowStations.length} stations`);
+        console.log('🔍 Sample station data:', baserowStations[0]);
+        
         // Transform Baserow data with proper field mapping
         const transformedStations = baserowStations
           .map((station, index) => {
-            // Extract coordinates
-            const lat = parseFloat(station.Latitude || station.field_5072136);
-            const lng = parseFloat(station.Longitude || station.field_5072137);
+            // Extract coordinates with multiple fallback options
+            const lat = parseFloat(station.Latitude || station.field_5072136 || station.lat);
+            const lng = parseFloat(station.Longitude || station.field_5072137 || station.lng);
             
-            // Skip stations without valid coordinates
+            // Enhanced coordinate validation
             if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
-              console.warn(`⚠️ Station ${index + 1} has invalid coordinates:`, { lat, lng, station });
+              console.warn(`⚠️ Station ${index + 1} has invalid coordinates:`, { 
+                lat, 
+                lng, 
+                stationId: station.id,
+                stationName: station['Station Name'] || station.field_5072130,
+                rawStation: station 
+              });
               return null;
             }
             
-            return {
+            // Validate coordinate ranges for Melbourne area
+            if (lat < -38.5 || lat > -37.0 || lng < 144.0 || lng > 146.0) {
+              console.warn(`⚠️ Station ${index + 1} coordinates outside Melbourne area:`, { lat, lng });
+              return null;
+            }
+            
+            const transformedStation = {
               id: station.id || index + 1,
               name: station['Station Name'] || station.field_5072130 || `Station ${index + 1}`,
               lat,
@@ -79,11 +94,19 @@ const MapboxMap = () => {
               category: station.Category || station.field_5072138,
               fuelPrices: station['Fuel Prices'] || station.field_5072139 || []
             };
+            
+            console.log(`✅ Transformed station ${index + 1}:`, transformedStation.name, `(${lat}, ${lng})`);
+            return transformedStation;
           })
           .filter(station => station !== null); // Remove invalid stations
         
+        console.log(`📈 Data transformation complete:`);
+        console.log(`   - Raw stations: ${baserowStations.length}`);
+        console.log(`   - Valid stations: ${transformedStations.length}`);
+        console.log(`   - Invalid stations: ${baserowStations.length - transformedStations.length}`);
+        
         setPetrolStations(transformedStations);
-        console.log(`✅ Successfully loaded ${transformedStations.length} stations (was limited to 100 with Leaflet)`);
+        console.log(`✅ Successfully loaded ${transformedStations.length} stations for map rendering`);
         
         // Set up price update simulation
         const priceUpdateInterval = setInterval(() => {
@@ -123,23 +146,36 @@ const MapboxMap = () => {
 
   // Create GeoJSON for clustering
   const createClusterData = useCallback(() => {
-    return {
+    console.log(`🗺️ Creating GeoJSON for ${petrolStations.length} stations`);
+    
+    const geoJsonData = {
       type: 'FeatureCollection',
-      features: petrolStations.map(station => ({
-        type: 'Feature',
-        properties: {
-          id: station.id,
-          name: station.name,
-          price: station.prices[selectedFuelType],
-          address: station.address,
-          ...station.prices
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [station.lng, station.lat]
+      features: petrolStations.map((station, index) => {
+        const feature = {
+          type: 'Feature',
+          properties: {
+            id: station.id,
+            name: station.name,
+            price: station.prices[selectedFuelType],
+            address: station.address,
+            ...station.prices
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [station.lng, station.lat]
+          }
+        };
+        
+        if (index < 5) { // Log first 5 features for debugging
+          console.log(`📍 Feature ${index + 1}:`, feature);
         }
-      }))
+        
+        return feature;
+      })
     };
+    
+    console.log(`✅ GeoJSON created with ${geoJsonData.features.length} features`);
+    return geoJsonData;
   }, [petrolStations, selectedFuelType]);
 
   // Get marker color based on price
@@ -355,36 +391,48 @@ const MapboxMap = () => {
             </Source>
 
             {/* Individual markers for selected stations */}
-            {petrolStations.map(station => (
-              <Marker
-                key={station.id}
-                longitude={station.lng}
-                latitude={station.lat}
-                anchor="bottom"
-                onClick={(e) => {
-                  e.originalEvent.stopPropagation();
-                  setSelectedStation(station);
-                }}
-              >
-                <div
-                  style={{
-                    backgroundColor: getMarkerColor(station.prices[selectedFuelType]),
-                    width: '30px',
-                    height: '30px',
-                    borderRadius: '50%',
-                    border: '3px solid white',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '12px',
-                    cursor: 'pointer'
+            {petrolStations.map((station, index) => {
+              if (index < 3) { // Log first 3 markers for debugging
+                console.log(`🎯 Rendering marker ${index + 1}:`, {
+                  id: station.id,
+                  name: station.name,
+                  coordinates: [station.lng, station.lat],
+                  price: station.prices[selectedFuelType]
+                });
+              }
+              
+              return (
+                <Marker
+                  key={station.id}
+                  longitude={station.lng}
+                  latitude={station.lat}
+                  anchor="bottom"
+                  onClick={(e) => {
+                    e.originalEvent.stopPropagation();
+                    console.log(`🖱️ Marker clicked:`, station.name);
+                    setSelectedStation(station);
                   }}
                 >
-                  ⛽
-                </div>
-              </Marker>
-            ))}
+                  <div
+                    style={{
+                      backgroundColor: getMarkerColor(station.prices[selectedFuelType]),
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      border: '3px solid white',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '12px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    ⛽
+                  </div>
+                </Marker>
+              );
+            })}
 
             {/* Popup for selected station */}
             {selectedStation && (

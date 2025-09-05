@@ -4,10 +4,37 @@ import { baserowAPI } from '../config';
 import './DirectoryPage.css';
 import { Link } from 'react-router-dom'; // Added Link import
 
+// Melbourne suburbs list for dropdown
+const MELBOURNE_SUBURBS = [
+  'All Suburbs', 'Abbotsford', 'Airport West', 'Albert Park', 'Alphington', 'Armadale', 'Ascot Vale',
+  'Ashburton', 'Aspendale', 'Auburn', 'Balaclava', 'Balwyn', 'Balwyn North', 'Bentleigh', 'Bentleigh East',
+  'Blackburn', 'Blackburn North', 'Blackburn South', 'Box Hill', 'Box Hill North', 'Box Hill South',
+  'Brighton', 'Brighton East', 'Brunswick', 'Brunswick East', 'Brunswick West', 'Bulleen', 'Burwood',
+  'Camberwell', 'Canterbury', 'Carlton', 'Carlton North', 'Carnegie', 'Caulfield', 'Caulfield East',
+  'Caulfield North', 'Caulfield South', 'Chadstone', 'Cheltenham', 'Clayton', 'Clifton Hill',
+  'Coburg', 'Coburg North', 'Collingwood', 'Cremorne', 'Dandenong', 'Dandenong North', 'Dandenong South',
+  'Docklands', 'Doncaster', 'Doncaster East', 'Donvale', 'East Melbourne', 'Elsternwick', 'Elwood',
+  'Essendon', 'Essendon North', 'Fairfield', 'Fitzroy', 'Fitzroy North', 'Footscray', 'Frankston',
+  'Gardenvale', 'Glen Iris', 'Glen Waverley', 'Glenroy', 'Greensborough', 'Hampton', 'Hampton East',
+  'Hawthorn', 'Hawthorn East', 'Heidelberg', 'Heidelberg Heights', 'Heidelberg West', 'Highett',
+  'Ivanhoe', 'Ivanhoe East', 'Kensington', 'Keilor', 'Keilor East', 'Kew', 'Kew East', 'Keysborough',
+  'Kooyong', 'Lalor', 'Laverton', 'Malvern', 'Malvern East', 'Maribyrnong', 'McKinnon', 'Melbourne',
+  'Melbourne CBD', 'Middle Park', 'Mitcham', 'Mont Albert', 'Montmorency', 'Moonee Ponds', 'Moorabbin',
+  'Mooroolbark', 'Mount Waverley', 'Mulgrave', 'Murrumbeena', 'Narre Warren', 'Newport', 'Noble Park',
+  'North Melbourne', 'Northcote', 'Nunawading', 'Oakleigh', 'Oakleigh East', 'Oakleigh South',
+  'Ormond', 'Pakenham', 'Parkville', 'Pascoe Vale', 'Prahran', 'Preston', 'Reservoir', 'Richmond',
+  'Ringwood', 'Ringwood East', 'Ringwood North', 'Ripponlea', 'Rowville', 'Sandringham', 'Seaford',
+  'South Melbourne', 'South Yarra', 'Southbank', 'Spotswood', 'Springvale', 'St Kilda', 'St Kilda East',
+  'St Kilda West', 'Surrey Hills', 'Templestowe', 'Thornbury', 'Toorak', 'Tullamarine', 'Vermont',
+  'Vermont South', 'Wantirna', 'Wantirna South', 'Warrandyte', 'Wheelers Hill', 'Williamstown',
+  'Windsor', 'Yarraville', 'Yarra Glen', 'Yarrambat'
+];
+
 const DirectoryPage = () => {
   const [petrolStations, setPetrolStations] = useState([]);
   const [filteredStations, setFilteredStations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSuburb, setSelectedSuburb] = useState('All Suburbs');
   const [sortBy, setSortBy] = useState('name');
   const [filterBy, setFilterBy] = useState('all');
   const [loading, setLoading] = useState(true);
@@ -81,12 +108,14 @@ const DirectoryPage = () => {
   useEffect(() => {
     let filtered = petrolStations.filter(station => {
       const searchMatch = station.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         station.suburb.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          station.brand.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const suburbMatch = selectedSuburb === 'All Suburbs' || 
+                         station.suburb.toLowerCase() === selectedSuburb.toLowerCase();
       
       const brandMatch = filterBy === 'all' || station.brand.toLowerCase() === filterBy.toLowerCase();
       
-      return searchMatch && brandMatch;
+      return searchMatch && suburbMatch && brandMatch;
     });
 
     // Sort stations
@@ -106,7 +135,7 @@ const DirectoryPage = () => {
     });
 
     setFilteredStations(filtered);
-  }, [petrolStations, searchTerm, sortBy, filterBy]);
+  }, [petrolStations, searchTerm, selectedSuburb, sortBy, filterBy]);
 
   const getBrandColor = (brand) => {
     const colors = {
@@ -209,7 +238,7 @@ const DirectoryPage = () => {
                 <span className="search-icon">🔍</span>
                 <input
                   type="text"
-                  placeholder="Search by station name, suburb, or brand..."
+                  placeholder="Search by station name or brand..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
@@ -218,30 +247,49 @@ const DirectoryPage = () => {
             </div>
 
             <div className="filters-section">
-              <select 
-                value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value)}
-                className="filter-select"
-              >
-                <option value="name">Sort by Name</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="suburb">Sort by Suburb</option>
-              </select>
+              <div className="filter-group">
+                <label className="filter-label">📍 Suburb</label>
+                <select 
+                  value={selectedSuburb} 
+                  onChange={(e) => setSelectedSuburb(e.target.value)}
+                  className="filter-select suburb-select"
+                >
+                  {MELBOURNE_SUBURBS.map(suburb => (
+                    <option key={suburb} value={suburb}>{suburb}</option>
+                  ))}
+                </select>
+              </div>
 
-              <select 
-                value={filterBy} 
-                onChange={(e) => setFilterBy(e.target.value)}
-                className="filter-select"
-              >
-                <option value="all">All Brands</option>
-                <option value="shell">Shell</option>
-                <option value="bp">BP</option>
-                <option value="caltex">Caltex</option>
-                <option value="7-eleven">7-Eleven</option>
-                <option value="united">United</option>
-                <option value="ampol">Ampol</option>
-              </select>
+              <div className="filter-group">
+                <label className="filter-label">🏷️ Brand</label>
+                <select 
+                  value={filterBy} 
+                  onChange={(e) => setFilterBy(e.target.value)}
+                  className="filter-select"
+                >
+                  <option value="all">All Brands</option>
+                  <option value="shell">Shell</option>
+                  <option value="bp">BP</option>
+                  <option value="caltex">Caltex</option>
+                  <option value="7-eleven">7-Eleven</option>
+                  <option value="united">United</option>
+                  <option value="ampol">Ampol</option>
+                </select>
+              </div>
+
+              <div className="filter-group">
+                <label className="filter-label">📊 Sort By</label>
+                <select 
+                  value={sortBy} 
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="filter-select"
+                >
+                  <option value="name">Name A-Z</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="suburb">Suburb A-Z</option>
+                </select>
+              </div>
             </div>
 
             <div className="results-count">
