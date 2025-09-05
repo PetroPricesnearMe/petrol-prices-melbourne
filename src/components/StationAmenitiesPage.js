@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import './StationAmenitiesPage.css';
@@ -8,7 +8,7 @@ const StationAmenitiesPage = () => {
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const amenitiesList = [
+  const amenitiesList = useMemo(() => [
     { key: 'all', label: 'All Amenities', icon: '🏪', count: 0 },
     { key: 'car_wash', label: 'Car Wash', icon: '🚿', count: 0 },
     { key: 'atm', label: 'ATM', icon: '🏧', count: 0 },
@@ -19,7 +19,7 @@ const StationAmenitiesPage = () => {
     { key: 'truck_friendly', label: 'Truck Friendly', icon: '🚛', count: 0 },
     { key: '24_hours', label: '24 Hours', icon: '🕐', count: 0 },
     { key: 'ev_charging', label: 'EV Charging', icon: '⚡', count: 0 }
-  ];
+  ], []);
 
   // Mock station data with amenities
   const mockStations = [
@@ -96,17 +96,20 @@ const StationAmenitiesPage = () => {
         });
       });
       
-      // Update amenities with counts
+      // Update amenities with counts (for display purposes)
       const updatedAmenities = amenitiesList.map(amenity => ({
         ...amenity,
         count: amenityCounts[amenity.key] || 0
       }));
       
+      // Log the updated amenities for debugging
+      console.log('Updated amenities with counts:', updatedAmenities);
       setLoading(false);
     };
     
     loadStations();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amenitiesList]);
 
   const filteredStations = selectedAmenity === 'all' 
     ? stations 
