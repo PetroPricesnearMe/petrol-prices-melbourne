@@ -179,6 +179,8 @@ const DataSourceDebug = ({ isVisible = false }) => {
           <li>Use "Test Connection" to verify API access</li>
           <li>Use "Refresh Data" to force reload from source</li>
           <li>Check browser console for detailed logs</li>
+          <li>CORS issues: Try switching to mock data source</li>
+          <li>Check network tab for failed requests</li>
         </ul>
       </div>
     </div>

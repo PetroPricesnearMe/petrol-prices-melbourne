@@ -161,7 +161,14 @@ class DataSourceManager {
       
       switch (this.activeSource) {
         case 'baserow':
-          rawStations = await baserowAPI.fetchAllStations();
+          try {
+            rawStations = await baserowAPI.fetchAllStations();
+          } catch (error) {
+            console.warn('⚠️ Baserow API failed, falling back to mock data:', error.message);
+            console.log('🔄 Switching to mock data source due to API issues');
+            this.setActiveSource('mock');
+            rawStations = this.getMockStations();
+          }
           break;
         case 'airtable':
           // Airtable integration would go here

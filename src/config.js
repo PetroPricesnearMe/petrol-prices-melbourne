@@ -4,7 +4,9 @@ const config = {
   baserow: {
     token: process.env.REACT_APP_BASEROW_TOKEN || 'WXGOdiCeNmvdj5NszzAdvIug3InwQQXP',
     apiUrl: process.env.REACT_APP_BASEROW_API_URL || 'https://api.baserow.io/api',
-    databaseId: 265358
+    databaseId: 265358,
+    // CORS proxy for development
+    corsProxy: process.env.REACT_APP_CORS_PROXY || 'https://cors-anywhere.herokuapp.com/'
   },
   
   // Backend API Configuration
@@ -237,11 +239,16 @@ export const baserowAPI = {
         
         while (retryCount < maxRetries) {
           try {
+            // Try direct API first
             response = await fetch(nextUrl, {
+              method: 'GET',
               headers: {
                 'Authorization': `Token ${config.baserow.token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
               },
+              mode: 'cors',
+              credentials: 'omit',
               signal: AbortSignal.timeout(10000)
             });
             
@@ -250,6 +257,35 @@ export const baserowAPI = {
             }
             break; // Success, exit retry loop
           } catch (error) {
+            console.warn(`⚠️ Direct API attempt ${retryCount + 1} failed:`, error.message);
+            
+            // If CORS error, try with a different approach
+            if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+              console.log('🔄 Trying CORS proxy...');
+              try {
+                const proxyUrl = `${config.baserow.corsProxy}${nextUrl}`;
+                response = await fetch(proxyUrl, {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': `Token ${config.baserow.token}`,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  mode: 'cors',
+                  credentials: 'omit',
+                  signal: AbortSignal.timeout(15000)
+                });
+                
+                if (!response.ok) {
+                  throw new Error(`Proxy HTTP ${response.status}: ${response.statusText}`);
+                }
+                break;
+              } catch (corsError) {
+                console.warn('⚠️ CORS proxy also failed:', corsError.message);
+                throw error; // Re-throw original error
+              }
+            }
+            
             retryCount++;
             if (retryCount >= maxRetries) {
               console.error(`❌ Failed after ${maxRetries} attempts:`, error.message);

@@ -73,7 +73,16 @@ const MapboxMap = () => {
         return () => clearInterval(priceUpdateInterval);
       } catch (err) {
         console.error('❌ Error fetching stations:', err);
-        setError(`Failed to load stations: ${err.message}`);
+        
+        // Provide user-friendly error message
+        let errorMessage = 'Failed to load stations';
+        if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
+          errorMessage = 'Unable to connect to data source. Using sample data instead.';
+        } else {
+          errorMessage = `Failed to load stations: ${err.message}`;
+        }
+        
+        setError(errorMessage);
         
         // Data source manager will handle fallback data
         const fallbackStations = dataSourceManager.getMockStations();
