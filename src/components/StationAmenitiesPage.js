@@ -8,7 +8,7 @@ const StationAmenitiesPage = () => {
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const amenities = [
+  const amenitiesList = [
     { key: 'all', label: 'All Amenities', icon: '🏪', count: 0 },
     { key: 'car_wash', label: 'Car Wash', icon: '🚿', count: 0 },
     { key: 'atm', label: 'ATM', icon: '🏧', count: 0 },
@@ -87,7 +87,7 @@ const StationAmenitiesPage = () => {
       setStations(mockStations);
       
       // Count amenities
-      const amenityCounts = { ...amenities.reduce((acc, amenity) => ({ ...acc, [amenity.key]: 0 }), {}) };
+      const amenityCounts = { ...amenitiesList.reduce((acc, amenity) => ({ ...acc, [amenity.key]: 0 }), {}) };
       mockStations.forEach(station => {
         station.amenities.forEach(amenity => {
           if (amenityCounts[amenity] !== undefined) {
@@ -96,10 +96,11 @@ const StationAmenitiesPage = () => {
         });
       });
       
-      setAmenities(prev => prev.map(amenity => ({
+      // Update amenities with counts
+      const updatedAmenities = amenitiesList.map(amenity => ({
         ...amenity,
         count: amenityCounts[amenity.key] || 0
-      })));
+      }));
       
       setLoading(false);
     };
@@ -124,12 +125,12 @@ const StationAmenitiesPage = () => {
   };
 
   const getAmenityIcon = (amenityKey) => {
-    const amenity = amenities.find(a => a.key === amenityKey);
+    const amenity = amenitiesList.find(a => a.key === amenityKey);
     return amenity ? amenity.icon : '❓';
   };
 
   const getAmenityLabel = (amenityKey) => {
-    const amenity = amenities.find(a => a.key === amenityKey);
+    const amenity = amenitiesList.find(a => a.key === amenityKey);
     return amenity ? amenity.label : amenityKey;
   };
 
@@ -159,7 +160,7 @@ const StationAmenitiesPage = () => {
             transition={{ delay: 0.3 }}
           >
             <div className="amenity-buttons">
-              {amenities.map(amenity => (
+              {amenitiesList.map(amenity => (
                 <button
                   key={amenity.key}
                   className={`amenity-btn ${selectedAmenity === amenity.key ? 'active' : ''}`}

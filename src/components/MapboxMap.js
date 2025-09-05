@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Map, Marker, Popup, Source, Layer } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MotionDiv } from './MotionComponents';
-import { baserowAPI } from '../config';
+import dataSourceManager from '../services/DataSourceManager';
 import './MapPage.css';
 
 // Mapbox access token - you'll need to set this
@@ -36,79 +36,25 @@ const MapboxMap = () => {
     }
   }, []);
 
-  // Fetch stations without the 100 station limit
+  // Fetch stations using centralized data source manager
   useEffect(() => {
     if (!hasValidMapboxToken) return; // Don't fetch if no valid token
     
-    const fetchStationsFromBaserow = async () => {
+    const fetchStations = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        console.log('🚀 Fetching ALL stations from Baserow (no limit)...');
-        const baserowStations = await baserowAPI.fetchAllStations();
+        console.log('🚀 Fetching stations using centralized data source manager...');
+        const stations = await dataSourceManager.fetchStations();
         
-        console.log(`📊 Raw Baserow data received: ${baserowStations.length} stations`);
-        console.log('🔍 Sample station data:', baserowStations[0]);
+        console.log(`📊 Stations loaded: ${stations.length} from ${dataSourceManager.getActiveSource()}`);
         
-        // Transform Baserow data with proper field mapping
-        const transformedStations = baserowStations
-          .map((station, index) => {
-            // Extract coordinates with multiple fallback options
-            const lat = parseFloat(station.Latitude || station.field_5072136 || station.lat);
-            const lng = parseFloat(station.Longitude || station.field_5072137 || station.lng);
-            
-            // Enhanced coordinate validation
-            if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
-              console.warn(`⚠️ Station ${index + 1} has invalid coordinates:`, { 
-                lat, 
-                lng, 
-                stationId: station.id,
-                stationName: station['Station Name'] || station.field_5072130,
-                rawStation: station 
-              });
-              return null;
-            }
-            
-            // Validate coordinate ranges for Melbourne area
-            if (lat < -38.5 || lat > -37.0 || lng < 144.0 || lng > 146.0) {
-              console.warn(`⚠️ Station ${index + 1} coordinates outside Melbourne area:`, { lat, lng });
-              return null;
-            }
-            
-            const transformedStation = {
-              id: station.id || index + 1,
-              name: station['Station Name'] || station.field_5072130 || `Station ${index + 1}`,
-              lat,
-              lng,
-              prices: {
-                // TODO: Get real prices from linked Fuel Prices table
-                unleaded: 180 + Math.random() * 20,
-                premium: 190 + Math.random() * 20,
-                premium98: 200 + Math.random() * 25,
-                diesel: 175 + Math.random() * 20,
-                gas: 85 + Math.random() * 15
-              },
-              address: station.Address || station.field_5072131 || `${station.City || station.field_5072132 || 'Melbourne'}, VIC`,
-              city: station.City || station.field_5072132 || 'Melbourne',
-              category: station.Category || station.field_5072138,
-              fuelPrices: station['Fuel Prices'] || station.field_5072139 || []
-            };
-            
-            console.log(`✅ Transformed station ${index + 1}:`, transformedStation.name, `(${lat}, ${lng})`);
-            return transformedStation;
-          })
-          .filter(station => station !== null); // Remove invalid stations
+        // Set stations data
+        setPetrolStations(stations);
+        console.log(`✅ Successfully loaded ${stations.length} stations for map rendering`);
         
-        console.log(`📈 Data transformation complete:`);
-        console.log(`   - Raw stations: ${baserowStations.length}`);
-        console.log(`   - Valid stations: ${transformedStations.length}`);
-        console.log(`   - Invalid stations: ${baserowStations.length - transformedStations.length}`);
-        
-        setPetrolStations(transformedStations);
-        console.log(`✅ Successfully loaded ${transformedStations.length} stations for map rendering`);
-        
-        // Set up price update simulation
+        // Set up price update simulation only after successful data load
         const priceUpdateInterval = setInterval(() => {
           setPetrolStations(prev => 
             prev.map(station => ({
@@ -126,38 +72,49 @@ const MapboxMap = () => {
 
         return () => clearInterval(priceUpdateInterval);
       } catch (err) {
-        console.error('❌ Error fetching stations from Baserow:', err);
+        console.error('❌ Error fetching stations:', err);
         setError(`Failed to load stations: ${err.message}`);
         
-        // Fallback to sample data if Baserow fails
-        const fallbackStations = [
-          { id: 1, name: 'Shell Melbourne CBD', lat: -37.8136, lng: 144.9631, prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 }, address: '123 Collins Street, Melbourne' },
-          { id: 2, name: 'BP South Yarra', lat: -37.8387, lng: 144.9924, prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 }, address: '456 Toorak Road, South Yarra' },
-          { id: 3, name: 'Caltex Richmond', lat: -37.8197, lng: 145.0058, prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 }, address: '789 Swan Street, Richmond' }
-        ];
+        // Data source manager will handle fallback data
+        const fallbackStations = dataSourceManager.getMockStations();
         setPetrolStations(fallbackStations);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStationsFromBaserow();
+    fetchStations();
   }, []);
 
-  // Create GeoJSON for clustering
+  // Create GeoJSON for clustering with validation
   const createClusterData = useCallback(() => {
     console.log(`🗺️ Creating GeoJSON for ${petrolStations.length} stations`);
+    
+    // Validate stations data before creating GeoJSON
+    if (!Array.isArray(petrolStations) || petrolStations.length === 0) {
+      console.warn('⚠️ No valid stations data available for GeoJSON creation');
+      return {
+        type: 'FeatureCollection',
+        features: []
+      };
+    }
     
     const geoJsonData = {
       type: 'FeatureCollection',
       features: petrolStations.map((station, index) => {
+        // Validate station data before creating feature
+        if (!station || typeof station.lat !== 'number' || typeof station.lng !== 'number') {
+          console.warn(`⚠️ Invalid station data at index ${index}:`, station);
+          return null;
+        }
+        
         const feature = {
           type: 'Feature',
           properties: {
             id: station.id,
-            name: station.name,
-            price: station.prices[selectedFuelType],
-            address: station.address,
+            name: station.name || `Station ${index + 1}`,
+            price: station.prices?.[selectedFuelType] || 0,
+            address: station.address || 'Unknown address',
             ...station.prices
           },
           geometry: {
@@ -171,10 +128,16 @@ const MapboxMap = () => {
         }
         
         return feature;
-      })
+      }).filter(feature => feature !== null) // Remove invalid features
     };
     
-    console.log(`✅ GeoJSON created with ${geoJsonData.features.length} features`);
+    console.log(`✅ GeoJSON created with ${geoJsonData.features.length} valid features`);
+    
+    // Validate GeoJSON structure
+    if (geoJsonData.features.length === 0) {
+      console.error('❌ No valid features in GeoJSON - this will cause map rendering issues');
+    }
+    
     return geoJsonData;
   }, [petrolStations, selectedFuelType]);
 
@@ -304,6 +267,50 @@ const MapboxMap = () => {
           <div className="loading-spinner"></div>
           <h2>Loading Enhanced Fuel Map...</h2>
           <p>Fetching all {petrolStations.length > 0 ? petrolStations.length + ' ' : ''}stations from Baserow database...</p>
+          <div style={{ 
+            marginTop: '1rem', 
+            padding: '1rem', 
+            backgroundColor: '#f0f9ff', 
+            borderRadius: '8px',
+            fontSize: '0.9rem',
+            color: '#1e40af'
+          }}>
+            <strong>🔍 Debug Info:</strong>
+            <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem' }}>
+              <li>Mapbox Token: {hasValidMapboxToken ? '✅ Valid' : '❌ Invalid/Missing'}</li>
+              <li>Data Source: Baserow API</li>
+              <li>Validation: Checking coordinates and data structure</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Validate data before rendering map
+  if (!Array.isArray(petrolStations) || petrolStations.length === 0) {
+    return (
+      <div className="map-page">
+        <div className="loading-container">
+          <div style={{ 
+            backgroundColor: '#fef2f2', 
+            border: '1px solid #fecaca', 
+            borderRadius: '8px', 
+            padding: '2rem',
+            textAlign: 'center',
+            color: '#dc2626'
+          }}>
+            <h2>❌ No Station Data Available</h2>
+            <p>Unable to load petrol station data for map rendering.</p>
+            {error && <p><strong>Error:</strong> {error}</p>}
+            <button 
+              className="btn btn-primary"
+              onClick={() => window.location.reload()}
+              style={{ marginTop: '1rem' }}
+            >
+              🔄 Retry Loading
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -338,6 +345,21 @@ const MapboxMap = () => {
                 <strong>⚠️ Warning:</strong> {error}. Showing fallback data.
               </div>
             )}
+            <div style={{ 
+              marginTop: '1rem', 
+              padding: '0.75rem', 
+              backgroundColor: '#f0f9ff', 
+              borderRadius: '6px',
+              fontSize: '0.9rem',
+              color: '#1e40af'
+            }}>
+              <strong>📊 Data Status:</strong> {petrolStations.length} valid stations loaded • 
+              <strong> Mapbox:</strong> {hasValidMapboxToken ? '✅ Ready' : '❌ Not configured'} • 
+              <strong> Source:</strong> {dataSourceManager.getActiveSource().toUpperCase()} API
+              {dataSourceManager.getStatus().cacheValid && (
+                <span> • <strong>Cache:</strong> ✅ Valid</span>
+              )}
+            </div>
           </MotionDiv>
 
           <MotionDiv 
