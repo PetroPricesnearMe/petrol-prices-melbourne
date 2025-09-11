@@ -81,10 +81,15 @@ const HomePage = () => {
                 src="/images/fuel-nozzles.jpg" 
                 alt="Fuel nozzles at petrol station showing different fuel types - Diesel, 98 Octane, 95 Octane, Unleaded, and 91 Octane"
                 className="nozzles-img"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
+                fetchPriority="high"
                 onLoad={(e) => {
                   e.target.style.opacity = '1';
+                }}
+                onError={(e) => {
+                  console.warn('Failed to load fuel-nozzles.jpg image');
+                  e.target.style.display = 'none';
                 }}
                 style={{
                   opacity: 0,

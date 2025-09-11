@@ -1,11 +1,14 @@
 .navbar {
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 1000;
   padding: 1rem 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
 .nav-content {
@@ -48,10 +51,11 @@
   color: var(--text-secondary);
   font-weight: 600;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0.75rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.95rem;
+  letter-spacing: -0.01em;
 }
 
 .nav-link:hover {
@@ -129,15 +133,17 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: white;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  min-width: 220px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  min-width: 240px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1001;
   margin-top: 0.5rem;
   overflow: hidden;
@@ -146,7 +152,7 @@
 .dropdown-menu.show {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .dropdown-item {
@@ -195,41 +201,57 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 0;
+  }
+
   .nav-toggle {
     display: flex;
+    z-index: 1002;
   }
 
   .nav-links {
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
     left: 0;
     right: 0;
-    background: white;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
     flex-direction: column;
     gap: 0;
-    padding: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--shadow);
-    transform: translateY(-100%);
+    padding: 5rem 2rem 2rem;
+    transform: translateX(-100%);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    overflow-y: auto;
   }
 
   .nav-links.nav-open {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
     visibility: visible;
   }
 
   .nav-link {
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     width: 100%;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
   }
 
   .nav-link:last-child {
     border-bottom: none;
+  }
+
+  .nav-link:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateX(8px);
   }
 
   .dropdown-menu {
@@ -240,18 +262,22 @@
     box-shadow: none;
     border: none;
     background: transparent;
-    margin-left: 1rem;
+    margin: 0.5rem 0 0 0;
+    padding: 0;
   }
 
   .dropdown-item {
-    padding: 0.5rem 0;
-    border-bottom: none;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     color: var(--text-secondary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
   .dropdown-item:hover {
     background: transparent;
     color: var(--primary-color);
+    transform: translateX(8px);
   }
 
   .nav-toggle.open span:nth-child(1) {
@@ -264,5 +290,31 @@
 
   .nav-toggle.open span:nth-child(3) {
     transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  /* Improve touch targets */
+  .nav-link,
+  .dropdown-toggle,
+  .dropdown-item {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    padding: 4rem 1.5rem 2rem;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
+
+  .dropdown-item {
+    font-size: 0.95rem;
+    padding: 0.6rem 0;
   }
 } 

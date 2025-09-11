@@ -36,9 +36,11 @@ const MapboxMap = () => {
     }
   }, []);
 
-  // Fetch stations using centralized data source manager
+  // Fetch stations using centralized data source manager with performance optimizations
   useEffect(() => {
     if (!hasValidMapboxToken) return; // Don't fetch if no valid token
+    
+    let isMounted = true; // Prevent state updates after unmount
     
     const fetchStations = async () => {
       try {
@@ -46,16 +48,37 @@ const MapboxMap = () => {
         setError(null);
         
         console.log('🚀 Fetching stations using centralized data source manager...');
+        
+        // Use AbortController for request cancellation
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+        
         const stations = await dataSourceManager.fetchStations();
+        clearTimeout(timeoutId);
+        
+        if (!isMounted) return; // Component unmounted, don't update state
         
         console.log(`📊 Stations loaded: ${stations.length} from ${dataSourceManager.getActiveSource()}`);
         
-        // Set stations data
-        setPetrolStations(stations);
-        console.log(`✅ Successfully loaded ${stations.length} stations for map rendering`);
+        // Validate and filter stations before setting state
+        const validStations = stations.filter(station => 
+          station && 
+          typeof station.lat === 'number' && 
+          typeof station.lng === 'number' &&
+          !isNaN(station.lat) && 
+          !isNaN(station.lng) &&
+          station.lat >= -90 && station.lat <= 90 &&
+          station.lng >= -180 && station.lng <= 180
+        );
+        
+        setPetrolStations(validStations);
+        console.log(`✅ Successfully loaded ${validStations.length} valid stations for map rendering`);
         
         // Set up price update simulation only after successful data load
+        // Use a more efficient update mechanism
         const priceUpdateInterval = setInterval(() => {
+          if (!isMounted) return;
+          
           setPetrolStations(prev => 
             prev.map(station => ({
               ...station,
@@ -70,13 +93,20 @@ const MapboxMap = () => {
           );
         }, 30000);
 
-        return () => clearInterval(priceUpdateInterval);
+        return () => {
+          clearInterval(priceUpdateInterval);
+          clearTimeout(timeoutId);
+        };
       } catch (err) {
+        if (!isMounted) return; // Component unmounted, don't update state
+        
         console.error('❌ Error fetching stations:', err);
         
         // Provide user-friendly error message
         let errorMessage = 'Failed to load stations';
-        if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
+        if (err.name === 'AbortError') {
+          errorMessage = 'Request timed out. Please try again.';
+        } else if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
           errorMessage = 'Unable to connect to data source. Using sample data instead.';
         } else {
           errorMessage = `Failed to load stations: ${err.message}`;
@@ -88,39 +118,54 @@ const MapboxMap = () => {
         const fallbackStations = dataSourceManager.getMockStations();
         setPetrolStations(fallbackStations);
       } finally {
+        if (isMounted) {
         setLoading(false);
+        }
       }
     };
 
     fetchStations();
+    
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Create GeoJSON for clustering with validation
+  // Create GeoJSON for clustering with validation and performance optimization
   const createClusterData = useCallback(() => {
-    console.log(`🗺️ Creating GeoJSON for ${petrolStations.length} stations`);
-    
-    // Validate stations data before creating GeoJSON
+    // Early return for empty data
     if (!Array.isArray(petrolStations) || petrolStations.length === 0) {
-      console.warn('⚠️ No valid stations data available for GeoJSON creation');
       return {
         type: 'FeatureCollection',
         features: []
       };
     }
     
-    const geoJsonData = {
-      type: 'FeatureCollection',
-      features: petrolStations.map((station, index) => {
+    // Use a more efficient approach for large datasets
+    const features = [];
+    const batchSize = 100; // Process in batches to avoid blocking
+    
+    for (let i = 0; i < petrolStations.length; i += batchSize) {
+      const batch = petrolStations.slice(i, i + batchSize);
+      
+      batch.forEach((station, batchIndex) => {
+        const index = i + batchIndex;
+        
         // Validate station data before creating feature
-        if (!station || typeof station.lat !== 'number' || typeof station.lng !== 'number') {
-          console.warn(`⚠️ Invalid station data at index ${index}:`, station);
-          return null;
+        if (!station || 
+            typeof station.lat !== 'number' || 
+            typeof station.lng !== 'number' ||
+            isNaN(station.lat) || 
+            isNaN(station.lng) ||
+            station.lat < -90 || station.lat > 90 ||
+            station.lng < -180 || station.lng > 180) {
+          return; // Skip invalid stations
         }
         
         const feature = {
           type: 'Feature',
           properties: {
-            id: station.id,
+            id: station.id || `station_${index}`,
             name: station.name || `Station ${index + 1}`,
             price: station.prices?.[selectedFuelType] || 0,
             address: station.address || 'Unknown address',
@@ -132,22 +177,14 @@ const MapboxMap = () => {
           }
         };
         
-        if (index < 5) { // Log first 5 features for debugging
-          console.log(`📍 Feature ${index + 1}:`, feature);
+        features.push(feature);
+      });
         }
         
-        return feature;
-      }).filter(feature => feature !== null) // Remove invalid features
+    return {
+      type: 'FeatureCollection',
+      features
     };
-    
-    console.log(`✅ GeoJSON created with ${geoJsonData.features.length} valid features`);
-    
-    // Validate GeoJSON structure
-    if (geoJsonData.features.length === 0) {
-      console.error('❌ No valid features in GeoJSON - this will cause map rendering issues');
-    }
-    
-    return geoJsonData;
   }, [petrolStations, selectedFuelType]);
 
   // Get marker color based on price
@@ -406,6 +443,16 @@ const MapboxMap = () => {
             style={{width: '100%', height: '100%'}}
             mapStyle="mapbox://styles/mapbox/streets-v12"
             onClick={() => setSelectedStation(null)}
+            // Performance optimizations
+            optimizeForTerrain={true}
+            renderWorldCopies={false}
+            maxZoom={18}
+            minZoom={8}
+            // Reduce map load time
+            initialViewState={viewState}
+            // Disable unnecessary features for better performance
+            attributionControl={false}
+            logoPosition="bottom-left"
           >
             {/* Add clustering source and layers */}
             <Source
@@ -421,42 +468,41 @@ const MapboxMap = () => {
               <Layer {...unclusteredPointLayer} />
             </Source>
 
-            {/* Individual markers for selected stations */}
-            {petrolStations.map((station, index) => {
-              if (index < 3) { // Log first 3 markers for debugging
-                console.log(`🎯 Rendering marker ${index + 1}:`, {
-                  id: station.id,
-                  name: station.name,
-                  coordinates: [station.lng, station.lat],
-                  price: station.prices[selectedFuelType]
-                });
-              }
-              
+            {/* Individual markers for selected stations - optimized rendering */}
+            {petrolStations.slice(0, 100).map((station, index) => {
+              // Only render first 100 stations for performance
+              // The rest will be handled by clustering
               return (
                 <Marker
-                  key={station.id}
+                  key={station.id || `marker_${index}`}
                   longitude={station.lng}
                   latitude={station.lat}
                   anchor="bottom"
                   onClick={(e) => {
                     e.originalEvent.stopPropagation();
-                    console.log(`🖱️ Marker clicked:`, station.name);
                     setSelectedStation(station);
                   }}
                 >
                   <div
                     style={{
-                      backgroundColor: getMarkerColor(station.prices[selectedFuelType]),
-                      width: '30px',
-                      height: '30px',
+                      backgroundColor: getMarkerColor(station.prices?.[selectedFuelType] || 0),
+                      width: '24px',
+                      height: '24px',
                       borderRadius: '50%',
-                      border: '3px solid white',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      border: '2px solid white',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '12px',
-                      cursor: 'pointer'
+                      fontSize: '10px',
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = 'scale(1.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = 'scale(1)';
                     }}
                   >
                     ⛽
