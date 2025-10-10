@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Map, Marker, Popup, Source, Layer } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MotionDiv } from './MotionComponents';
 import dataSourceManager from '../services/DataSourceManager';
-import { useRequestTracker } from '../hooks/useCancelOnUnmount';
 import './MapPage.css';
 
 // Mapbox access token - you'll need to set this
-const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN; // Replace with your token
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoicGV0cm9scHJpY2VzIiwiYSI6ImNtZW82a2ZkbzEzZzEycHB4bnN2a3d6MWYifQ.hOEEwKVHFhA2_IAxvj59SA'; // Replace with your token
 
 // Check if we have a valid Mapbox token
 const hasValidMapboxToken = MAPBOX_TOKEN && 
@@ -27,9 +26,6 @@ const MapboxMap = () => {
   });
 
   const mapRef = useRef();
-  
-  // Track and cancel requests on route change
-  const { addRequest, removeRequest, abortAll } = useRequestTracker();
 
   // Check Mapbox token availability
   useEffect(() => {
@@ -45,9 +41,6 @@ const MapboxMap = () => {
     if (!hasValidMapboxToken) return; // Don't fetch if no valid token
     
     let isMounted = true; // Prevent state updates after unmount
-    let priceUpdateInterval = null; // Track interval for cleanup
-    let controller = null;
-    let timeoutId = null;
     
     const fetchStations = async () => {
       try {
@@ -57,12 +50,11 @@ const MapboxMap = () => {
         console.log('🚀 Fetching stations using centralized data source manager...');
         
         // Use AbortController for request cancellation
-        controller = new AbortController();
-        timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
         
         const stations = await dataSourceManager.fetchStations();
         clearTimeout(timeoutId);
-        timeoutId = null;
         
         if (!isMounted) return; // Component unmounted, don't update state
         
@@ -84,7 +76,7 @@ const MapboxMap = () => {
         
         // Set up price update simulation only after successful data load
         // Use a more efficient update mechanism
-        priceUpdateInterval = setInterval(() => {
+        const priceUpdateInterval = setInterval(() => {
           if (!isMounted) return;
           
           setPetrolStations(prev => 
@@ -100,6 +92,11 @@ const MapboxMap = () => {
             }))
           );
         }, 30000);
+
+        return () => {
+          clearInterval(priceUpdateInterval);
+          clearTimeout(timeoutId);
+        };
       } catch (err) {
         if (!isMounted) return; // Component unmounted, don't update state
         
@@ -122,41 +119,20 @@ const MapboxMap = () => {
         setPetrolStations(fallbackStations);
       } finally {
         if (isMounted) {
-          setLoading(false);
+        setLoading(false);
         }
       }
     };
 
     fetchStations();
     
-    // Cleanup function - always runs on unmount
     return () => {
-      console.log('🧹 Cleaning up MapboxMap resources...');
       isMounted = false;
-      
-      // Clear interval if it exists
-      if (priceUpdateInterval) {
-        clearInterval(priceUpdateInterval);
-        priceUpdateInterval = null;
-      }
-      
-      // Clear timeout if it exists
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-      
-      // Abort any pending requests
-      if (controller) {
-        controller.abort();
-        controller = null;
-      }
     };
   }, []);
 
   // Create GeoJSON for clustering with validation and performance optimization
-  // Memoized to prevent unnecessary re-renders
-  const clusterData = useMemo(() => {
+  const createClusterData = useCallback(() => {
     // Early return for empty data
     if (!Array.isArray(petrolStations) || petrolStations.length === 0) {
       return {
@@ -185,15 +161,8 @@ const MapboxMap = () => {
           price: station.prices?.[selectedFuelType] || 0,
           address: station.address || 'Unknown address',
           ...station.prices,
-          // Store the full station data for popup (as JSON string to avoid serialization issues)
-          stationData: JSON.stringify({
-            id: station.id,
-            name: station.name,
-            address: station.address,
-            lat: station.lat,
-            lng: station.lng,
-            prices: station.prices
-          })
+          // Store the full station data for popup
+          station: station
         },
         geometry: {
           type: 'Point',
@@ -489,8 +458,8 @@ const MapboxMap = () => {
                 
                 if (feature.layer.id === 'unclustered-point') {
                   // Clicked on a single station
-                  const station = feature.properties.stationData ? 
-                    JSON.parse(feature.properties.stationData) : 
+                  const station = feature.properties.station ? 
+                    JSON.parse(feature.properties.station) : 
                     {
                       id: feature.properties.id,
                       name: feature.properties.name,
@@ -547,7 +516,7 @@ const MapboxMap = () => {
             <Source
               id="stations"
               type="geojson"
-              data={clusterData}
+              data={createClusterData()}
               cluster={true}
               clusterMaxZoom={14}
               clusterRadius={50}

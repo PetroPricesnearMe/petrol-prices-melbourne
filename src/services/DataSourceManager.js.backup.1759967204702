@@ -6,7 +6,6 @@
  */
 
 import { baserowAPI } from '../config';
-import { validateStations, validateAndTransformStation, getUserFriendlyError } from '../utils/validation';
 
 class DataSourceManager {
   constructor() {
@@ -87,8 +86,7 @@ class DataSourceManager {
     }
     
     // Validate coordinate ranges for Melbourne/Australia area (expanded range)
-    // All of Australia
-    if (lat < -45.0 || lat > -10.0 || lng < 110.0 || lng > 155.0) {
+    if (lat < -39.0 || lat > -37.0 || lng < 144.0 || lng > 146.0) {
       // Still log but don't reject - some stations might be outside Melbourne
       console.info(`ℹ️ Station ${index + 1} outside Melbourne metro:`, { lat, lng, name: station['Station Name'] });
     }
@@ -98,24 +96,37 @@ class DataSourceManager {
 
   /**
    * Transform station data with consistent field mapping
-   * Uses comprehensive validation from validation utility
    * @param {Object} station - Raw station data
    * @param {number} index - Station index
    * @returns {Object|null} Transformed station data or null if invalid
    */
   transformStationData(station, index) {
-    // Use the comprehensive validation and transformation utility
-    const result = validateAndTransformStation(station, index);
-    
-    if (!result.valid) {
-      console.warn(`⚠️ Skipping invalid station at index ${index}:`, result.errors);
+    const validation = this.validateStationData(station, index);
+    if (!validation.valid) {
       return null;
     }
+
+    const { lat, lng } = validation;
     
-    // Add source information
     return {
-      ...result.station,
-      source: this.activeSource
+      id: station.id || index + 1,
+      name: station['Station Name'] || station.field_5072130 || `Station ${index + 1}`,
+      lat,
+      lng,
+      prices: {
+        // TODO: Get real prices from linked Fuel Prices table
+        unleaded: 180 + Math.random() * 20,
+        premium: 190 + Math.random() * 20,
+        premium98: 200 + Math.random() * 25,
+        diesel: 175 + Math.random() * 20,
+        gas: 85 + Math.random() * 15
+      },
+      address: station.Address || station.field_5072131 || `${station.City || station.field_5072132 || 'Melbourne'}, VIC`,
+      city: station.City || station.field_5072132 || 'Melbourne',
+      category: station.Category || station.field_5072138,
+      fuelPrices: station['Fuel Prices'] || station.field_5072139 || [],
+      source: this.activeSource,
+      lastUpdated: new Date().toISOString()
     };
   }
 
@@ -211,17 +222,6 @@ class DataSourceManager {
     } catch (error) {
       console.error(`❌ Error fetching stations from ${this.activeSource}:`, error);
       
-      // Create user-friendly error message
-      const userMessage = getUserFriendlyError(error, 'loading station data');
-      console.log(`💬 User-friendly message: ${userMessage}`);
-      
-      // Store the user-friendly error message
-      this.lastError = {
-        technical: error.message,
-        userFriendly: userMessage,
-        timestamp: new Date().toISOString()
-      };
-      
       // Return fallback data if available
       if (this.dataCache.has(cacheKey)) {
         console.log('🔄 Returning cached data due to error');
@@ -280,21 +280,6 @@ class DataSourceManager {
   }
 
   /**
-   * Get the last error with user-friendly message
-   * @returns {Object|null} Last error information or null
-   */
-  getLastError() {
-    return this.lastError || null;
-  }
-
-  /**
-   * Clear the last error
-   */
-  clearError() {
-    this.lastError = null;
-  }
-
-  /**
    * Get data source status information
    * @returns {Object} Status information
    */
@@ -305,8 +290,7 @@ class DataSourceManager {
       lastFetchTime: this.lastFetchTime,
       cacheValid: this.isCacheValid(),
       cacheSize: this.dataCache.size,
-      availableSources: ['baserow', 'airtable', 'mock'],
-      lastError: this.lastError
+      availableSources: ['baserow', 'airtable', 'mock']
     };
   }
 

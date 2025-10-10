@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 import Navbar from './components/Navbar';
+import NetworkStatus from './components/NetworkStatus';
 import HomePage from './components/HomePage';
 
 // Lazy load non-critical pages to reduce initial bundle size
@@ -40,6 +41,7 @@ function App() {
         }}
       >
         <div className="App">
+          <NetworkStatus />
           <Navbar />
           <Suspense fallback={<PageLoader />}>
             <Routes>

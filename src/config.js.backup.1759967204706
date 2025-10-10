@@ -6,15 +6,14 @@ const config = {
     apiUrl: process.env.REACT_APP_BASEROW_API_URL || 'https://api.baserow.io/api',
     databaseId: 265358,
     // MCP SSE URL for real-time updates
-    mcpSseUrl: 'https://api.baserow.io/mcp/Anoz1pnwOGAZb7wHqKGwJIxPmu6jbbNN/sse'
+    mcpSseUrl: 'https://api.baserow.io/mcp/Anoz1pnwOGAZb7wHqKGwJIxPmu6jbbNN/sse',
+    // CORS proxy for development
+    corsProxy: process.env.REACT_APP_CORS_PROXY || 'https://cors-anywhere.herokuapp.com/'
   },
   
-  // Backend API Configuration - ALWAYS use backend as proxy to avoid CORS issues
+  // Backend API Configuration
   api: {
-    // Default to localhost in development, require explicit URL in production
-    baseUrl: process.env.REACT_APP_API_URL || 
-             (window.location.hostname === 'localhost' ? 'http://localhost:3001' : 
-              '/api') // Use relative path in production (assumes backend is on same domain)
+    baseUrl: process.env.REACT_APP_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:3001' : null)
   },
 
   // Baserow Table Configuration
@@ -42,82 +41,10 @@ const config = {
 
 // Utility functions for Baserow API calls
 export const baserowAPI = {
-  /**
-   * Fetch with exponential backoff retry logic
-   * @param {string} url - URL to fetch
-   * @param {object} options - Fetch options
-   * @param {number} maxRetries - Maximum number of retries
-   * @returns {Promise<Response>} Fetch response
-   */
-  async fetchWithRetry(url, options = {}, maxRetries = 3) {
-    let lastError;
-    
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-      try {
-        // Add timeout to each attempt
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-        
-        const response = await fetch(url, {
-          ...options,
-          signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        
-        // Handle rate limiting (429)
-        if (response.status === 429) {
-          const retryAfter = response.headers.get('Retry-After');
-          const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.pow(2, attempt) * 1000;
-          console.warn(`⚠️ Rate limited (429). Waiting ${waitTime/1000}s before retry...`);
-          await new Promise(resolve => setTimeout(resolve, waitTime));
-          continue;
-        }
-        
-        // Don't retry client errors (except 429) 
-        if (response.status >= 400 && response.status < 500 && response.status !== 429) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        
-        // Success or server error (which we should retry)
-        if (response.ok) {
-          console.log(`✅ Request successful after ${attempt + 1} attempt(s)`);
-          return response;
-        }
-        
-        // Server error - will retry
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        
-      } catch (error) {
-        lastError = error;
-        
-        // Don't retry on AbortError timeout after max retries
-        if (error.name === 'AbortError') {
-          console.warn(`⚠️ Request timeout on attempt ${attempt + 1}/${maxRetries}`);
-        } else {
-          console.warn(`⚠️ Request failed on attempt ${attempt + 1}/${maxRetries}: ${error.message}`);
-        }
-        
-        // If this was the last attempt, throw the error
-        if (attempt === maxRetries - 1) {
-          console.error(`❌ Request failed after ${maxRetries} attempts`);
-          throw lastError;
-        }
-        
-        // Exponential backoff: 1s, 2s, 4s, 8s, etc.
-        const backoffTime = Math.pow(2, attempt) * 1000;
-        console.log(`⏳ Waiting ${backoffTime/1000}s before retry...`);
-        await new Promise(resolve => setTimeout(resolve, backoffTime));
-      }
-    }
-    
-    throw lastError;
-  },
-
   // Fetch all stations using the new API endpoints
   async fetchAllStations() {
     // In production (no backend), use direct Baserow API
-    if (!config.api.baseUrl || config.api.baseUrl === '/api') {
+    if (!config.api.baseUrl) {
       console.log('🔄 Production mode: Using direct Baserow API...');
       try {
         return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
@@ -130,13 +57,17 @@ export const baserowAPI = {
     try {
       console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
       
-      // Use retry logic for backend API calls
-      const response = await this.fetchWithRetry(`${config.api.baseUrl}/api/stations/all`, {
+      const response = await fetch(`${config.api.baseUrl}/api/stations/all`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        }
-      }, 3);
+        },
+        signal: AbortSignal.timeout(15000) // 15 second timeout
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       
       const data = await response.json();
       
@@ -150,13 +81,12 @@ export const baserowAPI = {
       console.error('❌ Error fetching all stations:', error.message);
       
       // If backend is not available, try direct API call as fallback
-      if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch') || error.name === 'AbortError') {
-        console.log('🔄 Backend unavailable, trying direct Baserow API as fallback...');
+      if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+        console.log('🔄 Backend unavailable, trying direct Baserow API...');
         try {
           return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
         } catch (directError) {
           console.error('❌ Direct API also failed:', directError.message);
-          throw directError;
         }
       }
       
@@ -290,13 +220,10 @@ export const baserowAPI = {
 
   /**
    * Fetch all stations from Baserow, handling cursor-based pagination.
-   * Note: This method should only be used as a fallback. Prefer using the backend API.
    * @param {number|string} tableId
    * @returns {Promise<Array>} All station rows
    */
   async fetchAllStationsDirect(tableId) {
-    console.warn('⚠️ Using direct Baserow API access. Consider using backend proxy instead.');
-    
     let rows = [];
     let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
     
@@ -308,17 +235,69 @@ export const baserowAPI = {
       while (nextUrl) {
         console.log(`📡 Making request to: ${nextUrl}`);
         
-        // Use exponential backoff retry logic
-        const response = await this.fetchWithRetry(nextUrl, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Token ${config.baserow.token}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          mode: 'cors',
-          credentials: 'omit'
-        }, 3);
+        let retryCount = 0;
+        const maxRetries = 3;
+        let response;
+        
+        while (retryCount < maxRetries) {
+          try {
+            // Try direct API first
+            response = await fetch(nextUrl, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Token ${config.baserow.token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              mode: 'cors',
+              credentials: 'omit',
+              signal: AbortSignal.timeout(10000)
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            break; // Success, exit retry loop
+          } catch (error) {
+            console.warn(`⚠️ Direct API attempt ${retryCount + 1} failed:`, error.message);
+            
+            // If CORS error, try with a different approach
+            if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+              console.log('🔄 Trying CORS proxy...');
+              try {
+                const proxyUrl = `${config.baserow.corsProxy}${nextUrl}`;
+                response = await fetch(proxyUrl, {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': `Token ${config.baserow.token}`,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  mode: 'cors',
+                  credentials: 'omit',
+                  signal: AbortSignal.timeout(15000)
+                });
+                
+                if (!response.ok) {
+                  throw new Error(`Proxy HTTP ${response.status}: ${response.statusText}`);
+                }
+                break;
+              } catch (corsError) {
+                console.warn('⚠️ CORS proxy also failed:', corsError.message);
+                throw error; // Re-throw original error
+              }
+            }
+            
+            retryCount++;
+            if (retryCount >= maxRetries) {
+              console.error(`❌ Failed after ${maxRetries} attempts:`, error.message);
+              throw error;
+            }
+            console.log(`⚠️ Attempt ${retryCount} failed, retrying...`);
+            // eslint-disable-next-line no-loop-func
+            await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+          }
+        }
         
         const data = await response.json();
         
@@ -328,8 +307,6 @@ export const baserowAPI = {
         
         rows.push(...data.results);
         nextUrl = data.next; // Will be null when done
-        
-        console.log(`📊 Progress: ${rows.length} stations fetched so far...`);
       }
       
       console.log(`✅ Successfully fetched ${rows.length} stations from Baserow`);
