@@ -41,6 +41,33 @@ const DirectoryPage = () => {
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
 
+  // Utility functions for pricing and branding
+  const getBrandColor = (brand) => {
+    const colors = {
+      'Shell': '#FFD700',
+      'BP': '#00A651', 
+      'Caltex': '#E31837',
+      'Ampol': '#E31837',
+      '7-Eleven': '#F47920',
+      'Seven Eleven': '#F47920',
+      'United': '#1E3A8A',
+      'Mobil': '#E31837',
+      'Esso': '#E31837',
+      'Liberty': '#003DA5',
+      'Puma': '#FFD700',
+      'Metro': '#FF6B35',
+      'Independent': '#10B981',
+      'Unknown': '#6B7280',
+      'Other': '#8B5CF6'
+    };
+    return colors[brand] || colors['Unknown'];
+  };
+
+  const getLowestPrice = (prices) => {
+    const priceValues = Object.values(prices).filter(price => typeof price === 'number' && price > 0);
+    return Math.min(...priceValues);
+  };
+
   // Note: Now using the new Baserow table structure with table ID 623329
 
   const fetchStationsFromBaserow = async () => {
