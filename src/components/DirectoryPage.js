@@ -188,22 +188,6 @@ const DirectoryPage = () => {
     setFilteredStations(filtered);
   }, [petrolStations, searchTerm, selectedSuburb, sortBy, filterBy]);
 
-  const getBrandColor = (brand) => {
-    const colors = {
-      'Shell': '#FFD100',
-      'BP': '#00A651',
-      'Caltex': '#E31837',
-      '7-Eleven': '#FF6600',
-      'United': '#0066CC',
-      'Ampol': '#E31837'
-    };
-    return colors[brand] || '#6B7280';
-  };
-
-  const getLowestPrice = (prices) => {
-    return Math.min(prices.unleaded, prices.premium, prices.premium98, prices.diesel, prices.gas);
-  };
-
   if (loading) {
     return (
       <div className="directory-page">
