@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Map, Marker, Popup, Source, Layer } from 'react-map-gl/mapbox';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Map, Popup, Source, Layer } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { MotionDiv } from './MotionComponents';
+import spatialDataService from '../services/SpatialDataService';
 import dataSourceManager from '../services/DataSourceManager';
-import { useRequestTracker } from '../hooks/useCancelOnUnmount';
 import './MapPage.css';
 
 // Mapbox access token - you'll need to set this
@@ -15,11 +15,16 @@ const hasValidMapboxToken = MAPBOX_TOKEN &&
   MAPBOX_TOKEN.length > 50;
 
 const MapboxMap = () => {
-  const [petrolStations, setPetrolStations] = useState([]);
+  // Spatial data for map rendering (minimal: coordinates + basic identifiers only)
+  const [spatialData, setSpatialData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedFuelType, setSelectedFuelType] = useState('unleaded');
   const [error, setError] = useState(null);
+  
+  // Selected station detailed data (fetched from Baserow when needed)
   const [selectedStation, setSelectedStation] = useState(null);
+  const [selectedStationDetails, setSelectedStationDetails] = useState(null);
+  const [loadingStationDetails, setLoadingStationDetails] = useState(false);
+  
   const [viewState, setViewState] = useState({
     longitude: 144.9631,
     latitude: -37.8136,
@@ -27,9 +32,6 @@ const MapboxMap = () => {
   });
 
   const mapRef = useRef();
-  
-  // Track and cancel requests on route change
-  const { addRequest, removeRequest, abortAll } = useRequestTracker();
 
   // Check Mapbox token availability
   useEffect(() => {
@@ -40,86 +42,50 @@ const MapboxMap = () => {
     }
   }, []);
 
-  // Fetch stations using centralized data source manager with performance optimizations
+  // Fetch minimal spatial data for map rendering (enforces separation of concerns)
   useEffect(() => {
     if (!hasValidMapboxToken) return; // Don't fetch if no valid token
     
     let isMounted = true; // Prevent state updates after unmount
-    let priceUpdateInterval = null; // Track interval for cleanup
-    let controller = null;
-    let timeoutId = null;
     
-    const fetchStations = async () => {
+    const fetchSpatialData = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        console.log('🚀 Fetching stations using centralized data source manager...');
+        console.log('🗺️ Fetching minimal spatial data for map rendering...');
+        console.log('📋 Separation of concerns: Map uses only coordinates + basic identifiers');
         
-        // Use AbortController for request cancellation
-        controller = new AbortController();
-        timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
-        
-        const stations = await dataSourceManager.fetchStations();
-        clearTimeout(timeoutId);
-        timeoutId = null;
+        const spatialPoints = await spatialDataService.fetchSpatialData();
         
         if (!isMounted) return; // Component unmounted, don't update state
         
-        console.log(`📊 Stations loaded: ${stations.length} from ${dataSourceManager.getActiveSource()}`);
+        console.log(`✅ Spatial data loaded: ${spatialPoints.length} points for map rendering`);
+        console.log('🎯 Data type: Minimal (coordinates + name + id only)');
         
-        // Validate and filter stations before setting state
-        const validStations = stations.filter(station => 
-          station && 
-          typeof station.lat === 'number' && 
-          typeof station.lng === 'number' &&
-          !isNaN(station.lat) && 
-          !isNaN(station.lng) &&
-          station.lat >= -90 && station.lat <= 90 &&
-          station.lng >= -180 && station.lng <= 180
-        );
+        setSpatialData(spatialPoints);
         
-        setPetrolStations(validStations);
-        console.log(`✅ Successfully loaded ${validStations.length} valid stations for map rendering`);
-        
-        // Set up price update simulation only after successful data load
-        // Use a more efficient update mechanism
-        priceUpdateInterval = setInterval(() => {
-          if (!isMounted) return;
-          
-          setPetrolStations(prev => 
-            prev.map(station => ({
-              ...station,
-              prices: {
-                unleaded: Math.max(150, Math.min(220, station.prices.unleaded + (Math.random() - 0.5) * 4)),
-                premium: Math.max(160, Math.min(230, station.prices.premium + (Math.random() - 0.5) * 4)),
-                premium98: Math.max(170, Math.min(240, station.prices.premium98 + (Math.random() - 0.5) * 4)),
-                diesel: Math.max(145, Math.min(215, station.prices.diesel + (Math.random() - 0.5) * 4)),
-                gas: Math.max(70, Math.min(110, station.prices.gas + (Math.random() - 0.5) * 3)),
-              }
-            }))
-          );
-        }, 30000);
       } catch (err) {
         if (!isMounted) return; // Component unmounted, don't update state
         
-        console.error('❌ Error fetching stations:', err);
+        console.error('❌ Error fetching spatial data:', err);
         
         // Provide user-friendly error message
-        let errorMessage = 'Failed to load stations';
+        let errorMessage = 'Failed to load map data';
         if (err.name === 'AbortError') {
           errorMessage = 'Request timed out. Please try again.';
         } else if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
           errorMessage = 'Unable to connect to data source. Using sample data instead.';
         } else {
-          errorMessage = `Failed to load stations: ${err.message}`;
+          errorMessage = `Failed to load map data: ${err.message}`;
         }
         
         setError(errorMessage);
         
-        // Data source manager will handle fallback data
-        const fallbackStations = dataSourceManager.getMockStations();
-        setPetrolStations(fallbackStations);
+        // Use fallback spatial data
+        const fallbackSpatial = spatialDataService.getFallbackSpatialData();
+        setSpatialData(fallbackSpatial);
+        
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -127,104 +93,100 @@ const MapboxMap = () => {
       }
     };
 
-    fetchStations();
+    fetchSpatialData();
     
     // Cleanup function - always runs on unmount
     return () => {
-      console.log('🧹 Cleaning up MapboxMap resources...');
+      console.log('🧹 Cleaning up MapboxMap spatial data resources...');
       isMounted = false;
-      
-      // Clear interval if it exists
-      if (priceUpdateInterval) {
-        clearInterval(priceUpdateInterval);
-        priceUpdateInterval = null;
-      }
-      
-      // Clear timeout if it exists
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-      
-      // Abort any pending requests
-      if (controller) {
-        controller.abort();
-        controller = null;
-      }
     };
   }, []);
 
-  // Create GeoJSON for clustering with validation and performance optimization
+  // Fetch detailed station information from Baserow when user clicks on a station
+  // This maintains separation of concerns: spatial data for map, detailed data on-demand
+  const fetchStationDetails = async (stationId) => {
+    if (!stationId) return;
+    
+    try {
+      setLoadingStationDetails(true);
+      console.log(`🔍 Fetching detailed information for station ${stationId} from Baserow...`);
+      
+      // Use the full DataSourceManager to get complete station data from Baserow
+      const allStations = await dataSourceManager.fetchStations();
+      const stationDetails = allStations.find(station => station.id === stationId);
+      
+      if (stationDetails) {
+        console.log(`✅ Retrieved detailed data for station: ${stationDetails.name}`);
+        setSelectedStationDetails(stationDetails);
+      } else {
+        console.warn(`⚠️ Station ${stationId} not found in directory data`);
+        setSelectedStationDetails(null);
+      }
+      
+    } catch (error) {
+      console.error(`❌ Error fetching station details for ${stationId}:`, error);
+      setSelectedStationDetails(null);
+    } finally {
+      setLoadingStationDetails(false);
+    }
+  };
+
+  // Create GeoJSON for clustering using minimal spatial data (separation of concerns)
   // Memoized to prevent unnecessary re-renders
   const clusterData = useMemo(() => {
     // Early return for empty data
-    if (!Array.isArray(petrolStations) || petrolStations.length === 0) {
+    if (!Array.isArray(spatialData) || spatialData.length === 0) {
       return {
         type: 'FeatureCollection',
         features: []
       };
     }
     
-    // Process all stations efficiently
-    const features = petrolStations
-      .filter(station => {
-        // Validate station data before creating feature
-        return station && 
-               typeof station.lat === 'number' && 
-               typeof station.lng === 'number' &&
-               !isNaN(station.lat) && 
-               !isNaN(station.lng) &&
-               station.lat >= -90 && station.lat <= 90 &&
-               station.lng >= -180 && station.lng <= 180;
+    // Process spatial points efficiently - only coordinates and basic identifiers
+    const features = spatialData
+      .filter(point => {
+        // Validate spatial point data before creating feature
+        return point && 
+               typeof point.lat === 'number' && 
+               typeof point.lng === 'number' &&
+               !isNaN(point.lat) && 
+               !isNaN(point.lng) &&
+               point.lat >= -90 && point.lat <= 90 &&
+               point.lng >= -180 && point.lng <= 180 &&
+               point.id && point.name;
       })
-      .map((station, index) => ({
+      .map((point) => ({
         type: 'Feature',
         properties: {
-          id: station.id || `station_${index}`,
-          name: station.name || `Station ${index + 1}`,
-          price: station.prices?.[selectedFuelType] || 0,
-          address: station.address || 'Unknown address',
-          ...station.prices,
-          // Store the full station data for popup (as JSON string to avoid serialization issues)
-          stationData: JSON.stringify({
-            id: station.id,
-            name: station.name,
-            address: station.address,
-            lat: station.lat,
-            lng: station.lng,
-            prices: station.prices
-          })
+          id: point.id,
+          name: point.name,
+          // No pricing data - enforces separation of concerns
+          // Detailed data will be fetched on-demand when user clicks
         },
         geometry: {
           type: 'Point',
-          coordinates: [station.lng, station.lat]
+          coordinates: [point.lng, point.lat]
         }
       }));
     
-    console.log(`🗺️ Created GeoJSON with ${features.length} valid stations out of ${petrolStations.length} total`);
+    console.log(`🗺️ Created GeoJSON with ${features.length} spatial points out of ${spatialData.length} total`);
+    console.log('🎯 Data separation: Map uses minimal spatial data, directory data fetched on-demand');
     
     return {
       type: 'FeatureCollection',
       features
     };
-  }, [petrolStations, selectedFuelType]);
+  }, [spatialData]);
 
-  // Get marker color based on price
-  const getMarkerColor = (price) => {
-    if (price < 180) return '#10b981'; // Green - cheap
-    if (price < 190) return '#f59e0b'; // Yellow - average
-    return '#ef4444'; // Red - expensive
+  // Map styling constants (no price-based coloring due to separation of concerns)
+  const STATION_COLOR = '#2563eb'; // Blue - consistent for all stations
+  const CLUSTER_COLORS = {
+    small: '#51bbd6',   // Light blue for small clusters
+    medium: '#f1f075',  // Yellow for medium clusters  
+    large: '#f28cb1'    // Pink for large clusters
   };
 
-  const fuelTypes = [
-    { key: 'unleaded', label: 'Unleaded 91', icon: '⛽' },
-    { key: 'premium', label: 'Premium 95', icon: '🔋' },
-    { key: 'premium98', label: 'Premium 98', icon: '⚡' },
-    { key: 'diesel', label: 'Diesel', icon: '🚛' },
-    { key: 'gas', label: 'Gas', icon: '🔥' }
-  ];
-
-  // Cluster layer configuration
+  // Cluster layer configuration (optimized for low zoom levels)
   const clusterLayer = {
     id: 'clusters',
     type: 'circle',
@@ -234,11 +196,11 @@ const MapboxMap = () => {
       'circle-color': [
         'step',
         ['get', 'point_count'],
-        '#51bbd6',
+        CLUSTER_COLORS.small,
         10,
-        '#f1f075',
+        CLUSTER_COLORS.medium,
         20,
-        '#f28cb1'
+        CLUSTER_COLORS.large
       ],
       'circle-radius': [
         'step',
@@ -248,7 +210,8 @@ const MapboxMap = () => {
         30,
         20,
         40
-      ]
+      ],
+      'circle-opacity': 0.8
     }
   };
 
@@ -261,6 +224,9 @@ const MapboxMap = () => {
       'text-field': '{point_count_abbreviated}',
       'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
       'text-size': 12
+    },
+    paint: {
+      'text-color': '#ffffff'
     }
   };
 
@@ -270,15 +236,11 @@ const MapboxMap = () => {
     source: 'stations',
     filter: ['!', ['has', 'point_count']],
     paint: {
-      'circle-color': [
-        'case',
-        ['<', ['get', 'price'], 180], '#10b981',
-        ['<', ['get', 'price'], 190], '#f59e0b',
-        '#ef4444'
-      ],
+      'circle-color': STATION_COLOR, // Consistent color - no price data available at map level
       'circle-radius': 10,
       'circle-stroke-width': 2,
-      'circle-stroke-color': '#fff'
+      'circle-stroke-color': '#ffffff',
+      'circle-opacity': 0.9
     }
   };
 
@@ -350,8 +312,8 @@ const MapboxMap = () => {
       <div className="map-page">
         <div className="loading-container">
           <div className="loading-spinner"></div>
-          <h2>Loading Enhanced Fuel Map...</h2>
-          <p>Fetching all {petrolStations.length > 0 ? petrolStations.length + ' ' : ''}stations from Baserow database...</p>
+          <h2>Loading Spatial Map Data...</h2>
+          <p>Fetching {spatialData.length > 0 ? spatialData.length + ' ' : ''}station locations from Baserow...</p>
           <div style={{ 
             marginTop: '1rem', 
             padding: '1rem', 
@@ -360,11 +322,12 @@ const MapboxMap = () => {
             fontSize: '0.9rem',
             color: '#1e40af'
           }}>
-            <strong>🔍 Debug Info:</strong>
+            <strong>🔍 Separation of Concerns:</strong>
             <ul style={{ margin: '0.5rem 0', paddingLeft: '1.5rem' }}>
               <li>Mapbox Token: {hasValidMapboxToken ? '✅ Valid' : '❌ Invalid/Missing'}</li>
-              <li>Data Source: Baserow API</li>
-              <li>Validation: Checking coordinates and data structure</li>
+              <li>Spatial Data: Minimal coordinates + identifiers only</li>
+              <li>Directory Data: Complete station info in Baserow</li>
+              <li>Performance: Optimized clustering for low zoom levels</li>
             </ul>
           </div>
         </div>
@@ -372,8 +335,8 @@ const MapboxMap = () => {
     );
   }
 
-  // Validate data before rendering map
-  if (!Array.isArray(petrolStations) || petrolStations.length === 0) {
+  // Validate spatial data before rendering map
+  if (!Array.isArray(spatialData) || spatialData.length === 0) {
     return (
       <div className="map-page">
         <div className="loading-container">
@@ -385,15 +348,18 @@ const MapboxMap = () => {
             textAlign: 'center',
             color: '#dc2626'
           }}>
-            <h2>❌ No Station Data Available</h2>
-            <p>Unable to load petrol station data for map rendering.</p>
+            <h2>❌ No Spatial Data Available</h2>
+            <p>Unable to load station locations for map rendering.</p>
             {error && <p><strong>Error:</strong> {error}</p>}
+            <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#6b7280' }}>
+              <p>Note: This map shows only location data. Complete station directory information is managed separately in Baserow.</p>
+            </div>
             <button 
               className="btn btn-primary"
               onClick={() => window.location.reload()}
               style={{ marginTop: '1rem' }}
             >
-              🔄 Retry Loading
+              🔄 Retry Loading Spatial Data
             </button>
           </div>
         </div>
@@ -416,8 +382,8 @@ const MapboxMap = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <h1>Live Fuel Price Map - Mapbox Edition</h1>
-            <p>All {petrolStations.length} petrol stations across Melbourne with smart clustering</p>
+            <h1>Station Location Map - Optimized Clustering</h1>
+            <p>Showing {spatialData.length} petrol station locations with intelligent clustering</p>
             {error && (
               <div style={{ 
                 backgroundColor: '#fff3cd', 
@@ -427,7 +393,7 @@ const MapboxMap = () => {
                 marginTop: '10px',
                 color: '#856404'
               }}>
-                <strong>⚠️ Warning:</strong> {error}. Showing fallback data.
+                <strong>⚠️ Warning:</strong> {error}. Showing fallback spatial data.
               </div>
             )}
             <div style={{ 
@@ -438,31 +404,24 @@ const MapboxMap = () => {
               fontSize: '0.9rem',
               color: '#1e40af'
             }}>
-              <strong>📊 Data Status:</strong> {petrolStations.length} valid stations loaded • 
+              <strong>📊 Separation of Concerns:</strong> Map shows {spatialData.length} spatial points • 
               <strong> Mapbox:</strong> {hasValidMapboxToken ? '✅ Ready' : '❌ Not configured'} • 
-              <strong> Source:</strong> {dataSourceManager.getActiveSource().toUpperCase()} API
-              {dataSourceManager.getStatus().cacheValid && (
-                <span> • <strong>Cache:</strong> ✅ Valid</span>
+              <strong> Directory Data:</strong> Managed in Baserow • 
+              <strong> Performance:</strong> Optimized clustering
+              {spatialDataService.getStatus().cacheValid && (
+                <span> • <strong>Spatial Cache:</strong> ✅ Valid</span>
               )}
             </div>
-          </MotionDiv>
-
-          <MotionDiv 
-            className="fuel-type-selector"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            {fuelTypes.map(fuel => (
-              <button
-                key={fuel.key}
-                className={`fuel-btn ${selectedFuelType === fuel.key ? 'active' : ''}`}
-                onClick={() => setSelectedFuelType(fuel.key)}
-              >
-                <span className="fuel-icon">{fuel.icon}</span>
-                <span className="fuel-label">{fuel.label}</span>
-              </button>
-            ))}
+            <div style={{ 
+              marginTop: '0.5rem', 
+              padding: '0.5rem', 
+              backgroundColor: '#fef3c7', 
+              borderRadius: '4px',
+              fontSize: '0.8rem',
+              color: '#92400e'
+            }}>
+              <strong>💡 Note:</strong> Click any station marker to view detailed information including prices, amenities, and contact details from Baserow.
+            </div>
           </MotionDiv>
         </div>
       </div>
@@ -488,36 +447,33 @@ const MapboxMap = () => {
                 const feature = features[0];
                 
                 if (feature.layer.id === 'unclustered-point') {
-                  // Clicked on a single station
-                  const station = feature.properties.stationData ? 
-                    JSON.parse(feature.properties.stationData) : 
-                    {
-                      id: feature.properties.id,
-                      name: feature.properties.name,
-                      lat: feature.geometry.coordinates[1],
-                      lng: feature.geometry.coordinates[0],
-                      address: feature.properties.address,
-                      prices: {
-                        unleaded: feature.properties.unleaded,
-                        premium: feature.properties.premium,
-                        premium98: feature.properties.premium98,
-                        diesel: feature.properties.diesel,
-                        gas: feature.properties.gas
-                      }
-                    };
-                  setSelectedStation(station);
+                  // Clicked on a single station - set spatial data and fetch detailed data
+                  const spatialPoint = {
+                    id: feature.properties.id,
+                    name: feature.properties.name,
+                    lat: feature.geometry.coordinates[1],
+                    lng: feature.geometry.coordinates[0]
+                  };
+                  
+                  setSelectedStation(spatialPoint);
+                  setSelectedStationDetails(null); // Clear previous details
+                  
+                  // Fetch detailed station information from Baserow (separation of concerns)
+                  fetchStationDetails(feature.properties.id);
+                  
                 } else if (feature.layer.id === 'clusters') {
-                  // Clicked on a cluster - zoom in
-                  const clusterId = feature.properties.cluster_id;
+                  // Clicked on a cluster - zoom in for better performance at low zoom levels
                   const zoom = mapRef.current.getZoom();
                   mapRef.current.easeTo({
                     center: feature.geometry.coordinates,
-                    zoom: zoom + 2
+                    zoom: Math.min(zoom + 2, 16), // Limit max zoom
+                    duration: 800
                   });
                 }
               } else {
-                // Clicked on empty area
+                // Clicked on empty area - clear selection
                 setSelectedStation(null);
+                setSelectedStationDetails(null);
               }
             }}
             // Performance optimizations
@@ -561,35 +517,78 @@ const MapboxMap = () => {
             {/* The clustering layers handle all station markers efficiently */}
             {/* Individual markers are already rendered through the unclusteredPointLayer */}
 
-            {/* Popup for selected station */}
+            {/* Popup for selected station with separation of concerns */}
             {selectedStation && (
               <Popup
                 longitude={selectedStation.lng}
                 latitude={selectedStation.lat}
                 anchor="top"
-                onClose={() => setSelectedStation(null)}
+                onClose={() => {
+                  setSelectedStation(null);
+                  setSelectedStationDetails(null);
+                }}
                 closeButton={true}
               >
                 <div className="popup-content">
                   <h3>{selectedStation.name}</h3>
-                  <p className="popup-address">{selectedStation.address}</p>
+                  <p className="popup-address">
+                    Coordinates: {selectedStation.lat.toFixed(4)}, {selectedStation.lng.toFixed(4)}
+                  </p>
                   
-                  <div className="popup-prices">
-                    {fuelTypes.map(fuel => (
-                      <div 
-                        key={fuel.key}
-                        className={`price-row ${selectedFuelType === fuel.key ? 'highlighted' : ''}`}
-                      >
-                        <span className="fuel-type">
-                          <span className="fuel-icon">{fuel.icon}</span>
-                          {fuel.label}
-                        </span>
-                        <span className="price">
-                          {selectedStation.prices[fuel.key].toFixed(1)}¢
-                        </span>
+                  {loadingStationDetails ? (
+                    <div style={{ 
+                      textAlign: 'center', 
+                      padding: '1rem',
+                      backgroundColor: '#f8f9fa',
+                      borderRadius: '4px',
+                      margin: '0.5rem 0'
+                    }}>
+                      <div className="loading-spinner" style={{ width: '20px', height: '20px', marginBottom: '0.5rem' }}></div>
+                      <p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280' }}>
+                        Loading detailed station information from Baserow...
+                      </p>
+                    </div>
+                  ) : selectedStationDetails ? (
+                    <div>
+                      <p className="popup-address">{selectedStationDetails.address || 'Address not available'}</p>
+                      
+                      {selectedStationDetails.prices && (
+                        <div className="popup-prices">
+                          <h4 style={{ margin: '0.5rem 0', fontSize: '0.9rem', color: '#374151' }}>Current Fuel Prices:</h4>
+                          {Object.entries(selectedStationDetails.prices).map(([fuelType, price]) => (
+                            <div key={fuelType} className="price-row">
+                              <span className="fuel-type">
+                                {fuelType.charAt(0).toUpperCase() + fuelType.slice(1)}
+                              </span>
+                              <span className="price">
+                                {typeof price === 'number' ? price.toFixed(1) + '¢' : 'N/A'}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <div style={{ 
+                        fontSize: '0.8rem', 
+                        color: '#6b7280', 
+                        marginTop: '0.5rem',
+                        fontStyle: 'italic'
+                      }}>
+                        Complete directory data from Baserow
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ) : (
+                    <div style={{ 
+                      padding: '0.5rem',
+                      backgroundColor: '#fef3c7',
+                      borderRadius: '4px',
+                      margin: '0.5rem 0'
+                    }}>
+                      <p style={{ margin: 0, fontSize: '0.9rem', color: '#92400e' }}>
+                        Detailed information not available. Click refresh or check Baserow data.
+                      </p>
+                    </div>
+                  )}
                   
                   <div className="popup-actions">
                     <button 
@@ -602,6 +601,15 @@ const MapboxMap = () => {
                     >
                       Get Directions
                     </button>
+                    {!loadingStationDetails && !selectedStationDetails && (
+                      <button 
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => fetchStationDetails(selectedStation.id)}
+                        style={{ marginLeft: '0.5rem' }}
+                      >
+                        Retry Loading Details
+                      </button>
+                    )}
                   </div>
                 </div>
               </Popup>
@@ -613,31 +621,63 @@ const MapboxMap = () => {
       <div className="map-legend">
         <div className="container">
           <div className="legend-content">
-            <h3>Enhanced Map Features</h3>
+            <h3>Spatial Map Features - Separation of Concerns</h3>
             <div className="legend-items">
               <div className="legend-item">
-                <span className="legend-color green"></span>
-                <span>Under 180¢ - Great Price</span>
-              </div>
-              <div className="legend-item">
-                <span className="legend-color yellow"></span>
-                <span>180-190¢ - Average Price</span>
-              </div>
-              <div className="legend-item">
-                <span className="legend-color red"></span>
-                <span>Over 190¢ - High Price</span>
+                <span style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  backgroundColor: STATION_COLOR,
+                  display: 'inline-block',
+                  marginRight: '8px'
+                }}></span>
+                <span>Individual petrol stations</span>
               </div>
               <div className="legend-item">
                 <span style={{
                   width: '16px',
                   height: '16px',
                   borderRadius: '50%',
-                  backgroundColor: '#51bbd6',
+                  backgroundColor: CLUSTER_COLORS.small,
                   display: 'inline-block',
                   marginRight: '8px'
                 }}></span>
-                <span>Clusters show nearby stations</span>
+                <span>Small clusters (&lt;10 stations)</span>
               </div>
+              <div className="legend-item">
+                <span style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  backgroundColor: CLUSTER_COLORS.medium,
+                  display: 'inline-block',
+                  marginRight: '8px'
+                }}></span>
+                <span>Medium clusters (10-20 stations)</span>
+              </div>
+              <div className="legend-item">
+                <span style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  backgroundColor: CLUSTER_COLORS.large,
+                  display: 'inline-block',
+                  marginRight: '8px'
+                }}></span>
+                <span>Large clusters (20+ stations)</span>
+              </div>
+            </div>
+            <div style={{ 
+              marginTop: '1rem', 
+              padding: '0.75rem', 
+              backgroundColor: '#f0f9ff', 
+              borderRadius: '6px',
+              fontSize: '0.9rem',
+              color: '#1e40af'
+            }}>
+              <strong>💡 Architecture:</strong> This map displays only spatial data (coordinates + identifiers) for optimal performance. 
+              All detailed station information including prices, amenities, and directory data is managed in Baserow and loaded on-demand when you click a station.
             </div>
           </div>
         </div>

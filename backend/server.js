@@ -142,6 +142,57 @@ app.get('/api/baserow/fields/:tableId', async (req, res) => {
 
 // IMPORTANT: More specific routes must come BEFORE generic ones to avoid route conflicts
 
+// Get minimal spatial data for map rendering (coordinates + basic identifiers only)
+app.get('/api/stations/spatial', async (req, res) => {
+  try {
+    console.log('🗺️ Fetching minimal spatial data for map rendering...');
+    const allStations = await baserowClient.getAllPetrolStations();
+    
+    // Extract only the minimal data needed for map rendering
+    const spatialData = allStations
+      .map((station) => {
+        // Extract coordinates with multiple fallback options
+        let lat = station.Latitude || station.field_5072136 || station.lat;
+        let lng = station.Longitude || station.field_5072137 || station.lng;
+        
+        // Convert to numbers
+        lat = parseFloat(lat);
+        lng = parseFloat(lng);
+        
+        // Validate coordinates
+        if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+          return null; // Invalid coordinates, exclude from spatial data
+        }
+        
+        // Return only minimal spatial data
+        return {
+          id: station.id,
+          name: station['Station Name'] || station.field_5072130 || `Station ${station.id}`,
+          lat: lat,
+          lng: lng
+        };
+      })
+      .filter(station => station !== null); // Remove invalid entries
+    
+    console.log(`✅ Extracted ${spatialData.length} valid spatial points from ${allStations.length} total stations`);
+    
+    res.json({
+      success: true,
+      data: spatialData,
+      count: spatialData.length,
+      type: 'spatial',
+      note: 'This endpoint provides minimal data for map rendering only. Use /api/stations for complete directory data.'
+    });
+  } catch (error) {
+    console.error('❌ Error in /api/stations/spatial:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      details: 'Failed to fetch spatial data from Baserow'
+    });
+  }
+});
+
 // Get all petrol stations (complete dataset) - MOVED BEFORE generic route
 app.get('/api/stations/all', async (req, res) => {
   try {
