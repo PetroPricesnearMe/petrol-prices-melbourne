@@ -1,22 +1,20 @@
+# Robots.txt for Melbourne Petrol Stations
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
-
-# Crawl-delay for respectful crawling
-Crawl-delay: 1
-
-# Allow all important pages
+# Optimize crawling for key pages
+Allow: /
 Allow: /map
 Allow: /directory
-Allow: /blog
+Allow: /fuel-price-trends
+Allow: /how-pricing-works
 
-# Disallow admin or private areas (if any)
-Disallow: /admin/
-Disallow: /private/
+# Block dynamic/API endpoints
 Disallow: /api/
+Disallow: /*?*
 
-# Allow search engines to index all content
-Allow: /images/
-Allow: /static/ 
+# Allow sitemap
+Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
+
+# Crawl delay for politeness
+Crawl-delay: 1

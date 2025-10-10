@@ -1,3 +1,5 @@
+// ⚠️ DEPRECATED: This file is deprecated. Use the TypeScript version in src/server.ts
+// This file is kept for reference only and will be removed in a future version.
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');

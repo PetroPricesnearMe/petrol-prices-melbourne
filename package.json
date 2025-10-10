@@ -27,7 +27,12 @@
     "dev": "node start-dev.js",
     "backend": "cd backend && npm start",
     "frontend": "npm start",
-    "analyze": "npm run build && npx serve -s build"
+    "analyze": "npm run build && npx serve -s build",
+    "analyze-bundle": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
+    "lighthouse": "npm run build && npx lighthouse http://localhost:3000 --output-path=./lighthouse-report.html",
+    "security-audit": "npm audit --audit-level=moderate",
+    "performance-test": "npm run build && npx lighthouse-ci autorun",
+    "build-and-analyze": "npm run build && npm run analyze-bundle"
   },
   "eslintConfig": {
     "extends": [

@@ -8,7 +8,7 @@ const config = {
   
   // Baserow API Configuration
   baserow: {
-    token: process.env.BASEROW_TOKEN || 'LuwYYOFxLFuBkzSMZJ9XTvE9OgnIsiuXI',
+    token: process.env.BASEROW_TOKEN,
     apiUrl: process.env.BASEROW_API_URL || 'https://api.baserow.io/api',
     databaseId: 265358,
     // MCP SSE URL for real-time updates
