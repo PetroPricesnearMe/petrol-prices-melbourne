@@ -52,10 +52,33 @@ const DirectoryPage = () => {
       const baserowStations = await baserowAPI.fetchAllStations();
       
       // Transform Baserow data to match expected format
-      const transformedStations = baserowStations.map((station, index) => ({
+      const transformedStations = baserowStations.map((station, index) => {
+        // Handle brand field - it might be a file object from Baserow
+        let brandValue = 'Unknown';
+        if (station.brand) {
+          if (typeof station.brand === 'string') {
+            brandValue = station.brand;
+          } else if (Array.isArray(station.brand) && station.brand.length > 0) {
+            // If it's an array of file objects, get the name of the first one
+            brandValue = station.brand[0]?.visible_name || station.brand[0]?.name || 'Unknown';
+          } else if (typeof station.brand === 'object' && station.brand.visible_name) {
+            // If it's a single file object
+            brandValue = station.brand.visible_name || station.brand.name || 'Unknown';
+          }
+        } else if (station.Brand) {
+          if (typeof station.Brand === 'string') {
+            brandValue = station.Brand;
+          } else if (Array.isArray(station.Brand) && station.Brand.length > 0) {
+            brandValue = station.Brand[0]?.visible_name || station.Brand[0]?.name || 'Unknown';
+          } else if (typeof station.Brand === 'object' && station.Brand.visible_name) {
+            brandValue = station.Brand.visible_name || station.Brand.name || 'Unknown';
+          }
+        }
+        
+        return {
         id: station.id || index + 1,
         name: station.field_5072130 || station['Station Name'] || `Station ${index + 1}`,
-        brand: station.brand || station.Brand || 'Unknown',
+        brand: brandValue,
         suburb: station.field_5072132 || station.City || 'Melbourne',
         prices: {
           // Generate realistic prices for demo - in production, get from linked Fuel Prices
@@ -74,7 +97,8 @@ const DirectoryPage = () => {
         postalCode: station.field_5072133 || station['Postal Code'],
         locationDetails: station.field_5072140 || station['Location Details'],
         fuelPrices: station.field_5072139 || station['Fuel Prices'] || []
-      }));
+        };
+      });
 
       setPetrolStations(transformedStations);
       setFilteredStations(transformedStations);

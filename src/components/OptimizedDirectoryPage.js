@@ -208,10 +208,31 @@ const OptimizedDirectoryPage = () => {
       
       const baserowStations = await baserowAPI.fetchAllStations();
       
-      const transformedStations = baserowStations.map((station, index) => ({
+      const transformedStations = baserowStations.map((station, index) => {
+        // Handle brand field - it might be a file object from Baserow
+        let brandValue = 'Unknown';
+        if (station.brand) {
+          if (typeof station.brand === 'string') {
+            brandValue = station.brand;
+          } else if (Array.isArray(station.brand) && station.brand.length > 0) {
+            brandValue = station.brand[0]?.visible_name || station.brand[0]?.name || 'Unknown';
+          } else if (typeof station.brand === 'object' && station.brand.visible_name) {
+            brandValue = station.brand.visible_name || station.brand.name || 'Unknown';
+          }
+        } else if (station.Brand) {
+          if (typeof station.Brand === 'string') {
+            brandValue = station.Brand;
+          } else if (Array.isArray(station.Brand) && station.Brand.length > 0) {
+            brandValue = station.Brand[0]?.visible_name || station.Brand[0]?.name || 'Unknown';
+          } else if (typeof station.Brand === 'object' && station.Brand.visible_name) {
+            brandValue = station.Brand.visible_name || station.Brand.name || 'Unknown';
+          }
+        }
+        
+        return {
         id: station.id || index + 1,
         name: station.field_5072130 || station['Station Name'] || `Station ${index + 1}`,
-        brand: station.brand || station.Brand || 'Unknown',
+        brand: brandValue,
         suburb: station.field_5072132 || station.City || 'Melbourne',
         prices: {
           unleaded: 180 + Math.random() * 20,
@@ -221,7 +242,8 @@ const OptimizedDirectoryPage = () => {
         address: station.field_5072131 || station.Address || `${station.field_5072132 || 'Melbourne'}, VIC`,
         phone: '(03) 0000 0000',
         hours: '24/7',
-      }));
+        };
+      });
 
       setPetrolStations(transformedStations);
       console.log(`✅ Loaded ${transformedStations.length} stations from Baserow`);

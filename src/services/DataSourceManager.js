@@ -6,7 +6,8 @@
  */
 
 import { baserowAPI } from '../config';
-import { validateStations, validateAndTransformStation, getUserFriendlyError } from '../utils/validation';
+import { validateAndTransformStation, getUserFriendlyError } from '../utils/validation';
+// validateStations currently unused - commented out to fix ESLint warning
 
 class DataSourceManager {
   constructor() {

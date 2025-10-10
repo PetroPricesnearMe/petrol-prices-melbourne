@@ -246,11 +246,13 @@ export function validateAndTransformStation(rawStation, index) {
   };
 }
 
-export default {
+const validationUtils = {
   validateStation,
   validateStations,
   validateAPIResponse,
   getUserFriendlyError,
   validateAndTransformStation
 };
+
+export default validationUtils;
 
