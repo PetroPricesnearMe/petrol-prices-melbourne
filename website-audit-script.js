@@ -4,7 +4,21 @@
  * Comprehensive Website Audit Script
  * Crawls websites for SEO, performance, and code quality issues
  * 
- * Usage: node website-audit-script.js
+ * Usage: 
+ * 1. Install dependencies: npm install puppeteer csv-writer
+ * 2. Start your dev server: npm start
+ * 3. Run audit: node website-audit-script.js
+ * 
+ * This will audit:
+ * - Homepage
+ * - Directory pages (all regions)
+ * - About page
+ * - All linked pages
+ * 
+ * Results saved to:
+ * - website-audit-report.csv
+ * - audit-summary.md
+ * - screenshots/ folder
  */
 
 const puppeteer = require('puppeteer');
@@ -453,14 +467,19 @@ async function main() {
     try {
         await auditor.init();
         
-        // Audit both domains
-        await auditor.crawlSite('https://www.petrolpricesnearme.com.au');
-        await auditor.crawlSite('https://www.petrolpricesnearme.com');
+        // Audit local development site first
+        console.log('🔍 Auditing LOCAL DEVELOPMENT SITE...\n');
+        await auditor.crawlSite('http://localhost:3000');
+        
+        // Optionally audit production domains (uncomment when deployed)
+        // await auditor.crawlSite('https://www.petrolpricesnearme.com.au');
+        // await auditor.crawlSite('https://www.petrolpricesnearme.com');
         
         await auditor.generateReport();
         
     } catch (error) {
         console.error('❌ Audit failed:', error);
+        console.error('💡 Make sure your development server is running: npm start');
     } finally {
         await auditor.close();
     }
