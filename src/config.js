@@ -69,7 +69,9 @@ export const baserowAPI = {
         if (response.status === 429) {
           const retryAfter = response.headers.get('Retry-After');
           const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.pow(2, attempt) * 1000;
-          console.warn(`⚠️ Rate limited (429). Waiting ${waitTime/1000}s before retry...`);
+          if (process.env.NODE_ENV === 'development') {
+            console.warn(`⚠️ Rate limited (429). Waiting ${waitTime/1000}s before retry...`);
+          }
           await new Promise(resolve => setTimeout(resolve, waitTime));
           continue;
         }
@@ -81,7 +83,9 @@ export const baserowAPI = {
         
         // Success or server error (which we should retry)
         if (response.ok) {
-          console.log(`✅ Request successful after ${attempt + 1} attempt(s)`);
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`✅ Request successful after ${attempt + 1} attempt(s)`);
+          }
           return response;
         }
         
@@ -92,21 +96,27 @@ export const baserowAPI = {
         lastError = error;
         
         // Don't retry on AbortError timeout after max retries
-        if (error.name === 'AbortError') {
-          console.warn(`⚠️ Request timeout on attempt ${attempt + 1}/${maxRetries}`);
-        } else {
-          console.warn(`⚠️ Request failed on attempt ${attempt + 1}/${maxRetries}: ${error.message}`);
+        if (process.env.NODE_ENV === 'development') {
+          if (error.name === 'AbortError') {
+            console.warn(`⚠️ Request timeout on attempt ${attempt + 1}/${maxRetries}`);
+          } else {
+            console.warn(`⚠️ Request failed on attempt ${attempt + 1}/${maxRetries}: ${error.message}`);
+          }
         }
-        
+
         // If this was the last attempt, throw the error
         if (attempt === maxRetries - 1) {
-          console.error(`❌ Request failed after ${maxRetries} attempts`);
+          if (process.env.NODE_ENV === 'development') {
+            console.error(`❌ Request failed after ${maxRetries} attempts`);
+          }
           throw lastError;
         }
-        
+
         // Exponential backoff: 1s, 2s, 4s, 8s, etc.
         const backoffTime = Math.pow(2, attempt) * 1000;
-        console.log(`⏳ Waiting ${backoffTime/1000}s before retry...`);
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`⏳ Waiting ${backoffTime/1000}s before retry...`);
+        }
         await new Promise(resolve => setTimeout(resolve, backoffTime));
       }
     }
@@ -118,17 +128,23 @@ export const baserowAPI = {
   async fetchAllStations() {
     // In production (no backend), use direct Baserow API
     if (!config.api.baseUrl || config.api.baseUrl === '/api') {
-      console.log('🔄 Production mode: Using direct Baserow API...');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔄 Production mode: Using direct Baserow API...');
+      }
       try {
         return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
       } catch (error) {
-        console.error('❌ Direct API failed:', error.message);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('❌ Direct API failed:', error.message);
+        }
         throw error;
       }
     }
 
     try {
-      console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
+      }
       
       // Use retry logic for backend API calls
       const response = await this.fetchWithRetry(`${config.api.baseUrl}/api/stations/all`, {
@@ -143,19 +159,27 @@ export const baserowAPI = {
       if (!data.success) {
         throw new Error(data.error || 'Failed to fetch stations');
       }
-      
-      console.log(`✅ Successfully fetched ${data.data.length} stations from backend`);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Successfully fetched ${data.data.length} stations from backend`);
+      }
       return data.data;
     } catch (error) {
-      console.error('❌ Error fetching all stations:', error.message);
-      
+      if (process.env.NODE_ENV === 'development') {
+        console.error('❌ Error fetching all stations:', error.message);
+      }
+
       // If backend is not available, try direct API call as fallback
       if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch') || error.name === 'AbortError') {
-        console.log('🔄 Backend unavailable, trying direct Baserow API as fallback...');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('🔄 Backend unavailable, trying direct Baserow API as fallback...');
+        }
         try {
           return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
         } catch (directError) {
-          console.error('❌ Direct API also failed:', directError.message);
+          if (process.env.NODE_ENV === 'development') {
+            console.error('❌ Direct API also failed:', directError.message);
+          }
           throw directError;
         }
       }
@@ -167,8 +191,10 @@ export const baserowAPI = {
   // Create a new petrol station
   async createStation(stationData) {
     try {
-      console.log(`🔄 Creating new station: ${stationData.stationName}`);
-      
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🔄 Creating new station: ${stationData.stationName}`);
+      }
+
       const response = await fetch(`${config.api.baseUrl}/api/stations`, {
         method: 'POST',
         headers: {
@@ -177,21 +203,25 @@ export const baserowAPI = {
         body: JSON.stringify(stationData),
         signal: AbortSignal.timeout(10000)
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (!data.success) {
         throw new Error(data.error || 'Failed to create station');
       }
-      
-      console.log(`✅ Successfully created station: ${stationData.stationName}`);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Successfully created station: ${stationData.stationName}`);
+      }
       return data.data;
     } catch (error) {
-      console.error('❌ Error creating station:', error.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('❌ Error creating station:', error.message);
+      }
       throw error;
     }
   },
@@ -199,8 +229,10 @@ export const baserowAPI = {
   // Update a petrol station
   async updateStation(stationId, updateData) {
     try {
-      console.log(`🔄 Updating station ${stationId}`);
-      
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🔄 Updating station ${stationId}`);
+      }
+
       const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
         method: 'PUT',
         headers: {
@@ -209,21 +241,25 @@ export const baserowAPI = {
         body: JSON.stringify(updateData),
         signal: AbortSignal.timeout(10000)
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (!data.success) {
         throw new Error(data.error || 'Failed to update station');
       }
-      
-      console.log(`✅ Successfully updated station ${stationId}`);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Successfully updated station ${stationId}`);
+      }
       return data.data;
     } catch (error) {
-      console.error(`❌ Error updating station ${stationId}:`, error.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.error(`❌ Error updating station ${stationId}:`, error.message);
+      }
       throw error;
     }
   },
@@ -231,8 +267,10 @@ export const baserowAPI = {
   // Delete a petrol station
   async deleteStation(stationId) {
     try {
-      console.log(`🔄 Deleting station ${stationId}`);
-      
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🔄 Deleting station ${stationId}`);
+      }
+
       const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
         method: 'DELETE',
         headers: {
@@ -240,21 +278,25 @@ export const baserowAPI = {
         },
         signal: AbortSignal.timeout(10000)
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (!data.success) {
         throw new Error(data.error || 'Failed to delete station');
       }
-      
-      console.log(`✅ Successfully deleted station ${stationId}`);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Successfully deleted station ${stationId}`);
+      }
       return true;
     } catch (error) {
-      console.error(`❌ Error deleting station ${stationId}:`, error.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.error(`❌ Error deleting station ${stationId}:`, error.message);
+      }
       throw error;
     }
   },
@@ -269,21 +311,25 @@ export const baserowAPI = {
         },
         signal: AbortSignal.timeout(10000)
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (!data.success) {
         throw new Error(data.error || 'Failed to fetch table fields');
       }
-      
-      console.log(`✅ Successfully fetched fields for table ${tableId}`);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Successfully fetched fields for table ${tableId}`);
+      }
       return data.data;
     } catch (error) {
-      console.error(`❌ Error fetching table fields:`, error.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.error(`❌ Error fetching table fields:`, error.message);
+      }
       throw error;
     }
   },
@@ -295,18 +341,24 @@ export const baserowAPI = {
    * @returns {Promise<Array>} All station rows
    */
   async fetchAllStationsDirect(tableId) {
-    console.warn('⚠️ Using direct Baserow API access. Consider using backend proxy instead.');
-    
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ Using direct Baserow API access. Consider using backend proxy instead.');
+    }
+
     let rows = [];
     let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
-    
-    console.log(`🔄 Fetching directly from Baserow API: ${nextUrl}`);
-    console.log(`📊 Database ID: ${config.baserow.databaseId}`);
-    console.log(`🔑 Using token: ${config.baserow.token.substring(0, 8)}...`);
-    
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🔄 Fetching directly from Baserow API: ${nextUrl}`);
+      console.log(`📊 Database ID: ${config.baserow.databaseId}`);
+      console.log(`🔑 Using token: ${config.baserow.token.substring(0, 8)}...`);
+    }
+
     try {
       while (nextUrl) {
-        console.log(`📡 Making request to: ${nextUrl}`);
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`📡 Making request to: ${nextUrl}`);
+        }
         
         // Use exponential backoff retry logic
         const response = await this.fetchWithRetry(nextUrl, {
@@ -328,14 +380,20 @@ export const baserowAPI = {
         
         rows.push(...data.results);
         nextUrl = data.next; // Will be null when done
-        
-        console.log(`📊 Progress: ${rows.length} stations fetched so far...`);
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`📊 Progress: ${rows.length} stations fetched so far...`);
+        }
       }
-      
-      console.log(`✅ Successfully fetched ${rows.length} stations from Baserow`);
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Successfully fetched ${rows.length} stations from Baserow`);
+      }
       return rows;
     } catch (error) {
-      console.error('❌ Error fetching stations from Baserow:', error.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('❌ Error fetching stations from Baserow:', error.message);
+      }
       throw error;
     }
   },
@@ -347,7 +405,9 @@ export const baserowAPI = {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error testing connection:', error.message);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error testing connection:', error.message);
+      }
       throw error;
     }
   }
