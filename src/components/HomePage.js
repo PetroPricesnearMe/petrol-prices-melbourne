@@ -16,25 +16,27 @@ const HomePage = () => {
   };
 
   return (
-    <div className="home-page">
+    <main className="home-page">
       <MotionDiv 
         className="hero-section"
         variants={heroContainerVariants}
         initial="hidden"
         animate="visible"
+        role="banner"
+        aria-label="Hero section"
       >
         <div className="hero-background">
           <div className="hero-gradient"></div>
         </div>
         
         <div className="container">
-          <div className="hero-content">
+          <header className="hero-content">
             <MotionDiv className="hero-badge" variants={itemVariants}>
               <span>Live Fuel Prices</span>
             </MotionDiv>
             
             <MotionH1 className="hero-title" variants={itemVariants}>
-              Petrol Prices Monitoring
+              Melbourne Petrol Prices - Find Cheapest Fuel Near You
             </MotionH1>
             
             <MotionP className="hero-subtitle" variants={itemVariants}>
@@ -66,7 +68,7 @@ const HomePage = () => {
                 <div className="stat-label">Monitoring</div>
               </div>
             </MotionDiv>
-          </div>
+          </header>
           
           {/* Fuel Nozzle Image */}
           <MotionDiv 
@@ -76,7 +78,7 @@ const HomePage = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            <div className="fuel-nozzles-image">
+            <figure className="fuel-nozzles-image">
               <img 
                 src="/images/fuel-nozzles.jpg" 
                 alt="Fuel nozzles at petrol station showing different fuel types - Diesel, 98 Octane, 95 Octane, Unleaded, and 91 Octane"
@@ -96,7 +98,7 @@ const HomePage = () => {
                   transition: 'opacity 0.3s ease-in-out'
                 }}
               />
-              <div className="image-overlay">
+              <figcaption className="image-overlay">
                 <div className="fuel-types">
                   <span className="fuel-type diesel">Diesel</span>
                   <span className="fuel-type octane-98">98 Octane</span>
@@ -104,8 +106,8 @@ const HomePage = () => {
                   <span className="fuel-type unleaded">Unleaded</span>
                   <span className="fuel-type octane-91">91 Octane</span>
                 </div>
-              </div>
-            </div>
+              </figcaption>
+            </figure>
           </MotionDiv>
         </div>
         
@@ -125,40 +127,65 @@ const HomePage = () => {
         transition={{ duration: 0.8 }}
       >
         <div className="container">
+          <MotionDiv 
+            className="section-header"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="section-title">Why Choose Melbourne Fuel?</h2>
+            <p className="section-subtitle">Comprehensive fuel price monitoring to help you save money on every fill-up</p>
+          </MotionDiv>
+          
           <div className="features-grid">
-            <MotionDiv 
+            <article 
               className="feature-card"
-              whileHover={{ y: -5, scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              itemScope 
+              itemType="https://schema.org/Service"
             >
-              <div className="feature-icon">🕐</div>
-              <h3>Real-Time Updates</h3>
-              <p>Get live fuel price updates from petrol stations across Melbourne</p>
-            </MotionDiv>
+              <MotionDiv 
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="feature-icon" aria-hidden="true">🕐</div>
+                <h3 itemProp="name">Real-Time Updates</h3>
+                <p itemProp="description">Get live fuel price updates from petrol stations across Melbourne with instant notifications when prices change</p>
+              </MotionDiv>
+            </article>
             
-            <MotionDiv 
+            <article 
               className="feature-card"
-              whileHover={{ y: -5, scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              itemScope 
+              itemType="https://schema.org/Service"
             >
-              <div className="feature-icon">🎯</div>
-              <h3>Location-Based</h3>
-              <p>Find the nearest and cheapest petrol stations in your area</p>
-            </MotionDiv>
+              <MotionDiv 
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="feature-icon" aria-hidden="true">🎯</div>
+                <h3 itemProp="name">Location-Based Search</h3>
+                <p itemProp="description">Find the nearest and cheapest petrol stations in your area using our advanced location-based search system</p>
+              </MotionDiv>
+            </article>
             
-            <MotionDiv 
+            <article 
               className="feature-card"
-              whileHover={{ y: -5, scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              itemScope 
+              itemType="https://schema.org/Service"
             >
-              <div className="feature-icon">💰</div>
-              <h3>Save Money</h3>
-              <p>Compare prices and save on every fuel purchase</p>
-            </MotionDiv>
+              <MotionDiv 
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="feature-icon" aria-hidden="true">💰</div>
+                <h3 itemProp="name">Save Money</h3>
+                <p itemProp="description">Compare prices from over 250 petrol stations and save up to 20 cents per liter on every fuel purchase</p>
+              </MotionDiv>
+            </article>
           </div>
         </div>
       </MotionSection>
-    </div>
+    </main>
   );
 };
 

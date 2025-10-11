@@ -13,10 +13,10 @@
   --secondary-color: #10b981;
   --accent-color: #f59e0b;
   
-  /* Text Colors */
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --text-light: #9ca3af;
+  /* Text Colors - WCAG AA Compliant (4.5:1+ contrast on white) */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-light: #6b7280;
   
   /* Background Colors */
   --background: #ffffff;
