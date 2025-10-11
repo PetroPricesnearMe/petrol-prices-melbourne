@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { MotionDiv } from './MotionComponents';
 import spatialDataService from '../services/SpatialDataService';
 import dataSourceManager from '../services/DataSourceManager';
+import DiagnosticPanel from './DiagnosticPanel';
 import './MapPage.css';
 
 // Mapbox access token - you'll need to set this
@@ -24,6 +25,7 @@ const MapboxMap = () => {
   const [selectedStation, setSelectedStation] = useState(null);
   const [selectedStationDetails, setSelectedStationDetails] = useState(null);
   const [loadingStationDetails, setLoadingStationDetails] = useState(false);
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
   
   const [viewState, setViewState] = useState({
     longitude: 144.9631,
@@ -59,6 +61,12 @@ const MapboxMap = () => {
         const spatialPoints = await spatialDataService.fetchSpatialData();
         
         if (!isMounted) return; // Component unmounted, don't update state
+        
+        // Additional null check for robustness
+        if (!Array.isArray(spatialPoints)) {
+          console.error('❌ Invalid spatial data format received');
+          throw new Error('Invalid spatial data format');
+        }
         
         console.log(`✅ Spatial data loaded: ${spatialPoints.length} points for map rendering`);
         console.log('🎯 Data type: Minimal (coordinates + name + id only)');
@@ -341,26 +349,60 @@ const MapboxMap = () => {
       <div className="map-page">
         <div className="loading-container">
           <div style={{ 
-            backgroundColor: '#fef2f2', 
-            border: '1px solid #fecaca', 
+            backgroundColor: '#fff3cd', 
+            border: '1px solid #ffeaa7', 
             borderRadius: '8px', 
             padding: '2rem',
             textAlign: 'center',
-            color: '#dc2626'
+            color: '#856404'
           }}>
-            <h2>❌ No Spatial Data Available</h2>
-            <p>Unable to load station locations for map rendering.</p>
-            {error && <p><strong>Error:</strong> {error}</p>}
-            <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#6b7280' }}>
-              <p>Note: This map shows only location data. Complete station directory information is managed separately in Baserow.</p>
+            <h2>⚠️ Loading Station Data...</h2>
+            <p>The backend service may be starting up or temporarily unavailable.</p>
+            {error && (
+              <div style={{ 
+                marginTop: '1rem', 
+                padding: '1rem', 
+                backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                borderRadius: '4px',
+                color: '#dc2626'
+              }}>
+                <strong>Error Details:</strong> {error}
+              </div>
+            )}
+            <div style={{ marginTop: '1.5rem', fontSize: '0.95rem', color: '#6b7280', lineHeight: 1.6 }}>
+              <p><strong>Possible solutions:</strong></p>
+              <ul style={{ textAlign: 'left', maxWidth: '400px', margin: '1rem auto', paddingLeft: '1.5rem' }}>
+                <li>Check if the backend server is running on port 3001</li>
+                <li>Verify API_URL environment variable is set correctly</li>
+                <li>Try the <a href="/directory" style={{ color: '#2563eb', textDecoration: 'underline' }}>Station Directory</a> instead</li>
+                <li>Refresh the page in a few moments</li>
+              </ul>
             </div>
-            <button 
-              className="btn btn-primary"
-              onClick={() => window.location.reload()}
-              style={{ marginTop: '1rem' }}
-            >
-              🔄 Retry Loading Spatial Data
-            </button>
+            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button 
+                className="btn btn-primary"
+                onClick={() => {
+                  setSpatialData([]);
+                  setError(null);
+                  window.location.reload();
+                }}
+              >
+                🔄 Retry Loading
+              </button>
+              <button 
+                className="btn btn-secondary"
+                onClick={() => setShowDiagnostics(true)}
+                style={{ background: '#f59e0b', color: 'white', border: 'none' }}
+              >
+                🔬 Run Diagnostics
+              </button>
+              <a href="/directory" className="btn btn-secondary">
+                📋 View Station Directory
+              </a>
+            </div>
+            <div style={{ marginTop: '1.5rem', fontSize: '0.85rem', color: '#9ca3af' }}>
+              <p>💡 <strong>Tip:</strong> The map uses minimal spatial data for performance. Complete station details are in the directory.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -368,13 +410,15 @@ const MapboxMap = () => {
   }
 
   return (
-    <MotionDiv 
-      className="map-page"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="map-header">
+    <>
+      {showDiagnostics && <DiagnosticPanel />}
+      <MotionDiv 
+        className="map-page"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="map-header">
         <div className="container">
           <MotionDiv 
             className="map-title-section"
@@ -682,7 +726,8 @@ const MapboxMap = () => {
           </div>
         </div>
       </div>
-    </MotionDiv>
+      </MotionDiv>
+    </>
   );
 };
 

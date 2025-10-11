@@ -9,6 +9,7 @@ import HomePage from './components/HomePage';
 // Lazy load non-critical pages to reduce initial bundle size
 const MapPage = React.lazy(() => import('./components/MapPage'));
 const DirectoryPage = React.lazy(() => import('./components/DirectoryPage'));
+const AboutPage = React.lazy(() => import('./components/AboutPage'));
 const FuelPriceTrendsPage = React.lazy(() => import('./components/FuelPriceTrendsPage'));
 const StationAmenitiesPage = React.lazy(() => import('./components/StationAmenitiesPage'));
 const HowPricingWorksPage = React.lazy(() => import('./components/HowPricingWorksPage'));
@@ -48,6 +49,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/map" element={<MapPage />} />
               <Route path="/directory" element={<DirectoryPage />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
               <Route path="/station-amenities" element={<StationAmenitiesPage />} />
               <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />

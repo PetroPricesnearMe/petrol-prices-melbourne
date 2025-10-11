@@ -22,6 +22,30 @@ const PORT = config.port;
 // Initialize Baserow client
 const baserowClient = new BaserowClient();
 
+// Security headers middleware - MUST come first
+app.use((req, res, next) => {
+  // Security headers recommended by OWASP
+  res.setHeader('X-Frame-Options', 'DENY'); // Prevent clickjacking
+  res.setHeader('X-Content-Type-Options', 'nosniff'); // Prevent MIME sniffing
+  res.setHeader('X-XSS-Protection', '1; mode=block'); // XSS protection (legacy browsers)
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload'); // Force HTTPS
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin'); // Referrer policy
+  res.setHeader('Permissions-Policy', 'geolocation=(self), microphone=(), camera=()'); // Feature policy
+  
+  // Content Security Policy
+  res.setHeader('Content-Security-Policy', 
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://api.mapbox.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.mapbox.com; " +
+    "font-src 'self' https://fonts.gstatic.com; " +
+    "img-src 'self' data: https: blob:; " +
+    "connect-src 'self' https://api.baserow.io https://api.mapbox.com; " +
+    "frame-ancestors 'none';"
+  );
+  
+  next();
+});
+
 // Middleware
 app.use(cors({
   origin: config.cors.origin,
@@ -40,6 +64,89 @@ if (config.nodeEnv === 'development') {
 
 app.use(morgan('combined'));
 app.use(express.json());
+
+// Rate limiting middleware to prevent abuse
+const rateLimit = {};
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 100; // per window
+
+app.use((req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+  
+  // Initialize or clean up old entries
+  if (!rateLimit[ip]) {
+    rateLimit[ip] = { count: 0, resetTime: now + RATE_LIMIT_WINDOW };
+  }
+  
+  // Reset if window expired
+  if (now > rateLimit[ip].resetTime) {
+    rateLimit[ip] = { count: 0, resetTime: now + RATE_LIMIT_WINDOW };
+  }
+  
+  // Increment count
+  rateLimit[ip].count++;
+  
+  // Check if limit exceeded
+  if (rateLimit[ip].count > MAX_REQUESTS) {
+    const retryAfter = Math.ceil((rateLimit[ip].resetTime - now) / 1000);
+    res.setHeader('Retry-After', retryAfter);
+    return res.status(429).json({
+      success: false,
+      error: 'Too many requests',
+      message: `Rate limit exceeded. Try again in ${retryAfter} seconds.`,
+      retryAfter
+    });
+  }
+  
+  // Add rate limit headers
+  res.setHeader('X-RateLimit-Limit', MAX_REQUESTS);
+  res.setHeader('X-RateLimit-Remaining', Math.max(0, MAX_REQUESTS - rateLimit[ip].count));
+  res.setHeader('X-RateLimit-Reset', Math.ceil(rateLimit[ip].resetTime / 1000));
+  
+  next();
+});
+
+// Simple in-memory cache for API responses
+const cache = {};
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+function cacheMiddleware(duration = CACHE_DURATION) {
+  return (req, res, next) => {
+    // Only cache GET requests
+    if (req.method !== 'GET') {
+      return next();
+    }
+    
+    const key = req.originalUrl || req.url;
+    const cached = cache[key];
+    
+    // Return cached response if valid
+    if (cached && Date.now() < cached.expiry) {
+      console.log(`📦 Cache hit: ${key}`);
+      res.setHeader('X-Cache', 'HIT');
+      res.setHeader('Cache-Control', `public, max-age=${Math.floor((cached.expiry - Date.now()) / 1000)}`);
+      return res.json(cached.data);
+    }
+    
+    // Store original json method
+    const originalJson = res.json.bind(res);
+    
+    // Override json method to cache response
+    res.json = function(data) {
+      cache[key] = {
+        data: data,
+        expiry: Date.now() + duration
+      };
+      res.setHeader('X-Cache', 'MISS');
+      res.setHeader('Cache-Control', `public, max-age=${Math.floor(duration / 1000)}`);
+      console.log(`💾 Cached: ${key}`);
+      return originalJson(data);
+    };
+    
+    next();
+  };
+}
 
 // Petrol station data now comes from Baserow database
 // Table ID: 623329 (Petrol Stations)
@@ -145,58 +252,7 @@ app.get('/api/baserow/fields/:tableId', async (req, res) => {
 // IMPORTANT: More specific routes must come BEFORE generic ones to avoid route conflicts
 
 // Get minimal spatial data for map rendering (coordinates + basic identifiers only)
-app.get('/api/stations/spatial', async (req, res) => {
-  try {
-    console.log('🗺️ Fetching minimal spatial data for map rendering...');
-    const allStations = await baserowClient.getAllPetrolStations();
-    
-    // Extract only the minimal data needed for map rendering
-    const spatialData = allStations
-      .map((station) => {
-        // Extract coordinates with multiple fallback options
-        let lat = station.Latitude || station.field_5072136 || station.lat;
-        let lng = station.Longitude || station.field_5072137 || station.lng;
-        
-        // Convert to numbers
-        lat = parseFloat(lat);
-        lng = parseFloat(lng);
-        
-        // Validate coordinates
-        if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
-          return null; // Invalid coordinates, exclude from spatial data
-        }
-        
-        // Return only minimal spatial data
-        return {
-          id: station.id,
-          name: station['Station Name'] || station.field_5072130 || `Station ${station.id}`,
-          lat: lat,
-          lng: lng
-        };
-      })
-      .filter(station => station !== null); // Remove invalid entries
-    
-    console.log(`✅ Extracted ${spatialData.length} valid spatial points from ${allStations.length} total stations`);
-    
-    res.json({
-      success: true,
-      data: spatialData,
-      count: spatialData.length,
-      type: 'spatial',
-      note: 'This endpoint provides minimal data for map rendering only. Use /api/stations for complete directory data.'
-    });
-  } catch (error) {
-    console.error('❌ Error in /api/stations/spatial:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message,
-      details: 'Failed to fetch spatial data from Baserow'
-    });
-  }
-});
-
-// Get minimal spatial data for map rendering (coordinates + basic identifiers only)
-app.get('/api/stations/spatial', async (req, res) => {
+app.get('/api/stations/spatial', cacheMiddleware(10 * 60 * 1000), async (req, res) => {
   try {
     console.log('🗺️ Fetching minimal spatial data for map rendering...');
     const allStations = await baserowClient.getAllPetrolStations();
@@ -247,7 +303,7 @@ app.get('/api/stations/spatial', async (req, res) => {
 });
 
 // Get all petrol stations (complete dataset) - MOVED BEFORE generic route
-app.get('/api/stations/all', async (req, res) => {
+app.get('/api/stations/all', cacheMiddleware(), async (req, res) => {
   try {
     console.log('📍 Fetching ALL stations from Baserow...');
     const allStations = await baserowClient.getAllPetrolStations(req.query);
@@ -296,7 +352,7 @@ app.get('/api/stations/:id', async (req, res) => {
 });
 
 // Get petrol stations (paginated) - Now comes AFTER specific routes
-app.get('/api/stations', async (req, res) => {
+app.get('/api/stations', cacheMiddleware(), async (req, res) => {
   try {
     console.log('📍 Fetching paginated stations from Baserow...');
     const stations = await baserowClient.getPetrolStations(req.query);
@@ -370,7 +426,7 @@ app.delete('/api/stations/:id', async (req, res) => {
 // ==================== FUEL PRICES ENDPOINTS ====================
 
 // Get fuel prices
-app.get('/api/fuel-prices', async (req, res) => {
+app.get('/api/fuel-prices', cacheMiddleware(), async (req, res) => {
   try {
     const prices = await baserowClient.getFuelPrices(req.query);
     res.json({

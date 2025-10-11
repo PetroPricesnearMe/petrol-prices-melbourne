@@ -58,7 +58,7 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Melbourne Fuel - Petrol Prices Near Me",
-      "alternateName": ["Petrol Prices Monitoring", "Melbourne Fuel Prices"],
+      "alternateName": "Petrol Prices Monitoring",
       "url": "https://petrolpricesnearme.com.au/",
       "logo": {
         "@type": "ImageObject",
@@ -67,12 +67,11 @@
         "height": 630
       },
       "description": "Australia's leading petrol price monitoring service providing real-time fuel prices across Melbourne. Compare prices from 250+ stations and save up to 20c per liter on every fill-up.",
-      "sameAs": [],
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+61-3-0000-0000",
         "contactType": "customer service",
-        "availableLanguage": ["English"],
+        "availableLanguage": "English",
         "areaServed": "AU-VIC"
       },
       "areaServed": {
@@ -87,9 +86,48 @@
           }
         }
       },
-      "serviceType": ["Fuel Price Monitoring", "Petrol Price Comparison", "Location-Based Services"],
-      "knowsAbout": ["Petrol Prices", "Fuel Stations", "Price Comparison", "Melbourne"],
-      "slogan": "Find the cheapest fuel prices in Melbourne"
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Fuel Price Monitoring",
+            "description": "Real-time monitoring of petrol prices across Melbourne",
+            "category": "Price Monitoring",
+            "provider": {
+              "@type": "Organization",
+              "name": "Melbourne Fuel - Petrol Prices Near Me"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Petrol Price Comparison",
+            "description": "Compare fuel prices from 250+ petrol stations",
+            "category": "Price Comparison",
+            "provider": {
+              "@type": "Organization",
+              "name": "Melbourne Fuel - Petrol Prices Near Me"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Location-Based Fuel Search",
+            "description": "Find cheapest fuel prices near your location",
+            "category": "Location-Based Service",
+            "provider": {
+              "@type": "Organization",
+              "name": "Melbourne Fuel - Petrol Prices Near Me"
+            }
+          }
+        }
+      ],
+      "knowsAbout": "Petrol Prices"
     }
     </script>
     
@@ -179,7 +217,96 @@
     
     <!-- Critical CSS Inlined - Optimized for LCP -->
     <style>
-      *{margin:0;padding:0;box-sizing:border-box}:root{--primary-color:#2563eb;--primary-dark:#1d4ed8;--secondary-color:#10b981;--accent-color:#f59e0b;--text-primary:#111827;--text-secondary:#4b5563;--text-light:#6b7280;--background:#ffffff;--background-gray:#f9fafb;--border-color:#e5e7eb;--shadow:0 4px 6px -1px rgba(0,0,0,0.1);--shadow-lg:0 20px 25px -5px rgba(0,0,0,0.1);--gradient:linear-gradient(135deg,var(--primary-color) 0%,var(--secondary-color) 100%)}@font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2')}@font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7SUc.woff2) format('woff2')}@font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2) format('woff2')}body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-color:var(--background);color:var(--text-primary);line-height:1.6}.container{max-width:1200px;margin:0 auto;padding:0 1rem}@media (min-width:640px){.container{padding:0 2rem}}.btn{padding:.75rem 1.5rem;border-radius:.5rem;font-weight:600;text-decoration:none;display:inline-block;transition:all .3s ease;cursor:pointer;border:none;font-size:1rem}.btn-primary{background:var(--gradient);color:white;box-shadow:var(--shadow)}.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}.btn-secondary{background:white;color:var(--primary-color);border:2px solid var(--primary-color)}.btn-secondary:hover{background:var(--primary-color);color:white;transform:translateY(-2px)}.fade-up{animation:fadeUp .8s ease-out}@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}.leaflet-container{border-radius:1rem;box-shadow:var(--shadow-lg)}#root{min-height:100vh}.navbar{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:1000;padding:1rem 0}.nav-content{display:flex;justify-content:space-between;align-items:center}.nav-logo{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--text-primary);font-weight:700;font-size:1.25rem}.logo-text{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}.nav-links{display:flex;gap:2rem;align-items:center}.nav-link{text-decoration:none;color:var(--text-secondary);font-weight:500;position:relative;transition:color .3s ease;padding:.5rem 0}.nav-link:hover,.nav-link.active{color:var(--primary-color)}.home-page{min-height:100vh}.hero-section{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}.hero-background{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);z-index:-2}.hero-gradient{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,var(--primary-color) 0%,var(--secondary-color) 50%,var(--accent-color) 100%);opacity:.9;z-index:-1}.hero-section .container{display:flex;align-items:center;justify-content:space-between;gap:3rem}.hero-content{text-align:center;color:white;max-width:600px;flex:1}.hero-title{font-size:clamp(2.5rem,8vw,5rem);font-weight:800;margin-bottom:1.5rem;line-height:1.1;text-shadow:0 4px 8px rgba(0,0,0,.3)}.hero-subtitle{font-size:clamp(1.1rem,3vw,1.4rem);margin-bottom:3rem;opacity:.9;line-height:1.6;max-width:600px;margin-left:auto;margin-right:auto}.hero-buttons{display:flex;gap:1.5rem;justify-content:center;margin-bottom:4rem;flex-wrap:wrap}.hero-btn{display:flex;align-items:center;gap:.5rem;padding:1rem 2rem;font-size:1.1rem;border-radius:.75rem;transition:all .3s ease;backdrop-filter:blur(10px);min-width:200px;justify-content:center}.hero-btn.btn-primary{background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.3);color:white}.hero-btn.btn-primary:hover{background:rgba(255,255,255,.35);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,.3)}.hero-image-container{flex:1;display:flex;justify-content:center;align-items:center}.fuel-nozzles-image{position:relative;max-width:400px;border-radius:1rem;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.3);background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2)}.nozzles-img{width:100%;height:auto;display:block;border-radius:1rem;object-fit:cover;object-position:center}@media (max-width:768px){.hero-section .container{flex-direction:column;text-align:center;gap:2rem}.hero-content{padding:1rem;order:1}.hero-buttons{flex-direction:column;align-items:center}.hero-btn{width:100%;max-width:300px}.hero-image-container{order:2;max-width:300px}.fuel-nozzles-image{max-width:100%}}
+      /* Reset and Variables */
+      *{margin:0;padding:0;box-sizing:border-box}
+      :root{--primary-color:#2563eb;--primary-dark:#1d4ed8;--secondary-color:#10b981;--accent-color:#f59e0b;--text-primary:#111827;--text-secondary:#4b5563;--text-light:#6b7280;--background:#ffffff;--background-gray:#f9fafb;--border-color:#e5e7eb;--shadow:0 4px 6px -1px rgba(0,0,0,0.1);--shadow-lg:0 20px 25px -5px rgba(0,0,0,0.1);--gradient:linear-gradient(135deg,var(--primary-color) 0%,var(--secondary-color) 100%)}
+      
+      /* Font Face */
+      @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2')}
+      @font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7SUc.woff2) format('woff2')}
+      @font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2) format('woff2')}
+      
+      /* Base Styles */
+      body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-color:var(--background);color:var(--text-primary);line-height:1.6;font-size:16px}
+      .container{max-width:1200px;margin:0 auto;padding:0 1rem}
+      @media (min-width:640px){.container{padding:0 2rem}}
+      
+      /* Buttons - WCAG Compliant Touch Targets (min 44x44px) */
+      .btn{
+        padding:0.875rem 1.5rem; /* Increased from 0.75rem to ensure 44px height */
+        min-height:44px; /* Explicit minimum height for mobile accessibility */
+        border-radius:.5rem;
+        font-weight:600;
+        text-decoration:none;
+        display:inline-flex; /* Changed to flex for better alignment */
+        align-items:center;
+        justify-content:center;
+        transition:all .3s ease;
+        cursor:pointer;
+        border:none;
+        font-size:1rem;
+        line-height:1.5;
+        -webkit-tap-highlight-color:transparent; /* Remove tap highlight on mobile */
+      }
+      .btn-primary{background:var(--gradient);color:white;box-shadow:var(--shadow)}
+      .btn-primary:hover,.btn-primary:focus{transform:translateY(-2px);box-shadow:var(--shadow-lg);outline:2px solid var(--primary-dark);outline-offset:2px}
+      .btn-secondary{background:white;color:var(--primary-color);border:2px solid var(--primary-color)}
+      .btn-secondary:hover,.btn-secondary:focus{background:var(--primary-color);color:white;transform:translateY(-2px);outline:2px solid var(--primary-dark);outline-offset:2px}
+      
+      /* Focus Indicators for Accessibility */
+      a:focus,button:focus,input:focus,textarea:focus,select:focus{outline:2px solid var(--primary-color);outline-offset:2px}
+      
+      /* Animations */
+      .fade-up{animation:fadeUp .8s ease-out}
+      @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+      
+      /* Global Components */
+      .leaflet-container{border-radius:1rem;box-shadow:var(--shadow-lg)}
+      #root{min-height:100vh}
+      
+      /* Navbar */
+      .navbar{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:1000;padding:1rem 0}
+      .nav-content{display:flex;justify-content:space-between;align-items:center}
+      .nav-logo{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--text-primary);font-weight:700;font-size:1.25rem;min-height:44px} /* Touch target compliance */
+      .logo-text{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+      .nav-links{display:flex;gap:1rem;align-items:center} /* Reduced gap on mobile */
+      .nav-link{text-decoration:none;color:var(--text-secondary);font-weight:500;position:relative;transition:color .3s ease;padding:.75rem .5rem;min-height:44px;display:flex;align-items:center} /* Touch target compliance */
+      .nav-link:hover,.nav-link:focus,.nav-link.active{color:var(--primary-color)}
+      
+      /* Homepage */
+      .home-page{min-height:100vh}
+      .hero-section{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+      .hero-background{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);z-index:-2}
+      .hero-gradient{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,var(--primary-color) 0%,var(--secondary-color) 50%,var(--accent-color) 100%);opacity:.9;z-index:-1}
+      .hero-section .container{display:flex;align-items:center;justify-content:space-between;gap:3rem}
+      .hero-content{text-align:center;color:white;max-width:600px;flex:1}
+      .hero-title{font-size:clamp(2rem,6vw,4rem);font-weight:800;margin-bottom:1.5rem;line-height:1.1;text-shadow:0 4px 8px rgba(0,0,0,.3)} /* Reduced min size for mobile */
+      .hero-subtitle{font-size:clamp(1rem,3vw,1.3rem);margin-bottom:3rem;opacity:.9;line-height:1.6;max-width:600px;margin-left:auto;margin-right:auto}
+      .hero-buttons{display:flex;gap:1rem;justify-content:center;margin-bottom:3rem;flex-wrap:wrap}
+      .hero-btn{display:flex;align-items:center;gap:.5rem;padding:1rem 2rem;min-height:48px;font-size:1.1rem;border-radius:.75rem;transition:all .3s ease;backdrop-filter:blur(10px);min-width:180px;justify-content:center}
+      .hero-btn.btn-primary{background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.3);color:white}
+      .hero-btn.btn-primary:hover,.hero-btn.btn-primary:focus{background:rgba(255,255,255,.35);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+      .hero-image-container{flex:1;display:flex;justify-content:center;align-items:center}
+      .fuel-nozzles-image{position:relative;max-width:400px;border-radius:1rem;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.3);background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2)}
+      .nozzles-img{width:100%;height:auto;display:block;border-radius:1rem;object-fit:cover;object-position:center}
+      
+      /* Mobile Optimizations - Enhanced for touch targets and readability */
+      @media (max-width:768px){
+        body{font-size:16px} /* Minimum readable font size */
+        .hero-section .container{flex-direction:column;text-align:center;gap:2rem}
+        .hero-content{padding:1rem;order:1}
+        .hero-buttons{flex-direction:column;align-items:stretch;width:100%;max-width:300px;margin-left:auto;margin-right:auto}
+        .hero-btn{width:100%;min-height:48px} /* Larger touch target on mobile */
+        .hero-image-container{order:2;max-width:300px;width:100%}
+        .fuel-nozzles-image{max-width:100%}
+        .nav-links{gap:0.5rem}
+        .nav-link{padding:.75rem .4rem;font-size:0.9rem}
+      }
+      
+      /* Reduced motion for accessibility */
+      @media (prefers-reduced-motion:reduce){
+        *{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+      }
     </style>
     
     <!-- Critical Resources -->

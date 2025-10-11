@@ -1,45 +1,43 @@
-# Robots.txt for Melbourne Fuel - Petrol Prices Near Me
+# Robots.txt for Petrol Prices Near Me
 # Updated: 2025-01-10
 
 User-agent: *
 Allow: /
-
-# Optimize crawling for key pages (highest priority)
 Allow: /map
 Allow: /directory
 Allow: /fuel-price-trends
 Allow: /station-amenities
 Allow: /how-pricing-works
-Allow: /service-stations
-
-# Allow service pages
 Allow: /roadside-assistance
-Allow: /car-washes
-Allow: /truck-stops
-Allow: /traffic
-Allow: /station-brands
 Allow: /news
+Allow: /station-brands
 
-# Block API endpoints and private pages
-Disallow: /api/
-Disallow: /account
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /account/
 Disallow: /sign-in
-Disallow: /*.json$
-Disallow: /*_buildManifest.js
-Disallow: /*_ssgManifest.js
+Disallow: /api/
 
-# Allow search engine parameters for tracking
-Allow: /*?utm_*
-
-# Sitemaps
+# Sitemap location
 Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
+Sitemap: https://www.petrolpricesnearme.com.au/sitemap.xml
 
-# Crawl delay for major search engines (no delay needed for our content)
+# Crawl delay (be nice to our servers)
+Crawl-delay: 1
+
+# Specific rules for major bots
 User-agent: Googlebot
-Crawl-delay: 0
+Allow: /
+Crawl-delay: 0.5
 
 User-agent: Bingbot
-Crawl-delay: 0
+Allow: /
+Crawl-delay: 1
 
 User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
 Crawl-delay: 1

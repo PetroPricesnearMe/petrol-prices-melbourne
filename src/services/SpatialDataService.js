@@ -14,11 +14,17 @@
 
 class SpatialDataService {
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+    this.baseUrl = process.env.REACT_APP_API_URL || 
+                   (window.location.hostname === 'localhost' ? 'http://localhost:3001' : '');
     this.spatialCache = null;
     this.lastFetchTime = null;
     this.cacheTimeout = 10 * 60 * 1000; // 10 minutes cache (longer than directory data)
     this.isLoading = false;
+    
+    // Log initialization
+    console.log('🗺️ SpatialDataService initialized');
+    console.log(`   - Base URL: ${this.baseUrl || 'relative paths'}`);
+    console.log(`   - Endpoint: ${this.baseUrl}/api/stations/spatial`);
   }
 
   /**
@@ -72,6 +78,7 @@ class SpatialDataService {
     try {
       this.isLoading = true;
       console.log('🗺️ Fetching minimal spatial data from backend...');
+      console.log(`   - URL: ${this.baseUrl}/api/stations/spatial`);
 
       const response = await fetch(`${this.baseUrl}/api/stations/spatial`, {
         method: 'GET',
@@ -79,20 +86,24 @@ class SpatialDataService {
           'Content-Type': 'application/json',
         },
         // Add timeout for the request
-        signal: AbortSignal.timeout(10000) // 10 second timeout
+        signal: AbortSignal.timeout(15000) // 15 second timeout (increased)
       });
+
+      console.log(`   - Response status: ${response.status}`);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const result = await response.json();
+      console.log(`   - Response received: ${result.success ? 'Success' : 'Failed'}`);
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to fetch spatial data');
       }
 
       const spatialData = result.data || [];
+      console.log(`   - Data points received: ${spatialData.length}`);
 
       // Validate spatial data structure
       const validatedData = spatialData.filter(point => {
@@ -122,17 +133,36 @@ class SpatialDataService {
       return validatedData;
 
     } catch (error) {
-      console.error('❌ Error fetching spatial data:', error);
+      console.error('❌ Error fetching spatial data:', error.message);
+      console.error('   - Error type:', error.name);
+      console.error('   - Full error:', error);
+
+      // Provide helpful debugging information
+      if (error.name === 'AbortError') {
+        console.warn('⏱️ Request timed out - backend may be slow or unavailable');
+      } else if (error.message.includes('Failed to fetch')) {
+        console.warn('🔌 Network error - backend may not be running');
+        console.warn(`   - Expected backend at: ${this.baseUrl}/api/stations/spatial`);
+        console.warn('   - Is your backend server running?');
+      }
 
       // Return cached data if available
-      if (this.spatialCache) {
+      if (this.spatialCache && this.spatialCache.length > 0) {
         console.log('🔄 Returning cached spatial data due to error');
+        console.log(`   - Cached points: ${this.spatialCache.length}`);
         return this.spatialCache;
       }
 
       // Return fallback spatial data as last resort
-      console.log('🔄 Returning fallback spatial data');
-      return this.getFallbackSpatialData();
+      console.log('🔄 Using fallback spatial data (backend unavailable)');
+      const fallback = this.getFallbackSpatialData();
+      
+      // Cache the fallback data so map can render
+      this.spatialCache = fallback;
+      this.lastFetchTime = Date.now();
+      
+      console.log(`   - Fallback points: ${fallback.length}`);
+      return fallback;
 
     } finally {
       this.isLoading = false;
