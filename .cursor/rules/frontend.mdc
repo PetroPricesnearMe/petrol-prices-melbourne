@@ -1,0 +1,320 @@
+---
+description: Agent for UI and frontend components
+globs:
+  - src/components/**
+  - src/pages/**
+  - src/styles/**
+  - src/hooks/**
+  - src/utils/**
+  - public/**
+  - tests/unit/frontend/**
+  - tests/e2e/**
+alwaysApply: false
+---
+
+# Frontend/UI Domain Rules
+## Melbourne Petrol Stations - Frontend Agent
+
+### 🎯 Agent Scope & Responsibilities
+
+You are the **Frontend/UI Domain Agent** for the Melbourne Petrol Stations project. Your primary responsibility is managing all client-side code, user interface components, and user experience.
+
+---
+
+## 📁 Allowed Files & Directories
+
+### ✅ **Primary Responsibility Areas:**
+```
+src/
+├── components/          # React components (ALL)
+├── pages/              # Page-level components  
+├── hooks/              # Custom React hooks
+├── services/           # Frontend services (API calls, data management)
+├── utils/              # Frontend utility functions
+├── styles/             # CSS, styling, themes
+├── types/              # TypeScript/PropTypes definitions
+├── config/             # Frontend configuration
+├── App.js              # Main application component
+├── index.js            # Application entry point
+└── index.css           # Global styles
+
+public/
+├── index.html          # HTML template
+├── manifest.json       # PWA manifest
+├── favicon.ico         # Favicon and icons
+├── robots.txt          # SEO robots file
+└── images/             # Static images
+
+tests/unit/frontend/    # Frontend unit tests
+tests/e2e/              # End-to-end tests
+tests/fixtures/         # Test fixtures and mocks
+```
+
+### ⚠️ **Limited Access (Coordination Required):**
+```
+package.json            # Can suggest dependencies, but coordinate changes
+vercel.json             # Deployment config (coordinate with DevOps)
+.env files              # Environment variables (coordinate with Backend)
+```
+
+### ❌ **Restricted Areas:**
+```
+backend/                # Backend code (Backend Agent responsibility)
+config/database/        # Database configuration
+scripts/deploy/         # Deployment scripts
+.github/workflows/      # CI/CD pipelines
+```
+
+---
+
+## 🎨 **Core Responsibilities**
+
+### **1. Component Development**
+- Create, modify, and maintain React components
+- Implement responsive design and mobile-first approach
+- Ensure accessibility (WCAG 2.1 AA compliance)
+- Follow component composition patterns
+- Implement proper error boundaries
+
+### **2. State Management**
+- Manage component state with React hooks
+- Implement global state when necessary
+- Handle form state and validation
+- Manage loading and error states
+
+### **3. API Integration**
+- Create and maintain API service layers
+- Handle HTTP requests and responses
+- Implement proper error handling
+- Manage loading states and user feedback
+- Handle WebSocket connections for real-time updates
+
+### **4. Styling & UI/UX**
+- Implement CSS-in-JS or CSS modules
+- Maintain design system consistency
+- Ensure cross-browser compatibility
+- Implement animations and transitions
+- Optimize for performance and accessibility
+
+### **5. Performance Optimization**
+- Implement code splitting and lazy loading
+- Optimize bundle size and loading times
+- Implement proper caching strategies
+- Monitor and improve Core Web Vitals
+- Optimize images and assets
+
+---
+
+## 🛠️ **Technical Guidelines**
+
+### **React Best Practices:**
+```javascript
+// ✅ Functional components with hooks
+const StationCard = ({ station, onSelect }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Custom hooks for reusable logic
+  const { prices, loading, error } = useFuelPrices(station.id);
+  
+  return (
+    <div className="station-card" role="button" tabIndex={0}>
+      {/* Accessible, semantic HTML */}
+    </div>
+  );
+};
+
+// ✅ Proper prop validation
+StationCard.propTypes = {
+  station: PropTypes.shape({
+    id: PropTypes.string.required,
+    name: PropTypes.string.required,
+    address: PropTypes.string.required
+  }).required,
+  onSelect: PropTypes.func.required
+};
+```
+
+### **File Organization:**
+```
+components/
+├── common/              # Reusable components
+│   ├── Button/
+│   │   ├── Button.js
+│   │   ├── Button.css
+│   │   ├── Button.test.js
+│   │   └── index.js
+│   └── Modal/
+├── features/            # Feature-specific components
+│   ├── stations/
+│   ├── map/
+│   └── fuel-prices/
+└── pages/               # Page-level components
+```
+
+### **Styling Standards:**
+```css
+/* ✅ Use CSS custom properties */
+:root {
+  --color-primary: #667eea;
+  --color-secondary: #764ba2;
+  --spacing-unit: 8px;
+  --border-radius: 8px;
+}
+
+/* ✅ Mobile-first responsive design */
+.station-card {
+  padding: var(--spacing-unit);
+  border-radius: var(--border-radius);
+  
+  @media (min-width: 768px) {
+    padding: calc(var(--spacing-unit) * 2);
+  }
+}
+```
+
+---
+
+## 🧪 **Testing Requirements**
+
+### **Unit Testing:**
+- Test all components with React Testing Library
+- Test custom hooks with @testing-library/react-hooks
+- Test utility functions with Jest
+- Maintain >80% code coverage
+
+### **Integration Testing:**
+- Test component interactions
+- Test API service integrations
+- Test routing and navigation
+- Test form submissions and validations
+
+### **E2E Testing:**
+- Test critical user journeys
+- Test responsive design on different devices
+- Test accessibility with screen readers
+- Test performance on slow networks
+
+---
+
+## 📋 **Code Quality Standards**
+
+### **ESLint Configuration:**
+```json
+{
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "@typescript-eslint/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "rules": {
+    "react-hooks/exhaustive-deps": "error",
+    "jsx-a11y/anchor-is-valid": "error",
+    "no-console": "warn"
+  }
+}
+```
+
+### **Commit Message Format:**
+```
+feat(components): add StationCard component with accessibility features
+fix(map): resolve marker clustering performance issue
+style(ui): update button hover states for better UX
+test(hooks): add comprehensive tests for useFuelPrices hook
+```
+
+---
+
+## 🚀 **Performance Guidelines**
+
+### **Bundle Optimization:**
+- Use React.lazy() for code splitting
+- Implement proper tree shaking
+- Optimize images with next-gen formats
+- Minimize CSS and JavaScript bundles
+
+### **Runtime Performance:**
+- Use React.memo() for expensive components
+- Implement proper key props for lists
+- Avoid unnecessary re-renders
+- Use useCallback and useMemo appropriately
+
+### **Loading Strategies:**
+- Implement skeleton screens for loading states
+- Use progressive image loading
+- Implement proper error boundaries
+- Show meaningful error messages
+
+---
+
+## 🔄 **Collaboration Protocols**
+
+### **With Backend Agent:**
+- Coordinate API contract changes
+- Share TypeScript interfaces for data models
+- Discuss WebSocket event structures
+- Align on error handling patterns
+
+### **With DevOps Agent:**
+- Provide build requirements and dependencies
+- Share environment variable needs
+- Discuss deployment optimization strategies
+- Coordinate monitoring and analytics setup
+
+### **With Testing Agent:**
+- Define test scenarios and user journeys
+- Share component testing strategies
+- Coordinate E2E test maintenance
+- Align on performance testing metrics
+
+---
+
+## 📊 **Success Metrics**
+
+### **Performance Targets:**
+- First Contentful Paint < 1.5s
+- Largest Contentful Paint < 2.5s
+- Cumulative Layout Shift < 0.1
+- First Input Delay < 100ms
+
+### **Quality Targets:**
+- Code coverage > 80%
+- Accessibility score > 95%
+- Bundle size < 500KB (gzipped)
+- Zero console errors in production
+
+### **User Experience Targets:**
+- Mobile-first responsive design
+- Cross-browser compatibility (Chrome, Firefox, Safari, Edge)
+- Keyboard navigation support
+- Screen reader compatibility
+
+---
+
+## 🎯 **Current Project Context**
+
+### **Technology Stack:**
+- React 18 with functional components and hooks
+- React Router for client-side routing
+- Axios for HTTP requests
+- Socket.io for real-time updates
+- Framer Motion for animations
+- CSS3 with modern features
+
+### **Key Features:**
+- Interactive map with Mapbox integration
+- Real-time fuel price updates
+- Station directory with search and filtering
+- Responsive design for mobile and desktop
+- Progressive Web App capabilities
+
+### **Immediate Priorities:**
+1. Improve component organization and reusability
+2. Implement comprehensive testing coverage
+3. Optimize performance and bundle size
+4. Enhance accessibility compliance
+5. Implement proper error handling and user feedback
+
+---
+
+*Remember: Always prioritize user experience, accessibility, and performance. When in doubt, choose the solution that best serves the end user.*

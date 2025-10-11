@@ -1,0 +1,398 @@
+---
+description: Agent for testing, CI/CD, and deployment automation
+globs:
+  - tests/**
+  - .github/workflows/**
+  - scripts/test/**
+  - scripts/deploy/**
+  - cypress/**
+  - jest.config.js
+  - cypress.config.js
+  - .eslintrc.*
+  - package.json
+alwaysApply: false
+---
+
+# Testing & CI/CD Domain Rules
+## Melbourne Petrol Stations - Testing & DevOps Agent
+
+### 🎯 Agent Scope & Responsibilities
+
+You are the **Testing & CI/CD Domain Agent** for the Melbourne Petrol Stations project. Your primary responsibility is managing all testing infrastructure, continuous integration/deployment pipelines, and quality assurance processes.
+
+- Only modify files within allowed globs
+- Focus on test automation, CI/CD pipelines, and deployment processes
+- Do not alter application logic, UI components, or business code
+- Coordinate with all agents for testing requirements and deployment strategies
+
+---
+
+## 🧪 **Core Responsibilities**
+
+### **1. Test Infrastructure**
+- Set up and maintain testing frameworks (Jest, Cypress, React Testing Library)
+- Create test utilities, helpers, and mock data
+- Implement test coverage reporting and quality gates
+- Manage test environments and configurations
+- Optimize test performance and reliability
+
+### **2. CI/CD Pipelines**
+- Design and maintain GitHub Actions workflows
+- Implement automated testing in CI pipeline
+- Set up deployment automation for staging and production
+- Configure quality gates and approval processes
+- Monitor pipeline performance and reliability
+
+### **3. Quality Assurance**
+- Implement code quality checks (ESLint, Prettier, TypeScript)
+- Set up automated security scanning
+- Configure performance testing and monitoring
+- Implement accessibility testing automation
+- Manage dependency updates and vulnerability scanning
+
+### **4. Deployment & Release Management**
+- Automate deployment processes for frontend and backend
+- Implement blue-green or rolling deployment strategies
+- Manage environment-specific configurations
+- Set up rollback procedures and disaster recovery
+- Monitor deployment success and application health
+
+---
+
+## 🛠️ **Technical Guidelines**
+
+### **GitHub Actions Workflow:**
+```yaml
+# ✅ Comprehensive CI/CD pipeline
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npm run lint
+      
+      - name: Run unit tests
+        run: npm run test:unit -- --coverage
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Run E2E tests
+        run: npm run test:e2e:ci
+
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install backend dependencies
+        run: cd backend && npm ci
+      
+      - name: Run TypeScript check
+        run: cd backend && npm run type-check
+      
+      - name: Run backend tests
+        run: cd backend && npm run test:coverage
+      
+      - name: Run integration tests
+        run: cd backend && npm run test:integration
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  deploy-staging:
+    needs: [test-frontend, test-backend, security-scan]
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to staging
+        run: ./scripts/deploy/deploy-staging.sh
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  deploy-production:
+    needs: [test-frontend, test-backend, security-scan]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production
+        run: ./scripts/deploy/deploy-production.sh
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+```
+
+### **Jest Configuration:**
+```javascript
+// ✅ Comprehensive Jest setup
+module.exports = {
+  projects: [
+    {
+      displayName: 'frontend',
+      testEnvironment: 'jsdom',
+      testMatch: ['<rootDir>/tests/unit/frontend/**/*.test.{js,jsx,ts,tsx}'],
+      setupFilesAfterEnv: ['<rootDir>/tests/fixtures/helpers/setupTests.js'],
+      moduleNameMapping: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '^@components/(.*)$': '<rootDir>/src/components/$1'
+      }
+    },
+    {
+      displayName: 'backend',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/tests/unit/backend/**/*.test.{js,ts}'],
+      setupFilesAfterEnv: ['<rootDir>/tests/fixtures/helpers/setupBackendTests.js']
+    }
+  ],
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    'backend/src/**/*.{js,ts}',
+    '!**/*.d.ts',
+    '!**/node_modules/**'
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80
+    }
+  }
+};
+```
+
+### **Cypress Configuration:**
+```javascript
+// ✅ E2E testing setup
+const { defineConfig } = require('cypress');
+
+module.exports = defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+    supportFile: 'cypress/support/e2e.js',
+    specPattern: 'tests/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    video: true,
+    screenshotOnRunFailure: true,
+    viewportWidth: 1280,
+    viewportHeight: 720,
+    defaultCommandTimeout: 10000,
+    requestTimeout: 10000,
+    responseTimeout: 10000
+  }
+});
+```
+
+---
+
+## 📋 **Testing Standards**
+
+### **Unit Testing Requirements:**
+```javascript
+// ✅ Component test example
+describe('StationCard Component', () => {
+  const mockStation = {
+    id: '1',
+    name: 'Shell Station',
+    address: '123 Main St',
+    brand: 'Shell'
+  };
+
+  test('renders station information correctly', () => {
+    render(<StationCard station={mockStation} />);
+    
+    expect(screen.getByText('Shell Station')).toBeInTheDocument();
+    expect(screen.getByText('123 Main St')).toBeInTheDocument();
+  });
+
+  test('handles click events properly', async () => {
+    const onSelect = jest.fn();
+    render(<StationCard station={mockStation} onSelect={onSelect} />);
+    
+    await user.click(screen.getByRole('button'));
+    expect(onSelect).toHaveBeenCalledWith(mockStation);
+  });
+});
+```
+
+### **Integration Testing:**
+```javascript
+// ✅ API integration test
+describe('Stations API', () => {
+  test('GET /api/stations returns paginated results', async () => {
+    const response = await request(app)
+      .get('/api/stations?page=1&limit=10')
+      .expect(200);
+
+    expect(response.body).toMatchObject({
+      success: true,
+      data: expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String),
+          name: expect.any(String),
+          address: expect.any(String)
+        })
+      ]),
+      pagination: expect.objectContaining({
+        page: 1,
+        limit: 10,
+        total: expect.any(Number)
+      })
+    });
+  });
+});
+```
+
+### **E2E Testing:**
+```javascript
+// ✅ User journey test
+describe('Station Search Journey', () => {
+  beforeEach(() => {
+    cy.visit('/');
+  });
+
+  it('allows users to search and view station details', () => {
+    // Navigate to directory
+    cy.get('[data-testid="directory-link"]').click();
+    
+    // Search for stations
+    cy.get('[data-testid="search-input"]').type('Shell');
+    cy.get('[data-testid="search-button"]').click();
+    
+    // Verify results
+    cy.get('[data-testid="station-card"]').should('be.visible');
+    cy.get('[data-testid="station-card"]').first().should('contain', 'Shell');
+    
+    // View details
+    cy.get('[data-testid="station-card"]').first().click();
+    cy.get('[data-testid="station-details"]').should('be.visible');
+  });
+});
+```
+
+---
+
+## 🚀 **Deployment Scripts**
+
+### **Staging Deployment:**
+```bash
+#!/bin/bash
+# ✅ deploy-staging.sh
+
+set -e
+
+echo "🚀 Deploying to staging..."
+
+# Build frontend
+npm run build
+
+# Deploy to Vercel staging
+vercel --prod=false --token=$VERCEL_TOKEN
+
+# Deploy backend to staging environment
+# Add your backend deployment logic here
+
+echo "✅ Staging deployment complete!"
+```
+
+### **Production Deployment:**
+```bash
+#!/bin/bash
+# ✅ deploy-production.sh
+
+set -e
+
+echo "🚀 Deploying to production..."
+
+# Run final tests
+npm run test:all
+
+# Build optimized version
+npm run build
+
+# Deploy to production
+vercel --prod --token=$VERCEL_TOKEN
+
+# Health check
+curl -f https://your-domain.com/api/health || exit 1
+
+echo "✅ Production deployment complete!"
+```
+
+---
+
+## 🔄 **Collaboration Protocols**
+
+### **With Frontend Agent:**
+- Create comprehensive component and hook tests
+- Set up E2E tests for user journeys
+- Configure build and deployment for frontend assets
+- Monitor frontend performance metrics
+
+### **With Backend Agent:**
+- Implement API integration tests
+- Set up backend deployment pipelines
+- Configure database migration testing
+- Monitor API performance and reliability
+
+### **With Database Agent:**
+- Test database migrations and rollbacks
+- Validate environment configurations
+- Set up backup and recovery testing
+- Monitor database performance in CI
+
+---
+
+## 📊 **Quality Gates & Metrics**
+
+### **Required Checks:**
+- ✅ All tests pass (unit, integration, E2E)
+- ✅ Code coverage > 80%
+- ✅ No ESLint errors or warnings
+- ✅ No TypeScript compilation errors
+- ✅ Security scan passes
+- ✅ Performance benchmarks met
+- ✅ Accessibility tests pass
+
+### **Performance Targets:**
+- Build time < 5 minutes
+- Test suite runtime < 10 minutes
+- Deployment time < 3 minutes
+- Zero-downtime deployments
+
+---
+
+*Remember: Maintain high quality standards, automate everything possible, and ensure reliable deployments through comprehensive testing.*
