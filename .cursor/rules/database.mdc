@@ -1,0 +1,10 @@
+---
+description: Agent for database and configuration
+globs:
+  - config/**
+  - .env*
+  - src/db/**
+alwaysApply: false
+---
+- Only edit database connection, models, and configuration files.
+- Do not change code in UI, API, or tests.

@@ -4,20 +4,12 @@ globs:
   - src/components/**
   - src/pages/**
   - src/styles/**
-  - src/hooks/**
-  - src/utils/**
-  - public/**
-  - tests/unit/frontend/**
-  - tests/e2e/**
 alwaysApply: false
 ---
 
-# Frontend/UI Domain Rules
-## Melbourne Petrol Stations - Frontend Agent
-
-### 🎯 Agent Scope & Responsibilities
-
-You are the **Frontend/UI Domain Agent** for the Melbourne Petrol Stations project. Your primary responsibility is managing all client-side code, user interface components, and user experience.
+- Only modify files within the allowed globs.
+- Focus on React code, UI fixes, layout, and style optimizations.
+- Do not alter API, backend, or database files.
 
 ---
 
