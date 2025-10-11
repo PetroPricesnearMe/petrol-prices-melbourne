@@ -1,12 +1,7 @@
 ---
 description: Agent for UI and frontend components
-globs:
-  - src/components/**
-  - src/pages/**
-  - src/styles/**
 alwaysApply: false
 ---
-
 - Only modify files within the allowed globs.
 - Focus on React code, UI fixes, layout, and style optimizations.
 - Do not alter API, backend, or database files.
