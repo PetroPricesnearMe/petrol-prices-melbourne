@@ -4,6 +4,9 @@
 /* Import cross-browser utilities */
 @import './styles/cross-browser-utils.css';
 
+/* Import Premium Modern Theme */
+@import './styles/premium-theme.css';
+
 /* Universal Browser-Compatible CSS Variables with fallbacks */
 
 :root {

@@ -8,7 +8,7 @@ import HomePage from './components/HomePage';
 
 // Lazy load non-critical pages to reduce initial bundle size
 const MapPage = React.lazy(() => import('./components/MapPage'));
-const DirectoryPage = React.lazy(() => import('./components/DirectoryPage'));
+const DirectoryPage = React.lazy(() => import('./components/DirectoryPageNew'));
 const AboutPage = React.lazy(() => import('./components/AboutPage'));
 const FuelPriceTrendsPage = React.lazy(() => import('./components/FuelPriceTrendsPage'));
 const StationAmenitiesPage = React.lazy(() => import('./components/StationAmenitiesPage'));

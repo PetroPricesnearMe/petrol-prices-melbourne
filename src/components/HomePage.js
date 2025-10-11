@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { MotionDiv, MotionH1, MotionP, MotionSection, containerVariants, itemVariants } from './MotionComponents';
+import RegionSelector from './RegionSelector';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -45,12 +46,12 @@ const HomePage = () => {
             </MotionP>
             
             <MotionDiv className="hero-buttons" variants={itemVariants}>
-              <Link to="/map" className="btn btn-primary hero-btn">
-                <span className="btn-text">Preview Live Map</span>
-              </Link>
+              <a href="#regions" className="btn btn-primary hero-btn">
+                <span className="btn-text">Browse by Region</span>
+              </a>
               
               <Link to="/directory" className="btn btn-secondary hero-btn">
-                <span className="btn-text">Latest Fuel Prices in Melbourne</span>
+                <span className="btn-text">View All Stations</span>
               </Link>
             </MotionDiv>
             
@@ -119,6 +120,9 @@ const HomePage = () => {
           ></MotionDiv>
         </div>
       </MotionDiv>
+      
+      {/* Region Selector - Replace Complex Map */}
+      <RegionSelector />
       
       <MotionSection 
         className="features-section"
