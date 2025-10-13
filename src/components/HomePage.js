@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MotionDiv, MotionH1, MotionP, MotionSection, containerVariants, itemVariants } from './MotionComponents';
 import RegionSelector from './RegionSelector';
+import MelbourneRegionalMap from './MelbourneRegionalMap';
 import SEO from './SEO';
 import { trackPageView } from '../utils/analytics';
 import './HomePage.css';
 
 const HomePage = () => {
+  const [viewMode, setViewMode] = useState('map'); // 'map' or 'cards'
+
   // Track page view on mount
   useEffect(() => {
     trackPageView('Home');
@@ -172,8 +175,28 @@ const HomePage = () => {
           </div>
         </MotionDiv>
 
-        {/* Region Selector - Replace Complex Map */}
-        <RegionSelector />
+        {/* Interactive Melbourne Map Section */}
+        <MelbourneRegionalMap />
+
+        {/* Optional: Toggle between map and card view */}
+        {/* Uncomment below to show both with toggle */}
+        {/*
+        <div className="view-toggle-container">
+          <button
+            className={`view-toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
+            onClick={() => setViewMode('map')}
+          >
+            🗺️ Map View
+          </button>
+          <button
+            className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
+            onClick={() => setViewMode('cards')}
+          >
+            📋 Card View
+          </button>
+        </div>
+        {viewMode === 'map' ? <MelbourneRegionalMap /> : <RegionSelector />}
+        */}
 
         <MotionSection
           className="features-section"

@@ -1,0 +1,26 @@
+{
+  "title": "Add Interactive Melbourne Map to Homepage",
+  "description": "Implement a clickable, animated Melbourne map using React and your custom image. Each region is a button leading to its petrol station directory.",
+  "steps": [
+    {
+      "title": "Convert Image to SVG",
+      "details": "Open 'melbourne-map-vector.jpg' in a vector/graphic editor (Figma, Inkscape, Illustrator, or Free Online SVG Converter). Trace each region so you have accurate SVG paths for Northern, Western, Eastern, South Eastern, and Inner Melbourne. Export the result as 'MelbourneRegions.svg'."
+    },
+    {
+      "title": "Add SVG to Project",
+      "details": "Place 'MelbourneRegions.svg' in your 'public' folder. If you do not need per-region interactivity, a PNG/JPG can be used; but SVG is best for hover effects and clickable regions."
+    },
+    {
+      "title": "Set Up React Map Component",
+      "details": "Create 'src/components/MelbourneMap.jsx' with this code:\n\nimport React, { useState } from 'react';\nimport { useNavigate } from 'react-router-dom';\n\nconst regions = [\n  { key: 'northern', label: 'Northern Suburbs', color: '#ef474b', link: '/directory/northern', path: '...' },\n  { key: 'western', label: 'Western Suburbs', color: '#939598', link: '/directory/western', path: '...' },\n  { key: 'eastern', label: 'Eastern Suburbs', color: '#ee3e9e', link: '/directory/eastern', path: '...' },\n  { key: 'southeastern', label: 'South Eastern Suburbs', color: '#ff9812', link: '/directory/southeastern', path: '...' },\n  { key: 'inner', label: 'Melbourne', color: '#a980c5', link: '/directory/inner', path: '...' }\n];\n\nconst MapRegion = ({ region, hovered, setHovered, navigate }) => (\n  <g onMouseEnter={() => setHovered(region.key)} onMouseLeave={() => setHovered(null)} onClick={() => navigate(region.link)} style={{ cursor: 'pointer' }}>\n    <path d={region.path} fill={hovered === region.key ? region.color : region.color + 'CC'} stroke=\"#fff\" strokeWidth={hovered === region.key ? 4 : 2} style={{ transition: 'all 0.3s', filter: hovered === region.key ? 'brightness(1.1) drop-shadow(0 3px 10px #222)' : '' }} />\n    <text x=\"50%\" y=\"50%\" textAnchor=\"middle\" dominantBaseline=\"middle\" fontSize=\"2rem\" fontFamily=\"Montserrat, Arial, sans-serif\" fill=\"#fff\" style={{ pointerEvents: 'none', fontWeight: 'bold', textShadow: '2px 2px 8px #222' }}>{region.label}</text>\n  </g>\n);\n\nexport default function MelbourneMap() {\n  const navigate = useNavigate();\n  const [hovered, setHovered] = useState(null);\n  return (\n    <div style={{ width: '100%', maxWidth: 960, margin: '2rem auto' }}>\n      <svg viewBox=\"0 0 900 750\" style={{ width: '100%', height: 'auto' }}>\n        {regions.map(region => <MapRegion key={region.key} region={region} hovered={hovered} setHovered={setHovered} navigate={navigate} />)}\n      </svg>\n    </div>\n  );\n}"
+    },
+    {
+      "title": "Wire Up Directory Links",
+      "details": "Make sure your React Router setup matches the '/directory/...' links in the code above for each region."
+    },
+    {
+      "title": "How to Use Image",
+      "details": "For full interactivity, you must use SVG format and manually copy each region’s <path> from your converted image. PNG/JPEG can be used only for static backgrounds—no per-region click/hover."
+    }
+  ]
+}
