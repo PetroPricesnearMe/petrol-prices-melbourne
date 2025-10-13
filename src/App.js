@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 import Navbar from './components/Navbar';
@@ -17,8 +18,8 @@ const FAQPage = React.lazy(() => import('./components/FAQPage'));
 
 // Loading component for lazy-loaded pages
 const PageLoader = () => (
-  <LoadingSpinner 
-    message="Loading page..." 
+  <LoadingSpinner
+    message="Loading page..."
     showTips={true}
     size="medium"
   />
@@ -26,31 +27,33 @@ const PageLoader = () => (
 
 function App() {
   return (
-    <ErrorBoundary>
-      <Router
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        <div className="App">
-          <NetworkStatus />
-          <Navbar />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/directory" element={<DirectoryPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
-              <Route path="/station-amenities" element={<StationAmenitiesPage />} />
-              <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/faq" element={<FAQPage />} />
-            </Routes>
-          </Suspense>
-        </div>
-      </Router>
-    </ErrorBoundary>
+    <HelmetProvider>
+      <ErrorBoundary>
+        <Router
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          <div className="App">
+            <NetworkStatus />
+            <Navbar />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/directory" element={<DirectoryPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
+                <Route path="/station-amenities" element={<StationAmenitiesPage />} />
+                <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/faq" element={<FAQPage />} />
+              </Routes>
+            </Suspense>
+          </div>
+        </Router>
+      </ErrorBoundary>
+    </HelmetProvider>
   );
 }
 

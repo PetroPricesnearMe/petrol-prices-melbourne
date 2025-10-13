@@ -1,5 +1,11 @@
+/**
+ * HomePage Component Styles
+ * Modern, responsive landing page design
+ */
+
 .home-page {
   min-height: 100vh;
+  background: var(--bg-primary);
 }
 
 .hero-section {
@@ -8,7 +14,8 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
+  padding: var(--space-8) 0;
 }
 
 .hero-background {
@@ -27,8 +34,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
-  opacity: 0.9;
+  background: var(--gradient-primary);
+  opacity: 0.95;
   z-index: -1;
 }
 
@@ -129,37 +136,40 @@
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
-  margin-bottom: 2rem;
-  font-size: 0.9rem;
-  font-weight: 500;
+  -webkit-backdrop-filter: blur(10px);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-8);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .badge-icon {
-  font-size: 1.2rem;
+  font-size: var(--text-xl);
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  line-height: 1.1;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-size: clamp(var(--text-4xl), 8vw, var(--text-7xl));
+  font-weight: var(--font-extrabold);
+  margin-bottom: var(--space-6);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
-  margin-bottom: 3rem;
-  opacity: 0.9;
-  line-height: 1.6;
+  font-size: clamp(var(--text-lg), 3vw, var(--text-xl));
+  margin-bottom: var(--space-12);
+  opacity: 0.95;
+  line-height: var(--leading-relaxed);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  font-weight: var(--font-normal);
 }
 
 .hero-buttons {
@@ -264,30 +274,32 @@
 }
 
 .features-section {
-  padding: 6rem 0;
-  background: var(--background-gray);
+  padding: var(--space-20) 0;
+  background: var(--bg-secondary);
 }
 
 .section-header {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 4rem;
+  margin: 0 auto var(--space-16);
 }
 
 .section-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 800;
-  margin-bottom: 1rem;
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+  font-weight: var(--font-extrabold);
+  margin-bottom: var(--space-4);
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
 }
 
 .section-subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-size: clamp(var(--text-base), 2.5vw, var(--text-xl));
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
   max-width: 600px;
   margin: 0 auto;
+  font-weight: var(--font-normal);
 }
 
 .features-grid {
@@ -387,4 +399,4 @@
   .fuel-types {
     font-size: 0.6rem;
   }
-} 
+}

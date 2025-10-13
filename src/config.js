@@ -2,19 +2,22 @@
 const config = {
   // Baserow API Configuration
   baserow: {
-    token: process.env.REACT_APP_BASEROW_TOKEN || 'LuwYYOFxLFuBkzSMZJ9XTvE9OgnIsiuXI',
+    // Public share token (for public grids - no authentication needed)
+    publicToken: process.env.REACT_APP_BASEROW_PUBLIC_TOKEN || 'MIhg-ye0C_K99qvwTzoH6MCvTMAHLbwHR0C4aZKP674',
+    // Database token (for authenticated API access)
+    token: process.env.REACT_APP_BASEROW_TOKEN || 'G2bhijqxqtg0O05dc176fwDpaUPDSIgj',
     apiUrl: process.env.REACT_APP_BASEROW_API_URL || 'https://api.baserow.io/api',
     databaseId: 265358,
     // MCP SSE URL for real-time updates
-    mcpSseUrl: 'https://api.baserow.io/mcp/Anoz1pnwOGAZb7wHqKGwJIxPmu6jbbNN/sse'
+    mcpSseUrl: process.env.REACT_APP_BASEROW_SSE_URL || 'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse'
   },
-  
+
   // Backend API Configuration - ALWAYS use backend as proxy to avoid CORS issues
   api: {
     // Default to localhost in development, require explicit URL in production
-    baseUrl: process.env.REACT_APP_API_URL || 
-             (window.location.hostname === 'localhost' ? 'http://localhost:3001' : 
-              '/api') // Use relative path in production (assumes backend is on same domain)
+    baseUrl: process.env.REACT_APP_API_URL ||
+      (window.location.hostname === 'localhost' ? 'http://localhost:3001' :
+        '/api') // Use relative path in production (assumes backend is on same domain)
   },
 
   // Baserow Table Configuration
@@ -25,14 +28,14 @@ const config = {
     },
     fuelPrices: {
       id: 623330,
-      name: 'Fuel Prices'  
+      name: 'Fuel Prices'
     },
     airtableImport: {
       id: 623331,
       name: 'Airtable import report'
     }
   },
-  
+
   // Application Settings
   app: {
     name: process.env.REACT_APP_APP_NAME || 'Petrol Prices Near Me',
@@ -51,36 +54,36 @@ export const baserowAPI = {
    */
   async fetchWithRetry(url, options = {}, maxRetries = 3) {
     let lastError;
-    
+
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
         // Add timeout to each attempt
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-        
+
         const response = await fetch(url, {
           ...options,
           signal: controller.signal
         });
-        
+
         clearTimeout(timeoutId);
-        
+
         // Handle rate limiting (429)
         if (response.status === 429) {
           const retryAfter = response.headers.get('Retry-After');
           const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.pow(2, attempt) * 1000;
           if (process.env.NODE_ENV === 'development') {
-            console.warn(`⚠️ Rate limited (429). Waiting ${waitTime/1000}s before retry...`);
+            console.warn(`⚠️ Rate limited (429). Waiting ${waitTime / 1000}s before retry...`);
           }
           await new Promise(resolve => setTimeout(resolve, waitTime));
           continue;
         }
-        
+
         // Don't retry client errors (except 429) 
         if (response.status >= 400 && response.status < 500 && response.status !== 429) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-        
+
         // Success or server error (which we should retry)
         if (response.ok) {
           if (process.env.NODE_ENV === 'development') {
@@ -88,13 +91,13 @@ export const baserowAPI = {
           }
           return response;
         }
-        
+
         // Server error - will retry
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        
+
       } catch (error) {
         lastError = error;
-        
+
         // Don't retry on AbortError timeout after max retries
         if (process.env.NODE_ENV === 'development') {
           if (error.name === 'AbortError') {
@@ -115,12 +118,12 @@ export const baserowAPI = {
         // Exponential backoff: 1s, 2s, 4s, 8s, etc.
         const backoffTime = Math.pow(2, attempt) * 1000;
         if (process.env.NODE_ENV === 'development') {
-          console.log(`⏳ Waiting ${backoffTime/1000}s before retry...`);
+          console.log(`⏳ Waiting ${backoffTime / 1000}s before retry...`);
         }
         await new Promise(resolve => setTimeout(resolve, backoffTime));
       }
     }
-    
+
     throw lastError;
   },
 
@@ -145,7 +148,7 @@ export const baserowAPI = {
       if (process.env.NODE_ENV === 'development') {
         console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
       }
-      
+
       // Use retry logic for backend API calls
       const response = await this.fetchWithRetry(`${config.api.baseUrl}/api/stations/all`, {
         method: 'GET',
@@ -153,9 +156,9 @@ export const baserowAPI = {
           'Content-Type': 'application/json',
         }
       }, 3);
-      
+
       const data = await response.json();
-      
+
       if (!data.success) {
         throw new Error(data.error || 'Failed to fetch stations');
       }
@@ -183,7 +186,7 @@ export const baserowAPI = {
           throw directError;
         }
       }
-      
+
       throw error;
     }
   },
@@ -346,40 +349,51 @@ export const baserowAPI = {
     }
 
     let rows = [];
-    let nextUrl = `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
+    // Use public token if available, otherwise use authenticated token
+    const usePublicToken = config.baserow.publicToken && config.baserow.publicToken !== 'your_public_token_here';
+    let nextUrl = usePublicToken
+      ? `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100&public_token=${config.baserow.publicToken}`
+      : `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(`🔄 Fetching directly from Baserow API: ${nextUrl}`);
+      console.log(`🔄 Fetching directly from Baserow API: ${nextUrl.replace(config.baserow.publicToken, 'PUBLIC_TOKEN')}`);
       console.log(`📊 Database ID: ${config.baserow.databaseId}`);
-      console.log(`🔑 Using token: ${config.baserow.token.substring(0, 8)}...`);
+      console.log(`🔑 Using ${usePublicToken ? 'public token' : 'auth token'}: ${(usePublicToken ? config.baserow.publicToken : config.baserow.token).substring(0, 8)}...`);
     }
 
     try {
       while (nextUrl) {
         if (process.env.NODE_ENV === 'development') {
-          console.log(`📡 Making request to: ${nextUrl}`);
+          console.log(`📡 Making request to: ${nextUrl.replace(config.baserow.publicToken, 'PUBLIC_TOKEN')}`);
         }
-        
+
+        // Build headers - only add Authorization if using auth token
+        const headers = {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        };
+
+        if (!usePublicToken) {
+          headers['Authorization'] = `Token ${config.baserow.token}`;
+        }
+
         // Use exponential backoff retry logic
         const response = await this.fetchWithRetry(nextUrl, {
           method: 'GET',
-          headers: {
-            'Authorization': `Token ${config.baserow.token}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
+          headers,
           mode: 'cors',
           credentials: 'omit'
         }, 3);
-        
+
         const data = await response.json();
-        
+
         if (!Array.isArray(data.results)) {
           throw new Error('Unexpected API response structure');
         }
-        
+
         rows.push(...data.results);
-        nextUrl = data.next; // Will be null when done
+        // Update nextUrl, preserving public_token if present
+        nextUrl = data.next ? (usePublicToken ? `${data.next}&public_token=${config.baserow.publicToken}` : data.next) : null;
 
         if (process.env.NODE_ENV === 'development') {
           console.log(`📊 Progress: ${rows.length} stations fetched so far...`);

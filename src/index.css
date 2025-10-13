@@ -4,58 +4,51 @@
 /* Import cross-browser utilities */
 @import './styles/cross-browser-utils.css';
 
-/* Import Premium Modern Theme */
-@import './styles/premium-theme.css';
+/* Import Unified Design System */
+@import './styles/design-system.css';
 
-/* Universal Browser-Compatible CSS Variables with fallbacks */
-
+/* Legacy variable support for backwards compatibility */
 :root {
-  /* Primary Colors with IE fallbacks */
-  --primary-color: #2563eb;
-  --primary-dark: #1d4ed8;
-  --secondary-color: #10b981;
-  --accent-color: #f59e0b;
-  
-  /* Text Colors - WCAG AA Compliant (4.5:1+ contrast on white) */
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-light: #6b7280;
-  
-  /* Background Colors */
-  --background: #ffffff;
-  --background-gray: #f9fafb;
-  --border-color: #e5e7eb;
-  
-  /* Shadows with fallbacks */
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  
-  /* Gradients with fallbacks */
-  --gradient: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
-  
-  /* Layout Variables */
-  --container-max-width: 1200px;
-  --border-radius: 0.5rem;
-  --border-radius-lg: 1rem;
-  --transition: all 0.3s ease;
-  
-  /* Typography Scale */
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.875rem;
-  --font-size-4xl: 2.25rem;
-  
-  /* Spacing Scale */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
+  /* Map new design system to legacy variables */
+  --primary-color: var(--primary-600);
+  --primary-dark: var(--primary-700);
+  --secondary-color: var(--secondary-500);
+  --accent-color: var(--accent-500);
+
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-600);
+  --text-light: var(--gray-500);
+
+  --background: var(--bg-primary);
+  --background-gray: var(--bg-secondary);
+  --border-color: var(--border-medium);
+
+  --shadow: var(--shadow-md);
+  --shadow-lg: var(--shadow-xl);
+
+  --gradient: var(--gradient-primary);
+
+  --container-max-width: var(--container-max);
+  --border-radius: var(--radius-lg);
+  --border-radius-lg: var(--radius-xl);
+  --transition: all var(--transition-base);
+
+  /* Legacy spacing and typography */
+  --font-size-xs: var(--text-xs);
+  --font-size-sm: var(--text-sm);
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --font-size-2xl: var(--text-2xl);
+  --font-size-3xl: var(--text-3xl);
+  --font-size-4xl: var(--text-4xl);
+
+  --spacing-xs: var(--space-1);
+  --spacing-sm: var(--space-2);
+  --spacing-md: var(--space-4);
+  --spacing-lg: var(--space-6);
+  --spacing-xl: var(--space-8);
+  --spacing-2xl: var(--space-12);
 }
 
 body {
@@ -63,25 +56,25 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     Arial, sans-serif;
-  
+
   /* Font smoothing for better text rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern" 1;
   font-kerning: normal;
-  
+
   /* Colors with fallbacks for older browsers */
   background-color: var(--background, #ffffff);
   color: var(--text-primary, #1f2937);
-  
+
   /* Typography */
   font-size: var(--font-size-base, 1rem);
   line-height: 1.6;
-  
+
   /* Prevent horizontal scroll on mobile */
   overflow-x: hidden;
-  
+
   /* Smooth scrolling where supported */
   scroll-behavior: smooth;
 }
@@ -119,33 +112,33 @@ body {
   /* Sizing and spacing */
   padding: var(--spacing-sm, 0.75rem) var(--spacing-lg, 1.5rem);
   font-size: var(--font-size-base, 1rem);
-  
+
   /* Appearance */
   border-radius: var(--border-radius, 0.5rem);
   font-weight: 600;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  
+
   /* Layout */
   display: inline-block;
   vertical-align: middle;
   text-align: center;
   white-space: nowrap;
-  
+
   /* Transitions with vendor prefixes */
   -webkit-transition: var(--transition, all 0.3s ease);
   -moz-transition: var(--transition, all 0.3s ease);
   -ms-transition: var(--transition, all 0.3s ease);
   -o-transition: var(--transition, all 0.3s ease);
   transition: var(--transition, all 0.3s ease);
-  
+
   /* Prevent text selection */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  
+
   /* Touch device optimization */
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -156,7 +149,7 @@ body {
   background-color: var(--primary-color, #2563eb);
   background-image: var(--gradient, linear-gradient(135deg, #2563eb 0%, #10b981 100%));
   color: white;
-  
+
   /* Shadow with fallbacks */
   -webkit-box-shadow: var(--shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
   -moz-box-shadow: var(--shadow, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
@@ -171,7 +164,7 @@ body {
   -ms-transform: translateY(-2px);
   -o-transform: translateY(-2px);
   transform: translateY(-2px);
-  
+
   /* Enhanced shadow */
   -webkit-box-shadow: var(--shadow-lg, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
   -moz-box-shadow: var(--shadow-lg, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
@@ -188,7 +181,7 @@ body {
 .btn-secondary:focus {
   background-color: var(--primary-color, #2563eb);
   color: white;
-  
+
   /* Transform with vendor prefixes */
   -webkit-transform: translateY(-2px);
   -moz-transform: translateY(-2px);
@@ -228,6 +221,7 @@ body {
     -webkit-transform: translateY(30px);
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     -webkit-transform: translateY(0);
@@ -241,6 +235,7 @@ body {
     -moz-transform: translateY(30px);
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     -moz-transform: translateY(0);
@@ -254,6 +249,7 @@ body {
     -ms-transform: translateY(30px);
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     -ms-transform: translateY(0);
@@ -267,6 +263,7 @@ body {
     -o-transform: translateY(30px);
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     -o-transform: translateY(0);
@@ -283,6 +280,7 @@ body {
     -o-transform: translateY(30px);
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     -webkit-transform: translateY(0);
@@ -296,4 +294,4 @@ body {
 .leaflet-container {
   border-radius: 1rem;
   box-shadow: var(--shadow-lg);
-} 
+}

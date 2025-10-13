@@ -1,0 +1,108 @@
+/**
+ * Breadcrumbs Component Styles
+ * Provides visual hierarchy and navigation context
+ */
+
+.breadcrumbs {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-light);
+  padding: var(--space-4) 0;
+  position: sticky;
+  top: 73px;
+  /* Below navbar */
+  z-index: var(--z-sticky);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  font-weight: var(--font-medium);
+}
+
+.breadcrumb-link:hover {
+  color: var(--primary-600);
+  background: var(--primary-50);
+}
+
+.breadcrumb-link:focus-visible {
+  outline: 2px solid var(--primary-300);
+  outline-offset: 2px;
+}
+
+.breadcrumb-current {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+  padding: var(--space-1) var(--space-2);
+}
+
+.breadcrumb-separator {
+  color: var(--text-disabled);
+  font-weight: var(--font-light);
+  user-select: none;
+}
+
+.breadcrumb-icon {
+  font-size: var(--text-base);
+  line-height: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .breadcrumbs {
+    padding: var(--space-2) 0;
+    top: 60px;
+  }
+
+  .breadcrumb-list {
+    gap: var(--space-1);
+  }
+
+  .breadcrumb-item {
+    font-size: var(--text-xs);
+  }
+
+  .breadcrumb-icon {
+    font-size: var(--text-sm);
+  }
+
+  /* Hide icons on very small screens */
+  .breadcrumb-icon {
+    display: none;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .breadcrumb-link {
+    transition: none;
+  }
+}
