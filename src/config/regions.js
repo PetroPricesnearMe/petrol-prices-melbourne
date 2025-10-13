@@ -4,10 +4,31 @@
  */
 
 export const MELBOURNE_REGIONS = {
+  NORTHERN: {
+    id: 'northern',
+    name: 'Northern Suburbs',
+    color: '#7B68B6', // Purple
+    icon: '🌆',
+    description: 'Preston, Coburg, Essendon, Tullamarine, Sunbury',
+    suburbs: [
+      'Preston', 'Coburg', 'Brunswick', 'Essendon', 'Airport West', 'Tullamarine',
+      'Sunbury', 'Keilor', 'Niddrie', 'Strathmore', 'Moonee Ponds', 'Ascot Vale',
+      'Flemington', 'Kensington', 'Glenroy', 'Oak Park', 'Pascoe Vale', 'Brunswick West',
+      'Reservoir', 'Thornbury', 'Northcote', 'Fairfield', 'Ivanhoe'
+    ],
+    bounds: {
+      latMin: -37.75,
+      latMax: -37.60,
+      lngMin: 144.85,
+      lngMax: 145.05
+    }
+  },
+
   WESTERN: {
     id: 'western',
-    name: 'Western Melbourne',
-    color: '#8B2635', // Dark red
+    name: 'Western Suburbs',
+    color: '#FF6B6B', // Coral Red
+    icon: '🌅',
     description: 'Footscray, Sunshine, Werribee, Point Cook',
     suburbs: [
       'Footscray', 'Sunshine', 'Werribee', 'Point Cook', 'Altona', 'Williamstown',
@@ -21,47 +42,32 @@ export const MELBOURNE_REGIONS = {
       lngMax: 144.85
     }
   },
-  
-  NORTHWESTERN: {
-    id: 'northwestern',
-    name: 'North Western Melbourne',
-    color: '#C8417B', // Pink/Magenta
-    description: 'Essendon, Airport West, Tullamarine, Sunbury',
-    suburbs: [
-      'Essendon', 'Airport West', 'Tullamarine', 'Sunbury', 'Keilor', 'Niddrie',
-      'Strathmore', 'Moonee Ponds', 'Ascot Vale', 'Flemington', 'Kensington',
-      'Glenroy', 'Oak Park', 'Pascoe Vale', 'Coburg', 'Brunswick West'
-    ],
-    bounds: {
-      latMin: -37.75,
-      latMax: -37.60,
-      lngMin: 144.85,
-      lngMax: 144.95
-    }
-  },
-  
-  NORTHEASTERN: {
-    id: 'northeastern',
-    name: 'North Eastern Melbourne',
-    color: '#7B68B6', // Purple
-    description: 'Doncaster, Box Hill, Ringwood, Templestowe',
+
+  EASTERN: {
+    id: 'eastern',
+    name: 'Eastern Suburbs',
+    color: '#4ECDC4', // Turquoise
+    icon: '🏞️',
+    description: 'Doncaster, Box Hill, Ringwood, Glen Waverley',
     suburbs: [
       'Doncaster', 'Box Hill', 'Ringwood', 'Templestowe', 'Bulleen', 'Balwyn',
       'Kew', 'Camberwell', 'Hawthorn', 'Surrey Hills', 'Blackburn', 'Mitcham',
-      'Nunawading', 'Vermont', 'Forest Hill', 'Croydon', 'Lilydale', 'Chirnside Park'
+      'Nunawading', 'Vermont', 'Forest Hill', 'Croydon', 'Lilydale', 'Chirnside Park',
+      'Glen Waverley', 'Mount Waverley', 'Wheelers Hill', 'Burwood'
     ],
     bounds: {
-      latMin: -37.82,
+      latMin: -37.92,
       latMax: -37.70,
       lngMin: 145.05,
       lngMax: 145.30
     }
   },
-  
-  CENTRAL: {
-    id: 'central',
-    name: 'Melbourne CBD & Inner Suburbs',
-    color: '#5A6267', // Gray
+
+  MELBOURNE_INNER: {
+    id: 'melbourne_inner',
+    name: 'Melbourne Inner',
+    color: '#FFD93D', // Golden Yellow
+    icon: '🏙️',
     description: 'CBD, Carlton, Fitzroy, South Yarra, Richmond',
     suburbs: [
       'Melbourne', 'CBD', 'Carlton', 'Fitzroy', 'Collingwood', 'Richmond',
@@ -76,39 +82,23 @@ export const MELBOURNE_REGIONS = {
       lngMax: 145.05
     }
   },
-  
-  INNER_EAST: {
-    id: 'inner_east',
-    name: 'Inner Eastern Melbourne',
-    color: '#4DB8C5', // Cyan/Teal
-    description: 'Malvern, Caulfield, Glen Waverley, Oakleigh',
-    suburbs: [
-      'Malvern', 'Caulfield', 'Glen Waverley', 'Oakleigh', 'Clayton', 'Carnegie',
-      'Murrumbeena', 'Hughesdale', 'Ashwood', 'Mount Waverley', 'Wheelers Hill',
-      'Notting Hill', 'Clarinda', 'Bentleigh', 'McKinnon', 'Ormond'
-    ],
-    bounds: {
-      latMin: -37.92,
-      latMax: -37.82,
-      lngMin: 145.02,
-      lngMax: 145.18
-    }
-  },
-  
-  SOUTHERN: {
-    id: 'southern',
-    name: 'Southern Melbourne',
-    color: '#2E7AB5', // Blue
-    description: 'Frankston, Dandenong, Cranbourne, Mordialloc',
+
+  SOUTH_EASTERN: {
+    id: 'south_eastern',
+    name: 'South Eastern Suburbs',
+    color: '#6BCB77', // Green
+    icon: '🌳',
+    description: 'Frankston, Dandenong, Cranbourne, Clayton',
     suburbs: [
       'Frankston', 'Dandenong', 'Cranbourne', 'Mordialloc', 'Chelsea', 'Carrum',
       'Seaford', 'Mentone', 'Parkdale', 'Cheltenham', 'Springvale', 'Noble Park',
       'Keysborough', 'Hampton Park', 'Narre Warren', 'Berwick', 'Pakenham',
-      'Endeavour Hills', 'Hallam', 'Lyndhurst', 'Lynbrook'
+      'Endeavour Hills', 'Hallam', 'Lyndhurst', 'Lynbrook', 'Clayton', 'Oakleigh',
+      'Malvern', 'Caulfield', 'Carnegie', 'Murrumbeena', 'Hughesdale', 'Bentleigh'
     ],
     bounds: {
       latMin: -38.20,
-      latMax: -37.87,
+      latMax: -37.82,
       lngMin: 145.00,
       lngMax: 145.30
     }
@@ -122,23 +112,23 @@ export const getStationRegion = (lat, lng, suburb) => {
   // First try to match by suburb name
   if (suburb) {
     const suburbLower = suburb.toLowerCase();
-    for (const [key, region] of Object.entries(MELBOURNE_REGIONS)) {
+    for (const region of Object.values(MELBOURNE_REGIONS)) {
       if (region.suburbs.some(s => suburbLower.includes(s.toLowerCase()))) {
         return region;
       }
     }
   }
-  
+
   // Fall back to coordinate-based matching
-  for (const [key, region] of Object.entries(MELBOURNE_REGIONS)) {
-    if (lat >= region.bounds.latMin && 
-        lat <= region.bounds.latMax &&
-        lng >= region.bounds.lngMin && 
-        lng <= region.bounds.lngMax) {
+  for (const region of Object.values(MELBOURNE_REGIONS)) {
+    if (lat >= region.bounds.latMin &&
+      lat <= region.bounds.latMax &&
+      lng >= region.bounds.lngMin &&
+      lng <= region.bounds.lngMax) {
       return region;
     }
   }
-  
+
   // Default to Central if can't determine
   return MELBOURNE_REGIONS.CENTRAL;
 };
@@ -148,11 +138,11 @@ export const getStationRegion = (lat, lng, suburb) => {
  */
 export const getRegionCounts = (stations) => {
   const counts = {};
-  
+
   Object.keys(MELBOURNE_REGIONS).forEach(key => {
     counts[key] = 0;
   });
-  
+
   stations.forEach(station => {
     const region = getStationRegion(
       station.lat || station.Latitude,
@@ -161,7 +151,7 @@ export const getRegionCounts = (stations) => {
     );
     counts[region.id.toUpperCase()]++;
   });
-  
+
   return counts;
 };
 

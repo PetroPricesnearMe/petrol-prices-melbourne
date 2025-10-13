@@ -3,7 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { MotionDiv } from './MotionComponents';
 import dataSourceManager from '../services/DataSourceManager';
 import { MELBOURNE_REGIONS, getStationRegion } from '../config/regions';
-import './DirectoryPageModern.css';
+import './DirectoryPageNew.css';
 
 // Brand image mapping for uploaded images
 const BRAND_IMAGES = {
@@ -42,13 +42,13 @@ const getBrandImage = (brand) => {
 const ITEMS_PER_PAGE = 10;
 
 const DirectoryPageNew = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [stations, setStations] = useState([]);
   const [filteredStations, setFilteredStations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const regionParam = searchParams.get('region');
   const selectedRegion = regionParam ? MELBOURNE_REGIONS[regionParam.toUpperCase()] : null;
 
@@ -92,7 +92,7 @@ const DirectoryPageNew = () => {
         const name = (station.name || station['Station Name'] || '').toLowerCase();
         const city = (station.city || station.City || '').toLowerCase();
         const address = (station.address || station.Address || '').toLowerCase();
-        
+
         return name.includes(search) || city.includes(search) || address.includes(search);
       });
     }
@@ -170,7 +170,7 @@ const DirectoryPageNew = () => {
               className="search-input"
             />
             {searchTerm && (
-              <button 
+              <button
                 onClick={() => setSearchTerm('')}
                 className="clear-search"
                 aria-label="Clear search"
@@ -205,7 +205,7 @@ const DirectoryPageNew = () => {
                   const brandStr = typeof brand === 'string' ? brand : '';
                   const brandClass = getBrandClass(brandStr);
                   const brandImage = getBrandImage(brandStr);
-                  
+
                   return (
                     <MotionDiv
                       key={station.id || index}
@@ -216,7 +216,7 @@ const DirectoryPageNew = () => {
                     >
                       {/* Premium Image Header */}
                       <div className="station-image-header">
-                        <img 
+                        <img
                           src={brandImage}
                           alt={`${brandStr || 'Petrol'} station`}
                           className="station-brand-image"
@@ -233,13 +233,13 @@ const DirectoryPageNew = () => {
                           )}
                         </div>
                       </div>
-                      
+
                       {/* Station Content */}
                       <div className="station-content">
                         <div className="station-header">
                           <h3 className="station-name">{stationName}</h3>
                         </div>
-                        
+
                         <div className="station-details">
                           <div className="detail-item">
                             <span className="detail-icon">📍</span>
@@ -248,7 +248,7 @@ const DirectoryPageNew = () => {
                               {city && <><br />{city} {postalCode}</>}
                             </span>
                           </div>
-                          
+
                           {station.prices && Object.keys(station.prices).length > 0 && (
                             <div className="station-prices">
                               <strong>💰 Current Prices</strong>
@@ -265,7 +265,7 @@ const DirectoryPageNew = () => {
                               </div>
                             </div>
                           )}
-                          
+
                           {(station.lat && station.lng) && (
                             <a
                               href={`https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lng}`}
@@ -295,14 +295,14 @@ const DirectoryPageNew = () => {
                   >
                     ← Previous
                   </button>
-                  
+
                   <div className="pagination-pages">
                     {Array.from({ length: totalPages }, (_, i) => i + 1)
                       .filter(page => {
                         // Show first, last, current, and adjacent pages
-                        return page === 1 || 
-                               page === totalPages || 
-                               Math.abs(page - currentPage) <= 1;
+                        return page === 1 ||
+                          page === totalPages ||
+                          Math.abs(page - currentPage) <= 1;
                       })
                       .map((page, index, array) => (
                         <React.Fragment key={page}>
@@ -320,7 +320,7 @@ const DirectoryPageNew = () => {
                         </React.Fragment>
                       ))}
                   </div>
-                  
+
                   <button
                     onClick={() => goToPage(currentPage + 1)}
                     disabled={currentPage === totalPages}

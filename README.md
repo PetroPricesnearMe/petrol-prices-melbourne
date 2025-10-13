@@ -27,30 +27,25 @@ A modern, interactive web application that features a directory of petrol statio
 - Complete station information including prices, hours, and contact details
 - Responsive design adapting to different screen sizes
 
-### 🚀 Backend API
-- RESTful API built with Express.js
-- WebSocket integration with Socket.io for real-time updates
-- Multiple endpoints for station data and price information
-- CORS enabled for frontend integration
-- Mock data simulation for Melbourne petrol stations
-
 ## Technology Stack
 
-### Frontend
+### Frontend (Static React Application)
 - **React 18** - Modern React with hooks and functional components
 - **React Router Dom** - Client-side routing
-- **Leaflet & React-Leaflet** - Interactive maps
+- **Mapbox GL** - Interactive maps
 - **Framer Motion** - Smooth animations and transitions
-- **Socket.io Client** - Real-time WebSocket communication
 - **Styled Components** - Component-based styling
 - **Axios** - HTTP client for API requests
 
-### Backend
-- **Node.js & Express** - Server-side JavaScript runtime and framework
-- **Socket.io** - Real-time bidirectional communication
-- **CORS** - Cross-origin resource sharing
-- **Morgan** - HTTP request logging
-- **Dotenv** - Environment variable management
+### Data Source
+- **Baserow API** - Direct API integration for petrol station data
+- **622 petrol stations** - Live data from Baserow database
+- **Real-time updates** - Data refreshed from Baserow
+
+### Deployment
+- **Vercel** - Static site hosting with automatic deployments
+- **GoDaddy** - Domain management
+- **GitHub** - Version control and CI/CD integration
 
 ### Styling
 - **CSS3** with modern features (Grid, Flexbox, CSS Variables)
@@ -63,63 +58,45 @@ A modern, interactive web application that features a directory of petrol statio
 ### Prerequisites
 - Node.js (v16+ recommended)
 - npm or yarn package manager
+- Baserow API token (for data access)
 
-### Frontend Setup
+### Quick Start
 
-1. **Install dependencies:**
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/melbourne-petrol-stations.git
+   cd melbourne-petrol-stations
+   ```
+
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. **Start the development server:**
+3. **Set up environment variables:**
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local and add your Baserow API token
+   ```
+
+4. **Start the development server:**
    ```bash
    npm start
    ```
 
-3. **Access the application:**
+5. **Access the application:**
    - Open http://localhost:3000 in your browser
    - The app will automatically reload when you make changes
 
-### Backend Setup
-
-1. **Navigate to backend directory:**
-   ```bash
-   cd backend
-   ```
-
-2. **Install backend dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the backend server:**
-   ```bash
-   npm run dev
-   ```
-   or for production:
-   ```bash
-   npm start
-   ```
-
-4. **Backend will be available at:**
-   - API: http://localhost:3001
-   - WebSocket: ws://localhost:3001
-
-### API Endpoints
-
-- `GET /` - API information and available endpoints
-- `GET /api/stations` - Get all petrol stations
-- `GET /api/stations/:id` - Get specific station by ID
-- `GET /api/stations/search?q=query&brand=brand&suburb=suburb` - Search stations
-- `GET /api/prices/lowest?fuelType=unleaded&limit=5` - Get lowest prices
-
 ### Environment Variables
 
-Create a `.env` file in the backend directory:
+Create a `.env.local` file in the root directory:
 ```env
-PORT=3001
-NODE_ENV=development
+REACT_APP_BASEROW_TOKEN=your_baserow_token_here
+REACT_APP_BASEROW_API_URL=https://api.baserow.io/api
 ```
+
+**Note:** This is a static React application. There is no backend server - data is fetched directly from Baserow API.
 
 ## Deployment
 
@@ -162,15 +139,7 @@ NODE_ENV=development
    }
    ```
 
-### Backend Deployment
-
-For production deployment, consider:
-- **Heroku** - Easy deployment with Git integration
-- **Railway** - Modern platform with WebSocket support
-- **DigitalOcean App Platform** - Scalable container-based hosting
-- **AWS/Google Cloud** - Full control over infrastructure
-
-### Alternative: Netlify (Frontend Only)
+### Alternative: Netlify
 
 1. **Build the project:**
    ```bash
@@ -185,26 +154,28 @@ For production deployment, consider:
 
 ```
 melbourne-petrol-stations/
-├── public/
-│   ├── index.html
-│   └── manifest.json
-├── src/
-│   ├── components/
-│   │   ├── HomePage.js
-│   │   ├── HomePage.css
-│   │   ├── MapPage.js
-│   │   ├── MapPage.css
-│   │   ├── DirectoryPage.js
-│   │   ├── DirectoryPage.css
-│   │   ├── Navbar.js
-│   │   └── Navbar.css
+├── public/              # Static assets
+│   ├── images/
+│   ├── favicon.ico
+│   ├── manifest.json
+│   └── sitemap.xml
+├── src/                 # React application source
+│   ├── components/      # React components
+│   ├── config/          # Configuration files
+│   ├── hooks/           # Custom React hooks
+│   ├── services/        # API services
+│   ├── styles/          # Global styles
+│   ├── utils/           # Utility functions
 │   ├── App.js
 │   ├── index.js
-│   └── index.css
-├── backend/
-│   ├── server.js
-│   └── package.json
-├── package.json
+│   └── config.js        # Baserow API configuration
+├── docs/                # Documentation
+│   ├── setup/
+│   ├── development/
+│   └── architecture/
+├── package.json         # Dependencies and scripts
+├── vercel.json          # Vercel deployment config
+├── .env.example         # Environment variables template
 └── README.md
 ```
 

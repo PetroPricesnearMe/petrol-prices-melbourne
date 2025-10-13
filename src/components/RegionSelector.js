@@ -37,109 +37,75 @@ const RegionSelector = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="region-header">
-            <h2>Find Petrol Stations by Region</h2>
-            <p>Click on a region to view all petrol stations in that area</p>
+            <h2>Explore Melbourne by Region</h2>
+            <p>Find the cheapest fuel in your area - Select your region below</p>
           </div>
 
           <div className="region-content">
-            {/* Region Map Grid */}
-            <div className="region-grid">
+            {/* Modern Region Card Grid */}
+            <div className="region-grid-modern">
               {regions.map((region, index) => (
                 <MotionDiv
                   key={region.id}
-                  className="region-card"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="modern-region-card"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.15, duration: 0.5 }}
+                  whileHover={{ y: -10, scale: 1.02 }}
                   onMouseEnter={() => setHoveredRegion(region.id)}
                   onMouseLeave={() => setHoveredRegion(null)}
                 >
-                  <Link 
+                  <Link
                     to={`/directory?region=${region.id}`}
-                    className="region-link"
+                    className="modern-region-link"
                     style={{
-                      borderColor: region.color,
-                      background: hoveredRegion === region.id 
-                        ? `linear-gradient(135deg, ${region.color}15, ${region.color}25)`
+                      background: hoveredRegion === region.id
+                        ? `linear-gradient(135deg, ${region.color}25, ${region.color}15)`
                         : 'white'
                     }}
                   >
-                    <div 
-                      className="region-color-indicator"
-                      style={{ backgroundColor: region.color }}
-                    />
-                    <div className="region-info">
-                      <h3 className="region-name">{region.name}</h3>
-                      <p className="region-description">{region.description}</p>
-                      <div className="region-stats">
-                        {loading ? (
-                          <span className="loading-count">Loading...</span>
-                        ) : (
-                          <span className="station-count">
-                            {regionCounts[region.id.toUpperCase()] || 0} Stations
-                          </span>
-                        )}
-                      </div>
+                    {/* Icon Circle */}
+                    <div className="region-icon-circle" style={{ backgroundColor: region.color }}>
+                      <span className="region-emoji">{region.icon}</span>
                     </div>
-                    <div className="region-arrow">→</div>
+
+                    {/* Region Info */}
+                    <div className="modern-region-info">
+                      <h3 className="modern-region-name">{region.name}</h3>
+                      <p className="modern-region-description">{region.description}</p>
+                    </div>
+
+                    {/* Station Count Badge */}
+                    <div className="region-count-badge" style={{ backgroundColor: region.color }}>
+                      {loading ? (
+                        <span className="count-loading">...</span>
+                      ) : (
+                        <>
+                          <span className="count-number">{regionCounts[region.id.toUpperCase()] || 0}</span>
+                          <span className="count-label">Stations</span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Hover Effect Overlay */}
+                    <div className="card-hover-shine"></div>
                   </Link>
                 </MotionDiv>
               ))}
             </div>
-
-            {/* Alternative: Simple List View */}
-            <div className="region-list-view">
-              <table className="region-table">
-                <thead>
-                  <tr>
-                    <th>Region</th>
-                    <th>Key Suburbs</th>
-                    <th>Stations</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {regions.map((region) => (
-                    <tr key={region.id}>
-                      <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <div
-                            style={{
-                              width: '20px',
-                              height: '20px',
-                              borderRadius: '4px',
-                              backgroundColor: region.color
-                            }}
-                          />
-                          <strong>{region.name}</strong>
-                        </div>
-                      </td>
-                      <td className="suburbs-cell">{region.description}</td>
-                      <td className="count-cell">
-                        <strong>{regionCounts[region.id.toUpperCase()] || 0}</strong>
-                      </td>
-                      <td>
-                        <Link
-                          to={`/directory?region=${region.id}`}
-                          className="btn btn-primary btn-sm"
-                        >
-                          View Stations
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           </div>
 
           {/* Total Summary */}
-          <div className="region-summary">
-            <p>
-              <strong>Total:</strong> {Object.values(regionCounts).reduce((a, b) => a + b, 0)} 
-              petrol stations across Greater Melbourne
-            </p>
+          <div className="region-summary-modern">
+            <div className="summary-content">
+              <div className="summary-icon">🚗</div>
+              <div className="summary-text">
+                <span className="summary-number">
+                  {Object.values(regionCounts).reduce((a, b) => a + b, 0)}
+                </span>
+                <span className="summary-label">Petrol Stations Across Greater Melbourne</span>
+              </div>
+            </div>
           </div>
         </MotionDiv>
       </div>
