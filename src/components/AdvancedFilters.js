@@ -69,6 +69,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
           <span className="search-icon" aria-hidden="true">🔍</span>
           <input
             type="search"
+            name="station-search"
             className="filter-search-input"
             placeholder="Search by station name, address, suburb..."
             value={searchTerm}
@@ -113,6 +114,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
               </label>
               <select
                 id="fuel-type-filter"
+                name="fuel-type-filter"
                 className="filter-select"
                 value={selectedFuelType}
                 onChange={(e) => setSelectedFuelType(e.target.value)}
@@ -133,6 +135,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
               </label>
               <select
                 id="brand-filter"
+                name="brand-filter"
                 className="filter-select"
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
@@ -153,6 +156,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
               </label>
               <select
                 id="region-filter"
+                name="region-filter"
                 className="filter-select"
                 value={selectedRegion}
                 onChange={(e) => setSelectedRegion(e.target.value)}
@@ -172,6 +176,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
               </label>
               <select
                 id="sort-filter"
+                name="sort-filter"
                 className="filter-select"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}

@@ -51,6 +51,22 @@ export function validateStation(station, index = 0) {
     }
   }
 
+  // Extract and normalize fuelPrices
+  let fuelPrices = station['Fuel Prices'] || station.field_5072139 || station.fuelPrices;
+
+  // Ensure fuelPrices is an array of objects, not IDs
+  if (!Array.isArray(fuelPrices)) {
+    fuelPrices = [];
+  } else {
+    // Filter out non-object items (like Baserow link IDs)
+    fuelPrices = fuelPrices.filter(item => item && typeof item === 'object' && item.type);
+  }
+
+  // If no valid fuel prices, provide default empty array
+  if (fuelPrices.length === 0) {
+    fuelPrices = [];
+  }
+
   // Return validation result
   return {
     valid: errors.length === 0,
@@ -67,7 +83,7 @@ export function validateStation(station, index = 0) {
       country: station.Country || station.field_5072135 || station.country || 'AUSTRALIA',
       category: station.Category || station.feature_type || station.field_5072138 || station.category,
       locationDetails: station['Location Details'] || station.station_description || station.field_5072140 || station.locationDetails,
-      fuelPrices: station['Fuel Prices'] || station.field_5072139 || station.fuelPrices || [],
+      fuelPrices: fuelPrices,
       brand: station.brand || station.station_owner || station.Brand
     } : null
   };

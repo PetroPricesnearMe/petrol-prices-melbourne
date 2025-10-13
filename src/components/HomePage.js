@@ -137,7 +137,7 @@ const HomePage = () => {
                   className="nozzles-img"
                   loading="eager"
                   decoding="async"
-                  fetchPriority="high"
+                  fetchpriority="high"
                   onLoad={(e) => {
                     e.target.style.opacity = '1';
                   }}

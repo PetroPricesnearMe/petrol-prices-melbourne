@@ -49,10 +49,24 @@ class AnalyticsStore {
     // Load existing analytics data from localStorage
     this.loadFromStorage();
 
-    // Track session end on page unload
-    window.addEventListener('beforeunload', () => {
+    // Track session end using modern Page Visibility API and pagehide event
+    // These are more reliable than the deprecated beforeunload/unload events
+
+    // Use visibilitychange to track when user switches tabs or minimizes
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+          duration: Date.now() - this.sessionStartTime,
+          reason: 'visibility_hidden'
+        });
+      }
+    });
+
+    // Use pagehide as a more reliable alternative to beforeunload
+    window.addEventListener('pagehide', () => {
       this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
-        duration: Date.now() - this.sessionStartTime
+        duration: Date.now() - this.sessionStartTime,
+        reason: 'page_hide'
       });
     });
   }

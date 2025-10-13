@@ -63,10 +63,13 @@ const StationCards = () => {
                 key.toLowerCase().includes('diesel') ? 'Diesel' :
                   key.toLowerCase().includes('lpg') ? 'LPG' : 'Fuel';
 
-            fuelPrices.push({
-              type: fuelType,
-              price: parseFloat(station[key]) || 0
-            });
+            const price = parseFloat(station[key]);
+            if (!isNaN(price) && price > 0) {
+              fuelPrices.push({
+                type: fuelType,
+                price: price
+              });
+            }
           }
         });
 
@@ -150,7 +153,13 @@ const StationCards = () => {
   }, [stations]);
 
   const fuelTypes = useMemo(() => {
-    const allFuelTypes = stations.flatMap(s => s.fuelPrices?.map(f => f.type) || []);
+    const allFuelTypes = stations.flatMap(s => {
+      // Ensure fuelPrices is an array and contains objects with type property
+      if (!Array.isArray(s.fuelPrices)) return [];
+      return s.fuelPrices
+        .filter(f => f && typeof f === 'object' && f.type)
+        .map(f => f.type);
+    });
     const uniqueFuelTypes = [...new Set(allFuelTypes.filter(Boolean))];
     return ['all', ...uniqueFuelTypes.sort()];
   }, [stations]);
@@ -193,7 +202,8 @@ const StationCards = () => {
     // Fuel type filter
     if (filterFuelType !== 'all') {
       filtered = filtered.filter(s =>
-        s.fuelPrices.some(fuel => fuel.type === filterFuelType)
+        Array.isArray(s.fuelPrices) &&
+        s.fuelPrices.some(fuel => fuel && fuel.type === filterFuelType)
       );
       trackFilter('fuelType', filterFuelType);
     }
@@ -283,6 +293,7 @@ const StationCards = () => {
           <label htmlFor="search">🔍 Search Stations</label>
           <input
             id="search"
+            name="search"
             type="search"
             placeholder="Search by name, address, suburb..."
             value={searchTerm}
@@ -295,6 +306,7 @@ const StationCards = () => {
           <label htmlFor="brand-filter">🏪 Brand</label>
           <select
             id="brand-filter"
+            name="brand-filter"
             value={filterBrand}
             onChange={(e) => setFilterBrand(e.target.value)}
             className="filter-select"
@@ -311,6 +323,7 @@ const StationCards = () => {
           <label htmlFor="suburb-filter">🏘️ Suburb</label>
           <select
             id="suburb-filter"
+            name="suburb-filter"
             value={filterSuburb}
             onChange={(e) => setFilterSuburb(e.target.value)}
             className="filter-select"
@@ -327,6 +340,7 @@ const StationCards = () => {
           <label htmlFor="fuel-filter">⛽ Fuel Type</label>
           <select
             id="fuel-filter"
+            name="fuel-filter"
             value={filterFuelType}
             onChange={(e) => setFilterFuelType(e.target.value)}
             className="filter-select"
@@ -343,6 +357,7 @@ const StationCards = () => {
           <label htmlFor="region-filter">📍 Region</label>
           <select
             id="region-filter"
+            name="region-filter"
             value={filterRegion}
             onChange={(e) => setFilterRegion(e.target.value)}
             className="filter-select"
@@ -385,17 +400,25 @@ const StationCards = () => {
 
                 {/* Fuel Prices */}
                 <div className="fuel-prices">
-                  {station.fuelPrices.map((fuel, index) => (
-                    <div key={index} className="fuel-price-item">
-                      <div className="fuel-type">
-                        <div className={`fuel-icon ${fuel.type.toLowerCase()}`}>
-                          {getFuelIcon(fuel.type)}
+                  {Array.isArray(station.fuelPrices) && station.fuelPrices.length > 0 ? (
+                    station.fuelPrices
+                      .filter(fuel => fuel && typeof fuel === 'object' && fuel.type)
+                      .map((fuel, index) => (
+                        <div key={index} className="fuel-price-item">
+                          <div className="fuel-type">
+                            <div className={`fuel-icon ${fuel.type.toLowerCase()}`}>
+                              {getFuelIcon(fuel.type)}
+                            </div>
+                            {fuel.type}
+                          </div>
+                          <div className="price">{formatPrice(fuel.price)}</div>
                         </div>
-                        {fuel.type}
-                      </div>
-                      <div className="price">{formatPrice(fuel.price)}</div>
+                      ))
+                  ) : (
+                    <div className="no-fuel-prices">
+                      <p>No fuel prices available</p>
                     </div>
-                  ))}
+                  )}
                 </div>
 
                 <div className="last-updated">

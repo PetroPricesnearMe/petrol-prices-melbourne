@@ -127,16 +127,20 @@ const FAQPage = () => {
                 <span className="search-icon">🔍</span>
                 <input
                   type="text"
+                  name="faq-search"
                   placeholder="Search FAQs..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
+                  aria-label="Search FAQs"
                 />
               </div>
 
               <div className="category-filter">
-                <label>Filter by category:</label>
+                <label htmlFor="faq-category-filter">Filter by category:</label>
                 <select
+                  id="faq-category-filter"
+                  name="faq-category-filter"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   className="category-select"

@@ -153,7 +153,11 @@ class DataSourceManager {
       longitude: validation.lng,
       lat: validation.lat,
       lng: validation.lng,
-      source: this.activeSource
+      source: this.activeSource,
+      // Ensure fuelPrices is always an array
+      fuelPrices: Array.isArray(result.station.fuelPrices)
+        ? result.station.fuelPrices.filter(f => f && typeof f === 'object')
+        : []
     };
 
     return transformedStation;
