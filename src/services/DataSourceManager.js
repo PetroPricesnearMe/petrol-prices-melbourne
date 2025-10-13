@@ -57,6 +57,7 @@ class DataSourceManager {
 
   /**
    * Validate station data structure
+   * Enhanced with comprehensive field mapping for Baserow compatibility
    * @param {Object} station - Station data to validate
    * @param {number} index - Station index for logging
    * @returns {Object} Validation result
@@ -66,23 +67,44 @@ class DataSourceManager {
       return { valid: false, reason: 'Invalid station object' };
     }
 
-    // Extract coordinates with multiple fallback options
-    // Priority: Direct field names -> Baserow field IDs -> Common alternatives
-    let lat = station.Latitude || station.Y || station.lat || station.latitude;
-    let lng = station.Longitude || station.X || station.lng || station.longitude;
+    // Extract coordinates with comprehensive fallback options
+    // Priority: Standard names -> Baserow field IDs -> Common alternatives
+    // This handles both human-readable field names and Baserow's auto-generated field IDs
+    let lat =
+      station.Latitude ||
+      station.latitude ||
+      station.lat ||
+      station.Y ||
+      station.field_5072136 || // Baserow field ID format
+      station.field5072136 ||
+      null;
+
+    let lng =
+      station.Longitude ||
+      station.longitude ||
+      station.lng ||
+      station.X ||
+      station.field_5072137 || // Baserow field ID format
+      station.field5072137 ||
+      null;
 
     // Convert to numbers if they're strings
-    if (typeof lat === 'string') lat = parseFloat(lat);
-    if (typeof lng === 'string') lng = parseFloat(lng);
+    if (lat !== null && typeof lat === 'string') lat = parseFloat(lat);
+    if (lng !== null && typeof lng === 'string') lng = parseFloat(lng);
 
-    // Enhanced coordinate validation
-    if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+    // Enhanced coordinate validation with detailed logging
+    if (lat === null || lng === null || isNaN(lat) || isNaN(lng)) {
       console.warn(`⚠️ Station ${index + 1} has invalid coordinates:`, {
         lat,
         lng,
         stationId: station.id,
         stationName: station['Station Name'] || station.station_name || station.name,
-        rawStation: Object.keys(station).slice(0, 10) // Show first 10 keys for debugging
+        availableFields: Object.keys(station).filter(k =>
+          k.toLowerCase().includes('lat') ||
+          k.toLowerCase().includes('long') ||
+          k.toLowerCase().includes('x') ||
+          k.toLowerCase().includes('y')
+        )
       });
       return { valid: false, reason: 'Invalid coordinates' };
     }
@@ -102,12 +124,19 @@ class DataSourceManager {
 
   /**
    * Transform station data with consistent field mapping
-   * Uses comprehensive validation from validation utility
+   * Uses comprehensive validation and enhanced coordinate extraction
    * @param {Object} station - Raw station data
    * @param {number} index - Station index
    * @returns {Object|null} Transformed station data or null if invalid
    */
   transformStationData(station, index) {
+    // First validate coordinates using our enhanced validation
+    const validation = this.validateStationData(station, index);
+
+    if (!validation.valid) {
+      return null;
+    }
+
     // Use the comprehensive validation and transformation utility
     const result = validateAndTransformStation(station, index);
 
@@ -116,11 +145,18 @@ class DataSourceManager {
       return null;
     }
 
-    // Add source information
-    return {
+    // Ensure coordinates are properly set from our validation
+    // This guarantees we have valid lat/lng even if the transform utility missed them
+    const transformedStation = {
       ...result.station,
+      latitude: validation.lat,
+      longitude: validation.lng,
+      lat: validation.lat,
+      lng: validation.lng,
       source: this.activeSource
     };
+
+    return transformedStation;
   }
 
   /**
