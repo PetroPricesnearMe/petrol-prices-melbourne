@@ -37,22 +37,8 @@ const StationCards = () => {
     'Vibe': '/images/brands/vibe-logo.png',
   };
 
-  // Load CSV file from public folder
-  const loadCSV = useCallback(async () => {
-    try {
-      const response = await fetch('/export-Petrol-Stations-Grid-view.csv');
-      if (!response.ok) return null;
-
-      const text = await response.text();
-      return parseCSV(text);
-    } catch (error) {
-      console.log('CSV not available, using Baserow API');
-      return null;
-    }
-  }, []);
-
   // Parse CSV data
-  const parseCSV = (text) => {
+  const parseCSV = useCallback((text) => {
     const lines = text.split('\n');
     const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
 
@@ -105,7 +91,21 @@ const StationCards = () => {
         };
       })
       .filter(s => s.name); // Filter out empty rows
-  };
+  }, []);
+
+  // Load CSV file from public folder
+  const loadCSV = useCallback(async () => {
+    try {
+      const response = await fetch('/export-Petrol-Stations-Grid-view.csv');
+      if (!response.ok) return null;
+
+      const text = await response.text();
+      return parseCSV(text);
+    } catch (error) {
+      console.log('CSV not available, using Baserow API');
+      return null;
+    }
+  }, [parseCSV]);
 
   // Load stations from Baserow or CSV
   useEffect(() => {
