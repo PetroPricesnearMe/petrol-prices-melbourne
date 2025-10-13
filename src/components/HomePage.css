@@ -189,6 +189,7 @@
   border-radius: 0.75rem;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   min-width: 200px;
   justify-content: center;
 }

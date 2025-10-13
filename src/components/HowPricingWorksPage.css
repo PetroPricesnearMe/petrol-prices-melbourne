@@ -612,6 +612,7 @@
   border-radius: 0.5rem;
   padding: 1rem;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .calculator-item h4 {
@@ -708,22 +709,22 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .sidebar {
     position: static;
     order: 2;
   }
-  
+
   .main-content {
     order: 1;
   }
-  
+
   .section-nav {
     flex-direction: row;
     overflow-x: auto;
     padding-bottom: 0.5rem;
   }
-  
+
   .nav-item {
     white-space: nowrap;
     min-width: 150px;
@@ -734,36 +735,36 @@
   .header-content h1 {
     font-size: 2rem;
   }
-  
+
   .main-content {
     padding: 1.5rem;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .cycle-timeline {
     grid-template-columns: 1fr;
   }
-  
+
   .tips-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .tips-categories {
     grid-template-columns: 1fr;
   }
-  
+
   .calculator-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .cta-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .cta-buttons .btn {
     width: 100%;
     max-width: 300px;
@@ -775,23 +776,23 @@
   .pricing-header {
     padding: 1.5rem 0;
   }
-  
+
   .header-content h1 {
     font-size: 1.75rem;
   }
-  
+
   .pricing-content {
     padding: 1rem 0;
   }
-  
+
   .main-content {
     padding: 1rem;
   }
-  
+
   .cta-section {
     padding: 2rem 1.5rem;
   }
-  
+
   .cta-section h3 {
     font-size: 1.5rem;
   }
