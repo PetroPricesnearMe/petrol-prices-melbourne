@@ -51,7 +51,7 @@ const BlogPage = () => {
       "name": "Petrol Prices Near Me",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.petrolpricesnearme.com.au/logo192.png"
+        "url": "https://www.petrolpricesnearme.com.au/images/fuel-icon-192.svg"
       }
     },
     "datePublished": "2024-02-08",

@@ -53,7 +53,7 @@ const SEO = ({
     "@type": "Organization",
     "name": "Petrol Prices Near Me",
     "url": siteUrl,
-    "logo": `${siteUrl}/logo192.png`,
+    "logo": `${siteUrl}/images/fuel-icon-192.svg`,
     "description": "Melbourne's leading fuel price comparison platform",
     "address": {
       "@type": "PostalAddress",
