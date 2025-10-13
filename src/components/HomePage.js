@@ -132,7 +132,7 @@ const HomePage = () => {
             >
               <figure className="fuel-nozzles-image">
                 <img
-                  src="/images/fuel-nozzles.jpg"
+                  src="/images/fuel-nozzles.svg"
                   alt="Fuel nozzles at petrol station showing different fuel types - Diesel, 98 Octane, 95 Octane, Unleaded, and 91 Octane"
                   className="nozzles-img"
                   loading="eager"
@@ -142,7 +142,7 @@ const HomePage = () => {
                     e.target.style.opacity = '1';
                   }}
                   onError={(e) => {
-                    console.warn('Failed to load fuel-nozzles.jpg image');
+                    console.warn('Failed to load fuel-nozzles image');
                     e.target.style.display = 'none';
                   }}
                   style={{

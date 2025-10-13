@@ -26,7 +26,7 @@ const BRAND_IMAGES = {
   '7-eleven': '/images/stations/seven-eleven.jpg',
   'seven eleven': '/images/stations/seven-eleven.jpg',
   'mobil': '/images/stations/seven-eleven.jpg',
-  'default': '/images/fuel-nozzles.jpg'
+  'default': '/images/fuel-nozzles.svg'
 };
 
 // Get brand-specific CSS class
@@ -402,7 +402,7 @@ const DirectoryPageNew = () => {
                               className="station-brand-image"
                               loading="lazy"
                               onError={(e) => {
-                                e.target.src = '/images/fuel-nozzles.jpg';
+                                e.target.src = '/images/fuel-nozzles.svg';
                               }}
                             />
                             <div className="station-brand-overlay">

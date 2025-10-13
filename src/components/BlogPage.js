@@ -40,7 +40,7 @@ const BlogPage = () => {
     "@type": "BlogPosting",
     "headline": "Complete Guide to Finding the Cheapest Petrol Prices in Melbourne in 2024",
     "alternativeHeadline": "Save Money on Fuel: Melbourne Petrol Price Guide",
-    "image": "https://www.petrolpricesnearme.com.au/images/fuel-nozzles.jpg",
+    "image": "https://www.petrolpricesnearme.com.au/images/fuel-nozzles.svg",
     "author": {
       "@type": "Organization",
       "name": "Petrol Prices Near Me",
@@ -95,7 +95,7 @@ const BlogPage = () => {
         keywords="melbourne petrol prices, cheapest fuel melbourne, petrol price guide, fuel savings, petrol stations melbourne, fuel price comparison melbourne, live fuel prices"
         canonical="/blog"
         ogType="article"
-        ogImage="/images/fuel-nozzles.jpg"
+        ogImage="/images/fuel-nozzles.svg"
         structuredData={articleStructuredData}
       />
       <div className="blog-page">

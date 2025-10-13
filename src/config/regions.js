@@ -129,8 +129,8 @@ export const getStationRegion = (lat, lng, suburb) => {
     }
   }
 
-  // Default to Central if can't determine
-  return MELBOURNE_REGIONS.CENTRAL;
+  // Default to Melbourne Inner if can't determine
+  return MELBOURNE_REGIONS.MELBOURNE_INNER;
 };
 
 /**
@@ -149,7 +149,14 @@ export const getRegionCounts = (stations) => {
       station.lng || station.Longitude,
       station.city || station.City || station.suburb
     );
-    counts[region.id.toUpperCase()]++;
+    
+    // Safety check - ensure region exists
+    if (region && region.id) {
+      const regionKey = region.id.toUpperCase();
+      if (counts.hasOwnProperty(regionKey)) {
+        counts[regionKey]++;
+      }
+    }
   });
 
   return counts;

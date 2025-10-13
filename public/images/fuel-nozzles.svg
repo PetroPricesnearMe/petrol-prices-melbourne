@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background Gradient -->
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#667eea;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="nozzleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ade80;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="nozzleGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="nozzleGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Fuel Nozzle 1 (Green - Unleaded) -->
+  <g transform="translate(250, 200)">
+    <rect x="0" y="0" width="80" height="200" rx="10" fill="url(#nozzleGrad)"/>
+    <rect x="20" y="180" width="40" height="80" rx="5" fill="url(#nozzleGrad)"/>
+    <circle cx="40" cy="50" r="25" fill="#fff" opacity="0.3"/>
+    <text x="40" y="110" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle">91</text>
+    <text x="40" y="280" font-family="Arial, sans-serif" font-size="14" fill="#fff" text-anchor="middle">Unleaded</text>
+  </g>
+
+  <!-- Fuel Nozzle 2 (Blue - Premium) -->
+  <g transform="translate(450, 200)">
+    <rect x="0" y="0" width="80" height="200" rx="10" fill="url(#nozzleGrad2)"/>
+    <rect x="20" y="180" width="40" height="80" rx="5" fill="url(#nozzleGrad2)"/>
+    <circle cx="40" cy="50" r="25" fill="#fff" opacity="0.3"/>
+    <text x="40" y="110" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle">95</text>
+    <text x="40" y="280" font-family="Arial, sans-serif" font-size="14" fill="#fff" text-anchor="middle">Premium</text>
+  </g>
+
+  <!-- Fuel Nozzle 3 (Yellow - Diesel) -->
+  <g transform="translate(650, 200)">
+    <rect x="0" y="0" width="80" height="200" rx="10" fill="url(#nozzleGrad3)"/>
+    <rect x="20" y="180" width="40" height="80" rx="5" fill="url(#nozzleGrad3)"/>
+    <circle cx="40" cy="50" r="25" fill="#fff" opacity="0.3"/>
+    <text x="40" y="110" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle">D</text>
+    <text x="40" y="280" font-family="Arial, sans-serif" font-size="14" fill="#fff" text-anchor="middle">Diesel</text>
+  </g>
+
+  <!-- Title -->
+  <text x="600" y="500" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#fff" text-anchor="middle">Melbourne Petrol Prices</text>
+  <text x="600" y="550" font-family="Arial, sans-serif" font-size="24" fill="#fff" text-anchor="middle" opacity="0.9">Compare Live Fuel Prices</text>
+</svg>
+

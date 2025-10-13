@@ -22,7 +22,7 @@ const SEO = ({
   keywords = 'petrol prices melbourne, fuel prices melbourne, cheapest petrol melbourne, petrol stations melbourne, fuel price comparison, live petrol prices',
   canonical,
   ogType = 'website',
-  ogImage = '/images/fuel-nozzles.jpg',
+  ogImage = '/images/fuel-nozzles.svg',
   structuredData,
   noindex = false,
 }) => {
