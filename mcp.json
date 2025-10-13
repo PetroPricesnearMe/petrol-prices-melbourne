@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "Baserow MCP": {
+      "url": "https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse"
+    }
+  }
+}

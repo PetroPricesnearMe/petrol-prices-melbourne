@@ -150,7 +150,7 @@ const StationCards = () => {
   }, [stations]);
 
   const fuelTypes = useMemo(() => {
-    const allFuelTypes = stations.flatMap(s => s.fuelPrices.map(f => f.type));
+    const allFuelTypes = stations.flatMap(s => s.fuelPrices?.map(f => f.type) || []);
     const uniqueFuelTypes = [...new Set(allFuelTypes.filter(Boolean))];
     return ['all', ...uniqueFuelTypes.sort()];
   }, [stations]);

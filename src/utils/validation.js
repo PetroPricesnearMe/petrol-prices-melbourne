@@ -13,7 +13,7 @@
  */
 export function validateStation(station, index = 0) {
   const errors = [];
-  
+
   // Check if station exists and is an object
   if (!station || typeof station !== 'object') {
     return {
@@ -22,23 +22,23 @@ export function validateStation(station, index = 0) {
       data: null
     };
   }
-  
+
   // Extract and validate ID
   const id = station.id || station.Id;
   if (!id) {
     errors.push(`Station at index ${index} missing id`);
   }
-  
-  // Extract and validate name
-  const name = station['Station Name'] || station.field_5072130 || station.name;
+
+  // Extract and validate name - support multiple field name formats
+  const name = station['Station Name'] || station.station_name || station.field_5072130 || station.name;
   if (!name || typeof name !== 'string') {
     errors.push(`Station at index ${index} missing or invalid name`);
   }
-  
-  // Extract and validate coordinates
-  const lat = parseFloat(station.Latitude || station.field_5072136 || station.lat);
-  const lng = parseFloat(station.Longitude || station.field_5072137 || station.lng);
-  
+
+  // Extract and validate coordinates - support CSV (X, Y) and Baserow formats
+  const lat = parseFloat(station.Latitude || station.Y || station.lat || station.latitude || station.field_5072136);
+  const lng = parseFloat(station.Longitude || station.X || station.lng || station.longitude || station.field_5072137);
+
   if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
     errors.push(`Station at index ${index} has invalid coordinates: lat=${lat}, lng=${lng}`);
   } else {
@@ -50,7 +50,7 @@ export function validateStation(station, index = 0) {
       errors.push(`Station at index ${index} has invalid longitude: ${lng} (must be between -180 and 180)`);
     }
   }
-  
+
   // Return validation result
   return {
     valid: errors.length === 0,
@@ -60,15 +60,15 @@ export function validateStation(station, index = 0) {
       name,
       lat,
       lng,
-      address: station.Address || station.field_5072131 || station.address,
-      city: station.City || station.field_5072132 || station.city,
-      region: station.Region || station.field_5072134 || station.region,
-      postalCode: station['Postal Code'] || station.field_5072133 || station.postalCode,
+      address: station.Address || station.station_address || station.field_5072131 || station.address,
+      city: station.City || station.station_suburb || station.field_5072132 || station.city,
+      region: station.Region || station.station_state || station.field_5072134 || station.region,
+      postalCode: station['Postal Code'] || station.station_postcode || station.field_5072133 || station.postalCode,
       country: station.Country || station.field_5072135 || station.country || 'AUSTRALIA',
-      category: station.Category || station.field_5072138 || station.category,
-      locationDetails: station['Location Details'] || station.field_5072140 || station.locationDetails,
+      category: station.Category || station.feature_type || station.field_5072138 || station.category,
+      locationDetails: station['Location Details'] || station.station_description || station.field_5072140 || station.locationDetails,
       fuelPrices: station['Fuel Prices'] || station.field_5072139 || station.fuelPrices || [],
-      brand: station.brand || station.Brand
+      brand: station.brand || station.station_owner || station.Brand
     } : null
   };
 }
@@ -87,11 +87,11 @@ export function validateStations(stations) {
       invalidCount: 0
     };
   }
-  
+
   const allErrors = [];
   const validStations = [];
   let invalidCount = 0;
-  
+
   stations.forEach((station, index) => {
     const validation = validateStation(station, index);
     if (validation.valid) {
@@ -101,7 +101,7 @@ export function validateStations(stations) {
       allErrors.push(...validation.errors);
     }
   });
-  
+
   return {
     valid: invalidCount === 0,
     errors: allErrors,
@@ -119,22 +119,22 @@ export function validateStations(stations) {
  */
 export function validateAPIResponse(response) {
   const errors = [];
-  
+
   if (!response || typeof response !== 'object') {
     errors.push('Response is not an object');
     return { valid: false, errors };
   }
-  
+
   // Check for success field
   if (response.hasOwnProperty('success') && !response.success) {
     errors.push(`API returned success=false: ${response.error || 'Unknown error'}`);
   }
-  
+
   // Check for data field
   if (!response.data && !response.results) {
     errors.push('Response missing data or results field');
   }
-  
+
   return {
     valid: errors.length === 0,
     errors
@@ -149,47 +149,47 @@ export function validateAPIResponse(response) {
  */
 export function getUserFriendlyError(error, context = 'processing request') {
   const errorMessage = typeof error === 'string' ? error : error.message || 'Unknown error';
-  
+
   // Network errors
   if (errorMessage.includes('NetworkError') || errorMessage.includes('Failed to fetch')) {
     return `Unable to connect to the server. Please check your internet connection and try again.`;
   }
-  
+
   // Timeout errors
   if (errorMessage.includes('timeout') || errorMessage.includes('AbortError')) {
     return `The request is taking longer than expected. Please check your connection and try again.`;
   }
-  
+
   // CORS errors
   if (errorMessage.includes('CORS')) {
     return `There's a connection issue with our servers. Please try again in a few moments.`;
   }
-  
+
   // Authentication errors
   if (errorMessage.includes('401') || errorMessage.includes('Unauthorized')) {
     return `Authentication failed. Please refresh the page and try again.`;
   }
-  
+
   // Not found errors
   if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
     return `The requested information could not be found. Please try again later.`;
   }
-  
+
   // Rate limit errors
   if (errorMessage.includes('429') || errorMessage.includes('Too Many Requests')) {
     return `Too many requests. Please wait a moment and try again.`;
   }
-  
+
   // Server errors
   if (errorMessage.includes('500') || errorMessage.includes('502') || errorMessage.includes('503')) {
     return `Our servers are experiencing issues. Please try again in a few moments.`;
   }
-  
+
   // Validation errors
   if (errorMessage.includes('invalid') || errorMessage.includes('validation')) {
     return `The data format is incorrect. Please refresh the page and try again.`;
   }
-  
+
   // Generic error with context
   return `An error occurred while ${context}. Please try again. If the problem persists, contact support.`;
 }
@@ -202,7 +202,7 @@ export function getUserFriendlyError(error, context = 'processing request') {
  */
 export function validateAndTransformStation(rawStation, index) {
   const validation = validateStation(rawStation, index);
-  
+
   if (!validation.valid) {
     console.warn(`⚠️ Invalid station at index ${index}:`, validation.errors);
     return {
@@ -211,7 +211,7 @@ export function validateAndTransformStation(rawStation, index) {
       errors: validation.errors
     };
   }
-  
+
   // Transform validated data
   const transformed = {
     id: validation.data.id,
@@ -238,7 +238,7 @@ export function validateAndTransformStation(rawStation, index) {
     source: 'baserow',
     lastUpdated: new Date().toISOString()
   };
-  
+
   return {
     valid: true,
     station: transformed,

@@ -121,8 +121,11 @@ class LocalDataService {
       state: props.station_state || 'VIC',
       brand: brand,
       category: props.feature_type || 'PETROL STATION',
-      latitude: coords[1],  // GeoJSON is [lng, lat]
-      longitude: coords[0],
+      // Use capitalized field names to match validation.js expectations
+      Latitude: coords[1],  // GeoJSON is [lng, lat]
+      Longitude: coords[0],
+      lat: coords[1],  // Also provide lowercase for compatibility
+      lng: coords[0],
       operationalStatus: props.operational_status || 'OPERATIONAL',
       description: props.station_description || '',
       lastUpdated: props.station_revised_date || new Date().toISOString(),
@@ -251,8 +254,11 @@ class LocalDataService {
           region: station['Region'] || 'VIC',
           category: station['Category'] || 'PETROL STATION',
           brand: this.extractBrandFromCSV(station.brand),
-          latitude: 0,  // CSV doesn't have coordinates
-          longitude: 0,
+          // Use capitalized field names to match validation.js expectations
+          Latitude: 0,  // CSV doesn't have coordinates
+          Longitude: 0,
+          lat: 0,  // Also provide lowercase for compatibility
+          lng: 0,
           operationalStatus: 'OPERATIONAL',
           locationDetails: station['Location Details'] || '',
           lastUpdated: new Date().toISOString(),

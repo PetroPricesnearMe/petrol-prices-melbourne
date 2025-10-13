@@ -67,13 +67,13 @@ class DataSourceManager {
     }
 
     // Extract coordinates with multiple fallback options
-    // Check for numeric fields first (from Baserow API)
-    let lat = station.Latitude || station.field_5072136 || station.lat;
-    let lng = station.Longitude || station.field_5072137 || station.lng;
+    // Priority: Direct field names -> Baserow field IDs -> Common alternatives
+    let lat = station.Latitude || station.Y || station.lat || station.latitude;
+    let lng = station.Longitude || station.X || station.lng || station.longitude;
 
-    // Convert to numbers
-    lat = parseFloat(lat);
-    lng = parseFloat(lng);
+    // Convert to numbers if they're strings
+    if (typeof lat === 'string') lat = parseFloat(lat);
+    if (typeof lng === 'string') lng = parseFloat(lng);
 
     // Enhanced coordinate validation
     if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
@@ -81,18 +81,20 @@ class DataSourceManager {
         lat,
         lng,
         stationId: station.id,
-        stationName: station['Station Name'] || station.field_5072130,
-        rawLat: station.Latitude || station.field_5072136,
-        rawLng: station.Longitude || station.field_5072137
+        stationName: station['Station Name'] || station.station_name || station.name,
+        rawStation: Object.keys(station).slice(0, 10) // Show first 10 keys for debugging
       });
       return { valid: false, reason: 'Invalid coordinates' };
     }
 
-    // Validate coordinate ranges for Melbourne/Australia area (expanded range)
-    // All of Australia
+    // Validate coordinate ranges for Australia
     if (lat < -45.0 || lat > -10.0 || lng < 110.0 || lng > 155.0) {
-      // Still log but don't reject - some stations might be outside Melbourne
-      console.info(`ℹ️ Station ${index + 1} outside Melbourne metro:`, { lat, lng, name: station['Station Name'] });
+      console.warn(`⚠️ Station ${index + 1} outside Australia:`, {
+        lat,
+        lng,
+        name: station['Station Name'] || station.station_name || station.name
+      });
+      return { valid: false, reason: 'Coordinates outside Australia' };
     }
 
     return { valid: true, lat, lng };
