@@ -1,9 +1,12 @@
 /**
  * Analytics Tracking Utilities
  * Track user interactions, searches, and conversions for UX insights
+ * Integrates with Google Analytics 4 and custom analytics endpoints
  * 
  * @module analytics
  */
+
+import { trackGAEvent } from './googleAnalytics';
 
 // Analytics event types
 export const ANALYTICS_EVENTS = {
@@ -140,14 +143,16 @@ class AnalyticsStore {
    * Send event to external analytics platforms (Google Analytics, etc.)
    */
   sendToExternalAnalytics(event) {
-    // Google Analytics 4
-    if (window.gtag) {
-      window.gtag('event', event.type, {
-        event_category: this.getCategoryFromEventType(event.type),
-        event_label: JSON.stringify(event.data),
-        value: event.data.value || 0,
-      });
-    }
+    // Google Analytics 4 - Enhanced Event Tracking
+    // Use the dedicated GA helper function for better tracking
+    trackGAEvent(event.type, {
+      event_category: this.getCategoryFromEventType(event.type),
+      event_label: event.data.query || event.data.stationId || event.data.filterType || 'unknown',
+      value: event.data.value || 0,
+      session_id: this.sessionId,
+      page_path: window.location.pathname,
+      ...event.data
+    });
 
     // Facebook Pixel
     if (window.fbq) {

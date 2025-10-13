@@ -732,38 +732,9 @@
     }
   </script>
 
-  <!-- Google Analytics - Optimized Loading -->
-  <script>
-    // Defer Google Analytics loading until user interaction or after 3 seconds
-    function loadGA() {
-      if (window.gtag) return; // Already loaded
-
-      var script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
-      document.head.appendChild(script);
-
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID', {
-        page_title: 'Petrol Prices Melbourne - Live Fuel Prices',
-        custom_map: {
-          'dimension1': 'fuel_type',
-          'dimension2': 'station_brand'
-        }
-      });
-      window.gtag = gtag;
-    }
-
-    // Load GA on first user interaction
-    ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'].forEach(function (event) {
-      document.addEventListener(event, loadGA, { once: true, passive: true });
-    });
-
-    // Fallback: load after 3 seconds if no interaction
-    setTimeout(loadGA, 3000);
-  </script>
+  <!-- Google Analytics - Loaded by React App -->
+  <!-- GA4 is initialized in src/utils/googleAnalytics.js with environment variables -->
+  <!-- This ensures proper configuration and prevents hardcoded IDs -->
 </head>
 
 <body>

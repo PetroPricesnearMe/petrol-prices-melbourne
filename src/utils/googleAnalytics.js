@@ -175,7 +175,7 @@ export const setUserProperties = (properties) => {
   window.gtag('set', 'user_properties', properties);
 };
 
-export default {
+const googleAnalytics = {
   initializeGA,
   trackPageView,
   trackGAEvent,
@@ -186,4 +186,6 @@ export default {
   trackConversion,
   setUserProperties
 };
+
+export default googleAnalytics;
 
