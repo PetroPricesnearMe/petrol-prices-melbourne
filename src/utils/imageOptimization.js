@@ -268,7 +268,7 @@ export const monitorImageLoad = (img, callback) => {
   });
 };
 
-export default {
+const imageOptimization = {
   generateSrcSet,
   generateSizes,
   isWebPSupported,
@@ -280,4 +280,6 @@ export default {
   initializeLazyLoading,
   monitorImageLoad,
 };
+
+export default imageOptimization;
 

@@ -99,12 +99,12 @@ const HomePage = () => {
               </MotionP>
 
               <MotionDiv className="hero-buttons" variants={itemVariants}>
-                <a href="#regions" className="btn btn-primary hero-btn">
+                <Link to="/directory" className="btn btn-primary hero-btn">
                   <span className="btn-text">Browse by Region</span>
-                </a>
+                </Link>
 
-                <Link to="/directory" className="btn btn-secondary hero-btn">
-                  <span className="btn-text">View All Stations</span>
+                <Link to="/fuel-price-trends" className="btn btn-secondary hero-btn">
+                  <span className="btn-text">View Price Trends</span>
                 </Link>
               </MotionDiv>
 

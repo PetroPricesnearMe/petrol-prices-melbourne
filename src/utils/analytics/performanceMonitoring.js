@@ -222,7 +222,7 @@ export const trackDataFetch = (fetchName) => {
   };
 };
 
-export default {
+const performanceMonitoring = {
   reportWebVitals,
   initializePerformanceMonitoring,
   markPerformance,
@@ -230,4 +230,6 @@ export default {
   trackComponentRender,
   trackDataFetch,
 };
+
+export default performanceMonitoring;
 
