@@ -86,21 +86,21 @@ const HomePage = () => {
           <div className="container">
             <header className="hero-content">
               <MotionH1 className="hero-title" variants={itemVariants}>
-                Find the Cheapest Petrol Prices in Melbourne
+                Melbourne Petrol Prices - Find Cheapest Fuel Near You
               </MotionH1>
 
               <MotionP className="hero-subtitle" variants={itemVariants}>
-                Compare live fuel prices from 250+ Melbourne petrol stations updated hourly. 
-                Save up to 20c per liter on unleaded, diesel, premium & E10. Free, fast, and easy to use.
+                Find the cheapest fuel prices in Melbourne with real-time updates
+                and interactive maps. Save money on every fill-up.
               </MotionP>
 
               <MotionDiv className="hero-buttons" variants={itemVariants}>
-                <Link to="/directory" className="btn btn-primary hero-btn" aria-label="Browse petrol stations by Melbourne region">
-                  <span className="btn-text">🗺️ Find Cheap Fuel Now</span>
+                <Link to="/directory" className="btn btn-primary hero-btn">
+                  <span className="btn-text">Browse by Region</span>
                 </Link>
 
-                <Link to="/fuel-price-trends" className="btn btn-secondary hero-btn" aria-label="View fuel price trends and analytics">
-                  <span className="btn-text">📊 View Price Trends</span>
+                <Link to="/fuel-price-trends" className="btn btn-secondary hero-btn">
+                  <span className="btn-text">View Price Trends</span>
                 </Link>
               </MotionDiv>
 
@@ -203,8 +203,8 @@ const HomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="section-title">Why Choose Petrol Prices Near Me?</h2>
-              <p className="section-subtitle">Australia's most comprehensive fuel price monitoring platform designed to save you money on every single fill-up</p>
+              <h2 className="section-title">Why Choose Melbourne Fuel?</h2>
+              <p className="section-subtitle">Comprehensive fuel price monitoring to help you save money on every fill-up</p>
             </MotionDiv>
 
             <div className="features-grid">
@@ -218,8 +218,8 @@ const HomePage = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="feature-icon" aria-hidden="true">🕐</div>
-                  <h3 itemProp="name">Hourly Price Updates</h3>
-                  <p itemProp="description">Get live fuel price updates from 250+ petrol stations across Melbourne updated every hour, 24/7. Never miss a price drop with our real-time monitoring system.</p>
+                  <h3 itemProp="name">Real-Time Updates</h3>
+                  <p itemProp="description">Get live fuel price updates from petrol stations across Melbourne with instant notifications when prices change</p>
                 </MotionDiv>
               </article>
 
@@ -233,8 +233,8 @@ const HomePage = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="feature-icon" aria-hidden="true">🎯</div>
-                  <h3 itemProp="name">Smart Location Search</h3>
-                  <p itemProp="description">Find the nearest and cheapest petrol stations instantly using our intelligent location-based search. Filter by fuel type, brand, and distance to get exactly what you need.</p>
+                  <h3 itemProp="name">Location-Based Search</h3>
+                  <p itemProp="description">Find the nearest and cheapest petrol stations in your area using our advanced location-based search system</p>
                 </MotionDiv>
               </article>
 
@@ -248,177 +248,10 @@ const HomePage = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="feature-icon" aria-hidden="true">💰</div>
-                  <h3 itemProp="name">Guaranteed Savings</h3>
-                  <p itemProp="description">Compare prices from over 250 petrol stations and save up to 20 cents per liter on every fill-up. That's $8-15 savings per tank, or hundreds annually!</p>
+                  <h3 itemProp="name">Save Money</h3>
+                  <p itemProp="description">Compare prices from over 250 petrol stations and save up to 20 cents per liter on every fuel purchase</p>
                 </MotionDiv>
               </article>
-            </div>
-          </div>
-        </MotionSection>
-
-        {/* How It Works Section */}
-        <MotionSection
-          className="how-it-works-section"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{ backgroundColor: 'var(--background-gray)', padding: '4rem 0' }}
-        >
-          <div className="container">
-            <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <h2 className="section-title">How to Find Cheap Petrol in 3 Easy Steps</h2>
-              <p className="section-subtitle">Start saving money on fuel in under a minute</p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-              <div style={{ textAlign: 'center', padding: '2rem', background: 'white', borderRadius: '1rem', boxShadow: 'var(--shadow)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📍</div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
-                  Step 1: Choose Your Location
-                </h3>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                  Browse by region or use our interactive map to select your Melbourne suburb. We cover all areas from CBD to outer suburbs.
-                </p>
-              </div>
-
-              <div style={{ textAlign: 'center', padding: '2rem', background: 'white', borderRadius: '1rem', boxShadow: 'var(--shadow)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⛽</div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
-                  Step 2: Filter by Fuel Type
-                </h3>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                  Select your preferred fuel type: Unleaded 91, Premium 95/98, Diesel, E10, or LPG. Filter by brand if you have a preference.
-                </p>
-              </div>
-
-              <div style={{ textAlign: 'center', padding: '2rem', background: 'white', borderRadius: '1rem', boxShadow: 'var(--shadow)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>💵</div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
-                  Step 3: Compare & Save
-                </h3>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                  View real-time prices sorted from cheapest to most expensive. Get directions and save up to 20c/L on your next fill-up!
-                </p>
-              </div>
-            </div>
-          </div>
-        </MotionSection>
-
-        {/* Fuel Types Coverage Section */}
-        <MotionSection
-          className="fuel-types-section"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{ padding: '4rem 0' }}
-        >
-          <div className="container">
-            <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <h2 className="section-title">All Fuel Types, All Prices, All in One Place</h2>
-              <p className="section-subtitle">Compare prices for every type of fuel available in Melbourne</p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
-              <article style={{ padding: '1.5rem', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderRadius: '1rem', color: 'white', boxShadow: 'var(--shadow)' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>⛽ Unleaded 91</h3>
-                <p style={{ opacity: 0.9, fontSize: '0.95rem' }}>Regular unleaded petrol - the most common fuel type for everyday vehicles</p>
-              </article>
-
-              <article style={{ padding: '1.5rem', background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', borderRadius: '1rem', color: 'white', boxShadow: 'var(--shadow)' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>🏆 Premium 95</h3>
-                <p style={{ opacity: 0.9, fontSize: '0.95rem' }}>Premium unleaded for better performance and fuel efficiency</p>
-              </article>
-
-              <article style={{ padding: '1.5rem', background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', borderRadius: '1rem', color: 'white', boxShadow: 'var(--shadow)' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>⭐ Premium 98</h3>
-                <p style={{ opacity: 0.9, fontSize: '0.95rem' }}>High-octane premium fuel for high-performance vehicles</p>
-              </article>
-
-              <article style={{ padding: '1.5rem', background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', borderRadius: '1rem', color: 'white', boxShadow: 'var(--shadow)' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>🚛 Diesel</h3>
-                <p style={{ opacity: 0.9, fontSize: '0.95rem' }}>Diesel fuel for trucks, vans, and diesel-powered vehicles</p>
-              </article>
-
-              <article style={{ padding: '1.5rem', background: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)', borderRadius: '1rem', color: 'white', boxShadow: 'var(--shadow)' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>🌱 E10 Ethanol</h3>
-                <p style={{ opacity: 0.9, fontSize: '0.95rem' }}>Eco-friendly ethanol blend - 10% ethanol, 90% unleaded</p>
-              </article>
-
-              <article style={{ padding: '1.5rem', background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)', borderRadius: '1rem', color: '#333', boxShadow: 'var(--shadow)' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>💨 LPG Autogas</h3>
-                <p style={{ opacity: 0.8, fontSize: '0.95rem' }}>Liquefied petroleum gas - economical alternative fuel option</p>
-              </article>
-            </div>
-          </div>
-        </MotionSection>
-
-        {/* Coverage Area Section */}
-        <MotionSection
-          className="coverage-section"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{ backgroundColor: 'var(--background-gray)', padding: '4rem 0' }}
-        >
-          <div className="container">
-            <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <h2 className="section-title">Comprehensive Melbourne Coverage</h2>
-              <p className="section-subtitle">We monitor petrol prices across all Melbourne regions - from inner city to outer suburbs</p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-              {['Melbourne CBD', 'North Melbourne', 'South Melbourne', 'East Melbourne', 'West Melbourne', 'Dandenong', 'Frankston', 'Werribee', 'Craigieburn', 'Pakenham', 'Sunbury', 'Mornington Peninsula'].map((area) => (
-                <div key={area} style={{ padding: '1rem', background: 'white', borderRadius: '0.5rem', textAlign: 'center', border: '2px solid var(--border-color)', transition: 'all 0.3s ease' }}>
-                  <span style={{ fontWeight: 600, color: 'var(--primary-color)' }}>📍 {area}</span>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ textAlign: 'center', padding: '2rem', background: 'white', borderRadius: '1rem', boxShadow: 'var(--shadow)' }}>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>
-                250+ Petrol Stations Monitored Daily
-              </h3>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.5rem', maxWidth: '700px', margin: '0 auto 1.5rem' }}>
-                Our comprehensive database includes all major brands: Coles Express, Woolworths Metro, 7-Eleven, BP, Shell, Caltex, United, Liberty, and independent stations across Greater Melbourne.
-              </p>
-              <Link to="/directory" className="btn btn-primary" style={{ display: 'inline-block' }}>
-                Explore All Regions
-              </Link>
-            </div>
-          </div>
-        </MotionSection>
-
-        {/* CTA Section */}
-        <MotionSection
-          className="cta-section"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{ padding: '4rem 0' }}
-        >
-          <div className="container">
-            <div style={{ 
-              background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)', 
-              borderRadius: '1.5rem', 
-              padding: '3rem 2rem', 
-              textAlign: 'center',
-              color: 'white',
-              boxShadow: 'var(--shadow-lg)'
-            }}>
-              <h2 style={{ fontSize: 'clamp(1.75rem, 5vw, 2.5rem)', fontWeight: 800, marginBottom: '1rem' }}>
-                Ready to Start Saving on Fuel?
-              </h2>
-              <p style={{ fontSize: '1.1rem', opacity: 0.95, marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem' }}>
-                Join thousands of Melbourne drivers who save money every day by comparing petrol prices. It's free, fast, and easy!
-              </p>
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/directory" className="btn" style={{ background: 'rgba(255,255,255,0.25)', border: '2px solid white', color: 'white', padding: '1rem 2rem', fontSize: '1.1rem' }}>
-                  🗺️ Browse by Region
-                </Link>
-                <Link to="/fuel-price-trends" className="btn" style={{ background: 'white', color: 'var(--primary-color)', padding: '1rem 2rem', fontSize: '1.1rem' }}>
-                  📊 View Price Trends
-                </Link>
-              </div>
             </div>
           </div>
         </MotionSection>
