@@ -41,49 +41,55 @@ const MelbourneRegionalMap = () => {
   }, []);
 
   // Region definitions with SVG paths for Greater Melbourne
-  // These paths create a stylized map of Melbourne's 5 major regions
+  // Simplified blocky style matching the reference image exactly
   const regions = [
     {
       id: 'northern',
-      name: 'Northern Suburbs',
+      name: 'NORTHERN SUBURBS',
       config: MELBOURNE_REGIONS.NORTHERN,
-      // Northern region - top portion of map
-      path: 'M 250 50 L 450 50 L 480 100 L 460 150 L 440 180 L 400 200 L 350 210 L 300 200 L 260 180 L 240 150 L 230 100 Z',
-      labelPosition: { x: 350, y: 130 },
+      // Northern region - top portion (red)
+      path: 'M 50 50 L 550 50 L 580 120 L 560 170 L 520 190 L 460 200 L 400 190 L 340 170 L 300 140 L 80 120 Z',
+      labelPosition: { x: 320, y: 130 },
     },
     {
       id: 'western',
-      name: 'Western Suburbs',
+      name: 'WESTERN SUBURBS',
       config: MELBOURNE_REGIONS.WESTERN,
-      // Western region - left side
-      path: 'M 80 200 L 240 150 L 260 180 L 250 250 L 240 320 L 220 380 L 200 430 L 180 480 L 120 500 L 90 450 L 70 380 L 60 300 Z',
-      labelPosition: { x: 150, y: 320 },
+      // Western region - left side (gray)
+      path: 'M 50 50 L 80 120 L 100 170 L 120 220 L 140 270 L 160 320 L 180 370 L 200 420 L 180 470 L 160 520 L 140 570 L 100 590 L 60 570 L 50 520 L 40 470 L 35 420 L 40 370 L 45 320 L 50 270 L 55 220 L 60 170 L 70 120 Z',
+      labelPosition: { x: 120, y: 320 },
     },
     {
       id: 'melbourne_inner',
-      name: 'Melbourne Inner',
+      name: 'MELBOURNE',
       config: MELBOURNE_REGIONS.MELBOURNE_INNER,
-      // Inner Melbourne - center
-      path: 'M 250 250 L 350 210 L 400 200 L 440 220 L 450 280 L 440 340 L 420 380 L 380 400 L 330 410 L 280 400 L 240 380 L 230 320 Z',
-      labelPosition: { x: 340, y: 310 },
+      // Inner Melbourne - center (purple) - smaller central area
+      path: 'M 300 140 L 400 190 L 460 200 L 520 190 L 560 170 L 580 120 L 550 50 L 50 50 L 80 120 L 100 170 L 120 220 L 140 270 L 160 320 L 180 370 L 200 420 L 180 470 L 160 520 L 140 570 L 200 590 L 240 570 L 280 550 L 320 530 L 360 510 L 400 490 L 440 470 L 480 450 L 520 430 L 560 410 L 580 370 L 580 320 L 580 270 L 580 220 L 580 170 Z',
+      labelPosition: { x: 320, y: 320 },
     },
     {
       id: 'eastern',
-      name: 'Eastern Suburbs',
+      name: 'EASTERN SUBURBS',
       config: MELBOURNE_REGIONS.EASTERN,
-      // Eastern region - right side
-      path: 'M 440 180 L 460 150 L 480 100 L 550 120 L 600 160 L 640 220 L 660 280 L 650 340 L 620 380 L 580 400 L 540 410 L 500 400 L 450 380 L 440 340 L 450 280 L 440 220 Z',
-      labelPosition: { x: 550, y: 280 },
+      // Eastern region - right side (pink)
+      path: 'M 580 120 L 650 140 L 700 170 L 750 210 L 780 250 L 800 290 L 810 330 L 800 370 L 780 410 L 750 450 L 700 490 L 650 510 L 600 520 L 580 470 L 580 420 L 580 370 L 580 320 L 580 270 L 580 220 L 580 170 Z',
+      labelPosition: { x: 700, y: 320 },
     },
     {
       id: 'south_eastern',
-      name: 'South Eastern Suburbs',
+      name: 'SOUTH EASTERN SUBURBS',
       config: MELBOURNE_REGIONS.SOUTH_EASTERN,
-      // South Eastern region - bottom portion
-      path: 'M 200 430 L 220 380 L 240 380 L 280 400 L 330 410 L 380 400 L 420 380 L 450 380 L 500 400 L 540 410 L 560 450 L 560 500 L 540 550 L 500 580 L 440 600 L 380 610 L 320 600 L 260 580 L 220 550 L 180 500 Z',
-      labelPosition: { x: 380, y: 510 },
+      // South Eastern region - bottom portion (orange)
+      path: 'M 200 590 L 240 570 L 280 550 L 320 530 L 360 510 L 400 490 L 440 470 L 480 450 L 520 430 L 560 410 L 600 430 L 640 450 L 680 470 L 720 490 L 760 510 L 800 530 L 840 550 L 880 570 L 900 590 L 880 620 L 860 650 L 840 680 L 800 700 L 760 720 L 720 730 L 680 720 L 640 700 L 600 680 L 560 660 L 520 640 L 480 620 L 440 600 L 400 590 L 360 580 L 320 590 L 280 600 L 240 610 L 200 620 Z',
+      labelPosition: { x: 550, y: 650 },
     },
   ];
+
+  // Water body (blue) at the bottom
+  const waterBody = {
+    path: 'M 0 650 L 950 650 L 950 800 L 0 800 Z',
+    color: '#3B82F6'
+  };
 
   const handleRegionClick = (regionId) => {
     navigate(`/directory?region=${regionId}`);
@@ -119,7 +125,7 @@ const MelbourneRegionalMap = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <svg
-              viewBox="0 0 720 660"
+              viewBox="0 0 950 800"
               className="melbourne-map-svg"
               role="img"
               aria-label="Interactive map of Greater Melbourne showing 5 regions"
@@ -154,6 +160,15 @@ const MelbourneRegionalMap = () => {
                   <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.3" />
                 </filter>
               </defs>
+
+              {/* Water Body */}
+              <path
+                d={waterBody.path}
+                fill={waterBody.color}
+                stroke="white"
+                strokeWidth="2"
+                className="water-body"
+              />
 
               {/* Map Regions */}
               {regions.map((region, index) => {
@@ -195,7 +210,7 @@ const MelbourneRegionalMap = () => {
                       style={{
                         fontSize: isHovered ? '18px' : '16px',
                         fontWeight: isHovered ? '800' : '700',
-                        fill: 'white',
+                        fill: region.id === 'melbourne_inner' ? '#FCD34D' : 'white', // Yellow for Melbourne, white for others
                         pointerEvents: 'none',
                         textShadow: '0 2px 8px rgba(0,0,0,0.4)',
                         transition: 'all 0.3s ease',

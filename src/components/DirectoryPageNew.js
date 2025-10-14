@@ -330,14 +330,6 @@ const DirectoryPageNew = () => {
               <span>🃏</span> Cards
             </button>
             <button
-              className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-              onClick={() => setViewMode('grid')}
-              aria-label="Grid view"
-              aria-pressed={viewMode === 'grid'}
-            >
-              <span>⊞</span> Grid
-            </button>
-            <button
               className={`view-btn ${viewMode === 'map' ? 'active' : ''}`}
               onClick={() => setViewMode('map')}
               aria-label="Map view"

@@ -7,7 +7,7 @@ export const MELBOURNE_REGIONS = {
   NORTHERN: {
     id: 'northern',
     name: 'Northern Suburbs',
-    color: '#7B68B6', // Purple
+    color: '#DC2626', // Red (matching image)
     icon: '🌆',
     description: 'Preston, Coburg, Essendon, Tullamarine, Sunbury',
     suburbs: [
@@ -27,7 +27,7 @@ export const MELBOURNE_REGIONS = {
   WESTERN: {
     id: 'western',
     name: 'Western Suburbs',
-    color: '#FF6B6B', // Coral Red
+    color: '#6B7280', // Gray (matching image)
     icon: '🌅',
     description: 'Footscray, Sunshine, Werribee, Point Cook',
     suburbs: [
@@ -46,7 +46,7 @@ export const MELBOURNE_REGIONS = {
   EASTERN: {
     id: 'eastern',
     name: 'Eastern Suburbs',
-    color: '#4ECDC4', // Turquoise
+    color: '#EC4899', // Pink (matching image)
     icon: '🏞️',
     description: 'Doncaster, Box Hill, Ringwood, Glen Waverley',
     suburbs: [
@@ -66,7 +66,7 @@ export const MELBOURNE_REGIONS = {
   MELBOURNE_INNER: {
     id: 'melbourne_inner',
     name: 'Melbourne Inner',
-    color: '#FFD93D', // Golden Yellow
+    color: '#7C3AED', // Purple (matching image)
     icon: '🏙️',
     description: 'CBD, Carlton, Fitzroy, South Yarra, Richmond',
     suburbs: [
@@ -86,7 +86,7 @@ export const MELBOURNE_REGIONS = {
   SOUTH_EASTERN: {
     id: 'south_eastern',
     name: 'South Eastern Suburbs',
-    color: '#6BCB77', // Green
+    color: '#EA580C', // Orange (matching image)
     icon: '🌳',
     description: 'Frankston, Dandenong, Cranbourne, Clayton',
     suburbs: [
@@ -149,7 +149,7 @@ export const getRegionCounts = (stations) => {
       station.lng || station.Longitude,
       station.city || station.City || station.suburb
     );
-    
+
     // Safety check - ensure region exists
     if (region && region.id) {
       const regionKey = region.id.toUpperCase();
