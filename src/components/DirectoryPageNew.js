@@ -232,12 +232,12 @@ const DirectoryPageNew = () => {
 
   // SEO data
   const pageTitle = selectedRegion
-    ? `${selectedRegion.name} Petrol Stations - Live Fuel Prices`
-    : 'Melbourne Petrol Stations Directory - Live Fuel Prices';
+    ? `${selectedRegion.name} Petrol Prices 2025 | Compare ${filteredStations.length}+ Stations - Save Up to 30c/L`
+    : 'Melbourne Petrol Stations Directory 2025 | Live Fuel Price Comparison - 250+ Stations';
 
   const pageDescription = selectedRegion
-    ? `Find the cheapest petrol prices in ${selectedRegion.name}, Melbourne. Compare real-time fuel prices from ${filteredStations.length}+ stations. ${selectedRegion.description}`
-    : `Browse ${filteredStations.length}+ petrol stations across Melbourne. Compare live fuel prices and find the cheapest petrol near you.`;
+    ? `🚗 Find the cheapest petrol prices in ${selectedRegion.name}, Melbourne. Compare live fuel prices from ${filteredStations.length}+ stations with real-time updates. ${selectedRegion.description} Save money on unleaded, diesel & premium fuel today!`
+    : `🚗 Browse and compare live fuel prices from ${filteredStations.length}+ petrol stations across Melbourne. Interactive map, advanced filters, and real-time price updates. Find the cheapest petrol near you now! FREE price alerts.`;
 
   if (loading) {
     return (
@@ -260,10 +260,10 @@ const DirectoryPageNew = () => {
 
   return (
     <>
-      <SEO
+        <SEO
         title={pageTitle}
         description={pageDescription}
-        keywords={`petrol prices ${selectedRegion?.name || 'melbourne'}, fuel prices ${selectedRegion?.name || 'melbourne'}, cheapest petrol, station directory`}
+        keywords={`petrol prices ${selectedRegion?.name || 'melbourne'} 2025, fuel prices ${selectedRegion?.name || 'melbourne'} today, cheapest petrol ${selectedRegion?.name || 'melbourne'}, ${selectedRegion?.name || 'melbourne'} petrol stations map, fuel price comparison ${selectedRegion?.name || 'melbourne'}, live petrol prices ${selectedRegion?.name || 'melbourne'}, unleaded diesel premium prices ${selectedRegion?.name || 'melbourne'}, ${selectedRegion?.name || 'melbourne'} fuel station directory, petrol near me ${selectedRegion?.name || 'melbourne'}, shell bp caltex ${selectedRegion?.name || 'melbourne'}`}
         canonical={`/directory${regionParam ? `?region=${regionParam}` : ''}`}
         structuredData={generateFuelPriceListingData(filteredStations.slice(0, 10))}
       />
@@ -283,24 +283,31 @@ const DirectoryPageNew = () => {
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="header-content">
-                <Link to="/" className="back-link" aria-label="Back to regions">
-                  ← Back to Regions
+                <Link to="/" className="back-link" aria-label="Back to home page">
+                  ← Back to Home
                 </Link>
                 <h1>
-                  {selectedRegion ? selectedRegion.name : 'All Melbourne Petrol Stations'}
+                  {selectedRegion 
+                    ? `${selectedRegion.name} Petrol Prices - Compare Live Fuel Prices Today` 
+                    : 'Melbourne Petrol Stations Directory - Compare 250+ Live Fuel Prices'}
                 </h1>
                 {selectedRegion && (
                   <p className="region-description">
-                    {selectedRegion.description}
+                    {selectedRegion.description} Find the cheapest unleaded, diesel & premium fuel in {selectedRegion.name} with real-time price updates.
+                  </p>
+                )}
+                {!selectedRegion && (
+                  <p className="region-description">
+                    Browse all petrol stations across Melbourne with live price updates. Use filters to find the cheapest fuel by type, brand, or location. Save money on every fill-up!
                   </p>
                 )}
                 <div className="header-stats">
                   <span className="stat">
-                    <strong>{filteredStations.length}</strong> stations found
+                    <strong>{filteredStations.length}</strong> {filteredStations.length === 1 ? 'station' : 'stations'} with live prices
                   </span>
                   {selectedRegion && (
                     <span className="region-badge" style={{ backgroundColor: selectedRegion.color }}>
-                      {selectedRegion.name}
+                      📍 {selectedRegion.name}
                     </span>
                   )}
                 </div>
@@ -362,10 +369,16 @@ const DirectoryPageNew = () => {
               {currentStations.length === 0 ? (
                 <div className="no-results">
                   <div className="no-results-icon">🔍</div>
-                  <h3>No stations found</h3>
-                  <p>Try adjusting your filters or search criteria</p>
+                  <h2>No Petrol Stations Found</h2>
+                  <p>We couldn't find any stations matching your search criteria. Try:</p>
+                  <ul style={{ textAlign: 'left', maxWidth: '400px', margin: '1rem auto' }}>
+                    <li>Adjusting your price range filters</li>
+                    <li>Selecting a different fuel type</li>
+                    <li>Clearing all filters to see all stations</li>
+                    <li>Browsing by region instead</li>
+                  </ul>
                   <Link to="/" className="btn btn-primary">
-                    ← Explore All Regions
+                    ← View All Melbourne Regions
                   </Link>
                 </div>
               ) : (
