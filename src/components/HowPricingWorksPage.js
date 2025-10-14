@@ -494,10 +494,30 @@ const HowPricingWorksPage = () => {
   return (
     <>
       <SEO
-        title="How Fuel Pricing Works in Australia | Melbourne Petrol Price Guide"
-        description="Understand how petrol prices work in Australia. Learn about price cycles, factors affecting fuel costs, regulations, and expert tips to save money on every fill-up."
-        keywords="how fuel pricing works, petrol price cycle australia, fuel price factors, petrol regulations, fuel pricing explained, melbourne fuel guide"
+        title="How Fuel Pricing Works in Australia 2025 | Complete Guide to Melbourne Petrol Prices"
+        description="🔍 Complete guide to Australian fuel pricing! Learn about the weekly price cycle, key factors affecting petrol costs, government regulations, and expert tips to save $500+ annually. Understand when to fill up in Melbourne."
+        keywords="how fuel pricing works australia, petrol price cycle melbourne, fuel price factors, australian petrol regulations, fuel pricing explained, melbourne fuel guide, when to buy petrol melbourne, fuel price cycle australia, petrol price trends, fuel excise duty australia, petrol tax australia, cheapest day to buy fuel melbourne, fuel saving tips australia, petrol price monitoring, australian fuel market, melbourne petrol guide 2025"
         canonical="/how-pricing-works"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "How Fuel Pricing Works in Australia - Complete Guide",
+          "description": "Comprehensive guide to understanding fuel pricing in Australia, including price cycles, factors, regulations, and money-saving tips",
+          "author": {
+            "@type": "Organization",
+            "name": "Petrol Prices Near Me"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Petrol Prices Near Me",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://petrolpricesnearme.com.au/images/fuel-nozzles.svg"
+            }
+          },
+          "datePublished": "2024-01-01",
+          "dateModified": "2025-10-14"
+        }}
       />
       <motion.div
         className="how-pricing-works-page"
