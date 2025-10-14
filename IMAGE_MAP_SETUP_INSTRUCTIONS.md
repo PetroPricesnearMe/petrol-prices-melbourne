@@ -57,7 +57,7 @@ Currently, I've created a placeholder `melbourne-map-vector.jpg` file. You need 
 ### Visual Features
 - **Region overlay** showing station counts when hovering
 - **Smooth animations** using Framer Motion
-- **Modern styling** matching your site's design system
+- **Modern styling** matching your site's blue/green color theme
 - **Loading states** for station count data
 
 ### Technical Features

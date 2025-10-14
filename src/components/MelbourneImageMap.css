@@ -17,7 +17,7 @@
   font-weight: 800;
   color: #2c3e50;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #DD1D21, #F39200);
+  background: linear-gradient(135deg, #2563EB, #10B981);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -72,7 +72,7 @@
   border-radius: 16px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  border: 2px solid #DD1D21;
+  border: 2px solid #2563EB;
   z-index: 10;
   animation: fadeInScale 0.3s ease-out;
 }
@@ -97,7 +97,7 @@
 .region-name {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #DD1D21;
+  color: #2563EB;
   margin-bottom: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -113,7 +113,7 @@
 .count-number {
   font-size: 3rem;
   font-weight: 900;
-  color: #F39200;
+  color: #10B981;
   line-height: 1;
   margin-bottom: 0.5rem;
 }
@@ -137,7 +137,7 @@
 }
 
 .cta-content {
-  background: linear-gradient(135deg, #DD1D21, #F39200);
+  background: linear-gradient(135deg, #2563EB, #10B981);
   border-radius: 20px;
   padding: 2.5rem;
   color: white;
@@ -146,7 +146,7 @@
   justify-content: space-between;
   max-width: 800px;
   margin: 0 auto;
-  box-shadow: 0 15px 35px rgba(221, 29, 33, 0.3);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3);
 }
 
 .cta-icon {
@@ -186,7 +186,7 @@
 
 .btn-primary {
   background: white;
-  color: #DD1D21;
+  color: #2563EB;
   border: 2px solid white;
 }
 
