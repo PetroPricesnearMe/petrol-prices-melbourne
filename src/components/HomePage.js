@@ -64,9 +64,9 @@ const HomePage = () => {
   return (
     <>
       <SEO
-        title="Petrol Prices Near Me - Find Cheapest Fuel in Melbourne | Live Updates"
-        description="Find the cheapest petrol prices in Melbourne with real-time fuel price updates. Compare prices from 250+ stations across Melbourne regions. Save money on every fill-up."
-        keywords="petrol prices melbourne, fuel prices melbourne, cheapest petrol, petrol stations near me, live fuel prices, melbourne petrol, fuel comparison"
+        title="Petrol Prices Melbourne | Cheapest Fuel Near Me - Live Price Comparison 2025"
+        description="Find the cheapest petrol prices in Melbourne today. Compare live fuel prices from 250+ stations. Save up to 20c/L on unleaded, diesel & premium. Updated every hour. Free price alerts!"
+        keywords="petrol prices melbourne, fuel prices melbourne, cheapest petrol near me, petrol stations melbourne, fuel price comparison melbourne, live petrol prices, melbourne fuel prices today, unleaded prices melbourne, diesel prices melbourne, premium unleaded melbourne, 91 octane melbourne, 95 octane melbourne, 98 octane melbourne, e10 prices melbourne, lpg prices melbourne, petrol price comparison, fuel finder melbourne, cheap fuel melbourne, petrol prices victoria, petrol stations near me, melbourne petrol map, fuel savings melbourne, petrol price trends melbourne, best fuel prices melbourne, melbourne petrol stations, fuel costs melbourne"
         canonical="/"
         structuredData={homepageStructuredData}
       />
@@ -85,10 +85,6 @@ const HomePage = () => {
 
           <div className="container">
             <header className="hero-content">
-              <MotionDiv className="hero-badge" variants={itemVariants}>
-                <span>Live Fuel Prices</span>
-              </MotionDiv>
-
               <MotionH1 className="hero-title" variants={itemVariants}>
                 Melbourne Petrol Prices - Find Cheapest Fuel Near You
               </MotionH1>

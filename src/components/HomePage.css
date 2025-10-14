@@ -9,14 +9,14 @@
   background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
 }
 
-/* Hero Section - Modern gradient without backdrop filter */
+/* Hero Section - Clean blue/green gradient */
 .hero-section {
   min-height: 90vh;
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #DD1D21 0%, #FFC700 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
   padding: 4rem 0;
 }
 
@@ -26,7 +26,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #DD1D21 0%, #F39200 50%, #FFC700 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #059669 50%, #10b981 100%);
   z-index: -2;
 }
 
@@ -36,8 +36,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at top right, rgba(255, 199, 0, 0.3) 0%, transparent 70%),
-    radial-gradient(circle at bottom left, rgba(221, 29, 33, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.3) 0%, transparent 70%),
+    radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.3) 0%, transparent 70%);
   z-index: -1;
 }
 
