@@ -1,0 +1,340 @@
+/* Melbourne Image Map Component Styles */
+
+.melbourne-map-section {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.map-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.map-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #DD1D21, #F39200);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.map-subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.map-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.image-map-wrapper {
+  position: relative;
+  max-width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 1rem;
+}
+
+.melbourne-map-image {
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.melbourne-map-image:hover {
+  transform: scale(1.02);
+}
+
+/* Region overlay styles */
+.region-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 2px solid #DD1D21;
+  z-index: 10;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.region-info {
+  text-align: center;
+  min-width: 200px;
+}
+
+.region-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #DD1D21;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.station-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.count-number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #F39200;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.count-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.region-icon {
+  font-size: 2.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Call to Action Styles */
+.map-cta {
+  text-align: center;
+}
+
+.cta-content {
+  background: linear-gradient(135deg, #DD1D21, #F39200);
+  border-radius: 20px;
+  padding: 2.5rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 15px 35px rgba(221, 29, 33, 0.3);
+}
+
+.cta-icon {
+  font-size: 3rem;
+  margin-right: 2rem;
+}
+
+.cta-text {
+  flex: 1;
+  text-align: left;
+}
+
+.cta-text h3 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.cta-text p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background: white;
+  color: #DD1D21;
+  border: 2px solid white;
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: white;
+  border-color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .melbourne-map-section {
+    padding: 2rem 0;
+  }
+
+  .map-title {
+    font-size: 2rem;
+  }
+
+  .map-subtitle {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .image-map-wrapper {
+    margin: 0 1rem;
+    padding: 0.5rem;
+  }
+
+  .region-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 300px;
+    padding: 1.5rem;
+  }
+
+  .region-name {
+    font-size: 1.2rem;
+  }
+
+  .count-number {
+    font-size: 2.5rem;
+  }
+
+  .cta-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .cta-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .cta-text {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-text h3 {
+    font-size: 1.5rem;
+  }
+
+  .cta-text p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-title {
+    font-size: 1.8rem;
+  }
+
+  .region-overlay {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .region-name {
+    font-size: 1rem;
+  }
+
+  .count-number {
+    font-size: 2rem;
+  }
+
+  .cta-content {
+    padding: 1.5rem;
+  }
+
+  .cta-text h3 {
+    font-size: 1.3rem;
+  }
+}
+
+/* Image map area hover effects */
+area {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+area:hover {
+  opacity: 0.8;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+
+  .melbourne-map-image,
+  .region-overlay,
+  .btn-primary {
+    transition: none;
+  }
+
+  @keyframes fadeInScale {
+
+    from,
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .region-overlay {
+    background: white;
+    border: 3px solid #000;
+  }
+
+  .region-name {
+    color: #000;
+  }
+
+  .count-number {
+    color: #000;
+  }
+}

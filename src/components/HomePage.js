@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MotionDiv, MotionH1, MotionP, MotionSection, containerVariants, itemVariants } from './MotionComponents';
-import RegionSelector from './RegionSelector';
-import MelbourneRegionalMap from './MelbourneRegionalMap';
+// import RegionSelector from './RegionSelector'; // Unused - keeping for future toggle functionality
+import MelbourneImageMap from './MelbourneImageMap';
 import SEO from './SEO';
 import { trackPageView } from '../utils/analytics';
 import './HomePage.css';
 
 const HomePage = () => {
-  const [viewMode, setViewMode] = useState('map'); // 'map' or 'cards'
+  // const [viewMode, setViewMode] = useState('map'); // 'map' or 'cards' - unused for now
 
   // Track page view on mount
   useEffect(() => {
@@ -176,7 +176,7 @@ const HomePage = () => {
         </MotionDiv>
 
         {/* Interactive Melbourne Map Section */}
-        <MelbourneRegionalMap />
+        <MelbourneImageMap />
 
         {/* Optional: Toggle between map and card view */}
         {/* Uncomment below to show both with toggle */}

@@ -22,6 +22,7 @@ const PRECACHE_URLS = [
   '/images/brands/United.svg',
   '/images/brands/Liberty.svg',
   '/images/brands/default-logo.svg',
+  '/images/melbourne-map-vector.jpg',
 ];
 
 // Install event - cache static assets
