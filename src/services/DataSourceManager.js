@@ -8,6 +8,7 @@
 import { baserowAPI } from '../config';
 import { validateAndTransformStation, getUserFriendlyError } from '../utils/validation';
 import localDataService from './LocalDataService';
+import fuelPriceService from './FuelPriceService';
 // validateStations currently unused - commented out to fix ESLint warning
 
 class DataSourceManager {
@@ -260,12 +261,24 @@ class DataSourceManager {
         console.warn(`⚠️ Only ${transformedStations.length} valid stations found - this may indicate data quality issues`);
       }
 
-      // Cache the transformed data
-      this.dataCache.set(cacheKey, transformedStations);
+      // Fetch and merge fuel prices from Baserow
+      let stationsWithPrices = transformedStations;
+      try {
+        console.log(`⛽ Fetching fuel prices from Baserow...`);
+        const fuelPrices = await fuelPriceService.fetchFuelPrices(forceRefresh);
+        stationsWithPrices = fuelPriceService.mergeStationsWithPrices(transformedStations, fuelPrices);
+        console.log(`✅ Fuel prices merged successfully`);
+      } catch (priceError) {
+        console.warn(`⚠️ Could not fetch fuel prices, stations will not have price data:`, priceError.message);
+        // Continue with stations without prices rather than failing completely
+      }
+
+      // Cache the transformed data with prices
+      this.dataCache.set(cacheKey, stationsWithPrices);
       this.lastFetchTime = Date.now();
 
-      console.log(`✅ Successfully loaded ${transformedStations.length} stations from ${this.activeSource}`);
-      return transformedStations;
+      console.log(`✅ Successfully loaded ${stationsWithPrices.length} stations from ${this.activeSource}`);
+      return stationsWithPrices;
 
     } catch (error) {
       console.error(`❌ Error fetching stations from ${this.activeSource}:`, error);

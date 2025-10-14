@@ -84,10 +84,13 @@ const DirectoryPageNew = () => {
           latitude: parseFloat(station.lat || station.Latitude || 0),
           longitude: parseFloat(station.lng || station.Longitude || 0),
           brand: station.brand || station.Brand || '',
-          fuelPrices: station.prices ? Object.entries(station.prices).map(([fuelType, price]) => ({
-            fuelType,
-            price: parseFloat(price || 0)
-          })) : []
+          // Use fuelPrices array if available (from Baserow), otherwise convert prices object
+          fuelPrices: station.fuelPrices && station.fuelPrices.length > 0 
+            ? station.fuelPrices 
+            : (station.prices ? Object.entries(station.prices).map(([fuelType, price]) => ({
+                fuelType,
+                price: parseFloat(price || 0)
+              })) : [])
         }));
 
         setStations(normalizedData);

@@ -215,10 +215,12 @@ const StationCards = () => {
     return icons[type] || 'F';
   };
 
-  // Format price
+  // Format price - Australian fuel prices are in cents per litre
   const formatPrice = (price) => {
     if (!price || price === 0) return 'N/A';
-    return `$${price.toFixed(2)}`;
+    // If price is less than 10, assume it's in dollars and convert to cents
+    const priceInCents = price < 10 ? price * 100 : price;
+    return `${priceInCents.toFixed(1)}¢`;
   };
 
   // Format last updated date
@@ -369,16 +371,30 @@ const StationCards = () => {
                 <div className="fuel-prices">
                   {Array.isArray(station.fuelPrices) && station.fuelPrices.length > 0 ? (
                     station.fuelPrices
-                      .filter(fuel => fuel && typeof fuel === 'object' && fuel.type)
+                      .filter(fuel => fuel && typeof fuel === 'object' && (fuel.type || fuel.fuelType) && fuel.price > 0)
                       .map((fuel, index) => (
                         <div key={index} className="fuel-price-item">
                           <div className="fuel-type">
-                            <div className={`fuel-icon ${fuel.type.toLowerCase()}`}>
-                              {getFuelIcon(fuel.type)}
+                            <div className={`fuel-icon ${(fuel.type || fuel.fuelType || '').toLowerCase()}`}>
+                              {getFuelIcon(fuel.type || fuel.fuelType)}
                             </div>
-                            {fuel.type}
+                            {fuel.type || fuel.fuelType}
                           </div>
                           <div className="price">{formatPrice(fuel.price)}</div>
+                        </div>
+                      ))
+                  ) : station.prices && Object.keys(station.prices).length > 0 ? (
+                    Object.entries(station.prices)
+                      .filter(([, price]) => price > 0)
+                      .map(([fuelType, price]) => (
+                        <div key={fuelType} className="fuel-price-item">
+                          <div className="fuel-type">
+                            <div className={`fuel-icon ${fuelType.toLowerCase()}`}>
+                              {getFuelIcon(fuelType.charAt(0).toUpperCase() + fuelType.slice(1))}
+                            </div>
+                            {fuelType.charAt(0).toUpperCase() + fuelType.slice(1)}
+                          </div>
+                          <div className="price">{formatPrice(price)}</div>
                         </div>
                       ))
                   ) : (

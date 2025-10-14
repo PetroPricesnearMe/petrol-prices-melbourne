@@ -127,7 +127,6 @@ const MelbourneRegionalMap = () => {
             <svg
               viewBox="0 0 950 800"
               className="melbourne-map-svg"
-              role="img"
               aria-label="Interactive map of Greater Melbourne showing 5 regions"
             >
               <defs>

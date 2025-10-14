@@ -1,7 +1,7 @@
 .navbar {
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
@@ -134,8 +134,8 @@
   top: 100%;
   left: 0;
   background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
@@ -217,8 +217,8 @@
     right: 0;
     bottom: 0;
     background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     flex-direction: column;
     gap: 0;
     padding: 5rem 2rem 2rem;

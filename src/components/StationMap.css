@@ -50,8 +50,8 @@
   bottom: var(--space-4);
   width: 320px;
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   padding: var(--space-4);
@@ -301,8 +301,8 @@
   bottom: var(--space-4);
   left: var(--space-4);
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   padding: var(--space-3);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -369,8 +369,8 @@
 /* Mapbox Custom Styles */
 .mapboxgl-ctrl-group {
   background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--shadow-lg) !important;
 }

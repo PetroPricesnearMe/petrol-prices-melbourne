@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import SEO from './SEO';
 import Breadcrumbs from './Breadcrumbs';
 import { trackPageView } from '../utils/analytics';
+import fuelPriceService from '../services/FuelPriceService';
+import dataSourceManager from '../services/DataSourceManager';
 import './FuelPriceTrendsPage.css';
 
 const FuelPriceTrendsPage = () => {
@@ -32,46 +34,50 @@ const FuelPriceTrendsPage = () => {
     { key: '90days', label: '90 Days' }
   ];
 
-  // Simulate trend data fetching
+  // Fetch real trend data from Baserow
   useEffect(() => {
     const fetchTrendData = async () => {
       setLoading(true);
 
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      try {
+        // Calculate number of days based on timeframe
+        const days = selectedTimeframe === '24hours' ? 1 :
+          selectedTimeframe === '7days' ? 7 :
+            selectedTimeframe === '30days' ? 30 : 90;
 
-      // Generate mock trend data
-      const generateTrendData = (fuelType, timeframe) => {
-        const days = timeframe === '24hours' ? 1 :
-          timeframe === '7days' ? 7 :
-            timeframe === '30days' ? 30 : 90;
+        // Get trend data from Baserow
+        const trendDataFromService = await fuelPriceService.getTrendData(selectedFuelType, days);
 
-        const basePrice = fuelType === 'unleaded' ? 180 :
-          fuelType === 'premium' ? 190 :
-            fuelType === 'premium98' ? 200 :
-              fuelType === 'diesel' ? 175 : 85;
+        // If we have real data, use it
+        if (trendDataFromService && trendDataFromService.length > 0) {
+          setTrendData(trendDataFromService);
+        } else {
+          // Fallback: Calculate from current station data
+          console.log('⚠️ No historical trend data, using current prices as baseline');
+          const stations = await dataSourceManager.fetchStations();
+          const currentAverage = fuelPriceService.getAveragePrice(stations, selectedFuelType);
 
-        const data = [];
-        for (let i = 0; i < days; i++) {
-          const date = new Date();
-          date.setDate(date.getDate() - (days - 1 - i));
+          // Generate simple trend based on current average
+          const fallbackData = [];
+          for (let i = 0; i < days; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() - (days - 1 - i));
 
-          const variation = (Math.random() - 0.5) * 10; // ±5 cents variation
-          const price = Math.max(basePrice - 10, basePrice + variation);
-
-          data.push({
-            date: date.toISOString().split('T')[0],
-            price: Math.round(price * 10) / 10,
-            volume: Math.floor(Math.random() * 1000) + 500
-          });
+            fallbackData.push({
+              date: date.toISOString().split('T')[0],
+              price: currentAverage > 0 ? currentAverage : 180, // Use real average or fallback to 180
+              count: 0
+            });
+          }
+          setTrendData(fallbackData);
         }
-
-        return data;
-      };
-
-      const data = generateTrendData(selectedFuelType, selectedTimeframe);
-      setTrendData(data);
-      setLoading(false);
+      } catch (error) {
+        console.error('Error fetching trend data:', error);
+        // Set empty data on error
+        setTrendData([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchTrendData();
