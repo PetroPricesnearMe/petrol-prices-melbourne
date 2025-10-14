@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import dataSourceManager from '../services/DataSourceManager';
 import { trackSearch, trackFilter } from '../utils/analytics';
+import { getBrandLogo, getBrandClass } from '../utils/brandLogo';
 import './StationCards.css';
 
 /**
@@ -20,22 +21,6 @@ const StationCards = () => {
   const [filterFuelType, setFilterFuelType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
-
-  // Brand logo mapping
-  const brandLogos = {
-    'Shell': '/images/brands/shell-logo.png',
-    'BP': '/images/brands/bp-logo.png',
-    '7-Eleven': '/images/brands/7eleven-logo.png',
-    'Mobil': '/images/brands/mobil-logo.png',
-    'Coles Express': '/images/brands/coles-express-logo.png',
-    'Caltex': '/images/brands/caltex-logo.png',
-    'Ampol': '/images/brands/ampol-logo.png',
-    'United': '/images/brands/united-logo.png',
-    'Liberty': '/images/brands/liberty-logo.png',
-    'Metro': '/images/brands/metro-logo.png',
-    'Puma': '/images/brands/puma-logo.png',
-    'Vibe': '/images/brands/vibe-logo.png',
-  };
 
   // Parse CSV data
   const parseCSV = useCallback((text) => {
@@ -218,24 +203,6 @@ const StationCards = () => {
     currentPage * itemsPerPage
   );
 
-  // Get brand logo
-  const getBrandLogo = (brand) => {
-    return brandLogos[brand] || '/images/brands/default-logo.svg';
-  };
-
-  // Get brand-specific CSS class for header styling
-  const getBrandClass = (brand) => {
-    if (!brand) return 'default';
-    const brandLower = brand.toLowerCase();
-    if (brandLower.includes('shell')) return 'shell';
-    if (brandLower.includes('bp')) return 'bp';
-    if (brandLower.includes('caltex')) return 'caltex';
-    if (brandLower.includes('ampol')) return 'ampol';
-    if (brandLower.includes('7') || brandLower.includes('seven')) return 'seven-eleven';
-    if (brandLower.includes('mobil')) return 'mobil';
-    if (brandLower.includes('united')) return 'united';
-    return 'default';
-  };
 
   // Format fuel type for display
   const getFuelIcon = (type) => {

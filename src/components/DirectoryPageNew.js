@@ -9,6 +9,7 @@ import StationCards from './StationCards';
 import Breadcrumbs from './Breadcrumbs';
 import SEO, { generateFuelPriceListingData } from './SEO';
 import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../utils/analytics';
+import { getBrandClass as getBrandStyleClass } from '../utils/brandLogo';
 import './DirectoryPageNew.css';
 
 /**
@@ -29,17 +30,11 @@ const BRAND_IMAGES = {
   'default': '/images/fuel-nozzles.svg'
 };
 
-// Get brand-specific CSS class
+// Get brand-specific CSS class for directory cards
 const getBrandClass = (brand) => {
   if (!brand) return '';
-  const brandLower = (typeof brand === 'string' ? brand : '').toLowerCase();
-  if (brandLower.includes('shell')) return 'brand-shell';
-  if (brandLower.includes('bp')) return 'brand-bp';
-  if (brandLower.includes('caltex') || brandLower.includes('ampol')) return 'brand-caltex';
-  if (brandLower.includes('7') || brandLower.includes('seven')) return 'brand-seven-eleven';
-  if (brandLower.includes('mobil')) return 'brand-mobil';
-  if (brandLower.includes('united')) return 'brand-united';
-  return '';
+  const baseClass = getBrandStyleClass(brand);
+  return baseClass ? `brand-${baseClass}` : '';
 };
 
 // Get brand image
