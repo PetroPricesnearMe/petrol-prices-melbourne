@@ -3,7 +3,7 @@
   "outputDirectory": "build",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!static|images|data|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|service-worker\\.js).*)",
       "destination": "/index.html"
     }
   ],
