@@ -23,13 +23,24 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:analyze": "npm run build && npx source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "analyze": "npm run build && npx serve -s build",
     "analyze-bundle": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
-    "lighthouse": "npm run build && npx lighthouse http://localhost:3000 --output-path=./lighthouse-report.html",
+    "lighthouse": "npm run build && npx lighthouse http://localhost:3000 --output-path=./lighthouse-report.html --view",
+    "lighthouse:ci": "npm run build && npx lighthouse-ci autorun",
     "security-audit": "npm audit --audit-level=moderate",
-    "performance-test": "npm run build && npx lighthouse-ci autorun"
+    "security-audit:fix": "npm audit fix",
+    "performance-test": "npm run build && npx lighthouse http://localhost:3000 --only-categories=performance --output=json --output-path=./performance-report.json",
+    "clean": "rm -rf build node_modules/.cache",
+    "clean:all": "rm -rf build node_modules && npm install",
+    "optimize-images": "node scripts/optimize-images.js",
+    "lint": "eslint src --ext .js,.jsx",
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
+    "size": "npm run build && size-limit"
   },
   "eslintConfig": {
     "extends": [
