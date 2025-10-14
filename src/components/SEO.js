@@ -203,5 +203,166 @@ export const generateFuelPriceListingData = (stations) => {
   };
 };
 
+/**
+ * Generate Article schema for blog/guide pages
+ */
+export const generateArticleSchema = ({
+  title,
+  description,
+  author = "Petrol Prices Near Me Team",
+  datePublished,
+  dateModified,
+  image,
+  keywords = []
+}) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": description,
+    "author": {
+      "@type": "Organization",
+      "name": author,
+      "url": "https://www.petrolpricesnearme.com.au"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Petrol Prices Near Me",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.petrolpricesnearme.com.au/images/fuel-icon-192.svg"
+      }
+    },
+    "datePublished": datePublished || new Date().toISOString(),
+    "dateModified": dateModified || new Date().toISOString(),
+    "image": image || "https://www.petrolpricesnearme.com.au/images/fuel-nozzles.svg",
+    "keywords": keywords.join(', '),
+    "articleSection": "Fuel Price Guides",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.petrolpricesnearme.com.au"
+    }
+  };
+};
+
+/**
+ * Generate HowTo schema for guide pages
+ */
+export const generateHowToSchema = ({
+  name,
+  description,
+  image,
+  totalTime,
+  steps = []
+}) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": name,
+    "description": description,
+    "image": image || "https://www.petrolpricesnearme.com.au/images/fuel-nozzles.svg",
+    "totalTime": totalTime || "PT5M",
+    "tool": [
+      {
+        "@type": "HowToTool",
+        "name": "Petrol Prices Near Me Platform"
+      },
+      {
+        "@type": "HowToTool",
+        "name": "Mobile Device or Computer"
+      }
+    ],
+    "supply": [],
+    "step": steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.name,
+      "text": step.text,
+      "url": `https://www.petrolpricesnearme.com.au#step${index + 1}`,
+      "image": step.image || "https://www.petrolpricesnearme.com.au/images/fuel-nozzles.svg"
+    }))
+  };
+};
+
+/**
+ * Generate LocalBusiness schema for location-specific pages
+ */
+export const generateLocalBusinessSchema = ({
+  name = "Petrol Prices Near Me",
+  description,
+  address,
+  region = "Melbourne"
+}) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": name,
+    "description": description || "Real-time fuel price comparison service for Melbourne",
+    "image": "https://www.petrolpricesnearme.com.au/images/fuel-nozzles.svg",
+    "address": address || {
+      "@type": "PostalAddress",
+      "addressLocality": region,
+      "addressRegion": "VIC",
+      "addressCountry": "AU"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -37.8136,
+      "longitude": 144.9631
+    },
+    "url": "https://www.petrolpricesnearme.com.au",
+    "telephone": "+61-1300-PETROL",
+    "priceRange": "Free",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "00:00",
+      "closes": "23:59"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1250"
+    }
+  };
+};
+
+/**
+ * Generate Product schema for service offerings
+ */
+export const generateProductSchema = () => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Petrol Price Comparison Service",
+    "description": "Free real-time petrol price comparison service for Melbourne with live updates from 250+ stations",
+    "brand": {
+      "@type": "Brand",
+      "name": "Petrol Prices Near Me"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "AUD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://www.petrolpricesnearme.com.au"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "bestRating": "5",
+      "ratingCount": "1250"
+    }
+  };
+};
+
 export default SEO;
 

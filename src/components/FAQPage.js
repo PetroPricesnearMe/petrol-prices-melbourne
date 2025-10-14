@@ -104,9 +104,9 @@ const FAQPage = () => {
   return (
     <>
       <SEO
-        title="FAQ - Melbourne Petrol Prices | Frequently Asked Questions"
-        description="Find answers to common questions about fuel prices in Melbourne. Learn about price cycles, data sources, coverage areas, and how to save money on petrol."
-        keywords="petrol prices faq, fuel price questions, melbourne petrol help, fuel price cycle, petrol station finder, fuel savings tips"
+        title="FAQ - Melbourne Petrol Prices 2025 | Your Questions Answered"
+        description="💡 Get answers to common questions about Melbourne fuel prices. Learn about price cycles, data sources, how to save up to 30c/L, and maximize your fuel savings. Expert tips & insights!"
+        keywords="petrol prices faq melbourne, fuel price questions answered, melbourne petrol help guide, fuel price cycle explained, petrol station finder tips, fuel savings tips melbourne, how to save on petrol australia, fuel price monitoring faq, unleaded diesel premium prices melbourne"
         canonical="/faq"
         structuredData={faqStructuredData}
       />
@@ -118,8 +118,12 @@ const FAQPage = () => {
         <div className="faq-header">
           <div className="container">
             <header>
-              <h1>Frequently Asked Questions</h1>
-              <p>Find answers to common questions about fuel prices, our service, and how to save money</p>
+              <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800 }}>
+                Frequently Asked Questions About Melbourne Petrol Prices
+              </h1>
+              <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', marginTop: '0.75rem' }}>
+                Get instant answers to common questions about fuel prices, price cycles, our service, and proven strategies to save money on every fill-up
+              </p>
             </header>
 
             <div className="faq-controls">
@@ -180,12 +184,17 @@ const FAQPage = () => {
 
             {/* Additional Help Section */}
             <div className="help-section">
-              <h2>Still need help?</h2>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: '1.5rem' }}>
+                Still Need Help? We're Here for You
+              </h2>
+              <p style={{ maxWidth: '600px', margin: '0 auto 2rem', fontSize: '1.05rem', color: 'var(--text-secondary)' }}>
+                Can't find what you're looking for? Our team is ready to assist you with any questions about fuel prices, our platform, or how to maximize your savings.
+              </p>
               <div className="help-options">
                 <div className="help-option">
                   <span className="help-icon">📧</span>
                   <h3>Email Support</h3>
-                  <p>Get personalized help from our support team</p>
+                  <p>Get personalized help from our expert support team. We typically respond within 24 hours.</p>
                   <a href="mailto:support@petrolpricesnearme.com.au" className="help-link">
                     support@petrolpricesnearme.com.au
                   </a>
@@ -193,14 +202,14 @@ const FAQPage = () => {
                 <div className="help-option">
                   <span className="help-icon">💬</span>
                   <h3>Live Chat</h3>
-                  <p>Chat with us in real-time during business hours</p>
-                  <button className="help-link">Start Chat</button>
+                  <p>Chat with us in real-time during business hours (Mon-Fri, 9am-5pm AEST)</p>
+                  <button className="help-link">Start Chat (Coming Soon)</button>
                 </div>
                 <div className="help-option">
                   <span className="help-icon">📚</span>
-                  <h3>Learn More</h3>
-                  <p>Explore our comprehensive guides and resources</p>
-                  <a href="/how-pricing-works" className="help-link">View Guides</a>
+                  <h3>Educational Resources</h3>
+                  <p>Explore our comprehensive guides to understand fuel pricing and maximize your savings</p>
+                  <a href="/how-pricing-works" className="help-link">View Complete Guide</a>
                 </div>
               </div>
             </div>

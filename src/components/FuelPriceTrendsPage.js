@@ -109,9 +109,9 @@ const FuelPriceTrendsPage = () => {
   return (
     <>
       <SEO
-        title="Fuel Price Trends Melbourne | Live Petrol Price Analysis & History"
-        description="Track fuel price trends in Melbourne with real-time analysis and historical data. View price cycles, compare fuel types, and predict when to fill up for maximum savings."
-        keywords="fuel price trends melbourne, petrol price history, fuel price cycle, petrol price analysis, melbourne fuel trends, price forecasting"
+        title="Melbourne Fuel Price Trends 2025 | Live Analysis & Historical Data - Save Up to 30c/L"
+        description="📊 Track live fuel price trends in Melbourne with real-time analysis and historical data. Understand price cycles, compare unleaded/diesel/premium trends, and discover the best days to fill up for maximum savings!"
+        keywords="fuel price trends melbourne 2025, petrol price history melbourne, fuel price cycle australia, petrol price analysis melbourne, melbourne fuel trends live, price forecasting petrol, fuel price patterns melbourne, weekly price cycle vic, best day to buy petrol melbourne, unleaded diesel trends melbourne"
         canonical="/fuel-price-trends"
       />
       <motion.div
@@ -132,8 +132,13 @@ const FuelPriceTrendsPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1>Fuel Price Trends</h1>
-              <p>Track fuel price movements across Melbourne to find the best times to fill up</p>
+              <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800 }}>
+                Melbourne Fuel Price Trends & Analysis
+              </h1>
+              <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', marginTop: '0.75rem', maxWidth: '800px', margin: '0 auto' }}>
+                Track real-time fuel price movements across Melbourne. Understand weekly cycles, analyze historical trends,
+                and discover the optimal times to fill up and save up to 30c per liter on every purchase.
+              </p>
             </motion.div>
 
             <motion.div
@@ -290,16 +295,18 @@ const FuelPriceTrendsPage = () => {
 
                 {/* Call to Action */}
                 <div className="cta-section">
-                  <h3>Ready to Find the Best Prices?</h3>
-                  <p>Use our live map and directory to find the cheapest fuel near you right now.</p>
+                  <h3 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: '1rem' }}>
+                    Ready to Start Saving Money on Fuel?
+                  </h3>
+                  <p style={{ fontSize: '1.05rem', marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>
+                    Use our live tools to find the cheapest petrol prices near you right now and start saving up to $520 per year!
+                  </p>
                   <div className="cta-buttons">
                     <Link to="/map" className="btn btn-primary">
-                      <span className="btn-text">View Live Map</span>
-                      <span className="btn-icon">🗺️</span>
+                      <span className="btn-text">🗺️ View Live Map</span>
                     </Link>
                     <Link to="/directory" className="btn btn-secondary">
-                      <span className="btn-text">Browse Directory</span>
-                      <span className="btn-icon">📋</span>
+                      <span className="btn-text">📋 Browse All Stations</span>
                     </Link>
                   </div>
                 </div>

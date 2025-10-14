@@ -494,9 +494,9 @@ const HowPricingWorksPage = () => {
   return (
     <>
       <SEO
-        title="How Fuel Pricing Works in Australia | Melbourne Petrol Price Guide"
-        description="Understand how petrol prices work in Australia. Learn about price cycles, factors affecting fuel costs, regulations, and expert tips to save money on every fill-up."
-        keywords="how fuel pricing works, petrol price cycle australia, fuel price factors, petrol regulations, fuel pricing explained, melbourne fuel guide"
+        title="How Fuel Pricing Works in Australia 2025 | Complete Melbourne Petrol Price Guide"
+        description="🎓 Master Australian fuel pricing! Understand price cycles, government taxes, global oil markets, and regulations. Learn expert strategies to save up to 30c/L on petrol in Melbourne with our complete guide."
+        keywords="how fuel pricing works australia, petrol price cycle explained melbourne, fuel price factors australia, petrol regulations vic, fuel pricing guide melbourne, australian petrol taxes, fuel excise duty australia, weekly price cycle melbourne, oil prices australia, save money on petrol guide"
         canonical="/how-pricing-works"
       />
       <motion.div
@@ -517,8 +517,13 @@ const HowPricingWorksPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1>How Fuel Pricing Works in Australia</h1>
-              <p>Understanding the factors that influence petrol prices to help you save money</p>
+              <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800 }}>
+                How Fuel Pricing Works in Australia
+              </h1>
+              <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', marginTop: '0.75rem', maxWidth: '900px', margin: '0 auto' }}>
+                Understand the complex factors that influence petrol prices in Melbourne and across Australia.
+                Master price cycles, government regulations, and market dynamics to save money on every fill-up.
+              </p>
             </motion.div>
           </div>
         </div>
@@ -570,20 +575,21 @@ const HowPricingWorksPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <h3>Ready to Find the Best Fuel Prices?</h3>
-              <p>Put your knowledge to use with our live price comparison tools</p>
+              <h3 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: '1rem' }}>
+                Ready to Apply Your Knowledge and Start Saving?
+              </h3>
+              <p style={{ fontSize: '1.05rem', marginBottom: '1.5rem', color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto 1.5rem' }}>
+                Now that you understand how fuel pricing works, put your knowledge into action with our powerful price comparison tools and start saving money today!
+              </p>
               <div className="cta-buttons">
                 <Link to="/map" className="btn btn-primary">
-                  <span className="btn-text">View Live Map</span>
-                  <span className="btn-icon">🗺️</span>
+                  <span className="btn-text">🗺️ View Live Map</span>
                 </Link>
                 <Link to="/directory" className="btn btn-secondary">
-                  <span className="btn-text">Browse Directory</span>
-                  <span className="btn-icon">📋</span>
+                  <span className="btn-text">📋 Browse Directory</span>
                 </Link>
                 <Link to="/fuel-price-trends" className="btn btn-outline">
-                  <span className="btn-text">View Trends</span>
-                  <span className="btn-icon">📈</span>
+                  <span className="btn-text">📈 View Trends</span>
                 </Link>
               </div>
             </motion.div>

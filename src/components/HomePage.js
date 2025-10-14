@@ -90,8 +90,8 @@ const HomePage = () => {
               </MotionH1>
 
               <MotionP className="hero-subtitle" variants={itemVariants}>
-                Compare live fuel prices from 250+ stations across Melbourne. 
-                Save up to 30c per liter with real-time price updates on unleaded, 
+                Compare live fuel prices from 250+ stations across Melbourne.
+                Save up to 30c per liter with real-time price updates on unleaded,
                 diesel & premium fuel. Smart. Simple. Free.
               </MotionP>
 
