@@ -135,27 +135,11 @@
 }
 
 .brand-logo {
-  /* Fixed height for consistent layout alignment */
-  height: 36px;
-  max-width: 120px;
-  width: auto;
-
-  /* Prevent layout shift during image load */
-  min-width: 36px;
-
-  /* Image fitting and alignment */
+  max-width: 60px;
+  max-height: 40px;
   object-fit: contain;
-  object-position: center;
-
-  /* Visual styling */
   filter: brightness(0) invert(1);
   transition: var(--transition-base);
-
-  /* Performance optimization */
-  will-change: transform;
-
-  /* Accessibility */
-  display: block;
 }
 
 .brand-badge {

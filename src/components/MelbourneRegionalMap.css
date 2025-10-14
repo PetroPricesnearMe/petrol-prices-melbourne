@@ -17,7 +17,7 @@
 .map-title {
   font-size: 3.5rem;
   font-weight: 900;
-  color: #2563EB;
+  color: #DD1D21;
   margin-bottom: 1rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -100,10 +100,10 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 3rem;
-  background: linear-gradient(135deg, #2563EB 0%, #10B981 100%);
+  background: linear-gradient(135deg, #DD1D21 0%, #F39200 100%);
   border-radius: 2rem;
   color: white;
-  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 15px 40px rgba(221, 29, 33, 0.25);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -124,7 +124,7 @@
   font-size: 2.25rem;
   font-weight: 900;
   margin-bottom: 0.5rem;
-  color: #60A5FA;
+  color: #FFC700;
 }
 
 .cta-text p {
@@ -148,15 +148,15 @@
 
 .btn-primary {
   background: white;
-  color: #2563EB;
+  color: #DD1D21;
   border: 2px solid white;
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-  background: #60A5FA;
-  color: #2563EB;
+  background: #FFC700;
+  color: #DD1D21;
 }
 
 /* Responsive Design */

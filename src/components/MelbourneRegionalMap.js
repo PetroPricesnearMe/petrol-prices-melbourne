@@ -131,30 +131,30 @@ const MelbourneRegionalMap = () => {
               preserveAspectRatio="xMidYMid meet"
             >
               <defs>
-                {/* Modern gradient definitions with blue/green theme */}
+                {/* Modern gradient definitions with Shell brand colors */}
                 <linearGradient id="gradient-northern" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#2563EB" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity="0.75" />
+                  <stop offset="0%" stopColor="#DD1D21" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="#F39200" stopOpacity="0.75" />
                 </linearGradient>
 
                 <linearGradient id="gradient-western" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#60A5FA" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="#10B981" stopOpacity="0.75" />
+                  <stop offset="0%" stopColor="#FFC700" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="#F39200" stopOpacity="0.75" />
                 </linearGradient>
 
                 <linearGradient id="gradient-melbourne_inner" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#2563EB" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#1D4ED8" stopOpacity="0.8" />
+                  <stop offset="0%" stopColor="#DD1D21" stopOpacity="0.9" />
+                  <stop offset="100%" stopColor="#B01419" stopOpacity="0.8" />
                 </linearGradient>
 
                 <linearGradient id="gradient-eastern" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#10B981" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.75" />
+                  <stop offset="0%" stopColor="#F39200" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="#DD1D21" stopOpacity="0.75" />
                 </linearGradient>
 
                 <linearGradient id="gradient-south_eastern" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#34D399" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="#2563EB" stopOpacity="0.75" />
+                  <stop offset="0%" stopColor="#FFC700" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="#DD1D21" stopOpacity="0.75" />
                 </linearGradient>
 
                 {/* Modern shadow effect */}
@@ -237,7 +237,7 @@ const MelbourneRegionalMap = () => {
                           cy={region.labelPosition.y + 35}
                           r="32"
                           fill="#ffffff"
-                          stroke="#2563EB"
+                          stroke="#DD1D21"
                           strokeWidth="4"
                           filter="url(#shadow)"
                         />
@@ -248,7 +248,7 @@ const MelbourneRegionalMap = () => {
                           style={{
                             fontSize: '20px',
                             fontWeight: '900',
-                            fill: '#2563EB',
+                            fill: '#DD1D21',
                             pointerEvents: 'none',
                           }}
                         >
