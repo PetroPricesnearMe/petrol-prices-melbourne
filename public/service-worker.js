@@ -217,5 +217,25 @@ self.addEventListener('notificationclick', (event) => {
   }
 });
 
+// Handle bfcache compatibility
+self.addEventListener('freeze', () => {
+  console.log('[Service Worker] Page frozen (bfcache)');
+});
+
+self.addEventListener('resume', () => {
+  console.log('[Service Worker] Page resumed from bfcache');
+});
+
+// Suppress Chrome extension errors in service worker
+self.addEventListener('error', (event) => {
+  if (event.message && (
+      event.message.includes('runtime.lastError') ||
+      event.message.includes('extension port') ||
+      event.message.includes('message channel')
+    )) {
+    event.preventDefault();
+  }
+});
+
 console.log('[Service Worker] Loaded successfully');
 

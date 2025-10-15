@@ -910,20 +910,65 @@
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/images/fuel-icon-192.svg" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-  <!-- Suppress IDE deprecation warnings in development -->
+  <!-- Suppress IDE and Chrome extension warnings -->
   <script>
-    // Suppress unload event warnings from IDE/extensions during development
-    // Only applies in non-production environments
+    // Suppress extension and IDE warnings during development
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       const originalWarn = console.warn;
+      const originalError = console.error;
+      
       console.warn = function (...args) {
         const message = args[0]?.toString() || '';
-        if (message.includes('Unload event listeners are deprecated')) {
+        if (message.includes('Unload event listeners are deprecated') ||
+            message.includes('extension port') ||
+            message.includes('back/forward cache')) {
           return; // Suppress IDE/extension warnings
         }
         originalWarn.apply(console, args);
       };
+
+      console.error = function (...args) {
+        const message = args[0]?.toString() || '';
+        if (message.includes('runtime.lastError') ||
+            message.includes('extension port') ||
+            message.includes('back/forward cache') ||
+            message.includes('message channel is closed')) {
+          return; // Suppress Chrome extension errors
+        }
+        originalError.apply(console, args);
+      };
     }
+
+    // Handle bfcache events to prevent extension errors
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        // Page was restored from bfcache
+        console.log('[BFCache] Page restored from cache');
+        // Reinitialize any necessary components
+        if (window.__bfcache_restore_callbacks) {
+          window.__bfcache_restore_callbacks.forEach(cb => cb());
+        }
+      }
+    });
+
+    window.addEventListener('pagehide', function(event) {
+      if (event.persisted) {
+        // Page is being cached
+        console.log('[BFCache] Page entering cache');
+      }
+    });
+
+    // Global error handler for uncaught extension errors
+    window.addEventListener('error', function(event) {
+      if (event.message && (
+          event.message.includes('runtime.lastError') ||
+          event.message.includes('extension port') ||
+          event.message.includes('message channel is closed')
+        )) {
+        event.preventDefault();
+        return true;
+      }
+    }, true);
   </script>
 
   <!-- Google Analytics - Loaded by React App -->

@@ -166,24 +166,15 @@ module.exports = {
       // Transform imports for better tree-shaking
       ['babel-plugin-transform-imports', {
         'lodash': {
-          transform: 'lodash/${member}',
+          transform: 'lodash/$' + '{member}',
           preventFullImport: true
         },
         '@mui/icons-material': {
-          transform: '@mui/icons-material/${member}',
+          transform: '@mui/icons-material/$' + '{member}',
           preventFullImport: true
         }
       }]
-    ],
-
-    // Optimize React for production
-    presets: env === 'production' ? [
-      ['@babel/preset-react', {
-        runtime: 'automatic',
-        development: false,
-        importSource: 'react'
-      }]
-    ] : undefined
+    ]
   },
 
   // DevServer configuration

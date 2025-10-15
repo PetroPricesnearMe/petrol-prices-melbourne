@@ -4,7 +4,7 @@
  * @version 2.0.0
  */
 
-import { initializeGA, initializeGADeferred, trackGAEvent, trackPageView as gaPageView } from '../googleAnalytics';
+import { initializeGADeferred, trackGAEvent, trackPageView as gaPageView } from '../googleAnalytics';
 
 class AnalyticsManager {
   constructor() {

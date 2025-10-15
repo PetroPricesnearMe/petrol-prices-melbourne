@@ -4,6 +4,19 @@ import './index.css';
 import App from './App';
 import analyticsManager from './utils/analytics/analyticsManager';
 import { initializePerformanceMonitoring } from './utils/analytics/performanceMonitoring';
+import { initBFCacheCompat } from './utils/bfcacheCompat';
+
+// Initialize BFCache compatibility (suppress Chrome extension errors)
+initBFCacheCompat({
+  debug: process.env.NODE_ENV === 'development',
+  onRestore: () => {
+    console.log('[App] Restored from bfcache - reinitializing...');
+    // Reinitialize analytics if needed
+    if (analyticsManager.initialized) {
+      analyticsManager.trackPageView(window.location.pathname, document.title);
+    }
+  }
+});
 
 // Initialize Performance Monitoring
 initializePerformanceMonitoring();

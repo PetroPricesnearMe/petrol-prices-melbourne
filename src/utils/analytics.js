@@ -48,30 +48,175 @@ class AnalyticsStore {
     this.events = [];
     this.sessionId = this.generateSessionId();
     this.sessionStartTime = Date.now();
+    this.isInBackForwardCache = false;
+    this.eventListeners = new Map(); // Track event listeners for cleanup
 
     // Load existing analytics data from localStorage
     this.loadFromStorage();
 
-    // Track session end using modern Page Visibility API and pagehide event
-    // These are more reliable than the deprecated beforeunload/unload events
+    // Initialize back/forward cache compatible event handling
+    this.initializeEventHandlers();
+  }
 
-    // Use visibilitychange to track when user switches tabs or minimizes
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
-          duration: Date.now() - this.sessionStartTime,
-          reason: 'visibility_hidden'
-        });
+  /**
+   * Initialize event handlers for back/forward cache compatibility
+   */
+  initializeEventHandlers() {
+    try {
+      // Handle visibility changes (tab switching, minimizing)
+      const handleVisibilityChange = () => {
+        try {
+          if (document.visibilityState === 'hidden' && !this.isInBackForwardCache) {
+            this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+              duration: Date.now() - this.sessionStartTime,
+              reason: 'visibility_hidden'
+            });
+          }
+        } catch (error) {
+          console.warn('[Analytics] Error in visibilitychange handler:', error);
+        }
+      };
+
+      // Handle page hide (including back/forward cache)
+      const handlePageHide = (event) => {
+        try {
+          this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+            duration: Date.now() - this.sessionStartTime,
+            reason: event.persisted ? 'bfcache_hide' : 'page_hide',
+            persisted: event.persisted
+          });
+
+          if (event.persisted) {
+            this.isInBackForwardCache = true;
+            this.cleanupResources();
+          }
+        } catch (error) {
+          console.warn('[Analytics] Error in pagehide handler:', error);
+        }
+      };
+
+      // Handle page show (including restoration from back/forward cache)
+      const handlePageShow = (event) => {
+        try {
+          if (event.persisted) {
+            // Page restored from back/forward cache
+            this.isInBackForwardCache = false;
+            this.sessionStartTime = Date.now(); // Reset session time
+            this.trackEvent(ANALYTICS_EVENTS.SESSION_START, {
+              reason: 'bfcache_restore',
+              persisted: event.persisted
+            });
+          }
+        } catch (error) {
+          console.warn('[Analytics] Error in pageshow handler:', error);
+        }
+      };
+
+      // Handle freeze event (modern browsers, page going to back/forward cache)
+      const handleFreeze = () => {
+        try {
+          this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+            duration: Date.now() - this.sessionStartTime,
+            reason: 'freeze'
+          });
+          this.cleanupResources();
+        } catch (error) {
+          console.warn('[Analytics] Error in freeze handler:', error);
+        }
+      };
+
+      // Handle resume event (modern browsers, page resuming from back/forward cache)
+      const handleResume = () => {
+        try {
+          this.sessionStartTime = Date.now();
+          this.trackEvent(ANALYTICS_EVENTS.SESSION_START, {
+            reason: 'resume'
+          });
+        } catch (error) {
+          console.warn('[Analytics] Error in resume handler:', error);
+        }
+      };
+
+      // Add event listeners with passive option for better performance
+      this.addEventListenerSafe('visibilitychange', handleVisibilityChange, { passive: true });
+      this.addEventListenerSafe('pagehide', handlePageHide, { passive: true });
+      this.addEventListenerSafe('pageshow', handlePageShow, { passive: true });
+
+      // Modern back/forward cache events (if supported)
+      if ('onfreeze' in document) {
+        this.addEventListenerSafe('freeze', handleFreeze, { passive: true });
       }
-    });
+      if ('onresume' in document) {
+        this.addEventListenerSafe('resume', handleResume, { passive: true });
+      }
 
-    // Use pagehide as a more reliable alternative to beforeunload
-    window.addEventListener('pagehide', () => {
-      this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
-        duration: Date.now() - this.sessionStartTime,
-        reason: 'page_hide'
+      // Handle unhandled promise rejections to prevent extension conflicts
+      const handleUnhandledRejection = (event) => {
+        console.warn('[Analytics] Unhandled promise rejection:', event.reason);
+        // Prevent the event from causing issues with extensions
+        event.preventDefault();
+      };
+
+      this.addEventListenerSafe('unhandledrejection', handleUnhandledRejection, { passive: true });
+
+    } catch (error) {
+      console.warn('[Analytics] Failed to initialize event handlers:', error);
+    }
+  }
+
+  /**
+   * Safely add event listener with error handling and cleanup tracking
+   */
+  addEventListenerSafe(eventType, handler, options = {}) {
+    try {
+      const target = eventType === 'visibilitychange' ? document : window;
+      target.addEventListener(eventType, handler, options);
+
+      // Store for cleanup
+      if (!this.eventListeners.has(eventType)) {
+        this.eventListeners.set(eventType, []);
+      }
+      this.eventListeners.get(eventType).push({ target, handler, options });
+    } catch (error) {
+      console.warn(`[Analytics] Failed to add ${eventType} listener:`, error);
+    }
+  }
+
+  /**
+   * Clean up resources when entering back/forward cache
+   */
+  cleanupResources() {
+    try {
+      // Save current state to localStorage before cleanup
+      this.saveToStorage();
+
+      // Clear any pending timeouts or intervals
+      if (this.saveTimeout) {
+        clearTimeout(this.saveTimeout);
+        this.saveTimeout = null;
+      }
+
+      // Close any open connections (if any)
+      // Note: Don't remove event listeners here as they're needed for restoration
+    } catch (error) {
+      console.warn('[Analytics] Error during resource cleanup:', error);
+    }
+  }
+
+  /**
+   * Remove all event listeners (call on component unmount)
+   */
+  destroy() {
+    try {
+      this.eventListeners.forEach((listeners, eventType) => {
+        listeners.forEach(({ target, handler }) => {
+          target.removeEventListener(eventType, handler);
+        });
       });
-    });
+      this.eventListeners.clear();
+    } catch (error) {
+      console.warn('[Analytics] Error removing event listeners:', error);
+    }
   }
 
   /**
