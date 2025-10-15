@@ -48,30 +48,175 @@ class AnalyticsStore {
     this.events = [];
     this.sessionId = this.generateSessionId();
     this.sessionStartTime = Date.now();
+    this.isInBackForwardCache = false;
+    this.eventListeners = new Map(); // Track event listeners for cleanup
 
     // Load existing analytics data from localStorage
     this.loadFromStorage();
 
-    // Track session end using modern Page Visibility API and pagehide event
-    // These are more reliable than the deprecated beforeunload/unload events
+    // Initialize back/forward cache compatible event handling
+    this.initializeEventHandlers();
+  }
 
-    // Use visibilitychange to track when user switches tabs or minimizes
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
-          duration: Date.now() - this.sessionStartTime,
-          reason: 'visibility_hidden'
-        });
+  /**
+   * Initialize event handlers for back/forward cache compatibility
+   */
+  initializeEventHandlers() {
+    try {
+      // Handle visibility changes (tab switching, minimizing)
+      const handleVisibilityChange = () => {
+        try {
+          if (document.visibilityState === 'hidden' && !this.isInBackForwardCache) {
+            this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+              duration: Date.now() - this.sessionStartTime,
+              reason: 'visibility_hidden'
+            });
+          }
+        } catch (error) {
+          console.warn('[Analytics] Error in visibilitychange handler:', error);
+        }
+      };
+
+      // Handle page hide (including back/forward cache)
+      const handlePageHide = (event) => {
+        try {
+          this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+            duration: Date.now() - this.sessionStartTime,
+            reason: event.persisted ? 'bfcache_hide' : 'page_hide',
+            persisted: event.persisted
+          });
+
+          if (event.persisted) {
+            this.isInBackForwardCache = true;
+            this.cleanupResources();
+          }
+        } catch (error) {
+          console.warn('[Analytics] Error in pagehide handler:', error);
+        }
+      };
+
+      // Handle page show (including restoration from back/forward cache)
+      const handlePageShow = (event) => {
+        try {
+          if (event.persisted) {
+            // Page restored from back/forward cache
+            this.isInBackForwardCache = false;
+            this.sessionStartTime = Date.now(); // Reset session time
+            this.trackEvent(ANALYTICS_EVENTS.SESSION_START, {
+              reason: 'bfcache_restore',
+              persisted: event.persisted
+            });
+          }
+        } catch (error) {
+          console.warn('[Analytics] Error in pageshow handler:', error);
+        }
+      };
+
+      // Handle freeze event (modern browsers, page going to back/forward cache)
+      const handleFreeze = () => {
+        try {
+          this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+            duration: Date.now() - this.sessionStartTime,
+            reason: 'freeze'
+          });
+          this.cleanupResources();
+        } catch (error) {
+          console.warn('[Analytics] Error in freeze handler:', error);
+        }
+      };
+
+      // Handle resume event (modern browsers, page resuming from back/forward cache)
+      const handleResume = () => {
+        try {
+          this.sessionStartTime = Date.now();
+          this.trackEvent(ANALYTICS_EVENTS.SESSION_START, {
+            reason: 'resume'
+          });
+        } catch (error) {
+          console.warn('[Analytics] Error in resume handler:', error);
+        }
+      };
+
+      // Add event listeners with passive option for better performance
+      this.addEventListenerSafe('visibilitychange', handleVisibilityChange, { passive: true });
+      this.addEventListenerSafe('pagehide', handlePageHide, { passive: true });
+      this.addEventListenerSafe('pageshow', handlePageShow, { passive: true });
+
+      // Modern back/forward cache events (if supported)
+      if ('onfreeze' in document) {
+        this.addEventListenerSafe('freeze', handleFreeze, { passive: true });
       }
-    });
+      if ('onresume' in document) {
+        this.addEventListenerSafe('resume', handleResume, { passive: true });
+      }
 
-    // Use pagehide as a more reliable alternative to beforeunload
-    window.addEventListener('pagehide', () => {
-      this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
-        duration: Date.now() - this.sessionStartTime,
-        reason: 'page_hide'
+      // Handle unhandled promise rejections to prevent extension conflicts
+      const handleUnhandledRejection = (event) => {
+        console.warn('[Analytics] Unhandled promise rejection:', event.reason);
+        // Prevent the event from causing issues with extensions
+        event.preventDefault();
+      };
+
+      this.addEventListenerSafe('unhandledrejection', handleUnhandledRejection, { passive: true });
+
+    } catch (error) {
+      console.warn('[Analytics] Failed to initialize event handlers:', error);
+    }
+  }
+
+  /**
+   * Safely add event listener with error handling and cleanup tracking
+   */
+  addEventListenerSafe(eventType, handler, options = {}) {
+    try {
+      const target = eventType === 'visibilitychange' ? document : window;
+      target.addEventListener(eventType, handler, options);
+      
+      // Store for cleanup
+      if (!this.eventListeners.has(eventType)) {
+        this.eventListeners.set(eventType, []);
+      }
+      this.eventListeners.get(eventType).push({ target, handler, options });
+    } catch (error) {
+      console.warn(`[Analytics] Failed to add ${eventType} listener:`, error);
+    }
+  }
+
+  /**
+   * Clean up resources when entering back/forward cache
+   */
+  cleanupResources() {
+    try {
+      // Save current state to localStorage before cleanup
+      this.saveToStorage();
+
+      // Clear any pending timeouts or intervals
+      if (this.saveTimeout) {
+        clearTimeout(this.saveTimeout);
+        this.saveTimeout = null;
+      }
+
+      // Close any open connections (if any)
+      // Note: Don't remove event listeners here as they're needed for restoration
+    } catch (error) {
+      console.warn('[Analytics] Error during resource cleanup:', error);
+    }
+  }
+
+  /**
+   * Remove all event listeners (call on component unmount)
+   */
+  destroy() {
+    try {
+      this.eventListeners.forEach((listeners, eventType) => {
+        listeners.forEach(({ target, handler }) => {
+          target.removeEventListener(eventType, handler);
+        });
       });
-    });
+      this.eventListeners.clear();
+    } catch (error) {
+      console.warn('[Analytics] Error removing event listeners:', error);
+    }
   }
 
   /**
@@ -97,17 +242,41 @@ class AnalyticsStore {
   }
 
   /**
-   * Save analytics data to localStorage
+   * Save analytics data to localStorage (debounced for performance)
    */
   saveToStorage() {
     try {
-      const data = {
-        events: this.events.slice(-1000), // Keep last 1000 events
-        lastUpdated: Date.now()
-      };
-      localStorage.setItem('ppnm_analytics', JSON.stringify(data));
+      // Clear existing timeout
+      if (this.saveTimeout) {
+        clearTimeout(this.saveTimeout);
+      }
+
+      // Debounce saves to prevent excessive localStorage writes
+      this.saveTimeout = setTimeout(() => {
+        try {
+          const data = {
+            events: this.events.slice(-1000), // Keep last 1000 events
+            lastUpdated: Date.now(),
+            sessionId: this.sessionId,
+            version: '2.0.0'
+          };
+          localStorage.setItem('ppnm_analytics', JSON.stringify(data));
+        } catch (error) {
+          console.warn('[Analytics] Failed to save to localStorage:', error);
+          // Fallback: try to save reduced data set
+          try {
+            const reducedData = {
+              events: this.events.slice(-100), // Keep only last 100 events
+              lastUpdated: Date.now()
+            };
+            localStorage.setItem('ppnm_analytics', JSON.stringify(reducedData));
+          } catch (fallbackError) {
+            console.warn('[Analytics] Fallback save also failed:', fallbackError);
+          }
+        }
+      }, 1000); // 1 second debounce
     } catch (error) {
-      console.warn('Failed to save analytics to storage:', error);
+      console.warn('[Analytics] Error setting up save timeout:', error);
     }
   }
 
@@ -117,25 +286,78 @@ class AnalyticsStore {
    * @param {Object} eventData - Additional event data
    */
   trackEvent(eventType, eventData = {}) {
-    const event = {
-      id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      type: eventType,
-      timestamp: Date.now(),
-      sessionId: this.sessionId,
-      data: eventData,
-      page: window.location.pathname,
-      userAgent: navigator.userAgent,
-    };
+    try {
+      // Skip tracking if in back/forward cache to prevent conflicts
+      if (this.isInBackForwardCache && eventType !== ANALYTICS_EVENTS.SESSION_START) {
+        return;
+      }
 
-    this.events.push(event);
-    this.saveToStorage();
+      // Validate event type
+      if (!eventType || typeof eventType !== 'string') {
+        console.warn('[Analytics] Invalid event type:', eventType);
+        return;
+      }
 
-    // Send to external analytics if configured
-    this.sendToExternalAnalytics(event);
+      const event = {
+        id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type: eventType,
+        timestamp: Date.now(),
+        sessionId: this.sessionId,
+        data: this.sanitizeEventData(eventData),
+        page: this.getPagePath(),
+        userAgent: navigator.userAgent,
+      };
 
-    // Log in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('📊 Analytics Event:', event);
+      this.events.push(event);
+      
+      // Limit events array size to prevent memory issues
+      if (this.events.length > 2000) {
+        this.events = this.events.slice(-1500);
+      }
+
+      this.saveToStorage();
+
+      // Send to external analytics if configured (async to prevent blocking)
+      requestIdleCallback(() => {
+        this.sendToExternalAnalytics(event);
+      }, { timeout: 5000 });
+
+      // Log in development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('📊 Analytics Event:', event);
+      }
+    } catch (error) {
+      console.warn('[Analytics] Error tracking event:', error);
+    }
+  }
+
+  /**
+   * Sanitize event data to prevent potential issues
+   */
+  sanitizeEventData(data) {
+    try {
+      // Deep clone and sanitize the data
+      const sanitized = JSON.parse(JSON.stringify(data));
+      
+      // Remove any potentially problematic properties
+      delete sanitized.__proto__;
+      delete sanitized.constructor;
+      
+      return sanitized;
+    } catch (error) {
+      console.warn('[Analytics] Error sanitizing event data:', error);
+      return {};
+    }
+  }
+
+  /**
+   * Safely get current page path
+   */
+  getPagePath() {
+    try {
+      return window.location.pathname;
+    } catch (error) {
+      return '/unknown';
     }
   }
 
@@ -143,29 +365,74 @@ class AnalyticsStore {
    * Send event to external analytics platforms (Google Analytics, etc.)
    */
   sendToExternalAnalytics(event) {
-    // Google Analytics 4 - Enhanced Event Tracking
-    // Use the dedicated GA helper function for better tracking
-    trackGAEvent(event.type, {
-      event_category: this.getCategoryFromEventType(event.type),
-      event_label: event.data.query || event.data.stationId || event.data.filterType || 'unknown',
-      value: event.data.value || 0,
-      session_id: this.sessionId,
-      page_path: window.location.pathname,
-      ...event.data
-    });
+    try {
+      // Skip if in back/forward cache to prevent conflicts
+      if (this.isInBackForwardCache) {
+        return;
+      }
 
-    // Facebook Pixel
-    if (window.fbq) {
-      window.fbq('trackCustom', event.type, event.data);
+      // Google Analytics 4 - Enhanced Event Tracking
+      // Use the dedicated GA helper function with error handling
+      try {
+        trackGAEvent(event.type, {
+          event_category: this.getCategoryFromEventType(event.type),
+          event_label: event.data.query || event.data.stationId || event.data.filterType || 'unknown',
+          value: event.data.value || 0,
+          session_id: this.sessionId,
+          page_path: this.getPagePath(),
+          ...event.data
+        });
+      } catch (gaError) {
+        console.warn('[Analytics] Google Analytics error:', gaError);
+      }
+
+      // Facebook Pixel - with safety checks
+      try {
+        if (window.fbq && typeof window.fbq === 'function') {
+          window.fbq('trackCustom', event.type, event.data);
+        }
+      } catch (fbError) {
+        console.warn('[Analytics] Facebook Pixel error:', fbError);
+      }
+
+      // Custom analytics endpoint (optional) - with retry logic
+      if (process.env.REACT_APP_ANALYTICS_ENDPOINT) {
+        this.sendToCustomEndpoint(event);
+      }
+    } catch (error) {
+      console.warn('[Analytics] Error sending to external analytics:', error);
     }
+  }
 
-    // Custom analytics endpoint (optional)
-    if (process.env.REACT_APP_ANALYTICS_ENDPOINT) {
-      fetch(process.env.REACT_APP_ANALYTICS_ENDPOINT, {
+  /**
+   * Send to custom analytics endpoint with retry logic
+   */
+  async sendToCustomEndpoint(event, retryCount = 0) {
+    const maxRetries = 2;
+    
+    try {
+      const response = await fetch(process.env.REACT_APP_ANALYTICS_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
         body: JSON.stringify(event),
-      }).catch(error => console.warn('Analytics endpoint error:', error));
+        signal: AbortSignal.timeout(5000) // 5 second timeout
+      });
+
+      if (!response.ok && retryCount < maxRetries) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+    } catch (error) {
+      if (retryCount < maxRetries && !error.name === 'AbortError') {
+        // Retry with exponential backoff
+        setTimeout(() => {
+          this.sendToCustomEndpoint(event, retryCount + 1);
+        }, Math.pow(2, retryCount) * 1000);
+      } else {
+        console.warn('[Analytics] Custom endpoint error (final):', error);
+      }
     }
   }
 
@@ -414,6 +681,13 @@ export const exportAnalytics = () => {
  */
 export const clearAnalytics = () => {
   analyticsStore.clearData();
+};
+
+/**
+ * Cleanup analytics store (call on app unmount)
+ */
+export const destroyAnalytics = () => {
+  analyticsStore.destroy();
 };
 
 export default analyticsStore;

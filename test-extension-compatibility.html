@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extension Compatibility Test</title>
+  
+  <!-- Test the early extension compatibility script -->
+  <script>
+    (function() {
+      'use strict';
+      
+      // Early extension compatibility handler
+      var originalConsoleError = console.error;
+      var originalConsoleWarn = console.warn;
+      
+      function isExtensionError(message) {
+        if (!message || typeof message !== 'string') return false;
+        
+        var patterns = [
+          'mobx-state-tree.*no longer part of a state tree',
+          'runtime\\.lastError.*back/forward cache',
+          'message channel is closed',
+          'Extension context invalidated',
+          'tabStates.*injectionLifecycle',
+          'sw\\.js.*mobx-state-tree',
+          'AnonymousModel.*Path upon death',
+          'chrome-extension://',
+          'moz-extension://'
+        ];
+        
+        return patterns.some(function(pattern) {
+          return new RegExp(pattern, 'i').test(message);
+        });
+      }
+      
+      // Override console methods
+      console.error = function() {
+        var args = Array.prototype.slice.call(arguments);
+        var message = args.join(' ');
+        
+        if (isExtensionError(message)) {
+          console.log('[TEST] ✅ Successfully suppressed extension error:', message);
+          return;
+        }
+        
+        originalConsoleError.apply(console, args);
+      };
+      
+      console.warn = function() {
+        var args = Array.prototype.slice.call(arguments);
+        var message = args.join(' ');
+        
+        if (isExtensionError(message)) {
+          console.log('[TEST] ✅ Successfully suppressed extension warning:', message);
+          return;
+        }
+        
+        originalConsoleWarn.apply(console, args);
+      };
+      
+      console.log('[TEST] Extension compatibility handler loaded');
+    })();
+  </script>
+</head>
+<body>
+  <h1>Extension Compatibility Test</h1>
+  <button id="test-errors">Test Extension Error Suppression</button>
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('test-errors').addEventListener('click', function() {
+      console.log('[TEST] Testing extension error suppression...');
+      
+      // Test various extension-related errors
+      console.error('Error: [mobx-state-tree] You are trying to read or write to an object that is no longer part of a state tree.');
+      console.error('Unchecked runtime.lastError: The page keeping the extension port is moved into back/forward cache, so the message channel is closed.');
+      console.error('Extension context invalidated');
+      console.warn('sw.js:1 Error: [mobx-state-tree] tabStates injectionLifecycle error');
+      
+      // Test normal errors (should not be suppressed)
+      console.error('[TEST] This normal error should appear');
+      console.warn('[TEST] This normal warning should appear');
+      
+      document.getElementById('results').innerHTML = '<p>✅ Test completed! Check console for results. Extension errors should be suppressed, normal errors should appear.</p>';
+    });
+  </script>
+</body>
+</html>

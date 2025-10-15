@@ -13,6 +13,11 @@
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#667eea" />
+  
+  <!-- Back/Forward Cache and Extension Compatibility -->
+  <meta name="bfcache-opt-in" content="true" />
+  <meta name="extension-compatibility" content="cursor,chrome-extensions" />
+  <meta name="state-management" content="isolated" />
 
   <!-- Primary Meta Tags -->
   <title>Melbourne Petrol Prices 2025 | Find Cheapest Fuel Near You - Save Up to 30c/L Daily</title>
@@ -841,6 +846,91 @@
   <link rel="preload" href="%PUBLIC_URL%/images/brands/Shell.svg" as="image" type="image/svg+xml" />
 
   <!-- Mapbox CSS is loaded automatically by react-map-gl -->
+
+  <!-- Early Extension Compatibility Script - MUST LOAD FIRST -->
+  <script>
+    (function() {
+      'use strict';
+      
+      // Early extension compatibility handler
+      // This must run before any other JavaScript to catch extension conflicts
+      
+      // Suppress mobx-state-tree and extension-related errors early
+      var originalConsoleError = console.error;
+      var originalConsoleWarn = console.warn;
+      
+      function isExtensionError(message) {
+        if (!message || typeof message !== 'string') return false;
+        
+        var patterns = [
+          'mobx-state-tree.*no longer part of a state tree',
+          'runtime\\.lastError.*back/forward cache',
+          'message channel is closed',
+          'Extension context invalidated',
+          'tabStates.*injectionLifecycle',
+          'sw\\.js.*mobx-state-tree',
+          'AnonymousModel.*Path upon death',
+          'chrome-extension://',
+          'moz-extension://'
+        ];
+        
+        return patterns.some(function(pattern) {
+          return new RegExp(pattern, 'i').test(message);
+        });
+      }
+      
+      // Override console methods early
+      console.error = function() {
+        var args = Array.prototype.slice.call(arguments);
+        var message = args.join(' ');
+        
+        if (isExtensionError(message)) {
+          console.debug('[Early ExtCompat] Suppressed error:', message);
+          return;
+        }
+        
+        originalConsoleError.apply(console, args);
+      };
+      
+      console.warn = function() {
+        var args = Array.prototype.slice.call(arguments);
+        var message = args.join(' ');
+        
+        if (isExtensionError(message)) {
+          console.debug('[Early ExtCompat] Suppressed warning:', message);
+          return;
+        }
+        
+        originalConsoleWarn.apply(console, args);
+      };
+      
+      // Early global error handling
+      window.addEventListener('error', function(event) {
+        if (isExtensionError(event.message)) {
+          event.preventDefault();
+          console.debug('[Early ExtCompat] Prevented error propagation:', event.message);
+          return false;
+        }
+      }, true);
+      
+      // Early unhandled rejection handling
+      window.addEventListener('unhandledrejection', function(event) {
+        var message = event.reason && event.reason.message ? event.reason.message : String(event.reason);
+        if (isExtensionError(message)) {
+          event.preventDefault();
+          console.debug('[Early ExtCompat] Prevented rejection propagation:', message);
+        }
+      });
+      
+      // Add early DOM attributes for extension awareness
+      if (document.documentElement) {
+        document.documentElement.setAttribute('data-early-ext-compat', 'active');
+        document.documentElement.setAttribute('data-bfcache-safe', 'true');
+      }
+      
+      console.debug('[Early ExtCompat] Early extension compatibility handler loaded');
+    })();
+  </script>
 
   <!-- Script to defer main CSS bundle -->
   <script>

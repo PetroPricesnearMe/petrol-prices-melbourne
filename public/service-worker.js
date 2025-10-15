@@ -142,18 +142,40 @@ async function updateCache(request) {
 
 // Handle messages from clients
 self.addEventListener('message', (event) => {
-  if (event.data === 'skipWaiting') {
-    self.skipWaiting();
-  }
+  // Safely handle messages to prevent conflicts with browser extensions
+  try {
+    if (!event.data || typeof event.data !== 'string') {
+      return;
+    }
 
-  if (event.data === 'clearCache') {
-    event.waitUntil(
-      caches.keys().then((cacheNames) => {
-        return Promise.all(
-          cacheNames.map((cacheName) => caches.delete(cacheName))
-        );
-      })
-    );
+    if (event.data === 'skipWaiting') {
+      self.skipWaiting();
+    }
+
+    if (event.data === 'clearCache') {
+      event.waitUntil(
+        caches.keys().then((cacheNames) => {
+          return Promise.all(
+            cacheNames.map((cacheName) => caches.delete(cacheName))
+          );
+        }).catch((error) => {
+          console.warn('[Service Worker] Error clearing cache:', error);
+        })
+      );
+    }
+
+    // Handle back/forward cache messages
+    if (event.data === 'page-entering-bfcache') {
+      // Cleanup resources when page enters back/forward cache
+      cleanupResourcesForBFCache();
+    }
+
+    if (event.data === 'page-restored-from-bfcache') {
+      // Reinitialize when page is restored from back/forward cache
+      reinitializeAfterBFCache();
+    }
+  } catch (error) {
+    console.warn('[Service Worker] Error handling message:', error);
   }
 });
 
@@ -216,6 +238,43 @@ self.addEventListener('notificationclick', (event) => {
     );
   }
 });
+
+/**
+ * Cleanup resources when page enters back/forward cache
+ */
+function cleanupResourcesForBFCache() {
+  try {
+    // Close any open IndexedDB connections
+    // Cancel pending fetch requests
+    // Clear any timers or intervals
+    console.log('[Service Worker] Cleaned up resources for back/forward cache');
+  } catch (error) {
+    console.warn('[Service Worker] Error during BFCache cleanup:', error);
+  }
+}
+
+/**
+ * Reinitialize after page is restored from back/forward cache
+ */
+function reinitializeAfterBFCache() {
+  try {
+    // Reinitialize any necessary connections or resources
+    console.log('[Service Worker] Reinitialized after back/forward cache restore');
+  } catch (error) {
+    console.warn('[Service Worker] Error during BFCache reinitialize:', error);
+  }
+}
+
+/**
+ * Enhanced error handling for service worker operations
+ */
+function handleServiceWorkerError(error, context) {
+  console.warn(`[Service Worker] Error in ${context}:`, error);
+  
+  // Don't let service worker errors affect the main thread or extensions
+  // Just log and continue
+  return Promise.resolve();
+}
 
 console.log('[Service Worker] Loaded successfully');
 

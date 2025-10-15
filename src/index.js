@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import analyticsManager from './utils/analytics/analyticsManager';
 import { initializePerformanceMonitoring } from './utils/analytics/performanceMonitoring';
+import { initializeExtensionCompatibility } from './utils/extensionCompatibilityHandler';
+
+// Initialize Extension Compatibility FIRST (must be early to catch all errors)
+initializeExtensionCompatibility();
 
 // Initialize Performance Monitoring
 initializePerformanceMonitoring();
