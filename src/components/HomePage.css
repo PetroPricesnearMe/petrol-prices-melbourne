@@ -9,14 +9,14 @@
   background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
 }
 
-/* Hero Section - Clean blue/green gradient */
+/* Hero Section - Deep Blue & Electric Green gradient */
 .hero-section {
   min-height: 90vh;
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+  background: linear-gradient(135deg, #0A2540 0%, #10b981 100%);
   padding: 4rem 0;
 }
 
@@ -26,7 +26,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #2563eb 0%, #059669 50%, #10b981 100%);
+  background: linear-gradient(135deg, #0A2540 0%, #061626 50%, #10b981 100%);
   z-index: -2;
 }
 
@@ -36,8 +36,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.3) 0%, transparent 70%),
-    radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.4) 0%, transparent 70%),
+    radial-gradient(circle at bottom left, rgba(10, 37, 64, 0.6) 0%, transparent 70%);
   z-index: -1;
 }
 
@@ -66,21 +66,22 @@
   align-items: center;
 }
 
-/* Modern image container without backdrop filter */
+/* Modern image container with Deep Blue accent */
 .fuel-nozzles-image {
   position: relative;
   max-width: 450px;
   border-radius: 2rem;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 30px 60px rgba(10, 37, 64, 0.3);
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.15), rgba(10, 37, 64, 0.1));
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fuel-nozzles-image:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 40px 80px rgba(10, 37, 64, 0.4);
+  border-color: rgba(16, 185, 129, 0.5);
 }
 
 .nozzles-img {
@@ -329,6 +330,7 @@
   font-size: 3.5rem;
   margin-bottom: 1.5rem;
   display: block;
+  filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
 }
 
 .feature-title {
