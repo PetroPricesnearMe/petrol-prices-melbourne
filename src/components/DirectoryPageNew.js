@@ -21,8 +21,8 @@ const ITEMS_PER_PAGE = 12;
 
 // Brand image mapping
 const BRAND_IMAGES = {
-  'shell': '/images/stations/shell-station.jpg',
-  'bp': '/images/stations/bp-station.jpg',
+  'shell': '/images/fuel-nozzles.svg', // Using default image (shell-station.jpg not available)
+  'bp': '/images/fuel-nozzles.svg', // Using default image (bp-station.jpg not available)
   '7-eleven': '/images/stations/seven-eleven.jpg',
   'seven eleven': '/images/stations/seven-eleven.jpg',
   'mobil': '/images/stations/seven-eleven.jpg',

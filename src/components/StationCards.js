@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import dataSourceManager from '../services/DataSourceManager';
 import { trackSearch, trackFilter } from '../utils/analytics';
+import BrandLogoManager from './BrandLogoManager';
 import './StationCards.css';
 
 /**
  * Station Cards Component
- * Displays Melbourne petrol stations as visually attractive profile cards
- * Shows brand logos, fuel prices, and station details
+ * Displays Melbourne petrol stations with customizable brand logos
+ * Simplified design focusing on Unleaded & Diesel prices
  * 
  * @component
  */
@@ -19,23 +20,35 @@ const StationCards = () => {
   const [filterSuburb, setFilterSuburb] = useState('all');
   const [filterFuelType, setFilterFuelType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [showLogoManager, setShowLogoManager] = useState(false);
+  const [brandLogos, setBrandLogos] = useState({});
   const itemsPerPage = 12;
 
-  // Brand logo mapping
-  const brandLogos = {
-    'Shell': '/images/brands/shell-logo.png',
-    'BP': '/images/brands/bp-logo.png',
-    '7-Eleven': '/images/brands/7eleven-logo.png',
-    'Mobil': '/images/brands/mobil-logo.png',
-    'Coles Express': '/images/brands/coles-express-logo.png',
-    'Caltex': '/images/brands/caltex-logo.png',
-    'Ampol': '/images/brands/ampol-logo.png',
-    'United': '/images/brands/united-logo.png',
-    'Liberty': '/images/brands/liberty-logo.png',
-    'Metro': '/images/brands/metro-logo.png',
-    'Puma': '/images/brands/puma-logo.png',
-    'Vibe': '/images/brands/vibe-logo.png',
-  };
+  // Load brand logos from localStorage
+  useEffect(() => {
+    const loadBrandLogos = () => {
+      const savedLogos = localStorage.getItem('brandLogos');
+      if (savedLogos) {
+        try {
+          setBrandLogos(JSON.parse(savedLogos));
+        } catch (error) {
+          console.error('Error loading brand logos:', error);
+        }
+      }
+    };
+
+    loadBrandLogos();
+
+    // Listen for storage changes (when logos are updated in BrandLogoManager)
+    const handleStorageChange = (e) => {
+      if (e.key === 'brandLogos') {
+        loadBrandLogos();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   // Parse CSV data
   const parseCSV = useCallback((text) => {
@@ -218,23 +231,28 @@ const StationCards = () => {
     currentPage * itemsPerPage
   );
 
-  // Get brand logo
+  // Get brand logo (custom uploaded or default)
   const getBrandLogo = (brand) => {
-    return brandLogos[brand] || '/images/brands/default-logo.svg';
+    // Check if brand has a custom uploaded logo
+    if (brand && brandLogos[brand]) {
+      return brandLogos[brand];
+    }
+    // Return default logo
+    return '/images/brands/default-logo.svg';
   };
 
-  // Get brand-specific CSS class for header styling
-  const getBrandClass = (brand) => {
-    if (!brand) return 'default';
-    const brandLower = brand.toLowerCase();
-    if (brandLower.includes('shell')) return 'shell';
-    if (brandLower.includes('bp')) return 'bp';
-    if (brandLower.includes('caltex')) return 'caltex';
-    if (brandLower.includes('ampol')) return 'ampol';
-    if (brandLower.includes('7') || brandLower.includes('seven')) return 'seven-eleven';
-    if (brandLower.includes('mobil')) return 'mobil';
-    if (brandLower.includes('united')) return 'united';
-    return 'default';
+  // Refresh logos when manager is closed
+  const handleLogoManagerClose = () => {
+    setShowLogoManager(false);
+    // Reload logos from localStorage
+    const savedLogos = localStorage.getItem('brandLogos');
+    if (savedLogos) {
+      try {
+        setBrandLogos(JSON.parse(savedLogos));
+      } catch (error) {
+        console.error('Error reloading brand logos:', error);
+      }
+    }
   };
 
   // Format fuel type for display
@@ -285,7 +303,19 @@ const StationCards = () => {
         <p className="cards-subtitle">
           Find the best fuel prices near you • {filteredStations.length} stations available
         </p>
+        <button 
+          onClick={() => setShowLogoManager(true)}
+          className="admin-btn"
+          title="Manage Brand Logos"
+        >
+          🎨 Manage Logos
+        </button>
       </div>
+
+      {/* Brand Logo Manager Modal */}
+      {showLogoManager && (
+        <BrandLogoManager onClose={handleLogoManagerClose} />
+      )}
 
       {/* Enhanced Filters */}
       <div className="cards-filters">
@@ -374,80 +404,93 @@ const StationCards = () => {
       {/* Cards Grid */}
       {paginatedStations.length > 0 ? (
         <div className="cards-grid">
-          {paginatedStations.map((station) => (
-            <div key={station.id} className="station-card">
-              {/* Card Header with Brand Logo */}
-              <div className={`card-header ${getBrandClass(station.brand)}`}>
-                <img
-                  src={getBrandLogo(station.brand)}
-                  alt={`${station.brand} logo`}
-                  className="brand-logo"
-                  onError={(e) => {
-                    e.target.src = '/images/brands/default-logo.svg';
-                  }}
-                />
-                <div className="brand-badge">{station.brand}</div>
-              </div>
+          {paginatedStations.map((station) => {
+            // Filter to show only Unleaded and Diesel prices
+            const unleadedPrice = Array.isArray(station.fuelPrices) 
+              ? station.fuelPrices.find(f => f && f.type && f.type.toLowerCase().includes('unleaded'))
+              : null;
+            
+            const dieselPrice = Array.isArray(station.fuelPrices)
+              ? station.fuelPrices.find(f => f && f.type && f.type.toLowerCase().includes('diesel'))
+              : null;
 
-              {/* Card Content */}
-              <div className="card-content">
-                <h3 className="station-name">{station.name}</h3>
-                <p className="station-address">
-                  {station.address && `${station.address}, `}
-                  {station.city && `${station.city} `}
-                  {station.postalCode && station.postalCode}
-                </p>
+            return (
+              <div key={station.id} className="station-card">
+                {/* Card Header with Brand Logo */}
+                <div className="card-header">
+                  <img
+                    src={getBrandLogo(station.brand)}
+                    alt={`${station.brand || 'Station'} logo`}
+                    className="brand-logo"
+                    onError={(e) => {
+                      e.target.src = '/images/brands/default-logo.svg';
+                    }}
+                  />
+                  <div className="brand-badge">{station.brand || 'Independent'}</div>
+                </div>
 
-                {/* Fuel Prices */}
-                <div className="fuel-prices">
-                  {Array.isArray(station.fuelPrices) && station.fuelPrices.length > 0 ? (
-                    station.fuelPrices
-                      .filter(fuel => fuel && typeof fuel === 'object' && fuel.type)
-                      .map((fuel, index) => (
-                        <div key={index} className="fuel-price-item">
-                          <div className="fuel-type">
-                            <div className={`fuel-icon ${fuel.type.toLowerCase()}`}>
-                              {getFuelIcon(fuel.type)}
-                            </div>
-                            {fuel.type}
-                          </div>
-                          <div className="price">{formatPrice(fuel.price)}</div>
-                        </div>
-                      ))
-                  ) : (
-                    <div className="no-fuel-prices">
-                      <p>No fuel prices available</p>
+                {/* Card Content */}
+                <div className="card-content">
+                  <h3 className="station-name">{station.name}</h3>
+                  <p className="station-address">
+                    {station.address && `${station.address}, `}
+                    {station.city && `${station.city} `}
+                    {station.postalCode && station.postalCode}
+                  </p>
+
+                  {/* Fuel Prices - Only Unleaded & Diesel */}
+                  <div className="fuel-prices">
+                    {/* Unleaded Price */}
+                    <div className={`fuel-price-item ${unleadedPrice ? 'unleaded' : ''}`}>
+                      <div className="fuel-type">
+                        <div className="fuel-icon unleaded">U</div>
+                        Unleaded
+                      </div>
+                      <div className="price">
+                        {unleadedPrice && unleadedPrice.price 
+                          ? formatPrice(unleadedPrice.price)
+                          : 'N/A'}
+                      </div>
                     </div>
-                  )}
-                </div>
 
-                <div className="last-updated">
-                  Last updated: {formatLastUpdated(station.lastUpdated)}
-                </div>
+                    {/* Diesel Price */}
+                    <div className={`fuel-price-item ${dieselPrice ? 'diesel' : ''}`}>
+                      <div className="fuel-type">
+                        <div className="fuel-icon diesel">D</div>
+                        Diesel
+                      </div>
+                      <div className="price">
+                        {dieselPrice && dieselPrice.price 
+                          ? formatPrice(dieselPrice.price)
+                          : 'N/A'}
+                      </div>
+                    </div>
+                  </div>
 
-                {/* Card Actions */}
-                <div className="card-actions">
-                  {station.latitude && station.longitude ? (
-                    <a
-                      href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="action-btn"
-                    >
-                      🧭 Get Directions
-                    </a>
-                  ) : (
-                    <button className="action-btn secondary" disabled>
-                      📍 No Location
+                  {/* Card Actions */}
+                  <div className="card-actions">
+                    {station.latitude && station.longitude ? (
+                      <a
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="action-btn"
+                      >
+                        🧭 Directions
+                      </a>
+                    ) : (
+                      <button className="action-btn" disabled>
+                        📍 No Location
+                      </button>
+                    )}
+                    <button className="action-btn secondary">
+                      ℹ️ More Info
                     </button>
-                  )}
-                  <button className="action-btn secondary">
-                    ℹ️ More Info
-                  </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="no-results">
