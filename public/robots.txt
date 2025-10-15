@@ -1,43 +1,65 @@
-# Robots.txt for Petrol Prices Near Me
-# Updated: 2025-01-10
+# Robots.txt - Petrol Prices Near Me
+# Updated: January 2025
 
+# Allow all search engines
 User-agent: *
 Allow: /
-Allow: /map
-Allow: /directory
-Allow: /fuel-price-trends
-Allow: /station-amenities
-Allow: /how-pricing-works
-Allow: /roadside-assistance
-Allow: /news
-Allow: /station-brands
 
-# Disallow admin and private areas
+# High-value pages for crawling
+Allow: /directory
+Allow: /about
+Allow: /faq
+Allow: /fuel-price-trends
+Allow: /how-pricing-works
+Allow: /blog
+Allow: /melbourne/
+Allow: /suburbs/
+Allow: /fuel-types/
+
+# Disallow admin/test pages
 Disallow: /admin/
-Disallow: /account/
-Disallow: /sign-in
+Disallow: /test/
 Disallow: /api/
+Disallow: /*.json$
+Disallow: /*?*print=
+Disallow: /*?*pdf=
+
+# Allow images and assets
+Allow: /images/
+Allow: /static/
+
+# Crawl delay (be nice to servers)
+Crawl-delay: 0
 
 # Sitemap location
-Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
 Sitemap: https://www.petrolpricesnearme.com.au/sitemap.xml
 
-# Crawl delay (be nice to our servers)
-Crawl-delay: 1
-
-# Specific rules for major bots
+# Specific rules for major search engines
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0.5
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /images/
 
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 1
+Crawl-delay: 0
 
 User-agent: Slurp
 Allow: /
 Crawl-delay: 1
 
-User-agent: DuckDuckBot
-Allow: /
-Crawl-delay: 1
+# Block bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Block scrapers
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
