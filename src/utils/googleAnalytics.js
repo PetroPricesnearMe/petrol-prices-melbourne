@@ -41,7 +41,7 @@ export const initializeGA = () => {
   script.async = true;
   script.defer = true; // Defer for better performance
   script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-  
+
   // Handle script load
   script.onload = () => {
     gaInitialized = true;
@@ -100,7 +100,7 @@ export const initializeGADeferred = () => {
   const loadGA = () => {
     if (loadingScheduled) return;
     loadingScheduled = true;
-    
+
     // Use requestIdleCallback for better performance
     if ('requestIdleCallback' in window) {
       requestIdleCallback(() => initializeGA(), { timeout: 3000 });

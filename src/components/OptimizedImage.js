@@ -73,13 +73,13 @@ const OptimizedImage = ({
   // Generate srcset for responsive images
   const generateSrcSet = (baseSrc) => {
     if (!baseSrc) return '';
-    
+
     // Check if it's an SVG (no srcset needed)
     if (baseSrc.endsWith('.svg')) return '';
-    
+
     const ext = baseSrc.split('.').pop();
     const baseUrl = baseSrc.replace(`.${ext}`, '');
-    
+
     // Generate multiple sizes
     const sizes = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
     return sizes
@@ -90,10 +90,10 @@ const OptimizedImage = ({
   // Generate WebP srcset
   const generateWebPSrcSet = (baseSrc) => {
     if (!baseSrc || baseSrc.endsWith('.svg')) return '';
-    
+
     const ext = baseSrc.split('.').pop();
     const baseUrl = baseSrc.replace(`.${ext}`, '');
-    
+
     const sizes = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
     return sizes
       .map((size) => `${baseUrl}-${size}w.webp ${size}w`)
@@ -103,10 +103,10 @@ const OptimizedImage = ({
   // Generate AVIF srcset (best compression)
   const generateAVIFSrcSet = (baseSrc) => {
     if (!baseSrc || baseSrc.endsWith('.svg')) return '';
-    
+
     const ext = baseSrc.split('.').pop();
     const baseUrl = baseSrc.replace(`.${ext}`, '');
-    
+
     const sizes = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
     return sizes
       .map((size) => `${baseUrl}-${size}w.avif ${size}w`)
