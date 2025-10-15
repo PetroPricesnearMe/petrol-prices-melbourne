@@ -1,4 +1,4 @@
-/**
+np/**
  * Vercel AI SDK One-Step Setup Script
  * This script installs AI SDK dependencies, creates API route, client, page,
  * and configures your environment for use with Anthropic, OpenAI, or Perplexity.
