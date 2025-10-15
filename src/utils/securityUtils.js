@@ -5,12 +5,12 @@
 // Input sanitization patterns
 const PATTERNS = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  phone: /^[\+]?[\d\s\-\(\)]+$/,
+  phone: /^[+]?[\d\s\-()]+$/,
   postcode: /^[0-9]{4}$/,
   coordinates: /^-?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)$/,
   alphanumeric: /^[a-zA-Z0-9\s\-_]+$/,
   searchQuery: /^[a-zA-Z0-9\s\-_.,&'()]+$/,
-  url: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/
+  url: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/
 };
 
 /**
@@ -18,11 +18,11 @@ const PATTERNS = {
  */
 export const sanitizeString = (input, maxLength = 255) => {
   if (typeof input !== 'string') return '';
-  
+
   return input
     .trim()
     .slice(0, maxLength)
-    .replace(/[<>\"']/g, (match) => {
+    .replace(/[<>"']/g, (match) => {
       const htmlEntities = {
         '<': '&lt;',
         '>': '&gt;',
@@ -56,13 +56,13 @@ export const validateSearchQuery = (query) => {
 export const validateCoordinates = (lat, lng) => {
   const latNum = parseFloat(lat);
   const lngNum = parseFloat(lng);
-  
-  return !isNaN(latNum) && 
-         !isNaN(lngNum) && 
-         latNum >= -90 && 
-         latNum <= 90 && 
-         lngNum >= -180 && 
-         lngNum <= 180;
+
+  return !isNaN(latNum) &&
+    !isNaN(lngNum) &&
+    latNum >= -90 &&
+    latNum <= 90 &&
+    lngNum >= -180 &&
+    lngNum <= 180;
 };
 
 /**
@@ -72,23 +72,23 @@ export const validateStationData = (station) => {
   if (!station || typeof station !== 'object') {
     throw new Error('Invalid station data: must be an object');
   }
-  
+
   const errors = [];
   const sanitized = {};
-  
+
   // Validate required fields
   if (!station.name || typeof station.name !== 'string') {
     errors.push('Station name is required and must be a string');
   } else {
     sanitized.name = sanitizeString(station.name, 100);
   }
-  
+
   if (!station.address || typeof station.address !== 'string') {
     errors.push('Station address is required and must be a string');
   } else {
     sanitized.address = sanitizeString(station.address, 200);
   }
-  
+
   // Validate coordinates if provided
   if (station.latitude !== undefined || station.longitude !== undefined) {
     if (!validateCoordinates(station.latitude, station.longitude)) {
@@ -98,7 +98,7 @@ export const validateStationData = (station) => {
       sanitized.longitude = parseFloat(station.longitude);
     }
   }
-  
+
   // Validate prices if provided
   if (station.prices && typeof station.prices === 'object') {
     sanitized.prices = {};
@@ -109,27 +109,27 @@ export const validateStationData = (station) => {
       }
     });
   }
-  
+
   // Sanitize optional fields
   if (station.suburb) {
     sanitized.suburb = sanitizeString(station.suburb, 50);
   }
-  
+
   if (station.brand) {
     sanitized.brand = sanitizeString(station.brand, 50);
   }
-  
+
   if (station.phone) {
     const phone = station.phone.toString();
     if (PATTERNS.phone.test(phone)) {
       sanitized.phone = phone;
     }
   }
-  
+
   if (errors.length > 0) {
     throw new Error(`Station validation failed: ${errors.join(', ')}`);
   }
-  
+
   return sanitized;
 };
 
@@ -142,36 +142,36 @@ export class RateLimiter {
     this.windowMs = windowMs;
     this.requests = new Map();
   }
-  
+
   isAllowed(identifier = 'default') {
     const now = Date.now();
     const windowStart = now - this.windowMs;
-    
+
     if (!this.requests.has(identifier)) {
       this.requests.set(identifier, []);
     }
-    
+
     const userRequests = this.requests.get(identifier);
-    
+
     // Remove old requests outside the window
     const validRequests = userRequests.filter(time => time > windowStart);
     this.requests.set(identifier, validRequests);
-    
+
     // Check if under the limit
     if (validRequests.length < this.maxRequests) {
       validRequests.push(now);
       return true;
     }
-    
+
     return false;
   }
-  
+
   getRemainingRequests(identifier = 'default') {
     const now = Date.now();
     const windowStart = now - this.windowMs;
     const userRequests = this.requests.get(identifier) || [];
     const validRequests = userRequests.filter(time => time > windowStart);
-    
+
     return Math.max(0, this.maxRequests - validRequests.length);
   }
 }
@@ -230,7 +230,7 @@ export class SecureStorage {
   constructor(prefix = 'app_') {
     this.prefix = prefix;
   }
-  
+
   // Simple encryption using base64 and reverse (not for sensitive data)
   encrypt(data) {
     try {
@@ -242,7 +242,7 @@ export class SecureStorage {
       return null;
     }
   }
-  
+
   decrypt(encryptedData) {
     try {
       const decoded = atob(encryptedData.split('').reverse().join(''));
@@ -252,7 +252,7 @@ export class SecureStorage {
       return null;
     }
   }
-  
+
   setItem(key, value) {
     try {
       const encrypted = this.encrypt(value);
@@ -265,7 +265,7 @@ export class SecureStorage {
     }
     return false;
   }
-  
+
   getItem(key) {
     try {
       const encrypted = localStorage.getItem(this.prefix + key);
@@ -277,7 +277,7 @@ export class SecureStorage {
     }
     return null;
   }
-  
+
   removeItem(key) {
     try {
       localStorage.removeItem(this.prefix + key);

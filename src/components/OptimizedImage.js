@@ -46,6 +46,7 @@ const OptimizedImage = ({
   useEffect(() => {
     if (priority || !imgRef.current) return;
 
+    const currentRef = imgRef.current;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -61,11 +62,11 @@ const OptimizedImage = ({
       }
     );
 
-    observer.observe(imgRef.current);
+    observer.observe(currentRef);
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [priority]);

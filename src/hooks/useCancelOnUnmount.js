@@ -21,13 +21,13 @@ export function useCancelOnUnmount() {
     // Create new controller on mount or route change
     if (previousLocation.current !== location.pathname) {
       console.log(`🔄 Route changed from ${previousLocation.current} to ${location.pathname}`);
-      
+
       // Abort previous controller
       if (controllerRef.current) {
         controllerRef.current.abort();
         console.log('❌ Aborted previous route\'s requests');
       }
-      
+
       // Create new controller
       controllerRef.current = new AbortController();
       previousLocation.current = location.pathname;
@@ -114,13 +114,14 @@ export function useRequestTracker() {
 
   useEffect(() => {
     // Abort all requests on route change
+    const currentRequests = requestsRef.current;
     return () => {
-      console.log(`🧹 Route changing, aborting ${requestsRef.current.size} pending requests...`);
-      requestsRef.current.forEach((controller, name) => {
+      console.log(`🧹 Route changing, aborting ${currentRequests.size} pending requests...`);
+      currentRequests.forEach((controller, name) => {
         console.log(`  - Aborting: ${name}`);
         controller.abort();
       });
-      requestsRef.current.clear();
+      currentRequests.clear();
     };
   }, [location.pathname]);
 

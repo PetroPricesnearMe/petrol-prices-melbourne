@@ -370,7 +370,7 @@ export class AbortableRequest {
   }
 }
 
-export default {
+const apiOptimization = {
   DataLoader,
   createStationsLoader,
   RequestBatcher,
@@ -383,4 +383,6 @@ export default {
   fetchWithRetry,
   AbortableRequest
 };
+
+export default apiOptimization;
 

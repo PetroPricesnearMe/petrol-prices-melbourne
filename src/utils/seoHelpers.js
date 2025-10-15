@@ -335,7 +335,7 @@ export const generateRobotsTag = (pageType = 'index') => {
   return robotsMap[pageType] || robotsMap.index;
 };
 
-export default {
+const seoHelpers = {
   generateStationTitle,
   generateStationDescription,
   generateSuburbTitle,
@@ -356,4 +356,6 @@ export default {
   generateTwitterCardTags,
   generateRobotsTag
 };
+
+export default seoHelpers;
 

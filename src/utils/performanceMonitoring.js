@@ -429,7 +429,7 @@ export const cancelIdleCallback = window.cancelIdleCallback || function (id) {
   clearTimeout(id);
 };
 
-export default {
+const performanceMonitoring = {
   initWebVitals,
   markPerformance,
   measurePerformance,
@@ -445,4 +445,6 @@ export default {
   requestIdleCallback,
   cancelIdleCallback
 };
+
+export default performanceMonitoring;
 

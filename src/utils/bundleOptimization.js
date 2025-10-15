@@ -291,7 +291,7 @@ export const detectUnusedCSS = () => {
   };
 };
 
-export default {
+const bundleOptimization = {
   lazyLoad,
   preloadComponent,
   prefetchOnHover,
@@ -303,8 +303,8 @@ export default {
   loadOnInteraction,
   extractCriticalCSS,
   prefetchRoute,
-  detectUnusedCSS,
-  DataLoader,
-  RequestBatcher
+  detectUnusedCSS
 };
+
+export default bundleOptimization;
 
