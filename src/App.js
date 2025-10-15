@@ -36,20 +36,35 @@ function App() {
           }}
         >
           <div className="App">
+            {/* Skip to main content for keyboard navigation */}
+            <a href="#main-content" className="skip-link">
+              Skip to main content
+            </a>
+            
             <NetworkStatus />
-            <Navbar />
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/directory" element={<DirectoryPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
-                <Route path="/station-amenities" element={<StationAmenitiesPage />} />
-                <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/faq" element={<FAQPage />} />
-              </Routes>
-            </Suspense>
+            
+            {/* Header with navigation */}
+            <header role="banner">
+              <Navbar />
+            </header>
+            
+            {/* Main content area */}
+            <main id="main-content" role="main" tabIndex={-1}>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/directory" element={<DirectoryPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
+                  <Route path="/station-amenities" element={<StationAmenitiesPage />} />
+                  <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/faq" element={<FAQPage />} />
+                </Routes>
+              </Suspense>
+            </main>
+            
+            {/* Footer - can be added later when needed */}
           </div>
         </Router>
       </ErrorBoundary>

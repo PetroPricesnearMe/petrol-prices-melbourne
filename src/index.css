@@ -7,6 +7,9 @@
 /* Import Unified Design System */
 @import './styles/design-system.css';
 
+/* Import Accessibility Utilities - WCAG 2.1 AA Compliant */
+@import './styles/accessibility.css';
+
 /* Legacy variable support for backwards compatibility */
 :root {
   /* Map new design system to legacy variables */
