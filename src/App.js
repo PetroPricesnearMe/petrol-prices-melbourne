@@ -15,6 +15,7 @@ const StationAmenitiesPage = React.lazy(() => import('./components/StationAmenit
 const HowPricingWorksPage = React.lazy(() => import('./components/HowPricingWorksPage'));
 const BlogPage = React.lazy(() => import('./components/BlogPage'));
 const FAQPage = React.lazy(() => import('./components/FAQPage'));
+const AIChat = React.lazy(() => import('./components/AIChat'));
 
 // Loading component for lazy-loaded pages
 const PageLoader = () => (
@@ -60,6 +61,7 @@ function App() {
                   <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/chat" element={<AIChat />} />
                 </Routes>
               </Suspense>
             </main>
