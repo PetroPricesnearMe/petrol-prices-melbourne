@@ -32,7 +32,7 @@ class DataLoader {
 
       if (!this.batchScheduled) {
         this.batchScheduled = true;
-        
+
         // Use microtask queue for batching
         queueMicrotask(() => {
           this.dispatch();
@@ -69,11 +69,11 @@ class DataLoader {
 
       batch.forEach((item, index) => {
         const value = values[index];
-        
+
         if (this.cache) {
           this.cacheMap.set(item.key, value);
         }
-        
+
         item.resolve(value);
       });
     } catch (error) {
@@ -189,7 +189,7 @@ export const compressData = async (data, format = 'gzip') => {
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const compressedStream = blob.stream().pipeThrough(stream);
     const compressedBlob = await new Response(compressedStream).blob();
-    
+
     return compressedBlob;
   } catch (error) {
     console.warn('[API] Compression failed:', error);
@@ -210,7 +210,7 @@ export const decompressData = async (compressedData, format = 'gzip') => {
     const stream = new DecompressionStream(format);
     const decompressedStream = compressedData.stream().pipeThrough(stream);
     const decompressed = await new Response(decompressedStream).text();
-    
+
     return JSON.parse(decompressed);
   } catch (error) {
     console.warn('[API] Decompression failed:', error);
@@ -227,7 +227,7 @@ export const fetchOptimized = async (url, options = {}) => {
 
   // Try cache first (stale-while-revalidate)
   const cached = await cacheManager.get(cacheKey);
-  
+
   if (cached) {
     // Return cached data and revalidate in background
     fetchAndCache(url, options, cacheKey, ttl);
@@ -249,7 +249,7 @@ const fetchAndCache = async (url, options, cacheKey, ttl) => {
     };
 
     const response = await fetch(url, { ...options, headers });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
@@ -271,7 +271,7 @@ const fetchAndCache = async (url, options, cacheKey, ttl) => {
  */
 export const batchRequests = async (requests = []) => {
   const batcher = new RequestBatcher({ batchDelay: 50, maxBatchSize: 10 });
-  
+
   return Promise.all(
     requests.map(request => batcher.add(request))
   );
@@ -322,7 +322,7 @@ export const fetchWithRetry = async (url, options = {}, maxRetries = 3) => {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       const response = await fetch(url, options);
-      
+
       if (response.ok) {
         return response;
       }
@@ -335,7 +335,7 @@ export const fetchWithRetry = async (url, options = {}, maxRetries = 3) => {
       lastError = new Error(`HTTP ${response.status}`);
     } catch (error) {
       lastError = error;
-      
+
       // Don't retry on last attempt
       if (attempt === maxRetries) {
         throw lastError;

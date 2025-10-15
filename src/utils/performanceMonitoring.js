@@ -34,11 +34,11 @@ const observeLCP = () => {
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
       const lastEntry = entries[entries.length - 1];
-      
+
       const lcp = lastEntry.renderTime || lastEntry.loadTime;
-      
+
       console.log('[Performance] LCP:', lcp.toFixed(2), 'ms');
-      
+
       // Send to analytics
       if (window.gtag) {
         window.gtag('event', 'web_vitals', {
@@ -73,9 +73,9 @@ const observeFID = () => {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         const fid = entry.processingStart - entry.startTime;
-        
+
         console.log('[Performance] FID:', fid.toFixed(2), 'ms');
-        
+
         if (window.gtag) {
           window.gtag('event', 'web_vitals', {
             event_category: 'Web Vitals',
@@ -118,7 +118,7 @@ const observeCLS = () => {
       }
 
       console.log('[Performance] CLS:', clsValue.toFixed(4));
-      
+
       if (window.gtag) {
         window.gtag('event', 'web_vitals', {
           event_category: 'Web Vitals',
@@ -149,12 +149,12 @@ const observeCLS = () => {
 const observeTTFB = () => {
   try {
     const navigationEntry = performance.getEntriesByType('navigation')[0];
-    
+
     if (navigationEntry) {
       const ttfb = navigationEntry.responseStart - navigationEntry.requestStart;
-      
+
       console.log('[Performance] TTFB:', ttfb.toFixed(2), 'ms');
-      
+
       if (window.gtag) {
         window.gtag('event', 'web_vitals', {
           event_category: 'Web Vitals',
@@ -189,15 +189,15 @@ export const measurePerformance = (measureName, startMark, endMark) => {
     try {
       performance.measure(measureName, startMark, endMark);
       const measure = performance.getEntriesByName(measureName)[0];
-      
+
       console.log(`[Performance] ${measureName}:`, measure.duration.toFixed(2), 'ms');
-      
+
       return measure.duration;
     } catch (error) {
       console.warn('[Performance] Measurement failed:', error);
     }
   }
-  
+
   return null;
 };
 
@@ -207,7 +207,7 @@ export const measurePerformance = (measureName, startMark, endMark) => {
 export const trackBundleSize = () => {
   if ('performance' in window) {
     const resources = performance.getEntriesByType('resource');
-    
+
     const bundles = {
       js: 0,
       css: 0,
@@ -237,7 +237,7 @@ export const trackBundleSize = () => {
     });
 
     console.table(bundles);
-    
+
     return bundles;
   }
 };
@@ -248,7 +248,7 @@ export const trackBundleSize = () => {
 export const trackMemoryUsage = () => {
   if ('memory' in performance) {
     const memory = performance.memory;
-    
+
     const usage = {
       used: (memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB',
       total: (memory.totalJSHeapSize / 1048576).toFixed(2) + ' MB',
@@ -257,10 +257,10 @@ export const trackMemoryUsage = () => {
     };
 
     console.log('[Performance] Memory Usage:', usage);
-    
+
     return usage;
   }
-  
+
   return null;
 };
 
@@ -270,25 +270,25 @@ export const trackMemoryUsage = () => {
 export const isSlowNetwork = () => {
   if ('connection' in navigator) {
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    
+
     if (connection) {
       // 2G or slow-2g
       if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
         return true;
       }
-      
+
       // Save-Data mode enabled
       if (connection.saveData) {
         return true;
       }
-      
+
       // Low bandwidth
       if (connection.downlink < 1) {
         return true;
       }
     }
   }
-  
+
   return false;
 };
 
@@ -331,17 +331,17 @@ export const lazyLoadImages = () => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
-          
+
           if (img.dataset.src) {
             img.src = img.dataset.src;
             img.removeAttribute('data-src');
           }
-          
+
           if (img.dataset.srcset) {
             img.srcset = img.dataset.srcset;
             img.removeAttribute('data-srcset');
           }
-          
+
           img.classList.add('loaded');
           observer.unobserve(img);
         }
@@ -375,7 +375,7 @@ export const reportPerformance = () => {
     };
 
     console.log('[Performance] Metrics:', metrics);
-    
+
     return metrics;
   }
 };
@@ -385,7 +385,7 @@ export const reportPerformance = () => {
  */
 export const debounce = (func, wait = 300) => {
   let timeout;
-  
+
   return function executedFunction(...args) {
     const later = () => {
       clearTimeout(timeout);
@@ -402,8 +402,8 @@ export const debounce = (func, wait = 300) => {
  */
 export const throttle = (func, limit = 100) => {
   let inThrottle;
-  
-  return function(...args) {
+
+  return function (...args) {
     if (!inThrottle) {
       func.apply(this, args);
       inThrottle = true;
@@ -415,7 +415,7 @@ export const throttle = (func, limit = 100) => {
 /**
  * Request Idle Callback polyfill
  */
-export const requestIdleCallback = window.requestIdleCallback || function(cb) {
+export const requestIdleCallback = window.requestIdleCallback || function (cb) {
   const start = Date.now();
   return setTimeout(() => {
     cb({
@@ -425,7 +425,7 @@ export const requestIdleCallback = window.requestIdleCallback || function(cb) {
   }, 1);
 };
 
-export const cancelIdleCallback = window.cancelIdleCallback || function(id) {
+export const cancelIdleCallback = window.cancelIdleCallback || function (id) {
   clearTimeout(id);
 };
 
