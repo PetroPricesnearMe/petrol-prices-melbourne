@@ -73,7 +73,7 @@ class CacheManager {
 
     // Store in IndexedDB
     if (!this.db) await this.init();
-    
+
     if (this.db) {
       return new Promise((resolve, reject) => {
         const transaction = this.db.transaction([store], 'readwrite');
@@ -105,7 +105,7 @@ class CacheManager {
 
     // Check IndexedDB
     if (!this.db) await this.init();
-    
+
     if (this.db) {
       return new Promise((resolve, reject) => {
         const transaction = this.db.transaction([store], 'readonly');
@@ -114,7 +114,7 @@ class CacheManager {
 
         request.onsuccess = () => {
           const entry = request.result;
-          
+
           if (!entry) {
             resolve(null);
             return;
@@ -146,7 +146,7 @@ class CacheManager {
     this.memoryCache.delete(key);
 
     if (!this.db) await this.init();
-    
+
     if (this.db) {
       return new Promise((resolve, reject) => {
         const transaction = this.db.transaction([store], 'readwrite');
@@ -166,10 +166,10 @@ class CacheManager {
     this.memoryCache.clear();
 
     if (!this.db) await this.init();
-    
+
     if (this.db) {
       const stores = Object.values(this.stores);
-      
+
       return Promise.all(
         stores.map(store => {
           return new Promise((resolve, reject) => {
@@ -193,7 +193,7 @@ class CacheManager {
    */
   async getOrSet(key, fetcher, ttl = 3600, store = this.stores.queries) {
     const cached = await this.get(key, store);
-    
+
     if (cached !== null) {
       return cached;
     }
@@ -201,7 +201,7 @@ class CacheManager {
     // Not cached, fetch fresh data
     const freshData = await fetcher();
     await this.set(key, freshData, ttl, store);
-    
+
     return freshData;
   }
 
@@ -211,7 +211,7 @@ class CacheManager {
    */
   async getStale(key, fetcher, ttl = 3600, store = this.stores.queries) {
     const cached = await this.get(key, store);
-    
+
     if (cached !== null) {
       // Return stale data immediately
       // Revalidate in background
@@ -222,7 +222,7 @@ class CacheManager {
     // No cache, fetch fresh
     const freshData = await fetcher();
     await this.set(key, freshData, ttl, store);
-    
+
     return { data: freshData, stale: false };
   }
 
@@ -271,7 +271,7 @@ class CacheManager {
    */
   async clearExpired() {
     if (!this.db) await this.init();
-    
+
     if (this.db) {
       const stores = Object.values(this.stores);
       const now = Date.now();
@@ -286,7 +286,7 @@ class CacheManager {
 
             request.onsuccess = (event) => {
               const cursor = event.target.result;
-              
+
               if (cursor) {
                 const entry = cursor.value;
                 if (now > entry.expiresAt) {
@@ -316,20 +316,20 @@ class CacheManager {
     };
 
     if (!this.db) await this.init();
-    
+
     if (this.db) {
       const stores = Object.values(this.stores);
-      
+
       for (const storeName of stores) {
         const count = await new Promise((resolve) => {
           const transaction = this.db.transaction([storeName], 'readonly');
           const objectStore = transaction.objectStore(storeName);
           const request = objectStore.count();
-          
+
           request.onsuccess = () => resolve(request.result);
           request.onerror = () => resolve(0);
         });
-        
+
         stats.indexedDBEntries += count;
       }
     }

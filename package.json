@@ -18,13 +18,13 @@
     "react-scripts": "^5.0.1",
     "socket.io-client": "^4.6.1",
     "styled-components": "^5.3.9",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^3.5.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build:analyze": "npm run build && npx source-map-explorer 'build/static/js/*.js'",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "build:analyze": "ANALYZE=true craco build",
+    "test": "craco test",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "analyze": "npm run build && npx serve -s build",

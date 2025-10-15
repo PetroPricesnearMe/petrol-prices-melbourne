@@ -9,6 +9,7 @@ import { baserowAPI } from '../config';
 import { validateAndTransformStation, getUserFriendlyError } from '../utils/validation';
 import localDataService from './LocalDataService';
 import fuelPriceService from './FuelPriceService';
+import cacheManager from './CacheManager';
 // validateStations currently unused - commented out to fix ESLint warning
 
 class DataSourceManager {
@@ -17,7 +18,8 @@ class DataSourceManager {
     this.dataCache = new Map();
     this.isLoading = false;
     this.lastFetchTime = null;
-    this.cacheTimeout = 5 * 60 * 1000; // 5 minutes cache
+    this.cacheTimeout = 60 * 60 * 1000; // 1 hour cache (increased from 5 min)
+    this.staleWhileRevalidate = true; // Enable background revalidation
   }
 
   /**
@@ -41,10 +43,17 @@ class DataSourceManager {
   /**
    * Clear all cached data
    */
-  clearCache() {
+  async clearCache() {
     console.log('🗑️ Clearing data cache');
     this.dataCache.clear();
     this.lastFetchTime = null;
+
+    // Also clear IndexedDB cache
+    try {
+      await cacheManager.clearAll();
+    } catch (error) {
+      console.warn('Failed to clear IndexedDB cache:', error);
+    }
   }
 
   /**
