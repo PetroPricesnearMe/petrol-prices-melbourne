@@ -1,7 +1,11 @@
+/* eslint-disable no-restricted-globals, no-undef */
 /**
  * Service Worker
  * Handles caching and offline functionality
  * @version 2.0.0
+ * 
+ * Note: Service workers run in a different context where 'self' is the global object
+ * ESLint warnings about 'self' and 'clients' are expected and can be ignored
  */
 
 const CACHE_NAME = 'ppnm-v2.0.0';
@@ -55,6 +59,7 @@ self.addEventListener('activate', (event) => {
               console.log('[Service Worker] Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             }
+            return null;
           })
         );
       })
@@ -229,10 +234,10 @@ self.addEventListener('resume', () => {
 // Suppress Chrome extension errors in service worker
 self.addEventListener('error', (event) => {
   if (event.message && (
-      event.message.includes('runtime.lastError') ||
-      event.message.includes('extension port') ||
-      event.message.includes('message channel')
-    )) {
+    event.message.includes('runtime.lastError') ||
+    event.message.includes('extension port') ||
+    event.message.includes('message channel')
+  )) {
     event.preventDefault();
   }
 });

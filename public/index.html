@@ -916,12 +916,12 @@
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       const originalWarn = console.warn;
       const originalError = console.error;
-      
+
       console.warn = function (...args) {
         const message = args[0]?.toString() || '';
         if (message.includes('Unload event listeners are deprecated') ||
-            message.includes('extension port') ||
-            message.includes('back/forward cache')) {
+          message.includes('extension port') ||
+          message.includes('back/forward cache')) {
           return; // Suppress IDE/extension warnings
         }
         originalWarn.apply(console, args);
@@ -930,9 +930,9 @@
       console.error = function (...args) {
         const message = args[0]?.toString() || '';
         if (message.includes('runtime.lastError') ||
-            message.includes('extension port') ||
-            message.includes('back/forward cache') ||
-            message.includes('message channel is closed')) {
+          message.includes('extension port') ||
+          message.includes('back/forward cache') ||
+          message.includes('message channel is closed')) {
           return; // Suppress Chrome extension errors
         }
         originalError.apply(console, args);
@@ -940,7 +940,7 @@
     }
 
     // Handle bfcache events to prevent extension errors
-    window.addEventListener('pageshow', function(event) {
+    window.addEventListener('pageshow', function (event) {
       if (event.persisted) {
         // Page was restored from bfcache
         console.log('[BFCache] Page restored from cache');
@@ -951,7 +951,7 @@
       }
     });
 
-    window.addEventListener('pagehide', function(event) {
+    window.addEventListener('pagehide', function (event) {
       if (event.persisted) {
         // Page is being cached
         console.log('[BFCache] Page entering cache');
@@ -959,12 +959,12 @@
     });
 
     // Global error handler for uncaught extension errors
-    window.addEventListener('error', function(event) {
+    window.addEventListener('error', function (event) {
       if (event.message && (
-          event.message.includes('runtime.lastError') ||
-          event.message.includes('extension port') ||
-          event.message.includes('message channel is closed')
-        )) {
+        event.message.includes('runtime.lastError') ||
+        event.message.includes('extension port') ||
+        event.message.includes('message channel is closed')
+      )) {
         event.preventDefault();
         return true;
       }

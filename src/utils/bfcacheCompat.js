@@ -41,8 +41,8 @@ export const onBFCacheRestore = (callback) => {
  */
 export const useBFCacheCompat = (options = {}) => {
   const {
-    onRestore = () => {},
-    onFreeze = () => {},
+    onRestore = () => { },
+    onFreeze = () => { },
     debug = false
   } = options;
 
@@ -128,7 +128,7 @@ export const suppressExtensionErrors = () => {
   const originalError = window.console.error;
   window.console.error = (...args) => {
     const message = args[0]?.toString() || '';
-    
+
     // Filter out known extension errors
     const extensionErrors = [
       'runtime.lastError',
