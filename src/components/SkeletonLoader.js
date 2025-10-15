@@ -6,21 +6,21 @@
 import React from 'react';
 import './SkeletonLoader.css';
 
-const SkeletonLoader = ({ 
-  variant = 'card', 
-  count = 1, 
+const SkeletonLoader = ({
+  variant = 'card',
+  count = 1,
   className = '',
   height,
-  width 
+  width
 }) => {
   const renderSkeleton = () => {
     switch (variant) {
       case 'text':
         return <div className="skeleton skeleton-text" style={{ height, width }} />;
-      
+
       case 'avatar':
         return <div className="skeleton skeleton-avatar" style={{ height: height || 48, width: width || 48 }} />;
-      
+
       case 'card':
         return (
           <div className="skeleton-card" style={{ height, width }}>
@@ -32,7 +32,7 @@ const SkeletonLoader = ({
             </div>
           </div>
         );
-      
+
       case 'station-card':
         return (
           <div className="skeleton-station-card">
@@ -49,7 +49,7 @@ const SkeletonLoader = ({
             </div>
           </div>
         );
-      
+
       case 'list-item':
         return (
           <div className="skeleton-list-item">
@@ -60,7 +60,7 @@ const SkeletonLoader = ({
             </div>
           </div>
         );
-      
+
       case 'table-row':
         return (
           <div className="skeleton-table-row">
@@ -70,7 +70,7 @@ const SkeletonLoader = ({
             <div className="skeleton skeleton-text" style={{ width: '15%' }} />
           </div>
         );
-      
+
       default:
         return <div className="skeleton" style={{ height, width }} />;
     }
