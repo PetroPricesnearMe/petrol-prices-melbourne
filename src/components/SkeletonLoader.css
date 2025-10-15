@@ -4,12 +4,10 @@
  */
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--gray-200, #E5E7EB) 0%,
-    var(--gray-100, #F3F4F6) 50%,
-    var(--gray-200, #E5E7EB) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--gray-200, #E5E7EB) 0%,
+      var(--gray-100, #F3F4F6) 50%,
+      var(--gray-200, #E5E7EB) 100%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s ease-in-out infinite;
   border-radius: var(--radius-md, 6px);
@@ -21,6 +19,7 @@
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -29,12 +28,10 @@
 /* Dark mode skeleton */
 @media (prefers-color-scheme: dark) {
   .skeleton {
-    background: linear-gradient(
-      90deg,
-      var(--gray-800, #1F2937) 0%,
-      var(--gray-700, #374151) 50%,
-      var(--gray-800, #1F2937) 100%
-    );
+    background: linear-gradient(90deg,
+        var(--gray-800, #1F2937) 0%,
+        var(--gray-700, #374151) 50%,
+        var(--gray-800, #1F2937) 100%);
   }
 }
 
@@ -82,7 +79,7 @@
   border: 1px solid var(--border-medium, #E5E7EB);
   border-radius: var(--radius-xl, 12px);
   overflow: hidden;
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
   margin-bottom: var(--space-4, 16px);
 }
 
@@ -165,4 +162,3 @@
     background: var(--gray-200, #E5E7EB);
   }
 }
-
