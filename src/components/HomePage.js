@@ -6,58 +6,58 @@ import SEO from './SEO';
 import { trackPageView } from '../utils/analytics';
 import './HomePage.css';
 
+// Structured data for homepage (moved outside component for performance)
+const homepageStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Petrol Prices Near Me",
+    "url": "https://www.petrolpricesnearme.com.au",
+    "description": "Find the cheapest petrol prices in Melbourne with real-time fuel price updates from 250+ stations",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.petrolpricesnearme.com.au/directory?search={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Petrol Prices Near Me",
+    "description": "Melbourne's premier fuel price comparison service",
+    "areaServed": {
+      "@type": "City",
+      "name": "Melbourne",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Melbourne",
+        "addressRegion": "VIC",
+        "addressCountry": "AU"
+      }
+    },
+    "priceRange": "$$"
+  }
+];
+
+// Override stagger timing for homepage (moved outside for performance)
+const heroContainerVariants = {
+  ...containerVariants,
+  visible: {
+    ...containerVariants.visible,
+    transition: {
+      staggerChildren: 0.3
+    }
+  }
+};
+
 const HomePage = () => {
   // Track page view on mount
   useEffect(() => {
     trackPageView('Home');
   }, []);
-
-  // Override stagger timing for homepage
-  const heroContainerVariants = {
-    ...containerVariants,
-    visible: {
-      ...containerVariants.visible,
-      transition: {
-        staggerChildren: 0.3
-      }
-    }
-  };
-
-  // Structured data for homepage
-  const homepageStructuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Petrol Prices Near Me",
-      "url": "https://www.petrolpricesnearme.com.au",
-      "description": "Find the cheapest petrol prices in Melbourne with real-time fuel price updates from 250+ stations",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://www.petrolpricesnearme.com.au/directory?search={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Petrol Prices Near Me",
-      "description": "Melbourne's premier fuel price comparison service",
-      "areaServed": {
-        "@type": "City",
-        "name": "Melbourne",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Melbourne",
-          "addressRegion": "VIC",
-          "addressCountry": "AU"
-        }
-      },
-      "priceRange": "$$"
-    }
-  ];
 
   return (
     <>

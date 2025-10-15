@@ -106,7 +106,7 @@ const DirectoryPageNew = () => {
     loadStations();
   }, []);
 
-  // Apply filters
+  // Apply filters - Optimized with correct dependencies
   const applyFilters = useCallback((filters) => {
     let filtered = [...stations];
 

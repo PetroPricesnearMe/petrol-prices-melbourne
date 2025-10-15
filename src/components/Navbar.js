@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  const isActive = (path) => {
+  const isActive = useCallback((path) => {
     return location.pathname === path ? 'active' : '';
-  };
+  }, [location.pathname]);
+  
+  const handleToggle = useCallback(() => {
+    setIsOpen(prev => !prev);
+  }, []);
+  
+  const handleLinkClick = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   return (
     <nav className="navbar" role="navigation" aria-label="Main navigation">
@@ -22,7 +30,7 @@ const Navbar = () => {
             <Link 
               to="/" 
               className={`nav-link ${isActive('/')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/' ? 'page' : undefined}
             >
               Home
@@ -30,7 +38,7 @@ const Navbar = () => {
             <Link 
               to="/directory" 
               className={`nav-link ${isActive('/directory')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/directory' ? 'page' : undefined}
             >
               Directory
@@ -38,7 +46,7 @@ const Navbar = () => {
             <Link 
               to="/fuel-price-trends" 
               className={`nav-link ${isActive('/fuel-price-trends')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/fuel-price-trends' ? 'page' : undefined}
             >
               Price Trends
@@ -46,7 +54,7 @@ const Navbar = () => {
             <Link 
               to="/station-amenities" 
               className={`nav-link ${isActive('/station-amenities')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/station-amenities' ? 'page' : undefined}
             >
               Amenities
@@ -54,7 +62,7 @@ const Navbar = () => {
             <Link 
               to="/how-pricing-works" 
               className={`nav-link ${isActive('/how-pricing-works')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/how-pricing-works' ? 'page' : undefined}
             >
               How It Works
@@ -62,7 +70,7 @@ const Navbar = () => {
             <Link 
               to="/blog" 
               className={`nav-link ${isActive('/blog')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/blog' ? 'page' : undefined}
             >
               Blog
@@ -70,7 +78,7 @@ const Navbar = () => {
             <Link 
               to="/faq" 
               className={`nav-link ${isActive('/faq')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/faq' ? 'page' : undefined}
             >
               FAQ
@@ -78,7 +86,7 @@ const Navbar = () => {
             <Link 
               to="/about" 
               className={`nav-link ${isActive('/about')}`}
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               aria-current={location.pathname === '/about' ? 'page' : undefined}
             >
               About
@@ -87,7 +95,7 @@ const Navbar = () => {
 
           <button 
             className="nav-toggle"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleToggle}
             aria-label="Toggle navigation menu"
             aria-expanded={isOpen}
             aria-controls="nav-links"
@@ -100,6 +108,8 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
+});
+
+Navbar.displayName = 'Navbar';
 
 export default Navbar; 
