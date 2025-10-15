@@ -517,10 +517,10 @@ const HowPricingWorksPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800 }}>
+              <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800 }}>
                 How Fuel Pricing Works in Australia
               </h1>
-              <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', marginTop: '0.75rem', maxWidth: '900px', margin: '0 auto' }}>
+              <p style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)', marginTop: '0.75rem', maxWidth: '900px', margin: '0 auto' }}>
                 Understand the complex factors that influence petrol prices in Melbourne and across Australia.
                 Master price cycles, government regulations, and market dynamics to save money on every fill-up.
               </p>
@@ -575,10 +575,10 @@ const HowPricingWorksPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              <h3 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', marginBottom: '1rem' }}>
                 Ready to Apply Your Knowledge and Start Saving?
               </h3>
-              <p style={{ fontSize: '1.05rem', marginBottom: '1.5rem', color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto 1.5rem' }}>
+              <p style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)', marginBottom: '1.5rem', color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto 1.5rem' }}>
                 Now that you understand how fuel pricing works, put your knowledge into action with our powerful price comparison tools and start saving money today!
               </p>
               <div className="cta-buttons">

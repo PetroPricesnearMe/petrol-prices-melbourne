@@ -394,7 +394,20 @@
       --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)
     }
 
-    /* Font Face */
+    /* Font Face - Inter Variable Font for Better Performance */
+    /* Using variable font reduces requests and provides all weights */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 100 900;
+      /* Variable font supports all weights */
+      font-display: swap;
+      /* Prevent invisible text (FOIT) */
+      src: url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZJhiI2B.woff2) format('woff2');
+      font-named-instance: 'Regular';
+    }
+
+    /* Fallback for browsers without variable font support */
     @font-face {
       font-family: 'Inter';
       font-style: normal;
@@ -406,17 +419,17 @@
     @font-face {
       font-family: 'Inter';
       font-style: normal;
-      font-weight: 500;
+      font-weight: 600;
       font-display: swap;
-      src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7SUc.woff2) format('woff2')
+      src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2) format('woff2')
     }
 
     @font-face {
       font-family: 'Inter';
       font-style: normal;
-      font-weight: 600;
+      font-weight: 700;
       font-display: swap;
-      src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2) format('woff2')
+      src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa0ZL7SUc.woff2) format('woff2')
     }
 
     /* Base Styles */
@@ -427,7 +440,26 @@
       background-color: var(--background);
       color: var(--text-primary);
       line-height: 1.6;
-      font-size: 16px
+      font-size: clamp(0.875rem, 2vw, 1rem)
+    }
+
+    /* Global Typography Scale */
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.2;
+      font-weight: 800
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      line-height: 1.3;
+      font-weight: 700
+    }
+
+    h3 {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      line-height: 1.4;
+      font-weight: 600
     }
 
     .container {
@@ -787,15 +819,25 @@
     }
   </style>
 
-  <!-- Critical Resources -->
+  <!-- Critical Resources - Preload for Performance -->
 
-  <!-- Preload critical font files directly -->
+  <!-- Preload Inter Variable Font (primary) - reduces font requests -->
+  <link rel="preload"
+    href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZJhiI2B.woff2"
+    as="font" type="font/woff2" crossorigin />
+
+  <!-- Preload fallback fonts (for older browsers) -->
   <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" as="font"
     type="font/woff2" crossorigin />
-  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7SUc.woff2"
-    as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2"
     as="font" type="font/woff2" crossorigin />
+
+  <!-- Preload hero images for faster LCP -->
+  <link rel="preload" href="%PUBLIC_URL%/images/fuel-nozzles.svg" as="image" type="image/svg+xml" />
+
+  <!-- Preload critical brand logos (above fold) -->
+  <link rel="preload" href="%PUBLIC_URL%/images/brands/BP.svg" as="image" type="image/svg+xml" />
+  <link rel="preload" href="%PUBLIC_URL%/images/brands/Shell.svg" as="image" type="image/svg+xml" />
 
   <!-- Mapbox CSS is loaded automatically by react-map-gl -->
 

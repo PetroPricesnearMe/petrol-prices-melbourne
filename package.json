@@ -61,6 +61,12 @@
     ]
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.3"
+    "@types/leaflet": "^1.9.3",
+    "imagemin": "^9.0.1",
+    "imagemin-avif": "^0.1.6",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
+    "imagemin-webp": "^8.0.0",
+    "sharp": "^0.34.4"
   }
 }

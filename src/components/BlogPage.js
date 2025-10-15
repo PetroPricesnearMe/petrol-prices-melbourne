@@ -110,10 +110,10 @@ const BlogPage = () => {
           animate="visible"
         >
           <div className="container">
-            <motion.h1 className="blog-title" variants={itemVariants} style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', fontWeight: 800, lineHeight: 1.2 }}>
+            <motion.h1 className="blog-title" variants={itemVariants} style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.2 }}>
               Complete Guide to Finding the Cheapest Petrol Prices in Melbourne in 2025
             </motion.h1>
-            <motion.p variants={itemVariants} style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', marginTop: '1rem', color: 'var(--text-secondary)', maxWidth: '900px', margin: '1rem auto 0' }}>
+            <motion.p variants={itemVariants} style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)', marginTop: '1rem', color: 'var(--text-secondary)', maxWidth: '900px', margin: '1rem auto 0' }}>
               Learn expert strategies to save up to $520 per year on fuel. Master price cycles, discover optimal fill-up times, and unlock the secrets to consistently finding the cheapest petrol in Melbourne.
             </motion.p>
             <motion.div className="blog-meta" variants={itemVariants} style={{ marginTop: '1.5rem' }}>
@@ -133,7 +133,7 @@ const BlogPage = () => {
         >
           <div className="container">
             <motion.section className="blog-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 Why Melbourne Petrol Prices Vary by Up to 30 Cents Per Liter
               </h2>
               <p>
@@ -153,7 +153,7 @@ const BlogPage = () => {
             </motion.section>
 
             <motion.section className="blog-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 How to Use Our Live Fuel Price Map to Find the Cheapest Stations
               </h2>
               <p>
@@ -176,7 +176,7 @@ const BlogPage = () => {
             </motion.section>
 
             <motion.section className="blog-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 Top 10 Cheapest Petrol Stations in Melbourne (Updated 2025)
               </h2>
               <p>
@@ -202,7 +202,7 @@ const BlogPage = () => {
             </motion.section>
 
             <motion.section className="blog-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 Understanding Different Fuel Types and Their Price Ranges in 2025
               </h2>
               <p>
@@ -233,7 +233,7 @@ const BlogPage = () => {
             </motion.section>
 
             <motion.section className="blog-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 Best Times to Buy Petrol in Melbourne - The Ultimate Timing Guide
               </h2>
               <p>
@@ -257,7 +257,7 @@ const BlogPage = () => {
             </motion.section>
 
             <motion.section className="blog-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 Mobile Apps vs. Our Website: Which Saves You More Money?
               </h2>
               <p>
@@ -288,7 +288,7 @@ const BlogPage = () => {
             </motion.section>
 
             <motion.section className="blog-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 Pro Tips for Maximum Fuel Savings in Melbourne
               </h2>
               <div className="tips-grid">
@@ -312,10 +312,10 @@ const BlogPage = () => {
             </motion.section>
 
             <motion.section className="blog-section cta-section" variants={itemVariants}>
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
                 Ready to Start Saving Up to $520 Per Year on Fuel?
               </h2>
-              <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>
+              <p style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)', marginBottom: '1.5rem' }}>
                 Don't overpay for petrol again. Use our <strong>live fuel prices Melbourne</strong> tool to find the cheapest stations near you right now.
                 Join thousands of smart Melbourne drivers who are already saving money on every fill-up!
               </p>

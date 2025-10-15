@@ -85,11 +85,11 @@ const HomePage = () => {
 
           <div className="container">
             <header className="hero-content">
-              <MotionH1 className="hero-title" variants={itemVariants}>
+              <MotionH1 className="hero-title" variants={itemVariants} style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
                 Find the Cheapest Petrol Prices in Melbourne Today
               </MotionH1>
 
-              <MotionP className="hero-subtitle" variants={itemVariants}>
+              <MotionP className="hero-subtitle" variants={itemVariants} style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
                 Compare live fuel prices from 250+ stations across Melbourne.
                 Save up to 30c per liter with real-time price updates on unleaded,
                 diesel & premium fuel. Smart. Simple. Free.
@@ -204,8 +204,8 @@ const HomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="section-title">Why Thousands of Melburnians Trust Us to Save Money on Fuel</h2>
-              <p className="section-subtitle">Real-time price monitoring across 250+ petrol stations • Free forever • Updated hourly</p>
+              <h2 className="section-title" style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)' }}>Why Thousands of Melburnians Trust Us to Save Money on Fuel</h2>
+              <p className="section-subtitle" style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>Real-time price monitoring across 250+ petrol stations • Free forever • Updated hourly</p>
             </MotionDiv>
 
             <div className="features-grid">

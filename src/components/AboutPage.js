@@ -59,10 +59,10 @@ const AboutPage = () => {
       ]} />
       <div className="container" style={{ padding: '2rem 0' }}>
         <header style={{ marginBottom: '1.5rem' }}>
-          <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800, lineHeight: 1.2, marginBottom: '0.5rem' }}>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.2, marginBottom: '0.5rem' }}>
             About Petrol Prices Near Me
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(1rem, 2vw, 1.25rem)', lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(0.875rem, 2vw, 1rem)', lineHeight: 1.6 }}>
             Australia's most trusted fuel price comparison platform, helping Melbourne drivers save money on every fill-up since 2024.
           </p>
         </header>
@@ -75,10 +75,10 @@ const AboutPage = () => {
             padding: '1.5rem',
             boxShadow: 'var(--shadow)'
           }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>
               💡 Our Mission: Making Fuel Pricing Transparent for All Australians
             </h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.8, fontSize: '1.05rem' }}>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.8, fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
               We believe every Australian motorist deserves access to transparent, real-time fuel pricing information.
               Our mission is simple: help you find the cheapest petrol prices in your area and save money on every fill-up.
               Compare live prices, explore detailed station directories, and use our interactive map to plan smarter,
@@ -93,10 +93,10 @@ const AboutPage = () => {
             padding: '1.5rem',
             boxShadow: 'var(--shadow)'
           }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>
               🎯 Built Specifically for Melbourne Drivers
             </h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.8, fontSize: '1.05rem' }}>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.8, fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
               Unlike generic fuel apps, we've designed our platform specifically for Melbourne motorists. Our service
               features intelligent suburb suggestions, local area autocomplete, suburb-centric navigation, and detailed
               coverage of all Melbourne regions from the CBD to outer suburbs. We understand Melbourne's unique fuel
@@ -112,10 +112,10 @@ const AboutPage = () => {
             padding: '1.5rem',
             boxShadow: 'var(--shadow)'
           }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-primary)' }}>
               ⚡ Real-Time Data You Can Trust
             </h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.8, fontSize: '1.05rem' }}>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.8, fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
               Our advanced monitoring system tracks prices from 250+ petrol stations across Melbourne, updating
               hourly to ensure you always have the most current information. We aggregate data from multiple trusted
               sources including government APIs, direct station feeds, and verified community reports. Every price
@@ -133,10 +133,10 @@ const AboutPage = () => {
             color: 'white',
             textAlign: 'center'
           }}>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, marginBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '0.75rem' }}>
               Why Thousands of Melburnians Choose Us Daily
             </h2>
-            <p style={{ opacity: 0.9, marginBottom: '2rem', fontSize: '1.05rem' }}>
+            <p style={{ opacity: 0.9, marginBottom: '2rem', fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
               Join our growing community of smart drivers saving money on fuel
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
@@ -165,10 +165,10 @@ const AboutPage = () => {
         </section>
 
         <section style={{ marginTop: '2rem', background: 'white', border: '1px solid var(--border-color)', borderRadius: '0.75rem', padding: '2rem', boxShadow: 'var(--shadow)' }}>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
             📖 Our Story: From Frustration to Solution
           </h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.25rem', fontSize: '1.05rem' }}>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1.25rem', fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
             Founded in Melbourne in 2024, Petrol Prices Near Me was born from a simple observation: Melbourne motorists
             were losing hundreds of dollars every year simply because they couldn't easily compare fuel prices across
             different stations. We experienced this frustration firsthand—driving past one station only to discover
@@ -198,7 +198,7 @@ const AboutPage = () => {
         </section>
 
         <section style={{ marginTop: '2rem', background: 'var(--background-gray)', border: '1px solid var(--border-color)', borderRadius: '0.75rem', padding: '2rem' }}>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-primary)', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-primary)', textAlign: 'center' }}>
             🌟 What Makes Us Different
           </h2>
           <div style={{ display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>

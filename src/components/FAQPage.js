@@ -118,10 +118,10 @@ const FAQPage = () => {
         <div className="faq-header">
           <div className="container">
             <header>
-              <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 800 }}>
+              <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800 }}>
                 Frequently Asked Questions About Melbourne Petrol Prices
               </h1>
-              <p style={{ fontSize: 'clamp(1rem, 2vw, 1.15rem)', marginTop: '0.75rem' }}>
+              <p style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)', marginTop: '0.75rem' }}>
                 Get instant answers to common questions about fuel prices, price cycles, our service, and proven strategies to save money on every fill-up
               </p>
             </header>
@@ -184,10 +184,10 @@ const FAQPage = () => {
 
             {/* Additional Help Section */}
             <div className="help-section">
-              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', marginBottom: '1.5rem' }}>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', marginBottom: '1.5rem' }}>
                 Still Need Help? We're Here for You
               </h2>
-              <p style={{ maxWidth: '600px', margin: '0 auto 2rem', fontSize: '1.05rem', color: 'var(--text-secondary)' }}>
+              <p style={{ maxWidth: '600px', margin: '0 auto 2rem', fontSize: 'clamp(0.875rem, 2vw, 1rem)', color: 'var(--text-secondary)' }}>
                 Can't find what you're looking for? Our team is ready to assist you with any questions about fuel prices, our platform, or how to maximize your savings.
               </p>
               <div className="help-options">
