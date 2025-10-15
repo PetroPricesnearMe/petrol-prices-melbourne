@@ -3,7 +3,7 @@
   "outputDirectory": "build",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/:path((?!manifest\\.json|robots\\.txt|sitemap\\.xml|favicon\\.ico|static/|images/|data/).*)",
       "destination": "/index.html"
     }
   ],
@@ -87,6 +87,14 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=86400"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET"
         }
       ]
     },
