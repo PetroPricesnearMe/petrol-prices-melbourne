@@ -176,6 +176,93 @@
   }
 }
 
+/* Error State Styles */
+.loading-content.error-state {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 2px solid #fecaca;
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: shake 0.5s ease-in-out;
+}
+
+.error-tip {
+  color: #dc2626 !important;
+  font-style: normal;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.retry-button,
+.home-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.retry-button {
+  background: #2563eb;
+  color: white;
+}
+
+.retry-button:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.retry-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.home-button {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.home-button:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.timeout-message {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.elapsed-time {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+  font-family: monospace;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .loading-container {
@@ -197,5 +284,14 @@
 
   .loading-tip {
     font-size: 0.85rem;
+  }
+
+  .error-actions {
+    flex-direction: column;
+  }
+
+  .retry-button,
+  .home-button {
+    width: 100%;
   }
 }

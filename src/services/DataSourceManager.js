@@ -180,10 +180,20 @@ class DataSourceManager {
     // Prevent multiple simultaneous requests
     if (this.isLoading) {
       console.log('⏳ Data fetch already in progress, waiting...');
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
+        const startTime = Date.now();
+        const maxWaitTime = 15000; // 15 seconds max wait
+        
         const checkLoading = () => {
+          const elapsed = Date.now() - startTime;
+          
           if (!this.isLoading) {
+            console.log(`✅ Wait completed after ${elapsed}ms`);
             resolve(this.dataCache.get(cacheKey) || []);
+          } else if (elapsed >= maxWaitTime) {
+            console.error(`⏰ Wait timeout after ${elapsed}ms - isLoading flag stuck!`);
+            this.isLoading = false; // Force reset the flag
+            reject(new Error('Data fetch wait timeout - concurrent request took too long'));
           } else {
             setTimeout(checkLoading, 100);
           }
