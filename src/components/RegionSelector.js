@@ -51,17 +51,17 @@ const RegionSelector = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.15, duration: 0.5 }}
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  onMouseEnter={() => setHoveredRegion(region.id)}
-                  onMouseLeave={() => setHoveredRegion(null)}
                 >
                   <Link
                     to={`/directory?region=${region.id}`}
                     className="modern-region-link"
+                    onMouseEnter={() => setHoveredRegion(region.id)}
+                    onMouseLeave={() => setHoveredRegion(null)}
                     style={{
                       background: hoveredRegion === region.id
                         ? `linear-gradient(135deg, ${region.color}25, ${region.color}15)`
-                        : 'white'
+                        : 'white',
+                      transform: hoveredRegion === region.id ? 'translateY(-10px) scale(1.02)' : 'translateY(0) scale(1)'
                     }}
                   >
                     {/* Icon Circle */}

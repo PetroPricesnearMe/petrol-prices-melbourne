@@ -76,7 +76,16 @@ const DirectoryPageNew = () => {
     const loadStations = async () => {
       try {
         setLoading(true);
-        const data = await dataSourceManager.fetchStations();
+        
+        // Add timeout to prevent infinite loading
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Loading timeout')), 10000)
+        );
+        
+        const dataPromise = dataSourceManager.fetchStations();
+        
+        // Race between data fetch and timeout
+        const data = await Promise.race([dataPromise, timeoutPromise]);
 
         // Normalize station data
         const normalizedData = data.map(station => ({
@@ -98,6 +107,8 @@ const DirectoryPageNew = () => {
         setStations(normalizedData);
       } catch (error) {
         console.error('Error loading stations:', error);
+        // Set empty array on error to prevent infinite loading
+        setStations([]);
       } finally {
         setLoading(false);
       }
