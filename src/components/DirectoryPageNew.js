@@ -66,6 +66,13 @@ const DirectoryPageNew = () => {
   const regionParam = searchParams.get('region');
   const selectedRegion = regionParam ? MELBOURNE_REGIONS[regionParam.toUpperCase()] : null;
 
+  // Debug logging
+  useEffect(() => {
+    console.log('🗺️ DirectoryPageNew mounted');
+    console.log('📋 Region param from URL:', regionParam);
+    console.log('🎯 Selected region:', selectedRegion?.name || 'All Stations');
+  }, [regionParam, selectedRegion]);
+
   // Track page view on mount
   useEffect(() => {
     trackPageView(selectedRegion ? `Directory - ${selectedRegion.name}` : 'Directory - All Stations');
@@ -75,6 +82,7 @@ const DirectoryPageNew = () => {
   useEffect(() => {
     const loadStations = async () => {
       try {
+        console.log('⏳ Starting to load stations...');
         setLoading(true);
         
         // Add timeout to prevent infinite loading
@@ -86,6 +94,7 @@ const DirectoryPageNew = () => {
         
         // Race between data fetch and timeout
         const data = await Promise.race([dataPromise, timeoutPromise]);
+        console.log('✅ Data loaded successfully:', data.length, 'stations');
 
         // Normalize station data
         const normalizedData = data.map(station => ({
@@ -105,12 +114,15 @@ const DirectoryPageNew = () => {
         }));
 
         setStations(normalizedData);
+        console.log('📊 Stations set in state:', normalizedData.length);
       } catch (error) {
-        console.error('Error loading stations:', error);
+        console.error('❌ Error loading stations:', error);
         // Set empty array on error to prevent infinite loading
         setStations([]);
+        console.warn('⚠️ Set empty stations array due to error');
       } finally {
         setLoading(false);
+        console.log('✅ Loading complete, loading state set to false');
       }
     };
 
