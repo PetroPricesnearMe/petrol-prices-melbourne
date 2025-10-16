@@ -21,11 +21,16 @@ const ITEMS_PER_PAGE = 12;
 
 // Brand image mapping
 const BRAND_IMAGES = {
-  'shell': '/images/fuel-nozzles.svg', // Using default image (shell-station.jpg not available)
-  'bp': '/images/fuel-nozzles.svg', // Using default image (bp-station.jpg not available)
+  'shell': '/images/stations/shell-station.jpg',
+  'bp': '/images/stations/bp-station.jpg',
+  'caltex': '/images/stations/caltex-station.jpg',
+  'ampol': '/images/stations/ampol-station.jpg',
+  'mobil': '/images/stations/mobil-station.jpg',
+  'united': '/images/stations/united-station.jpg',
+  'coles express': '/images/stations/coles-express-station.jpg',
+  'metro': '/images/stations/metro-station.jpg',
   '7-eleven': '/images/stations/seven-eleven.jpg',
   'seven eleven': '/images/stations/seven-eleven.jpg',
-  'mobil': '/images/stations/seven-eleven.jpg',
   'default': '/images/fuel-nozzles.svg'
 };
 

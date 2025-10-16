@@ -3,14 +3,15 @@
 
 User-agent: *
 Allow: /
+Allow: /map
 Allow: /directory
 Allow: /about
 Allow: /fuel-price-trends
 Allow: /station-amenities
 Allow: /how-pricing-works
-Allow: /blog
-Allow: /faq
-Allow: /chat
+Allow: /roadside-assistance
+Allow: /news
+Allow: /station-brands
 
 # Disallow admin and private areas
 Disallow: /admin/

@@ -139,6 +139,35 @@
   border-bottom: 2px solid #f3f4f6;
 }
 
+/* Brand-specific header colors */
+.card-header.shell {
+  background: linear-gradient(135deg, #E5A922 0%, #D4941D 100%);
+}
+
+.card-header.bp {
+  background: linear-gradient(135deg, var(--brand-bp) 0%, #4ade80 100%);
+}
+
+.card-header.caltex {
+  background: linear-gradient(135deg, var(--brand-caltex) 0%, #f87171 100%);
+}
+
+.card-header.ampol {
+  background: linear-gradient(135deg, var(--brand-ampol) 0%, #f87171 100%);
+}
+
+.card-header.seven-eleven {
+  background: linear-gradient(135deg, var(--brand-seven-eleven) 0%, #fb923c 100%);
+}
+
+.card-header.mobil {
+  background: linear-gradient(135deg, var(--brand-mobil) 0%, #f87171 100%);
+}
+
+.card-header.united {
+  background: linear-gradient(135deg, var(--brand-united) 0%, #60a5fa 100%);
+}
+
 .brand-logo {
   max-width: 120px;
   max-height: 60px;
