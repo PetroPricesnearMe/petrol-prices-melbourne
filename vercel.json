@@ -1,10 +1,26 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/((?!static|images|data|favicon.ico|manifest.json|robots.txt|sitemap.xml).*)",
-      "destination": "/index.html"
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/data/(.*)",
+      "dest": "/data/$1"
+    },
+    {
+      "src": "/(manifest\\.json|robots\\.txt|sitemap\\.xml|favicon\\.ico)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
   "headers": [
@@ -95,7 +111,7 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "application/json; charset=utf-8"
+          "value": "application/manifest+json; charset=utf-8"
         },
         {
           "key": "Cache-Control",
@@ -130,7 +146,16 @@
       ]
     },
     {
-      "source": "/static/js/(.*)",
+      "source": "/(.*\\.(jpg|jpeg|png|gif|svg|webp))",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/static/js/(.*\\.js)",
       "headers": [
         {
           "key": "Content-Type",
@@ -149,6 +174,15 @@
           "key": "Content-Type",
           "value": "text/css; charset=utf-8"
         },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*\\.(js|css))",
+      "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"

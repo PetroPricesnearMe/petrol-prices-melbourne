@@ -9,9 +9,9 @@ Allow: /about
 Allow: /fuel-price-trends
 Allow: /station-amenities
 Allow: /how-pricing-works
-Allow: /roadside-assistance
-Allow: /news
-Allow: /station-brands
+Allow: /blog
+Allow: /faq
+Allow: /chat
 
 # Disallow admin and private areas
 Disallow: /admin/
