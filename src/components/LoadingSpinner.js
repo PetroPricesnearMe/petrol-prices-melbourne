@@ -51,7 +51,7 @@ const LoadingSpinner = ({
     };
   }, [timeout, onTimeout, message]);
 
-  const containerClass = `loading-container ${fullScreen ? 'fullscreen' : ''} ${size}`;
+  const containerClass = ['loading-container', fullScreen && 'fullscreen', size].filter(Boolean).join(' ');
 
   // Show timeout message if timed out
   if (timedOut) {
