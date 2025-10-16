@@ -341,7 +341,8 @@
 }
 
 .action-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
+  background: var(--primary-600);
+  transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 

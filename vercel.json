@@ -3,7 +3,7 @@
   "outputDirectory": "build",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!static|images|data|favicon.ico|manifest.json|robots.txt|sitemap.xml).*)",
       "destination": "/index.html"
     }
   ],
@@ -60,6 +60,19 @@
       ]
     },
     {
+      "source": "/images/(.*).svg",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/svg+xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
       "source": "/images/(.*)",
       "headers": [
         {
@@ -82,7 +95,7 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "application/manifest+json; charset=utf-8"
+          "value": "application/json; charset=utf-8"
         },
         {
           "key": "Cache-Control",
@@ -121,7 +134,7 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "application/javascript; charset=utf-8"
+          "value": "text/javascript; charset=utf-8"
         },
         {
           "key": "Cache-Control",
