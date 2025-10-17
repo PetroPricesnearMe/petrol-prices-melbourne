@@ -1,31 +1,35 @@
-# Melbourne Petrol Stations Directory
+# Melbourne Petrol Prices - Compare Live Fuel Prices
 
-A modern, interactive web application that features a directory of petrol stations in Melbourne with real-time fuel prices and an interactive map.
+**Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today!**
 
-## Features
+A modern, interactive web application that helps Melbourne drivers save money by comparing real-time fuel prices across hundreds of petrol stations.
 
-### 🏠 Home Page
-- Full-page header with bold color contrasts
-- Hero section with "Petrol Prices Near Me" heading  
-- Navigation buttons to live map and fuel prices
-- Responsive design with animations and modern aesthetics
-- Statistics display and feature cards
+## 🌟 Key Features
 
-### 🗺️ Interactive Live Map Page
-- Interactive map showing all petrol stations in Melbourne
-- Real-time fuel price updates using WebSockets
-- Custom markers with color-coded pricing (green = cheap, yellow = average, red = expensive)
-- Fuel type selector (Unleaded 91, Premium 95, Diesel)
-- Detailed popup information for each station
-- Modern map styling with Leaflet integration
+### 💰 Save Money on Every Fill-Up
+- **250+ Petrol Stations** - Comprehensive coverage across Melbourne
+- **Real-Time Price Updates** - Always see the latest fuel prices
+- **Save up to 20c/L** - Find the cheapest fuel near you
+- **Compare All Fuel Types** - Unleaded, Diesel, Premium, E10, LPG
 
-### 📋 Directory Page  
-- Grid layout displaying petrol stations (5 per row on desktop)
-- Advanced search functionality by name, suburb, or brand
-- Filter by fuel brand and sort by various criteria
-- Interactive station cards with hover effects
-- Complete station information including prices, hours, and contact details
-- Responsive design adapting to different screen sizes
+### 🗺️ Interactive Live Map
+- **Visual Price Comparison** - Color-coded markers (green = cheap, red = expensive)
+- **Location-Based Search** - Find cheapest fuel stations near your location
+- **Detailed Station Info** - Prices, hours, contact details, and directions
+- **Multiple Fuel Types** - Filter by Unleaded 91, Premium 95/98, Diesel
+- **Real-Time Updates** - Prices refresh automatically every 15 seconds
+
+### 📋 Smart Directory & Search
+- **Advanced Filters** - Search by name, suburb, brand, or fuel type
+- **Brand Filtering** - Shell, BP, Caltex, 7-Eleven, United, Ampol, and more
+- **Responsive Grid Layout** - Beautiful 3x4 card layout adapts to any screen
+- **Sort Options** - Sort by price, name, or location
+- **Live Search** - Results update as you type
+
+### 🎯 Regional Browse
+- **Melbourne Regions** - Browse by North, South, East, West, and CBD
+- **Fuel Pump Counter** - See station counts for each region
+- **Quick Navigation** - Jump directly to your area of interest
 
 ## Technology Stack
 

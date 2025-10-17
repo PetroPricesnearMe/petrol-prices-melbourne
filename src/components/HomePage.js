@@ -13,7 +13,7 @@ const homepageStructuredData = [
     "@type": "WebSite",
     "name": "Petrol Prices Near Me",
     "url": "https://www.petrolpricesnearme.com.au",
-    "description": "Find the cheapest petrol prices in Melbourne with real-time fuel price updates from 250+ stations",
+    "description": "Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today!",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -62,9 +62,9 @@ const HomePage = () => {
   return (
     <>
       <SEO
-        title="Petrol Prices Near Me - Find Cheapest Fuel in Melbourne | Live Updates"
-        description="Find the cheapest petrol prices in Melbourne with real-time fuel price updates. Compare prices from 250+ stations across Melbourne regions. Save money on every fill-up."
-        keywords="petrol prices melbourne, fuel prices melbourne, cheapest petrol, petrol stations near me, live fuel prices, melbourne petrol, fuel comparison"
+        title="Compare Live Petrol Prices from 250+ Stations in Melbourne | Save up to 20c/L"
+        description="Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today!"
+        keywords="petrol prices melbourne, fuel prices melbourne, cheapest petrol, petrol stations near me, live fuel prices, melbourne petrol, fuel comparison, unleaded prices, diesel prices, premium fuel"
         canonical="/"
         structuredData={homepageStructuredData}
       />
@@ -88,12 +88,12 @@ const HomePage = () => {
               </MotionDiv>
 
               <MotionH1 className="hero-title" variants={itemVariants}>
-                Melbourne Petrol Prices - Find Cheapest Fuel Near You
+                Compare Live Petrol Prices from 250+ Stations in Melbourne
               </MotionH1>
 
               <MotionP className="hero-subtitle" variants={itemVariants}>
-                Find the cheapest fuel prices in Melbourne with real-time updates
-                and interactive maps. Save money on every fill-up.
+                Save up to 20c/L with real-time fuel price updates. Find the cheapest 
+                unleaded, diesel & premium near you today!
               </MotionP>
 
               <MotionDiv className="hero-buttons" variants={itemVariants}>
