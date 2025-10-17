@@ -11,8 +11,8 @@
   top: 73px;
   /* Below navbar */
   z-index: var(--z-sticky);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .breadcrumb-list {
