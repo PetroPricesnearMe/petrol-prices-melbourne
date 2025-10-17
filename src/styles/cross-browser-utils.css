@@ -268,6 +268,7 @@
   }
   
   .station-card {
+    flex: 1 1 300px;
     -ms-flex: 1 1 300px;
   }
 }

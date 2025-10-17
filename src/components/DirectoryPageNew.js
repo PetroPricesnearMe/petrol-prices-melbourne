@@ -21,18 +21,12 @@ const ITEMS_PER_PAGE = 12;
 
 // Brand image mapping
 const BRAND_IMAGES = {
-  'shell': '/images/brands/shell.svg',
-  'bp': '/images/brands/bp.svg',
-  '7-eleven': '/images/brands/7-eleven.svg',
-  'seven eleven': '/images/brands/7-eleven.svg',
-  'mobil': '/images/brands/mobil.svg',
-  'coles express': '/images/brands/coles-express.svg',
-  'united': '/images/brands/united.svg',
-  'liberty': '/images/brands/liberty.svg',
-  'apco': '/images/brands/apco.svg',
-  'caltex': '/images/brands/caltex.svg',
-  'ampol': '/images/brands/caltex.svg',
-  'default': '/images/brands/default-logo.svg'
+  'shell': '/images/fuel-nozzles.svg', // Using default image (shell-station.jpg not available)
+  'bp': '/images/fuel-nozzles.svg', // Using default image (bp-station.jpg not available)
+  '7-eleven': '/images/stations/seven-eleven.jpg',
+  'seven eleven': '/images/stations/seven-eleven.jpg',
+  'mobil': '/images/stations/seven-eleven.jpg',
+  'default': '/images/fuel-nozzles.svg'
 };
 
 // Get brand-specific CSS class
@@ -392,7 +386,7 @@ const DirectoryPageNew = () => {
           </div>
         </div>
 
-        {/* Cards View - StationCards component handles its own data loading and filtering */}
+        {/* Cards View */}
         {viewMode === 'cards' && (
           <div className="container">
             <StationCards />
