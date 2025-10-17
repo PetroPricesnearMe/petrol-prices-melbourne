@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { MotionDiv, MotionH1, MotionP, MotionSection, containerVariants, itemVariants } from '../src/components/MotionComponents';
 import RegionSelectorNext from '../components/features/RegionSelectorNext';
 import { trackPageView } from '../src/utils/analytics';
-import { loadStationsFromGeoJSON } from '../lib/data/loadStations';
+import { loadStations } from '../lib/data/loadStations';
 import { getRegionCounts } from '../src/config/regions';
 
 // Structured data for homepage
@@ -231,19 +231,35 @@ export default function HomePage({ regionCounts, totalStations }) {
 }
 
 // Server-side data loading with ISR
+// Uses Baserow data when available, falls back to GeoJSON
 export async function getStaticProps() {
   console.log('🏗️ [Build] Generating HomePage with static data...');
   
-  const stations = await loadStationsFromGeoJSON();
-  const regionCounts = getRegionCounts(stations);
-  const totalStations = stations.length;
+  try {
+    const stations = await loadStations();
+    const regionCounts = getRegionCounts(stations);
+    const totalStations = stations.length;
 
-  return {
-    props: {
-      regionCounts,
-      totalStations,
-    },
-    revalidate: 86400, // Regenerate every 24 hours (ISR)
-  };
+    console.log(`✅ [Build] Loaded ${totalStations} stations for HomePage`);
+
+    return {
+      props: {
+        regionCounts,
+        totalStations,
+      },
+      revalidate: 3600, // Regenerate every hour (ISR) - more frequent for real data
+    };
+  } catch (error) {
+    console.error('❌ [Build] Error loading stations:', error);
+    
+    // Return default values on error
+    return {
+      props: {
+        regionCounts: {},
+        totalStations: 0,
+      },
+      revalidate: 60, // Retry in 1 minute
+    };
+  }
 }
 
