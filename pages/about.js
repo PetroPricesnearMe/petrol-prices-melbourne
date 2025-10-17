@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Head from 'next/head';
-import Breadcrumbs from '../src/components/Breadcrumbs';
+import BreadcrumbsNext from '../components/layout/BreadcrumbsNext';
 import { trackPageView } from '../src/utils/analytics';
 
 export default function AboutPage() {
@@ -17,7 +17,7 @@ export default function AboutPage() {
       </Head>
 
       <div className="about-page">
-        <Breadcrumbs />
+        <BreadcrumbsNext />
         <h1>About Melbourne Fuel</h1>
         {/* Rest of about content */}
       </div>

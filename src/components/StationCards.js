@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import dataSourceManager from '../services/DataSourceManager';
 import { trackSearch, trackFilter } from '../utils/analytics';
 import BrandLogoManager from './BrandLogoManager';
-import './StationCards.css';
+// CSS imported in pages/_app.js
 
 /**
  * Station Cards Component

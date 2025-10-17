@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MotionDiv } from './MotionComponents';
 import { MELBOURNE_REGIONS, getRegionCounts } from '../config/regions';
 import dataSourceManager from '../services/DataSourceManager';
-import './RegionSelector.css';
+// CSS imported in pages/_app.js for Next.js compatibility
 
 const RegionSelector = () => {
   const [regionCounts, setRegionCounts] = useState({});

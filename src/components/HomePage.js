@@ -4,7 +4,7 @@ import { MotionDiv, MotionH1, MotionP, MotionSection, containerVariants, itemVar
 import RegionSelector from './RegionSelector';
 import SEO from './SEO';
 import { trackPageView } from '../utils/analytics';
-import './HomePage.css';
+// CSS imported in pages/_app.js
 
 // Structured data for homepage (moved outside component for performance)
 const homepageStructuredData = [

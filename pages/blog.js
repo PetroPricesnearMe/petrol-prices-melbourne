@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Head from 'next/head';
-import Breadcrumbs from '../src/components/Breadcrumbs';
+import BreadcrumbsNext from '../components/layout/BreadcrumbsNext';
 import { trackPageView } from '../src/utils/analytics';
 
 export default function BlogPage() {
@@ -17,7 +17,7 @@ export default function BlogPage() {
       </Head>
 
       <div className="blog-page">
-        <Breadcrumbs />
+        <BreadcrumbsNext />
         <h1>Blog - Fuel Savings Guide</h1>
         {/* Rest of blog content from src/components/BlogPage.js */}
       </div>

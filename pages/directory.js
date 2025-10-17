@@ -9,7 +9,7 @@ import { MELBOURNE_REGIONS, getStationRegion } from '../src/config/regions';
 import AdvancedFilters from '../src/components/AdvancedFilters';
 import StationMap from '../src/components/StationMap';
 import StationCards from '../src/components/StationCards';
-import Breadcrumbs from '../src/components/Breadcrumbs';
+import BreadcrumbsNext from '../components/layout/BreadcrumbsNext';
 import { generateFuelPriceListingData } from '../src/components/SEO';
 import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../src/utils/analytics';
 import { loadStationsFromGeoJSON } from '../lib/data/loadStations';
@@ -152,7 +152,7 @@ export default function DirectoryPage({ allStations, selectedRegionData }) {
       </Head>
 
       <div className="directory-page">
-        <Breadcrumbs customCrumbs={selectedRegion ? [
+        <BreadcrumbsNext customCrumbs={selectedRegion ? [
           { label: 'Home', path: '/', icon: '🏠' },
           { label: 'Station Directory', path: '/directory' },
           { label: selectedRegion.name, path: `/directory?region=${regionParam}`, isActive: true }

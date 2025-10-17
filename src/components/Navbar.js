@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import './Navbar.css';
+// CSS imported in pages/_app.js for Next.js compatibility
 
 const Navbar = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './LoadingSpinner.css';
+// CSS imported in pages/_app.js for Next.js compatibility
 
 const LoadingSpinner = ({ 
   message = "Loading...", 

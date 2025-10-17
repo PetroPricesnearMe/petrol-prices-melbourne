@@ -27,8 +27,8 @@ import '../src/components/HowPricingWorksPage.css';
 import '../src/components/BrandLogoManager.css';
 import '../src/components/AIChat.css';
 
-// Import layout components
-import Navbar from '../src/components/Navbar';
+// Import layout components (Next.js versions)
+import NavbarNext from '../components/layout/NavbarNext';
 import NetworkStatus from '../src/components/NetworkStatus';
 import ErrorBoundary from '../src/components/ErrorBoundary';
 
@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps }) {
           
           {/* Header with navigation */}
           <header role="banner">
-            <Navbar />
+            <NavbarNext />
           </header>
           
           {/* Main content area */}

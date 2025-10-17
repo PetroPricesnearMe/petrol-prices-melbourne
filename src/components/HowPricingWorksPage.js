@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import SEO from './SEO';
 import Breadcrumbs from './Breadcrumbs';
 import { trackPageView } from '../utils/analytics';
-import './HowPricingWorksPage.css';
+// CSS imported in pages/_app.js
 
 const HowPricingWorksPage = () => {
   const [activeSection, setActiveSection] = useState('overview');

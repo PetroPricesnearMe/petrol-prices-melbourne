@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './BrandLogoManager.css';
+// CSS imported in pages/_app.js
 
 /**
  * Brand Logo Manager Component

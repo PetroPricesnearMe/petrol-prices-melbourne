@@ -1,5 +1,5 @@
 import React from 'react';
-import './ErrorBoundary.css';
+// CSS imported in pages/_app.js for Next.js compatibility
 
 class ErrorBoundary extends React.Component {
   constructor(props) {

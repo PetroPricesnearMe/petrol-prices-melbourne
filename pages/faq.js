@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Head from 'next/head';
-import Breadcrumbs from '../src/components/Breadcrumbs';
+import BreadcrumbsNext from '../components/layout/BreadcrumbsNext';
 import { trackPageView } from '../src/utils/analytics';
 
 export default function FAQPage() {
@@ -17,7 +17,7 @@ export default function FAQPage() {
       </Head>
 
       <div className="faq-page">
-        <Breadcrumbs />
+        <BreadcrumbsNext />
         <h1>Frequently Asked Questions</h1>
         {/* Rest of FAQ content from src/components/FAQPage.js */}
       </div>

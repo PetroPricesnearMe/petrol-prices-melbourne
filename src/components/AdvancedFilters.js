@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './AdvancedFilters.css';
+// CSS imported in pages/_app.js
 
 /**
  * Advanced Filters Component

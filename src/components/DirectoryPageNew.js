@@ -9,7 +9,7 @@ import StationCards from './StationCards';
 import Breadcrumbs from './Breadcrumbs';
 import SEO, { generateFuelPriceListingData } from './SEO';
 import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../utils/analytics';
-import './DirectoryPageNew.css';
+// CSS imported in pages/_app.js
 
 /**
  * Directory Page Component
