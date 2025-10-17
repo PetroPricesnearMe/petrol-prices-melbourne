@@ -1,7 +1,9 @@
 {
   "buildCommand": "react-scripts build",
   "devCommand": "react-scripts start",
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "npm install",
+  "outputDirectory": "build",
+  "framework": null,
   "headers": [
     {
       "source": "/(.*)",
