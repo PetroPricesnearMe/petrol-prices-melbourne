@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import dataSourceManager from '../services/DataSourceManager';
 import { trackSearch, trackFilter } from '../utils/analytics';
-import BrandLogoManager from './BrandLogoManager';
 // CSS imported in pages/_app.js
 
 /**
@@ -20,37 +19,8 @@ const StationCards = () => {
   const [filterSuburb, setFilterSuburb] = useState('all');
   const [filterFuelType, setFilterFuelType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [showLogoManager, setShowLogoManager] = useState(false);
-  const [brandLogos, setBrandLogos] = useState({});
   const itemsPerPage = 12;
 
-  // Load brand logos from localStorage
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    const loadBrandLogos = () => {
-      const savedLogos = localStorage.getItem('brandLogos');
-      if (savedLogos) {
-        try {
-          setBrandLogos(JSON.parse(savedLogos));
-        } catch (error) {
-          console.error('Error loading brand logos:', error);
-        }
-      }
-    };
-
-    loadBrandLogos();
-
-    // Listen for storage changes (when logos are updated in BrandLogoManager)
-    const handleStorageChange = (e) => {
-      if (e.key === 'brandLogos') {
-        loadBrandLogos();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
 
   // Parse CSV data
   const parseCSV = useCallback((text) => {
@@ -233,29 +203,44 @@ const StationCards = () => {
     currentPage * itemsPerPage
   );
 
-  // Get brand logo (custom uploaded or default)
-  const getBrandLogo = (brand) => {
-    // Check if brand has a custom uploaded logo
-    if (brand && brandLogos[brand]) {
-      return brandLogos[brand];
-    }
-    // Return default logo
-    return '/images/brands/default-logo.svg';
+  // Brand image mapping
+  const BRAND_IMAGES = {
+    'shell': '/images/brands/shell.svg',
+    'bp': '/images/brands/bp.svg',
+    '7-eleven': '/images/brands/7-eleven.svg',
+    'seven eleven': '/images/brands/7-eleven.svg',
+    'mobil': '/images/brands/mobil.svg',
+    'coles express': '/images/brands/coles-express.svg',
+    'united': '/images/brands/united.svg',
+    'liberty': '/images/brands/liberty.svg',
+    'apco': '/images/brands/apco.svg',
+    'caltex': '/images/brands/caltex.svg',
+    'ampol': '/images/brands/caltex.svg',
+    'default': '/images/brands/default-logo.svg'
   };
 
-  // Refresh logos when manager is closed
-  const handleLogoManagerClose = () => {
-    setShowLogoManager(false);
-    // Reload logos from localStorage
-    const savedLogos = localStorage.getItem('brandLogos');
-    if (savedLogos) {
-      try {
-        setBrandLogos(JSON.parse(savedLogos));
-      } catch (error) {
-        console.error('Error reloading brand logos:', error);
-      }
-    }
+  // Get brand logo
+  const getBrandLogo = (brand) => {
+    if (!brand) return BRAND_IMAGES.default;
+    const brandLower = (typeof brand === 'string' ? brand : '').toLowerCase();
+    
+    // Check for exact matches first
+    if (BRAND_IMAGES[brandLower]) return BRAND_IMAGES[brandLower];
+    
+    // Check for partial matches
+    if (brandLower.includes('shell')) return BRAND_IMAGES.shell;
+    if (brandLower.includes('bp')) return BRAND_IMAGES.bp;
+    if (brandLower.includes('7') || brandLower.includes('seven')) return BRAND_IMAGES['7-eleven'];
+    if (brandLower.includes('mobil')) return BRAND_IMAGES.mobil;
+    if (brandLower.includes('coles')) return BRAND_IMAGES['coles express'];
+    if (brandLower.includes('united')) return BRAND_IMAGES.united;
+    if (brandLower.includes('liberty')) return BRAND_IMAGES.liberty;
+    if (brandLower.includes('apco')) return BRAND_IMAGES.apco;
+    if (brandLower.includes('caltex') || brandLower.includes('ampol')) return BRAND_IMAGES.caltex;
+    
+    return BRAND_IMAGES.default;
   };
+
 
   // Format fuel type for display
   const getFuelIcon = (type) => {
@@ -305,19 +290,7 @@ const StationCards = () => {
         <p className="cards-subtitle">
           Find the best fuel prices near you • {filteredStations.length} stations available
         </p>
-        <button 
-          onClick={() => setShowLogoManager(true)}
-          className="admin-btn"
-          title="Manage Brand Logos"
-        >
-          🎨 Manage Logos
-        </button>
       </div>
-
-      {/* Brand Logo Manager Modal */}
-      {showLogoManager && (
-        <BrandLogoManager onClose={handleLogoManagerClose} />
-      )}
 
       {/* Enhanced Filters */}
       <div className="cards-filters">

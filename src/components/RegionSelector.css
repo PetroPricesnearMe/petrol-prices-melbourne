@@ -119,43 +119,192 @@
   font-weight: 500;
 }
 
-/* Count Badge */
-.region-count-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  color: white;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  min-width: 140px;
+/* Fuel Pump Counter */
+.fuel-pump-counter {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+  --region-color: #667eea;
 }
 
-.modern-region-link:hover .region-count-badge {
-  transform: scale(1.05);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+.pump-display {
+  position: relative;
+  background: linear-gradient(145deg, #2d3748, #1a202c);
+  border-radius: 12px 12px 8px 8px;
+  padding: 1rem;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 2px solid #4a5568;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-region-link:hover .pump-display {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: var(--region-color);
+}
+
+.pump-screen {
+  background: linear-gradient(135deg, #1a202c, #2d3748);
+  border-radius: 8px;
+  padding: 0.75rem;
+  border: 1px solid #4a5568;
+  position: relative;
+  overflow: hidden;
+}
+
+.pump-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    transparent 70%);
+  animation: screenGlow 3s ease-in-out infinite;
+}
+
+.pump-screen-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pump-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 4px var(--region-color));
+  animation: pumpPulse 2s ease-in-out infinite;
+}
+
+.pump-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.station-count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
 }
 
 .count-number {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 900;
+  color: var(--region-color);
+  text-shadow: 0 0 8px var(--region-color);
+  font-family: 'Courier New', monospace;
   line-height: 1;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.count-label {
-  font-size: 0.75rem;
+.count-unit {
+  font-size: 0.7rem;
+  color: #a0aec0;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  opacity: 0.95;
 }
 
-.count-loading {
-  font-size: 1.25rem;
-  animation: pulse 1.5s ease-in-out infinite;
+.fuel-price-display {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.price-label {
+  font-size: 0.6rem;
+  color: #718096;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.price-value {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #68d391;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 4px #68d391;
+}
+
+.pump-handle {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 40px;
+  background: linear-gradient(145deg, #4a5568, #2d3748);
+  border-radius: 8px;
+  box-shadow: 
+    2px 0 4px rgba(0, 0, 0, 0.3),
+    inset 1px 0 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid #2d3748;
+}
+
+.pump-base {
+  height: 8px;
+  background: linear-gradient(145deg, #1a202c, #2d3748);
+  border-radius: 0 0 8px 8px;
+  margin-top: -1px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pump-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.loading-dots span {
+  width: 6px;
+  height: 6px;
+  background: var(--region-color);
+  border-radius: 50%;
+  animation: loadingBounce 1.4s ease-in-out infinite both;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+.loading-dots span:nth-child(3) { animation-delay: 0s; }
+
+@keyframes screenGlow {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes pumpPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes loadingBounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Hover Shine Effect */
@@ -345,13 +494,38 @@
     font-size: 0.875rem;
   }
 
-  .region-count-badge {
-    padding: 0.75rem 1.5rem;
-    min-width: 120px;
+  .fuel-pump-counter {
+    max-width: 160px;
+  }
+
+  .pump-display {
+    padding: 0.75rem;
+  }
+
+  .pump-screen {
+    padding: 0.5rem;
+  }
+
+  .pump-icon {
+    font-size: 1.25rem;
   }
 
   .count-number {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
+  }
+
+  .count-unit {
+    font-size: 0.65rem;
+  }
+
+  .price-value {
+    font-size: 0.7rem;
+  }
+
+  .pump-handle {
+    width: 12px;
+    height: 32px;
+    right: -6px;
   }
 
   .summary-content {

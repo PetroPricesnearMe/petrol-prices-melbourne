@@ -24,7 +24,6 @@ import '../src/components/FAQPage.css';
 import '../src/components/FuelPriceTrendsPage.css';
 import '../src/components/StationAmenitiesPage.css';
 import '../src/components/HowPricingWorksPage.css';
-import '../src/components/BrandLogoManager.css';
 import '../src/components/AIChat.css';
 
 // Import layout components (Next.js versions)

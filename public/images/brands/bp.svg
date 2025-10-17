@@ -1,0 +1,33 @@
+<svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bpGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#32CD32;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#228B22;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Outer green petals -->
+  <g transform="translate(100,40)">
+    <g>
+      <polygon points="0,-30 8,-8 30,0 8,8 0,30 -8,8 -30,0 -8,-8" 
+               fill="#228B22" stroke="#1E5A1E" stroke-width="1"/>
+    </g>
+    
+    <!-- Middle light green petals -->
+    <g transform="scale(0.7)">
+      <polygon points="0,-25 6,-6 25,0 6,6 0,25 -6,6 -25,0 -6,-6" 
+               fill="#32CD32" stroke="#228B22" stroke-width="1"/>
+    </g>
+    
+    <!-- Inner yellow petals -->
+    <g transform="scale(0.4)">
+      <polygon points="0,-20 5,-5 20,0 5,5 0,20 -5,5 -20,0 -5,-5" 
+               fill="#FFD700" stroke="#32CD32" stroke-width="1"/>
+    </g>
+    
+    <!-- White center -->
+    <circle cx="0" cy="0" r="8" fill="white" stroke="#FFD700" stroke-width="1"/>
+  </g>
+</svg>

@@ -21,12 +21,18 @@ const ITEMS_PER_PAGE = 12;
 
 // Brand image mapping
 const BRAND_IMAGES = {
-  'shell': '/images/fuel-nozzles.svg', // Using default image (shell-station.jpg not available)
-  'bp': '/images/fuel-nozzles.svg', // Using default image (bp-station.jpg not available)
-  '7-eleven': '/images/stations/seven-eleven.jpg',
-  'seven eleven': '/images/stations/seven-eleven.jpg',
-  'mobil': '/images/stations/seven-eleven.jpg',
-  'default': '/images/fuel-nozzles.svg'
+  'shell': '/images/brands/shell.svg',
+  'bp': '/images/brands/bp.svg',
+  '7-eleven': '/images/brands/7-eleven.svg',
+  'seven eleven': '/images/brands/7-eleven.svg',
+  'mobil': '/images/brands/mobil.svg',
+  'coles express': '/images/brands/coles-express.svg',
+  'united': '/images/brands/united.svg',
+  'liberty': '/images/brands/liberty.svg',
+  'apco': '/images/brands/apco.svg',
+  'caltex': '/images/brands/caltex.svg',
+  'ampol': '/images/brands/caltex.svg',
+  'default': '/images/brands/default-logo.svg'
 };
 
 // Get brand-specific CSS class
@@ -46,10 +52,21 @@ const getBrandClass = (brand) => {
 const getBrandImage = (brand) => {
   if (!brand) return BRAND_IMAGES.default;
   const brandLower = (typeof brand === 'string' ? brand : '').toLowerCase();
+  
+  // Check for exact matches first
+  if (BRAND_IMAGES[brandLower]) return BRAND_IMAGES[brandLower];
+  
+  // Check for partial matches
   if (brandLower.includes('shell')) return BRAND_IMAGES.shell;
   if (brandLower.includes('bp')) return BRAND_IMAGES.bp;
   if (brandLower.includes('7') || brandLower.includes('seven')) return BRAND_IMAGES['7-eleven'];
   if (brandLower.includes('mobil')) return BRAND_IMAGES.mobil;
+  if (brandLower.includes('coles')) return BRAND_IMAGES['coles express'];
+  if (brandLower.includes('united')) return BRAND_IMAGES.united;
+  if (brandLower.includes('liberty')) return BRAND_IMAGES.liberty;
+  if (brandLower.includes('apco')) return BRAND_IMAGES.apco;
+  if (brandLower.includes('caltex') || brandLower.includes('ampol')) return BRAND_IMAGES.caltex;
+  
   return BRAND_IMAGES.default;
 };
 
