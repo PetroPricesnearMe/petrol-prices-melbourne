@@ -10,6 +10,9 @@
  * Loads the gtag.js script and configures GA4 with environment variables
  */
 export const initializeGA = () => {
+  // Only initialize on client side
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  
   try {
     const measurementId = process.env.REACT_APP_GA_MEASUREMENT_ID;
 
@@ -79,6 +82,8 @@ export const initializeGA = () => {
  * @param {string} title - Page title
  */
 export const trackPageView = (path, title) => {
+  if (typeof window === 'undefined') return;
+  
   try {
     if (!window.gtag) return;
 
@@ -102,6 +107,8 @@ export const trackPageView = (path, title) => {
  * @param {Object} eventParams - Event parameters
  */
 export const trackGAEvent = (eventName, eventParams = {}) => {
+  if (typeof window === 'undefined') return;
+  
   try {
     if (!window.gtag) return;
 
@@ -211,6 +218,8 @@ export const trackConversion = (conversionType, stationName) => {
  * @param {Object} properties - User properties
  */
 export const setUserProperties = (properties) => {
+  if (typeof window === 'undefined') return;
+  
   try {
     if (!window.gtag) return;
 
