@@ -119,6 +119,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
 }
@@ -227,19 +228,20 @@
   line-height: var(--leading-normal);
 }
 
-/* Fuel Prices - Redesigned with Prominent Display */
+/* Fuel Prices - Enhanced Modern Design */
 .fuel-prices {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
   padding: 0;
 }
 
 .fuel-price-item {
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -475,6 +477,11 @@
     gap: var(--space-6);
   }
 
+  .station-card {
+    min-height: 280px;
+  }
+}
+
   .cards-filters {
     flex-direction: row;
     flex-wrap: wrap;
@@ -500,6 +507,10 @@
     gap: var(--space-8);
   }
 
+  .station-card {
+    min-height: 320px;
+  }
+
   .cards-filters {
     flex-wrap: nowrap;
   }
@@ -514,5 +525,9 @@
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-8);
+  }
+
+  .station-card {
+    min-height: 340px;
   }
 }
