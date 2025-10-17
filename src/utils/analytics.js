@@ -159,6 +159,8 @@ class AnalyticsStore {
    * Send event to external analytics platforms (Google Analytics, etc.)
    */
   sendToExternalAnalytics(event) {
+    if (typeof window === 'undefined') return;
+    
     // Wrap all analytics in try-catch to ensure they never block user interactions
     try {
       // Google Analytics 4 - Enhanced Event Tracking
@@ -338,6 +340,8 @@ class AnalyticsStore {
    * Export analytics data as CSV
    */
   exportToCSV() {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    
     const headers = ['Timestamp', 'Event Type', 'Session ID', 'Page', 'Data'];
     const rows = this.events.map(e => [
       new Date(e.timestamp).toISOString(),
@@ -363,7 +367,9 @@ class AnalyticsStore {
    */
   clearData() {
     this.events = [];
-    localStorage.removeItem('ppnm_analytics');
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('ppnm_analytics');
+    }
   }
 }
 
