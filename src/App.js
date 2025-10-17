@@ -16,6 +16,7 @@ const HowPricingWorksPage = React.lazy(() => import('./components/HowPricingWork
 const BlogPage = React.lazy(() => import('./components/BlogPage'));
 const FAQPage = React.lazy(() => import('./components/FAQPage'));
 const AIChat = React.lazy(() => import('./components/AIChat'));
+const GooglePlacesSearch = React.lazy(() => import('./components/GooglePlacesSearch'));
 
 // Loading component for lazy-loaded pages
 const PageLoader = () => (
@@ -62,6 +63,7 @@ function App() {
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/faq" element={<FAQPage />} />
                   <Route path="/chat" element={<AIChat />} />
+                  <Route path="/google-places" element={<GooglePlacesSearch />} />
                 </Routes>
               </Suspense>
             </main>

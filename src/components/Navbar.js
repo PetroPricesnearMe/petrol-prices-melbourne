@@ -60,6 +60,14 @@ const Navbar = React.memo(() => {
               Amenities
             </Link>
             <Link 
+              to="/google-places" 
+              className={`nav-link ${isActive('/google-places')}`}
+              onClick={handleLinkClick}
+              aria-current={location.pathname === '/google-places' ? 'page' : undefined}
+            >
+              Google Search
+            </Link>
+            <Link 
               to="/how-pricing-works" 
               className={`nav-link ${isActive('/how-pricing-works')}`}
               onClick={handleLinkClick}
