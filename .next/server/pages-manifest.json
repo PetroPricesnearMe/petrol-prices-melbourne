@@ -1,14 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/about": "pages/about.html",
-  "/_document": "pages/_document.js",
-  "/_error": "pages/_error.js",
-  "/api/fuel-prices": "pages/api/fuel-prices.js",
-  "/api/health": "pages/api/health.js",
-  "/api/master-agent-report": "pages/api/master-agent-report.js",
-  "/api/stations": "pages/api/stations.js",
-  "/blog": "pages/blog.html",
-  "/faq": "pages/faq.html",
-  "/": "pages/index.js",
-  "/404": "pages/404.html"
-}
+{}
