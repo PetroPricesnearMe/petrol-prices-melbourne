@@ -1,12 +1,14 @@
 {
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
-  "/about": "pages/about.js",
-  "/blog": "pages/blog.js",
   "/_document": "pages/_document.js",
-  "/faq": "pages/faq.js",
-  "/api/stations": "pages/api/stations.js",
+  "/about": "pages/about.js",
+  "/api/master-agent-report": "pages/api/master-agent-report.js",
+  "/api/fuel-prices": "pages/api/fuel-prices.js",
   "/api/health": "pages/api/health.js",
+  "/api/stations": "pages/api/stations.js",
+  "/blog": "pages/blog.js",
+  "/faq": "pages/faq.js",
   "/": "pages/index.js",
   "/directory": "pages/directory.js"
 }

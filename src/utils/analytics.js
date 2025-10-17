@@ -49,29 +49,32 @@ class AnalyticsStore {
     this.sessionId = this.generateSessionId();
     this.sessionStartTime = Date.now();
 
-    // Load existing analytics data from localStorage
-    this.loadFromStorage();
+    // Only run browser-specific code on the client side
+    if (typeof window !== 'undefined') {
+      // Load existing analytics data from localStorage
+      this.loadFromStorage();
 
-    // Track session end using modern Page Visibility API and pagehide event
-    // These are more reliable than the deprecated beforeunload/unload events
+      // Track session end using modern Page Visibility API and pagehide event
+      // These are more reliable than the deprecated beforeunload/unload events
 
-    // Use visibilitychange to track when user switches tabs or minimizes
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
+      // Use visibilitychange to track when user switches tabs or minimizes
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+          this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
+            duration: Date.now() - this.sessionStartTime,
+            reason: 'visibility_hidden'
+          });
+        }
+      });
+
+      // Use pagehide as a more reliable alternative to beforeunload
+      window.addEventListener('pagehide', () => {
         this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
           duration: Date.now() - this.sessionStartTime,
-          reason: 'visibility_hidden'
+          reason: 'page_hide'
         });
-      }
-    });
-
-    // Use pagehide as a more reliable alternative to beforeunload
-    window.addEventListener('pagehide', () => {
-      this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
-        duration: Date.now() - this.sessionStartTime,
-        reason: 'page_hide'
       });
-    });
+    }
   }
 
   /**
@@ -85,6 +88,8 @@ class AnalyticsStore {
    * Load analytics data from localStorage
    */
   loadFromStorage() {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+    
     try {
       const stored = localStorage.getItem('ppnm_analytics');
       if (stored) {
@@ -100,6 +105,8 @@ class AnalyticsStore {
    * Save analytics data to localStorage
    */
   saveToStorage() {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+    
     try {
       const data = {
         events: this.events.slice(-1000), // Keep last 1000 events
@@ -117,6 +124,8 @@ class AnalyticsStore {
    * @param {Object} eventData - Additional event data
    */
   trackEvent(eventType, eventData = {}) {
+    if (typeof window === 'undefined') return;
+    
     try {
       const event = {
         id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,

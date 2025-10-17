@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { MotionDiv } from '../../src/components/MotionComponents';
 import { MELBOURNE_REGIONS } from '../../src/config/regions';
-import '../../src/components/RegionSelector.css';
 
 const RegionSelectorNext = ({ regionCounts, totalStations }) => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
