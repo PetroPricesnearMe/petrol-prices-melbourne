@@ -216,9 +216,21 @@ export default function DirectoryPage() {
           content={`petrol prices ${selectedRegion?.name || 'melbourne'}, fuel prices ${selectedRegion?.name || 'melbourne'}, cheapest petrol, station directory`} 
         />
         <link rel="canonical" href={`/directory${regionParam ? `?region=${regionParam}` : ''}`} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFuelPriceListingData(filteredStations.slice(0, 10))) }}
+        />
       </Head>
 
       <div className="directory-page">
+        {loading && (
+          <div style={{ textAlign: 'center', padding: '4rem' }}>
+            <p>Loading stations...</p>
+          </div>
+        )}
+        
+        {!loading && (
+          <>
         <BreadcrumbsNext customCrumbs={selectedRegion ? [
           { label: 'Home', path: '/', icon: '🏠' },
           { label: 'Station Directory', path: '/directory' },
