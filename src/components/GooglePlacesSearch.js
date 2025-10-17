@@ -266,4 +266,3 @@ const GooglePlacesSearch = () => {
 };
 
 export default GooglePlacesSearch;
-onbefore
