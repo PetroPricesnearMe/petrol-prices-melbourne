@@ -130,15 +130,6 @@
       ]
     },
     {
-      "source": "/(.*\\.(jpg|jpeg|png|gif|svg|webp))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
       "source": "/static/js/(.*\\.js)",
       "headers": [
         {
@@ -158,15 +149,6 @@
           "key": "Content-Type",
           "value": "text/css; charset=utf-8"
         },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(.*\\.(js|css))",
-      "headers": [
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"

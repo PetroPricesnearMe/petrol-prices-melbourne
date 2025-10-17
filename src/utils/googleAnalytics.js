@@ -10,21 +10,24 @@
  * Loads the gtag.js script and configures GA4 with environment variables
  */
 export const initializeGA = () => {
-  const measurementId = process.env.REACT_APP_GA_MEASUREMENT_ID;
+  try {
+    const measurementId = process.env.REACT_APP_GA_MEASUREMENT_ID;
 
-  // Don't initialize if no measurement ID is provided
-  if (!measurementId || measurementId === 'G-XXXXXXXXXX') {
-    console.log('📊 Google Analytics: Measurement ID not configured, skipping initialization');
-    return;
-  }
+    // Don't initialize if no measurement ID is provided
+    if (!measurementId || measurementId === 'G-XXXXXXXXXX') {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('ℹ️ Google Analytics: Measurement ID not configured (this is normal in development)');
+      }
+      return;
+    }
 
-  // Prevent double initialization
-  if (window.gtag) {
-    console.log('📊 Google Analytics: Already initialized');
-    return;
-  }
+    // Prevent double initialization
+    if (window.gtag) {
+      console.log('📊 Google Analytics: Already initialized');
+      return;
+    }
 
-  console.log('📊 Initializing Google Analytics 4:', measurementId);
+    console.log('📊 Initializing Google Analytics 4:', measurementId);
 
   // Load gtag.js script
   const script = document.createElement('script');
@@ -63,7 +66,11 @@ export const initializeGA = () => {
     }
   });
 
-  console.log('✅ Google Analytics 4 initialized successfully');
+    console.log('✅ Google Analytics 4 initialized successfully');
+  } catch (error) {
+    // Fail gracefully - analytics should never break functionality
+    console.warn('⚠️ Google Analytics initialization failed:', error);
+  }
 };
 
 /**
@@ -72,14 +79,21 @@ export const initializeGA = () => {
  * @param {string} title - Page title
  */
 export const trackPageView = (path, title) => {
-  if (!window.gtag) return;
+  try {
+    if (!window.gtag) return;
 
-  window.gtag('event', 'page_view', {
-    page_title: title,
-    page_location: window.location.href,
-    page_path: path,
-    send_to: process.env.REACT_APP_GA_MEASUREMENT_ID
-  });
+    window.gtag('event', 'page_view', {
+      page_title: title,
+      page_location: window.location.href,
+      page_path: path,
+      send_to: process.env.REACT_APP_GA_MEASUREMENT_ID
+    });
+  } catch (error) {
+    // Fail silently - analytics should never break functionality
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('GA trackPageView error:', error);
+    }
+  }
 };
 
 /**
@@ -88,12 +102,19 @@ export const trackPageView = (path, title) => {
  * @param {Object} eventParams - Event parameters
  */
 export const trackGAEvent = (eventName, eventParams = {}) => {
-  if (!window.gtag) return;
+  try {
+    if (!window.gtag) return;
 
-  window.gtag('event', eventName, {
-    ...eventParams,
-    send_to: process.env.REACT_APP_GA_MEASUREMENT_ID
-  });
+    window.gtag('event', eventName, {
+      ...eventParams,
+      send_to: process.env.REACT_APP_GA_MEASUREMENT_ID
+    });
+  } catch (error) {
+    // Fail silently - analytics should never break functionality
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('GA trackEvent error:', error);
+    }
+  }
 };
 
 /**
@@ -102,12 +123,16 @@ export const trackGAEvent = (eventName, eventParams = {}) => {
  * @param {string} location - Location searched
  */
 export const trackFuelSearch = (fuelType, location) => {
-  trackGAEvent('fuel_search', {
-    fuel_type: fuelType,
-    search_location: location,
-    event_category: 'Search',
-    event_label: `${fuelType} in ${location}`
-  });
+  try {
+    trackGAEvent('fuel_search', {
+      fuel_type: fuelType,
+      search_location: location,
+      event_category: 'Search',
+      event_label: `${fuelType} in ${location}`
+    });
+  } catch (error) {
+    // Fail silently
+  }
 };
 
 /**
@@ -116,12 +141,16 @@ export const trackFuelSearch = (fuelType, location) => {
  * @param {string} action - Action type (view, directions, etc.)
  */
 export const trackStationInteraction = (stationName, action) => {
-  trackGAEvent('station_interaction', {
-    station_name: stationName,
-    interaction_type: action,
-    event_category: 'Engagement',
-    event_label: stationName
-  });
+  try {
+    trackGAEvent('station_interaction', {
+      station_name: stationName,
+      interaction_type: action,
+      event_category: 'Engagement',
+      event_label: stationName
+    });
+  } catch (error) {
+    // Fail silently
+  }
 };
 
 /**
@@ -130,12 +159,16 @@ export const trackStationInteraction = (stationName, action) => {
  * @param {number} stationCount - Number of stations compared
  */
 export const trackPriceComparison = (fuelType, stationCount) => {
-  trackGAEvent('price_comparison', {
-    fuel_type: fuelType,
-    station_count: stationCount,
-    event_category: 'Comparison',
-    value: stationCount
-  });
+  try {
+    trackGAEvent('price_comparison', {
+      fuel_type: fuelType,
+      station_count: stationCount,
+      event_category: 'Comparison',
+      value: stationCount
+    });
+  } catch (error) {
+    // Fail silently
+  }
 };
 
 /**
@@ -144,11 +177,15 @@ export const trackPriceComparison = (fuelType, stationCount) => {
  * @param {string} filterValue - Filter value
  */
 export const trackFilterUsage = (filterType, filterValue) => {
-  trackGAEvent('filter_applied', {
-    filter_type: filterType,
-    filter_value: filterValue,
-    event_category: 'Filter'
-  });
+  try {
+    trackGAEvent('filter_applied', {
+      filter_type: filterType,
+      filter_value: filterValue,
+      event_category: 'Filter'
+    });
+  } catch (error) {
+    // Fail silently
+  }
 };
 
 /**
@@ -157,12 +194,16 @@ export const trackFilterUsage = (filterType, filterValue) => {
  * @param {string} stationName - Station name
  */
 export const trackConversion = (conversionType, stationName) => {
-  trackGAEvent('conversion', {
-    conversion_type: conversionType,
-    station_name: stationName,
-    event_category: 'Conversion',
-    value: 1
-  });
+  try {
+    trackGAEvent('conversion', {
+      conversion_type: conversionType,
+      station_name: stationName,
+      event_category: 'Conversion',
+      value: 1
+    });
+  } catch (error) {
+    // Fail silently
+  }
 };
 
 /**
@@ -170,9 +211,13 @@ export const trackConversion = (conversionType, stationName) => {
  * @param {Object} properties - User properties
  */
 export const setUserProperties = (properties) => {
-  if (!window.gtag) return;
+  try {
+    if (!window.gtag) return;
 
-  window.gtag('set', 'user_properties', properties);
+    window.gtag('set', 'user_properties', properties);
+  } catch (error) {
+    // Fail silently
+  }
 };
 
 const googleAnalytics = {
