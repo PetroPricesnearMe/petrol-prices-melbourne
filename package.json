@@ -17,9 +17,10 @@
     "express": "^5.1.0",
     "framer-motion": "^10.0.1",
     "mapbox-gl": "^3.14.0",
+    "next": "^15.5.5",
     "node-fetch": "^3.3.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-helmet-async": "^2.0.5",
     "react-map-gl": "^8.0.4",
     "react-router-dom": "^6.8.0",
@@ -30,17 +31,15 @@
     "zod": "^4.1.12"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "node server.js",
-    "dev": "concurrently \"npm run server\" \"npm start\"",
-    "analyze": "npm run build && npx serve -s build",
-    "analyze-bundle": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
-    "lighthouse": "npm run build && npx lighthouse http://localhost:3000 --output-path=./lighthouse-report.html",
-    "security-audit": "npm audit --audit-level=moderate",
-    "performance-test": "npm run build && npx lighthouse-ci autorun"
+    "lint": "next lint",
+    "analyze": "ANALYZE=true next build",
+    "cra-start": "react-scripts start",
+    "cra-build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": [
