@@ -334,15 +334,19 @@ const DirectoryPageNew = () => {
           </div>
         </div>
 
-        {/* Advanced Filters */}
-        <div className="container">
-          <AdvancedFilters
-            onFilterChange={handleFilterChange}
-            stations={stations}
-            activeFilters={activeFilters}
-          />
+        {/* Note: StationCards view has its own built-in filters, so we only show filters for Grid and Map views */}
+        {viewMode !== 'cards' && (
+          <div className="container">
+            <AdvancedFilters
+              onFilterChange={handleFilterChange}
+              stations={stations}
+              activeFilters={activeFilters}
+            />
+          </div>
+        )}
 
-          {/* View Toggle */}
+        {/* View Toggle */}
+        <div className="container">
           <div className="view-toggle">
             <button
               className={`view-btn ${viewMode === 'cards' ? 'active' : ''}`}
@@ -371,9 +375,11 @@ const DirectoryPageNew = () => {
           </div>
         </div>
 
-        {/* Cards View */}
+        {/* Cards View - StationCards component handles its own data loading and filtering */}
         {viewMode === 'cards' && (
-          <StationCards />
+          <div className="container">
+            <StationCards />
+          </div>
         )}
 
         {/* Map View */}
