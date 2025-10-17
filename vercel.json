@@ -1,8 +1,7 @@
 {
-  "buildCommand": "next build",
-  "devCommand": "next dev",
+  "buildCommand": "react-scripts build",
+  "devCommand": "react-scripts start",
   "installCommand": "npm install --legacy-peer-deps",
-  "framework": "nextjs",
   "headers": [
     {
       "source": "/(.*)",

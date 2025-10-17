@@ -14,7 +14,7 @@ const nextConfig = {
   },
 
   // Path aliases
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': __dirname,
@@ -24,6 +24,13 @@ const nextConfig = {
       '@/public': `${__dirname}/public`,
       '@/styles': `${__dirname}/styles`,
     };
+    
+    // Exclude framer-motion from server-side bundle to avoid SSR issues
+    if (isServer) {
+      config.externals = config.externals || [];
+      config.externals.push('framer-motion');
+    }
+    
     return config;
   },
 

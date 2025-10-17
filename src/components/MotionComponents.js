@@ -1,12 +1,28 @@
-// Optimized Framer Motion imports - only import what we actually use
-import { motion } from 'framer-motion';
+// Server-side safe Motion Components
+// During SSR, these will be plain HTML elements; on client they'll be animated
+import React from 'react';
 
-// Export only the motion components we actually use
-export const MotionDiv = motion.div;
-export const MotionH1 = motion.h1;
-export const MotionP = motion.p;
-export const MotionSection = motion.section;
-export const MotionArticle = motion.article;
+// On server, export plain HTML elements
+// On client, these will be replaced with motion components
+export const MotionDiv = React.forwardRef((props, ref) => {
+  return React.createElement('div', { ...props, ref });
+});
+
+export const MotionH1 = React.forwardRef((props, ref) => {
+  return React.createElement('h1', { ...props, ref });
+});
+
+export const MotionP = React.forwardRef((props, ref) => {
+  return React.createElement('p', { ...props, ref });
+});
+
+export const MotionSection = React.forwardRef((props, ref) => {
+  return React.createElement('section', { ...props, ref });
+});
+
+export const MotionArticle = React.forwardRef((props, ref) => {
+  return React.createElement('article', { ...props, ref });
+});
 
 // Common animation variants to reduce duplication
 export const containerVariants = {

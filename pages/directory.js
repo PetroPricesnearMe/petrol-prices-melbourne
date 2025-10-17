@@ -9,17 +9,17 @@ import StationMap from '../src/components/StationMap';
 import StationCards from '../src/components/StationCards';
 import BreadcrumbsNext from '../components/layout/BreadcrumbsNext';
 import { generateFuelPriceListingData } from '../src/components/SEO';
-import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../src/utils/analytics';
-import { loadStationsFromGeoJSON } from '../lib/data/loadStations';
+import { trackPageView, trackSearch, trackFilter } from '../src/utils/analytics';
 
 const ITEMS_PER_PAGE = 12;
 
-export default function DirectoryPage({ allStations, selectedRegionData }) {
+export default function DirectoryPage() {
   const router = useRouter();
   const { region: regionParam } = router.query;
   
-  const [stations] = useState(allStations);
-  const [filteredStations, setFilteredStations] = useState(allStations);
+  const [stations, setStations] = useState([]);
+  const [filteredStations, setFilteredStations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeFilters, setActiveFilters] = useState({});
   const [viewMode, setViewMode] = useState('cards');
@@ -27,12 +27,77 @@ export default function DirectoryPage({ allStations, selectedRegionData }) {
 
   const selectedRegion = regionParam ? MELBOURNE_REGIONS[regionParam.toUpperCase()] : null;
 
+  // Load stations data on client side
+  useEffect(() => {
+    const loadStations = async () => {
+      try {
+        setLoading(true);
+        // Fetch the GeoJSON data from the public folder
+        const response = await fetch('/data/stations.geojson');
+        const geojson = await response.json();
+        
+        if (geojson.features && Array.isArray(geojson.features)) {
+          const loadedStations = geojson.features.map((feature, index) => {
+            const props = feature.properties || {};
+            const coords = feature.geometry?.coordinates || [0, 0];
+            
+            // Extract brand from station owner
+            const owner = props.station_owner || '';
+            let brand = owner;
+            
+            // Normalize brand names
+            if (owner.includes('7-ELEVEN') || owner.includes('7 ELEVEN')) {
+              brand = '7-Eleven';
+            } else if (owner.includes('BP')) {
+              brand = 'BP';
+            } else if (owner.includes('SHELL')) {
+              brand = 'Shell';
+            } else if (owner.includes('CALTEX')) {
+              brand = 'Caltex';
+            } else if (owner.includes('AMPOL')) {
+              brand = 'Ampol';
+            } else if (owner.includes('MOBIL')) {
+              brand = 'Mobil';
+            } else if (owner.includes('UNITED')) {
+              brand = 'United';
+            }
+            
+            return {
+              id: props.objectid || index + 1,
+              name: props.station_name || 'Unknown Station',
+              address: props.station_address || props.gnaf_formatted_address || '',
+              city: props.station_suburb || props.gnaf_suburb || '',
+              postalCode: props.station_postcode || props.gnaf_postcode || '',
+              state: props.station_state || 'VIC',
+              brand: brand,
+              latitude: coords[1],
+              longitude: coords[0],
+              lat: coords[1],
+              lng: coords[0],
+              fuelPrices: [],
+              lastUpdated: props.station_revised_date || new Date().toISOString(),
+            };
+          });
+          
+          setStations(loadedStations);
+          console.log(`✅ Loaded ${loadedStations.length} stations from GeoJSON`);
+        }
+      } catch (error) {
+        console.error('❌ Error loading stations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadStations();
+  }, []);
+
   // Debug logging
   useEffect(() => {
     console.log('🗺️ DirectoryPage mounted (Next.js)');
     console.log('📋 Region param from URL:', regionParam);
     console.log('🎯 Selected region:', selectedRegion?.name || 'All Stations');
-    console.log('📊 Pre-loaded stations:', stations.length);
+    console.log('📊 Loaded stations:', stations.length);
   }, [regionParam, selectedRegion, stations.length]);
 
   // Track page view
@@ -152,6 +217,14 @@ export default function DirectoryPage({ allStations, selectedRegionData }) {
       </Head>
 
       <div className="directory-page">
+        {loading && (
+          <div style={{ textAlign: 'center', padding: '4rem' }}>
+            <p>Loading stations...</p>
+          </div>
+        )}
+        
+        {!loading && (
+          <>
         <BreadcrumbsNext customCrumbs={selectedRegion ? [
           { label: 'Home', path: '/', icon: '🏠' },
           { label: 'Station Directory', path: '/directory' },
@@ -246,32 +319,13 @@ export default function DirectoryPage({ allStations, selectedRegionData }) {
             </button>
           </div>
         )}
+          </>
+        )}
       </div>
     </>
   );
 }
 
-// Server-side data loading with ISR
-export async function getStaticProps(context) {
-  console.log('🏗️ [Build] Generating DirectoryPage...');
-  
-  const stations = await loadStationsFromGeoJSON();
-  
-  // Normalize station data
-  const normalizedStations = stations.map(station => ({
-    ...station,
-    fuelPrices: station.prices ? Object.entries(station.prices).map(([fuelType, price]) => ({
-      fuelType,
-      price: parseFloat(price || 0)
-    })) : []
-  }));
-
-  return {
-    props: {
-      allStations: normalizedStations,
-      selectedRegionData: null,
-    },
-    revalidate: 86400, // ISR: Regenerate every 24 hours
-  };
-}
+// Note: Converted to client-side data fetching to avoid SSR issues with framer-motion
+// The station data will be loaded on the client side
 
