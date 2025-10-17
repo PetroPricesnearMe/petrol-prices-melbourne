@@ -26,6 +26,8 @@ const StationCards = () => {
 
   // Load brand logos from localStorage
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const loadBrandLogos = () => {
       const savedLogos = localStorage.getItem('brandLogos');
       if (savedLogos) {
