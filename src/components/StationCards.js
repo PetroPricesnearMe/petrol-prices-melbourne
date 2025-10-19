@@ -242,35 +242,10 @@ const StationCards = () => {
   };
 
 
-  // Format fuel type for display
-  const getFuelIcon = (type) => {
-    const icons = {
-      'Unleaded': 'U',
-      'Premium': 'P',
-      'Diesel': 'D',
-      'LPG': 'L'
-    };
-    return icons[type] || 'F';
-  };
-
   // Format price
   const formatPrice = (price) => {
     if (!price || price === 0) return 'N/A';
     return `$${price.toFixed(2)}`;
-  };
-
-  // Format last updated date
-  const formatLastUpdated = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-AU', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-    } catch {
-      return 'Unknown';
-    }
   };
 
   if (loading) {
