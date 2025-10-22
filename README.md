@@ -1,256 +1,265 @@
-# Melbourne Petrol Prices - Compare Live Fuel Prices
+# Petrol Price Near Me 🚗⛽
 
-**Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today!**
+> Find the cheapest petrol stations near you in Australia with real-time fuel prices.
 
-A modern, interactive web application that helps Melbourne drivers save money by comparing real-time fuel prices across hundreds of petrol stations.
+[![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.0-blue)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-## 🌟 Key Features
+## ✨ Features
 
-### 💰 Save Money on Every Fill-Up
-- **250+ Petrol Stations** - Comprehensive coverage across Melbourne
-- **Real-Time Price Updates** - Always see the latest fuel prices
-- **Save up to 20c/L** - Find the cheapest fuel near you
-- **Compare All Fuel Types** - Unleaded, Diesel, Premium, E10, LPG
+- 🗺️ **Interactive Map** - Find stations on an interactive map
+- 💰 **Price Comparison** - Compare fuel prices across different stations
+- 📍 **Location-Based** - Find stations near your current location
+- ⛽ **Multiple Fuel Types** - Unleaded, Premium, Diesel, LPG, and more
+- 🔍 **Advanced Search** - Filter by price, distance, and brand
+- 📱 **Responsive Design** - Works on desktop, tablet, and mobile
+- ⚡ **Real-Time Data** - Up-to-date fuel prices
+- 🌙 **Dark Mode** - Easy on the eyes
+- ♿ **Accessible** - WCAG 2.1 AA compliant
+- 🚀 **Fast Performance** - Optimized for speed
 
-### 🗺️ Interactive Live Map
-- **Visual Price Comparison** - Color-coded markers (green = cheap, red = expensive)
-- **Location-Based Search** - Find cheapest fuel stations near your location
-- **Detailed Station Info** - Prices, hours, contact details, and directions
-- **Multiple Fuel Types** - Filter by Unleaded 91, Premium 95/98, Diesel
-- **Real-Time Updates** - Prices refresh automatically every 15 seconds
+## 🛠️ Tech Stack
 
-### 📋 Smart Directory & Search
-- **Advanced Filters** - Search by name, suburb, brand, or fuel type
-- **Brand Filtering** - Shell, BP, Caltex, 7-Eleven, United, Ampol, and more
-- **Responsive Grid Layout** - Beautiful 3x4 card layout adapts to any screen
-- **Sort Options** - Sort by price, name, or location
-- **Live Search** - Results update as you type
+- **Framework**: Next.js 15 with App Router
+- **UI Library**: React 19
+- **Language**: TypeScript 5.3
+- **Styling**: Tailwind CSS 3.4
+- **State Management**: TanStack Query (React Query)
+- **Maps**: React Leaflet
+- **Authentication**: NextAuth.js 5
+- **API Client**: Axios
+- **Animations**: Framer Motion
+- **Testing**: Jest + React Testing Library
+- **Code Quality**: ESLint + Prettier
+- **Database**: Baserow (API)
 
-### 🎯 Regional Browse
-- **Melbourne Regions** - Browse by North, South, East, West, and CBD
-- **Fuel Pump Counter** - See station counts for each region
-- **Quick Navigation** - Jump directly to your area of interest
-
-## Technology Stack
-
-### Frontend (Static React Application)
-- **React 18** - Modern React with hooks and functional components
-- **React Router Dom** - Client-side routing
-- **Mapbox GL** - Interactive maps
-- **Framer Motion** - Smooth animations and transitions
-- **Styled Components** - Component-based styling
-- **Axios** - HTTP client for API requests
-
-### Data Source
-- **Baserow API** - Direct API integration for petrol station data
-- **622 petrol stations** - Live data from Baserow database
-- **Real-time updates** - Data refreshed from Baserow
-
-### Deployment
-- **Vercel** - Static site hosting with automatic deployments
-- **GoDaddy** - Domain management
-- **GitHub** - Version control and CI/CD integration
-
-### Styling
-- **CSS3** with modern features (Grid, Flexbox, CSS Variables)
-- **Inter Font** - Clean, modern typography
-- **Responsive Design** - Mobile-first approach
-- **CSS Animations** - Smooth transitions and effects
-
-## Installation & Setup
+## 📦 Installation
 
 ### Prerequisites
-- Node.js (v16+ recommended)
-- npm or yarn package manager
-- Baserow API token (for data access)
+
+- Node.js 18.17 or higher
+- npm 9.0 or higher
 
 ### Quick Start
 
-1. **Clone the repository:**
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/melbourne-petrol-stations.git
-   cd melbourne-petrol-stations
+   git clone https://github.com/yourusername/petrol-price-near-me.git
+   cd petrol-price-near-me
    ```
 
-2. **Install dependencies:**
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Set up environment variables:**
+3. **Set up environment variables**
    ```bash
-   cp .env.example .env.local
-   # Edit .env.local and add your Baserow API token
+   cp .env.example .env
+   ```
+   
+   Edit `.env` with your configuration:
+   ```env
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   BASEROW_API_TOKEN=your_baserow_token
+   BASEROW_PETROL_STATIONS_TABLE_ID=623329
+   BASEROW_FUEL_PRICES_TABLE_ID=623330
    ```
 
-4. **Start the development server:**
+4. **Run the development server**
    ```bash
-   npm start
+   npm run dev
    ```
 
-5. **Access the application:**
-   - Open http://localhost:3000 in your browser
-   - The app will automatically reload when you make changes
-
-### Environment Variables
-
-Create a `.env.local` file in the root directory:
-```env
-REACT_APP_BASEROW_TOKEN=your_baserow_token_here
-REACT_APP_BASEROW_API_URL=https://api.baserow.io/api
-```
-
-**Note:** This is a static React application. There is no backend server - data is fetched directly from Baserow API.
-
-## Deployment
-
-### Frontend Deployment (Vercel)
-
-1. **Install Vercel CLI:**
-   ```bash
-   npm install -g vercel
+5. **Open your browser**
+   ```
+   http://localhost:3000
    ```
 
-2. **Build the project:**
-   ```bash
-   npm run build
-   ```
+## 📜 Available Scripts
 
-3. **Deploy to Vercel:**
-   ```bash
-   vercel --prod
-   ```
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint issues |
+| `npm run format` | Format code with Prettier |
+| `npm run type-check` | Check TypeScript types |
+| `npm run test` | Run tests |
+| `npm run test:coverage` | Run tests with coverage |
+| `npm run analyze` | Analyze bundle size |
 
-4. **Vercel Configuration:**
-   Create `vercel.json` in the root directory:
-   ```json
-   {
-     "builds": [
-       {
-         "src": "package.json",
-         "use": "@vercel/static-build",
-         "config": {
-           "distDir": "build"
-         }
-       }
-     ],
-     "routes": [
-       {
-         "src": "/(.*)",
-         "dest": "/index.html"
-       }
-     ]
-   }
-   ```
-
-### Alternative: Netlify
-
-1. **Build the project:**
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy build folder to Netlify:**
-   - Drag and drop the `build` folder to Netlify dashboard
-   - Or connect your Git repository for continuous deployment
-
-## Project Structure
+## 📁 Project Structure
 
 ```
-melbourne-petrol-stations/
-├── public/              # Static assets
-│   ├── images/
-│   ├── favicon.ico
-│   ├── manifest.json
-│   └── sitemap.xml
-├── src/                 # React application source
-│   ├── components/      # React components
-│   ├── config/          # Configuration files
+├── src/
+│   ├── app/              # Next.js App Router pages
+│   ├── components/       # React components (Atomic Design)
+│   │   ├── atoms/       # Basic UI components
+│   │   ├── molecules/   # Composite components
+│   │   └── organisms/   # Complex components
 │   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Library code
 │   ├── services/        # API services
-│   ├── styles/          # Global styles
+│   ├── types/           # TypeScript types
 │   ├── utils/           # Utility functions
-│   ├── App.js
-│   ├── index.js
-│   └── config.js        # Baserow API configuration
-├── docs/                # Documentation
-│   ├── setup/
-│   ├── development/
-│   └── architecture/
-├── package.json         # Dependencies and scripts
-├── vercel.json          # Vercel deployment config
-├── .env.example         # Environment variables template
-└── README.md
+│   └── styles/          # Global styles
+├── public/              # Static assets
+└── ...config files
 ```
 
-## Features in Detail
+For detailed structure documentation, see [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md).
 
-### Real-time Updates
-- WebSocket connection provides live fuel price updates
-- Prices update automatically every 15 seconds
-- Visual indicators show recent price changes
-- Connection status monitoring
+## 🏗️ Architecture
 
-### Interactive Map
-- Centered on Melbourne CBD
-- Custom fuel station markers
-- Color-coded pricing system
-- Detailed popups with all station information
-- Smooth zoom and pan interactions
+This project follows enterprise-level architecture patterns:
 
-### Search & Filtering
-- Real-time search across station names, suburbs, and brands
-- Brand filtering (Shell, BP, Caltex, 7-Eleven, United, Ampol)
-- Multiple sorting options (name, price, suburb)
-- Results counter and "no results" handling
+### Atomic Design Pattern
+- **Atoms**: Button, Input, Card, Badge
+- **Molecules**: SearchBar, StationCard
+- **Organisms**: Hero, SearchSection, FeaturesSection
 
-### Responsive Design
-- Mobile-first approach
-- Breakpoints: 480px, 768px, 992px, 1200px
-- Adaptive grid layouts (5→4→3→2→1 columns)
-- Touch-friendly interface on mobile devices
+### Layered Architecture
+```
+UI Layer (Components)
+    ↓
+Hooks Layer (State Management)
+    ↓
+Service Layer (Business Logic)
+    ↓
+Repository Layer (Data Access)
+    ↓
+API Layer (External Services)
+```
 
-## Browser Support
+### Key Principles
+- ✅ Separation of Concerns
+- ✅ Single Responsibility
+- ✅ DRY (Don't Repeat Yourself)
+- ✅ Type Safety
+- ✅ Testability
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+## 🔐 Environment Variables
 
-## Contributing
+Create a `.env` file based on `.env.example`:
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXT_PUBLIC_APP_URL` | Application URL | Yes |
+| `BASEROW_API_TOKEN` | Baserow API token | Yes |
+| `BASEROW_PETROL_STATIONS_TABLE_ID` | Stations table ID | Yes |
+| `BASEROW_FUEL_PRICES_TABLE_ID` | Fuel prices table ID | Yes |
+| `NEXTAUTH_SECRET` | NextAuth secret | No* |
+| `NEXT_PUBLIC_GA_TRACKING_ID` | Google Analytics ID | No |
+
+\* Required if authentication is enabled
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm run test
+
+# Watch mode
+npm run test:watch
+
+# Coverage report
+npm run test:coverage
+```
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/petrol-price-near-me)
+
+1. Push to GitHub
+2. Import to Vercel
+3. Add environment variables
+4. Deploy!
+
+### Docker
+
+```bash
+docker build -t petrol-price-app .
+docker run -p 3000:3000 petrol-price-app
+```
+
+### Manual Deployment
+
+```bash
+npm run build
+npm run start
+```
+
+## 📱 Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## ♿ Accessibility
+
+This application follows WCAG 2.1 AA standards:
+
+- ✅ Semantic HTML
+- ✅ ARIA labels
+- ✅ Keyboard navigation
+- ✅ Screen reader support
+- ✅ Color contrast compliance
+- ✅ Focus indicators
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## Performance Optimizations
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and development process.
 
-- Lazy loading of map components
-- Optimized image loading
-- CSS animations using transform and opacity
-- Efficient re-rendering with React best practices
-- WebSocket connection management
+## 📄 License
 
-## Future Enhancements
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- User location detection
-- Route planning to cheapest station
-- Price history charts
-- Push notifications for price drops
-- User reviews and ratings
-- Fuel type availability tracking
-- Station amenities (car wash, shop, etc.)
+## 👥 Authors
 
-## License
+- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 🙏 Acknowledgments
 
-## Support
+- Next.js team for the amazing framework
+- Vercel for hosting and analytics
+- Baserow for the database solution
+- OpenStreetMap for map tiles
+- All contributors and users
 
-For support, email [support@melbournefuel.com](mailto:support@melbournefuel.com) or create an issue in the GitHub repository.
+## 📞 Support
+
+- 📧 Email: contact@petrolpricenearme.com.au
+- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/petrol-price-near-me/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/petrol-price-near-me/discussions)
+
+## 🗺️ Roadmap
+
+- [ ] Mobile app (React Native)
+- [ ] Price alerts and notifications
+- [ ] User accounts and favorites
+- [ ] Price history and trends
+- [ ] API for developers
+- [ ] Integration with fuel card providers
 
 ---
 
-Made with ❤️ in Melbourne 
+**Made with ❤️ in Australia**
+
