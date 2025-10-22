@@ -1,0 +1,246 @@
+name: Performance Testing
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run performance tests daily
+    - cron: '0 4 * * *'
+
+jobs:
+  # Lighthouse Performance Tests
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_ENV: test
+
+      - name: Start server
+        run: npm start &
+        env:
+          PORT: 3000
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            http://localhost:3000
+            http://localhost:3000/api/health
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 3
+          budgetPath: .lighthouserc.json
+
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: '.lighthouseci'
+
+  # Bundle Size Analysis
+  bundle-size:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and analyze
+        run: npm run analyze
+        env:
+          ANALYZE: true
+
+      - name: Check bundle size
+        run: |
+          echo "Checking bundle sizes..."
+          du -sh .next/static/chunks/* | sort -h
+
+          # Get total bundle size
+          TOTAL_SIZE=$(du -sh .next | cut -f1)
+          echo "Total build size: $TOTAL_SIZE"
+
+      - name: Bundle Size Report
+        uses: andresz1/size-limit-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_step: install
+
+  # Load Testing
+  load-test:
+    name: Load Testing
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start server
+        run: npm start &
+        env:
+          PORT: 3000
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
+      - name: Run load tests
+        run: k6 run scripts/load-test.js
+        continue-on-error: true
+
+      - name: Upload load test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: load-test-results
+          path: load-test-results.json
+
+  # Performance Regression
+  performance-regression:
+    name: Performance Regression Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build current version
+        run: npm run build
+        env:
+          NEXT_PUBLIC_ENV: test
+
+      - name: Measure build time
+        id: build-time
+        run: |
+          START_TIME=$(date +%s)
+          npm run build
+          END_TIME=$(date +%s)
+          BUILD_TIME=$((END_TIME - START_TIME))
+          echo "build_time=$BUILD_TIME" >> $GITHUB_OUTPUT
+          echo "Build time: ${BUILD_TIME}s"
+
+      - name: Check build time regression
+        run: |
+          CURRENT_TIME=${{ steps.build-time.outputs.build_time }}
+          BASELINE_TIME=120  # 2 minutes baseline
+
+          if [ $CURRENT_TIME -gt $((BASELINE_TIME * 2)) ]; then
+            echo "⚠️ Build time regression detected: ${CURRENT_TIME}s (baseline: ${BASELINE_TIME}s)"
+            exit 1
+          fi
+
+          echo "✅ Build time acceptable: ${CURRENT_TIME}s"
+
+      - name: Measure bundle size
+        run: |
+          BUNDLE_SIZE=$(du -sb .next/static | cut -f1)
+          echo "Bundle size: $BUNDLE_SIZE bytes"
+
+          # Store for comparison
+          echo "$BUNDLE_SIZE" > bundle-size.txt
+
+      - name: Upload bundle size
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-size
+          path: bundle-size.txt
+
+  # Web Vitals Check
+  web-vitals:
+    name: Web Vitals
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start server
+        run: npm start &
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Measure Web Vitals
+        run: |
+          npx web-vitals-element http://localhost:3000 > web-vitals.json || true
+
+      - name: Upload Web Vitals
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-vitals
+          path: web-vitals.json

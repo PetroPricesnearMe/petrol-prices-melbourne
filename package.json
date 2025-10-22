@@ -107,11 +107,15 @@
     "typescript": "^5.3.3"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
+    "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
+      "prettier --write",
+      "jest --bail --findRelatedTests"
+    ],
+    "*.{json,md,yml,yaml}": [
       "prettier --write"
     ],
-    "*.{json,css,scss,md}": [
+    "*.{css}": [
       "prettier --write"
     ]
   }

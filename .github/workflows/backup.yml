@@ -2,69 +2,48 @@ name: Daily Database Backup
 
 on:
   schedule:
-    # Run daily at 2 AM UTC
+    # Run every day at 2 AM UTC
     - cron: '0 2 * * *'
-  # Allow manual trigger
-  workflow_dispatch:
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   backup:
     name: Backup Database
     runs-on: ubuntu-latest
-    timeout-minutes: 30
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
-          cache: 'npm'
 
-      - name: Create backup directory
-        run: mkdir -p backups logs
+      - name: Make backup script executable
+        run: chmod +x scripts/backup-database.sh
 
-      - name: Run backup script
+      - name: Run backup
         env:
-          BASEROW_API_URL: ${{ secrets.BASEROW_API_URL }}
           BASEROW_API_TOKEN: ${{ secrets.BASEROW_API_TOKEN }}
-          BASEROW_PETROL_STATIONS_TABLE_ID: ${{ secrets.BASEROW_PETROL_STATIONS_TABLE_ID }}
+          BASEROW_STATIONS_TABLE_ID: ${{ secrets.BASEROW_STATIONS_TABLE_ID }}
           BASEROW_FUEL_PRICES_TABLE_ID: ${{ secrets.BASEROW_FUEL_PRICES_TABLE_ID }}
         run: |
-          chmod +x scripts/backup-database.sh
           ./scripts/backup-database.sh
 
-      - name: Upload backups to artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload backup artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
         with:
           name: database-backup-${{ github.run_number }}
           path: backups/*.json.gz
-          retention-days: 90
-
-      - name: Upload to AWS S3 (if configured)
-        if: ${{ secrets.AWS_S3_BUCKET != '' }}
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        run: |
-          aws s3 sync backups/ s3://$AWS_S3_BUCKET/backups/ \
-            --exclude "*" \
-            --include "*.json.gz"
+          retention-days: 30
 
       - name: Notify on failure
         if: failure()
-        uses: actions/github-script@v7
+        uses: 8398a7/action-slack@v3
         with:
-          script: |
-            const issue = await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: '🚨 Database Backup Failed',
-              body: `Automated database backup failed on ${new Date().toISOString()}.\n\nWorkflow: ${context.workflow}\nRun: ${context.runNumber}\n\nPlease investigate immediately.`,
-              labels: ['backup', 'critical']
-            });
-            console.log('Created issue:', issue.data.html_url);
+          status: ${{ job.status }}
+          text: 'Database backup failed!'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true

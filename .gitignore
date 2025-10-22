@@ -4,15 +4,19 @@
 /node_modules
 /.pnp
 .pnp.js
+/package-lock.json
 
 # testing
 /coverage
 *.log
+/.jest-cache/
 
 # next.js
 /.next/
 /out/
 /build
+*.tsbuildinfo
+next-env.d.ts
 
 # production
 /build

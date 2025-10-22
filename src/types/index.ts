@@ -1,215 +1,164 @@
 /**
- * Core application types and interfaces
+ * Central Type Exports
+ *
+ * Re-exports all TypeScript types for convenient importing
+ * @module types
  */
 
-// Component Base Types
-export interface BaseProps {
-  className?: string;
-  id?: string;
-  testId?: string;
-  style?: React.CSSProperties;
-  ariaLabel?: string;
-  ariaDescribedBy?: string;
-}
+// Common types
+export type {
+  ID,
+  Status,
+  HttpMethod,
+  Optional,
+  RequiredFields,
+  DeepPartial,
+  ArrayElement,
+  NonNullable as NonNullableType,
+  AsyncFunction,
+  BaseProps,
+  WithLoadingState,
+  WithErrorState,
+  WithDisabledState,
+  ComponentProps,
+  ApiResponse,
+  ApiError,
+  PaginatedResponse,
+  QueryParams,
+  Coordinates,
+  Location,
+  BoundingBox,
+  FieldError,
+  ValidationResult,
+  FormSubmitHandler,
+  CustomEvent,
+  EventHandler,
+  AsyncState,
+  PerformanceMetric,
+  RenderInfo,
+  EnvironmentConfig,
+  FeatureFlags,
+} from './common';
 
-export interface InteractiveProps {
-  onClick?: (event: React.MouseEvent) => void;
-  onFocus?: (event: React.FocusEvent) => void;
-  onBlur?: (event: React.FocusEvent) => void;
-  disabled?: boolean;
-  loading?: boolean;
-  ariaLabel?: string;
-  ariaDescribedBy?: string;
-}
+export {
+  AppError,
+  NetworkError,
+  ValidationError,
+  isDefined,
+  isString,
+  isNumber,
+  isObject,
+  isArray,
+  isAppError,
+  isNetworkError,
+  isValidationError,
+  createAsyncState,
+} from './common';
 
-export type ColorVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-export type Variant = 'filled' | 'outline' | 'text' | 'ghost';
-export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+// Station types
+export {
+  FuelType,
+  StationCategory,
+  PriceTrend,
+} from './station';
 
-// Polymorphic component types
-export type PolymorphicProps<E extends React.ElementType, P = {}> = {
-  as?: E;
-} & P & Omit<React.ComponentPropsWithoutRef<E>, keyof P | 'as'>;
+export type {
+  FuelTypeKey,
+  FuelTypeValue,
+  StationBrand,
+  StationAmenities,
+  OperatingHours,
+  BaseStation,
+  StationWithLocation,
+  Station,
+  FuelPrice,
+  StationWithPrices,
+  StationFilters,
+  StationSortBy,
+  StationSearchParams,
+  StationSearchResult,
+  StationMarker,
+  MapViewport,
+  MapBounds,
+  StationViewEvent,
+  PriceComparisonEvent,
+  BaserowStationResponse,
+  BaserowFuelPriceResponse,
+} from './station';
 
-// Helper type for components with children
-export type WithChildren<T = {}> = T & { children?: React.ReactNode };
+export {
+  isFuelType,
+  isStation,
+  isStationWithPrices,
+  getFuelTypeDisplayName,
+  formatPrice,
+  calculateDistance,
+} from './station';
 
-// Fuel Types
-export enum FuelType {
-  UNLEADED = 'unleaded',
-  PREMIUM_UNLEADED = 'premium_unleaded',
-  DIESEL = 'diesel',
-  LPG = 'lpg',
-  UNLEADED_95 = 'unleaded_95',
-}
+// Component types (renamed to avoid conflicts with existing components)
+export type {
+  Size,
+  Variant,
+  ColorScheme,
+  Alignment,
+  Position,
+  AccessibilityProps,
+  ButtonProps as ButtonPropsNew,
+  LinkProps,
+  InputProps as InputPropsNew,
+  SelectProps,
+  SelectOption,
+  TextareaProps,
+  CheckboxProps,
+  CardProps as CardPropsNew,
+  BadgeProps as BadgePropsNew,
+  ModalProps,
+  TooltipProps,
+  AlertProps as AlertPropsNew,
+  ContainerProps,
+  StackProps,
+  GridProps,
+  TableProps,
+  TableColumn,
+  ListProps,
+  SpinnerProps as SpinnerPropsNew,
+  ProgressProps,
+  SkeletonProps,
+  TabsProps,
+  TabItem,
+  BreadcrumbProps,
+  BreadcrumbItem,
+  WithStyle,
+  WithRef,
+  WithDataAttributes,
+  PolymorphicProps,
+  ExtractProps,
+  WithChildren,
+  ComponentRef,
+} from './component';
 
-export enum PriceTrend {
-  INCREASING = 'increasing',
-  STABLE = 'stable',
-  DECREASING = 'decreasing',
-}
+// Legacy types for backward compatibility
+export type {
+  PetrolStation,
+  SearchFilters,
+  SortOption,
+  GeolocationState,
+  ColorVariant,
+  InteractiveProps,
+} from './legacy';
 
-// Station Types
-export interface PetrolStation {
-  id: number;
-  stationName: string;
-  address: string;
-  city: string;
-  region: string;
-  postalCode: string;
-  country: string;
-  latitude: number;
-  longitude: number;
-  brand?: string[];
-  category?: string;
-  locationDetails?: string;
-  fuelPrices?: FuelPrice[];
-  distance?: number; // In kilometers
-}
-
-export interface FuelPrice {
-  id: number;
-  fuelType: FuelType;
-  pricePerLiter: number;
-  lastUpdated: string;
-  priceSource?: string;
-  priceTrend?: PriceTrend;
-  locations?: string;
-  petrolStationId?: number;
-}
-
-// Geolocation Types
-export interface Coordinates {
-  lat: number;
-  lng: number;
-}
-
-export interface GeolocationState {
-  coordinates: Coordinates | null;
-  loading: boolean;
-  error: string | null;
-}
-
-export interface BoundsCoordinates {
-  northEast: Coordinates;
-  southWest: Coordinates;
-}
-
-// Search and Filter Types
-export interface SearchFilters {
-  fuelType?: FuelType;
-  maxDistance?: number;
-  minPrice?: number;
-  maxPrice?: number;
-  brands?: string[];
-  sortBy?: SortOption;
-}
-
-export enum SortOption {
-  DISTANCE = 'distance',
-  PRICE_LOW_TO_HIGH = 'price_low_high',
-  PRICE_HIGH_TO_LOW = 'price_high_low',
-  NAME = 'name',
-}
-
-// API Response Types
-export interface ApiResponse<T> {
-  data: T;
-  status: number;
-  message?: string;
-}
-
-export interface PaginatedResponse<T> {
-  data: T[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
-
-export interface ApiError {
-  message: string;
-  statusCode: number;
-  errors?: Record<string, string[]>;
-}
-
-// UI Component Types
-export interface SelectOption {
-  value: string;
-  label: string;
-}
-
-export interface Toast {
-  id: string;
-  type: 'success' | 'error' | 'warning' | 'info';
-  message: string;
-  duration?: number;
-}
-
-// Form Types
-export interface ContactFormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
-
-// User and Auth Types (for future use)
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: UserRole;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user',
-  GUEST = 'guest',
-}
-
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-}
-
-// Analytics Types
-export interface AnalyticsEvent {
-  name: string;
-  properties?: Record<string, unknown>;
-}
-
-export interface PageViewEvent extends AnalyticsEvent {
-  name: 'page_view';
-  properties: {
-    path: string;
-    title: string;
-  };
-}
-
-export interface StationClickEvent extends AnalyticsEvent {
-  name: 'station_click';
-  properties: {
-    stationId: number;
-    stationName: string;
-  };
-}
-
-// Utility Types
-export type Nullable<T> = T | null;
-export type Optional<T> = T | undefined;
-export type Maybe<T> = T | null | undefined;
-
-// Make all properties optional
-export type PartialDeep<T> = {
-  [P in keyof T]?: T[P] extends object ? PartialDeep<T[P]> : T[P];
-};
-
-// Make all properties required
-export type RequiredDeep<T> = {
-  [P in keyof T]-?: T[P] extends object ? RequiredDeep<T[P]> : T[P];
-};
+// Re-export commonly used React types
+export type {
+  FC as FunctionComponent,
+  PropsWithChildren,
+  ReactNode,
+  ReactElement,
+  ComponentType,
+  ComponentProps as ReactComponentProps,
+  CSSProperties,
+  MouseEvent,
+  ChangeEvent,
+  FocusEvent,
+  FormEvent,
+  KeyboardEvent,
+} from 'react';

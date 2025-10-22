@@ -1,0 +1,450 @@
+/**
+ * Print Styles
+ * Optimized styles for printing and PDF generation
+ */
+
+@media print {
+  /* ========================================
+   * RESET & NORMALIZATION
+   * ======================================== */
+
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* ========================================
+   * PAGE SETUP
+   * ======================================== */
+
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+
+  @page :first {
+    margin-top: 2.5cm;
+  }
+
+  /* ========================================
+   * TYPOGRAPHY
+   * ======================================== */
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  h1 {
+    font-size: 24pt;
+    border-bottom: 2pt solid #000;
+    padding-bottom: 0.3em;
+  }
+
+  h2 {
+    font-size: 18pt;
+    border-bottom: 1pt solid #666;
+    padding-bottom: 0.2em;
+  }
+
+  h3 {
+    font-size: 14pt;
+  }
+
+  h4, h5, h6 {
+    font-size: 12pt;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+    margin-bottom: 0.5em;
+  }
+
+  /* ========================================
+   * LINKS
+   * ======================================== */
+
+  a {
+    text-decoration: underline;
+    word-wrap: break-word;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 90%;
+    font-style: italic;
+  }
+
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "";
+  }
+
+  /* ========================================
+   * IMAGES & MEDIA
+   * ======================================== */
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  video, audio, iframe, embed, object {
+    display: none !important;
+  }
+
+  figure {
+    page-break-inside: avoid;
+    margin: 1em 0;
+  }
+
+  figcaption {
+    font-size: 10pt;
+    font-style: italic;
+    margin-top: 0.5em;
+  }
+
+  /* ========================================
+   * TABLES
+   * ======================================== */
+
+  table {
+    border-collapse: collapse;
+    page-break-inside: avoid;
+    width: 100%;
+    margin: 1em 0;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1pt solid #000;
+    padding: 0.5em;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold;
+  }
+
+  /* ========================================
+   * LISTS
+   * ======================================== */
+
+  ul, ol {
+    margin: 0.5em 0;
+    padding-left: 2em;
+  }
+
+  li {
+    margin-bottom: 0.25em;
+  }
+
+  /* ========================================
+   * CODE & PRE
+   * ======================================== */
+
+  code, pre {
+    font-family: 'Courier New', monospace;
+    font-size: 10pt;
+    border: 1pt solid #000;
+    padding: 0.2em 0.4em;
+    page-break-inside: avoid;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding: 0.5em;
+    margin: 0.5em 0;
+  }
+
+  /* ========================================
+   * BLOCKQUOTES
+   * ======================================== */
+
+  blockquote {
+    border-left: 3pt solid #000;
+    padding-left: 1em;
+    margin: 1em 0;
+    font-style: italic;
+    page-break-inside: avoid;
+  }
+
+  /* ========================================
+   * PAGE BREAKS
+   * ======================================== */
+
+  .page-break,
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .avoid-break,
+  .no-break {
+    page-break-inside: avoid;
+  }
+
+  /* ========================================
+   * HIDE ELEMENTS
+   * ======================================== */
+
+  /* Hide navigation and interactive elements */
+  nav,
+  .navbar,
+  .nav,
+  header,
+  footer,
+  .header,
+  .footer,
+  .sidebar,
+  .menu,
+  .navigation {
+    display: none !important;
+  }
+
+  /* Hide buttons and forms */
+  button,
+  .button,
+  .btn,
+  input,
+  textarea,
+  select,
+  form,
+  .form {
+    display: none !important;
+  }
+
+  /* Hide advertisements and social media */
+  .ad,
+  .ads,
+  .advertisement,
+  .social,
+  .social-share,
+  .share-buttons {
+    display: none !important;
+  }
+
+  /* Hide videos and animations */
+  .video,
+  .animation,
+  .carousel,
+  .slider {
+    display: none !important;
+  }
+
+  /* Hide utility elements */
+  .print-hidden,
+  .no-print {
+    display: none !important;
+  }
+
+  /* ========================================
+   * SHOW ELEMENTS
+   * ======================================== */
+
+  .print-only,
+  .print-visible {
+    display: block !important;
+  }
+
+  /* ========================================
+   * CUSTOM COMPONENTS
+   * ======================================== */
+
+  /* Station Cards */
+  .station-card {
+    border: 1pt solid #000;
+    padding: 1em;
+    margin-bottom: 1em;
+    page-break-inside: avoid;
+  }
+
+  .station-card h3 {
+    margin-top: 0;
+  }
+
+  .fuel-price {
+    font-weight: bold;
+    font-size: 14pt;
+  }
+
+  /* Maps */
+  .map,
+  .map-container,
+  [class*="leaflet"],
+  [class*="mapbox"] {
+    display: none !important;
+  }
+
+  .map-fallback {
+    display: block !important;
+    border: 1pt solid #000;
+    padding: 1em;
+    text-align: center;
+  }
+
+  /* Badges */
+  .badge {
+    border: 1pt solid #000;
+    padding: 0.2em 0.5em;
+    display: inline-block;
+    margin: 0 0.2em;
+  }
+
+  /* Cards */
+  .card {
+    border: 1pt solid #000;
+    padding: 1em;
+    margin-bottom: 1em;
+    page-break-inside: avoid;
+  }
+
+  /* Alerts */
+  .alert {
+    border: 2pt solid #000;
+    padding: 1em;
+    margin: 1em 0;
+    page-break-inside: avoid;
+  }
+
+  /* ========================================
+   * UTILITY CLASSES
+   * ======================================== */
+
+  .print-block {
+    display: block !important;
+  }
+
+  .print-inline {
+    display: inline !important;
+  }
+
+  .print-inline-block {
+    display: inline-block !important;
+  }
+
+  .print-flex {
+    display: flex !important;
+  }
+
+  .print-grid {
+    display: grid !important;
+  }
+
+  .print-text-left {
+    text-align: left !important;
+  }
+
+  .print-text-center {
+    text-align: center !important;
+  }
+
+  .print-text-right {
+    text-align: right !important;
+  }
+
+  .print-font-bold {
+    font-weight: bold !important;
+  }
+
+  .print-border {
+    border: 1pt solid #000 !important;
+  }
+
+  .print-border-top {
+    border-top: 1pt solid #000 !important;
+  }
+
+  .print-border-bottom {
+    border-bottom: 1pt solid #000 !important;
+  }
+
+  /* ========================================
+   * PRINT HEADER & FOOTER
+   * ======================================== */
+
+  .print-header {
+    display: block !important;
+    position: running(header);
+    text-align: center;
+    font-size: 10pt;
+    border-bottom: 1pt solid #000;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+  }
+
+  .print-footer {
+    display: block !important;
+    position: running(footer);
+    text-align: center;
+    font-size: 10pt;
+    border-top: 1pt solid #000;
+    padding-top: 0.5em;
+    margin-top: 1em;
+  }
+
+  /* ========================================
+   * ACCESSIBILITY
+   * ======================================== */
+
+  /* Ensure sufficient contrast */
+  abbr[title]::after {
+    content: " (" attr(title) ")";
+  }
+
+  /* Show hidden content for print */
+  [aria-label]::after {
+    content: " (" attr(aria-label) ")";
+    font-size: 90%;
+    font-style: italic;
+  }
+}
+
+/* ========================================
+ * PRINT PREVIEW MODE (for development)
+ * ======================================== */
+
+.print-preview {
+  /* Apply print styles in browser for preview */
+  max-width: 21cm;
+  min-height: 29.7cm;
+  margin: 2cm auto;
+  padding: 2cm;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.print-preview * {
+  background: transparent !important;
+  color: #000 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}

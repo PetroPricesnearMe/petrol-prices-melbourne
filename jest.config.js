@@ -35,7 +35,7 @@ module.exports = {
     '!src/index.{js,jsx,ts,tsx}',
   ],
 
-  coverageThresholds: {
+  coverageThreshold: {
     global: {
       branches: 80,
       functions: 80,
@@ -61,11 +61,11 @@ module.exports = {
   // Module file extensions
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
 
-  // Watch plugins
-  watchPlugins: [
-    'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname',
-  ],
+  // Watch plugins - commented out until jest-watch-typeahead is installed
+  // watchPlugins: [
+  //   'jest-watch-typeahead/filename',
+  //   'jest-watch-typeahead/testname',
+  // ],
 
   // Globals
   globals: {

@@ -8,11 +8,11 @@
   }
 
   * {
-    @apply border-border;
+    border-color: theme('colors.gray.200');
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-gray-900;
   }
 
   html {
@@ -51,11 +51,11 @@
 
   /* Card */
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-soft;
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md;
   }
 
   .card-hover {
-    @apply transition-all duration-200 hover:shadow-medium hover:-translate-y-1;
+    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
   }
 
   /* Focus Styles */
@@ -128,7 +128,7 @@
 }
 
 .leaflet-popup-content-wrapper {
-  @apply rounded-lg shadow-medium;
+  @apply rounded-lg shadow-lg;
 }
 
 .leaflet-popup-content {
@@ -197,4 +197,3 @@
     transition-duration: 0.01ms !important;
   }
 }
-

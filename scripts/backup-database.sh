@@ -2,15 +2,20 @@
 
 ###############################################################################
 # Database Backup Script
-# Backs up Baserow data to local storage and optionally to cloud storage
+#
+# Description: Automated backup of Baserow database
+# Usage: ./scripts/backup-database.sh
+# Schedule: Run daily via cron or GitHub Actions
 ###############################################################################
 
-set -e
+set -e  # Exit on error
 
 # Configuration
-BACKUP_DIR="./backups"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+BACKUP_DIR="$PROJECT_ROOT/backups"
 DATE=$(date +%Y%m%d_%H%M%S)
-LOG_FILE="./logs/backup_${DATE}.log"
+LOG_FILE="$BACKUP_DIR/backup_$DATE.log"
 
 # Colors for output
 RED='\033[0;31m'
@@ -31,129 +36,97 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1" | tee -a "$LOG_FILE"
 }
 
+# Create backup directory
+mkdir -p "$BACKUP_DIR"
+
+log_info "Starting database backup at $(date)"
+
 # Check required environment variables
-check_env_vars() {
-    log_info "Checking environment variables..."
+if [ -z "$BASEROW_API_TOKEN" ]; then
+    log_error "BASEROW_API_TOKEN is not set"
+    exit 1
+fi
 
-    if [ -z "$BASEROW_API_TOKEN" ]; then
-        log_error "BASEROW_API_TOKEN is not set"
-        exit 1
-    fi
+if [ -z "$BASEROW_STATIONS_TABLE_ID" ]; then
+    log_error "BASEROW_STATIONS_TABLE_ID is not set"
+    exit 1
+fi
 
-    if [ -z "$BASEROW_PETROL_STATIONS_TABLE_ID" ]; then
-        log_warn "BASEROW_PETROL_STATIONS_TABLE_ID is not set, skipping stations backup"
-    fi
+if [ -z "$BASEROW_FUEL_PRICES_TABLE_ID" ]; then
+    log_error "BASEROW_FUEL_PRICES_TABLE_ID is not set"
+    exit 1
+fi
 
-    if [ -z "$BASEROW_FUEL_PRICES_TABLE_ID" ]; then
-        log_warn "BASEROW_FUEL_PRICES_TABLE_ID is not set, skipping prices backup"
-    fi
-}
-
-# Create backup directories
-setup_directories() {
-    log_info "Setting up backup directories..."
-    mkdir -p "$BACKUP_DIR"
-    mkdir -p "./logs"
-}
-
-# Backup Baserow table
+# Backup function
 backup_table() {
-    local table_id=$1
-    local table_name=$2
-    local backup_file="${BACKUP_DIR}/${table_name}_${DATE}.json"
+    local TABLE_ID=$1
+    local TABLE_NAME=$2
+    local OUTPUT_FILE="$BACKUP_DIR/${TABLE_NAME}_$DATE.json"
 
-    log_info "Backing up ${table_name} (Table ID: ${table_id})..."
+    log_info "Backing up $TABLE_NAME (ID: $TABLE_ID)..."
 
     # Fetch all rows from the table
-    local response=$(curl -s -w "\n%{http_code}" \
-        -H "Authorization: Token $BASEROW_API_TOKEN" \
-        "${BASEROW_API_URL:-https://api.baserow.io}/api/database/rows/table/${table_id}/?user_field_names=true&size=10000")
+    curl -s -H "Authorization: Token $BASEROW_API_TOKEN" \
+        "https://api.baserow.io/api/database/rows/table/$TABLE_ID/?user_field_names=true&size=10000" \
+        -o "$OUTPUT_FILE"
 
-    # Extract HTTP status code
-    local http_code=$(echo "$response" | tail -n1)
-    local data=$(echo "$response" | head -n-1)
+    if [ $? -eq 0 ]; then
+        log_info "Successfully backed up $TABLE_NAME"
 
-    if [ "$http_code" -eq 200 ]; then
-        echo "$data" > "$backup_file"
-        log_info "Successfully backed up ${table_name} to ${backup_file}"
+        # Compress the backup
+        gzip "$OUTPUT_FILE"
+        log_info "Compressed backup: ${OUTPUT_FILE}.gz"
 
-        # Compress backup
-        gzip "$backup_file"
-        log_info "Compressed backup to ${backup_file}.gz"
+        # Calculate file size
+        SIZE=$(du -h "${OUTPUT_FILE}.gz" | cut -f1)
+        log_info "Backup size: $SIZE"
 
         return 0
     else
-        log_error "Failed to backup ${table_name}. HTTP Status: ${http_code}"
+        log_error "Failed to backup $TABLE_NAME"
         return 1
     fi
 }
 
-# Clean old backups (keep last 30 days)
-cleanup_old_backups() {
-    log_info "Cleaning up old backups (keeping last 30 days)..."
-    find "$BACKUP_DIR" -name "*.json.gz" -type f -mtime +30 -delete
-    log_info "Cleanup complete"
-}
+# Perform backups
+backup_table "$BASEROW_STATIONS_TABLE_ID" "petrol_stations"
+STATIONS_STATUS=$?
 
-# Upload to cloud storage (optional)
-upload_to_cloud() {
-    local file=$1
+backup_table "$BASEROW_FUEL_PRICES_TABLE_ID" "fuel_prices"
+PRICES_STATUS=$?
 
-    # AWS S3 Example
-    if [ -n "$AWS_S3_BUCKET" ]; then
-        log_info "Uploading to AWS S3..."
-        if command -v aws &> /dev/null; then
-            aws s3 cp "$file" "s3://${AWS_S3_BUCKET}/backups/$(basename $file)"
-            log_info "Successfully uploaded to S3"
-        else
-            log_warn "AWS CLI not found, skipping S3 upload"
-        fi
-    fi
+# Cleanup old backups (keep last 30 days)
+log_info "Cleaning up old backups..."
+find "$BACKUP_DIR" -name "*.json.gz" -mtime +30 -delete
+find "$BACKUP_DIR" -name "*.log" -mtime +30 -delete
 
-    # Azure Blob Storage Example
-    if [ -n "$AZURE_STORAGE_ACCOUNT" ] && [ -n "$AZURE_STORAGE_CONTAINER" ]; then
-        log_info "Uploading to Azure Blob Storage..."
-        if command -v az &> /dev/null; then
-            az storage blob upload \
-                --account-name "$AZURE_STORAGE_ACCOUNT" \
-                --container-name "$AZURE_STORAGE_CONTAINER" \
-                --name "backups/$(basename $file)" \
-                --file "$file"
-            log_info "Successfully uploaded to Azure"
-        else
-            log_warn "Azure CLI not found, skipping Azure upload"
-        fi
-    fi
-}
+# Count remaining backups
+BACKUP_COUNT=$(find "$BACKUP_DIR" -name "*.json.gz" | wc -l)
+log_info "Total backups retained: $BACKUP_COUNT"
 
-# Main execution
-main() {
-    log_info "Starting database backup process..."
-    log_info "Timestamp: $DATE"
+# Upload to cloud storage (optional - uncomment and configure)
+# if [ ! -z "$AWS_S3_BUCKET" ]; then
+#     log_info "Uploading backups to S3..."
+#     aws s3 sync "$BACKUP_DIR" "s3://$AWS_S3_BUCKET/database-backups/" \
+#         --exclude "*" --include "*.json.gz"
+#     log_info "Upload complete"
+# fi
 
-    # Setup
-    check_env_vars
-    setup_directories
+# Summary
+log_info "================================"
+log_info "Backup Summary"
+log_info "================================"
+log_info "Date: $(date)"
+log_info "Stations backup: $([ $STATIONS_STATUS -eq 0 ] && echo 'SUCCESS' || echo 'FAILED')"
+log_info "Fuel prices backup: $([ $PRICES_STATUS -eq 0 ] && echo 'SUCCESS' || echo 'FAILED')"
+log_info "Backup location: $BACKUP_DIR"
+log_info "================================"
 
-    # Backup petrol stations
-    if [ -n "$BASEROW_PETROL_STATIONS_TABLE_ID" ]; then
-        if backup_table "$BASEROW_PETROL_STATIONS_TABLE_ID" "petrol_stations"; then
-            upload_to_cloud "${BACKUP_DIR}/petrol_stations_${DATE}.json.gz"
-        fi
-    fi
-
-    # Backup fuel prices
-    if [ -n "$BASEROW_FUEL_PRICES_TABLE_ID" ]; then
-        if backup_table "$BASEROW_FUEL_PRICES_TABLE_ID" "fuel_prices"; then
-            upload_to_cloud "${BACKUP_DIR}/fuel_prices_${DATE}.json.gz"
-        fi
-    fi
-
-    # Cleanup old backups
-    cleanup_old_backups
-
-    log_info "Backup process completed successfully!"
-}
-
-# Run main function
-main "$@"
+# Exit with appropriate status
+if [ $STATIONS_STATUS -eq 0 ] && [ $PRICES_STATUS -eq 0 ]; then
+    log_info "All backups completed successfully! ✓"
+    exit 0
+else
+    log_error "Some backups failed! ✗"
+    exit 1
+fi
