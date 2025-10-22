@@ -22,6 +22,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "analyze": "ANALYZE=true next build",
+    "analyze:bundle": "node scripts/analyze-bundle.js",
+    "performance:audit": "bash scripts/performance-audit.sh",
+    "lighthouse": "lighthouse http://localhost:3000 --view",
     "clean": "rm -rf .next node_modules",
     "prepare": "husky install"
   },
