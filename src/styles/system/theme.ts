@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Theme System
  * Advanced theme switching with performance optimization
