@@ -1,6 +1,6 @@
 /**
  * Optimized StationCard Component
- * 
+ *
  * Performance-optimized version with React.memo and proper memoization
  */
 
@@ -237,4 +237,3 @@ const areEqual = (
 };
 
 export const StationCardOptimized = memo(StationCardOptimizedComponent, areEqual);
-

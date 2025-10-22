@@ -1,6 +1,6 @@
 /**
  * Performance Optimization Hooks
- * 
+ *
  * Custom hooks for performance monitoring and optimization
  */
 
@@ -194,4 +194,3 @@ export function useIsMounted(): () => boolean {
 
 // Re-export React for convenience
 import React from 'react';
-

@@ -1,6 +1,6 @@
 /**
  * Virtual List Component
- * 
+ *
  * Efficiently renders large lists using virtualization
  */
 
@@ -122,4 +122,3 @@ function VirtualListComponent<T>({
 
 // Memoize to prevent unnecessary re-renders
 export const VirtualList = memo(VirtualListComponent) as typeof VirtualListComponent;
-

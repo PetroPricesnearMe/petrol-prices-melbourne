@@ -512,7 +512,7 @@ import { FPSMonitor } from '@/utils/performance';
 // In your app initialization
 const fpsMonitor = new FPSMonitor((fps) => {
   console.log(`Current FPS: ${fps}`);
-  
+
   if (fps < 30) {
     console.warn('Low FPS detected!');
   }
@@ -531,7 +531,7 @@ import { reportWebVitals } from '@/utils/performance';
 
 reportWebVitals((vitals) => {
   console.log('Web Vitals:', vitals);
-  
+
   // Report to analytics
   if (vitals.LCP > 2500) {
     console.warn('Poor LCP:', vitals.LCP);
@@ -678,9 +678,9 @@ self.onmessage = (e) => {
 function Component() {
   useEffect(() => {
     const worker = new Worker(new URL('./worker.ts', import.meta.url));
-    
+
     worker.postMessage(data);
-    
+
     worker.onmessage = (e) => {
       setResult(e.data);
     };
@@ -735,4 +735,3 @@ function Component() {
 ---
 
 **Remember**: Profile first, optimize second. Don't optimize prematurely!
-

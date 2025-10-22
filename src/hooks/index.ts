@@ -1,6 +1,6 @@
 /**
  * Custom Hooks Export
- * 
+ *
  * Performance and utility hooks
  */
 

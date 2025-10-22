@@ -1,6 +1,6 @@
 /**
  * Performance Context
- * 
+ *
  * Optimized context with selector pattern to prevent unnecessary re-renders
  */
 
@@ -35,7 +35,7 @@ export function createOptimizedContext<T>() {
     const getState = useCallback(() => stateRef.current, []);
 
     const setState = useCallback((newState: T | ((prev: T) => T)) => {
-      const nextState = typeof newState === 'function' 
+      const nextState = typeof newState === 'function'
         ? (newState as (prev: T) => T)(stateRef.current)
         : newState;
 
@@ -150,7 +150,7 @@ const StationContext = createOptimizedContext<StationState>();
 export const StationProvider = StationContext.Provider;
 
 // Optimized selectors - only re-render when specific data changes
-export const useStations = () => 
+export const useStations = () =>
   StationContext.useSelector((state) => state.stations);
 
 export const useSelectedStationId = () =>
@@ -187,4 +187,3 @@ export function shallowEqual<T extends Record<string, any>>(a: T, b: T): boolean
 
   return true;
 }
-

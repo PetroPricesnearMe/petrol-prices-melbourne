@@ -1,6 +1,6 @@
 /**
  * Error Boundary Component
- * 
+ *
  * Catches JavaScript errors in child components and displays fallback UI
  */
 
@@ -163,4 +163,3 @@ export function withErrorBoundary<P extends object>(
 
   return WrappedComponent;
 }
-

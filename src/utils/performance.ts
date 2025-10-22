@@ -1,6 +1,6 @@
 /**
  * Performance Utilities
- * 
+ *
  * Tools for measuring and optimizing performance
  */
 
@@ -316,4 +316,3 @@ export function reportWebVitals(callback: (vitals: Partial<WebVitals>) => void):
     }
   });
 }
-

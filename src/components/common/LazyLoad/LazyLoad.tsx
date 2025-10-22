@@ -1,6 +1,6 @@
 /**
  * Lazy Load Component
- * 
+ *
  * Lazy loads components when they enter the viewport
  */
 
@@ -125,4 +125,3 @@ export const LazyImage: React.FC<LazyImageProps> = ({
     />
   );
 };
-

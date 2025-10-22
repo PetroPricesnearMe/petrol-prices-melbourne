@@ -1,6 +1,6 @@
 /**
  * Virtualization Hook
- * 
+ *
  * Efficient rendering of large lists using virtual scrolling
  */
 
@@ -212,4 +212,3 @@ export function useDynamicVirtualization({
     },
   };
 }
-

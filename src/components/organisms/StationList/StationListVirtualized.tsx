@@ -1,6 +1,6 @@
 /**
  * Virtualized Station List Component
- * 
+ *
  * Efficiently renders large lists of stations using virtualization
  */
 
@@ -76,4 +76,3 @@ const StationListVirtualizedComponent: React.FC<StationListVirtualizedProps> = (
 };
 
 export const StationListVirtualized = memo(StationListVirtualizedComponent);
-
