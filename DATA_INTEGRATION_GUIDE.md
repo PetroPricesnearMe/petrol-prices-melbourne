@@ -47,7 +47,7 @@ stations.csv → convert-stations.js → stations.json → Next.js Build → Sta
   - ISR revalidation: 1 hour
   - Dynamic metadata based on real station count
   - Passes data as props (no runtime fetching)
-  
+
 - **`src/app/directory/[suburb]/page.tsx`** - Suburb-specific pages
   - 100 top suburbs pre-generated at build time
   - On-demand generation for other suburbs
@@ -214,4 +214,3 @@ For questions or issues:
 - Test locally: `npm run dev`
 - Verify data: `cat src/data/stations-metadata.json`
 - Rebuild data: `npm run update:data`
-

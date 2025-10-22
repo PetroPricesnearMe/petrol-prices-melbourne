@@ -32,7 +32,7 @@ function parseCSVLine(line) {
 
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
-    
+
     if (char === '"') {
       inQuotes = !inQuotes;
     } else if (char === '|' && !inQuotes) {
@@ -42,14 +42,14 @@ function parseCSVLine(line) {
       current += char;
     }
   }
-  
+
   result.push(current.trim());
   return result;
 }
 
 function cleanBrandName(brand) {
   if (!brand) return 'Independent';
-  
+
   // Extract brand from image URL or text
   if (brand.includes('BP')) return 'BP';
   if (brand.includes('Shell') || brand.includes('shell')) return 'Shell';
@@ -59,7 +59,7 @@ function cleanBrandName(brand) {
   if (brand.includes('Ampol') || brand.includes('AMPOL')) return 'Ampol';
   if (brand.includes('United') || brand.includes('UNITED')) return 'United';
   if (brand.includes('Mobil') || brand.includes('MOBIL')) return 'Mobil';
-  
+
   return 'Independent';
 }
 
@@ -69,22 +69,22 @@ function convertCSVToJSON() {
   // Read CSV file
   const csvContent = fs.readFileSync(CSV_PATH, 'utf-8');
   const lines = csvContent.split('\n').filter(line => line.trim());
-  
+
   // Parse header
   const headers = parseCSVLine(lines[0]);
   console.log(`📋 Headers: ${headers.join(', ')}\n`);
-  
+
   const stations = [];
   const suburbs = new Set();
   const brands = new Set();
   const regions = new Set();
-  
+
   // Parse data rows
   for (let i = 1; i < lines.length; i++) {
     const values = parseCSVLine(lines[i]);
-    
+
     if (values.length < headers.length) continue;
-    
+
     const id = parseInt(values[0]) || i;
     const stationName = values[1] || 'Unknown Station';
     const address = values[2] || '';
@@ -94,10 +94,10 @@ function convertCSVToJSON() {
     const category = values[6] || 'PETROL STATION';
     const rawBrand = values[9] || '';
     const brand = cleanBrandName(rawBrand);
-    
+
     // Skip invalid entries
     if (!stationName || stationName === 'Station Name') continue;
-    
+
     const station = {
       id,
       name: stationName,
@@ -129,28 +129,28 @@ function convertCSVToJSON() {
       lastUpdated: new Date().toISOString(),
       verified: false,
     };
-    
+
     // Generate sample prices (in production, these would come from API)
     if (brand !== 'Independent') {
       station.fuelPrices.unleaded = parseFloat((185 + Math.random() * 25).toFixed(1));
       station.fuelPrices.diesel = parseFloat((190 + Math.random() * 20).toFixed(1));
       station.fuelPrices.premium95 = parseFloat((195 + Math.random() * 25).toFixed(1));
     }
-    
+
     stations.push(station);
-    
+
     // Collect metadata
     suburbs.add(city);
     brands.add(brand);
     regions.add(region);
   }
-  
+
   // Sort stations by suburb, then name
   stations.sort((a, b) => {
     const suburbCompare = a.suburb.localeCompare(b.suburb);
     return suburbCompare !== 0 ? suburbCompare : a.name.localeCompare(b.name);
   });
-  
+
   // Create metadata
   const metadata = {
     totalStations: stations.length,
@@ -170,29 +170,29 @@ function convertCSVToJSON() {
       bySuburb: {},
     }
   };
-  
+
   // Count by brand
   stations.forEach(station => {
     metadata.stats.byBrand[station.brand] = (metadata.stats.byBrand[station.brand] || 0) + 1;
     metadata.stats.bySuburb[station.suburb] = (metadata.stats.bySuburb[station.suburb] || 0) + 1;
   });
-  
+
   // Ensure data directory exists
   const dataDir = path.dirname(JSON_PATH);
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
-  
+
   // Write JSON files
   fs.writeFileSync(JSON_PATH, JSON.stringify(stations, null, 2));
   fs.writeFileSync(METADATA_PATH, JSON.stringify(metadata, null, 2));
-  
+
   console.log(`✅ Successfully converted ${stations.length} stations`);
   console.log(`📊 Unique suburbs: ${suburbs.size}`);
   console.log(`🏪 Unique brands: ${brands.size}`);
   console.log(`📁 Output: ${JSON_PATH}`);
   console.log(`📁 Metadata: ${METADATA_PATH}\n`);
-  
+
   // Print brand distribution
   console.log('Brand Distribution:');
   Object.entries(metadata.stats.byBrand)
@@ -211,4 +211,3 @@ try {
   console.error('❌ Error converting CSV:', error.message);
   process.exit(1);
 }
-

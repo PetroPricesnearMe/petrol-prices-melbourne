@@ -44,8 +44,8 @@ export default function DirectoryPage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Suspense fallback={<DirectoryLoading />}>
-        <StationDirectoryClient 
-          initialStations={stationsData} 
+        <StationDirectoryClient
+          initialStations={stationsData}
           metadata={metadataJson}
         />
       </Suspense>

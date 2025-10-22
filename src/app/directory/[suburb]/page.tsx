@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { suburb } = await params;
   const suburbName = suburb.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-  
+
   const stations = (stationsData as Station[]).filter(
     (s) => s.suburb.toLowerCase().replace(/\s+/g, '-') === suburb
   );
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SuburbDirectoryPage({ params }: Props) {
   const { suburb } = await params;
   const suburbName = suburb.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-  
+
   const stations = (stationsData as Station[]).filter(
     (s) => s.suburb.toLowerCase().replace(/\s+/g, '-') === suburb
   );
@@ -190,13 +190,13 @@ export default async function SuburbDirectoryPage({ params }: Props) {
           <div className="mt-16 prose dark:prose-invert max-w-none">
             <h2>Petrol Stations in {suburbName}, Victoria</h2>
             <p>
-              Compare fuel prices across {stations.length} petrol stations in {suburbName}. 
-              Our directory includes stations from major brands like BP, Shell, Caltex, and 7-Eleven, 
+              Compare fuel prices across {stations.length} petrol stations in {suburbName}.
+              Our directory includes stations from major brands like BP, Shell, Caltex, and 7-Eleven,
               as well as independent operators. Find the cheapest petrol prices and save money on every fill-up.
             </p>
             <h3>About {suburbName} Fuel Prices</h3>
             <p>
-              The average petrol price in {suburbName} is currently {avgPrice.toFixed(1)}¢ per liter for unleaded fuel. 
+              The average petrol price in {suburbName} is currently {avgPrice.toFixed(1)}¢ per liter for unleaded fuel.
               Use our directory to compare prices and find the best deals in your area.
             </p>
           </div>
@@ -205,4 +205,3 @@ export default async function SuburbDirectoryPage({ params }: Props) {
     </main>
   );
 }
-

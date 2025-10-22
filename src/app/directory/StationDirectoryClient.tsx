@@ -505,7 +505,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
               <div className="mt-16 prose dark:prose-invert max-w-none">
                 <h2>Melbourne Petrol Station Directory</h2>
                 <p>
-                  Find the cheapest fuel prices across Melbourne with our comprehensive directory of {metadata.totalStations}+ petrol stations. 
+                  Find the cheapest fuel prices across Melbourne with our comprehensive directory of {metadata.totalStations}+ petrol stations.
                   Compare prices from major brands including BP, Shell, Caltex, 7-Eleven, and independent operators across {metadata.suburbs.length}+ suburbs.
                 </p>
                 <h3>Why Use Our Directory?</h3>
