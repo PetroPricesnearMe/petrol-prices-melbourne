@@ -1,0 +1,281 @@
+/**
+ * Text Component Styles
+ */
+
+.text {
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================================
+ * Typography Variants
+ * ============================================================================ */
+
+.text--h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.text--h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.text--h3 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.375;
+}
+
+.text--h4 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.375;
+}
+
+.text--h5 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.text--h6 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.text--bodyLarge {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.625;
+}
+
+.text--body {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text--bodySmall {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text--label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.025em;
+}
+
+.text--caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text--overline {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.text--button {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.025em;
+}
+
+.text--buttonSmall {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.025em;
+}
+
+.text--buttonLarge {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.025em;
+}
+
+/* ============================================================================
+ * Color Variants
+ * ============================================================================ */
+
+.text--color-primary {
+  color: #212121;
+}
+
+.text--color-secondary {
+  color: #757575;
+}
+
+.text--color-disabled {
+  color: #BDBDBD;
+}
+
+.text--color-inverse {
+  color: #FFFFFF;
+}
+
+.text--color-success {
+  color: #4CAF50;
+}
+
+.text--color-warning {
+  color: #FF9800;
+}
+
+.text--color-error {
+  color: #F44336;
+}
+
+/* ============================================================================
+ * Alignment
+ * ============================================================================ */
+
+.text--align-left {
+  text-align: left;
+}
+
+.text--align-center {
+  text-align: center;
+}
+
+.text--align-right {
+  text-align: right;
+}
+
+.text--align-justify {
+  text-align: justify;
+}
+
+/* ============================================================================
+ * Font Weight
+ * ============================================================================ */
+
+.text--weight-light {
+  font-weight: 300;
+}
+
+.text--weight-regular {
+  font-weight: 400;
+}
+
+.text--weight-medium {
+  font-weight: 500;
+}
+
+.text--weight-semibold {
+  font-weight: 600;
+}
+
+.text--weight-bold {
+  font-weight: 700;
+}
+
+/* ============================================================================
+ * Text Decoration
+ * ============================================================================ */
+
+.text--decoration-none {
+  text-decoration: none;
+}
+
+.text--decoration-underline {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.text--decoration-line-through {
+  text-decoration: line-through;
+}
+
+/* ============================================================================
+ * Truncation
+ * ============================================================================ */
+
+.text--truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Line clamp utilities */
+.text--line-clamp-1,
+.text--line-clamp-2,
+.text--line-clamp-3,
+.text--line-clamp-4,
+.text--line-clamp-5 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text--line-clamp-1 {
+  -webkit-line-clamp: 1;
+}
+
+.text--line-clamp-2 {
+  -webkit-line-clamp: 2;
+}
+
+.text--line-clamp-3 {
+  -webkit-line-clamp: 3;
+}
+
+.text--line-clamp-4 {
+  -webkit-line-clamp: 4;
+}
+
+.text--line-clamp-5 {
+  -webkit-line-clamp: 5;
+}
+
+/* ============================================================================
+ * Responsive Typography
+ * ============================================================================ */
+
+@media (max-width: 1024px) {
+  .text--h1 {
+    font-size: 2.25rem;
+  }
+
+  .text--h2 {
+    font-size: 1.875rem;
+  }
+
+  .text--h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .text--h1 {
+    font-size: 1.875rem;
+  }
+
+  .text--h2 {
+    font-size: 1.5rem;
+  }
+
+  .text--h3 {
+    font-size: 1.25rem;
+  }
+
+  .text--h4 {
+    font-size: 1.125rem;
+  }
+}
+
