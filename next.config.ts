@@ -4,22 +4,22 @@ const nextConfig: NextConfig = {
   /* Core Configuration */
   reactStrictMode: true,
   poweredByHeader: false,
-  
+
   /* TypeScript */
   typescript: {
     ignoreBuildErrors: false,
   },
-  
+
   /* ESLint */
   eslint: {
     ignoreDuringBuilds: false,
     dirs: ['src'],
   },
-  
+
   /* Performance Optimizations */
   compress: true,
   swcMinify: true,
-  
+
   /* Image Optimization */
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  
+
   /* Headers for Security and Performance */
   async headers() {
     return [
@@ -72,7 +72,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  
+
   /* Webpack Configuration */
   webpack: (config, { isServer }) => {
     // Add custom webpack configurations here
@@ -84,19 +84,19 @@ const nextConfig: NextConfig = {
         tls: false,
       };
     }
-    
+
     return config;
   },
-  
+
   /* Experimental Features */
   experimental: {
     optimizePackageImports: ['leaflet', 'react-leaflet'],
     webpackMemoryOptimizations: true,
   },
-  
+
   /* Output Configuration */
   output: 'standalone',
-  
+
   /* Environment Variables */
   env: {
     NEXT_PUBLIC_APP_VERSION: process.env.npm_package_version || '2.0.0',
@@ -104,4 +104,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-

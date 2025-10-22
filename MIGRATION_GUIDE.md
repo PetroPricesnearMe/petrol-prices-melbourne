@@ -170,13 +170,13 @@ import { useState, useEffect } from 'react';
 
 function Stations() {
   const [stations, setStations] = useState([]);
-  
+
   useEffect(() => {
     fetch('/api/stations')
       .then(res => res.json())
       .then(data => setStations(data));
   }, []);
-  
+
   return <div>{/* render stations */}</div>;
 }
 ```
@@ -189,10 +189,10 @@ import { useStations } from '@/hooks';
 
 function Stations() {
   const { data: stations, isLoading, error } = useStations();
-  
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error!</div>;
-  
+
   return <div>{/* render stations */}</div>;
 }
 ```
@@ -428,4 +428,3 @@ After migration:
 ---
 
 Need help? Create an issue or reach out to the development team!
-

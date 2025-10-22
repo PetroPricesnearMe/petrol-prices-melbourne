@@ -24,10 +24,10 @@ const apiClient: AxiosInstance = axios.create(config);
 apiClient.interceptors.request.use(
   (config) => {
     // Add auth token if available
-    const token = typeof window !== 'undefined' 
+    const token = typeof window !== 'undefined'
       ? localStorage.getItem('authToken')
       : null;
-    
+
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -100,4 +100,3 @@ export const api = {
 };
 
 export default apiClient;
-

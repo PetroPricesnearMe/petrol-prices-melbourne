@@ -60,7 +60,7 @@
    ```bash
    cp .env.example .env
    ```
-   
+
    Edit `.env` with your configuration:
    ```env
    NEXT_PUBLIC_APP_URL=http://localhost:3000
@@ -262,4 +262,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Made with ❤️ in Australia**
-

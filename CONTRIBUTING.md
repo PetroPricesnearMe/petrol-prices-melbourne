@@ -200,13 +200,13 @@ export interface MyComponentProps {
 export function MyComponent({ title }: MyComponentProps) {
   // 3a. Hooks
   const [state, setState] = useState();
-  
+
   // 3b. Handlers
   const handleClick = () => {};
-  
+
   // 3c. Effects
   useEffect(() => {}, []);
-  
+
   // 3d. Render
   return <div>{/* ... */}</div>;
 }
@@ -431,7 +431,7 @@ describe('Button', () => {
   it('handles click events', () => {
     const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Click me</Button>);
-    
+
     fireEvent.click(screen.getByText('Click me'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -518,4 +518,3 @@ Contributors will be:
 - Credited in the README
 
 Thank you for contributing! 🎉
-
