@@ -38,6 +38,7 @@
     "code:quality": "bash scripts/code-quality-check.sh",
     "code:unused": "node scripts/unused-code-detector.js",
     "seo:check": "lighthouse http://localhost:3000 --only-categories=seo --view",
+    "sitemap:generate": "node scripts/generate-sitemap.js",
     "clean": "rm -rf .next node_modules",
     "prepare": "husky install",
     "update:data": "node scripts/convert-stations.js"
@@ -103,6 +104,7 @@
     "postcss": "^8.4.33",
     "prettier": "^3.2.4",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "sitemap": "^8.0.1",
     "storybook": "^9.1.13",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
