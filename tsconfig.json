@@ -59,6 +59,9 @@
       ],
       "@/design-system/*": [
         "./src/design-system/*"
+      ],
+      "@/data/*": [
+        "./src/data/*"
       ]
     },
     "plugins": [

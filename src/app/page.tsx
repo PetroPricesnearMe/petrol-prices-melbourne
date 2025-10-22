@@ -169,6 +169,40 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Popular Suburbs */}
+      <section className="py-16 bg-white dark:bg-gray-800">
+        <div className={patterns.container()}>
+          <div className="text-center mb-12">
+            <h2 className={patterns.text.h2 + ' mb-4'}>
+              Find Petrol Stations by Suburb
+            </h2>
+            <p className={patterns.text.body + ' max-w-2xl mx-auto'}>
+              Explore fuel prices in popular Melbourne suburbs
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+            {[
+              'Melbourne', 'Brunswick', 'Preston', 'Coburg', 'Richmond', 'Fitzroy',
+              'Broadmeadows', 'Werribee', 'Dandenong', 'Frankston', 'Box Hill', 'Ringwood',
+              'Sunbury', 'Craigieburn', 'Pakenham', 'Geelong', 'Bendigo', 'Ballarat'
+            ].map((suburb) => (
+              <Link
+                key={suburb}
+                href={`/directory/${suburb.toLowerCase().replace(/\s+/g, '-')}`}
+                className="btn btn-outline btn-sm text-center hover:btn-primary transition-all"
+              >
+                {suburb}
+              </Link>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/directory" className="btn btn-primary">
+              View All Suburbs →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="bg-gradient-primary text-white py-20">
         <div className={patterns.container()}>

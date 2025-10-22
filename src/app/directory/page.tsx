@@ -1,6 +1,7 @@
 /**
  * Station Directory Page
  * Complete listing of all petrol stations with advanced filtering
+ * Uses ISR (Incremental Static Regeneration) for optimal SEO
  */
 
 import type { Metadata } from 'next';
@@ -9,11 +10,13 @@ import { Suspense } from 'react';
 import { LoadingCard } from '@/components/ui/LoadingSpinner';
 
 import { StationDirectoryClient } from './StationDirectoryClient';
+import stationsData from '@/data/stations.json';
+import metadataJson from '@/data/stations-metadata.json';
 
 export const metadata: Metadata = {
-  title: 'Station Directory | Find All Petrol Stations',
+  title: `Melbourne Petrol Stations Directory - ${metadataJson.totalStations}+ Stations | Find Cheapest Fuel`,
   description:
-    'Browse our complete directory of 250+ petrol stations across Melbourne. Compare live fuel prices, filter by location, brand, and fuel type. Find the cheapest petrol near you.',
+    `Browse our complete directory of ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ Melbourne suburbs. Compare live fuel prices from BP, Shell, Caltex, 7-Eleven, and more. Find the cheapest petrol near you.`,
   keywords: [
     'petrol station directory',
     'melbourne petrol stations',
@@ -21,20 +24,30 @@ export const metadata: Metadata = {
     'station listing',
     'petrol finder',
     'fuel comparison',
+    'BP stations',
+    'Shell stations',
+    'Caltex fuel prices',
+    '7-Eleven petrol',
   ],
   openGraph: {
-    title: 'Melbourne Petrol Station Directory | Live Fuel Prices',
+    title: `Melbourne Petrol Station Directory | ${metadataJson.totalStations}+ Stations`,
     description:
-      'Complete directory of 250+ petrol stations across Melbourne with real-time fuel prices.',
+      `Complete directory of ${metadataJson.totalStations}+ petrol stations across Melbourne with real-time fuel prices. Find the cheapest fuel near you.`,
     type: 'website',
   },
 };
+
+// Enable ISR - Revalidate every hour for fresh data while maintaining performance
+export const revalidate = 3600;
 
 export default function DirectoryPage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Suspense fallback={<DirectoryLoading />}>
-        <StationDirectoryClient />
+        <StationDirectoryClient 
+          initialStations={stationsData} 
+          metadata={metadataJson}
+        />
       </Suspense>
     </main>
   );
