@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import Image from 'next/image';
 import dataSourceManager from '../services/DataSourceManager';
 import { trackSearch, trackFilter } from '../utils/analytics';
-// CSS imported in pages/_app.js
 
 /**
- * Station Cards Component
- * Displays Melbourne petrol stations with customizable brand logos
- * Simplified design focusing on Unleaded & Diesel prices
+ * Station Cards Component - Fully Responsive with Tailwind CSS
+ * Mobile-first approach with fluid typography and touch-friendly interfaces
  * 
  * @component
  */
@@ -20,7 +19,6 @@ const StationCards = () => {
   const [filterFuelType, setFilterFuelType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
-
 
   // Parse CSV data
   const parseCSV = useCallback((text) => {
@@ -78,7 +76,7 @@ const StationCards = () => {
           ]
         };
       })
-      .filter(s => s.name); // Filter out empty rows
+      .filter(s => s.name);
   }, []);
 
   // Load CSV file from public folder
@@ -139,7 +137,6 @@ const StationCards = () => {
 
   const fuelTypes = useMemo(() => {
     const allFuelTypes = stations.flatMap(s => {
-      // Ensure fuelPrices is an array and contains objects with type property
       if (!Array.isArray(s.fuelPrices)) return [];
       return s.fuelPrices
         .filter(f => f && typeof f === 'object' && f.type)
@@ -153,7 +150,6 @@ const StationCards = () => {
   const filteredStations = useMemo(() => {
     let filtered = [...stations];
 
-    // Search filter
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
       filtered = filtered.filter(station =>
@@ -166,25 +162,21 @@ const StationCards = () => {
       trackSearch(searchTerm, filtered.length);
     }
 
-    // Brand filter
     if (filterBrand !== 'all') {
       filtered = filtered.filter(s => s.brand === filterBrand);
       trackFilter('brand', filterBrand);
     }
 
-    // Region filter
     if (filterRegion !== 'all') {
       filtered = filtered.filter(s => s.region === filterRegion);
       trackFilter('region', filterRegion);
     }
 
-    // Suburb filter
     if (filterSuburb !== 'all') {
       filtered = filtered.filter(s => s.city === filterSuburb);
       trackFilter('suburb', filterSuburb);
     }
 
-    // Fuel type filter
     if (filterFuelType !== 'all') {
       filtered = filtered.filter(s =>
         Array.isArray(s.fuelPrices) &&
@@ -224,10 +216,8 @@ const StationCards = () => {
     if (!brand) return BRAND_IMAGES.default;
     const brandLower = (typeof brand === 'string' ? brand : '').toLowerCase();
     
-    // Check for exact matches first
     if (BRAND_IMAGES[brandLower]) return BRAND_IMAGES[brandLower];
     
-    // Check for partial matches
     if (brandLower.includes('shell')) return BRAND_IMAGES.shell;
     if (brandLower.includes('bp')) return BRAND_IMAGES.bp;
     if (brandLower.includes('7') || brandLower.includes('seven')) return BRAND_IMAGES['7-eleven'];
@@ -241,7 +231,6 @@ const StationCards = () => {
     return BRAND_IMAGES.default;
   };
 
-
   // Format price
   const formatPrice = (price) => {
     if (!price || price === 0) return 'N/A';
@@ -250,236 +239,288 @@ const StationCards = () => {
 
   if (loading) {
     return (
-      <div className="station-cards-loading">
-        <div className="loading-spinner"></div>
-        <p>Loading stations...</p>
+      <div className="flex flex-col items-center justify-center min-h-[400px] p-8 sm:p-12">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-gray-200 border-t-primary-500 rounded-full animate-spin mb-4" />
+        <p className="text-base sm:text-lg text-gray-600 font-medium">Loading stations...</p>
       </div>
     );
   }
 
   return (
-    <div className="station-cards-container">
-      {/* Header */}
-      <div className="cards-header">
-        <h2>Melbourne Petrol Stations</h2>
-        <p className="cards-subtitle">
-          Find the best fuel prices near you • {filteredStations.length} stations available
-        </p>
-      </div>
+    <div className="w-full min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        {/* Header - Responsive */}
+        <header className="text-center mb-8 sm:mb-10 lg:mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-3 sm:mb-4 tracking-tight">
+            Melbourne Petrol Stations
+          </h2>
+          <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
+            Find the best fuel prices near you • <span className="font-semibold text-primary-600">{filteredStations.length}</span> stations available
+          </p>
+        </header>
 
-      {/* Enhanced Filters */}
-      <div className="cards-filters">
-        <div className="filter-group">
-          <label htmlFor="search">🔍 Search Stations</label>
-          <input
-            id="search"
-            name="search"
-            type="search"
-            placeholder="Search by name, address, suburb..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
+        {/* Filters - Mobile-First Layout */}
+        <div className="mb-6 sm:mb-8 lg:mb-10 p-4 sm:p-6 lg:p-8 bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-gray-200 shadow-soft">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+            {/* Search Input */}
+            <div className="sm:col-span-2 lg:col-span-3 xl:col-span-1">
+              <label htmlFor="search" className="block text-xs sm:text-sm font-semibold text-gray-700 uppercase tracking-wide mb-1.5 sm:mb-2">
+                🔍 Search
+              </label>
+              <input
+                id="search"
+                name="search"
+                type="search"
+                placeholder="Name, address, suburb..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 transition-all duration-200 hover:border-gray-400 bg-white shadow-sm min-h-[44px] touch-manipulation"
+              />
+            </div>
+
+            {/* Brand Filter */}
+            <div className="col-span-1">
+              <label htmlFor="brand-filter" className="block text-xs sm:text-sm font-semibold text-gray-700 uppercase tracking-wide mb-1.5 sm:mb-2">
+                🏪 Brand
+              </label>
+              <select
+                id="brand-filter"
+                name="brand-filter"
+                value={filterBrand}
+                onChange={(e) => setFilterBrand(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 transition-all duration-200 hover:border-gray-400 bg-white shadow-sm cursor-pointer min-h-[44px] touch-manipulation"
+              >
+                {brands.map(brand => (
+                  <option key={brand} value={brand}>
+                    {brand === 'all' ? 'All Brands' : brand}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Suburb Filter */}
+            <div className="col-span-1">
+              <label htmlFor="suburb-filter" className="block text-xs sm:text-sm font-semibold text-gray-700 uppercase tracking-wide mb-1.5 sm:mb-2">
+                🏘️ Suburb
+              </label>
+              <select
+                id="suburb-filter"
+                name="suburb-filter"
+                value={filterSuburb}
+                onChange={(e) => setFilterSuburb(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 transition-all duration-200 hover:border-gray-400 bg-white shadow-sm cursor-pointer min-h-[44px] touch-manipulation"
+              >
+                {suburbs.map(suburb => (
+                  <option key={suburb} value={suburb}>
+                    {suburb === 'all' ? 'All Suburbs' : suburb}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Fuel Type Filter */}
+            <div className="col-span-1">
+              <label htmlFor="fuel-filter" className="block text-xs sm:text-sm font-semibold text-gray-700 uppercase tracking-wide mb-1.5 sm:mb-2">
+                ⛽ Fuel Type
+              </label>
+              <select
+                id="fuel-filter"
+                name="fuel-filter"
+                value={filterFuelType}
+                onChange={(e) => setFilterFuelType(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 transition-all duration-200 hover:border-gray-400 bg-white shadow-sm cursor-pointer min-h-[44px] touch-manipulation"
+              >
+                {fuelTypes.map(fuelType => (
+                  <option key={fuelType} value={fuelType}>
+                    {fuelType === 'all' ? 'All Fuel Types' : fuelType}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Region Filter */}
+            <div className="col-span-1">
+              <label htmlFor="region-filter" className="block text-xs sm:text-sm font-semibold text-gray-700 uppercase tracking-wide mb-1.5 sm:mb-2">
+                📍 Region
+              </label>
+              <select
+                id="region-filter"
+                name="region-filter"
+                value={filterRegion}
+                onChange={(e) => setFilterRegion(e.target.value)}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 transition-all duration-200 hover:border-gray-400 bg-white shadow-sm cursor-pointer min-h-[44px] touch-manipulation"
+              >
+                {regions.map(region => (
+                  <option key={region} value={region}>
+                    {region === 'all' ? 'All Regions' : region}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div className="filter-group">
-          <label htmlFor="brand-filter">🏪 Brand</label>
-          <select
-            id="brand-filter"
-            name="brand-filter"
-            value={filterBrand}
-            onChange={(e) => setFilterBrand(e.target.value)}
-            className="filter-select"
-          >
-            {brands.map(brand => (
-              <option key={brand} value={brand}>
-                {brand === 'all' ? 'All Brands' : brand}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Cards Grid - Responsive Layout */}
+        {paginatedStations.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 xl:gap-8 mb-8 sm:mb-10">
+            {paginatedStations.map((station) => {
+              const unleadedPrice = Array.isArray(station.fuelPrices) 
+                ? station.fuelPrices.find(f => f && f.type && f.type.toLowerCase().includes('unleaded'))
+                : null;
+              
+              const dieselPrice = Array.isArray(station.fuelPrices)
+                ? station.fuelPrices.find(f => f && f.type && f.type.toLowerCase().includes('diesel'))
+                : null;
 
-        <div className="filter-group">
-          <label htmlFor="suburb-filter">🏘️ Suburb</label>
-          <select
-            id="suburb-filter"
-            name="suburb-filter"
-            value={filterSuburb}
-            onChange={(e) => setFilterSuburb(e.target.value)}
-            className="filter-select"
-          >
-            {suburbs.map(suburb => (
-              <option key={suburb} value={suburb}>
-                {suburb === 'all' ? 'All Suburbs' : suburb}
-              </option>
-            ))}
-          </select>
-        </div>
+              return (
+                <article 
+                  key={station.id} 
+                  className="group relative flex flex-col bg-gradient-to-b from-white to-gray-50 rounded-3xl shadow-soft hover:shadow-strong border border-gray-200 overflow-hidden transition-all duration-500 hover:-translate-y-3 hover:scale-[1.02] min-h-[400px] sm:min-h-[420px] lg:min-h-[440px]"
+                >
+                  {/* Top Gradient Border */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  {/* Card Header with Brand Logo */}
+                  <header className="relative h-24 sm:h-28 bg-gradient-to-br from-gray-50 to-white flex items-start justify-between p-4 sm:p-5 border-b border-gray-100">
+                    <div className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
+                      {station.brand || 'Independent'}
+                    </div>
+                    <div className="w-16 h-10 sm:w-20 sm:h-12 relative flex items-center justify-end">
+                      <img
+                        src={getBrandLogo(station.brand)}
+                        alt={`${station.brand || 'Station'} logo`}
+                        className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                        onError={(e) => {
+                          e.target.src = '/images/brands/default-logo.svg';
+                        }}
+                        loading="lazy"
+                      />
+                    </div>
+                  </header>
 
-        <div className="filter-group">
-          <label htmlFor="fuel-filter">⛽ Fuel Type</label>
-          <select
-            id="fuel-filter"
-            name="fuel-filter"
-            value={filterFuelType}
-            onChange={(e) => setFilterFuelType(e.target.value)}
-            className="filter-select"
-          >
-            {fuelTypes.map(fuelType => (
-              <option key={fuelType} value={fuelType}>
-                {fuelType === 'all' ? 'All Fuel Types' : fuelType}
-              </option>
-            ))}
-          </select>
-        </div>
+                  {/* Card Content */}
+                  <div className="flex-1 flex flex-col p-5 sm:p-6 space-y-4">
+                    <div className="space-y-2">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-primary-600 transition-colors">
+                        {station.name}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed line-clamp-2">
+                        {station.address && `${station.address}, `}
+                        {station.city && `${station.city} `}
+                        {station.postalCode && station.postalCode}
+                      </p>
+                    </div>
 
-        <div className="filter-group">
-          <label htmlFor="region-filter">📍 Region</label>
-          <select
-            id="region-filter"
-            name="region-filter"
-            value={filterRegion}
-            onChange={(e) => setFilterRegion(e.target.value)}
-            className="filter-select"
-          >
-            {regions.map(region => (
-              <option key={region} value={region}>
-                {region === 'all' ? 'All Regions' : region}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Cards Grid */}
-      {paginatedStations.length > 0 ? (
-        <div className="cards-grid">
-          {paginatedStations.map((station) => {
-            // Filter to show only Unleaded and Diesel prices
-            const unleadedPrice = Array.isArray(station.fuelPrices) 
-              ? station.fuelPrices.find(f => f && f.type && f.type.toLowerCase().includes('unleaded'))
-              : null;
-            
-            const dieselPrice = Array.isArray(station.fuelPrices)
-              ? station.fuelPrices.find(f => f && f.type && f.type.toLowerCase().includes('diesel'))
-              : null;
-
-            return (
-              <div key={station.id} className="station-card">
-                {/* Card Header with Brand Logo */}
-                <div className="card-header">
-                  <img
-                    src={getBrandLogo(station.brand)}
-                    alt={`${station.brand || 'Station'} logo`}
-                    className="brand-logo"
-                    onError={(e) => {
-                      e.target.src = '/images/brands/default-logo.svg';
-                    }}
-                  />
-                  <div className="brand-badge">{station.brand || 'Independent'}</div>
-                </div>
-
-                {/* Card Content */}
-                <div className="card-content">
-                  <h3 className="station-name">{station.name}</h3>
-                  <p className="station-address">
-                    {station.address && `${station.address}, `}
-                    {station.city && `${station.city} `}
-                    {station.postalCode && station.postalCode}
-                  </p>
-
-                  {/* Fuel Prices - Only Unleaded & Diesel */}
-                  <div className="fuel-prices">
-                    {/* Unleaded Price */}
-                    <div className={`fuel-price-item ${unleadedPrice ? 'unleaded' : ''}`}>
-                      <div className="fuel-type">
-                        <div className="fuel-icon unleaded">U</div>
-                        Unleaded
+                    {/* Fuel Prices - Touch-Friendly */}
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 flex-1">
+                      {/* Unleaded Price */}
+                      <div className="relative flex flex-col items-center justify-center p-3 sm:p-4 bg-gradient-to-br from-green-50 to-white border-2 border-green-200 rounded-2xl transition-all duration-300 hover:border-green-400 hover:shadow-md hover:-translate-y-1 min-h-[100px] touch-manipulation">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 text-white text-xs font-bold rounded-lg shadow-sm">
+                            U
+                          </span>
+                          <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                            Unleaded
+                          </span>
+                        </div>
+                        <div className="text-xl sm:text-2xl font-bold text-green-600">
+                          {unleadedPrice && unleadedPrice.price ? formatPrice(unleadedPrice.price) : 'N/A'}
+                        </div>
                       </div>
-                      <div className="price">
-                        {unleadedPrice && unleadedPrice.price 
-                          ? formatPrice(unleadedPrice.price)
-                          : 'N/A'}
+
+                      {/* Diesel Price */}
+                      <div className="relative flex flex-col items-center justify-center p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 rounded-2xl transition-all duration-300 hover:border-blue-400 hover:shadow-md hover:-translate-y-1 min-h-[100px] touch-manipulation">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-lg shadow-sm">
+                            D
+                          </span>
+                          <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                            Diesel
+                          </span>
+                        </div>
+                        <div className="text-xl sm:text-2xl font-bold text-blue-600">
+                          {dieselPrice && dieselPrice.price ? formatPrice(dieselPrice.price) : 'N/A'}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Diesel Price */}
-                    <div className={`fuel-price-item ${dieselPrice ? 'diesel' : ''}`}>
-                      <div className="fuel-type">
-                        <div className="fuel-icon diesel">D</div>
-                        Diesel
-                      </div>
-                      <div className="price">
-                        {dieselPrice && dieselPrice.price 
-                          ? formatPrice(dieselPrice.price)
-                          : 'N/A'}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Actions */}
-                  <div className="card-actions">
-                    {station.latitude && station.longitude ? (
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="action-btn"
-                      >
-                        🧭 Directions
-                      </a>
-                    ) : (
-                      <button className="action-btn" disabled>
-                        📍 No Location
+                    {/* Card Actions - Touch-Friendly Buttons */}
+                    <div className="grid grid-cols-2 gap-3 pt-4 border-t border-gray-100">
+                      {station.latitude && station.longitude ? (
+                        <a
+                          href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[44px] touch-manipulation active:scale-95"
+                        >
+                          <span aria-hidden="true">🧭</span>
+                          <span>Directions</span>
+                        </a>
+                      ) : (
+                        <button 
+                          disabled 
+                          className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-300 text-gray-500 text-sm font-bold rounded-xl cursor-not-allowed min-h-[44px]"
+                        >
+                          <span aria-hidden="true">📍</span>
+                          <span>No Location</span>
+                        </button>
+                      )}
+                      <button className="flex items-center justify-center gap-2 px-4 py-3 bg-white text-primary-600 text-sm font-bold rounded-xl border-2 border-primary-500 hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[44px] touch-manipulation active:scale-95">
+                        <span aria-hidden="true">ℹ️</span>
+                        <span>More Info</span>
                       </button>
-                    )}
-                    <button className="action-btn secondary">
-                      ℹ️ More Info
-                    </button>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="no-results">
-          <h3>No stations found</h3>
-          <p>Try adjusting your search criteria or filters</p>
-        </div>
-      )}
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 sm:py-16 lg:py-20 px-4">
+            <div className="text-6xl sm:text-7xl lg:text-8xl mb-4 sm:mb-6">🔍</div>
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">No stations found</h3>
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 text-center max-w-md">
+              Try adjusting your search criteria or filters to find stations
+            </p>
+          </div>
+        )}
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="cards-pagination">
-          <button
-            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
-            className="page-btn"
-          >
-            ← Previous
-          </button>
+        {/* Pagination - Mobile-Friendly */}
+        {totalPages > 1 && (
+          <nav className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-6 sm:mb-8" aria-label="Pagination">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="w-full sm:w-auto px-6 py-3 bg-primary-500 text-white font-semibold rounded-xl disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed hover:bg-primary-600 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg min-h-[44px] touch-manipulation"
+              aria-label="Previous page"
+            >
+              ← Previous
+            </button>
 
-          <span className="page-info">
-            Page {currentPage} of {totalPages}
-          </span>
+            <span className="text-sm sm:text-base font-medium text-gray-700 px-4 py-2 bg-gray-100 rounded-xl">
+              Page <span className="font-bold text-primary-600">{currentPage}</span> of <span className="font-bold">{totalPages}</span>
+            </span>
 
-          <button
-            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
-            className="page-btn"
-          >
-            Next →
-          </button>
-        </div>
-      )}
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="w-full sm:w-auto px-6 py-3 bg-primary-500 text-white font-semibold rounded-xl disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed hover:bg-primary-600 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg min-h-[44px] touch-manipulation"
+              aria-label="Next page"
+            >
+              Next →
+            </button>
+          </nav>
+        )}
 
-      {/* Footer */}
-      <div className="cards-footer">
-        <p>
-          Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, filteredStations.length)} of {filteredStations.length} stations
-          {(searchTerm || filterBrand !== 'all' || filterRegion !== 'all' || filterSuburb !== 'all' || filterFuelType !== 'all') && ` (filtered from ${stations.length} total)`}
-        </p>
+        {/* Footer Info */}
+        <footer className="text-center p-4 sm:p-6 bg-gray-100 rounded-2xl border border-gray-200">
+          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            Showing <span className="font-semibold text-gray-900">{((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, filteredStations.length)}</span> of <span className="font-semibold text-primary-600">{filteredStations.length}</span> stations
+            {(searchTerm || filterBrand !== 'all' || filterRegion !== 'all' || filterSuburb !== 'all' || filterFuelType !== 'all') && 
+              ` (filtered from ${stations.length} total)`
+            }
+          </p>
+        </footer>
       </div>
     </div>
   );
