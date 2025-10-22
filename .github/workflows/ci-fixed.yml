@@ -16,17 +16,17 @@ jobs:
     name: Lint Code
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -34,14 +34,14 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Run ESLint
         run: npm run lint || echo "::warning::ESLint found issues"
         continue-on-error: true
-        
+
       - name: Check code formatting
         run: npm run format:check || echo "::warning::Formatting issues found"
         continue-on-error: true
@@ -51,17 +51,17 @@ jobs:
     name: TypeScript Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -69,10 +69,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Run TypeScript check
         run: npm run type-check || echo "::warning::Type errors found (gradual migration in progress)"
         continue-on-error: true
@@ -82,17 +82,17 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -100,17 +100,17 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Run tests
         run: npm run test:ci
         env:
           CI: true
           NODE_ENV: test
         continue-on-error: true
-        
+
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         if: always()
@@ -119,7 +119,7 @@ jobs:
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
-          
+
       - name: Archive coverage
         uses: actions/upload-artifact@v4
         if: always()
@@ -133,17 +133,17 @@ jobs:
     name: Playwright E2E Tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -151,32 +151,32 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
-        
+
       - name: Build application
         run: npm run build
         env:
           CI: false
           NODE_ENV: production
         continue-on-error: false
-        
+
       - name: Start application
         run: npm start &
         env:
           PORT: 3000
-          
+
       - name: Wait for server
         run: npx wait-on http://localhost:3000 --timeout 60000
-        
+
       - name: Run Playwright tests
         run: npm run test:e2e
         continue-on-error: true
-        
+
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
         if: always()
@@ -190,17 +190,17 @@ jobs:
     name: Build Application
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -208,17 +208,17 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Build application
         run: npm run build
         env:
           CI: false
           NODE_ENV: production
           NEXT_PUBLIC_ENV: production
-          
+
       - name: Check build output
         run: |
           if [ ! -d ".next" ]; then
@@ -227,7 +227,7 @@ jobs:
           fi
           BUNDLE_SIZE=$(du -sh .next | cut -f1)
           echo "✅ Build successful! Size: $BUNDLE_SIZE"
-          
+
       - name: Archive build
         uses: actions/upload-artifact@v4
         with:
@@ -242,17 +242,17 @@ jobs:
     name: Accessibility Tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -260,10 +260,10 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Run accessibility tests
         run: npm run test:a11y || echo "::warning::Accessibility tests found issues"
         continue-on-error: true
@@ -273,17 +273,17 @@ jobs:
     name: Security Audit
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Run npm audit
         run: npm audit --audit-level=high || echo "::warning::Security vulnerabilities found"
         continue-on-error: true
@@ -294,7 +294,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [lint, typecheck, test, build, accessibility, e2e-playwright, security]
     if: always()
-    
+
     steps:
       - name: Check results
         run: |
@@ -309,12 +309,11 @@ jobs:
           echo "| Accessibility | ${{ needs.accessibility.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| E2E Tests | ${{ needs.e2e-playwright.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Security | ${{ needs.security.result }} |" >> $GITHUB_STEP_SUMMARY
-          
+
           # Fail only if build failed
           if [[ "${{ needs.build.result }}" != "success" ]]; then
             echo "::error::Build failed - blocking merge"
             exit 1
           fi
-          
-          echo "✅ CI checks complete"
 
+          echo "✅ CI checks complete"

@@ -19,19 +19,19 @@ jobs:
     name: Code Quality
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -39,18 +39,18 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Run ESLint
         run: npm run lint || echo "::warning::ESLint issues found"
         continue-on-error: true
-        
+
       - name: Check code formatting
         run: npm run format:check || echo "::warning::Formatting issues found"
         continue-on-error: true
-        
+
       - name: TypeScript type check
         run: npm run type-check || echo "::warning::Type errors found (gradual migration)"
         continue-on-error: true
@@ -63,17 +63,17 @@ jobs:
     permissions:
       contents: read
       security-events: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -81,16 +81,16 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Run npm audit
         run: |
           npm audit --audit-level=moderate --json > npm-audit.json || true
           npm audit --audit-level=moderate || echo "::warning::Security vulnerabilities found"
         continue-on-error: true
-        
+
       - name: Upload npm audit results
         uses: actions/upload-artifact@v4
         if: always()
@@ -98,7 +98,7 @@ jobs:
           name: npm-audit-results
           path: npm-audit.json
           retention-days: 30
-          
+
       - name: Snyk Security Scan
         uses: snyk/actions/node@master
         continue-on-error: true
@@ -107,7 +107,7 @@ jobs:
         with:
           args: --severity-threshold=high --json-file-output=snyk-report.json
         if: env.SNYK_TOKEN != ''
-        
+
       - name: Upload Snyk report
         uses: actions/upload-artifact@v4
         if: always() && env.SNYK_TOKEN != ''
@@ -117,13 +117,13 @@ jobs:
           retention-days: 30
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: javascript-typescript
           queries: security-and-quality
-          
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         continue-on-error: true
@@ -133,17 +133,17 @@ jobs:
     name: License Compliance
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -151,16 +151,16 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Check licenses
         run: |
           npx license-checker --summary || true
           npx license-checker --json > licenses.json || true
         continue-on-error: true
-        
+
       - name: Upload license report
         uses: actions/upload-artifact@v4
         with:
@@ -173,17 +173,17 @@ jobs:
     name: Code Coverage
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -191,16 +191,16 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-            
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Run tests with coverage
         run: npm run test:coverage || echo "::warning::Some tests failed"
         env:
           CI: true
         continue-on-error: true
-        
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         if: always()
@@ -210,7 +210,7 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
-          
+
       - name: Coverage summary
         run: |
           if [ -f coverage/coverage-summary.json ]; then
@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [code-quality, security-scan, coverage]
     if: always()
-    
+
     steps:
       - name: Check job results
         run: |
@@ -237,19 +237,18 @@ jobs:
           echo "| Code Quality | ${{ needs.code-quality.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Security Scan | ${{ needs.security-scan.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Coverage | ${{ needs.coverage.result }} |" >> $GITHUB_STEP_SUMMARY
-          
+
           # Soft gate - warn but don't fail
           if [[ "${{ needs.code-quality.result }}" == "failure" ]]; then
             echo "::warning::Code quality checks failed"
           fi
-          
+
           if [[ "${{ needs.security-scan.result }}" == "failure" ]]; then
             echo "::warning::Security scan found issues"
           fi
-          
+
           if [[ "${{ needs.coverage.result }}" == "failure" ]]; then
             echo "::warning::Coverage tests failed"
           fi
-          
-          echo "✅ Quality gate complete (soft gate mode)"
 
+          echo "✅ Quality gate complete (soft gate mode)"
