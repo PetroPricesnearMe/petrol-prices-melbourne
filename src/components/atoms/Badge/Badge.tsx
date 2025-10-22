@@ -1,50 +1,79 @@
-import type { HTMLAttributes, ReactNode } from 'react';
-import { forwardRef } from 'react';
+/**
+ * Badge Component (Atom)
+ * 
+ * Small status indicators and labels
+ */
 
-import { cn } from '@/utils/cn';
+import React from 'react';
+import type { BaseProps, ColorVariant, Size } from '@/types';
+import { cn } from '@/design-system/utils/styled';
+import './Badge.css';
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'success' | 'warning' | 'error' | 'info';
-  size?: 'sm' | 'md' | 'lg';
-  children: ReactNode;
+export interface BadgeProps extends BaseProps {
+  /** Badge content */
+  children: React.ReactNode;
+  /** Color variant */
+  variant?: ColorVariant;
+  /** Size */
+  size?: Exclude<Size, 'xl'>;
+  /** Visual style */
+  appearance?: 'solid' | 'outlined' | 'soft';
+  /** Dot indicator before text */
+  dot?: boolean;
+  /** Icon before text */
+  icon?: React.ReactNode;
+  /** Removable badge */
+  onRemove?: () => void;
 }
 
-export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ variant = 'default', size = 'md', className, children, ...props }, ref) => {
-    const variants = {
-      default:
-        'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-      success:
-        'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-300',
-      warning:
-        'bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-300',
-      error:
-        'bg-error-100 text-error-800 dark:bg-error-900 dark:text-error-300',
-      info: 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300',
-    };
+export const Badge: React.FC<BadgeProps> = ({
+  children,
+  variant = 'neutral',
+  size = 'sm',
+  appearance = 'soft',
+  dot = false,
+  icon,
+  onRemove,
+  className,
+  style,
+  testId,
+  ariaLabel,
+}) => {
+  const classNames = cn(
+    'badge',
+    `badge--${variant}`,
+    `badge--${size}`,
+    `badge--${appearance}`,
+    className
+  );
 
-    const sizes = {
-      sm: 'px-2 py-0.5 text-xs',
-      md: 'px-2.5 py-1 text-sm',
-      lg: 'px-3 py-1.5 text-base',
-    };
-
-    return (
-      <span
-        ref={ref}
-        className={cn(
-          'inline-flex items-center rounded-full font-medium',
-          variants[variant],
-          sizes[size],
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </span>
-    );
-  }
-);
-
-Badge.displayName = 'Badge';
-
+  return (
+    <span
+      className={classNames}
+      style={style}
+      data-testid={testId}
+      aria-label={ariaLabel}
+    >
+      {dot && <span className="badge__dot" aria-hidden="true" />}
+      {icon && <span className="badge__icon" aria-hidden="true">{icon}</span>}
+      <span className="badge__content">{children}</span>
+      {onRemove && (
+        <button
+          type="button"
+          className="badge__remove"
+          onClick={onRemove}
+          aria-label="Remove"
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path
+              d="M9 3L3 9M3 3L9 9"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+      )}
+    </span>
+  );
+};

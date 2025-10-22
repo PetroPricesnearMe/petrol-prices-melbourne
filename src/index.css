@@ -1,11 +1,17 @@
 /* Import normalize styles for cross-browser compatibility */
 @import './styles/normalize.css';
 
+/* Import Design Tokens - Foundation Layer */
+@import './styles/design-tokens.css';
+
+/* Import Tailwind CSS - Base, Components, Utilities */
+@import './styles/tailwind-base.css';
+
+/* Import Unified Design System - Legacy Support */
+@import './styles/design-system.css';
+
 /* Import cross-browser utilities */
 @import './styles/cross-browser-utils.css';
-
-/* Import Unified Design System */
-@import './styles/design-system.css';
 
 /* Import Accessibility Utilities - WCAG 2.1 AA Compliant */
 @import './styles/accessibility.css';
