@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import type { PetrolStation, FuelPrice } from '@/types';
+import type { PetrolStation, FuelPrice } from '@/types/index';
 import type {
   BaserowPetrolStation,
   BaserowFuelPrice,

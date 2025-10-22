@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import type { SearchFilters } from '@/types';
+import type { SearchFilters } from '@/types/index';
 
 import { stationsService } from '@/services/stations.service';
 

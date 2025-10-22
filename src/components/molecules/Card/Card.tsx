@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import type { BaseProps, WithChildren } from '@/types';
+import type { BaseProps, WithChildren } from '@/types/index';
 import { cn } from '@/design-system/utils/styled';
 import './Card.css';
 

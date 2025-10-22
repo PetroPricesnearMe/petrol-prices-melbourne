@@ -1,14 +1,13 @@
 /**
  * Component Library - Main Export
- * 
+ *
  * Centralized export for all components following Atomic Design
  */
 
-// Design System
-export * from '../design-system/tokens';
+// Design System Utils
 export * from '../design-system/utils/styled';
 
-// Types
+// Types (includes Size, ColorVariant, etc.)
 export * from '../types';
 
 // Atoms
@@ -22,4 +21,3 @@ export * from './organisms';
 
 // Templates
 export * from './templates';
-

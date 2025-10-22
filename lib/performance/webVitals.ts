@@ -3,7 +3,7 @@
  * Track Core Web Vitals and custom performance metrics
  */
 
-import { getCLS, getFCP, getFID, getLCP, getTTFB, Metric } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB, Metric } from 'web-vitals';
 
 // Types
 export type WebVitalsMetric = Metric;
@@ -77,11 +77,11 @@ export function initWebVitals() {
   if (typeof window === 'undefined') return;
 
   // Core Web Vitals
-  getCLS(sendToAnalytics);
-  getFCP(sendToAnalytics);
-  getFID(sendToAnalytics);
-  getLCP(sendToAnalytics);
-  getTTFB(sendToAnalytics);
+  onCLS(sendToAnalytics);
+  onFCP(sendToAnalytics);
+  onINP(sendToAnalytics); // Replaced FID with INP (newer metric)
+  onLCP(sendToAnalytics);
+  onTTFB(sendToAnalytics);
 
   // Track custom metrics
   trackCustomMetrics();
@@ -182,7 +182,7 @@ export function reportMetric(name: string, value: number) {
 /**
  * Track API call performance
  */
-export function trackAPICall(endpoint: string, duration: number, success: boolean) {
+export function trackAPICall(endpoint: string, duration: number, _success: boolean) {
   sendToAnalytics({
     name: 'API_Call',
     value: duration,
@@ -206,7 +206,6 @@ export function trackResourceLoad(resourceType: string, duration: number) {
 // Extend Window interface for TypeScript
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
     __componentMetrics?: {
       mark: (name: string) => void;
       measure: (name: string) => void;
@@ -216,4 +215,3 @@ declare global {
 
 // Export for use in _app.js
 export { sendToAnalytics as reportWebVitals };
-

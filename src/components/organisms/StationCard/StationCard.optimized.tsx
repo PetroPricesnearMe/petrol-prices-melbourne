@@ -9,7 +9,7 @@ import { Card, CardBody, CardFooter } from '../../molecules/Card';
 import { Text } from '../../atoms/Text';
 import { Badge } from '../../atoms/Badge';
 import { Button } from '../../atoms/Button';
-import type { PetrolStation } from '@/types';
+import type { PetrolStation } from '@/types/index';
 import { cn } from '@/design-system/utils/styled';
 import './StationCard.css';
 

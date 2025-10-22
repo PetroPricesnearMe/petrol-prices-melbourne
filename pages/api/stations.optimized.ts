@@ -4,6 +4,7 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+
 import { loadStations } from '../../lib/data/loadStations';
 
 // In-memory cache
@@ -22,10 +23,10 @@ function setCacheHeaders(res: NextApiResponse, maxAge: number = 3600) {
 }
 
 // Compression hint
-function setCompressionHeaders(res: NextApiResponse) {
-  res.setHeader('Content-Encoding', 'gzip');
-  res.setHeader('Vary', 'Accept-Encoding');
-}
+// function _setCompressionHeaders(res: NextApiResponse) {
+//   res.setHeader('Content-Encoding', 'gzip');
+//   res.setHeader('Vary', 'Accept-Encoding');
+// }
 
 // Main handler
 export default async function handler(
@@ -68,13 +69,13 @@ export default async function handler(
 
     if (region && typeof region === 'string') {
       filteredStations = filteredStations.filter(
-        (station) => station.region?.toLowerCase() === region.toLowerCase()
+        (station: any) => station.region?.toLowerCase() === region.toLowerCase()
       );
     }
 
     if (brand && typeof brand === 'string') {
       filteredStations = filteredStations.filter(
-        (station) => station.brand?.toLowerCase().includes(brand.toLowerCase())
+        (station: any) => station.brand?.toLowerCase().includes(brand.toLowerCase())
       );
     }
 
@@ -95,7 +96,7 @@ export default async function handler(
     });
   } catch (error) {
     console.error('❌ Error loading stations:', error);
-    
+
     // Return cached data if available, even if stale
     if (cachedStations) {
       console.log('⚠️ Returning stale cached data due to error');
@@ -109,7 +110,7 @@ export default async function handler(
 
     return res.status(500).json({
       error: 'Failed to load stations',
-      message: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      message: process.env.NODE_ENV === 'development' ? (error as Error).message : undefined,
     });
   }
 }
@@ -121,4 +122,3 @@ export const config = {
   // Enable edge caching
   regions: ['syd1'], // Sydney region for Australian users
 };
-

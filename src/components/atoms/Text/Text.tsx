@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import type { BaseProps, PolymorphicProps } from '@/types';
+import type { BaseProps, PolymorphicProps } from '@/types/index';
 import type { TextStyle } from '@/design-system/tokens/typography';
 import { cn } from '@/design-system/utils/styled';
 import './Text.css';

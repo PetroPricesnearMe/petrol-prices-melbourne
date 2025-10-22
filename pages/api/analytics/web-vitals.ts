@@ -54,11 +54,10 @@ export default async function handler(
 }
 
 // Optional: Store metrics for analysis
-async function storeMetric(data: WebVitalMetric) {
-  // Implementation depends on your storage solution
-  // Examples:
-  // - Store in database
-  // - Send to cloud storage
-  // - Aggregate in memory for periodic batch sending
-}
-
+// async function _storeMetric(data: WebVitalMetric) {
+//   // Implementation depends on your storage solution
+//   // Examples:
+//   // - Store in database
+//   // - Send to cloud storage
+//   // - Aggregate in memory for periodic batch sending
+// }

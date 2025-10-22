@@ -7,7 +7,7 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { VirtualList } from '../../common/VirtualList';
 import { StationCardOptimized } from '../StationCard/StationCard.optimized';
-import type { PetrolStation } from '@/types';
+import type { PetrolStation } from '@/types/index';
 
 export interface StationListVirtualizedProps {
   /** Array of stations */

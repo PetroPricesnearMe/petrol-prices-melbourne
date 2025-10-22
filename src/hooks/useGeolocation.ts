@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import type { Coordinates, GeolocationState } from '@/types';
+import type { Coordinates, GeolocationState } from '@/types/index';
 
 /**
  * Custom hook to get user's geolocation

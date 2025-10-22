@@ -1,311 +1,213 @@
-# 🚀 React Deployment Checklist
+# Production Deployment Checklist
 
-## ✅ **COMPLETED**
+## Pre-Deployment Tasks
 
-- [x] All navigation fixes committed
-- [x] Code pushed to GitHub (commit: `addd16b`)
-- [x] Vercel auto-deploy triggered
-- [x] `.gitignore` updated (excludes incomplete Next.js code)
+### Code Quality
+- [ ] All tests passing (`npm run test:all`)
+- [ ] Build succeeds locally (`npm run build`)
+- [ ] No TypeScript errors (`npm run type-check`)
+- [ ] Linter passing (`npm run lint`)
+- [ ] Code formatted (`npm run format:check`)
 
----
+### Environment Configuration
+- [ ] Production environment variables set in Vercel
+- [ ] `NEXTAUTH_SECRET` generated and set
+- [ ] Database credentials configured
+- [ ] API keys and tokens secured
+- [ ] Analytics IDs configured
+- [ ] Error tracking (Sentry) configured
 
-## 📋 **POST-DEPLOYMENT MONITORING** (Next 24 Hours)
+### Security
+- [ ] Secrets rotated for production
+- [ ] CORS origins configured
+- [ ] Rate limiting configured
+- [ ] Security headers verified
+- [ ] SSL certificate valid
+- [ ] Dependencies audited (`npm audit`)
 
-### **Step 1: Verify Deployment Status** (5 minutes)
+### Performance
+- [ ] Images optimized
+- [ ] Bundle size analyzed (`npm run analyze`)
+- [ ] Lighthouse score > 90
+- [ ] Core Web Vitals passing
+- [ ] API response times < 200ms
 
-1. **Check Vercel Dashboard:**
-   - Go to: https://vercel.com/dashboard
-   - Find project: **petrol-prices-melbourne**
-   - Status should be: ✅ **"Deployed"** (green)
-   - If building: Wait 2-3 minutes
-   - If failed: Check build logs
+### Database
+- [ ] Production database set up
+- [ ] Initial data migrated
+- [ ] Backup strategy configured
+- [ ] Database indexes optimized
+- [ ] Connection pooling configured
 
-2. **Get Your Live URL:**
-   ```
-   Production URL: https://[your-project].vercel.app
-   Custom Domain: https://petrolpricesnearme.com.au (if configured)
-   ```
+## Deployment Process
 
----
-
-### **Step 2: Environment Variables** (CRITICAL!)
-
-Verify these are set in Vercel:
-
-**Go to:** Vercel Dashboard → Your Project → Settings → Environment Variables
-
-**Required Variables:**
+### Step 1: Version Control
 ```bash
-REACT_APP_BASEROW_TOKEN=WXGOdiCeNmvdj5NszzAdvIug3InwQQXP
-REACT_APP_BASEROW_API_URL=https://api.baserow.io/api
-REACT_APP_BASEROW_SSE_URL=https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse
+# Update version
+npm version patch  # or minor, or major
+
+# Create git tag
+git tag -a v1.0.0 -m "Production release v1.0.0"
+
+# Push changes and tags
+git push origin main --tags
 ```
 
-**Optional (for AI Chat):**
+### Step 2: Deploy to Preview
 ```bash
-ANTHROPIC_API_KEY=your_anthropic_key_here
-PPLX_API_KEY=your_perplexity_key_here
+# Deploy to preview environment
+vercel
+
+# Test preview deployment
+# Visit: https://your-project-preview.vercel.app
+
+# Run smoke tests
+npm run test:e2e -- --baseUrl=https://your-project-preview.vercel.app
 ```
 
-⚠️ **If missing:** Add them → Redeploy
-
----
-
-### **Step 3: Test Your Live Site** (10 minutes)
-
-Open your production URL and test:
-
-**Homepage:**
-- [ ] Hero section displays
-- [ ] Region cards show correct station counts
-- [ ] "Browse by Region" button works
-- [ ] No console errors (F12)
-
-**Region Navigation:**
-- [ ] Click "Northern Suburbs" → Goes to `/directory?region=northern`
-- [ ] URL changes in browser
-- [ ] Page loads within 10 seconds
-- [ ] No infinite spinner! ✅
-
-**Directory Page:**
-- [ ] Shows 700+ stations
-- [ ] Search bar works
-- [ ] Filters work (brand, region)
-- [ ] Station cards display correctly
-- [ ] Map loads (if Mapbox configured)
-
-**Mobile Test:**
-- [ ] Open on phone browser
-- [ ] Tap region card → navigates
-- [ ] Responsive layout looks good
-- [ ] No horizontal scroll
-
----
-
-### **Step 4: Check for Errors** (5 minutes)
-
-**Browser Console (F12 → Console):**
-```
-✅ Good Logs:
-🗺️ Loading stations from local GeoJSON...
-✅ Loaded 700+ stations from GeoJSON
-✅ Successfully loaded 700+ stations from local
-
-❌ Bad Errors (Report to me):
-Error loading stations
-Failed to fetch
-CORS error
-```
-
-**Vercel Function Logs:**
-- Go to: Vercel Dashboard → Deployments → Latest → Functions
-- Check for errors
-- Should be minimal (static site, no serverless functions)
-
----
-
-### **Step 5: Performance Check** (5 minutes)
-
-**Run Lighthouse:**
-1. Open DevTools (F12)
-2. Go to Lighthouse tab
-3. Run audit (Desktop + Mobile)
-
-**Expected Scores:**
-- Performance: 85+ ✅
-- Accessibility: 90+ ✅
-- Best Practices: 90+ ✅
-- SEO: 95+ ✅
-
-**Check Core Web Vitals:**
-- LCP (Largest Contentful Paint): < 2.5s
-- FID (First Input Delay): < 100ms
-- CLS (Cumulative Layout Shift): < 0.1
-
----
-
-## 🐛 **Common Issues & Fixes**
-
-### **Issue 1: "Build Failed"**
-
-**Symptoms:** Red "Failed" badge in Vercel
-
-**Check:**
-1. Vercel Dashboard → Build logs
-2. Look for errors
-
-**Common Causes:**
+### Step 3: Deploy to Production
 ```bash
-# Missing dependencies
-npm install
+# Deploy to production
+vercel --prod
 
-# TypeScript errors (shouldn't have any)
-npm run build
-
-# Out of memory
-# Fix: Add to vercel.json:
-{
-  "functions": {
-    "api/**/*.js": {
-      "memory": 1024
-    }
-  }
-}
+# Or use GitHub Actions (automatic on tag push)
+git push --tags
 ```
 
----
+### Step 4: Verify Deployment
+- [ ] Site loads correctly
+- [ ] SSL certificate active
+- [ ] All pages render properly
+- [ ] API endpoints responding
+- [ ] Database connectivity working
+- [ ] Analytics tracking
+- [ ] Error tracking operational
 
-### **Issue 2: "White Screen" / Blank Page**
+## Post-Deployment Monitoring
 
-**Symptoms:** Site loads but shows nothing
+### First Hour
+- [ ] Monitor error rates (Sentry dashboard)
+- [ ] Check performance metrics (Vercel Analytics)
+- [ ] Verify health endpoint (`/api/health`)
+- [ ] Monitor server logs
+- [ ] Check uptime status
 
-**Fix:**
+### First 24 Hours
+- [ ] Review error logs
+- [ ] Check performance degradation
+- [ ] Monitor database performance
+- [ ] Review user feedback
+- [ ] Check analytics data
+
+### First Week
+- [ ] Weekly error report
+- [ ] Performance trends
+- [ ] User engagement metrics
+- [ ] Cost analysis
+- [ ] Backup verification
+
+## Rollback Procedure
+
+### Quick Rollback (Vercel)
 ```bash
-# 1. Check browser console for errors
-# 2. Verify environment variables are set
-# 3. Check data files exist:
-#    - /data/stations.geojson should be accessible
-#    - Try: https://your-site.vercel.app/data/stations.geojson
+# List recent deployments
+vercel ls
 
-# 4. If data missing, redeploy with correct files
+# Rollback to previous deployment
+vercel rollback <deployment-url>
 ```
 
----
+### Manual Rollback
+```bash
+# Checkout previous version
+git checkout v1.0.0
 
-### **Issue 3: "Infinite Spinner"**
+# Deploy previous version
+vercel --prod
 
-**Symptoms:** LoadingSpinner never disappears
-
-**We Fixed This!** But if it still happens:
-
-1. Open browser console
-2. Look for these logs:
-   ```
-   ⏰ LoadingSpinner TIMEOUT reached after 10000 ms
-   ```
-3. Check what request is hanging
-4. Verify Baserow API credentials
-
----
-
-### **Issue 4: "Region Links Don't Work"**
-
-**Symptoms:** Clicking region cards does nothing
-
-**We Fixed This Too!** But verify:
-
-1. Open console
-2. Click region card
-3. Should see:
-   ```
-   🔗 Region link clicked: northern
-   📍 Navigation URL: /directory?region=northern
-   ```
-4. If no logs: Clear cache and hard refresh (Ctrl+Shift+R)
-
----
-
-### **Issue 5: "404 Not Found" on Sub-Routes**
-
-**Symptoms:** `/directory` shows 404
-
-**Fix:** Verify `vercel.json` has correct routing:
-
-```json
-{
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
-}
+# Or revert commit
+git revert HEAD
+git push origin main
 ```
 
-This makes all routes go through React Router.
+## Emergency Contacts
+
+- **Technical Lead**: [Name] - [Email]
+- **DevOps**: [Name] - [Email]
+- **On-Call**: [Phone Number]
+- **Vercel Support**: support@vercel.com
+
+## Incident Response
+
+### High Priority (Site Down)
+1. Check Vercel status: https://www.vercel-status.com
+2. Review error logs in Sentry
+3. Check health endpoint
+4. Rollback if necessary
+5. Notify team via Slack/Discord
+
+### Medium Priority (Degraded Performance)
+1. Review performance metrics
+2. Check database queries
+3. Analyze slow API endpoints
+4. Scale resources if needed
+5. Plan optimization
+
+### Low Priority (Minor Issues)
+1. Create issue in GitHub
+2. Schedule fix for next release
+3. Monitor impact
+4. Document in changelog
+
+## Maintenance Windows
+
+### Regular Maintenance
+- **Schedule**: Every Sunday 2:00 AM - 4:00 AM UTC
+- **Duration**: Up to 2 hours
+- **Notification**: 48 hours advance notice
+- **Status Page**: https://status.your-domain.com
+
+### Emergency Maintenance
+- **Immediate** for critical security issues
+- **Same day** for data integrity issues
+- **Next window** for non-critical updates
+
+## Documentation Updates
+
+- [ ] Update README.md with new version
+- [ ] Update CHANGELOG.md
+- [ ] Update API documentation
+- [ ] Update user guides if needed
+- [ ] Update deployment documentation
+
+## Success Criteria
+
+### Technical Metrics
+- **Uptime**: > 99.9%
+- **Response Time**: < 200ms (p95)
+- **Error Rate**: < 0.1%
+- **Lighthouse Score**: > 90
+- **Core Web Vitals**: All green
+
+### Business Metrics
+- **User Satisfaction**: > 4.5/5
+- **Conversion Rate**: Meeting targets
+- **Active Users**: Growing trend
+- **Session Duration**: > 2 minutes
+
+## Sign-Off
+
+- [ ] Development Team Lead: _________________ Date: _______
+- [ ] QA Lead: _________________ Date: _______
+- [ ] Product Owner: _________________ Date: _______
+- [ ] DevOps Engineer: _________________ Date: _______
 
 ---
 
-## 📊 **Success Metrics**
+**Deployment Completed Successfully!** 🎉
 
-**After 24 hours, your site should have:**
-
-- ✅ 100% uptime
-- ✅ < 3s page load time
-- ✅ No console errors
-- ✅ All navigation working
-- ✅ Station data loading
-- ✅ Mobile-responsive
-
----
-
-## 🎉 **What's Working Now (That Wasn't Before)**
-
-From our debugging session:
-
-1. **Region buttons are clickable** ✅
-   - Fixed: Removed Framer Motion interference
-   
-2. **No infinite spinners** ✅
-   - Fixed: Added 10-second timeout
-   - Fixed: DataSourceManager wait loop timeout
-   
-3. **User-friendly errors** ✅
-   - Added: Retry and Go Home buttons
-   
-4. **Better debugging** ✅
-   - Added: Comprehensive console logging
-
----
-
-## 📞 **If You Need Help**
-
-**Report These to Me:**
-
-1. **Deployment Status:**
-   - URL of live site
-   - "Deployed" or "Failed"?
-   - Build time
-
-2. **Console Errors:**
-   - Copy/paste full error messages
-   - Screenshot of console
-   - Which page/action caused it
-
-3. **User Issues:**
-   - What were they trying to do?
-   - What happened instead?
-   - Device/browser used
-
----
-
-## 🚀 **Next Steps (After Verification)**
-
-### **This Week:**
-- [ ] Monitor site for 24 hours
-- [ ] Test on different devices
-- [ ] Share with friends/beta users
-- [ ] Collect feedback
-
-### **Next Week:**
-- [ ] Submit to Google Search Console
-- [ ] Add Google Analytics tracking
-- [ ] Monitor user behavior
-- [ ] Fix any reported issues
-
-### **Future:**
-- [ ] Plan Next.js migration (in separate branch)
-- [ ] Add MongoDB for live data
-- [ ] Implement real-time price updates
-- [ ] Build mobile app
-
----
-
-**Deployment Date:** $(date)  
-**Commit:** `addd16b`  
-**Status:** 🚀 DEPLOYED!
-
----
-
-*Focus on making your React app stable and successful first. Next.js can wait!* 💪
-
+Next Steps:
+1. Monitor deployment for 24 hours
+2. Gather user feedback
+3. Plan next iteration
+4. Celebrate the success! 🍾

@@ -2,6 +2,38 @@
  * Core application types and interfaces
  */
 
+// Component Base Types
+export interface BaseProps {
+  className?: string;
+  id?: string;
+  testId?: string;
+  style?: React.CSSProperties;
+  ariaLabel?: string;
+  ariaDescribedBy?: string;
+}
+
+export interface InteractiveProps {
+  onClick?: (event: React.MouseEvent) => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
+  disabled?: boolean;
+  loading?: boolean;
+  ariaLabel?: string;
+  ariaDescribedBy?: string;
+}
+
+export type ColorVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+export type Variant = 'filled' | 'outline' | 'text' | 'ghost';
+export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+// Polymorphic component types
+export type PolymorphicProps<E extends React.ElementType, P = {}> = {
+  as?: E;
+} & P & Omit<React.ComponentPropsWithoutRef<E>, keyof P | 'as'>;
+
+// Helper type for components with children
+export type WithChildren<T = {}> = T & { children?: React.ReactNode };
+
 // Fuel Types
 export enum FuelType {
   UNLEADED = 'unleaded',

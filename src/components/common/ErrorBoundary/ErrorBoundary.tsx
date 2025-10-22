@@ -55,7 +55,7 @@ export class ErrorBoundary extends Component<Props, State> {
     this.logErrorToService(error, errorInfo);
   }
 
-  private logErrorToService(error: Error, errorInfo: ErrorInfo): void {
+  private logErrorToService(_error: Error, _errorInfo: ErrorInfo): void {
     // TODO: Integrate with error tracking service
     // Example: Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
   }

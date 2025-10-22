@@ -5,7 +5,7 @@
  */
 
 import React, { forwardRef, useState } from 'react';
-import type { BaseProps } from '@/types';
+import type { BaseProps } from '@/types/index';
 import { cn } from '@/design-system/utils/styled';
 import './Input.css';
 

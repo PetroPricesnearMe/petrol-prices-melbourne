@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server';
 
 import { stationsRepository } from '@/lib/repositories/stations.repository';
 
@@ -9,7 +10,7 @@ export const dynamic = 'force-dynamic';
  * Get a single station by ID
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -97,7 +98,7 @@ export async function PUT(
  * Delete a station (admin only)
  */
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -131,4 +132,3 @@ export async function DELETE(
     );
   }
 }
-

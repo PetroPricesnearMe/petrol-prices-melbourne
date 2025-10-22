@@ -1,4 +1,5 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 /**
@@ -6,7 +7,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
  * This is a basic setup for authentication
  * Customize based on your authentication requirements
  */
-const authOptions: NextAuthOptions = {
+const authOptions: NextAuthConfig = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -51,14 +52,14 @@ const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = (user as any).role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
+        (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role as string;
       }
       return session;
     },
@@ -69,4 +70,3 @@ const authOptions: NextAuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-

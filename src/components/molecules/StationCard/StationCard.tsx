@@ -1,6 +1,6 @@
 'use client';
 
-import type { PetrolStation } from '@/types';
+import type { PetrolStation } from '@/types/index';
 
 import { Badge } from '@/components/atoms/Badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';

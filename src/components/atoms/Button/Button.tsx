@@ -5,7 +5,7 @@
  */
 
 import React, { forwardRef } from 'react';
-import type { BaseProps, InteractiveProps, ColorVariant, Variant, Size } from '@/types';
+import type { BaseProps, InteractiveProps, ColorVariant, Variant, Size } from '@/types/index';
 import { cn } from '@/design-system/utils/styled';
 import './Button.css';
 

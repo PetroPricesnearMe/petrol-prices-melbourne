@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-import type { PetrolStation } from '@/types';
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server';
 
 import { stationsRepository } from '@/lib/repositories/stations.repository';
+import type { PetrolStation, FuelType, SortOption } from '@/types/index';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -21,11 +22,11 @@ export async function GET(request: NextRequest) {
     const brands = searchParams.get('brands');
 
     const filters = {
-      fuelType: fuelType || undefined,
+      fuelType: fuelType as FuelType | undefined,
       maxDistance: maxDistance ? parseFloat(maxDistance) : undefined,
       minPrice: minPrice ? parseFloat(minPrice) : undefined,
       maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
-      sortBy: sortBy || undefined,
+      sortBy: sortBy as SortOption | undefined,
       brands: brands ? brands.split(',') : undefined,
     };
 
@@ -85,4 +86,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

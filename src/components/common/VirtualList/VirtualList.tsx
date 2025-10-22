@@ -4,7 +4,7 @@
  * Efficiently renders large lists using virtualization
  */
 
-import React, { memo, CSSProperties } from 'react';
+import React, { memo } from 'react';
 import { useVirtualization } from '@/hooks/useVirtualization';
 
 export interface VirtualListProps<T> {
@@ -42,7 +42,7 @@ function VirtualListComponent<T>({
   emptyMessage = 'No items to display',
   getItemKey,
 }: VirtualListProps<T>) {
-  const { virtualItems, totalHeight, containerRef, contentStyle } = useVirtualization({
+  const { virtualItems, totalHeight: _totalHeight, containerRef, contentStyle } = useVirtualization({
     itemCount: items.length,
     itemHeight,
     containerHeight: height,

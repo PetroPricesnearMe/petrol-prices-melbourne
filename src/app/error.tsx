@@ -2,8 +2,6 @@
 
 import { useEffect } from 'react';
 
-import { Button } from '@/components/atoms/Button';
-
 export default function Error({
   error,
   reset,
@@ -25,13 +23,20 @@ export default function Error({
           We apologize for the inconvenience. Please try again.
         </p>
         <div className="mt-8 flex justify-center gap-4">
-          <Button onClick={() => reset()}>Try again</Button>
-          <Button variant="outline" onClick={() => (window.location.href = '/')}>
+          <button
+            onClick={() => reset()}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Try again
+          </button>
+          <button
+            onClick={() => (window.location.href = '/')}
+            className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
             Go home
-          </Button>
+          </button>
         </div>
       </div>
     </div>
   );
 }
-

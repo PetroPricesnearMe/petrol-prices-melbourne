@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Text } from '../../atoms/Text';
-import type { BaseProps } from '@/types';
+import type { BaseProps } from '@/types/index';
 import { cn } from '@/design-system/utils/styled';
 import './Footer.css';
 

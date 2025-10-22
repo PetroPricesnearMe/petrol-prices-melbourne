@@ -7,7 +7,7 @@
 import React, { useState, useCallback } from 'react';
 import { Input } from '../../atoms/Input';
 import { Button } from '../../atoms/Button';
-import type { BaseProps } from '@/types';
+import type { BaseProps } from '@/types/index';
 import { cn } from '@/design-system/utils/styled';
 import './SearchBar.css';
 

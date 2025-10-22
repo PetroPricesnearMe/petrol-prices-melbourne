@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import type { BaseProps, WithChildren, ColorVariant } from '@/types';
+import type { BaseProps, WithChildren, ColorVariant } from '@/types/index';
 import { Text } from '../../atoms/Text';
 import { Button } from '../../atoms/Button';
 import { cn } from '@/design-system/utils/styled';

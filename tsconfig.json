@@ -30,7 +30,8 @@
         "./src/components/*"
       ],
       "@/lib/*": [
-        "./lib/*"
+        "./lib/*",
+        "./src/lib/*"
       ],
       "@/pages/*": [
         "./pages/*"
@@ -55,6 +56,9 @@
       ],
       "@/config/*": [
         "./src/config/*"
+      ],
+      "@/design-system/*": [
+        "./src/design-system/*"
       ]
     },
     "plugins": [

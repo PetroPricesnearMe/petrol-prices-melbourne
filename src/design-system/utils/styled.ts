@@ -1,11 +1,11 @@
 /**
  * Design System - Styling Utilities
- * 
+ *
  * Helper functions for applying design tokens
  */
 
 import { colors, spacing, shadows, borderRadius } from '../tokens';
-import type { ColorVariant, Size } from '@/types';
+import type { ColorVariant, Size } from '@/types/index';
 
 /**
  * Get color by variant
@@ -20,14 +20,14 @@ export const getVariantColor = (variant: ColorVariant, shade: number = 500): str
     info: 'info',
     neutral: 'neutral',
   };
-  
+
   const colorKey = colorMap[variant];
   const colorGroup = colors[colorKey];
-  
+
   if (typeof colorGroup === 'object' && shade in colorGroup) {
     return colorGroup[shade as keyof typeof colorGroup] as string;
   }
-  
+
   return colors.neutral[500];
 };
 
@@ -42,7 +42,7 @@ export const getSizeSpacing = (size: Size): string => {
     lg: 4,
     xl: 6,
   };
-  
+
   return spacing[sizeMap[size]];
 };
 
@@ -57,8 +57,8 @@ export const responsive = (base: string, breakpoint?: string, value?: string): s
 /**
  * Combine class names conditionally
  */
-export const cn = (...classes: (string | boolean | undefined | null)[]): string => {
-  return classes.filter(Boolean).join(' ');
+export const cn = (...classes: (string | boolean | undefined | null | number | bigint)[]): string => {
+  return classes.filter((c) => typeof c === 'string' && c.length > 0).join(' ');
 };
 
 /**
@@ -111,4 +111,3 @@ export const visuallyHidden: React.CSSProperties = {
   whiteSpace: 'nowrap',
   border: 0,
 };
-

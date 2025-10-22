@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import type { BaseProps, ColorVariant, Size } from '@/types';
+import type { BaseProps, ColorVariant, Size } from '@/types/index';
 import { cn } from '@/design-system/utils/styled';
 import './Badge.css';
 
