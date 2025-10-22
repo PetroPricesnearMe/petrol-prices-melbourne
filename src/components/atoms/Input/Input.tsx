@@ -1,81 +1,139 @@
-import type { InputHTMLAttributes, ReactNode } from 'react';
-import { forwardRef } from 'react';
+/**
+ * Input Component (Atom)
+ * 
+ * Accessible form input with validation states
+ */
 
-import { cn } from '@/utils/cn';
+import React, { forwardRef, useState } from 'react';
+import type { BaseProps } from '@/types';
+import { cn } from '@/design-system/utils/styled';
+import './Input.css';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
+export interface InputProps extends BaseProps, Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  /** Input size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Error state */
+  error?: boolean;
+  /** Error message */
+  errorMessage?: string;
+  /** Success state */
+  success?: boolean;
+  /** Helper text */
   helperText?: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
+  /** Label text */
+  label?: string;
+  /** Required field indicator */
+  required?: boolean;
+  /** Icon before input */
+  startIcon?: React.ReactNode;
+  /** Icon after input */
+  endIcon?: React.ReactNode;
+  /** Full width */
   fullWidth?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      label,
-      error,
+      size = 'md',
+      error = false,
+      errorMessage,
+      success = false,
       helperText,
-      leftIcon,
-      rightIcon,
+      label,
+      required = false,
+      startIcon,
+      endIcon,
       fullWidth = false,
+      disabled = false,
       className,
+      style,
+      testId,
+      ariaLabel,
+      ariaDescribedBy,
       id,
-      ...props
+      ...restProps
     },
     ref
   ) => {
+    const [isFocused, setIsFocused] = useState(false);
     const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    const helperId = `${inputId}-helper`;
+    const errorId = `${inputId}-error`;
+
+    const containerClasses = cn(
+      'input-container',
+      fullWidth && 'input-container--full-width',
+      className
+    );
+
+    const wrapperClasses = cn(
+      'input-wrapper',
+      `input-wrapper--${size}`,
+      error && 'input-wrapper--error',
+      success && 'input-wrapper--success',
+      disabled && 'input-wrapper--disabled',
+      isFocused && 'input-wrapper--focused',
+      startIcon && 'input-wrapper--with-start-icon',
+      endIcon && 'input-wrapper--with-end-icon'
+    );
+
+    const describedBy = [
+      ariaDescribedBy,
+      errorMessage ? errorId : null,
+      helperText ? helperId : null,
+    ]
+      .filter(Boolean)
+      .join(' ') || undefined;
 
     return (
-      <div className={cn('flex flex-col gap-1.5', fullWidth && 'w-full')}>
+      <div className={containerClasses} style={style}>
         {label && (
-          <label
-            htmlFor={inputId}
-            className="text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
+          <label htmlFor={inputId} className="input-label">
             {label}
+            {required && <span className="input-label__required" aria-label="required">*</span>}
           </label>
         )}
-
-        <div className="relative">
-          {leftIcon && (
-            <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              {leftIcon}
-            </div>
+        
+        <div className={wrapperClasses}>
+          {startIcon && (
+            <span className="input-icon input-icon--start" aria-hidden="true">
+              {startIcon}
+            </span>
           )}
-
+          
           <input
             ref={ref}
             id={inputId}
-            className={cn(
-              'w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 transition-colors',
-              'placeholder:text-gray-400',
-              'focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-0',
-              'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500',
-              'dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100',
-              'dark:focus:border-primary-400 dark:focus:ring-primary-400',
-              error &&
-                'border-error-500 focus:border-error-500 focus:ring-error-500',
-              leftIcon && 'pl-10',
-              rightIcon && 'pr-10',
-              className
-            )}
-            {...props}
+            className="input"
+            disabled={disabled}
+            aria-label={ariaLabel}
+            aria-describedby={describedBy}
+            aria-invalid={error}
+            aria-required={required}
+            data-testid={testId}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            {...restProps}
           />
-
-          {rightIcon && (
-            <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-              {rightIcon}
-            </div>
+          
+          {endIcon && (
+            <span className="input-icon input-icon--end" aria-hidden="true">
+              {endIcon}
+            </span>
           )}
         </div>
 
-        {error && <p className="text-sm text-error-600">{error}</p>}
-        {helperText && !error && (
-          <p className="text-sm text-gray-500">{helperText}</p>
+        {errorMessage && (
+          <p id={errorId} className="input-message input-message--error" role="alert">
+            {errorMessage}
+          </p>
+        )}
+        
+        {!errorMessage && helperText && (
+          <p id={helperId} className="input-message input-message--helper">
+            {helperText}
+          </p>
         )}
       </div>
     );
@@ -83,4 +141,3 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 );
 
 Input.displayName = 'Input';
-
