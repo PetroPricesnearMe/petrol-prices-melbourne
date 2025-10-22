@@ -4,7 +4,8 @@
  * Catches JavaScript errors in child components and displays fallback UI
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
+import React, { Component } from 'react';
 
 interface Props {
   children: ReactNode;

@@ -3,7 +3,7 @@
  * Tailwind CSS classes organized by variant, size, and state
  */
 
-import { CardStyleConfig } from './types';
+import type { CardStyleConfig } from './types';
 
 /**
  * Card style configuration with Tailwind classes

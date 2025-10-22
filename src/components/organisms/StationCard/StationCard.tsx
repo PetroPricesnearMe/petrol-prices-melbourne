@@ -5,13 +5,16 @@
  */
 
 import React from 'react';
-import { Card, CardBody, CardFooter } from '../../molecules/Card';
-import { Text } from '../../atoms/Text';
-import { Badge } from '../../atoms/Badge';
-import { Button } from '../../atoms/Button';
+
+import { cn } from '@/design-system/utils/styled';
 import type { PetrolStation } from '@/types/index';
 import type { BaseProps } from '@/types/index';
-import { cn } from '@/design-system/utils/styled';
+
+import { Badge } from '../../atoms/Badge';
+import { Button } from '../../atoms/Button';
+import { Text } from '../../atoms/Text';
+import { Card, CardBody, CardFooter } from '../../molecules/Card';
+
 import './StationCard.css';
 
 export interface StationCardProps extends BaseProps {

@@ -1,9 +1,15 @@
-import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import type { Metadata, Viewport } from 'next';
+import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
+import '@/styles/print.css';
+import '@/styles/media-queries.css';
+
+import { Footer } from '@/components/layout/Footer';
+import { Navigation } from '@/components/layout/Navigation';
+import { ThemeScript } from '@/styles/system/theme';
 
 import { Providers } from './providers';
 
@@ -103,9 +109,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <body className="min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-900">
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-900 flex flex-col">
         <Providers>
-          {children}
+          <Navigation />
+          <div className="flex-1">{children}</div>
+          <Footer />
           <Analytics />
           <SpeedInsights />
         </Providers>
@@ -113,4 +124,3 @@ export default function RootLayout({
     </html>
   );
 }
-

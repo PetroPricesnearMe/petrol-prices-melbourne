@@ -4,8 +4,9 @@
  */
 
 import React, { memo } from 'react';
-import { CardHeaderProps } from './types';
+
 import { headerStyles } from './styles';
+import type { CardHeaderProps } from './types';
 import { cn } from './utils';
 
 export const CardHeader = memo<CardHeaderProps>(({

@@ -4,7 +4,9 @@
  * Lazy loads components when they enter the viewport
  */
 
-import React, { ComponentType } from 'react';
+import type { ComponentType } from 'react';
+import React from 'react';
+
 import { useIntersectionObserver } from '@/hooks/usePerformance';
 
 export interface LazyLoadProps {

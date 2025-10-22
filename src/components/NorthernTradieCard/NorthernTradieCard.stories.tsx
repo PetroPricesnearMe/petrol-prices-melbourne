@@ -3,8 +3,9 @@
  * Comprehensive documentation and examples for the component
  */
 
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+
 import { NorthernTradieCard } from './NorthernTradieCard';
 
 const meta: Meta<typeof NorthernTradieCard> = {

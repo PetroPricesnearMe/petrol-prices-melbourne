@@ -5,10 +5,12 @@
  */
 
 import React from 'react';
-import { Header, type HeaderProps } from '../../organisms/Header';
-import { Footer, type FooterProps } from '../../organisms/Footer';
-import type { BaseProps, WithChildren } from '@/types/index';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps, WithChildren } from '@/types/index';
+
+import { Footer, type FooterProps } from '../../organisms/Footer';
+import { Header, type HeaderProps } from '../../organisms/Header';
 import './MainLayout.css';
 
 export interface MainLayoutProps extends BaseProps, WithChildren {

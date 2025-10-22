@@ -4,8 +4,9 @@
  */
 
 import React, { memo } from 'react';
-import { CardContentProps } from './types';
+
 import { contentStyles } from './styles';
+import type { CardContentProps } from './types';
 import { cn } from './utils';
 
 export const CardContent = memo<CardContentProps>(({

@@ -5,12 +5,15 @@
  */
 
 import React, { memo, useCallback, useMemo } from 'react';
-import { Card, CardBody, CardFooter } from '../../molecules/Card';
-import { Text } from '../../atoms/Text';
+
+import { cn } from '@/design-system/utils/styled';
+import type { PetrolStation } from '@/types/index';
+
 import { Badge } from '../../atoms/Badge';
 import { Button } from '../../atoms/Button';
-import type { PetrolStation } from '@/types/index';
-import { cn } from '@/design-system/utils/styled';
+import { Text } from '../../atoms/Text';
+import { Card, CardBody, CardFooter } from '../../molecules/Card';
+
 import './StationCard.css';
 
 export interface StationCardOptimizedProps {

@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+
 import type { PerformanceMetric, RenderInfo } from '@/types/common';
 
 // ============================================================================

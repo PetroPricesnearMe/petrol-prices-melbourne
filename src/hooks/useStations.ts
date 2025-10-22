@@ -2,9 +2,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { stationsService } from '@/services/stations.service';
 import type { SearchFilters } from '@/types/index';
 
-import { stationsService } from '@/services/stations.service';
 
 /**
  * Custom hook to fetch stations with filters

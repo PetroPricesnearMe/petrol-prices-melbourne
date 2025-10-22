@@ -1,6 +1,5 @@
-import type { PetrolStation, SearchFilters } from '@/types/index';
-
 import { baserowService } from '@/lib/services/baserow.service';
+import type { PetrolStation, SearchFilters } from '@/types/index';
 import { calculateDistance } from '@/utils/geo';
 
 /**

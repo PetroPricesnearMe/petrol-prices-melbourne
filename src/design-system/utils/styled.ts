@@ -4,8 +4,9 @@
  * Helper functions for applying design tokens
  */
 
-import { colors, spacing, shadows, borderRadius } from '../tokens';
 import type { ColorVariant, Size } from '@/types/index';
+
+import { colors, spacing, shadows, borderRadius } from '../tokens';
 
 /**
  * Get color by variant

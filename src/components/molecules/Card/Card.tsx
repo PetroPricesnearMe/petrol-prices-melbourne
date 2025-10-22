@@ -5,8 +5,9 @@
  */
 
 import React from 'react';
-import type { BaseProps, WithChildren } from '@/types/index';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps, WithChildren } from '@/types/index';
 import './Card.css';
 
 export interface CardProps extends BaseProps, WithChildren {

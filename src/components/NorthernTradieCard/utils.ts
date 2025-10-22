@@ -3,8 +3,8 @@
  * Helper functions for the card component
  */
 
-import { CardVariant, CardSize, CardState } from './types';
 import { cardStyles, shadowClasses } from './styles';
+import type { CardVariant, CardSize, CardState } from './types';
 
 /**
  * Combines class names, filtering out falsy values

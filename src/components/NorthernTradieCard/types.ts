@@ -3,7 +3,7 @@
  * Comprehensive TypeScript interfaces and types
  */
 
-import { ReactNode, HTMLAttributes } from 'react';
+import type { ReactNode, HTMLAttributes } from 'react';
 
 /**
  * Card variant types

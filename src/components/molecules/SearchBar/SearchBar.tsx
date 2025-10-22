@@ -5,10 +5,12 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { Input } from '../../atoms/Input';
-import { Button } from '../../atoms/Button';
-import type { BaseProps } from '@/types/index';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps } from '@/types/index';
+
+import { Button } from '../../atoms/Button';
+import { Input } from '../../atoms/Input';
 import './SearchBar.css';
 
 export interface SearchBarProps extends BaseProps {

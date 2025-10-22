@@ -5,8 +5,9 @@
  */
 
 import React from 'react';
-import type { BaseProps, Size, ColorVariant } from '@/types/index';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps, Size, ColorVariant } from '@/types/index';
 import './Spinner.css';
 
 export interface SpinnerProps extends BaseProps {

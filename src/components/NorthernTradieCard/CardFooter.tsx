@@ -4,8 +4,9 @@
  */
 
 import React, { memo } from 'react';
-import { CardFooterProps } from './types';
+
 import { footerStyles } from './styles';
+import type { CardFooterProps } from './types';
 import { cn } from './utils';
 
 export const CardFooter = memo<CardFooterProps>(({

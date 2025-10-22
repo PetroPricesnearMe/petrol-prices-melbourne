@@ -5,10 +5,12 @@
  */
 
 import React from 'react';
-import type { BaseProps, WithChildren, ColorVariant } from '@/types/index';
-import { Text } from '../../atoms/Text';
-import { Button } from '../../atoms/Button';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps, WithChildren, ColorVariant } from '@/types/index';
+
+import { Button } from '../../atoms/Button';
+import { Text } from '../../atoms/Text';
 import './Alert.css';
 
 export interface AlertProps extends BaseProps, WithChildren {

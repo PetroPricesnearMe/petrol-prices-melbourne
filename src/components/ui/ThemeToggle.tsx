@@ -5,8 +5,8 @@
 
 'use client';
 
-import { useTheme } from '@/styles/system/theme';
 import { cn, animations, a11y } from '@/styles/system/css-in-js';
+import { useTheme } from '@/styles/system/theme';
 
 interface ThemeToggleProps {
   className?: string;

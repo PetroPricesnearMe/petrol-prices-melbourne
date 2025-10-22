@@ -4,7 +4,8 @@
  * Reusable mock data for tests
  */
 
-import { PetrolStation, FuelPrice, FuelType, PriceTrend } from '@/types/index';
+import type { PetrolStation, FuelPrice} from '@/types/index';
+import { FuelType, PriceTrend } from '@/types/index';
 
 export const mockFuelPrices: FuelPrice[] = [
   {

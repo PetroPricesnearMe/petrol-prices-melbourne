@@ -5,9 +5,11 @@
  */
 
 import React from 'react';
-import { Text } from '../../atoms/Text';
-import type { BaseProps } from '@/types/index';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps } from '@/types/index';
+
+import { Text } from '../../atoms/Text';
 import './Footer.css';
 
 export interface FooterLink {

@@ -11,13 +11,15 @@
  * ```
  */
 
-import React, { memo, useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { NorthernTradieCardProps } from './types';
-import { CardHeader } from './CardHeader';
+import React, { memo, useMemo, useCallback, useState, useEffect, useRef } from 'react';
+
 import { CardContent } from './CardContent';
 import { CardFooter } from './CardFooter';
+import { CardHeader } from './CardHeader';
 import { CardMedia } from './CardMedia';
+import { loadingStyles, errorStyles } from './styles';
+import type { NorthernTradieCardProps } from './types';
 import { 
   getCardClasses, 
   handleKeyboardInteraction, 
@@ -26,7 +28,6 @@ import {
   validateProps,
   cn
 } from './utils';
-import { loadingStyles, errorStyles } from './styles';
 
 /**
  * Main Card Component with compound pattern support

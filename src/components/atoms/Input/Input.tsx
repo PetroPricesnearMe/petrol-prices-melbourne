@@ -5,8 +5,9 @@
  */
 
 import React, { forwardRef, useState } from 'react';
-import type { BaseProps } from '@/types/index';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps } from '@/types/index';
 import './Input.css';
 
 export interface InputProps extends BaseProps, Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {

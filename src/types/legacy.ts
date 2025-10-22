@@ -6,8 +6,8 @@
  * @module types/legacy
  */
 
-import type { Station, FuelPrice } from './station';
 import type { Variant, ColorScheme } from './component';
+import type { Station, FuelPrice } from './station';
 
 // Legacy station types
 export interface PetrolStation extends Station {

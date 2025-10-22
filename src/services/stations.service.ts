@@ -1,6 +1,6 @@
+import { api } from '@/lib/api/client';
 import type { PaginatedResponse, PetrolStation, SearchFilters } from '@/types/index';
 
-import { api } from '@/lib/api/client';
 
 /**
  * Stations Service

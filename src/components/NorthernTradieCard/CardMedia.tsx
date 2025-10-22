@@ -4,8 +4,9 @@
  */
 
 import React, { memo, useState } from 'react';
-import { CardMediaProps } from './types';
+
 import { mediaStyles } from './styles';
+import type { CardMediaProps } from './types';
 import { cn } from './utils';
 
 export const CardMedia = memo<CardMediaProps>(({

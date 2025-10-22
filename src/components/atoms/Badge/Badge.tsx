@@ -5,8 +5,9 @@
  */
 
 import React from 'react';
-import type { BaseProps, ColorVariant, Size } from '@/types/index';
+
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps, ColorVariant, Size } from '@/types/index';
 import './Badge.css';
 
 export interface BadgeProps extends BaseProps {

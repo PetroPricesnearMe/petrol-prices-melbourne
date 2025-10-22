@@ -1,9 +1,9 @@
 'use client';
 
-import type { PetrolStation } from '@/types/index';
 
 import { Badge } from '@/components/atoms/Badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
+import type { PetrolStation } from '@/types/index';
 import { formatDistance, formatPrice } from '@/utils/formatters';
 
 export interface StationCardProps {

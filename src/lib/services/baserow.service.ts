@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-import type { PetrolStation, FuelPrice } from '@/types/index';
 import type {
   BaserowPetrolStation,
   BaserowFuelPrice,
@@ -10,6 +9,7 @@ import {
   FUEL_TYPE_OPTIONS,
   PRICE_TREND_OPTIONS,
 } from '@/types/baserow';
+import type { PetrolStation, FuelPrice } from '@/types/index';
 
 const BASEROW_API_URL = process.env.BASEROW_API_URL || 'https://api.baserow.io';
 const BASEROW_API_TOKEN = process.env.BASEROW_API_TOKEN || '';

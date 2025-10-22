@@ -5,9 +5,10 @@
  */
 
 import React from 'react';
-import type { BaseProps, PolymorphicProps } from '@/types/index';
+
 import type { TextStyle } from '@/design-system/tokens/typography';
 import { cn } from '@/design-system/utils/styled';
+import type { BaseProps, PolymorphicProps } from '@/types/index';
 import './Text.css';
 
 type TextElement = 'p' | 'span' | 'div' | 'label' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
