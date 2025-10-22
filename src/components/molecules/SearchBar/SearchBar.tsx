@@ -1,56 +1,147 @@
-'use client';
+/**
+ * SearchBar Component (Molecule)
+ * 
+ * Search input with integrated clear button and loading state
+ */
 
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { Input } from '../../atoms/Input';
+import { Button } from '../../atoms/Button';
+import type { BaseProps } from '@/types';
+import { cn } from '@/design-system/utils/styled';
+import './SearchBar.css';
 
-import { Button } from '@/components/atoms/Button';
-import { Input } from '@/components/atoms/Input';
-
-export interface SearchBarProps {
-  onSearch: (query: string) => void;
+export interface SearchBarProps extends BaseProps {
+  /** Search value */
+  value?: string;
+  /** Placeholder text */
   placeholder?: string;
-  isLoading?: boolean;
+  /** onChange handler */
+  onChange?: (value: string) => void;
+  /** onSubmit handler */
+  onSubmit?: (value: string) => void;
+  /** Loading state */
+  loading?: boolean;
+  /** Disabled state */
+  disabled?: boolean;
+  /** Size variant */
+  size?: 'sm' | 'md' | 'lg';
+  /** Show search button */
+  showButton?: boolean;
+  /** Clear button label */
+  clearLabel?: string;
+  /** Search button label */
+  searchLabel?: string;
 }
 
-export function SearchBar({
-  onSearch,
-  placeholder = 'Search for petrol stations...',
-  isLoading = false,
-}: SearchBarProps) {
-  const [query, setQuery] = useState('');
+export const SearchBar: React.FC<SearchBarProps> = ({
+  value: controlledValue,
+  placeholder = 'Search...',
+  onChange,
+  onSubmit,
+  loading = false,
+  disabled = false,
+  size = 'md',
+  showButton = true,
+  clearLabel = 'Clear search',
+  searchLabel = 'Search',
+  className,
+  style,
+  testId,
+}) => {
+  const [internalValue, setInternalValue] = useState('');
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : internalValue;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch(query);
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = e.target.value;
+      if (!isControlled) {
+        setInternalValue(newValue);
+      }
+      onChange?.(newValue);
+    },
+    [isControlled, onChange]
+  );
+
+  const handleClear = useCallback(() => {
+    const newValue = '';
+    if (!isControlled) {
+      setInternalValue(newValue);
+    }
+    onChange?.(newValue);
+  }, [isControlled, onChange]);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      onSubmit?.(value);
+    },
+    [onSubmit, value]
+  );
+
+  const searchIcon = (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path
+        d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
+  const clearIcon = (
+    <button
+      type="button"
+      className="search-bar__clear"
+      onClick={handleClear}
+      aria-label={clearLabel}
+      disabled={disabled || !value}
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path
+          d="M12 4L4 12M4 4L12 12"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  );
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form
+      className={cn('search-bar', `search-bar--${size}`, className)}
+      style={style}
+      onSubmit={handleSubmit}
+      role="search"
+      data-testid={testId}
+    >
       <Input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        type="search"
+        value={value}
+        onChange={handleChange}
         placeholder={placeholder}
+        disabled={disabled}
+        size={size}
+        startIcon={searchIcon}
+        endIcon={value && !loading ? clearIcon : null}
         fullWidth
-        leftIcon={
-          <svg
-            className="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        }
+        ariaLabel="Search"
       />
-      <Button type="submit" isLoading={isLoading}>
-        Search
-      </Button>
+      
+      {showButton && (
+        <Button
+          type="submit"
+          size={size}
+          disabled={disabled || loading || !value}
+          loading={loading}
+        >
+          {searchLabel}
+        </Button>
+      )}
     </form>
   );
-}
-
+};
