@@ -9,6 +9,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { cn, patterns } from '@/styles/system/css-in-js';
+import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
 
 interface FuelPrices {
   unleaded: number | null;
@@ -55,7 +56,7 @@ interface SearchFilters {
   fuelType: keyof FuelPrices;
   brand: string;
   suburb: string;
-  sortBy: 'name' | 'price-low' | 'price-high' | 'suburb';
+  sortBy: SortOption;
   priceMax: string;
 }
 
@@ -294,20 +295,14 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                   {/* Sort */}
                   <div>
-                    <label htmlFor="sort" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       🔄 Sort By
                     </label>
-                    <select
-                      id="sort"
+                    <SortDropdown
                       value={filters.sortBy}
-                      onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                      className="input w-full"
-                    >
-                      <option value="price-low">Price (Low to High)</option>
-                      <option value="price-high">Price (High to Low)</option>
-                      <option value="suburb">Suburb (A-Z)</option>
-                      <option value="name">Name (A-Z)</option>
-                    </select>
+                      onChange={(value) => handleFilterChange('sortBy', value)}
+                      syncWithUrl={true}
+                    />
                   </div>
                 </div>
 
@@ -345,14 +340,16 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
       {/* Results */}
       <section className="py-12">
         <div className={patterns.container()}>
-          {/* Results Count */}
-          <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
-            <p className="text-gray-600 dark:text-gray-400">
-              Showing <strong>{paginatedStations.length}</strong> of{' '}
-              <strong>{filteredStations.length}</strong> stations
-              {filters.brand !== 'all' && ` • ${filters.brand}`}
-              {filters.suburb !== 'all' && ` • ${filters.suburb}`}
-            </p>
+          {/* Quick Sort Bar */}
+          <div className="mb-6">
+            <QuickSortBar
+              sortValue={filters.sortBy}
+              onSortChange={(value) => handleFilterChange('sortBy', value)}
+              totalResults={filteredStations.length}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              syncWithUrl={true}
+            />
           </div>
 
           {/* Station Grid */}

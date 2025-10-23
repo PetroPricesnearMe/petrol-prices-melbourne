@@ -1,0 +1,124 @@
+/**
+ * Pagination Component Styles
+ * 
+ * Custom styles for pagination component that complement Tailwind utilities
+ */
+
+.pagination-container {
+  @apply w-full;
+}
+
+/* Smooth transitions for all pagination elements */
+.pagination-container button {
+  @apply select-none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Focus visible styles for better keyboard navigation */
+.pagination-container button:focus-visible {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* Active state for touch devices */
+.pagination-container button:active:not(:disabled) {
+  @apply scale-95;
+}
+
+/* Hover state improvements */
+.pagination-container button:hover:not(:disabled) {
+  @apply shadow-md;
+  transform: translateY(-1px);
+}
+
+/* Disabled state */
+.pagination-container button:disabled {
+  @apply cursor-not-allowed opacity-50;
+  pointer-events: none;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Loading spinner for pagination */
+.pagination-loading {
+  @apply inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent;
+}
+
+/* Smooth page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .pagination-container button {
+    @apply shadow-gray-900/50;
+  }
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .pagination-container {
+    @apply text-sm;
+  }
+  
+  .pagination-container button {
+    @apply px-2 py-1 min-w-[36px];
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .pagination-container button {
+    @apply border-2;
+  }
+  
+  .pagination-container button[aria-current="page"] {
+    @apply border-4;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .pagination-container button {
+    transition: none !important;
+  }
+  
+  .pagination-container button:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .pagination-container button:active:not(:disabled) {
+    transform: none;
+  }
+}
+

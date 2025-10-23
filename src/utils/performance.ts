@@ -1,318 +1,240 @@
 /**
- * Performance Utilities
- *
- * Tools for measuring and optimizing performance
+ * Performance Optimization Utilities
+ * Tools for measuring and improving app performance
  */
 
 /**
- * Measure execution time of a function
+ * Dynamically load scripts without blocking
  */
-export function measurePerformance<T extends (...args: any[]) => any>(
-  fn: T,
-  label?: string
-): T {
-  return ((...args: Parameters<T>): ReturnType<T> => {
-    const start = performance.now();
-    const result = fn(...args);
-    const end = performance.now();
-
-    const time = end - start;
-    const name = label || fn.name || 'anonymous';
-
-    if (time > 16) {
-      console.warn(`[Performance] ${name} took ${time.toFixed(2)}ms`);
+export function loadScriptAsync(src: string, id?: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (id && document.getElementById(id)) {
+      resolve();
+      return;
     }
 
-    return result;
-  }) as T;
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    if (id) script.id = id;
+    
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+    
+    document.body.appendChild(script);
+  });
 }
 
 /**
- * Async function performance measurement
+ * Preload critical resources
  */
-export function measureAsyncPerformance<T extends (...args: any[]) => Promise<any>>(
-  fn: T,
-  label?: string
-): T {
-  return (async (...args: Parameters<T>): Promise<ReturnType<T>> => {
-    const start = performance.now();
-    const result = await fn(...args);
-    const end = performance.now();
-
-    const time = end - start;
-    const name = label || fn.name || 'anonymous';
-
-    if (time > 100) {
-      console.warn(`[Performance] Async ${name} took ${time.toFixed(2)}ms`);
-    }
-
-    return result;
-  }) as T;
+export function preloadResource(href: string, as: string, type?: string) {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.href = href;
+  link.as = as;
+  if (type) link.type = type;
+  document.head.appendChild(link);
 }
 
 /**
- * Debounce function
+ * Prefetch resources for future navigation
  */
-export function debounce<T extends (...args: any[]) => any>(
-  fn: T,
-  delay: number
-): (...args: Parameters<T>) => void {
-  let timeoutId: ReturnType<typeof setTimeout>;
-
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn(...args), delay);
-  };
+export function prefetchResource(href: string) {
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = href;
+  document.head.appendChild(link);
 }
 
 /**
- * Throttle function
+ * Preconnect to external domains
  */
-export function throttle<T extends (...args: any[]) => any>(
-  fn: T,
-  limit: number
-): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
-
-  return (...args: Parameters<T>) => {
-    if (!inThrottle) {
-      fn(...args);
-      inThrottle = true;
-      setTimeout(() => {
-        inThrottle = false;
-      }, limit);
-    }
-  };
+export function preconnect(href: string, crossorigin: boolean = false) {
+  const link = document.createElement('link');
+  link.rel = 'preconnect';
+  link.href = href;
+  if (crossorigin) link.crossOrigin = 'anonymous';
+  document.head.appendChild(link);
 }
 
 /**
- * Request Idle Callback wrapper with fallback
+ * DNS prefetch for external domains
  */
-export function requestIdleCallback(
-  callback: IdleRequestCallback,
-  options?: IdleRequestOptions
-): number {
-  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    return window.requestIdleCallback(callback, options);
-  }
-
-  // Fallback to setTimeout
-  return window.setTimeout(() => {
-    const start = Date.now();
-    callback({
-      didTimeout: false,
-      timeRemaining: () => Math.max(0, 50 - (Date.now() - start)),
-    });
-  }, 1) as any;
+export function dnsPrefetch(href: string) {
+  const link = document.createElement('link');
+  link.rel = 'dns-prefetch';
+  link.href = href;
+  document.head.appendChild(link);
 }
 
 /**
- * Cancel Idle Callback wrapper with fallback
+ * Measure First Contentful Paint (FCP)
  */
-export function cancelIdleCallback(id: number): void {
-  if (typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-    window.cancelIdleCallback(id);
-  } else {
-    clearTimeout(id);
-  }
-}
-
-/**
- * Batch updates for better performance
- */
-export class BatchUpdater<T> {
-  private queue: T[] = [];
-  private processing = false;
-  private batchSize: number;
-  private processor: (batch: T[]) => void;
-
-  constructor(processor: (batch: T[]) => void, batchSize = 10) {
-    this.processor = processor;
-    this.batchSize = batchSize;
-  }
-
-  add(item: T): void {
-    this.queue.push(item);
-
-    if (!this.processing) {
-      this.scheduleProcess();
-    }
-  }
-
-  private scheduleProcess(): void {
-    this.processing = true;
-
-    requestIdleCallback(() => {
-      const batch = this.queue.splice(0, this.batchSize);
-
-      if (batch.length > 0) {
-        this.processor(batch);
-      }
-
-      if (this.queue.length > 0) {
-        this.scheduleProcess();
-      } else {
-        this.processing = false;
-      }
-    });
-  }
-
-  clear(): void {
-    this.queue = [];
-    this.processing = false;
-  }
-}
-
-/**
- * FPS Monitor
- */
-export class FPSMonitor {
-  private lastTime = performance.now();
-  private frames = 0;
-  private fps = 60;
-  private rafId: number | null = null;
-  private callback: (fps: number) => void;
-
-  constructor(callback: (fps: number) => void) {
-    this.callback = callback;
-  }
-
-  start(): void {
-    const measure = () => {
-      this.frames++;
-      const currentTime = performance.now();
-
-      if (currentTime >= this.lastTime + 1000) {
-        this.fps = Math.round((this.frames * 1000) / (currentTime - this.lastTime));
-        this.frames = 0;
-        this.lastTime = currentTime;
-        this.callback(this.fps);
-      }
-
-      this.rafId = requestAnimationFrame(measure);
-    };
-
-    measure();
-  }
-
-  stop(): void {
-    if (this.rafId) {
-      cancelAnimationFrame(this.rafId);
-      this.rafId = null;
-    }
-  }
-
-  getFPS(): number {
-    return this.fps;
-  }
-}
-
-/**
- * Memory usage monitor
- */
-export function getMemoryUsage(): {
-  usedJSHeapSize: number;
-  totalJSHeapSize: number;
-  jsHeapSizeLimit: number;
-} | null {
-  if ('memory' in performance && (performance as any).memory) {
-    const memory = (performance as any).memory;
-    return {
-      usedJSHeapSize: memory.usedJSHeapSize,
-      totalJSHeapSize: memory.totalJSHeapSize,
-      jsHeapSizeLimit: memory.jsHeapSizeLimit,
-    };
-  }
-
-  return null;
-}
-
-/**
- * Long task detection
- */
-export function detectLongTasks(threshold = 50): void {
-  if ('PerformanceObserver' in window) {
-    try {
-      const observer = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.duration > threshold) {
-            console.warn(
-              `[Performance] Long task detected: ${entry.duration.toFixed(2)}ms`,
-              entry
-            );
-          }
-        }
-      });
-
-      observer.observe({ entryTypes: ['longtask'] });
-    } catch (e) {
-      // PerformanceObserver not supported
-    }
-  }
-}
-
-/**
- * Report Web Vitals
- */
-export interface WebVitals {
-  CLS: number; // Cumulative Layout Shift
-  FID: number; // First Input Delay
-  FCP: number; // First Contentful Paint
-  LCP: number; // Largest Contentful Paint
-  TTFB: number; // Time to First Byte
-}
-
-export function reportWebVitals(callback: (vitals: Partial<WebVitals>) => void): void {
+export function measureFCP(callback: (value: number) => void) {
   if (typeof window === 'undefined') return;
-
-  const vitals: Partial<WebVitals> = {};
-
-  // Observe performance entries
-  if ('PerformanceObserver' in window) {
-    try {
-      // LCP
-      const lcpObserver = new PerformanceObserver((list) => {
-        const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1] as any;
-        vitals.LCP = lastEntry.renderTime || lastEntry.loadTime;
-        callback(vitals);
-      });
-      lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-
-      // FID
-      const fidObserver = new PerformanceObserver((list) => {
-        const entries = list.getEntries();
-        entries.forEach((entry: any) => {
-          vitals.FID = entry.processingStart - entry.startTime;
-          callback(vitals);
-        });
-      });
-      fidObserver.observe({ entryTypes: ['first-input'] });
-
-      // CLS
-      let clsValue = 0;
-      const clsObserver = new PerformanceObserver((list) => {
-        list.getEntries().forEach((entry: any) => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
-            vitals.CLS = clsValue;
-            callback(vitals);
-          }
-        });
-      });
-      clsObserver.observe({ entryTypes: ['layout-shift'] });
-    } catch (e) {
-      // PerformanceObserver not fully supported
-    }
-  }
-
-  // Navigation timing
-  window.addEventListener('load', () => {
-    const navigation = performance.getEntriesByType('navigation')[0] as any;
-    if (navigation) {
-      vitals.TTFB = navigation.responseStart - navigation.requestStart;
-      vitals.FCP = navigation.responseEnd - navigation.fetchStart;
-      callback(vitals);
+  
+  const observer = new PerformanceObserver((list) => {
+    for (const entry of list.getEntries()) {
+      if (entry.name === 'first-contentful-paint') {
+        callback(entry.startTime);
+        observer.disconnect();
+      }
     }
   });
+
+  try {
+    observer.observe({ entryTypes: ['paint'] });
+  } catch (e) {
+    console.warn('PerformanceObserver not supported');
+  }
+}
+
+/**
+ * Measure Largest Contentful Paint (LCP)
+ */
+export function measureLCP(callback: (value: number) => void) {
+  if (typeof window === 'undefined') return;
+  
+  const observer = new PerformanceObserver((list) => {
+    const entries = list.getEntries();
+    const lastEntry = entries[entries.length - 1];
+    callback(lastEntry.startTime);
+  });
+
+  try {
+    observer.observe({ entryTypes: ['largest-contentful-paint'] });
+  } catch (e) {
+    console.warn('PerformanceObserver not supported');
+  }
+}
+
+/**
+ * Measure First Input Delay (FID)
+ */
+export function measureFID(callback: (value: number) => void) {
+  if (typeof window === 'undefined') return;
+  
+  const observer = new PerformanceObserver((list) => {
+    for (const entry of list.getEntries()) {
+      const firstInput = entry as PerformanceEventTiming;
+      callback(firstInput.processingStart - firstInput.startTime);
+      observer.disconnect();
+    }
+  });
+
+  try {
+    observer.observe({ entryTypes: ['first-input'] });
+  } catch (e) {
+    console.warn('PerformanceObserver not supported');
+  }
+}
+
+/**
+ * Measure Cumulative Layout Shift (CLS)
+ */
+export function measureCLS(callback: (value: number) => void) {
+  if (typeof window === 'undefined') return;
+  
+  let clsValue = 0;
+  const observer = new PerformanceObserver((list) => {
+    for (const entry of list.getEntries()) {
+      if (!(entry as any).hadRecentInput) {
+        clsValue += (entry as any).value;
+        callback(clsValue);
+      }
+    }
+  });
+
+  try {
+    observer.observe({ entryTypes: ['layout-shift'] });
+  } catch (e) {
+    console.warn('PerformanceObserver not supported');
+  }
+}
+
+/**
+ * Report all Web Vitals
+ */
+export function reportWebVitals(onReport: (metric: {
+  name: string;
+  value: number;
+  rating: 'good' | 'needs-improvement' | 'poor';
+}) => void) {
+  measureFCP((value) => {
+    onReport({
+      name: 'FCP',
+      value,
+      rating: value < 1800 ? 'good' : value < 3000 ? 'needs-improvement' : 'poor',
+    });
+  });
+
+  measureLCP((value) => {
+    onReport({
+      name: 'LCP',
+      value,
+      rating: value < 2500 ? 'good' : value < 4000 ? 'needs-improvement' : 'poor',
+    });
+  });
+
+  measureFID((value) => {
+    onReport({
+      name: 'FID',
+      value,
+      rating: value < 100 ? 'good' : value < 300 ? 'needs-improvement' : 'poor',
+    });
+  });
+
+  measureCLS((value) => {
+    onReport({
+      name: 'CLS',
+      value,
+      rating: value < 0.1 ? 'good' : value < 0.25 ? 'needs-improvement' : 'poor',
+    });
+  });
+}
+
+/**
+ * Defer non-critical JavaScript
+ */
+export function deferNonCritical(fn: () => void) {
+  if (typeof window === 'undefined') return;
+
+  if ('requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(fn);
+  } else {
+    setTimeout(fn, 1);
+  }
+}
+
+/**
+ * Check if connection is slow (useful for adaptive loading)
+ */
+export function isSlowConnection(): boolean {
+  if (typeof navigator === 'undefined' || !(navigator as any).connection) {
+    return false;
+  }
+
+  const connection = (navigator as any).connection;
+  return (
+    connection.saveData ||
+    connection.effectiveType === 'slow-2g' ||
+    connection.effectiveType === '2g'
+  );
+}
+
+/**
+ * Get device memory (for adaptive loading)
+ */
+export function getDeviceMemory(): number | undefined {
+  if (typeof navigator === 'undefined') return undefined;
+  return (navigator as any).deviceMemory;
+}
+
+/**
+ * Check if device has low memory (< 4GB)
+ */
+export function hasLowMemory(): boolean {
+  const memory = getDeviceMemory();
+  return memory !== undefined && memory < 4;
 }
