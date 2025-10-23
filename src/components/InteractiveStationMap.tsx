@@ -1,6 +1,6 @@
 /**
  * Interactive Station Map Component
- * 
+ *
  * Features:
  * - Interactive Leaflet map with clustering
  * - Responsive full-screen mode for mobile
@@ -290,7 +290,7 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
                     📍 {station.address}
                     {station.city && <>, {station.city}</>}
                   </p>
-                  
+
                   {station.fuelPrices && station.fuelPrices.length > 0 && (
                     <div className="popup-prices">
                       <strong>💰 Current Prices:</strong>
@@ -304,7 +304,7 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
                       </ul>
                     </div>
                   )}
-                  
+
                   <button
                     className="popup-directions-btn"
                     onClick={() => {
@@ -378,4 +378,3 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
 };
 
 export default InteractiveStationMap;
-

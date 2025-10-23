@@ -8,7 +8,7 @@
 @layer base {
   :root {
     --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-    
+
     /* System font stack */
     --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }

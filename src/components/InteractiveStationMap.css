@@ -1,6 +1,6 @@
 /**
  * Interactive Station Map Styles
- * 
+ *
  * Responsive, accessible map styling with animations
  */
 
@@ -509,4 +509,3 @@
 .leaflet-zoom-anim .leaflet-zoom-animated {
   will-change: transform;
 }
-

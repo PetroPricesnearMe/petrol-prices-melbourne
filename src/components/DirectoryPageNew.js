@@ -10,6 +10,8 @@ import Breadcrumbs from './Breadcrumbs';
 import SEO, { generateFuelPriceListingData } from './SEO';
 import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../utils/analytics';
 import Pagination from './common/Pagination';
+import ViewToggle from './ViewToggle';
+import InteractiveStationMap from './InteractiveStationMap';
 // CSS imported in pages/_app.js
 
 /**
@@ -72,8 +74,9 @@ const DirectoryPageNew = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeFilters, setActiveFilters] = useState({});
-  const [viewMode, setViewMode] = useState('cards'); // 'cards', 'grid', or 'map'
+  const [viewMode, setViewMode] = useState('grid'); // 'list', 'grid', or 'map'
   const [selectedStation, setSelectedStation] = useState(null);
+  const [isMapFullScreen, setIsMapFullScreen] = useState(false);
 
   const regionParam = searchParams.get('region');
   const selectedRegion = regionParam ? MELBOURNE_REGIONS[regionParam.toUpperCase()] : null;
@@ -358,49 +361,142 @@ const DirectoryPageNew = () => {
 
         {/* View Toggle */}
         <div className="container">
-          <div className="view-toggle">
-            <button
-              className={`view-btn ${viewMode === 'cards' ? 'active' : ''}`}
-              onClick={() => setViewMode('cards')}
-              aria-label="Cards view"
-              aria-pressed={viewMode === 'cards'}
-            >
-              <span>🃏</span> Cards
-            </button>
-            <button
-              className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-              onClick={() => setViewMode('grid')}
-              aria-label="Grid view"
-              aria-pressed={viewMode === 'grid'}
-            >
-              <span>⊞</span> Grid
-            </button>
-            <button
-              className={`view-btn ${viewMode === 'map' ? 'active' : ''}`}
-              onClick={() => setViewMode('map')}
-              aria-label="Map view"
-              aria-pressed={viewMode === 'map'}
-            >
-              <span>🗺️</span> Map
-            </button>
+          <div className="flex justify-between items-center mb-6">
+            <ViewToggle
+              currentView={viewMode}
+              onViewChange={setViewMode}
+              showGrid={true}
+              size="md"
+            />
+
+            {viewMode === 'map' && (
+              <button
+                onClick={() => setIsMapFullScreen(!isMapFullScreen)}
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                aria-label={isMapFullScreen ? 'Exit fullscreen' : 'Fullscreen map'}
+              >
+                {isMapFullScreen ? '⊗ Exit Fullscreen' : '⛶ Fullscreen'}
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Cards View */}
-        {viewMode === 'cards' && (
+        {/* List View */}
+        {viewMode === 'list' && (
           <div className="container">
-            <StationCards />
+            <div className="space-y-4">
+              {currentStations.map((station, index) => {
+                const brandClass = getBrandClass(station.brand);
+                const brandImage = getBrandImage(station.brand);
+
+                return (
+                  <MotionDiv
+                    key={station.id}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: Math.min(index * 0.05, 0.3) }}
+                  >
+                    <div className="flex flex-col sm:flex-row">
+                      {/* Station Image */}
+                      <div className="sm:w-48 h-32 sm:h-auto">
+                        <img
+                          src={brandImage}
+                          alt={`${station.brand || 'Petrol'} station`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.src = '/images/fuel-nozzles.svg';
+                          }}
+                        />
+                      </div>
+
+                      {/* Station Content */}
+                      <div className="flex-1 p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              {station.name}
+                            </h3>
+                            {station.brand && (
+                              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded mt-1 ${brandClass}`}>
+                                {station.brand}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                          📍 {station.address}
+                          {station.city && <>, {station.city} {station.postalCode}</>}
+                        </p>
+
+                        {station.fuelPrices && station.fuelPrices.length > 0 && (
+                          <div className="flex flex-wrap gap-3 mb-3">
+                            {station.fuelPrices
+                              .filter(fp => fp.price > 0)
+                              .slice(0, 4)
+                              .map((fp, i) => (
+                                <div key={i} className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">{fp.fuelType}:</span>
+                                  <span className="text-sm font-bold text-green-600 dark:text-green-400">
+                                    ${fp.price.toFixed(2)}
+                                  </span>
+                                </div>
+                              ))}
+                          </div>
+                        )}
+
+                        {station.latitude && station.longitude && (
+                          <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                            onClick={() => handleDirectionsClick(station)}
+                            aria-label={`Get directions to ${station.name}`}
+                          >
+                            <span aria-hidden="true">🧭</span>
+                            <span>Get Directions</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </MotionDiv>
+                );
+              })}
+            </div>
+
+            {/* Pagination for List View */}
+            {totalPages > 1 && (
+              <div className="mt-8">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={goToPage}
+                  totalItems={filteredStations.length}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  showItemsInfo={true}
+                  scrollToTop={true}
+                  size="md"
+                  animationType="fade"
+                />
+              </div>
+            )}
           </div>
         )}
 
-        {/* Map View */}
+        {/* Interactive Map View */}
         {viewMode === 'map' && (
-          <div className="container">
-            <StationMap
+          <div className={isMapFullScreen ? '' : 'container'}>
+            <InteractiveStationMap
               stations={filteredStations}
               onStationClick={handleStationClick}
               selectedStation={selectedStation}
-              height={600}
+              height={isMapFullScreen ? '100vh' : 600}
+              fullScreen={isMapFullScreen}
+              onFullScreenToggle={() => setIsMapFullScreen(!isMapFullScreen)}
+              showUserLocation={true}
             />
           </div>
         )}

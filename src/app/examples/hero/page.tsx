@@ -27,7 +27,7 @@ export default function HeroExamplesPage() {
 
       {/* Examples */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-        
+
         {/* Example 1: Default */}
         <section>
           <div className="mb-6">
@@ -101,7 +101,7 @@ export default function HeroExamplesPage() {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             Usage Guide
           </h2>
-          
+
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -220,4 +220,3 @@ export default function HomePage() {
     </div>
   );
 }
-

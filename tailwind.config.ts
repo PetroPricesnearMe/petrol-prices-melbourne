@@ -1,7 +1,7 @@
 /**
  * Tailwind CSS Configuration
  * Comprehensive design system with theming support
- * 
+ *
  * @see https://tailwindcss.com/docs/configuration
  */
 
@@ -14,10 +14,10 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  
+
   // Dark mode configuration - uses class strategy
   darkMode: 'class',
-  
+
   theme: {
     extend: {
       // ============================================================
@@ -38,7 +38,7 @@ const config: Config = {
           900: '#1e3a8a',
           950: '#172554',
         },
-        
+
         // Secondary Color (Indigo/Purple)
         secondary: {
           50: '#faf5ff',
@@ -53,7 +53,7 @@ const config: Config = {
           900: '#581c87',
           950: '#3b0764',
         },
-        
+
         // Accent Color (Teal/Cyan)
         accent: {
           50: '#ecfeff',
@@ -68,7 +68,7 @@ const config: Config = {
           900: '#164e63',
           950: '#083344',
         },
-        
+
         // Neutral Grays (Extended)
         neutral: {
           50: '#fafafa',
@@ -83,7 +83,7 @@ const config: Config = {
           900: '#171717',
           950: '#0a0a0a',
         },
-        
+
         // Success (Green)
         success: {
           50: '#f0fdf4',
@@ -98,7 +98,7 @@ const config: Config = {
           900: '#14532d',
           950: '#052e16',
         },
-        
+
         // Warning (Amber/Orange)
         warning: {
           50: '#fffbeb',
@@ -113,7 +113,7 @@ const config: Config = {
           900: '#78350f',
           950: '#451a03',
         },
-        
+
         // Error/Danger (Red)
         error: {
           50: '#fef2f2',
@@ -128,7 +128,7 @@ const config: Config = {
           900: '#7f1d1d',
           950: '#450a0a',
         },
-        
+
         // Info (Blue)
         info: {
           50: '#eff6ff',
@@ -217,7 +217,7 @@ const config: Config = {
         'base': ['1rem', { lineHeight: '1.5rem', letterSpacing: '0' }],              // 16px
         'lg': ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '-0.005em' }],   // 18px
         'xl': ['1.25rem', { lineHeight: '1.875rem', letterSpacing: '-0.01em' }],    // 20px
-        
+
         // Heading sizes
         '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.015em', fontWeight: '700' }],      // 24px
         '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '-0.02em', fontWeight: '700' }],  // 30px
@@ -259,7 +259,7 @@ const config: Config = {
         'xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
         '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
         'inner': 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
-        
+
         // Custom shadows
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.04)',
@@ -275,27 +275,27 @@ const config: Config = {
         // Fade
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'fade-out': 'fadeOut 0.3s ease-in-out',
-        
+
         // Slide
         'slide-up': 'slideUp 0.3s ease-out',
         'slide-down': 'slideDown 0.3s ease-out',
         'slide-left': 'slideLeft 0.3s ease-out',
         'slide-right': 'slideRight 0.3s ease-out',
-        
+
         // Scale
         'scale-in': 'scaleIn 0.2s ease-out',
         'scale-out': 'scaleOut 0.2s ease-out',
-        
+
         // Bounce
         'bounce-in': 'bounceIn 0.5s ease-out',
-        
+
         // Spin (slower than default)
         'spin-slow': 'spin 3s linear infinite',
         'spin-slower': 'spin 5s linear infinite',
-        
+
         // Pulse
         'pulse-slow': 'pulse 3s ease-in-out infinite',
-        
+
         // Custom
         'wiggle': 'wiggle 1s ease-in-out infinite',
         'float': 'float 3s ease-in-out infinite',
@@ -312,7 +312,7 @@ const config: Config = {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
-        
+
         // Slide
         slideUp: {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
@@ -330,7 +330,7 @@ const config: Config = {
           '0%': { transform: 'translateX(-10px)', opacity: '0' },
           '100%': { transform: 'translateX(0)', opacity: '1' },
         },
-        
+
         // Scale
         scaleIn: {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
@@ -340,14 +340,14 @@ const config: Config = {
           '0%': { transform: 'scale(1)', opacity: '1' },
           '100%': { transform: 'scale(0.95)', opacity: '0' },
         },
-        
+
         // Bounce
         bounceIn: {
           '0%': { transform: 'scale(0.8)', opacity: '0' },
           '50%': { transform: 'scale(1.05)' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
-        
+
         // Custom
         wiggle: {
           '0%, 100%': { transform: 'rotate(-3deg)' },
@@ -469,7 +469,7 @@ const config: Config = {
       }),
     },
   },
-  
+
   // ============================================================
   // PLUGINS
   // ============================================================

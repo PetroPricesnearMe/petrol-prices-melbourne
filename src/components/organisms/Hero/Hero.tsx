@@ -1,6 +1,6 @@
 /**
  * Hero Component - Modern hero section for directory introduction
- * 
+ *
  * Features:
  * - Animated text and CTA with Framer Motion
  * - Responsive design (mobile-first)
@@ -8,7 +8,7 @@
  * - Lighthouse 100 accessibility score optimized
  * - Modern gradient background
  * - Perfect color contrast
- * 
+ *
  * @component
  */
 
@@ -46,7 +46,7 @@ export interface HeroProps {
 
 /**
  * Hero - Modern hero section with animations
- * 
+ *
  * Accessibility features:
  * - Semantic HTML (header, h1, p)
  * - ARIA labels for screen readers
@@ -140,7 +140,7 @@ export function Hero({
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.05]" aria-hidden="true" />
-      
+
       {/* Gradient Orbs */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" aria-hidden="true" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-green-400/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" aria-hidden="true" />
@@ -375,4 +375,3 @@ export function Hero({
     </header>
   );
 }
-
