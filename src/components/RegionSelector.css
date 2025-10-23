@@ -441,20 +441,45 @@
   letter-spacing: 0.02em;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
+/* Mobile First - Base styles above are for mobile */
+
+/* Small tablets and larger (sm breakpoint - 640px+) */
+@media (min-width: 640px) {
   .region-grid-modern {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
+}
 
+/* Tablets (md breakpoint - 768px+) */
+@media (min-width: 768px) {
   .region-header h2 {
     font-size: 2.5rem;
   }
+  
+  .region-selector-section {
+    padding: 4rem 0;
+  }
+  
+  .modern-region-link {
+    min-height: 280px;
+  }
 }
 
-/* Mobile */
-@media (max-width: 640px) {
+/* Large tablets and small desktops (lg breakpoint - 1024px+) */
+@media (min-width: 1024px) {
+  .region-grid-modern {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  
+  .region-header h2 {
+    font-size: 3rem;
+  }
+}
+
+/* Mobile specific overrides (max-width approach for fine-tuning) */
+@media (max-width: 639px) {
   .region-grid-modern {
     grid-template-columns: 1fr;
     gap: 1.25rem;

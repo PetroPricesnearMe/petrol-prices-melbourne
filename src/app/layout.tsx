@@ -114,10 +114,10 @@ export default function RootLayout({
         <ResourceHints />
         <ThemeScript />
       </head>
-      <body className="min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-900 flex flex-col">
+      <body className="min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-900 flex flex-col overflow-x-hidden">
         <Providers>
           <Navigation />
-          <div className="flex-1">{children}</div>
+          <div className="flex-1 w-full overflow-x-hidden">{children}</div>
           <Footer />
           <Analytics />
           <SpeedInsights />

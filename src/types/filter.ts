@@ -1,9 +1,9 @@
 /**
  * Filter & Sort Types - Shared TypeScript types for filtering and sorting
- * 
+ *
  * This module provides comprehensive type definitions for all filter options,
  * sort options, and search parameters used across the application
- * 
+ *
  * @module types/filter
  */
 
@@ -351,7 +351,7 @@ export function getSortLabel(sortBy: SortOption): string {
 /** Convert filters to URL query params */
 export function filtersToQueryParams(filters: FilterState): URLQueryParams {
   const params: URLQueryParams = {};
-  
+
   if (filters.search) params.q = filters.search;
   if (filters.fuelType !== 'all') params.fuel = filters.fuelType;
   if (filters.brand !== 'all') params.brand = filters.brand;
@@ -361,14 +361,14 @@ export function filtersToQueryParams(filters: FilterState): URLQueryParams {
   if (filters.priceMax) params.maxPrice = String(filters.priceMax);
   if (filters.open24Hours) params.open24h = 'true';
   if (filters.verifiedOnly) params.verified = 'true';
-  
+
   return params;
 }
 
 /** Parse URL query params to filters */
 export function queryParamsToFilters(params: URLQueryParams): PartialFilterState {
   const filters: PartialFilterState = {};
-  
+
   if (params.q && typeof params.q === 'string') filters.search = params.q;
   if (params.fuel && typeof params.fuel === 'string' && isFuelTypeKey(params.fuel)) {
     filters.fuelType = params.fuel;
@@ -384,7 +384,7 @@ export function queryParamsToFilters(params: URLQueryParams): PartialFilterState
   }
   if (params.open24h === 'true') filters.open24Hours = true;
   if (params.verified === 'true') filters.verifiedOnly = true;
-  
+
   return filters;
 }
 
@@ -400,4 +400,3 @@ export function mergeFilters(
 ): FilterState {
   return { ...current, ...updates };
 }
-

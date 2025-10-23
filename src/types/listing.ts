@@ -1,9 +1,9 @@
 /**
  * Listing Types - Shared TypeScript types for petrol station listings
- * 
+ *
  * This module provides comprehensive type definitions for petrol station listings
  * used consistently across hooks, components, and pages
- * 
+ *
  * @module types/listing
  */
 
@@ -322,7 +322,7 @@ export function sortListings(
   sortBy: string
 ): Listing[] {
   const sorted = [...listings];
-  
+
   switch (sortBy) {
     case 'price-low':
       return sorted.sort((a, b) => {
@@ -330,32 +330,31 @@ export function sortListings(
         const priceB = getCheapestPrice(b) || Infinity;
         return priceA - priceB;
       });
-    
+
     case 'price-high':
       return sorted.sort((a, b) => {
         const priceA = getCheapestPrice(a) || -Infinity;
         const priceB = getCheapestPrice(b) || -Infinity;
         return priceB - priceA;
       });
-    
+
     case 'name':
       return sorted.sort((a, b) => a.name.localeCompare(b.name));
-    
+
     case 'suburb':
       return sorted.sort((a, b) => a.suburb.localeCompare(b.suburb));
-    
+
     case 'distance':
       return sorted.sort((a, b) => {
         const distA = a.distance || Infinity;
         const distB = b.distance || Infinity;
         return distA - distB;
       });
-    
+
     case 'top-rated':
       return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-    
+
     default:
       return sorted;
   }
 }
-

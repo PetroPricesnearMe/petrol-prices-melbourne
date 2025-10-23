@@ -1,9 +1,9 @@
 /**
  * API Response Types - Shared TypeScript types for API interactions
- * 
+ *
  * This module provides comprehensive type definitions for all API responses,
  * requests, and error handling used across the application
- * 
+ *
  * @module types/api
  */
 
@@ -489,4 +489,3 @@ export function formatAPITimestamp(timestamp: string): string {
     return timestamp;
   }
 }
-

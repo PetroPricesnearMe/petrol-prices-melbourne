@@ -60,6 +60,12 @@
   --spacing-2xl: var(--space-12);
 }
 
+html {
+  /* Prevent horizontal scroll globally */
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   /* Cross-browser font stack */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -83,6 +89,8 @@ body {
 
   /* Prevent horizontal scroll on mobile */
   overflow-x: hidden;
+  max-width: 100%;
+  position: relative;
 
   /* Smooth scrolling where supported */
   scroll-behavior: smooth;
@@ -95,8 +103,9 @@ body {
   padding-left: var(--spacing-md, 1rem);
   padding-right: var(--spacing-md, 1rem);
   width: 100%;
-  /* IE11 fallback */
-  width: calc(100% - 2rem);
+  /* Prevent horizontal overflow */
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 /* Progressive enhancement for larger screens */
