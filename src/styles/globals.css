@@ -2,21 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import theme variables */
+@import './theme-vars.css';
+
 @layer base {
   :root {
     --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+    
+    /* System font stack */
+    --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 
   * {
-    border-color: theme('colors.gray.200');
-  }
-
-  body {
-    @apply bg-white text-gray-900;
+    border-color: rgb(var(--color-border));
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-white text-gray-900 dark:bg-neutral-950 dark:text-neutral-50;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Focus visible styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 dark:ring-primary-400 dark:ring-offset-neutral-900;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-primary-200 text-primary-900 dark:bg-primary-800 dark:text-primary-100;
   }
 }
 

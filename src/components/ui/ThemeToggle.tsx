@@ -1,92 +1,181 @@
 /**
  * Theme Toggle Component
- * Advanced theme switcher with animations and accessibility
+ * Button to switch between light, dark, and system themes
  */
 
 'use client';
 
-import { cn, animations, a11y } from '@/styles/system/css-in-js';
-import { useTheme } from '@/styles/system/theme';
+import { useTheme, useMounted } from '@/components/providers/ThemeProvider';
+import { cn } from '@/styles/system/css-in-js';
 
 interface ThemeToggleProps {
   className?: string;
   showLabel?: boolean;
+  variant?: 'icon' | 'full' | 'dropdown';
 }
 
-export function ThemeToggle({ className, showLabel = false }: ThemeToggleProps) {
-  const { theme, resolvedTheme, setTheme, toggleTheme } = useTheme();
+export function ThemeToggle({
+  className,
+  showLabel = false,
+  variant = 'icon',
+}: ThemeToggleProps) {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const mounted = useMounted();
 
-  return (
-    <div className={cn('flex items-center gap-2', className)}>
-      {showLabel && (
-        <span className="text-sm text-gray-700 dark:text-gray-300">
-          Theme:
-        </span>
-      )}
-
-      {/* Quick Toggle Button */}
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
       <button
-        onClick={toggleTheme}
         className={cn(
-          'btn btn-ghost btn-sm',
-          animations.safe('transition-transform hover:scale-110'),
-          a11y.focusRing('primary')
+          'btn btn-sm btn-outline opacity-50',
+          className
         )}
-        aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
-        title={`Current theme: ${resolvedTheme}`}
+        disabled
+        aria-label="Loading theme..."
       >
-        {resolvedTheme === 'dark' ? (
-          <SunIcon className="w-5 h-5" />
-        ) : (
-          <MoonIcon className="w-5 h-5" />
-        )}
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"
+          />
+        </svg>
       </button>
+    );
+  }
 
-      {/* Optional Dropdown */}
-      {showLabel && (
+  if (variant === 'dropdown') {
+    return (
+      <div className={cn('relative inline-block text-left', className)}>
         <select
           value={theme}
           onChange={(e) => setTheme(e.target.value as any)}
-          className="input input-sm"
+          className="btn btn-sm btn-outline cursor-pointer"
           aria-label="Select theme"
         >
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="system">System</option>
         </select>
+      </div>
+    );
+  }
+
+  if (variant === 'full') {
+    return (
+      <div className={cn('inline-flex items-center gap-1 p-1 bg-gray-100 dark:bg-neutral-800 rounded-lg', className)}>
+        <button
+          onClick={() => setTheme('light')}
+          className={cn(
+            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+            theme === 'light'
+              ? 'bg-white dark:bg-neutral-700 text-gray-900 dark:text-white shadow-sm'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+          )}
+          aria-label="Light theme"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={() => setTheme('dark')}
+          className={cn(
+            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+            theme === 'dark'
+              ? 'bg-white dark:bg-neutral-700 text-gray-900 dark:text-white shadow-sm'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+          )}
+          aria-label="Dark theme"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={() => setTheme('system')}
+          className={cn(
+            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+            theme === 'system'
+              ? 'bg-white dark:bg-neutral-700 text-gray-900 dark:text-white shadow-sm'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+          )}
+          aria-label="System theme"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+        </button>
+      </div>
+    );
+  }
+
+  // Default icon variant
+  return (
+    <button
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      className={cn(
+        'btn btn-sm btn-outline',
+        'transition-all duration-300',
+        className
       )}
-    </div>
-  );
-}
-
-function SunIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={cn('transition-transform rotate-0', className)}
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      aria-hidden="true"
+      aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
     >
-      <path
-        fillRule="evenodd"
-        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-        clipRule="evenodd"
-      />
-    </svg>
+      {resolvedTheme === 'dark' ? (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+          />
+        </svg>
+      ) : (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          />
+        </svg>
+      )}
+      {showLabel && (
+        <span className="ml-2">
+          {resolvedTheme === 'dark' ? 'Light' : 'Dark'}
+        </span>
+      )}
+    </button>
   );
 }
-
-function MoonIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={cn('transition-transform', className)}
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      aria-hidden="true"
-    >
-      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-    </svg>
-  );
-}
-
-export default ThemeToggle;

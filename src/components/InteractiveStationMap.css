@@ -1,0 +1,512 @@
+/**
+ * Interactive Station Map Styles
+ * 
+ * Responsive, accessible map styling with animations
+ */
+
+/* Map Container */
+.interactive-station-map {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.interactive-station-map.fullscreen {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0;
+  z-index: 9999;
+  margin: 0;
+}
+
+/* Leaflet Map Container */
+.leaflet-map-container {
+  z-index: 1;
+}
+
+/* Custom Marker */
+.custom-marker {
+  background: transparent;
+  border: none;
+}
+
+.marker-pin {
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  animation: markerDrop 0.5s ease;
+}
+
+.marker-pin.selected {
+  animation: markerBounce 0.6s ease;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+.marker-pin:hover {
+  transform: rotate(-45deg) scale(1.1);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes markerDrop {
+  0% {
+    transform: rotate(-45deg) translateY(-100px);
+    opacity: 0;
+  }
+  60% {
+    transform: rotate(-45deg) translateY(10px);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-45deg) translateY(0);
+  }
+}
+
+@keyframes markerBounce {
+  0%, 100% {
+    transform: rotate(-45deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-45deg) translateY(-10px);
+  }
+}
+
+/* Cluster Markers */
+.custom-cluster-icon {
+  background: transparent;
+  border: none;
+}
+
+.cluster-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.cluster-marker:hover {
+  transform: scale(1.1);
+}
+
+.cluster-small {
+  background: #3B82F6;
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.cluster-medium {
+  background: #8B5CF6;
+  width: 50px;
+  height: 50px;
+  font-size: 16px;
+}
+
+.cluster-large {
+  background: #EC4899;
+  width: 60px;
+  height: 60px;
+  font-size: 18px;
+}
+
+/* Station Popup */
+.station-popup {
+  min-width: 250px;
+  max-width: 300px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.popup-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #111827;
+}
+
+.popup-brand {
+  font-size: 12px;
+  color: #6B7280;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.popup-address {
+  font-size: 13px;
+  color: #4B5563;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.popup-prices {
+  margin: 12px 0;
+  padding: 12px;
+  background: #F9FAFB;
+  border-radius: 8px;
+}
+
+.popup-prices strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #111827;
+  font-size: 13px;
+}
+
+.popup-prices ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.popup-prices li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 13px;
+  color: #4B5563;
+}
+
+.popup-prices .price {
+  font-weight: 700;
+  color: #059669;
+}
+
+.popup-directions-btn {
+  width: 100%;
+  padding: 10px 16px;
+  background: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 8px;
+  touch-action: manipulation;
+  min-height: 44px;
+}
+
+.popup-directions-btn:hover {
+  background: #2563EB;
+}
+
+.popup-directions-btn:active {
+  transform: scale(0.98);
+}
+
+/* User Location Popup */
+.user-location-popup {
+  text-align: center;
+  font-weight: 600;
+  color: #3B82F6;
+}
+
+/* Map Controls */
+.map-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.map-control-btn {
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.map-control-btn:hover {
+  background: #F9FAFB;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.map-control-btn:active {
+  transform: scale(0.95);
+}
+
+.fullscreen .map-controls {
+  top: 24px;
+  right: 24px;
+}
+
+/* Map Legend */
+.map-legend-overlay {
+  position: absolute;
+  bottom: 24px;
+  left: 16px;
+  background: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 180px;
+}
+
+.legend-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #4B5563;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Station Count Badge */
+.station-count-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.fullscreen .station-count-badge {
+  top: 24px;
+  left: 24px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .map-controls {
+    top: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .map-control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .map-legend-overlay {
+    bottom: 16px;
+    left: 12px;
+    padding: 10px 12px;
+    min-width: 160px;
+  }
+
+  .legend-title {
+    font-size: 12px;
+  }
+
+  .legend-item {
+    font-size: 11px;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .station-count-badge {
+    top: 12px;
+    left: 12px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .station-popup {
+    min-width: 220px;
+  }
+
+  .popup-title {
+    font-size: 15px;
+  }
+
+  .fullscreen .map-legend-overlay {
+    bottom: 80px; /* Above mobile navigation if present */
+  }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .map-legend-overlay {
+    bottom: 20px;
+    left: 16px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .station-popup {
+    background: #1F2937;
+  }
+
+  .popup-title {
+    color: #F9FAFB;
+  }
+
+  .popup-address,
+  .popup-prices li {
+    color: #D1D5DB;
+  }
+
+  .popup-prices {
+    background: #111827;
+  }
+
+  .popup-prices strong {
+    color: #F9FAFB;
+  }
+
+  .map-legend-overlay,
+  .station-count-badge {
+    background: #1F2937;
+    color: #F9FAFB;
+  }
+
+  .legend-title {
+    color: #F9FAFB;
+  }
+
+  .legend-item {
+    color: #D1D5DB;
+  }
+
+  .map-control-btn {
+    background: #1F2937;
+    border-color: #374151;
+    color: #F9FAFB;
+  }
+
+  .map-control-btn:hover {
+    background: #111827;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .marker-pin,
+  .cluster-marker,
+  .map-control-btn,
+  .popup-directions-btn {
+    animation: none;
+    transition: none;
+  }
+
+  .marker-pin:hover,
+  .map-control-btn:hover {
+    transform: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .map-control-btn,
+  .map-legend-overlay,
+  .station-count-badge {
+    border: 2px solid currentColor;
+  }
+
+  .marker-pin {
+    border-width: 4px !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .map-controls,
+  .popup-directions-btn {
+    display: none !important;
+  }
+
+  .interactive-station-map {
+    break-inside: avoid;
+  }
+}
+
+/* Loading State */
+.leaflet-container {
+  background: #F3F4F6;
+}
+
+/* Ensure proper z-index stacking */
+.leaflet-pane {
+  z-index: auto !important;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1000;
+}
+
+/* Custom Popup Styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 16px;
+}
+
+.leaflet-popup-tip-container {
+  display: none; /* Hide default arrow for cleaner look */
+}
+
+/* Smooth transitions for map */
+.leaflet-fade-anim .leaflet-tile {
+  will-change: opacity;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+  will-change: transform;
+}
+
