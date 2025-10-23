@@ -258,8 +258,8 @@ Animations don't interfere with screen reader functionality:
 ```tsx
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   {stations.map((station, index) => (
-    <AnimatedCard 
-      key={station.id} 
+    <AnimatedCard
+      key={station.id}
       index={index}
       staggerDelay={0.08}
     >
@@ -272,7 +272,7 @@ Animations don't interfere with screen reader functionality:
 ### Section with Delay
 
 ```tsx
-<AnimatedSection 
+<AnimatedSection
   animation="fadeInLeft"
   delay={0.3}
   duration={0.8}
@@ -284,7 +284,7 @@ Animations don't interfere with screen reader functionality:
 ### Custom Viewport Trigger
 
 ```tsx
-<AnimatedSection 
+<AnimatedSection
   animation="scaleIn"
   viewport="half"  // Triggers when 50% visible
 >
@@ -343,8 +343,8 @@ import { DEFAULT_VIEWPORT } from '@/utils/animations';
 
 const customVariants = {
   hidden: { opacity: 0, x: -100 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     x: 0,
     transition: { duration: 0.6, ease: 'easeOut' }
   }
@@ -413,10 +413,10 @@ import { staggerContainer, fadeInLeft } from '@/utils/animations';
 
 ```tsx
 // Before (GSAP)
-gsap.from(".card", { 
+gsap.from(".card", {
   scrollTrigger: ".card",
   y: 50,
-  opacity: 0 
+  opacity: 0
 });
 
 // After (Our system)
@@ -434,4 +434,3 @@ gsap.from(".card", {
 ---
 
 **Built with ❤️ for smooth, accessible animations**
-

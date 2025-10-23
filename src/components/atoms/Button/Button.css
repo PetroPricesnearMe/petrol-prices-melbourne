@@ -10,7 +10,7 @@
   background: none;
   font-family: inherit;
   cursor: pointer;
-  
+
   /* Base styles */
   display: inline-flex;
   align-items: center;
@@ -23,7 +23,7 @@
   white-space: nowrap;
   user-select: none;
   transition: all 0.15s ease-out;
-  
+
   /* Accessibility */
   outline: none;
 }
@@ -277,20 +277,20 @@
     height: 2.75rem;
     padding: 0 0.75rem;
   }
-  
+
   .button--sm {
     min-height: 2.75rem;
     height: 2.75rem;
     padding: 0 0.875rem;
   }
-  
+
   .button--md {
     min-height: 2.75rem;
     height: 2.75rem;
     padding: 0 0.875rem;
     font-size: 0.9375rem;
   }
-  
+
   .button--lg {
     min-height: 3rem;
     height: 3rem;
@@ -298,4 +298,3 @@
     font-size: 1rem;
   }
 }
-

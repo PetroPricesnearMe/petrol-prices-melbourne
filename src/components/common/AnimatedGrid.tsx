@@ -1,9 +1,9 @@
 /**
  * AnimatedGrid Component - Grid container with stagger animations
- * 
+ *
  * A container component that animates its children with a stagger effect.
  * Perfect for card grids and lists.
- * 
+ *
  * @example
  * ```tsx
  * <AnimatedGrid>
@@ -44,7 +44,7 @@ export interface AnimatedGridProps {
 
 /**
  * AnimatedGrid - Grid container with staggered child animations
- * 
+ *
  * Features:
  * - Automatic stagger animations for children
  * - GPU-optimized
@@ -61,21 +61,21 @@ export function AnimatedGrid({
   testId,
 }: AnimatedGridProps) {
   const shouldReduceMotion = useReducedMotion();
-  
+
   // Get container variants based on stagger speed
   let containerVariants = {
     fast: staggerContainerFast,
     normal: staggerContainer,
     slow: staggerContainerSlow,
   }[stagger];
-  
+
   // Apply custom delays if provided
   if (staggerDelay || initialDelay) {
-    const currentTransition = 
-      typeof containerVariants.visible === 'object' && containerVariants.visible.transition 
-        ? containerVariants.visible.transition 
+    const currentTransition =
+      typeof containerVariants.visible === 'object' && containerVariants.visible.transition
+        ? containerVariants.visible.transition
         : {};
-    
+
     containerVariants = {
       ...containerVariants,
       visible: {
@@ -88,14 +88,14 @@ export function AnimatedGrid({
       },
     };
   }
-  
+
   // Use reduced motion variants if needed
-  const finalContainerVariants = shouldReduceMotion 
-    ? getReducedMotionVariants(containerVariants) 
+  const finalContainerVariants = shouldReduceMotion
+    ? getReducedMotionVariants(containerVariants)
     : containerVariants;
-  
-  const finalItemVariants = shouldReduceMotion 
-    ? getReducedMotionVariants(staggerItem) 
+
+  const finalItemVariants = shouldReduceMotion
+    ? getReducedMotionVariants(staggerItem)
     : staggerItem;
 
   return (
@@ -114,7 +114,7 @@ export function AnimatedGrid({
 
 /**
  * AnimatedGridItem - Individual grid item (use inside AnimatedGrid)
- * 
+ *
  * @example
  * ```tsx
  * <AnimatedGrid>
@@ -151,4 +151,3 @@ export function AnimatedGridItem({
 }
 
 export default AnimatedGrid;
-

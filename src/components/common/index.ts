@@ -1,6 +1,6 @@
 /**
  * Common Components - Reusable UI components
- * 
+ *
  * @module components/common
  */
 

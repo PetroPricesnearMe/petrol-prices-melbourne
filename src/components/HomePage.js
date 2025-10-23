@@ -9,7 +9,7 @@ import { trackPageView } from '../utils/analytics';
 /**
  * HomePage Component - Fully Responsive with Tailwind CSS
  * Fluid typography, mobile-first design, and optimized images
- * 
+ *
  * @component
  */
 
@@ -75,7 +75,7 @@ const HomePage = () => {
         canonical="/"
         structuredData={homepageStructuredData}
       />
-      
+
       <main className="min-h-screen bg-white">
         {/* Hero Section - Fully Responsive with Mobile-First Vertical Compression */}
         <MotionDiv
@@ -97,7 +97,7 @@ const HomePage = () => {
               {/* Hero Content - Mobile-First */}
               <header className="text-center lg:text-left space-y-6 sm:space-y-8 order-2 lg:order-1">
                 {/* Badge */}
-                <MotionDiv 
+                <MotionDiv
                   className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-sm font-medium text-white shadow-lg"
                   variants={itemVariants}
                 >
@@ -106,7 +106,7 @@ const HomePage = () => {
                 </MotionDiv>
 
                 {/* Title - Fluid Typography */}
-                <MotionH1 
+                <MotionH1
                   className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-tight tracking-tight"
                   variants={itemVariants}
                 >
@@ -118,29 +118,29 @@ const HomePage = () => {
                 </MotionH1>
 
                 {/* Subtitle - Fluid Typography */}
-                <MotionP 
+                <MotionP
                   className="text-base sm:text-lg lg:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0"
                   variants={itemVariants}
                 >
-                  Save up to <span className="font-bold text-yellow-300">20c/L</span> with real-time fuel price updates. 
+                  Save up to <span className="font-bold text-yellow-300">20c/L</span> with real-time fuel price updates.
                   Find the cheapest unleaded, diesel & premium near you today!
                 </MotionP>
 
                 {/* CTA Buttons - Touch-Friendly */}
-                <MotionDiv 
+                <MotionDiv
                   className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
                   variants={itemVariants}
                 >
-                  <a 
-                    href="#regions" 
+                  <a
+                    href="#regions"
                     className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold bg-white/20 hover:bg-white/30 backdrop-blur-md border-2 border-white/30 text-white rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 min-h-[52px] touch-manipulation active:scale-95"
                   >
                     <span>🗺️</span>
                     <span>Browse by Region</span>
                   </a>
 
-                  <Link 
-                    to="/directory" 
+                  <Link
+                    to="/directory"
                     className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold bg-white hover:bg-gray-50 text-primary-600 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 min-h-[52px] touch-manipulation active:scale-95"
                   >
                     <span>🏪</span>
@@ -149,7 +149,7 @@ const HomePage = () => {
                 </MotionDiv>
 
                 {/* Stats - Responsive Grid */}
-                <MotionDiv 
+                <MotionDiv
                   className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pt-6 sm:pt-8"
                   variants={itemVariants}
                 >
@@ -307,13 +307,13 @@ const HomePage = () => {
                     <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-2xl mb-5 sm:mb-6 text-3xl sm:text-4xl lg:text-5xl group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
                     </div>
-                    <h3 
+                    <h3
                       itemProp="name"
                       className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-primary-600 transition-colors"
                     >
                       {feature.title}
                     </h3>
-                    <p 
+                    <p
                       itemProp="description"
                       className="text-sm sm:text-base text-gray-600 leading-relaxed"
                     >

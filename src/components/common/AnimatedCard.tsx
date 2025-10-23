@@ -1,9 +1,9 @@
 /**
  * AnimatedCard Component - Card wrapper with scroll animations
- * 
+ *
  * A specialized component for animating card elements in grids/lists.
  * Optimized for station cards and similar content.
- * 
+ *
  * @example
  * ```tsx
  * <AnimatedCard index={0}>
@@ -41,7 +41,7 @@ export interface AnimatedCardProps {
 
 /**
  * AnimatedCard - Animated card wrapper for grid/list items
- * 
+ *
  * Features:
  * - Automatic stagger delay based on index
  * - GPU-optimized animations
@@ -59,13 +59,13 @@ export function AnimatedCard({
   onClick,
 }: AnimatedCardProps) {
   const shouldReduceMotion = useReducedMotion();
-  
+
   // Calculate stagger delay based on index
   const delay = baseDelay + (index * staggerDelay);
-  
+
   // Use fade and slide up animation
   let variants = { ...fadeSlideUp };
-  
+
   // Apply stagger delay
   if (variants.visible && typeof variants.visible === 'object') {
     variants = {
@@ -79,7 +79,7 @@ export function AnimatedCard({
       },
     };
   }
-  
+
   // Use reduced motion variants if needed
   const finalVariants = shouldReduceMotion ? getReducedMotionVariants(variants) : variants;
 
@@ -110,4 +110,3 @@ export function AnimatedCard({
 }
 
 export default AnimatedCard;
-

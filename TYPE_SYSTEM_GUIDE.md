@@ -59,7 +59,7 @@ import { FilterState, DEFAULT_FILTER_STATE, hasActiveFilters } from '@/types';
 function FilterPanel() {
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTER_STATE);
   const hasFilters = hasActiveFilters(filters);
-  
+
   return <div>Active filters: {hasFilters ? 'Yes' : 'No'}</div>;
 }
 ```
@@ -146,9 +146,9 @@ export function useStations(): AsyncState<Listing[], APIError> {
     isSuccess: false,
     isIdle: true,
   });
-  
+
   // Implementation
-  
+
   return state;
 }
 ```
@@ -156,10 +156,10 @@ export function useStations(): AsyncState<Listing[], APIError> {
 ### API Service with Types
 
 ```typescript
-import { 
-  GetListingsRequest, 
+import {
+  GetListingsRequest,
   GetListingsResponse,
-  APIError 
+  APIError
 } from '@/types';
 
 export async function getListings(
@@ -172,21 +172,21 @@ export async function getListings(
 ### Filter Form with Types
 
 ```typescript
-import { 
-  FilterState, 
-  SortOption, 
+import {
+  FilterState,
+  SortOption,
   FuelTypeKey,
   SORT_OPTIONS,
-  DEFAULT_FILTER_STATE 
+  DEFAULT_FILTER_STATE
 } from '@/types';
 
 export function FilterForm() {
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTER_STATE);
-  
+
   const handleSortChange = (sortBy: SortOption) => {
     setFilters(prev => ({ ...prev, sortBy }));
   };
-  
+
   return (
     <select onChange={(e) => handleSortChange(e.target.value as SortOption)}>
       {Object.entries(SORT_OPTIONS).map(([value, config]) => (
@@ -406,27 +406,27 @@ function MyComponent({ stations }: { stations: Listing[] }) {
 
 ```typescript
 // Listing types
-import { 
-  Listing, 
-  FuelPrices, 
+import {
+  Listing,
+  FuelPrices,
   ListingMetadata,
-  PaginatedListings 
+  PaginatedListings
 } from '@/types';
 
 // Filter types
-import { 
-  FilterState, 
-  SortOption, 
+import {
+  FilterState,
+  SortOption,
   FilterOption,
-  QueryParams 
+  QueryParams
 } from '@/types';
 
 // API types
-import { 
-  APIResponse, 
+import {
+  APIResponse,
   PaginatedAPIResponse,
   APIError,
-  AsyncState 
+  AsyncState
 } from '@/types';
 
 // Utilities
@@ -443,4 +443,3 @@ import {
 ---
 
 **For full type definitions, see `/src/types/` directory**
-

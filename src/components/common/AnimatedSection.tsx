@@ -1,9 +1,9 @@
 /**
  * AnimatedSection Component - Scroll-triggered animation wrapper
- * 
+ *
  * A reusable component that wraps any content with scroll-triggered animations.
  * GPU-optimized for smooth 60fps performance.
- * 
+ *
  * @example
  * ```tsx
  * <AnimatedSection animation="fadeInUp">
@@ -49,7 +49,7 @@ export interface AnimatedSectionProps {
 
 /**
  * AnimatedSection - Scroll-triggered animation wrapper
- * 
+ *
  * Features:
  * - GPU-optimized animations (transform, opacity)
  * - Respects prefers-reduced-motion
@@ -69,7 +69,7 @@ export function AnimatedSection({
   style,
 }: AnimatedSectionProps) {
   const shouldReduceMotion = useReducedMotion();
-  
+
   // Get viewport configuration
   const viewportConfig = {
     default: DEFAULT_VIEWPORT,
@@ -80,7 +80,7 @@ export function AnimatedSection({
 
   // Get animation variants
   let variants = getAnimationVariants(animation);
-  
+
   // Apply custom duration if provided
   if (duration && variants.visible && typeof variants.visible === 'object') {
     variants = {
@@ -95,7 +95,7 @@ export function AnimatedSection({
       },
     };
   }
-  
+
   // Apply delay if provided and duration wasn't
   if (delay && !duration && variants.visible && typeof variants.visible === 'object') {
     variants = {
@@ -109,7 +109,7 @@ export function AnimatedSection({
       },
     };
   }
-  
+
   // Use reduced motion variants if user prefers
   const finalVariants = shouldReduceMotion ? getReducedMotionVariants(variants) : variants;
 
@@ -134,4 +134,3 @@ export function AnimatedSection({
 }
 
 export default AnimatedSection;
-

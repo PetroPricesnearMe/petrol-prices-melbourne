@@ -133,7 +133,7 @@
   background: linear-gradient(145deg, #2d3748, #1a202c);
   border-radius: 12px 12px 8px 8px;
   padding: 1rem;
-  box-shadow: 
+  box-shadow:
     0 8px 16px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   border: 2px solid #4a5568;
@@ -142,7 +142,7 @@
 
 .modern-region-link:hover .pump-display {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 12px 24px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   border-color: var(--region-color);
@@ -164,9 +164,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, 
-    transparent 30%, 
-    rgba(255, 255, 255, 0.1) 50%, 
+  background: linear-gradient(45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
     transparent 70%);
   animation: screenGlow 3s ease-in-out infinite;
 }
@@ -247,7 +247,7 @@
   height: 40px;
   background: linear-gradient(145deg, #4a5568, #2d3748);
   border-radius: 8px;
-  box-shadow: 
+  box-shadow:
     2px 0 4px rgba(0, 0, 0, 0.3),
     inset 1px 0 0 rgba(255, 255, 255, 0.1);
   border: 1px solid #2d3748;
@@ -456,11 +456,11 @@
   .region-header h2 {
     font-size: 2.5rem;
   }
-  
+
   .region-selector-section {
     padding: 4rem 0;
   }
-  
+
   .modern-region-link {
     min-height: 280px;
   }
@@ -472,7 +472,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
   }
-  
+
   .region-header h2 {
     font-size: 3rem;
   }
