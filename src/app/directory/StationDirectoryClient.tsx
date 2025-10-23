@@ -371,7 +371,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                 {paginatedStations.map((station) => {
                   const brandInfo = getBrandInfo(station.brand);
                   const brandClass = getBrandClass(station.brand);
-                  
+
                   return (
                   <article
                     key={station.id}

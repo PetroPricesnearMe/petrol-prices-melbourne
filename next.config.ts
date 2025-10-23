@@ -109,6 +109,10 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_APP_VERSION: process.env.npm_package_version || '2.0.0',
   },
+
+  /* Analytics Configuration */
+  // Vercel Analytics and Speed Insights are auto-configured
+  // Google Analytics is configured via GTM component
 };
 
 export default nextConfig;

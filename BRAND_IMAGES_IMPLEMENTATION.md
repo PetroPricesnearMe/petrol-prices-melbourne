@@ -179,11 +179,11 @@ const brandClass = getBrandClass(station.brand);
 ### Color-Coded Header
 
 ```tsx
-<div 
+<div
   className="relative h-24 flex items-center justify-center"
   style={{
-    background: `linear-gradient(135deg, 
-      ${brandInfo.color}15 0%, 
+    background: `linear-gradient(135deg,
+      ${brandInfo.color}15 0%,
       ${brandInfo.fallback}05 100%)`
   }}
 >
@@ -374,7 +374,7 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 
 ## 🎉 Result
 
-**Before:** Plain text badges, no visual brand identity  
+**Before:** Plain text badges, no visual brand identity
 **After:** Beautiful brand logos with color-coded styling!
 
 **Benefits:**
@@ -396,9 +396,8 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 
 ---
 
-**Status:** ✅ Complete and Production Ready  
-**Visual Impact:** ⭐⭐⭐⭐⭐  
-**User Experience:** Significantly Enhanced  
+**Status:** ✅ Complete and Production Ready
+**Visual Impact:** ⭐⭐⭐⭐⭐
+**User Experience:** Significantly Enhanced
 
 **Your station cards now look professional and visually appealing!** 🎉
-

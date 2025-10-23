@@ -1,6 +1,6 @@
 /**
  * Brand Image Utility
- * 
+ *
  * Centralized mapping of petrol station brands to their logo images
  */
 
@@ -141,9 +141,9 @@ export function getBrandColor(brandName: string | null | undefined): string {
  */
 export function getBrandClass(brandName: string | null | undefined): string {
   if (!brandName) return '';
-  
+
   const normalizedBrand = brandName.toLowerCase().trim();
-  
+
   if (normalizedBrand.includes('shell')) return 'brand-shell';
   if (normalizedBrand.includes('bp')) return 'brand-bp';
   if (normalizedBrand.includes('caltex') || normalizedBrand.includes('ampol')) return 'brand-caltex';
@@ -153,7 +153,6 @@ export function getBrandClass(brandName: string | null | undefined): string {
   if (normalizedBrand.includes('united')) return 'brand-united';
   if (normalizedBrand.includes('liberty')) return 'brand-liberty';
   if (normalizedBrand.includes('apco')) return 'brand-apco';
-  
+
   return '';
 }
-

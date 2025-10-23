@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import '../styles/globals.css';
 import '../styles/accessibility/focus-visible.css';
 import '../styles/brand-styles.css';
 import { SkipToContent } from '@/components/accessibility';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { CookieConsent } from '@/components/analytics/CookieConsent';
 
 import { Providers } from './providers';
 
@@ -97,6 +101,12 @@ export default function RootLayout({
           <footer id="footer" aria-label="Site footer">
             {/* Footer content will be injected by child pages */}
           </footer>
+
+          {/* Analytics - Privacy-focused, bot-excluding, consent-based */}
+          <GoogleAnalytics />
+          <CookieConsent />
+          <Analytics />
+          <SpeedInsights />
         </Providers>
       </body>
     </html>
