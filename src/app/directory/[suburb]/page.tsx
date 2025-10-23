@@ -17,10 +17,11 @@ interface Props {
 
 // Generate static pages for top suburbs
 export async function generateStaticParams() {
-  // Get top 100 suburbs by station count for static generation
+  // Get top 200 suburbs by station count for static generation
+  // This covers more suburbs while keeping build times reasonable
   const suburbCounts = Object.entries(metadataJson.stats.bySuburb)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 100);
+    .slice(0, 200);
 
   return suburbCounts.map(([suburb]) => ({
     suburb: suburb.toLowerCase().replace(/\s+/g, '-'),

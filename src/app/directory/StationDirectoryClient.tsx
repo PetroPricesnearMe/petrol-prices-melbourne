@@ -283,8 +283,8 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                       onChange={(e) => handleFilterChange('suburb', e.target.value)}
                       className="input w-full"
                     >
-                      <option value="all">All Suburbs ({metadata.suburbs.length}+)</option>
-                      {metadata.suburbs.slice(0, 100).map((suburb) => (
+                      <option value="all">All Suburbs ({metadata.suburbs.length})</option>
+                      {metadata.suburbs.map((suburb) => (
                         <option key={suburb} value={suburb}>
                           {suburb}
                         </option>

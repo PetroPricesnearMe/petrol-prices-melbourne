@@ -28,7 +28,7 @@ const mockStations = [
     name: 'Shell Coles Express',
     brand: 'Shell',
     address: '123 Main St',
-    suburb: 'North Melbourne',
+    suburb: 'Preston',
     fuelPrices: [
       { type: 'Unleaded', price: 1.85 },
       { type: 'Diesel', price: 1.75 },

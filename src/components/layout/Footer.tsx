@@ -27,14 +27,21 @@ const footerLinks = {
   ],
 };
 
+const CONTACT_INFO = {
+  name: 'Al T',
+  mobile: '0423 530 204',
+  mobileRaw: '0423530204',
+  email: 'contact@petrolpricenearme.com.au',
+};
+
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-white print-hidden mt-auto">
       <div className={patterns.container() + ' py-12'}>
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Brand */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-xl font-bold mb-4">⛽ Petrol Price Near Me</h3>
             <p className="text-gray-400 text-sm mb-4">
               Find the cheapest petrol stations near you in Melbourne with real-time fuel prices.
@@ -59,6 +66,34 @@ export function Footer() {
                 𝕏
               </a>
             </div>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-semibold mb-4">Contact</h4>
+            <ul className="space-y-3">
+              <li>
+                <p className="text-gray-400 text-sm font-medium mb-1">{CONTACT_INFO.name}</p>
+              </li>
+              <li>
+                <a
+                  href={`tel:${CONTACT_INFO.mobileRaw}`}
+                  className="text-gray-400 hover:text-white text-sm transition-colors focus-ring-white rounded flex items-center gap-2"
+                >
+                  <span>📱</span>
+                  {CONTACT_INFO.mobile}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${CONTACT_INFO.email}`}
+                  className="text-gray-400 hover:text-white text-sm transition-colors focus-ring-white rounded flex items-center gap-2"
+                >
+                  <span>✉️</span>
+                  <span className="break-all">{CONTACT_INFO.email}</span>
+                </a>
+              </li>
+            </ul>
           </div>
 
           {/* Links */}

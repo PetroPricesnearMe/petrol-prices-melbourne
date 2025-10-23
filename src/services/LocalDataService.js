@@ -179,17 +179,17 @@ class LocalDataService {
     // Northern suburbs
     const north = ['PRESTON', 'COBURG', 'ESSENDON', 'TULLAMARINE', 'EPPING', 'THOMASTOWN',
       'WOLLERT', 'CRAIGIEBURN', 'BROADMEADOWS', 'GREENSBOROUGH', 'ELTHAM'];
-    if (north.some(s => suburbUpper.includes(s))) return 'North Melbourne';
+    if (north.some(s => suburbUpper.includes(s))) return 'Northern Suburbs';
 
     // Western suburbs
     const west = ['FOOTSCRAY', 'SUNSHINE', 'WERRIBEE', 'POINT COOK', 'BROOKLYN', 'DEER PARK',
       'HOPPERS CROSSING', 'ALTONA', 'WILLIAMSTOWN', 'MARIBYRNONG'];
-    if (west.some(s => suburbUpper.includes(s))) return 'West Melbourne';
+    if (west.some(s => suburbUpper.includes(s))) return 'Western Suburbs';
 
     // Eastern suburbs
     const east = ['DONCASTER', 'BOX HILL', 'RINGWOOD', 'GLEN WAVERLEY', 'BURWOOD', 'MITCHAM',
       'BLACKBURN', 'NUNAWADING', 'CROYDON', 'BAYSWATER'];
-    if (east.some(s => suburbUpper.includes(s))) return 'East Melbourne';
+    if (east.some(s => suburbUpper.includes(s))) return 'Inner East Melbourne';
 
     // Inner CBD
     const cbd = ['MELBOURNE', 'CARLTON', 'FITZROY', 'SOUTH YARRA', 'RICHMOND', 'COLLINGWOOD',
@@ -199,7 +199,7 @@ class LocalDataService {
     // South Eastern suburbs
     const southeast = ['FRANKSTON', 'DANDENONG', 'CRANBOURNE', 'CLAYTON', 'SPRINGVALE',
       'NOBLE PARK', 'CHELTENHAM', 'MOORABBIN', 'MORDIALLOC', 'BENTLEIGH'];
-    if (southeast.some(s => suburbUpper.includes(s))) return 'South East Melbourne';
+    if (southeast.some(s => suburbUpper.includes(s))) return 'South Eastern Suburbs';
 
     // Default to VIC (regional)
     return 'VIC';
@@ -298,4 +298,3 @@ class LocalDataService {
 // Export singleton instance
 const localDataService = new LocalDataService();
 export default localDataService;
-

@@ -49,8 +49,11 @@ export const SOCIAL_LINKS = {
 
 // Contact information
 export const CONTACT = {
+  NAME: 'Al T',
   EMAIL: 'contact@petrolpricenearme.com.au',
   PHONE: '1300 XXX XXX',
+  MOBILE: '0423 530 204',
+  MOBILE_RAW: '0423530204',
 };
 
 // Map configuration
@@ -61,4 +64,3 @@ export const MAP_CONFIG = {
   MAX_ZOOM: 18,
   MIN_ZOOM: 8,
 };
-

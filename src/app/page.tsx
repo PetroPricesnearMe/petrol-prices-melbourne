@@ -75,10 +75,10 @@ export default function HomePage() {
 
           <div className={patterns.grid(3, 'lg')}>
             {[
-              { slug: 'north-melbourne', name: 'North Melbourne', icon: '🧭', color: 'bg-blue-500', stations: '50+' },
-              { slug: 'south-melbourne', name: 'South Melbourne', icon: '🏙️', color: 'bg-green-500', stations: '45+' },
-              { slug: 'east-melbourne', name: 'East Melbourne', icon: '🌅', color: 'bg-orange-500', stations: '60+' },
-              { slug: 'west-melbourne', name: 'West Melbourne', icon: '🌆', color: 'bg-red-500', stations: '55+' },
+              { slug: 'north-melbourne', name: 'Northern Suburbs', icon: '🧭', color: 'bg-blue-500', stations: '50+' },
+              { slug: 'south-melbourne', name: 'South Eastern Suburbs', icon: '🏙️', color: 'bg-green-500', stations: '45+' },
+              { slug: 'east-melbourne', name: 'Inner East Melbourne', icon: '🌅', color: 'bg-orange-500', stations: '60+' },
+              { slug: 'west-melbourne', name: 'Western Suburbs', icon: '🌆', color: 'bg-red-500', stations: '55+' },
               { slug: 'cbd', name: 'Melbourne CBD', icon: '🏢', color: 'bg-purple-500', stations: '30+' },
               { slug: 'directory', name: 'All Regions', icon: '🗺️', color: 'bg-gray-700', stations: '250+' },
             ].map((region, index) => (

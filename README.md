@@ -246,6 +246,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
+- 👤 Contact: Al T
+- 📱 Mobile: 0423 530 204
 - 📧 Email: contact@petrolpricenearme.com.au
 - 🐛 Issues: [GitHub Issues](https://github.com/yourusername/petrol-price-near-me/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/petrol-price-near-me/discussions)

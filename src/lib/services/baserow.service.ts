@@ -71,14 +71,35 @@ function mapBaserowStation(baserowStation: BaserowPetrolStation): PetrolStation 
 export const baserowService = {
   /**
    * Get all petrol stations
+   * Handles pagination to fetch all records
    */
   getStations: async (): Promise<PetrolStation[]> => {
     try {
-      const response = await baserowClient.get<
-        BaserowListResponse<BaserowPetrolStation>
-      >(`/${PETROL_STATIONS_TABLE_ID}/`);
+      let allStations: BaserowPetrolStation[] = [];
+      let url = `/${PETROL_STATIONS_TABLE_ID}/?size=200`;
+      let hasMore = true;
 
-      return response.data.results.map(mapBaserowStation);
+      // Fetch all pages
+      while (hasMore) {
+        const response = await baserowClient.get<
+          BaserowListResponse<BaserowPetrolStation>
+        >(url);
+
+        allStations = allStations.concat(response.data.results);
+
+        // Check if there's a next page
+        if (response.data.next) {
+          // Extract the query parameters from the next URL
+          const nextUrl = new URL(response.data.next);
+          url = `/${PETROL_STATIONS_TABLE_ID}/${nextUrl.search}`;
+          hasMore = true;
+        } else {
+          hasMore = false;
+        }
+      }
+
+      console.log(`Fetched ${allStations.length} stations from Baserow`);
+      return allStations.map(mapBaserowStation);
     } catch (error) {
       console.error('Error fetching stations from Baserow:', error);
       throw error;
@@ -181,4 +202,3 @@ export const baserowService = {
     }
   },
 };
-

@@ -23,6 +23,7 @@
     "test:integration": "jest --testPathPattern=integration/",
     "test:coverage": "jest --coverage",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "sync:baserow": "node scripts/sync-from-baserow.js",
     "test:a11y": "jest --testPathPattern=a11y",
     "test:e2e": "playwright test",
     "test:e2e:playwright": "playwright test",

@@ -101,6 +101,49 @@ export default function AboutPage() {
             </div>
           </section>
 
+          {/* Contact */}
+          <section className="card p-8">
+            <h2 className={patterns.text.h2 + ' mb-6'}>Get In Touch</h2>
+            <div className="space-y-4">
+              <p className={patterns.text.body}>
+                Have questions or feedback? We&apos;d love to hear from you!
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <span className="text-2xl">👤</span>
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white">Contact Name</p>
+                    <p className="text-gray-600 dark:text-gray-400">Al T</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <span className="text-2xl">📱</span>
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white">Mobile</p>
+                    <a
+                      href="tel:0423530204"
+                      className="text-primary-600 hover:text-primary-700 dark:text-primary-400 hover:underline"
+                    >
+                      0423 530 204
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg md:col-span-2">
+                  <span className="text-2xl">✉️</span>
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white">Email</p>
+                    <a
+                      href="mailto:contact@petrolpricenearme.com.au"
+                      className="text-primary-600 hover:text-primary-700 dark:text-primary-400 hover:underline break-all"
+                    >
+                      contact@petrolpricenearme.com.au
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* CTA */}
           <section className="text-center">
             <Link href="/directory" className="btn btn-primary btn-lg">

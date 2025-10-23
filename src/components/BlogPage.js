@@ -181,7 +181,7 @@ const BlogPage = () => {
                   <p>Average unleaded price: $1.77/L | Diesel: $1.74/L</p>
                 </div>
                 <div className="station-item">
-                  <h4>3. 7-Eleven - North Melbourne</h4>
+                  <h4>3. 7-Eleven - Northern Suburbs</h4>
                   <p>Average unleaded price: $1.78/L | Diesel: $1.75/L</p>
                 </div>
               </div>
@@ -313,4 +313,4 @@ const BlogPage = () => {
   );
 };
 
-export default BlogPage; 
+export default BlogPage;

@@ -10,23 +10,23 @@ import { RegionStationsClient } from './RegionStationsClient';
 
 const regions = {
   'north-melbourne': {
-    name: 'North Melbourne',
-    description: 'Find the cheapest petrol stations in North Melbourne and surrounding suburbs.',
+    name: 'Northern Suburbs',
+    description: 'Find the cheapest petrol stations in Northern Suburbs and surrounding areas.',
     color: '#3B82F6',
   },
   'south-melbourne': {
-    name: 'South Melbourne',
-    description: 'Compare fuel prices across South Melbourne petrol stations.',
+    name: 'South Eastern Suburbs',
+    description: 'Compare fuel prices across South Eastern Suburbs petrol stations.',
     color: '#10B981',
   },
   'east-melbourne': {
-    name: 'East Melbourne',
-    description: 'Discover affordable fuel in East Melbourne suburbs.',
+    name: 'Inner East Melbourne',
+    description: 'Discover affordable fuel in Inner East Melbourne suburbs.',
     color: '#F59E0B',
   },
   'west-melbourne': {
-    name: 'West Melbourne',
-    description: 'Browse petrol stations in West Melbourne for the best prices.',
+    name: 'Western Suburbs',
+    description: 'Browse petrol stations in Western Suburbs for the best prices.',
     color: '#EF4444',
   },
   'cbd': {
