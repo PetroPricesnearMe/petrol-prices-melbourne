@@ -98,10 +98,10 @@ export function Navigation() {
             <ThemeToggle />
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Touch-Friendly */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden btn btn-ghost btn-sm"
+            className="lg:hidden btn btn-ghost btn-sm min-h-[44px] min-w-[44px] touch-manipulation"
             aria-label="Toggle menu"
             aria-expanded={isOpen}
           >
@@ -138,6 +138,7 @@ export function Navigation() {
                   href={link.href}
                   className={cn(
                     'block px-4 py-3 rounded-lg text-sm font-medium transition-colors',
+                    'min-h-[44px] flex items-center touch-manipulation',
                     pathname === link.href
                       ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'

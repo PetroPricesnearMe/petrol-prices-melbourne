@@ -77,9 +77,9 @@ const HomePage = () => {
       />
       
       <main className="min-h-screen bg-white">
-        {/* Hero Section - Fully Responsive */}
+        {/* Hero Section - Fully Responsive with Mobile-First Vertical Compression */}
         <MotionDiv
-          className="relative min-h-screen flex items-center overflow-hidden"
+          className="relative min-h-[70vh] md:min-h-[85vh] lg:min-h-screen flex items-center overflow-hidden"
           variants={heroContainerVariants}
           initial="hidden"
           animate="visible"

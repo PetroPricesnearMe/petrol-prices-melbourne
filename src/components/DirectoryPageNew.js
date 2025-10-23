@@ -47,10 +47,10 @@ const getBrandClass = (brand) => {
 const getBrandImage = (brand) => {
   if (!brand) return BRAND_IMAGES.default;
   const brandLower = (typeof brand === 'string' ? brand : '').toLowerCase();
-  
+
   // Check for exact matches first
   if (BRAND_IMAGES[brandLower]) return BRAND_IMAGES[brandLower];
-  
+
   // Check for partial matches
   if (brandLower.includes('shell')) return BRAND_IMAGES.shell;
   if (brandLower.includes('bp')) return BRAND_IMAGES.bp;
@@ -61,7 +61,7 @@ const getBrandImage = (brand) => {
   if (brandLower.includes('liberty')) return BRAND_IMAGES.liberty;
   if (brandLower.includes('apco')) return BRAND_IMAGES.apco;
   if (brandLower.includes('caltex') || brandLower.includes('ampol')) return BRAND_IMAGES.caltex;
-  
+
   return BRAND_IMAGES.default;
 };
 
@@ -96,14 +96,14 @@ const DirectoryPageNew = () => {
       try {
         console.log('⏳ Starting to load stations...');
         setLoading(true);
-        
+
         // Add timeout to prevent infinite loading
-        const timeoutPromise = new Promise((_, reject) => 
+        const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Loading timeout')), 10000)
         );
-        
+
         const dataPromise = dataSourceManager.fetchStations();
-        
+
         // Race between data fetch and timeout
         const data = await Promise.race([dataPromise, timeoutPromise]);
         console.log('✅ Data loaded successfully:', data.length, 'stations');

@@ -185,4 +185,3 @@ useEffect(() => {
 ---
 
 ⭐ **Pro Tip**: Use `PaginatedGrid` for quick implementation with all features built-in!
-

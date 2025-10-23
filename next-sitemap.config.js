@@ -1,7 +1,7 @@
 /**
  * next-sitemap Configuration
  * Automatically generates sitemap.xml and robots.txt
- * 
+ *
  * @see https://github.com/iamvishnusankar/next-sitemap
  */
 
@@ -13,7 +13,7 @@ module.exports = {
   sitemapSize: 7000,
   changefreq: 'daily',
   priority: 0.7,
-  
+
   // Exclude patterns
   exclude: [
     '/api/*',
@@ -22,7 +22,7 @@ module.exports = {
     '/server-sitemap.xml',
     '/server-sitemap-index.xml',
   ],
-  
+
   // Robots.txt configuration
   robotsTxtOptions: {
     policies: [
@@ -56,60 +56,60 @@ module.exports = {
       `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}/server-sitemap.xml`,
     ],
   },
-  
+
   // Transform function to customize each URL entry
   transform: async (config, path) => {
     // Default values
     let priority = config.priority;
     let changefreq = config.changefreq;
-    
+
     // Homepage - highest priority
     if (path === '/') {
       priority = 1.0;
       changefreq = 'daily';
     }
-    
+
     // Directory pages - high priority (station listings)
     else if (path === '/directory' || path.startsWith('/directory/')) {
       priority = 0.9;
       changefreq = 'hourly';
     }
-    
+
     // Region pages - high priority
     else if (path.startsWith('/regions/')) {
       priority = 0.85;
       changefreq = 'daily';
     }
-    
+
     // Fuel trends - high priority
     else if (path === '/fuel-price-trends') {
       priority = 0.8;
       changefreq = 'daily';
     }
-    
+
     // Station amenities
     else if (path === '/station-amenities') {
       priority = 0.7;
       changefreq = 'weekly';
     }
-    
+
     // FAQ and How it works
     else if (path === '/faq' || path === '/how-pricing-works') {
       priority = 0.6;
       changefreq = 'monthly';
     }
-    
+
     // About and Blog
     else if (path === '/about' || path === '/blog') {
       priority = 0.5;
       changefreq = 'monthly';
     }
-    
+
     // Exclude URLs with query parameters (filters, search, pagination)
     if (path.includes('?')) {
       return null; // Don't include in sitemap
     }
-    
+
     return {
       loc: path,
       changefreq,
@@ -117,11 +117,11 @@ module.exports = {
       lastmod: new Date().toISOString(),
     };
   },
-  
+
   // Additional paths to include
   additionalPaths: async (config) => {
     const result = [];
-    
+
     // Add region paths
     const regions = [
       'north-melbourne',
@@ -130,14 +130,13 @@ module.exports = {
       'west-melbourne',
       'cbd',
     ];
-    
+
     for (const region of regions) {
       result.push(
         await config.transform(config, `/regions/${region}`)
       );
     }
-    
+
     return result;
   },
 };
-

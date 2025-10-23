@@ -9,13 +9,25 @@
 }
 
 .hero-section {
-  min-height: 100vh;
+  min-height: 70vh;
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
   background: var(--gradient-primary);
   padding: var(--space-8) 0;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    min-height: 85vh;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-section {
+    min-height: 100vh;
+  }
 }
 
 .hero-background {

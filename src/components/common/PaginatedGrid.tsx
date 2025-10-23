@@ -1,6 +1,6 @@
 /**
  * PaginatedGrid Component
- * 
+ *
  * A responsive grid layout with built-in pagination and smooth animations.
  * Features:
  * - Fluid responsive grid (1/2/3/4 columns)
@@ -285,4 +285,3 @@ export function PaginatedGrid<T = any>({
 }
 
 export default PaginatedGrid;
-

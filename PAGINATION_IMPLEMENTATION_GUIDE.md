@@ -166,7 +166,7 @@ function StationList({ stations }) {
 <PaginatedGrid
   items={filteredStations}
   renderItem={(station, index) => (
-    <StationCard 
+    <StationCard
       key={station.id}
       station={station}
       onClick={() => handleStationClick(station)}
@@ -299,7 +299,7 @@ const generatePageRange = (
 ): (number | 'ellipsis')[] => {
   // Always show: first page, last page, current page, and siblings
   // Use ellipsis for gaps
-  
+
   // Example with siblingCount=1:
   // [1] ... [5] [6] [7] ... [20]
   //          ^siblings  ^current
@@ -425,7 +425,7 @@ import Pagination from '@/components/common/Pagination';
 function ProductList({ products }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
-  
+
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentProducts = products.slice(startIndex, startIndex + itemsPerPage);
@@ -437,7 +437,7 @@ function ProductList({ products }) {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
-      
+
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
@@ -486,7 +486,7 @@ function ServerPaginatedList() {
               <ItemCard key={item.id} item={item} />
             ))}
           </div>
-          
+
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -511,7 +511,7 @@ function StationDirectory({ stations }) {
     <PaginatedGrid
       items={stations}
       renderItem={(station) => (
-        <StationCard 
+        <StationCard
           station={station}
           onViewDetails={() => console.log('View', station.id)}
           onGetDirections={() => console.log('Directions', station.id)}
@@ -663,7 +663,7 @@ describe('Pagination', () => {
         onPageChange={handlePageChange}
       />
     );
-    
+
     fireEvent.click(screen.getByLabelText('Go to page 2'));
     expect(handlePageChange).toHaveBeenCalledWith(2);
   });
@@ -672,7 +672,7 @@ describe('Pagination', () => {
     render(
       <Pagination currentPage={1} totalPages={5} onPageChange={jest.fn()} />
     );
-    
+
     expect(screen.getByLabelText('Go to previous page')).toBeDisabled();
   });
 });
@@ -687,7 +687,7 @@ it('has no accessibility violations', async () => {
   const { container } = render(
     <Pagination currentPage={1} totalPages={5} onPageChange={jest.fn()} />
   );
-  
+
   const results = await axe(container);
   expect(results).toHaveNoViolations();
 });
@@ -771,4 +771,3 @@ For issues or questions, please refer to:
 **Last Updated**: October 23, 2025
 **Version**: 1.0.0
 **Author**: Petrol Price Near Me Development Team
-

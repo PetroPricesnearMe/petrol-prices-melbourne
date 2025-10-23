@@ -166,4 +166,3 @@ Uses minimalistic Tailwind classes:
 ## License
 
 MIT
-

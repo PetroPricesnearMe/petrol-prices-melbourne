@@ -21,4 +21,3 @@ export interface SortDropdownProps {
   showDescription?: boolean;
   variant?: 'default' | 'compact' | 'minimal';
 }
-

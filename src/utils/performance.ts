@@ -17,10 +17,10 @@ export function loadScriptAsync(src: string, id?: string): Promise<void> {
     script.src = src;
     script.async = true;
     if (id) script.id = id;
-    
+
     script.onload = () => resolve();
     script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-    
+
     document.body.appendChild(script);
   });
 }
@@ -73,7 +73,7 @@ export function dnsPrefetch(href: string) {
  */
 export function measureFCP(callback: (value: number) => void) {
   if (typeof window === 'undefined') return;
-  
+
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
       if (entry.name === 'first-contentful-paint') {
@@ -95,7 +95,7 @@ export function measureFCP(callback: (value: number) => void) {
  */
 export function measureLCP(callback: (value: number) => void) {
   if (typeof window === 'undefined') return;
-  
+
   const observer = new PerformanceObserver((list) => {
     const entries = list.getEntries();
     const lastEntry = entries[entries.length - 1];
@@ -114,7 +114,7 @@ export function measureLCP(callback: (value: number) => void) {
  */
 export function measureFID(callback: (value: number) => void) {
   if (typeof window === 'undefined') return;
-  
+
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
       const firstInput = entry as PerformanceEventTiming;
@@ -135,7 +135,7 @@ export function measureFID(callback: (value: number) => void) {
  */
 export function measureCLS(callback: (value: number) => void) {
   if (typeof window === 'undefined') return;
-  
+
   let clsValue = 0;
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {

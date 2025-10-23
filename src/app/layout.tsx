@@ -10,6 +10,7 @@ import '@/styles/media-queries.css';
 import { Footer } from '@/components/layout/Footer';
 import { Navigation } from '@/components/layout/Navigation';
 import { ThemeScript } from '@/styles/system/theme';
+import { ResourceHints } from './ResourceHints';
 
 import { Providers } from './providers';
 
@@ -110,6 +111,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
+        <ResourceHints />
         <ThemeScript />
       </head>
       <body className="min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-900 flex flex-col">

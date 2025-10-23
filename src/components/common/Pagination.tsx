@@ -1,9 +1,9 @@
 /**
  * Pagination Component
- * 
+ *
  * A fully accessible, keyboard-navigable pagination component with smooth animations.
  * Supports both client-side and server-side pagination.
- * 
+ *
  * Features:
  * - ARIA accessibility labels
  * - Full keyboard navigation (Arrow keys, Home, End)
@@ -306,7 +306,6 @@ export const Pagination: React.FC<PaginationProps> = ({
                   font-medium
                 `}
                 aria-label="Go to previous page"
-                aria-disabled={disabled || currentPage === 1}
               >
                 <span className="flex items-center gap-1">
                   <span aria-hidden="true">←</span>
@@ -354,7 +353,6 @@ export const Pagination: React.FC<PaginationProps> = ({
                     `}
                     aria-label={`Go to page ${page}`}
                     aria-current={isActive ? 'page' : undefined}
-                    aria-disabled={disabled}
                     role="listitem"
                   >
                     {page}
@@ -381,7 +379,6 @@ export const Pagination: React.FC<PaginationProps> = ({
                   font-medium
                 `}
                 aria-label="Go to next page"
-                aria-disabled={disabled || currentPage === totalPages}
               >
                 <span className="flex items-center gap-1">
                   <span className="hidden sm:inline">Next</span>
@@ -407,7 +404,6 @@ export const Pagination: React.FC<PaginationProps> = ({
                   touch-manipulation
                 `}
                 aria-label="Go to last page"
-                aria-disabled={disabled || currentPage === totalPages}
               >
                 <span aria-hidden="true">⟩⟩</span>
               </button>
@@ -425,4 +421,3 @@ export const Pagination: React.FC<PaginationProps> = ({
 };
 
 export default Pagination;
-

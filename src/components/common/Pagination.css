@@ -1,6 +1,6 @@
 /**
  * Pagination Component Styles
- * 
+ *
  * Custom styles for pagination component that complement Tailwind utilities
  */
 
@@ -90,7 +90,7 @@
   .pagination-container {
     @apply text-sm;
   }
-  
+
   .pagination-container button {
     @apply px-2 py-1 min-w-[36px];
   }
@@ -101,7 +101,7 @@
   .pagination-container button {
     @apply border-2;
   }
-  
+
   .pagination-container button[aria-current="page"] {
     @apply border-4;
   }
@@ -112,13 +112,12 @@
   .pagination-container button {
     transition: none !important;
   }
-  
+
   .pagination-container button:hover:not(:disabled) {
     transform: none;
   }
-  
+
   .pagination-container button:active:not(:disabled) {
     transform: none;
   }
 }
-

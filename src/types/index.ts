@@ -137,11 +137,120 @@ export type {
   ComponentRef,
 } from './component';
 
+// Listing types - Shared petrol station listing types
+export type {
+  FuelPrices,
+  FuelTypeKey,
+  StationAmenities,
+  Listing,
+  ListingWithMetrics,
+  ListingCardData,
+  ListingMetadata,
+  PriceStats,
+  ListingCollection,
+  PaginatedListings,
+} from './listing';
+
+export {
+  FUEL_TYPE_LABELS,
+  isListing,
+  hasValidCoordinates,
+  hasFuelPrices,
+  getAvailableFuelTypes,
+  getCheapestPrice,
+  getListingCoordinates,
+  formatListingPrice,
+  formatDistance,
+  getBrandColor,
+  sortListings,
+} from './listing';
+
+// Filter types - Shared filter and sort option types
+export type {
+  SortOption,
+  SortDirection,
+  SortConfig,
+  FilterOption,
+  FilterOptionGroup,
+  FuelTypeFilterOption,
+  BrandFilterOption,
+  SuburbFilterOption,
+  RegionFilterOption,
+  PriceRangeFilter,
+  DistanceRangeFilter,
+  AmenityFilter,
+  FilterState,
+  PartialFilterState,
+  FilterChangeEvent,
+  SearchParams,
+  QueryParams,
+  URLQueryParams,
+  FilterPreset,
+} from './filter';
+
+export {
+  SORT_OPTIONS,
+  FILTER_PRESETS,
+  DEFAULT_FILTER_STATE,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE,
+  isSortOption,
+  isFuelTypeKey,
+  hasActiveFilters,
+  getSortLabel,
+  filtersToQueryParams,
+  queryParamsToFilters,
+  resetFilters,
+  mergeFilters,
+} from './filter';
+
+// API types - Shared API response and request types
+export type {
+  APIResponse,
+  PaginatedAPIResponse,
+  PaginationMetadata,
+  APIError,
+  ValidationError,
+  ValidationAPIError,
+  APIRequestConfig,
+  APIRequestOptions,
+  RetryConfig,
+  CacheConfig,
+  GetListingsRequest,
+  GetListingsResponse,
+  GetListingRequest,
+  GetListingResponse,
+  SearchListingsRequest,
+  SearchListingsResponse,
+  BaserowListResponse,
+  BaserowErrorResponse,
+  BaserowPetrolStation,
+  BaserowFuelPrice,
+  WebSocketMessage,
+  PriceUpdateMessage,
+  StationUpdateMessage,
+  AsyncState,
+  MutationState,
+} from './api';
+
+export {
+  APIErrorCode,
+  isAPIError,
+  isValidationAPIError,
+  isPaginatedResponse,
+  isSuccessResponse,
+  createAsyncState,
+  createSuccessResponse,
+  createErrorResponse,
+  getErrorMessage,
+  isRetryableError,
+  formatAPITimestamp,
+} from './api';
+
 // Legacy types for backward compatibility
 export type {
   PetrolStation,
   SearchFilters,
-  SortOption,
   GeolocationState,
   ColorVariant,
   InteractiveProps,

@@ -18,8 +18,10 @@
 - 📱 **Responsive Design** - Works on desktop, tablet, and mobile
 - ⚡ **Real-Time Data** - Up-to-date fuel prices
 - 🌙 **Dark Mode** - Easy on the eyes
-- ♿ **Accessible** - WCAG 2.1 AA compliant
+- ♿ **Accessible** - WCAG 2.1 AA compliant with keyboard navigation
 - 🚀 **Fast Performance** - Optimized for speed
+- 📄 **Smart Pagination** - Smooth, animated page transitions with full accessibility
+- 🎨 **Fluid Grid Layout** - Responsive design with uniform card heights
 
 ## 🛠️ Tech Stack
 

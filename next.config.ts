@@ -92,7 +92,13 @@ const nextConfig: NextConfig = {
 
   /* Experimental Features */
   experimental: {
-    optimizePackageImports: ['leaflet', 'react-leaflet'],
+    optimizePackageImports: [
+      'leaflet',
+      'react-leaflet',
+      '@tanstack/react-query',
+      'framer-motion',
+      'date-fns',
+    ],
     webpackMemoryOptimizations: true,
   },
 

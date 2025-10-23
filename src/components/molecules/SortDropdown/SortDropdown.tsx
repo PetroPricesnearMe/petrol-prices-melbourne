@@ -151,14 +151,16 @@ export function SortDropdown({
         disabled={disabled}
         className={cn(
           'w-full flex items-center justify-between gap-3',
-          'px-4 py-2.5 rounded-lg',
+          'px-4 py-3 md:py-2.5 rounded-lg',
+          'min-h-[44px]',
           'bg-white dark:bg-gray-800',
           'border border-gray-300 dark:border-gray-600',
           'shadow-sm hover:shadow-md',
           'transition-all duration-200',
-          'text-sm font-medium',
+          'text-sm md:text-base font-medium',
           'text-gray-900 dark:text-white',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+          'touch-manipulation active:scale-95',
           disabled && 'opacity-50 cursor-not-allowed',
           !disabled && 'hover:border-primary-500 dark:hover:border-primary-400'
         )}
@@ -215,10 +217,12 @@ export function SortDropdown({
                   transition={{ delay: index * 0.03 }}
                   onClick={() => handleSelect(option.value)}
                   className={cn(
-                    'w-full flex items-center gap-3 px-4 py-3',
+                    'w-full flex items-center gap-3 px-4 py-3.5 md:py-3',
+                    'min-h-[44px]',
                     'text-left transition-colors duration-150',
                     'hover:bg-gray-50 dark:hover:bg-gray-700',
                     'focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700',
+                    'touch-manipulation active:scale-98',
                     isSelected && 'bg-primary-50 dark:bg-primary-900/20',
                     'border-b border-gray-100 dark:border-gray-700 last:border-b-0'
                   )}
@@ -274,4 +278,3 @@ export function SortDropdown({
 }
 
 export default SortDropdown;
-
