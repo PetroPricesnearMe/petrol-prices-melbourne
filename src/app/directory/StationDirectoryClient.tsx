@@ -74,10 +74,34 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
+  const [searchResults, setSearchResults] = useState<Station[]>(initialStations);
+  const [selectedSearchCategory, setSelectedSearchCategory] = useState('all');
+
+  // Search categories for advanced search bar
+  const searchCategories: SearchCategory[] = [
+    { id: 'all', label: 'All', icon: '🔍' },
+    { id: 'name', label: 'Name', icon: '🏪' },
+    { id: 'brand', label: 'Brand', icon: '🏢' },
+    { id: 'suburb', label: 'Suburb', icon: '📍' },
+  ];
+
+  // Get search keys based on category
+  const getSearchKeys = useCallback(() => {
+    switch (selectedSearchCategory) {
+      case 'name':
+        return ['name'];
+      case 'brand':
+        return ['brand'];
+      case 'suburb':
+        return ['suburb'];
+      default:
+        return ['name', 'brand', 'suburb', 'address'];
+    }
+  }, [selectedSearchCategory]);
 
   // Filter and sort stations
   const filteredStations = useMemo(() => {
-    let result = [...initialStations];
+    let result = [...searchResults];
 
     // Search filter
     if (filters.search) {
@@ -135,7 +159,19 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
     });
 
     return result;
-  }, [initialStations, filters]);
+  }, [searchResults, filters]);
+
+  // Handle advanced search
+  const handleAdvancedSearch = useCallback((query: string, results: Station[]) => {
+    setSearchResults(results);
+    setFilters((prev) => ({ ...prev, search: query }));
+    setCurrentPage(1);
+  }, []);
+
+  // Handle search category change
+  const handleSearchCategoryChange = useCallback((categoryId: string) => {
+    setSelectedSearchCategory(categoryId);
+  }, []);
 
   // Pagination
   const totalPages = Math.ceil(filteredStations.length / ITEMS_PER_PAGE);
@@ -204,17 +240,41 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
       <section className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 print-hidden sticky top-0 z-10 shadow-sm">
         <div className={patterns.container()}>
           <div className="py-6 space-y-4">
-            {/* Search Bar */}
-            <div className="flex gap-4 flex-wrap">
-              <div className="flex-1 min-w-[280px]">
-                <input
-                  type="search"
-                  placeholder="Search by station name, address, or suburb..."
-                  value={filters.search}
-                  onChange={(e) => handleFilterChange('search', e.target.value)}
-                  className="input w-full"
-                  aria-label="Search stations"
-                />
+            {/* Advanced Search Bar */}
+            <div className="mb-4">
+              <AdvancedSearchBar
+                data={initialStations}
+                searchKeys={getSearchKeys()}
+                placeholder="Search stations by name, brand, suburb, or address..."
+                onSearch={handleAdvancedSearch}
+                onCategoryChange={handleSearchCategoryChange}
+                categories={searchCategories}
+                selectedCategory={selectedSearchCategory}
+                maxSuggestions={8}
+                debounceDelay={150}
+                enableRecentSearches={true}
+                renderResult={(station) => (
+                  <div className="flex flex-col">
+                    <div className="font-semibold text-gray-900 dark:text-white">
+                      {station.name}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      {station.address}, {station.suburb}
+                    </div>
+                  </div>
+                )}
+              />
+            </div>
+
+            {/* Filters Toggle */}
+            <div className="flex gap-4 flex-wrap items-center justify-between">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                {filteredStations.length} station{filteredStations.length !== 1 ? 's' : ''} found
+                {filters.search && (
+                  <span className="ml-2">
+                    for <strong>"{filters.search}"</strong>
+                  </span>
+                )}
               </div>
               <button
                 onClick={() => setShowFilters(!showFilters)}

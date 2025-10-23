@@ -18,7 +18,7 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [consentGiven, setConsentGiven] = useState<boolean | null>(null);
-  
+
   const GA_MEASUREMENT_ID = measurementId || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   // Check if this is a bot (respect privacy)
@@ -42,7 +42,7 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   useEffect(() => {
     if (consentGiven && GA_MEASUREMENT_ID && typeof window.gtag !== 'undefined') {
       const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
-      
+
       window.gtag('config', GA_MEASUREMENT_ID, {
         page_path: url,
         anonymize_ip: true, // Anonymize IP addresses
@@ -70,7 +70,7 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            
+
             gtag('config', '${GA_MEASUREMENT_ID}', {
               page_path: window.location.pathname,
               anonymize_ip: true,
@@ -80,7 +80,7 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
               'allow_ad_personalization_signals': false,
               ` : ''}
             });
-            
+
             // Set default consent mode
             gtag('consent', 'default', {
               'analytics_storage': ${consentGiven ? "'granted'" : "'denied'"},
@@ -128,7 +128,7 @@ export function updateConsent(consent: 'granted' | 'denied') {
     window.gtag('consent', 'update', {
       analytics_storage: consent,
     });
-    
+
     // Store consent preference
     localStorage.setItem(
       'analytics-consent',
@@ -136,4 +136,3 @@ export function updateConsent(consent: 'granted' | 'denied') {
     );
   }
 }
-
