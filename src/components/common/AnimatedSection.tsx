@@ -15,9 +15,11 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
+import type {
+  AnimationPreset} from '@/utils/animations';
 import {
-  AnimationPreset,
   getAnimationVariants,
   DEFAULT_VIEWPORT,
   VIEWPORT_IMMEDIATE,

@@ -10,8 +10,10 @@
  * - ARIA accessibility
  */
 
-import React, { useState, useCallback, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { ReactNode } from 'react';
+import React, { useState, useCallback } from 'react';
+
 import Pagination from './Pagination';
 
 export interface PaginatedGridProps<T = any> {

@@ -41,6 +41,144 @@
 }
 
 @layer components {
+  /* ==========================================================
+   * LAYOUT SYSTEM - RESPONSIVE GRID & FLEX UTILITIES
+   * ========================================================== */
+
+  /* Responsive Grid - Auto-fit with consistent gaps */
+  .grid-responsive {
+    @apply grid gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  .grid-auto-fit-xs {
+    @apply grid gap-4 sm:gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  }
+
+  .grid-auto-fit-sm {
+    @apply grid gap-4 sm:gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+
+  .grid-auto-fit-md {
+    @apply grid gap-4 sm:gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  }
+
+  .grid-auto-fit-lg {
+    @apply grid gap-4 sm:gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  }
+
+  .grid-auto-fit-xl {
+    @apply grid gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
+  }
+
+  /* Responsive Grid - Auto-fill for even spacing */
+  .grid-auto-fill-sm {
+    @apply grid gap-4 sm:gap-6;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  }
+
+  .grid-auto-fill-md {
+    @apply grid gap-4 sm:gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  }
+
+  .grid-auto-fill-lg {
+    @apply grid gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+
+  /* Fluid Container with consistent padding */
+  .container-fluid {
+    @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;
+    max-width: min(100% - 2rem, 90rem);
+  }
+
+  /* Flex Layout Utilities */
+  .flex-responsive {
+    @apply flex flex-wrap gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  .flex-responsive-center {
+    @apply flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  .flex-responsive-between {
+    @apply flex flex-wrap items-center justify-between gap-4 sm:gap-6;
+  }
+
+  /* Stack Layout - Responsive spacing */
+  .stack {
+    @apply flex flex-col gap-4;
+  }
+
+  .stack-sm {
+    @apply flex flex-col gap-2 sm:gap-3;
+  }
+
+  .stack-md {
+    @apply flex flex-col gap-4 sm:gap-6;
+  }
+
+  .stack-lg {
+    @apply flex flex-col gap-6 sm:gap-8 lg:gap-10;
+  }
+
+  .stack-xl {
+    @apply flex flex-col gap-8 sm:gap-12 lg:gap-16;
+  }
+
+  /* Inline Layout - Horizontal spacing */
+  .inline-flex-responsive {
+    @apply inline-flex flex-wrap items-center gap-2 sm:gap-3 lg:gap-4;
+  }
+
+  /* ==========================================================
+   * FLUID SPACING & RHYTHM
+   * ========================================================== */
+
+  /* Section spacing with fluid values */
+  .section-spacing {
+    padding-top: clamp(3rem, 2rem + 4vw, 6rem);
+    padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+  }
+
+  .section-spacing-sm {
+    padding-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+    padding-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .section-spacing-lg {
+    padding-top: clamp(4rem, 3rem + 4vw, 8rem);
+    padding-bottom: clamp(4rem, 3rem + 4vw, 8rem);
+  }
+
+  /* Content spacing - Balanced vertical rhythm */
+  .content-spacing > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .content-spacing-sm > * + * {
+    margin-top: 1rem;
+  }
+
+  .content-spacing-lg > * + * {
+    margin-top: 2rem;
+  }
+
+  /* Card Grid - Consistent with no overflow */
+  .card-grid {
+    @apply grid gap-4 sm:gap-6 lg:gap-8;
+    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  }
+
+  /* ==========================================================
+   * EXISTING COMPONENTS
+   * ========================================================== */
+
   /* Custom Scrollbar */
   .scrollbar-thin {
     scrollbar-width: thin;
@@ -100,10 +238,131 @@
 }
 
 @layer utilities {
+  /* ==========================================================
+   * FLUID TYPOGRAPHY UTILITIES
+   * ========================================================== */
+
+  /* Fluid text sizes - Use for body content that needs to scale */
+  .text-fluid-xs {
+    font-size: clamp(0.75rem, 0.7rem + 0.22vw, 0.875rem);
+    line-height: 1.5;
+  }
+
+  .text-fluid-sm {
+    font-size: clamp(0.875rem, 0.825rem + 0.22vw, 1rem);
+    line-height: 1.5;
+  }
+
+  .text-fluid-base {
+    font-size: clamp(1rem, 0.95rem + 0.22vw, 1.125rem);
+    line-height: 1.5;
+  }
+
+  .text-fluid-lg {
+    font-size: clamp(1.125rem, 1.05rem + 0.33vw, 1.25rem);
+    line-height: 1.5;
+  }
+
+  .text-fluid-xl {
+    font-size: clamp(1.25rem, 1.15rem + 0.44vw, 1.5rem);
+    line-height: 1.4;
+  }
+
+  /* Optimal line length for readability */
+  .text-measure {
+    max-width: 65ch;
+  }
+
+  .text-measure-sm {
+    max-width: 50ch;
+  }
+
+  .text-measure-lg {
+    max-width: 80ch;
+  }
+
   /* Text Balance */
   .text-balance {
     text-wrap: balance;
   }
+
+  /* ==========================================================
+   * RESPONSIVE SPACING UTILITIES
+   * ========================================================== */
+
+  /* Fluid padding - Scales with viewport */
+  .p-fluid {
+    padding: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  }
+
+  .px-fluid {
+    padding-left: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+    padding-right: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  }
+
+  .py-fluid {
+    padding-top: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+    padding-bottom: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  }
+
+  /* Fluid margin - Scales with viewport */
+  .m-fluid {
+    margin: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  }
+
+  .mx-fluid {
+    margin-left: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+    margin-right: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  }
+
+  .my-fluid {
+    margin-top: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+    margin-bottom: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  }
+
+  /* ==========================================================
+   * LAYOUT UTILITIES
+   * ========================================================== */
+
+  /* Prevent overflow on mobile */
+  .no-overflow {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Full bleed container */
+  .full-bleed {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
+
+  /* Center content with max width */
+  .content-container {
+    width: 100%;
+    max-width: 65rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .content-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .content-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  /* ==========================================================
+   * EXISTING UTILITIES
+   * ========================================================== */
 
   /* Hide Scrollbar */
   .hide-scrollbar {

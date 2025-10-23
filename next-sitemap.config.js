@@ -13,14 +13,18 @@ module.exports = {
   sitemapSize: 7000,
   changefreq: 'daily',
   priority: 0.7,
+  outDir: './public',
 
-  // Exclude patterns
+  // Exclude patterns - admin, API, and dynamic filter/search pages
   exclude: [
     '/api/*',
     '/_next/*',
     '/admin/*',
     '/server-sitemap.xml',
     '/server-sitemap-index.xml',
+    '/hero-example',
+    '/map-demo',
+    '/*?*', // Exclude all URLs with query parameters
   ],
 
   // Robots.txt configuration
@@ -34,22 +38,41 @@ module.exports = {
           '/_next/',
           '/admin/',
           '/auth/',
-          '/*?*sort=*', // Noindex sort parameters
-          '/*?*filter=*', // Noindex filter parameters
-          '/*?*page=*', // Noindex pagination parameters
-          '/*?*search=*', // Noindex search parameters
-          '/*?*q=*', // Noindex query parameters
+          '/private/',
+          '/hero-example',
+          '/map-demo',
+          '/*?sort=*', // Noindex sort parameters
+          '/*?filter=*', // Noindex filter parameters
+          '/*?filters=*', // Noindex filters parameters
+          '/*?page=*', // Noindex pagination parameters (except page 1)
+          '/*?search=*', // Noindex search parameters
+          '/*?q=*', // Noindex query parameters
+          '/*?s=*', // Noindex search variant
+          '/*?category=*', // Noindex category filters
+          '/*?brand=*', // Noindex brand filters
+          '/*?fuel=*', // Noindex fuel type filters
+          '/*?amenity=*', // Noindex amenity filters
         ],
       },
       {
         userAgent: 'Googlebot',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/'],
+        disallow: ['/api/', '/_next/', '/admin/', '/hero-example', '/map-demo'],
+        crawlDelay: 0.5,
       },
       {
         userAgent: 'Bingbot',
         allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/'],
+        disallow: ['/api/', '/_next/', '/admin/', '/hero-example', '/map-demo'],
+        crawlDelay: 1,
+      },
+      {
+        userAgent: 'GPTBot',
+        disallow: ['/'], // Block AI scrapers if desired
+      },
+      {
+        userAgent: 'CCBot',
+        disallow: ['/'], // Block Common Crawl
       },
     ],
     additionalSitemaps: [
@@ -137,6 +160,31 @@ module.exports = {
       );
     }
 
-    return result;
+    // Add popular suburb paths (top suburbs for SEO)
+    const popularSuburbs = [
+      'melbourne',
+      'brunswick',
+      'preston',
+      'coburg',
+      'richmond',
+      'fitzroy',
+      'broadmeadows',
+      'werribee',
+      'dandenong',
+      'frankston',
+      'box-hill',
+      'ringwood',
+      'sunbury',
+      'craigieburn',
+      'pakenham',
+    ];
+
+    for (const suburb of popularSuburbs) {
+      result.push(
+        await config.transform(config, `/directory/${suburb}`)
+      );
+    }
+
+    return result.filter(Boolean); // Filter out null values
   },
 };

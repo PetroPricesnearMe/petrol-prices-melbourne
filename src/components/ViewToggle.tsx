@@ -10,8 +10,8 @@
  * - Responsive design
  */
 
-import React from 'react';
 import { motion } from 'framer-motion';
+import React from 'react';
 import './ViewToggle.css';
 
 export type ViewMode = 'list' | 'grid' | 'map';
@@ -118,7 +118,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
             aria-checked={isActive ? 'true' : 'false'}
             aria-label={option.ariaLabel}
             title={option.label}
-            tabIndex={isActive ? 0 : -1}
+            tabIndex={0}
           >
             {/* Background highlight */}
             {isActive && (

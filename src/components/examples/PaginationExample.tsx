@@ -5,8 +5,9 @@
  */
 
 import React, { useState } from 'react';
-import Pagination from '../common/Pagination';
+
 import { PaginatedGrid } from '../common/PaginatedGrid';
+import Pagination from '../common/Pagination';
 
 // Example card component
 const ExampleCard: React.FC<{ item: any }> = ({ item }) => (

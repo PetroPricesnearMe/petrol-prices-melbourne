@@ -7,8 +7,8 @@
  * @module types/api
  */
 
-import type { Listing, ListingMetadata, PaginatedListings } from './listing';
 import type { QueryParams } from './filter';
+import type { Listing, ListingMetadata, PaginatedListings } from './listing';
 
 // ============================================================================
 // Generic API Response Types

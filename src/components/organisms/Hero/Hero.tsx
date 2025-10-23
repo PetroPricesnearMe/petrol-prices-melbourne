@@ -15,8 +15,9 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import Link from 'next/link';
 import { ArrowRight, MapPin, TrendingDown, Search } from 'lucide-react';
+import Link from 'next/link';
+
 import {
   fadeInUp,
   fadeIn,

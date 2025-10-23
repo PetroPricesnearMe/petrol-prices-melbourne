@@ -6,10 +6,11 @@
 
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
-import { cn, patterns } from '@/styles/system/css-in-js';
+import { useState, useCallback, useMemo } from 'react';
+
 import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
+import { cn, patterns } from '@/styles/system/css-in-js';
 
 interface FuelPrices {
   unleaded: number | null;

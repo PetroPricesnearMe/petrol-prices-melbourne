@@ -10,9 +10,10 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useState, useRef, useEffect } from 'react';
+
 import { cn } from '@/utils/cn';
 
 export type SortOption = 'nearest' | 'price-low' | 'price-high' | 'top-rated' | 'name' | 'suburb';

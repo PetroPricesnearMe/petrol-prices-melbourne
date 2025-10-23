@@ -4,11 +4,12 @@
  */
 
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { cn, patterns } from '@/styles/system/css-in-js';
-import stationsData from '@/data/stations.json';
+import { notFound } from 'next/navigation';
+
 import metadataJson from '@/data/stations-metadata.json';
+import stationsData from '@/data/stations.json';
+import { cn, patterns } from '@/styles/system/css-in-js';
 import type { Station } from '@/types/station';
 
 interface Props {

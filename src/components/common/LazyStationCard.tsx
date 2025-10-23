@@ -6,8 +6,8 @@
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useEffect, useRef, useState } from 'react';
 
 // Lazy load the actual StationCard component
 const StationCard = dynamic(

@@ -8,10 +8,11 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { LoadingCard } from '@/components/ui/LoadingSpinner';
+import metadataJson from '@/data/stations-metadata.json';
+import stationsData from '@/data/stations.json';
 
 import { StationDirectoryClient } from './StationDirectoryClient';
-import stationsData from '@/data/stations.json';
-import metadataJson from '@/data/stations-metadata.json';
+
 
 export const metadata: Metadata = {
   title: `Melbourne Petrol Stations Directory - ${metadataJson.totalStations}+ Stations | Find Cheapest Fuel`,
@@ -37,8 +38,9 @@ export const metadata: Metadata = {
   },
 };
 
-// Enable ISR - Revalidate every hour for fresh data while maintaining performance
-export const revalidate = 3600;
+// Enable ISR - Revalidate every 24 hours for fresh data while maintaining performance
+// 86400 seconds = 24 hours
+export const revalidate = 86400;
 
 export default function DirectoryPage() {
   return (

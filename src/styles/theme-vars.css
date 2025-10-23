@@ -1,175 +1,241 @@
 /**
- * CSS Custom Properties for Theme System
- * Provides dynamic theming with light/dark mode support
+ * Theme Variables - CSS Custom Properties
+ * Semantic color tokens that adapt to light/dark mode
+ * Usage: Use these variables in your components for consistent theming
  */
 
 @layer base {
-  /* ============================================================
-     LIGHT THEME (DEFAULT)
-     ============================================================ */
   :root {
-    /* Primary Colors */
-    --color-primary: 59 130 246;      /* primary-500 */
-    --color-primary-light: 147 197 253; /* primary-300 */
-    --color-primary-dark: 29 78 216;   /* primary-700 */
+    /* ============================================================
+     * COLOR SYSTEM - SEMANTIC TOKENS
+     * ============================================================ */
 
-    /* Secondary Colors */
-    --color-secondary: 168 85 247;     /* secondary-500 */
-    --color-secondary-light: 216 180 254; /* secondary-300 */
-    --color-secondary-dark: 126 34 206;  /* secondary-700 */
+    /* Brand Colors - Primary */
+    --color-primary-50: 239 246 255;
+    --color-primary-100: 219 234 254;
+    --color-primary-200: 191 219 254;
+    --color-primary-300: 147 197 253;
+    --color-primary-400: 96 165 250;
+    --color-primary-500: 59 130 246;
+    --color-primary-600: 37 99 235;
+    --color-primary-700: 29 78 216;
+    --color-primary-800: 30 64 175;
+    --color-primary-900: 30 58 138;
+    --color-primary-950: 23 37 84;
 
-    /* Accent Colors */
-    --color-accent: 6 182 212;         /* accent-500 */
-    --color-accent-light: 103 232 249; /* accent-300 */
-    --color-accent-dark: 14 116 144;   /* accent-700 */
+    /* Brand Colors - Secondary */
+    --color-secondary-50: 250 245 255;
+    --color-secondary-100: 243 232 255;
+    --color-secondary-200: 233 213 255;
+    --color-secondary-300: 216 180 254;
+    --color-secondary-400: 192 132 252;
+    --color-secondary-500: 168 85 247;
+    --color-secondary-600: 147 51 234;
+    --color-secondary-700: 126 34 206;
+    --color-secondary-800: 107 33 168;
+    --color-secondary-900: 88 28 135;
+    --color-secondary-950: 59 7 100;
 
-    /* Neutral/Backgrounds */
-    --color-bg: 255 255 255;           /* white */
-    --color-bg-secondary: 249 250 251; /* gray-50 */
-    --color-bg-tertiary: 243 244 246;  /* gray-100 */
-    --color-surface: 255 255 255;      /* white */
-    --color-surface-hover: 249 250 251; /* gray-50 */
+    /* Brand Colors - Accent */
+    --color-accent-50: 236 254 255;
+    --color-accent-100: 207 250 254;
+    --color-accent-200: 165 243 252;
+    --color-accent-300: 103 232 249;
+    --color-accent-400: 34 211 238;
+    --color-accent-500: 6 182 212;
+    --color-accent-600: 8 145 178;
+    --color-accent-700: 14 116 144;
+    --color-accent-800: 21 94 117;
+    --color-accent-900: 22 78 99;
+    --color-accent-950: 8 51 68;
+
+    /* ============================================================
+     * SEMANTIC COLORS - LIGHT MODE
+     * ============================================================ */
+
+    /* Background Colors */
+    --color-bg-primary: 255 255 255;        /* Main background */
+    --color-bg-secondary: 249 250 251;      /* Secondary background */
+    --color-bg-tertiary: 243 244 246;       /* Tertiary background */
+    --color-bg-inverse: 17 24 39;           /* Inverse background */
+
+    /* Surface Colors (Cards, Panels) */
+    --color-surface-primary: 255 255 255;
+    --color-surface-secondary: 249 250 251;
+    --color-surface-elevated: 255 255 255;
+    --color-surface-overlay: 255 255 255;
 
     /* Text Colors */
-    --color-text: 17 24 39;            /* gray-900 */
-    --color-text-secondary: 75 85 99;  /* gray-600 */
-    --color-text-tertiary: 156 163 175; /* gray-400 */
-    --color-text-inverse: 255 255 255; /* white */
+    --color-text-primary: 17 24 39;         /* Primary text */
+    --color-text-secondary: 75 85 99;       /* Secondary text */
+    --color-text-tertiary: 156 163 175;     /* Tertiary text */
+    --color-text-inverse: 255 255 255;      /* Inverse text */
+    --color-text-link: 37 99 235;           /* Link text */
+    --color-text-link-hover: 29 78 216;     /* Link hover */
 
     /* Border Colors */
-    --color-border: 229 231 235;       /* gray-200 */
-    --color-border-hover: 209 213 219; /* gray-300 */
-    --color-border-focus: 59 130 246;  /* primary-500 */
+    --color-border: 229 231 235;            /* Default border */
+    --color-border-secondary: 243 244 246;  /* Secondary border */
+    --color-border-strong: 209 213 219;     /* Strong border */
+    --color-border-inverse: 55 65 81;       /* Inverse border */
 
     /* State Colors */
-    --color-success: 34 197 94;        /* success-500 */
-    --color-warning: 245 158 11;       /* warning-500 */
-    --color-error: 239 68 68;          /* error-500 */
-    --color-info: 59 130 246;          /* info-500 */
+    --color-success: 34 197 94;
+    --color-success-bg: 240 253 244;
+    --color-success-border: 187 247 208;
 
-    /* Shadows */
+    --color-warning: 245 158 11;
+    --color-warning-bg: 255 251 235;
+    --color-warning-border: 253 230 138;
+
+    --color-error: 239 68 68;
+    --color-error-bg: 254 242 242;
+    --color-error-border: 254 202 202;
+
+    --color-info: 59 130 246;
+    --color-info-bg: 239 246 255;
+    --color-info-border: 191 219 254;
+
+    /* Interactive States */
+    --color-interactive-hover: 243 244 246;
+    --color-interactive-active: 229 231 235;
+    --color-interactive-focus: 59 130 246;
+    --color-interactive-disabled: 229 231 235;
+
+    /* Shadow Colors */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
-    /* Effects */
-    --blur-sm: 8px;
-    --blur-md: 12px;
-    --blur-lg: 16px;
-
-    /* Z-index Layers */
-    --z-dropdown: 1000;
-    --z-sticky: 1020;
-    --z-fixed: 1030;
-    --z-modal-backdrop: 1040;
-    --z-modal: 1050;
-    --z-popover: 1060;
-    --z-tooltip: 1070;
+    /* Overlay */
+    --color-overlay: 0 0 0;
+    --overlay-opacity: 0.5;
   }
 
   /* ============================================================
-     DARK THEME
-     ============================================================ */
+   * DARK MODE OVERRIDES
+   * ============================================================ */
   .dark {
-    /* Primary Colors (Lighter variants for dark mode) */
-    --color-primary: 96 165 250;       /* primary-400 */
-    --color-primary-light: 147 197 253; /* primary-300 */
-    --color-primary-dark: 37 99 235;   /* primary-600 */
+    /* Background Colors */
+    --color-bg-primary: 10 10 10;           /* Main background */
+    --color-bg-secondary: 23 23 23;         /* Secondary background */
+    --color-bg-tertiary: 38 38 38;          /* Tertiary background */
+    --color-bg-inverse: 255 255 255;        /* Inverse background */
 
-    /* Secondary Colors */
-    --color-secondary: 192 132 252;    /* secondary-400 */
-    --color-secondary-light: 216 180 254; /* secondary-300 */
-    --color-secondary-dark: 147 51 234;  /* secondary-600 */
-
-    /* Accent Colors */
-    --color-accent: 34 211 238;        /* accent-400 */
-    --color-accent-light: 103 232 249; /* accent-300 */
-    --color-accent-dark: 8 145 178;    /* accent-600 */
-
-    /* Neutral/Backgrounds */
-    --color-bg: 10 10 10;              /* neutral-950 */
-    --color-bg-secondary: 23 23 23;    /* neutral-900 */
-    --color-bg-tertiary: 38 38 38;     /* neutral-800 */
-    --color-surface: 23 23 23;         /* neutral-900 */
-    --color-surface-hover: 38 38 38;   /* neutral-800 */
+    /* Surface Colors (Cards, Panels) */
+    --color-surface-primary: 23 23 23;
+    --color-surface-secondary: 38 38 38;
+    --color-surface-elevated: 38 38 38;
+    --color-surface-overlay: 38 38 38;
 
     /* Text Colors */
-    --color-text: 250 250 250;         /* neutral-50 */
-    --color-text-secondary: 163 163 163; /* neutral-400 */
-    --color-text-tertiary: 115 115 115; /* neutral-500 */
-    --color-text-inverse: 10 10 10;    /* neutral-950 */
+    --color-text-primary: 250 250 250;      /* Primary text */
+    --color-text-secondary: 163 163 163;    /* Secondary text */
+    --color-text-tertiary: 115 115 115;     /* Tertiary text */
+    --color-text-inverse: 17 24 39;         /* Inverse text */
+    --color-text-link: 96 165 250;          /* Link text */
+    --color-text-link-hover: 147 197 253;   /* Link hover */
 
     /* Border Colors */
-    --color-border: 38 38 38;          /* neutral-800 */
-    --color-border-hover: 64 64 64;    /* neutral-700 */
-    --color-border-focus: 96 165 250;  /* primary-400 */
+    --color-border: 38 38 38;               /* Default border */
+    --color-border-secondary: 64 64 64;     /* Secondary border */
+    --color-border-strong: 82 82 82;        /* Strong border */
+    --color-border-inverse: 229 231 235;    /* Inverse border */
 
-    /* State Colors (Lighter variants) */
-    --color-success: 74 222 128;       /* success-400 */
-    --color-warning: 251 191 36;       /* warning-400 */
-    --color-error: 248 113 113;        /* error-400 */
-    --color-info: 96 165 250;          /* info-400 */
+    /* State Colors - Dark Mode Adjusted */
+    --color-success: 34 197 94;
+    --color-success-bg: 20 83 45;
+    --color-success-border: 34 197 94;
 
-    /* Shadows (Darker for dark mode) */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
+    --color-warning: 245 158 11;
+    --color-warning-bg: 120 53 15;
+    --color-warning-border: 245 158 11;
+
+    --color-error: 239 68 68;
+    --color-error-bg: 127 29 29;
+    --color-error-border: 239 68 68;
+
+    --color-info: 96 165 250;
+    --color-info-bg: 30 64 175;
+    --color-info-border: 96 165 250;
+
+    /* Interactive States */
+    --color-interactive-hover: 38 38 38;
+    --color-interactive-active: 64 64 64;
+    --color-interactive-focus: 96 165 250;
+    --color-interactive-disabled: 38 38 38;
+
+    /* Shadow Colors - Darker shadows for dark mode */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+
+    /* Overlay */
+    --color-overlay: 0 0 0;
+    --overlay-opacity: 0.7;
   }
 
   /* ============================================================
-     UTILITY CLASSES WITH CSS VARIABLES
-     ============================================================ */
-  .bg-themed {
-    background-color: rgb(var(--color-bg));
+   * UTILITY CLASSES USING CUSTOM PROPERTIES
+   * ============================================================ */
+
+  /* Background utilities */
+  .bg-primary {
+    background-color: rgb(var(--color-bg-primary));
+  }
+
+  .bg-secondary {
+    background-color: rgb(var(--color-bg-secondary));
+  }
+
+  .bg-tertiary {
+    background-color: rgb(var(--color-bg-tertiary));
   }
 
   .bg-surface {
-    background-color: rgb(var(--color-surface));
+    background-color: rgb(var(--color-surface-primary));
   }
 
-  .text-themed {
-    color: rgb(var(--color-text));
+  .bg-surface-elevated {
+    background-color: rgb(var(--color-surface-elevated));
   }
 
-  .text-secondary-themed {
+  /* Text utilities */
+  .text-primary {
+    color: rgb(var(--color-text-primary));
+  }
+
+  .text-secondary {
     color: rgb(var(--color-text-secondary));
   }
 
-  .border-themed {
+  .text-tertiary {
+    color: rgb(var(--color-text-tertiary));
+  }
+
+  /* Border utilities */
+  .border-default {
     border-color: rgb(var(--color-border));
   }
-}
 
-/* ============================================================
-   GRADIENT PRESETS
-   ============================================================ */
-@layer utilities {
-  .bg-gradient-primary {
-    background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-secondary)) 100%);
+  .border-strong {
+    border-color: rgb(var(--color-border-strong));
   }
 
-  .bg-gradient-accent {
-    background: linear-gradient(135deg, rgb(var(--color-accent)) 0%, rgb(var(--color-primary)) 100%);
+  /* Interactive states */
+  .hover-bg:hover {
+    background-color: rgb(var(--color-interactive-hover));
   }
 
-  .bg-gradient-sunset {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  .active-bg:active {
+    background-color: rgb(var(--color-interactive-active));
   }
 
-  .bg-gradient-ocean {
-    background: linear-gradient(135deg, #2E3192 0%, #1BFFFF 100%);
-  }
-
-  .bg-gradient-forest {
-    background: linear-gradient(135deg, #134E5E 0%, #71B280 100%);
-  }
-
-  .text-gradient-primary {
-    background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-secondary)) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* Focus ring using custom properties */
+  .focus-ring-custom:focus-visible {
+    outline: 2px solid rgb(var(--color-interactive-focus));
+    outline-offset: 2px;
   }
 }

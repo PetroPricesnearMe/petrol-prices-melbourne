@@ -2,6 +2,13 @@
  * Tailwind CSS Configuration
  * Comprehensive design system with theming support
  *
+ * Features:
+ * - Complete brand color palette (primary, secondary, accent, neutral)
+ * - Dark mode support with system detection
+ * - Fluid typography and spacing scales
+ * - Comprehensive design tokens
+ * - Accessible focus states and semantic colors
+ *
  * @see https://tailwindcss.com/docs/configuration
  */
 
@@ -15,7 +22,8 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
 
-  // Dark mode configuration - uses class strategy
+  // Dark mode configuration - uses class strategy for manual control
+  // Supports system preferences via ThemeProvider
   darkMode: 'class',
 
   theme: {
@@ -143,12 +151,40 @@ const config: Config = {
           900: '#1e3a8a',
           950: '#172554',
         },
+
+        // ============================================================
+        // SEMANTIC COLORS - Using CSS Custom Properties
+        // ============================================================
+
+        // Background semantic colors
+        'bg-primary': 'rgb(var(--color-bg-primary) / <alpha-value>)',
+        'bg-secondary': 'rgb(var(--color-bg-secondary) / <alpha-value>)',
+        'bg-tertiary': 'rgb(var(--color-bg-tertiary) / <alpha-value>)',
+        'bg-inverse': 'rgb(var(--color-bg-inverse) / <alpha-value>)',
+
+        // Surface semantic colors (cards, panels)
+        'surface': 'rgb(var(--color-surface-primary) / <alpha-value>)',
+        'surface-secondary': 'rgb(var(--color-surface-secondary) / <alpha-value>)',
+        'surface-elevated': 'rgb(var(--color-surface-elevated) / <alpha-value>)',
+        'surface-overlay': 'rgb(var(--color-surface-overlay) / <alpha-value>)',
+
+        // Text semantic colors
+        'text-primary': 'rgb(var(--color-text-primary) / <alpha-value>)',
+        'text-secondary': 'rgb(var(--color-text-secondary) / <alpha-value>)',
+        'text-tertiary': 'rgb(var(--color-text-tertiary) / <alpha-value>)',
+        'text-inverse': 'rgb(var(--color-text-inverse) / <alpha-value>)',
+
+        // Border semantic colors
+        'border-default': 'rgb(var(--color-border) / <alpha-value>)',
+        'border-secondary': 'rgb(var(--color-border-secondary) / <alpha-value>)',
+        'border-strong': 'rgb(var(--color-border-strong) / <alpha-value>)',
       },
 
       // ============================================================
-      // SPACING SCALE
+      // SPACING SCALE - FLUID & RESPONSIVE
       // ============================================================
       spacing: {
+        // Micro spacing - Fixed
         '0.5': '0.125rem',    // 2px
         '1.5': '0.375rem',    // 6px
         '2.5': '0.625rem',    // 10px
@@ -157,6 +193,8 @@ const config: Config = {
         '5.5': '1.375rem',    // 22px
         '6.5': '1.625rem',    // 26px
         '7.5': '1.875rem',    // 30px
+
+        // Standard spacing - Extended
         '15': '3.75rem',      // 60px
         '17': '4.25rem',      // 68px
         '18': '4.5rem',       // 72px
@@ -188,6 +226,48 @@ const config: Config = {
         '184': '46rem',       // 736px
         '192': '48rem',       // 768px
         '200': '50rem',       // 800px
+
+        // Fluid spacing using clamp() - Use for sections
+        'fluid-xs': 'clamp(1rem, 0.5rem + 2vw, 1.5rem)',        // 16px → 24px
+        'fluid-sm': 'clamp(1.5rem, 1rem + 2vw, 2rem)',          // 24px → 32px
+        'fluid-md': 'clamp(2rem, 1.5rem + 2vw, 3rem)',          // 32px → 48px
+        'fluid-lg': 'clamp(3rem, 2rem + 4vw, 4rem)',            // 48px → 64px
+        'fluid-xl': 'clamp(4rem, 3rem + 4vw, 6rem)',            // 64px → 96px
+        'fluid-2xl': 'clamp(6rem, 4rem + 8vw, 8rem)',           // 96px → 128px
+        'fluid-3xl': 'clamp(8rem, 6rem + 8vw, 12rem)',          // 128px → 192px
+      },
+
+      // ============================================================
+      // GRID UTILITIES
+      // ============================================================
+      gridTemplateColumns: {
+        // Auto-fit grids with minmax
+        'auto-fit-xs': 'repeat(auto-fit, minmax(8rem, 1fr))',     // 128px cards
+        'auto-fit-sm': 'repeat(auto-fit, minmax(12rem, 1fr))',    // 192px cards
+        'auto-fit-md': 'repeat(auto-fit, minmax(16rem, 1fr))',    // 256px cards
+        'auto-fit-lg': 'repeat(auto-fit, minmax(20rem, 1fr))',    // 320px cards
+        'auto-fit-xl': 'repeat(auto-fit, minmax(24rem, 1fr))',    // 384px cards
+        'auto-fit-2xl': 'repeat(auto-fit, minmax(28rem, 1fr))',   // 448px cards
+
+        // Auto-fill grids with minmax
+        'auto-fill-xs': 'repeat(auto-fill, minmax(8rem, 1fr))',   // 128px cards
+        'auto-fill-sm': 'repeat(auto-fill, minmax(12rem, 1fr))',  // 192px cards
+        'auto-fill-md': 'repeat(auto-fill, minmax(16rem, 1fr))',  // 256px cards
+        'auto-fill-lg': 'repeat(auto-fill, minmax(20rem, 1fr))',  // 320px cards
+        'auto-fill-xl': 'repeat(auto-fill, minmax(24rem, 1fr))',  // 384px cards
+        'auto-fill-2xl': 'repeat(auto-fill, minmax(28rem, 1fr))', // 448px cards
+      },
+
+      // ============================================================
+      // GAP UTILITIES
+      // ============================================================
+      gap: {
+        // Fluid gaps for responsive layouts
+        'fluid-xs': 'clamp(0.5rem, 0.25rem + 1vw, 0.75rem)',      // 8px → 12px
+        'fluid-sm': 'clamp(0.75rem, 0.5rem + 1vw, 1rem)',         // 12px → 16px
+        'fluid-md': 'clamp(1rem, 0.75rem + 1vw, 1.5rem)',         // 16px → 24px
+        'fluid-lg': 'clamp(1.5rem, 1rem + 2vw, 2rem)',            // 24px → 32px
+        'fluid-xl': 'clamp(2rem, 1.5rem + 2vw, 3rem)',            // 32px → 48px
       },
 
       // ============================================================
@@ -208,25 +288,32 @@ const config: Config = {
       },
 
       // ============================================================
-      // TYPOGRAPHY
+      // TYPOGRAPHY - FLUID & RESPONSIVE
       // ============================================================
       fontSize: {
-        // Base sizes
+        // Base sizes - Fixed for body text
         'xs': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.01em' }],         // 12px
         'sm': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.005em' }],    // 14px
         'base': ['1rem', { lineHeight: '1.5rem', letterSpacing: '0' }],              // 16px
         'lg': ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '-0.005em' }],   // 18px
         'xl': ['1.25rem', { lineHeight: '1.875rem', letterSpacing: '-0.01em' }],    // 20px
 
-        // Heading sizes
-        '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.015em', fontWeight: '700' }],      // 24px
-        '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '-0.02em', fontWeight: '700' }],  // 30px
-        '4xl': ['2.25rem', { lineHeight: '2.5rem', letterSpacing: '-0.025em', fontWeight: '800' }],   // 36px
-        '5xl': ['3rem', { lineHeight: '3.5rem', letterSpacing: '-0.03em', fontWeight: '800' }],       // 48px
-        '6xl': ['3.75rem', { lineHeight: '4rem', letterSpacing: '-0.035em', fontWeight: '900' }],     // 60px
-        '7xl': ['4.5rem', { lineHeight: '4.5rem', letterSpacing: '-0.04em', fontWeight: '900' }],     // 72px
-        '8xl': ['6rem', { lineHeight: '6rem', letterSpacing: '-0.045em', fontWeight: '900' }],        // 96px
-        '9xl': ['8rem', { lineHeight: '8rem', letterSpacing: '-0.05em', fontWeight: '900' }],         // 128px
+        // Fluid Heading sizes using clamp() - Scales smoothly across breakpoints
+        // Format: clamp(min, preferred, max)
+        '2xl': ['clamp(1.25rem, 1.1rem + 0.67vw, 1.5rem)', { lineHeight: '1.33', letterSpacing: '-0.015em', fontWeight: '700' }],      // 20px → 24px
+        '3xl': ['clamp(1.5rem, 1.25rem + 1.11vw, 1.875rem)', { lineHeight: '1.3', letterSpacing: '-0.02em', fontWeight: '700' }],     // 24px → 30px
+        '4xl': ['clamp(1.875rem, 1.5rem + 1.67vw, 2.25rem)', { lineHeight: '1.2', letterSpacing: '-0.025em', fontWeight: '800' }],    // 30px → 36px
+        '5xl': ['clamp(2.25rem, 1.75rem + 2.22vw, 3rem)', { lineHeight: '1.15', letterSpacing: '-0.03em', fontWeight: '800' }],       // 36px → 48px
+        '6xl': ['clamp(2.5rem, 1.875rem + 2.78vw, 3.75rem)', { lineHeight: '1.1', letterSpacing: '-0.035em', fontWeight: '900' }],    // 40px → 60px
+        '7xl': ['clamp(3rem, 2.25rem + 3.33vw, 4.5rem)', { lineHeight: '1.05', letterSpacing: '-0.04em', fontWeight: '900' }],        // 48px → 72px
+        '8xl': ['clamp(3.75rem, 2.625rem + 5vw, 6rem)', { lineHeight: '1', letterSpacing: '-0.045em', fontWeight: '900' }],           // 60px → 96px
+        '9xl': ['clamp(4.5rem, 3rem + 6.67vw, 8rem)', { lineHeight: '1', letterSpacing: '-0.05em', fontWeight: '900' }],              // 72px → 128px
+
+        // Fluid display sizes for hero sections
+        'display-sm': ['clamp(2.5rem, 2rem + 2.22vw, 3.5rem)', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '900' }],   // 40px → 56px
+        'display-md': ['clamp(3.5rem, 2.75rem + 3.33vw, 5rem)', { lineHeight: '1.05', letterSpacing: '-0.04em', fontWeight: '900' }], // 56px → 80px
+        'display-lg': ['clamp(4.5rem, 3.5rem + 4.44vw, 6.5rem)', { lineHeight: '1', letterSpacing: '-0.045em', fontWeight: '900' }],  // 72px → 104px
+        'display-xl': ['clamp(6rem, 4.5rem + 6.67vw, 9rem)', { lineHeight: '1', letterSpacing: '-0.05em', fontWeight: '900' }],       // 96px → 144px
       },
 
       fontFamily: {

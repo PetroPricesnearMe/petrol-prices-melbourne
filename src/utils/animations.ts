@@ -7,7 +7,7 @@
  * @module utils/animations
  */
 
-import { Variants, Transition } from 'framer-motion';
+import type { Variants, Transition } from 'framer-motion';
 
 // ============================================================================
 // Animation Configuration

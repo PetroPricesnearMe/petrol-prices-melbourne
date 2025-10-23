@@ -19,7 +19,7 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
     name: station.name,
     description: `${station.brand || ''} petrol station located at ${station.address}, ${station.suburb}. Find current fuel prices and station details.`,
     url: `https://petrolpricenearme.com.au/stations/${station.id}`,
-    
+
     // Brand information
     ...(station.brand && {
       brand: {
@@ -27,7 +27,7 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
         name: station.brand,
       },
     }),
-    
+
     // Address
     address: {
       '@type': 'PostalAddress',
@@ -37,7 +37,7 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
       postalCode: station.postcode,
       addressCountry: 'AU',
     },
-    
+
     // Geo coordinates
     ...(station.latitude && station.longitude && {
       geo: {
@@ -46,17 +46,17 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
         longitude: station.longitude,
       },
     }),
-    
+
     // Contact info
     ...(station.phoneNumber && {
       telephone: station.phoneNumber,
     }),
-    
+
     // Opening hours
     ...(station.amenities?.open24Hours && {
       openingHours: 'Mo-Su 00:00-24:00',
     }),
-    
+
     // Amenities
     amenityFeature: [
       ...(station.amenities?.carWash ? [{
@@ -80,20 +80,20 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
         value: true,
       }] : []),
     ].filter(Boolean),
-    
+
     // Price range (if available)
     ...(fuelPrices && {
       priceRange: '$$',
     }),
-    
+
     // Accepted payment methods
     paymentAccepted: 'Cash, Credit Card, Debit Card',
-    
+
     // Image
     ...(station.brandLogo && {
       image: `https://petrolpricenearme.com.au${station.brandLogo}`,
     }),
-    
+
     // Aggregate rating (mock - replace with real data)
     ...(station.rating && {
       aggregateRating: {
@@ -104,7 +104,7 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
         worstRating: '1',
       },
     }),
-    
+
     // Additional properties
     currenciesAccepted: 'AUD',
     areaServed: {
@@ -189,4 +189,3 @@ export function FuelPriceSchema({ station, fuelPrices }: LocalBusinessSchemaProp
     />
   );
 }
-

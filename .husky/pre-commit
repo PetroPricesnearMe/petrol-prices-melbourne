@@ -1,5 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "🔍 Running pre-commit checks..."
+
+# Run lint-staged
 npx lint-staged
 
+# Check for console.logs (except console.warn/error)
+if git diff --cached --name-only | grep -E '\.(ts|tsx|js|jsx)$' | xargs grep -n 'console\.log' 2>/dev/null; then
+  echo "❌ Found console.log statements. Please remove them or use console.warn/console.error instead."
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"

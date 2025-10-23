@@ -65,6 +65,10 @@ export async function generateMetadata({
   };
 }
 
+// Enable ISR - Revalidate every 24 hours
+// 86400 seconds = 24 hours
+export const revalidate = 86400;
+
 export async function generateStaticParams() {
   return Object.keys(regions).map((region) => ({
     region,

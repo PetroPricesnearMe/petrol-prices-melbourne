@@ -10,12 +10,14 @@
  * - Smooth animations
  */
 
+import L from 'leaflet';
 import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import L from 'leaflet';
+
 import 'leaflet/dist/leaflet.css';
 import './InteractiveStationMap.css';
+import { useFocusTrap } from '@/components/accessibility/FocusTrap';
 
 // Fix for default marker icons in Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -152,6 +154,9 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
   const mapRef = useRef<L.Map | null>(null);
 
+  // Focus trap for fullscreen mode
+  const mapContainerRef = useFocusTrap(fullScreen, onFullScreenToggle);
+
   // Get user's current location
   useEffect(() => {
     if (showUserLocation && navigator.geolocation) {
@@ -205,7 +210,14 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
   `.trim();
 
   return (
-    <div className={mapContainerClass} style={{ height: fullScreen ? '100vh' : height }}>
+    <div
+      ref={mapContainerRef as React.RefObject<HTMLDivElement>}
+      className={mapContainerClass}
+      style={{ height: fullScreen ? '100vh' : height }}
+      role="application"
+      aria-label="Interactive map showing petrol station locations"
+      aria-roledescription="map"
+    >
       <MapContainer
         center={mapCenter}
         zoom={currentZoom}

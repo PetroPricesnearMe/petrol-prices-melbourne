@@ -12,8 +12,8 @@
  * - Customizable appearance
  */
 
-import React, { useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 export interface PaginationProps {
   /** Current active page (1-indexed) */

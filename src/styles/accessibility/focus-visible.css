@@ -1,0 +1,284 @@
+/**
+ * Global Focus Styles
+ *
+ * Provides visible focus indicators for all interactive elements
+ * Ensures keyboard navigation is clear and accessible
+ *
+ * WCAG 2.1 Level AA - Focus Visible (2.4.7)
+ */
+
+/* ========================================
+   FOCUS INDICATOR STYLES
+   ======================================== */
+
+/* Default Focus Styles - High visibility */
+:focus {
+  outline: 3px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* Modern :focus-visible for better UX */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 2px;
+  transition: outline-color 0.2s ease;
+}
+
+/* ========================================
+   SPECIFIC ELEMENT FOCUS STYLES
+   ======================================== */
+
+/* Buttons */
+button:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+button:focus-visible:active,
+.btn:focus-visible:active {
+  outline-color: #1E40AF;
+}
+
+/* Links */
+a:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 3px;
+  text-decoration-thickness: 3px;
+  border-radius: 2px;
+}
+
+/* Form Inputs */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 0;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Checkboxes and Radio Buttons */
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+/* Cards and Interactive Containers */
+.card:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Dropdowns and Selects */
+.dropdown:focus-visible,
+[role="listbox"]:focus-visible,
+[role="option"]:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 2px;
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Map Controls */
+.leaflet-control:focus-visible,
+.map-control-btn:focus-visible,
+.leaflet-marker-icon:focus-visible {
+  outline: 4px solid #FCD34D;
+  outline-offset: 3px;
+  z-index: 10000;
+  box-shadow: 0 0 0 6px rgba(252, 211, 77, 0.3);
+}
+
+/* Modal and Dialog */
+[role="dialog"]:focus,
+.modal:focus {
+  outline: none;
+}
+
+[role="dialog"] *:focus-visible,
+.modal *:focus-visible {
+  outline: 3px solid #3B82F6;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  :focus-visible {
+    outline-width: 4px;
+    outline-offset: 3px;
+  }
+
+  button:focus-visible,
+  .btn:focus-visible,
+  a:focus-visible {
+    outline-width: 5px;
+    outline-style: double;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline-width: 4px;
+    border-width: 3px;
+  }
+}
+
+/* ========================================
+   DARK MODE
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  :focus-visible {
+    outline-color: #60A5FA;
+  }
+
+  button:focus-visible,
+  .btn:focus-visible {
+    outline-color: #60A5FA;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
+  }
+
+  a:focus-visible {
+    outline-color: #60A5FA;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline-color: #60A5FA;
+    border-color: #60A5FA;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+  }
+
+  .map-control-btn:focus-visible,
+  .leaflet-marker-icon:focus-visible {
+    outline-color: #FDE047;
+    box-shadow: 0 0 0 6px rgba(253, 224, 71, 0.3);
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :focus-visible {
+    transition: none;
+  }
+}
+
+/* ========================================
+   CUSTOM FOCUS INDICATOR CLASSES
+   ======================================== */
+
+/* Success State Focus */
+.focus-success:focus-visible {
+  outline-color: #10B981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+}
+
+/* Warning State Focus */
+.focus-warning:focus-visible {
+  outline-color: #F59E0B;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+}
+
+/* Error State Focus */
+.focus-error:focus-visible {
+  outline-color: #EF4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+/* No Focus Outline (use sparingly!) */
+.focus-none:focus,
+.focus-none:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ========================================
+   FOCUS WITHIN STYLES
+   ======================================== */
+
+/* Highlight parent when child is focused */
+.focus-within-highlight:focus-within {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* ========================================
+   KEYBOARD-ONLY FOCUS
+   ======================================== */
+
+/* Only show focus for keyboard users */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  :focus,
+  :focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 1px;
+  }
+}
+
+/* ========================================
+   SKIP LINK FOCUS
+   ======================================== */
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  outline: 4px solid #FCD34D;
+  outline-offset: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Make any element keyboard focusable */
+.focusable {
+  cursor: pointer;
+}
+
+.focusable:not([tabindex]) {
+  tabindex: 0;
+}
+
+/* Remove focus indicator (accessibility warning!) */
+.no-focus-ring:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Enhanced focus for critical actions */
+.focus-critical:focus-visible {
+  outline: 4px solid #DC2626;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(220, 38, 38, 0.25);
+}
+
+/* Focus for disabled elements (for context only) */
+[disabled]:focus,
+[aria-disabled="true"]:focus {
+  outline-color: #9CA3AF;
+}

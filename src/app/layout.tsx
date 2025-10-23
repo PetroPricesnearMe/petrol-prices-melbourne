@@ -1,88 +1,37 @@
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 
-import '@/styles/globals.css';
-import '@/styles/print.css';
-import '@/styles/media-queries.css';
-
-import { Footer } from '@/components/layout/Footer';
-import { Navigation } from '@/components/layout/Navigation';
-import { ThemeScript } from '@/styles/system/theme';
-import { ResourceHints } from './ResourceHints';
+import '../styles/globals.css';
+import '../styles/accessibility/focus-visible.css';
+import { SkipToContent } from '@/components/accessibility';
 
 import { Providers } from './providers';
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
-  ],
-};
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Petrol Price Near Me | Find Cheapest Fuel Prices',
+    default: 'Petrol Price Near Me | Find Cheapest Fuel in Melbourne',
     template: '%s | Petrol Price Near Me',
   },
-  description:
-    'Find the cheapest petrol stations near you in Australia. Compare fuel prices, unleaded, diesel, premium, and LPG prices in real-time.',
-  keywords: [
-    'petrol prices',
-    'fuel prices',
-    'cheap petrol',
-    'petrol stations',
-    'Australia fuel',
-    'diesel prices',
-    'unleaded prices',
-  ],
+  description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates.',
+  keywords: ['petrol prices', 'fuel prices', 'melbourne', 'gas stations', 'fuel comparison'],
   authors: [{ name: 'Petrol Price Near Me' }],
   creator: 'Petrol Price Near Me',
   publisher: 'Petrol Price Near Me',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  ),
-  alternates: {
-    canonical: '/',
-  },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   openGraph: {
     type: 'website',
     locale: 'en_AU',
     url: '/',
     siteName: 'Petrol Price Near Me',
-    title: 'Petrol Price Near Me | Find Cheapest Fuel Prices',
-    description:
-      'Find the cheapest petrol stations near you in Australia. Compare fuel prices in real-time.',
-    images: [
-      {
-        url: '/images/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Petrol Price Near Me',
-      },
-    ],
+    title: 'Find Cheapest Fuel in Melbourne',
+    description: 'Compare live petrol prices from 250+ stations',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Petrol Price Near Me | Find Cheapest Fuel Prices',
-    description:
-      'Find the cheapest petrol stations near you in Australia. Compare fuel prices in real-time.',
-    images: ['/images/twitter-image.jpg'],
+    title: 'Petrol Price Near Me',
+    description: 'Find the cheapest fuel in Melbourne',
   },
   robots: {
     index: true,
@@ -95,12 +44,15 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-  },
-  manifest: '/manifest.json',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#667eea' },
+    { media: '(prefers-color-scheme: dark)', color: '#1e3a8a' },
+  ],
 };
 
 export default function RootLayout({
@@ -109,18 +61,41 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
-      <head>
-        <ResourceHints />
-        <ThemeScript />
-      </head>
-      <body className="min-h-screen bg-gray-50 font-sans antialiased dark:bg-gray-900 flex flex-col overflow-x-hidden">
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
         <Providers>
-          <Navigation />
-          <div className="flex-1 w-full overflow-x-hidden">{children}</div>
-          <Footer />
-          <Analytics />
-          <SpeedInsights />
+          {/* Skip Navigation */}
+          <SkipToContent
+            links={[
+              { href: '#main-content', label: 'Skip to main content' },
+              { href: '#navigation', label: 'Skip to navigation' },
+              { href: '#footer', label: 'Skip to footer' },
+            ]}
+          />
+
+          {/* Screen Reader Announcements */}
+          <div
+            id="sr-announcements"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            className="sr-only"
+          />
+
+          {/* Navigation */}
+          <nav id="navigation" aria-label="Main navigation">
+            {/* Navigation content will be injected by child pages */}
+          </nav>
+
+          {/* Main Content */}
+          <main id="main-content" tabIndex={-1}>
+            {children}
+          </main>
+
+          {/* Footer */}
+          <footer id="footer" aria-label="Site footer">
+            {/* Footer content will be injected by child pages */}
+          </footer>
         </Providers>
       </body>
     </html>

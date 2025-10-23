@@ -7,6 +7,7 @@
 'use client';
 
 import { cn } from '@/utils/cn';
+
 import { SortDropdown, type SortOption } from './SortDropdown';
 
 interface QuickSortBarProps {
