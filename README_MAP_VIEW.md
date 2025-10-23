@@ -96,7 +96,7 @@ function StationDirectory() {
         showGrid={true}
         size="md"
       />
-      
+
       {viewMode === 'map' && (
         <InteractiveStationMap
           stations={stations}
@@ -296,7 +296,7 @@ aria-label="Get directions to Station Name"
 
 ### Manual Tests
 ✅ Marker rendering
-✅ Cluster functionality  
+✅ Cluster functionality
 ✅ Full-screen mode
 ✅ Keyboard navigation
 ✅ Touch interactions
@@ -384,8 +384,7 @@ The map view system is fully functional, accessible, well-documented, and ready 
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: October 23, 2025  
-**Status**: ✅ Production Ready  
+**Version**: 1.0.0
+**Last Updated**: October 23, 2025
+**Status**: ✅ Production Ready
 **Developer**: AI Assistant
-
