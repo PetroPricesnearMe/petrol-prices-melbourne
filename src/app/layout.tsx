@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 
 import '../styles/globals.css';
 import '../styles/accessibility/focus-visible.css';
+import '../styles/brand-styles.css';
 import { SkipToContent } from '@/components/accessibility';
 
 import { Providers } from './providers';

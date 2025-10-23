@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Find Duplicate Components Script
- * 
+ *
  * Identifies duplicate or similar components that can be consolidated
  */
 
@@ -110,7 +110,7 @@ function findDuplicateLogic(components) {
   components.forEach((comp1, i) => {
     components.slice(i + 1).forEach((comp2) => {
       const similarity = calculateSimilarity(comp1.content, comp2.content);
-      
+
       if (similarity > 0.7) {
         // More than 70% similar
         duplicates.push({
@@ -193,4 +193,3 @@ function main() {
 }
 
 main();
-

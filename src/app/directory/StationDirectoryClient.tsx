@@ -368,24 +368,54 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {paginatedStations.map((station) => (
+                {paginatedStations.map((station) => {
+                  const brandInfo = getBrandInfo(station.brand);
+                  const brandClass = getBrandClass(station.brand);
+                  
+                  return (
                   <article
                     key={station.id}
-                    className="card card-hover print-avoid-break"
+                    className="card card-hover print-avoid-break overflow-hidden"
                     itemScope
                     itemType="https://schema.org/GasStation"
                   >
-                    {/* Header */}
+                    {/* Brand Header with Logo */}
+                    <div className={cn(
+                      "relative h-24 flex items-center justify-center",
+                      "bg-gradient-to-br from-gray-50 to-gray-100",
+                      "dark:from-gray-800 dark:to-gray-900",
+                      brandClass
+                    )}
+                    style={{
+                      background: `linear-gradient(135deg, ${brandInfo.color}15 0%, ${brandInfo.fallback}05 100%)`
+                    }}>
+                      <div className="relative w-32 h-16">
+                        <Image
+                          src={brandInfo.logo}
+                          alt={`${brandInfo.name} logo`}
+                          fill
+                          className="object-contain"
+                          onError={(e) => {
+                            // Fallback to default logo
+                            e.currentTarget.src = '/images/brands/default-logo.svg';
+                          }}
+                        />
+                      </div>
+                      {station.verified && (
+                        <div className="absolute top-2 right-2 bg-white dark:bg-gray-800 rounded-full p-1 shadow-sm">
+                          <span className="text-success-600 text-lg" title="Verified">✓</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Station Info */}
                     <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                      <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className="flex items-start justify-between gap-3 mb-2">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white" itemProp="name">
                           {station.name}
                         </h3>
-                        {station.verified && (
-                          <span className="text-success-600" title="Verified">✓</span>
-                        )}
                       </div>
-                      <span className="badge badge-primary">{station.brand}</span>
+                      <span className={cn("badge", brandClass)}>{station.brand}</span>
                     </div>
 
                     {/* Content */}
@@ -443,7 +473,8 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                       </a>
                     </div>
                   </article>
-                ))}
+                )}
+                )}
               </div>
 
               {/* Pagination */}

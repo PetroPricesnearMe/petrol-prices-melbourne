@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Cleanup Script - Find Unused Code
- * 
+ *
  * Detects:
  * - Unused imports
  * - Unused CSS classes
@@ -75,7 +75,7 @@ function findUnusedExports() {
     });
 
     const lines = result.split('\n').filter(Boolean);
-    
+
     if (lines.length === 0) {
       log.success('No unused exports found!');
       return [];
@@ -83,7 +83,7 @@ function findUnusedExports() {
 
     log.warning(`Found ${lines.length} potentially unused exports:`);
     lines.forEach((line) => console.log(`  ${line}`));
-    
+
     return lines;
   } catch (error) {
     if (error.stdout) {
@@ -116,7 +116,7 @@ function findUnusedImportsInFile(filePath) {
         // Check if import is used in the file
         const usageRegex = new RegExp(`\\b${cleanName}\\b`, 'g');
         const usages = (content.match(usageRegex) || []).length;
-        
+
         // If only used once (in the import statement itself), it's unused
         if (usages <= 1) {
           unusedImports.push({
@@ -132,7 +132,7 @@ function findUnusedImportsInFile(filePath) {
       const importName = match[2];
       const usageRegex = new RegExp(`\\b${importName}\\b`, 'g');
       const usages = (content.match(usageRegex) || []).length;
-      
+
       if (usages <= 1) {
         unusedImports.push({
           type: 'default',
@@ -338,4 +338,3 @@ main().catch((error) => {
   log.error(`Script failed: ${error.message}`);
   process.exit(1);
 });
-

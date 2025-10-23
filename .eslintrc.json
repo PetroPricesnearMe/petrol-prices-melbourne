@@ -12,14 +12,21 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    },
-    "project": "./tsconfig.json"
+    }
   },
   "plugins": [
     "@typescript-eslint",
     "react",
     "jsx-a11y",
     "import"
+  ],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      }
+    }
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
