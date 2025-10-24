@@ -6,6 +6,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { updateConsent } from './GoogleAnalytics';
 
 export function CookieConsent() {
@@ -46,8 +47,8 @@ export function CookieConsent() {
     <div
       className={`
         fixed bottom-0 left-0 right-0 z-[1000]
-        bg-white dark:bg-neutral-900
-        border-t border-gray-200 dark:border-neutral-800
+        bg-white dark:bg-gray-900
+        border-t border-gray-200 dark:border-gray-800
         shadow-2xl
         transition-transform duration-300 ease-out
         ${isVisible ? 'translate-y-0' : 'translate-y-full'}
@@ -78,8 +79,8 @@ export function CookieConsent() {
               className="
                 px-4 py-2 rounded-lg
                 text-gray-700 dark:text-gray-300
-                border border-gray-300 dark:border-neutral-700
-                hover:bg-gray-50 dark:hover:bg-neutral-800
+                border border-gray-300 dark:border-gray-700
+                hover:bg-gray-50 dark:hover:bg-gray-800
                 transition-colors duration-200
                 font-medium text-sm
                 whitespace-nowrap

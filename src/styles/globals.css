@@ -2,15 +2,180 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import theme variables */
-@import './theme-vars.css';
-
 @layer base {
   :root {
     --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-
-    /* System font stack */
     --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+    /* ============================================================
+     * COLOR SYSTEM - SEMANTIC TOKENS
+     * ============================================================ */
+
+    /* Brand Colors - Primary */
+    --color-primary-50: 239 246 255;
+    --color-primary-100: 219 234 254;
+    --color-primary-200: 191 219 254;
+    --color-primary-300: 147 197 253;
+    --color-primary-400: 96 165 250;
+    --color-primary-500: 59 130 246;
+    --color-primary-600: 37 99 235;
+    --color-primary-700: 29 78 216;
+    --color-primary-800: 30 64 175;
+    --color-primary-900: 30 58 138;
+    --color-primary-950: 23 37 84;
+
+    /* Brand Colors - Secondary */
+    --color-secondary-50: 250 245 255;
+    --color-secondary-100: 243 232 255;
+    --color-secondary-200: 233 213 255;
+    --color-secondary-300: 216 180 254;
+    --color-secondary-400: 192 132 252;
+    --color-secondary-500: 168 85 247;
+    --color-secondary-600: 147 51 234;
+    --color-secondary-700: 126 34 206;
+    --color-secondary-800: 107 33 168;
+    --color-secondary-900: 88 28 135;
+    --color-secondary-950: 59 7 100;
+
+    /* Brand Colors - Accent */
+    --color-accent-50: 236 254 255;
+    --color-accent-100: 207 250 254;
+    --color-accent-200: 165 243 252;
+    --color-accent-300: 103 232 249;
+    --color-accent-400: 34 211 238;
+    --color-accent-500: 6 182 212;
+    --color-accent-600: 8 145 178;
+    --color-accent-700: 14 116 144;
+    --color-accent-800: 21 94 117;
+    --color-accent-900: 22 78 99;
+    --color-accent-950: 8 51 68;
+
+    /* ============================================================
+     * SEMANTIC COLORS - LIGHT MODE
+     * ============================================================ */
+
+    /* Background Colors */
+    --color-bg-primary: 255 255 255;        /* Main background */
+    --color-bg-secondary: 249 250 251;      /* Secondary background */
+    --color-bg-tertiary: 243 244 246;       /* Tertiary background */
+    --color-bg-inverse: 17 24 39;           /* Inverse background */
+
+    /* Surface Colors (Cards, Panels) */
+    --color-surface-primary: 255 255 255;
+    --color-surface-secondary: 249 250 251;
+    --color-surface-elevated: 255 255 255;
+    --color-surface-overlay: 255 255 255;
+
+    /* Text Colors */
+    --color-text-primary: 17 24 39;         /* Primary text */
+    --color-text-secondary: 75 85 99;       /* Secondary text */
+    --color-text-tertiary: 156 163 175;     /* Tertiary text */
+    --color-text-inverse: 255 255 255;      /* Inverse text */
+    --color-text-link: 37 99 235;           /* Link text */
+    --color-text-link-hover: 29 78 216;     /* Link hover */
+
+    /* Border Colors */
+    --color-border: 229 231 235;            /* Default border */
+    --color-border-secondary: 243 244 246;  /* Secondary border */
+    --color-border-strong: 209 213 219;     /* Strong border */
+    --color-border-inverse: 55 65 81;       /* Inverse border */
+
+    /* State Colors */
+    --color-success: 34 197 94;
+    --color-success-bg: 240 253 244;
+    --color-success-border: 187 247 208;
+
+    --color-warning: 245 158 11;
+    --color-warning-bg: 255 251 235;
+    --color-warning-border: 253 230 138;
+
+    --color-error: 239 68 68;
+    --color-error-bg: 254 242 242;
+    --color-error-border: 254 202 202;
+
+    --color-info: 59 130 246;
+    --color-info-bg: 239 246 255;
+    --color-info-border: 191 219 254;
+
+    /* Interactive States */
+    --color-interactive-hover: 243 244 246;
+    --color-interactive-active: 229 231 235;
+    --color-interactive-focus: 59 130 246;
+    --color-interactive-disabled: 229 231 235;
+
+    /* Shadow Colors */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* Overlay */
+    --color-overlay: 0 0 0;
+    --overlay-opacity: 0.5;
+  }
+
+  /* ============================================================
+   * DARK MODE OVERRIDES
+   * ============================================================ */
+  .dark {
+    /* Background Colors */
+    --color-bg-primary: 10 10 10;           /* Main background */
+    --color-bg-secondary: 23 23 23;         /* Secondary background */
+    --color-bg-tertiary: 38 38 38;          /* Tertiary background */
+    --color-bg-inverse: 255 255 255;        /* Inverse background */
+
+    /* Surface Colors (Cards, Panels) */
+    --color-surface-primary: 23 23 23;
+    --color-surface-secondary: 38 38 38;
+    --color-surface-elevated: 38 38 38;
+    --color-surface-overlay: 38 38 38;
+
+    /* Text Colors */
+    --color-text-primary: 250 250 250;      /* Primary text */
+    --color-text-secondary: 163 163 163;    /* Secondary text */
+    --color-text-tertiary: 115 115 115;     /* Tertiary text */
+    --color-text-inverse: 17 24 39;         /* Inverse text */
+    --color-text-link: 96 165 250;          /* Link text */
+    --color-text-link-hover: 147 197 253;   /* Link hover */
+
+    /* Border Colors */
+    --color-border: 38 38 38;               /* Default border */
+    --color-border-secondary: 64 64 64;     /* Secondary border */
+    --color-border-strong: 82 82 82;        /* Strong border */
+    --color-border-inverse: 229 231 235;    /* Inverse border */
+
+    /* State Colors - Dark Mode Adjusted */
+    --color-success: 34 197 94;
+    --color-success-bg: 20 83 45;
+    --color-success-border: 34 197 94;
+
+    --color-warning: 245 158 11;
+    --color-warning-bg: 120 53 15;
+    --color-warning-border: 245 158 11;
+
+    --color-error: 239 68 68;
+    --color-error-bg: 127 29 29;
+    --color-error-border: 239 68 68;
+
+    --color-info: 96 165 250;
+    --color-info-bg: 30 64 175;
+    --color-info-border: 96 165 250;
+
+    /* Interactive States */
+    --color-interactive-hover: 38 38 38;
+    --color-interactive-active: 64 64 64;
+    --color-interactive-focus: 96 165 250;
+    --color-interactive-disabled: 38 38 38;
+
+    /* Shadow Colors - Darker shadows for dark mode */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+
+    /* Overlay */
+    --color-overlay: 0 0 0;
+    --overlay-opacity: 0.7;
   }
 
   * {
@@ -25,13 +190,13 @@
   }
 
   body {
-    @apply bg-white text-gray-900 dark:bg-neutral-950 dark:text-neutral-50;
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-50;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Focus visible styles */
   *:focus-visible {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2 dark:ring-primary-400 dark:ring-offset-neutral-900;
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 dark:ring-primary-400 dark:ring-offset-gray-900;
   }
 
   /* Selection styles */
@@ -41,173 +206,11 @@
 }
 
 @layer components {
-  /* ==========================================================
-   * LAYOUT SYSTEM - RESPONSIVE GRID & FLEX UTILITIES
-   * ========================================================== */
-
-  /* Responsive Grid - Auto-fit with consistent gaps */
-  .grid-responsive {
-    @apply grid gap-4 sm:gap-6 lg:gap-8;
-  }
-
-  .grid-auto-fit-xs {
-    @apply grid gap-4 sm:gap-6;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  }
-
-  .grid-auto-fit-sm {
-    @apply grid gap-4 sm:gap-6;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  }
-
-  .grid-auto-fit-md {
-    @apply grid gap-4 sm:gap-6 lg:gap-8;
-    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
-  }
-
-  .grid-auto-fit-lg {
-    @apply grid gap-4 sm:gap-6 lg:gap-8;
-    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
-  }
-
-  .grid-auto-fit-xl {
-    @apply grid gap-6 lg:gap-8;
-    grid-template-columns: repeat(auto-fit, minmax(min(24rem, 100%), 1fr));
-  }
-
-  /* Responsive Grid - Auto-fill for even spacing */
-  .grid-auto-fill-sm {
-    @apply grid gap-4 sm:gap-6;
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  }
-
-  .grid-auto-fill-md {
-    @apply grid gap-4 sm:gap-6 lg:gap-8;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-  }
-
-  .grid-auto-fill-lg {
-    @apply grid gap-6 lg:gap-8;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-  }
-
-  /* Fluid Container with consistent padding */
-  .container-fluid {
-    @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;
-    max-width: min(100% - 2rem, 90rem);
-  }
-
-  /* Flex Layout Utilities */
-  .flex-responsive {
-    @apply flex flex-wrap gap-4 sm:gap-6 lg:gap-8;
-  }
-
-  .flex-responsive-center {
-    @apply flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8;
-  }
-
-  .flex-responsive-between {
-    @apply flex flex-wrap items-center justify-between gap-4 sm:gap-6;
-  }
-
-  /* Stack Layout - Responsive spacing */
-  .stack {
-    @apply flex flex-col gap-4;
-  }
-
-  .stack-sm {
-    @apply flex flex-col gap-2 sm:gap-3;
-  }
-
-  .stack-md {
-    @apply flex flex-col gap-4 sm:gap-6;
-  }
-
-  .stack-lg {
-    @apply flex flex-col gap-6 sm:gap-8 lg:gap-10;
-  }
-
-  .stack-xl {
-    @apply flex flex-col gap-8 sm:gap-12 lg:gap-16;
-  }
-
-  /* Inline Layout - Horizontal spacing */
-  .inline-flex-responsive {
-    @apply inline-flex flex-wrap items-center gap-2 sm:gap-3 lg:gap-4;
-  }
-
-  /* ==========================================================
-   * FLUID SPACING & RHYTHM
-   * ========================================================== */
-
-  /* Section spacing with fluid values */
-  .section-spacing {
-    padding-top: clamp(3rem, 2rem + 4vw, 6rem);
-    padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
-  }
-
-  .section-spacing-sm {
-    padding-top: clamp(2rem, 1.5rem + 2vw, 3rem);
-    padding-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
-  }
-
-  .section-spacing-lg {
-    padding-top: clamp(4rem, 3rem + 4vw, 8rem);
-    padding-bottom: clamp(4rem, 3rem + 4vw, 8rem);
-  }
-
-  /* Content spacing - Balanced vertical rhythm */
-  .content-spacing > * + * {
-    margin-top: 1.5rem;
-  }
-
-  .content-spacing-sm > * + * {
-    margin-top: 1rem;
-  }
-
-  .content-spacing-lg > * + * {
-    margin-top: 2rem;
-  }
-
-  /* Card Grid - Consistent with no overflow */
-  .card-grid {
-    @apply grid gap-4 sm:gap-6 lg:gap-8;
-    grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  }
-
-  /* ==========================================================
-   * EXISTING COMPONENTS
-   * ========================================================== */
-
-  /* Custom Scrollbar */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: theme('colors.gray.400') theme('colors.gray.100');
-  }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    @apply bg-gray-100 dark:bg-gray-800;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-gray-400 dark:bg-gray-600 rounded-full;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-500 dark:bg-gray-500;
-  }
-
-  /* Container */
+  /* Basic components */
   .container {
     @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
   }
 
-  /* Card */
   .card {
     @apply bg-white dark:bg-gray-800 rounded-lg shadow-md;
   }
@@ -216,235 +219,26 @@
     @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
   }
 
-  /* Focus Styles */
   .focus-ring {
     @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
   }
 
-  /* Loading Spinner */
   .spinner {
     @apply animate-spin rounded-full border-2 border-gray-200 border-t-primary-600;
-  }
-
-  /* Gradient Text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
-  }
-
-  /* Section Padding */
-  .section-padding {
-    @apply py-12 md:py-16 lg:py-24;
   }
 }
 
 @layer utilities {
-  /* ==========================================================
-   * FLUID TYPOGRAPHY UTILITIES
-   * ========================================================== */
-
-  /* Fluid text sizes - Use for body content that needs to scale */
-  .text-fluid-xs {
-    font-size: clamp(0.75rem, 0.7rem + 0.22vw, 0.875rem);
-    line-height: 1.5;
-  }
-
-  .text-fluid-sm {
-    font-size: clamp(0.875rem, 0.825rem + 0.22vw, 1rem);
-    line-height: 1.5;
-  }
-
-  .text-fluid-base {
-    font-size: clamp(1rem, 0.95rem + 0.22vw, 1.125rem);
-    line-height: 1.5;
-  }
-
-  .text-fluid-lg {
-    font-size: clamp(1.125rem, 1.05rem + 0.33vw, 1.25rem);
-    line-height: 1.5;
-  }
-
-  .text-fluid-xl {
-    font-size: clamp(1.25rem, 1.15rem + 0.44vw, 1.5rem);
-    line-height: 1.4;
-  }
-
-  /* Optimal line length for readability */
-  .text-measure {
-    max-width: 65ch;
-  }
-
-  .text-measure-sm {
-    max-width: 50ch;
-  }
-
-  .text-measure-lg {
-    max-width: 80ch;
-  }
-
-  /* Text Balance */
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* ==========================================================
-   * RESPONSIVE SPACING UTILITIES
-   * ========================================================== */
-
-  /* Fluid padding - Scales with viewport */
-  .p-fluid {
-    padding: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-  }
-
-  .px-fluid {
-    padding-left: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-    padding-right: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-  }
-
-  .py-fluid {
-    padding-top: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-    padding-bottom: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-  }
-
-  /* Fluid margin - Scales with viewport */
-  .m-fluid {
-    margin: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-  }
-
-  .mx-fluid {
-    margin-left: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-    margin-right: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-  }
-
-  .my-fluid {
-    margin-top: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-    margin-bottom: clamp(1rem, 0.75rem + 1vw, 1.5rem);
-  }
-
-  /* ==========================================================
-   * LAYOUT UTILITIES
-   * ========================================================== */
-
-  /* Prevent overflow on mobile */
-  .no-overflow {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  /* Full bleed container */
-  .full-bleed {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-  }
-
-  /* Center content with max width */
-  .content-container {
-    width: 100%;
-    max-width: 65rem;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .content-container {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .content-container {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
-  }
-
-  /* ==========================================================
-   * EXISTING UTILITIES
-   * ========================================================== */
-
-  /* Hide Scrollbar */
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Animate Presence */
-  .animate-in {
-    animation: animate-in 0.3s ease-out;
-  }
-
-  .animate-out {
-    animation: animate-out 0.2s ease-in;
-  }
-
-  /* Safe Area Insets */
-  .safe-top {
-    padding-top: env(safe-area-inset-top);
-  }
-
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  .safe-left {
-    padding-left: env(safe-area-inset-left);
-  }
-
-  .safe-right {
-    padding-right: env(safe-area-inset-right);
-  }
-}
-
-/* Leaflet Map Overrides */
-.leaflet-container {
-  @apply h-full w-full rounded-lg;
-}
-
-.leaflet-popup-content-wrapper {
-  @apply rounded-lg shadow-lg;
-}
-
-.leaflet-popup-content {
-  @apply m-0;
-}
-
-/* Custom Animations */
-@keyframes animate-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes animate-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-
-/* Print Styles */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-
-  body {
-    @apply text-black bg-white;
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
   }
 }
 

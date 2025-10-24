@@ -7,6 +7,8 @@ import LoadingSpinner from './components/LoadingSpinner';
 import Navbar from './components/Navbar';
 import NetworkStatus from './components/NetworkStatus';
 import HomePage from './components/HomePage';
+import { ModernFooter } from './components/organisms/Footer/ModernFooter';
+import { footerConfig } from './config/footerConfig';
 
 // Lazy load non-critical pages to reduce initial bundle size
 const DirectoryPage = React.lazy(() => import('./components/DirectoryPageNew'));

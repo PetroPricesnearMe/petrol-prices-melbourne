@@ -1,222 +1,213 @@
 /**
- * Enhanced Station Detail Page with Hero Image, Tabs, and Responsive Sections
- * Dynamic route: /stations/[id]
+ * Detailed Listing Page Demo
+ * Showcases the enhanced station detail page with hero image, tabs, and responsive sections
  */
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
+'use client';
 
-import DirectoryLayout from '@/components/layouts/DirectoryLayout';
+import React, { useState } from 'react';
 import { HeroSection } from '@/components/molecules/HeroSection';
 import { Tabs } from '@/components/molecules/Tabs';
-import { getStationById, getAllStationIds, getNearbyStations } from '@/lib/data/stations';
-import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
 
-interface StationPageProps {
-  params: {
-    id: string;
-  };
-}
+// Mock station data for demo
+const mockStation = {
+  id: 'demo-station-1',
+  name: 'Shell Service Station',
+  brand: 'Shell',
+  address: '123 Collins Street',
+  suburb: 'Melbourne',
+  postcode: '3000',
+  latitude: -37.8136,
+  longitude: 144.9631,
+  phoneNumber: '(03) 9650 1234',
+  website: 'https://www.shell.com.au',
+  rating: 4.5,
+  reviewCount: 127,
+  amenities: {
+    hasCarWash: true,
+    hasShop: true,
+    hasRestroom: true,
+    hasATM: true,
+    hasAirPump: true,
+    hasElectricCharging: false,
+    hasCafe: true,
+    hasParking: true,
+    isOpen24Hours: true,
+  },
+  operatingHours: {
+    monday: '6:00 AM - 10:00 PM',
+    tuesday: '6:00 AM - 10:00 PM',
+    wednesday: '6:00 AM - 10:00 PM',
+    thursday: '6:00 AM - 10:00 PM',
+    friday: '6:00 AM - 11:00 PM',
+    saturday: '7:00 AM - 11:00 PM',
+    sunday: '8:00 AM - 10:00 PM',
+  },
+  lastUpdated: new Date().toISOString(),
+};
 
-// Generate static params for ISR
-export async function generateStaticParams() {
-  const stationIds = await getAllStationIds();
+const mockNearbyStations = [
+  {
+    id: 'nearby-1',
+    name: 'BP Express',
+    address: '456 Bourke Street',
+    distance: 0.8,
+  },
+  {
+    id: 'nearby-2',
+    name: '7-Eleven',
+    address: '789 Swanston Street',
+    distance: 1.2,
+  },
+  {
+    id: 'nearby-3',
+    name: 'Caltex Star',
+    address: '321 Flinders Street',
+    distance: 1.5,
+  },
+];
 
-  // Generate params for the first 100 stations at build time
-  // Others will be generated on-demand
-  return stationIds.slice(0, 100).map((id) => ({
-    id: id.toString(),
-  }));
-}
-
-// Enable ISR with 1 hour revalidation
-export const revalidate = 3600;
-
-// Generate dynamic metadata
-export async function generateMetadata({
-  params,
-}: StationPageProps): Promise<Metadata> {
-  const station = await getStationById(params.id);
-
-  if (!station) {
-    return {
-      title: 'Station Not Found',
-    };
-  }
-
-  const title = `${station.name} - Fuel Prices & Information`;
-  const description = `Find real-time fuel prices and information for ${station.name} in ${station.suburb || 'Melbourne'}. ${station.address ? `Located at ${station.address}` : 'Compare prices and save on your next fill-up.'}`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      locale: 'en_AU',
-      url: `https://petrolpricenearme.com.au/stations/${params.id}`,
-      siteName: 'Petrol Price Near Me',
-      images: [
-        {
-          url: `/api/og/station/${params.id}`,
-          width: 1200,
-          height: 630,
-          alt: `${station.name} - Petrol Station`,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    alternates: {
-      canonical: `https://petrolpricenearme.com.au/stations/${params.id}`,
-    },
-    keywords: [
-      `${station.name} fuel prices`,
-      `${station.suburb} petrol station`,
-      station.brand || '',
-      'fuel prices near me',
-      'petrol prices Melbourne',
-    ].filter(Boolean),
-  };
-}
-
-export default async function StationPage({ params }: StationPageProps) {
-  const station = await getStationById(params.id);
-
-  if (!station) {
-    notFound();
-  }
-
-  // Get nearby stations for the map and recommendations
-  const nearbyStations = station.latitude && station.longitude
-    ? await getNearbyStations(station.latitude, station.longitude, 5)
-    : [];
-
-  const breadcrumbs = [
-    { label: 'Directory', href: '/directory' },
-    { label: station.suburb || 'Melbourne', href: `/directory/${station.suburb?.toLowerCase().replace(/\s+/g, '-') || 'melbourne'}` },
-    { label: station.name, href: `/stations/${params.id}` },
-  ];
-
-  // Generate hero image URL (placeholder for now)
-  const heroImageUrl = station.brand
-    ? `/images/stations/${station.brand.toLowerCase().replace(/\s+/g, '-')}-hero.jpg`
-    : '/images/stations/default-hero.jpg';
+export default function DetailedListingDemo() {
+  const [activeTab, setActiveTab] = useState('description');
 
   return (
-    <DirectoryLayout
-      title={station.name}
-      description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
-      breadcrumbs={breadcrumbs}
-      showSidebar={false}
-    >
-      <div className="space-y-8">
-        {/* Hero Section */}
-        <HeroSection
-          title={station.name}
-          subtitle={station.brand || 'Petrol Station'}
-          description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
-          imageUrl={heroImageUrl}
-          imageAlt={`${station.name} petrol station`}
-          height="lg"
-          contentPosition="left"
-        >
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href={`/directions?station=${params.id}`}
-              className="btn btn-primary btn-lg"
-            >
-              📍 Get Directions
-            </Link>
-            <button className="btn btn-outline btn-lg text-white border-white hover:bg-white hover:text-gray-900">
-              ⭐ Save Favorite
-            </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Hero Section */}
+      <HeroSection
+        title={mockStation.name}
+        subtitle={mockStation.brand}
+        description={`${mockStation.address} • ${mockStation.suburb}`}
+        imageUrl="/images/stations/shell-hero.jpg"
+        imageAlt={`${mockStation.name} petrol station`}
+        height="lg"
+        contentPosition="left"
+      >
+        <div className="flex flex-col sm:flex-row gap-4">
+          <button className="btn btn-primary btn-lg">
+            📍 Get Directions
+          </button>
+          <button className="btn btn-outline btn-lg text-white border-white hover:bg-white hover:text-gray-900">
+            ⭐ Save Favorite
+          </button>
+        </div>
+      </HeroSection>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="space-y-8">
+          {/* Quick Info Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <QuickInfoCard
+              title="Current Prices"
+              icon="⛽"
+              content={<FuelPriceSummary />}
+            />
+            <QuickInfoCard
+              title="Station Info"
+              icon="🏪"
+              content={<StationInfoSummary station={mockStation} />}
+            />
+            <QuickInfoCard
+              title="Nearby Stations"
+              icon="🗺️"
+              content={<NearbyStationsSummary stations={mockNearbyStations} />}
+            />
           </div>
-        </HeroSection>
 
-        {/* Quick Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <QuickInfoCard
-            title="Current Prices"
-            icon="⛽"
-            content={<FuelPriceSummary station={station} />}
-          />
-          <QuickInfoCard
-            title="Station Info"
-            icon="🏪"
-            content={<StationInfoSummary station={station} />}
-          />
-          <QuickInfoCard
-            title="Nearby Stations"
-            icon="🗺️"
-            content={<NearbyStationsSummary stations={nearbyStations.slice(0, 3)} />}
-          />
-        </div>
+          {/* Main Content Tabs */}
+          <div className="card p-6">
+            <Tabs
+              tabs={[
+                {
+                  id: 'description',
+                  label: 'Description',
+                  icon: '📝',
+                  content: <DescriptionTab station={mockStation} />,
+                },
+                {
+                  id: 'reviews',
+                  label: 'Reviews',
+                  icon: '⭐',
+                  content: <ReviewsTab station={mockStation} />,
+                },
+                {
+                  id: 'map',
+                  label: 'Map & Location',
+                  icon: '🗺️',
+                  content: <MapTab station={mockStation} nearbyStations={mockNearbyStations} />,
+                },
+                {
+                  id: 'prices',
+                  label: 'Fuel Prices',
+                  icon: '💰',
+                  content: <PricesTab station={mockStation} />,
+                },
+              ]}
+              defaultActiveTab="description"
+              className="w-full"
+              onTabChange={setActiveTab}
+            />
+          </div>
 
-        {/* Main Content Tabs */}
-        <div className="card p-6">
-          <Tabs
-            tabs={[
-              {
-                id: 'description',
-                label: 'Description',
-                icon: '📝',
-                content: <DescriptionTab station={station} />,
-              },
-              {
-                id: 'reviews',
-                label: 'Reviews',
-                icon: '⭐',
-                content: <ReviewsTab station={station} />,
-              },
-              {
-                id: 'map',
-                label: 'Map & Location',
-                icon: '🗺️',
-                content: <MapTab station={station} nearbyStations={nearbyStations} />,
-              },
-              {
-                id: 'prices',
-                label: 'Fuel Prices',
-                icon: '💰',
-                content: <PricesTab station={station} />,
-              },
-            ]}
-            defaultActiveTab="description"
-            className="w-full"
-          />
-        </div>
-
-        {/* Additional Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Amenities */}
-          {station.amenities && Object.values(station.amenities).some(Boolean) && (
+          {/* Additional Sections */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Amenities */}
             <div className="card p-6">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 Amenities
               </h2>
-              <AmenitiesGrid amenities={station.amenities} />
+              <AmenitiesGrid amenities={mockStation.amenities} />
             </div>
-          )}
 
-          {/* Operating Hours */}
-          {station.operatingHours && (
+            {/* Operating Hours */}
             <div className="card p-6">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                 Operating Hours
               </h2>
-              <OperatingHoursTable hours={station.operatingHours} />
+              <OperatingHoursTable hours={mockStation.operatingHours} />
             </div>
-          )}
+          </div>
+
+          {/* Features Showcase */}
+          <div className="card p-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              Design Features
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <FeatureCard
+                icon="🖼️"
+                title="Hero Image Section"
+                description="Responsive hero with overlay content and call-to-action buttons"
+              />
+              <FeatureCard
+                icon="📑"
+                title="Tabbed Interface"
+                description="Accessible tabs with keyboard navigation and smooth transitions"
+              />
+              <FeatureCard
+                icon="📱"
+                title="Responsive Design"
+                description="Mobile-first approach with fluid layouts and breakpoint optimization"
+              />
+              <FeatureCard
+                icon="♿"
+                title="Accessibility"
+                description="WCAG 2.1 AA compliant with proper ARIA labels and keyboard support"
+              />
+              <FeatureCard
+                icon="🎨"
+                title="Modern UI"
+                description="Clean design with Tailwind CSS and dark mode support"
+              />
+              <FeatureCard
+                icon="⚡"
+                title="Performance"
+                description="Optimized with Next.js Image component and lazy loading"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </DirectoryLayout>
+    </div>
   );
 }
 
@@ -248,8 +239,7 @@ function QuickInfoCard({
 /**
  * Fuel Price Summary Component
  */
-function FuelPriceSummary({ station }: { station: Station }) {
-  // Mock fuel prices - replace with actual data
+function FuelPriceSummary() {
   const fuelPrices = [
     { type: 'Unleaded 91', price: '169.9', trend: 'up' },
     { type: 'Unleaded 95', price: '179.9', trend: 'stable' },
@@ -285,7 +275,7 @@ function FuelPriceSummary({ station }: { station: Station }) {
 /**
  * Station Info Summary Component
  */
-function StationInfoSummary({ station }: { station: Station }) {
+function StationInfoSummary({ station }: { station: typeof mockStation }) {
   return (
     <div className="space-y-2 text-sm">
       {station.brand && (
@@ -324,7 +314,7 @@ function StationInfoSummary({ station }: { station: Station }) {
 /**
  * Nearby Stations Summary Component
  */
-function NearbyStationsSummary({ stations }: { stations: Station[] }) {
+function NearbyStationsSummary({ stations }: { stations: typeof mockNearbyStations }) {
   return (
     <div className="space-y-2">
       {stations.map((station, index) => (
@@ -333,15 +323,10 @@ function NearbyStationsSummary({ stations }: { stations: Station[] }) {
             {station.name}
           </span>
           <span className="font-medium text-primary-600 dark:text-primary-400">
-            {station.distance?.toFixed(1)}km
+            {station.distance.toFixed(1)}km
           </span>
         </div>
       ))}
-      {stations.length === 0 && (
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          No nearby stations found
-        </p>
-      )}
     </div>
   );
 }
@@ -349,7 +334,7 @@ function NearbyStationsSummary({ stations }: { stations: Station[] }) {
 /**
  * Description Tab Content
  */
-function DescriptionTab({ station }: { station: Station }) {
+function DescriptionTab({ station }: { station: typeof mockStation }) {
   return (
     <div className="space-y-6">
       <div>
@@ -358,10 +343,8 @@ function DescriptionTab({ station }: { station: Station }) {
         </h3>
         <div className="prose prose-gray dark:prose-invert max-w-none">
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-            {station.locationDetails ||
-              `${station.name} is a ${station.brand || 'petrol station'} located in ${station.suburb || 'Melbourne'}.
-              We provide quality fuel services and competitive prices to help you save on your fuel costs.`
-            }
+            {station.name} is a {station.brand} service station located in the heart of {station.suburb}.
+            We provide quality fuel services, competitive prices, and a range of amenities to make your visit convenient and comfortable.
           </p>
         </div>
       </div>
@@ -372,36 +355,30 @@ function DescriptionTab({ station }: { station: Station }) {
             Contact Information
           </h4>
           <div className="space-y-2 text-gray-700 dark:text-gray-300">
-            {station.address && (
-              <p className="flex items-start gap-2">
-                <span className="text-lg">📍</span>
-                <span>{station.address}</span>
-              </p>
-            )}
-            {station.phoneNumber && (
-              <p className="flex items-center gap-2">
-                <span className="text-lg">📞</span>
-                <a
-                  href={`tel:${station.phoneNumber}`}
-                  className="hover:text-primary-600 dark:hover:text-primary-400"
-                >
-                  {station.phoneNumber}
-                </a>
-              </p>
-            )}
-            {station.website && (
-              <p className="flex items-center gap-2">
-                <span className="text-lg">🌐</span>
-                <a
-                  href={station.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-primary-600 dark:hover:text-primary-400"
-                >
-                  Visit Website
-                </a>
-              </p>
-            )}
+            <p className="flex items-start gap-2">
+              <span className="text-lg">📍</span>
+              <span>{station.address}</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="text-lg">📞</span>
+              <a
+                href={`tel:${station.phoneNumber}`}
+                className="hover:text-primary-600 dark:hover:text-primary-400"
+              >
+                {station.phoneNumber}
+              </a>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="text-lg">🌐</span>
+              <a
+                href={station.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary-600 dark:hover:text-primary-400"
+              >
+                Visit Website
+              </a>
+            </p>
           </div>
         </div>
 
@@ -410,24 +387,18 @@ function DescriptionTab({ station }: { station: Station }) {
             Station Details
           </h4>
           <div className="space-y-2 text-gray-700 dark:text-gray-300">
-            {station.brand && (
-              <p className="flex items-center gap-2">
-                <span className="text-lg">🏪</span>
-                <span>Brand: {station.brand}</span>
-              </p>
-            )}
-            {station.category && (
-              <p className="flex items-center gap-2">
-                <span className="text-lg">🏷️</span>
-                <span>Category: {station.category}</span>
-              </p>
-            )}
-            {station.lastUpdated && (
-              <p className="flex items-center gap-2">
-                <span className="text-lg">🕐</span>
-                <span>Last Updated: {new Date(station.lastUpdated).toLocaleDateString()}</span>
-              </p>
-            )}
+            <p className="flex items-center gap-2">
+              <span className="text-lg">🏪</span>
+              <span>Brand: {station.brand}</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="text-lg">⭐</span>
+              <span>Rating: {station.rating}/5 ({station.reviewCount} reviews)</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="text-lg">🕐</span>
+              <span>Last Updated: {new Date(station.lastUpdated).toLocaleDateString()}</span>
+            </p>
           </div>
         </div>
       </div>
@@ -438,8 +409,7 @@ function DescriptionTab({ station }: { station: Station }) {
 /**
  * Reviews Tab Content
  */
-function ReviewsTab({ station }: { station: Station }) {
-  // Mock reviews data - replace with actual data
+function ReviewsTab({ station }: { station: typeof mockStation }) {
   const reviews = [
     {
       id: 1,
@@ -472,7 +442,7 @@ function ReviewsTab({ station }: { station: Station }) {
             Customer Reviews
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
-            {station.reviewCount || reviews.length} reviews • Average rating: {station.rating || 4.5}/5
+            {station.reviewCount} reviews • Average rating: {station.rating}/5
           </p>
         </div>
         <button className="btn btn-primary">
@@ -523,8 +493,8 @@ function MapTab({
   station,
   nearbyStations
 }: {
-  station: Station;
-  nearbyStations: Station[];
+  station: typeof mockStation;
+  nearbyStations: typeof mockNearbyStations;
 }) {
   return (
     <div className="space-y-6">
@@ -552,25 +522,22 @@ function MapTab({
           Nearby Stations ({nearbyStations.length})
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {nearbyStations.slice(0, 6).map((nearbyStation) => (
+          {nearbyStations.map((nearbyStation) => (
             <div key={nearbyStation.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start mb-2">
                 <h5 className="font-medium text-gray-900 dark:text-white">
                   {nearbyStation.name}
                 </h5>
                 <span className="text-sm text-primary-600 dark:text-primary-400 font-medium">
-                  {nearbyStation.distance?.toFixed(1)}km
+                  {nearbyStation.distance.toFixed(1)}km
                 </span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 {nearbyStation.address}
               </p>
-              <Link
-                href={`/stations/${nearbyStation.id}`}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
-              >
+              <button className="text-sm text-primary-600 dark:text-primary-400 hover:underline">
                 View Details →
-              </Link>
+              </button>
             </div>
           ))}
         </div>
@@ -582,8 +549,7 @@ function MapTab({
 /**
  * Prices Tab Content
  */
-function PricesTab({ station }: { station: Station }) {
-  // Mock fuel prices - replace with actual data
+function PricesTab({ station }: { station: typeof mockStation }) {
   const fuelPrices = [
     { type: 'Unleaded 91', price: '169.9', trend: 'up', lastUpdated: '2 hours ago' },
     { type: 'Unleaded 95', price: '179.9', trend: 'stable', lastUpdated: '1 hour ago' },
@@ -670,7 +636,7 @@ function PricesTab({ station }: { station: Station }) {
 /**
  * Amenities Grid Component
  */
-function AmenitiesGrid({ amenities }: { amenities: any }) {
+function AmenitiesGrid({ amenities }: { amenities: typeof mockStation.amenities }) {
   const amenityItems = [
     { key: 'hasCarWash', label: 'Car Wash', icon: '🚿' },
     { key: 'hasShop', label: 'Convenience Store', icon: '🏪' },
@@ -690,7 +656,7 @@ function AmenitiesGrid({ amenities }: { amenities: any }) {
           key={item.key}
           className={cn(
             'flex items-center gap-3 p-3 rounded-lg border transition-colors',
-            amenities[item.key]
+            amenities[item.key as keyof typeof amenities]
               ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200'
               : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
           )}
@@ -706,7 +672,7 @@ function AmenitiesGrid({ amenities }: { amenities: any }) {
 /**
  * Operating Hours Table Component
  */
-function OperatingHoursTable({ hours }: { hours: any }) {
+function OperatingHoursTable({ hours }: { hours: typeof mockStation.operatingHours }) {
   const days = [
     { key: 'monday', label: 'Monday' },
     { key: 'tuesday', label: 'Tuesday' },
@@ -740,12 +706,37 @@ function OperatingHoursTable({ hours }: { hours: any }) {
                 {day.label}
               </td>
               <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
-                {hours[day.key] || 'Closed'}
+                {hours[day.key as keyof typeof hours] || 'Closed'}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+/**
+ * Feature Card Component
+ */
+function FeatureCard({
+  icon,
+  title,
+  description
+}: {
+  icon: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="text-center p-4">
+      <div className="text-3xl mb-3">{icon}</div>
+      <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+        {title}
+      </h3>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        {description}
+      </p>
     </div>
   );
 }

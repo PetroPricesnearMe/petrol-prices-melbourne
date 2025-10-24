@@ -1,6 +1,6 @@
 /**
  * Modern Station Card with Glassmorphism
- * 
+ *
  * Features:
  * - Blurred glassmorphism background
  * - Responsive brand images
@@ -13,9 +13,11 @@
 
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useState } from 'react';
+
+import { LazyImage } from '@/components/atoms/LazyImage';
 import { cn } from '@/styles/system/css-in-js';
 import { getBrandInfo } from '@/utils/brandImages';
 import './ModernStationCard.css';
@@ -57,7 +59,7 @@ export function ModernStationCard({
 }: StationCardProps) {
   const [imageError, setImageError] = useState(false);
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
-  
+
   const brandInfo = getBrandInfo(brand);
 
   // Get lowest price for badge
@@ -101,19 +103,22 @@ export function ModernStationCard({
       <div className="card-glass-overlay" aria-hidden="true" />
 
       {/* Brand Image Header */}
-      <div className="card-image-header" style={{ 
-        background: `linear-gradient(135deg, ${brandInfo.color}20 0%, ${brandInfo.fallback}10 100%)` 
+      <div className="card-image-header" style={{
+        background: `linear-gradient(135deg, ${brandInfo.color}20 0%, ${brandInfo.fallback}10 100%)`
       }}>
         <div className="brand-logo-container">
           {!imageError ? (
-            <Image
+            <LazyImage
               src={brandInfo.logo}
               alt={`${brandInfo.name} logo`}
-              fill
+              width={120}
+              height={80}
               className="object-contain"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              objectFit="contain"
               priority={false}
+              rootMargin="100px"
               onError={() => setImageError(true)}
+              aspectRatio="3/2"
             />
           ) : (
             <div className="brand-logo-fallback">
@@ -140,7 +145,7 @@ export function ModernStationCard({
               )}
             </div>
           )}
-          
+
           {lowestPrice && (
             <div
               className="price-badge"
@@ -168,7 +173,7 @@ export function ModernStationCard({
           <h3 className="station-name" itemProp="name">
             {name}
           </h3>
-          <div 
+          <div
             className="brand-chip"
             style={{
               background: `linear-gradient(135deg, ${brandInfo.color} 0%, ${brandInfo.fallback} 100%)`
@@ -179,10 +184,10 @@ export function ModernStationCard({
         </div>
 
         {/* Address */}
-        <div 
-          className="station-address" 
-          itemProp="address" 
-          itemScope 
+        <div
+          className="station-address"
+          itemProp="address"
+          itemScope
           itemType="https://schema.org/PostalAddress"
         >
           <span className="address-icon" aria-hidden="true">📍</span>
@@ -199,7 +204,7 @@ export function ModernStationCard({
         <div className="fuel-prices-grid">
           {Object.entries(fuelPrices).map(([type, price]) => {
             if (price === null || price === undefined) return null;
-            
+
             return (
               <div
                 key={type}
@@ -262,4 +267,3 @@ export function ModernStationCard({
 }
 
 export default ModernStationCard;
-
