@@ -5,11 +5,20 @@ Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
 Disallow: /auth/
-Disallow: /*?*sort=*
-Disallow: /*?*filter=*
-Disallow: /*?*page=*
-Disallow: /*?*search=*
-Disallow: /*?*q=*
+Disallow: /private/
+Disallow: /hero-example
+Disallow: /map-demo
+Disallow: /*?sort=*
+Disallow: /*?filter=*
+Disallow: /*?filters=*
+Disallow: /*?page=*
+Disallow: /*?search=*
+Disallow: /*?q=*
+Disallow: /*?s=*
+Disallow: /*?category=*
+Disallow: /*?brand=*
+Disallow: /*?fuel=*
+Disallow: /*?amenity=*
 
 # Googlebot
 User-agent: Googlebot
@@ -17,6 +26,9 @@ Allow: /
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
+Disallow: /hero-example
+Disallow: /map-demo
+Crawl-delay: 0.5
 
 # Bingbot
 User-agent: Bingbot
@@ -24,6 +36,17 @@ Allow: /
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
+Disallow: /hero-example
+Disallow: /map-demo
+Crawl-delay: 1
+
+# GPTBot
+User-agent: GPTBot
+Disallow: /
+
+# CCBot
+User-agent: CCBot
+Disallow: /
 
 # Host
 Host: https://petrolpricenearme.com.au

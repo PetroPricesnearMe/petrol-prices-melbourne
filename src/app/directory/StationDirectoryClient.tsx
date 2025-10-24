@@ -7,6 +7,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useCallback, useMemo } from 'react';
 
 import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
@@ -62,6 +63,77 @@ interface SearchFilters {
 }
 
 const ITEMS_PER_PAGE = 24;
+
+// Brand utility functions
+const getBrandInfo = (brand: string) => {
+  const brandMap: Record<string, { name: string; logo: string; color: string; fallback: string }> = {
+    'BP': { name: 'BP', logo: '/images/brands/bp.png', color: '#00A651', fallback: '#00A651' },
+    'Shell': { name: 'Shell', logo: '/images/brands/shell.png', color: '#FFD700', fallback: '#FFD700' },
+    'Caltex': { name: 'Caltex', logo: '/images/brands/caltex.png', color: '#FF6B35', fallback: '#FF6B35' },
+    '7-Eleven': { name: '7-Eleven', logo: '/images/brands/7eleven.png', color: '#FF6900', fallback: '#FF6900' },
+    'Coles Express': { name: 'Coles Express', logo: '/images/brands/coles.png', color: '#E31837', fallback: '#E31837' },
+    'Woolworths': { name: 'Woolworths', logo: '/images/brands/woolworths.png', color: '#1B5E20', fallback: '#1B5E20' },
+    'United': { name: 'United', logo: '/images/brands/united.png', color: '#1976D2', fallback: '#1976D2' },
+    'Puma': { name: 'Puma', logo: '/images/brands/puma.png', color: '#E91E63', fallback: '#E91E63' },
+  };
+  return brandMap[brand] || { name: brand, logo: '/images/brands/default-logo.svg', color: '#6B7280', fallback: '#6B7280' };
+};
+
+const getBrandClass = (brand: string) => {
+  const brandClassMap: Record<string, string> = {
+    'BP': 'badge-success',
+    'Shell': 'badge-warning',
+    'Caltex': 'badge-error',
+    '7-Eleven': 'badge-primary',
+    'Coles Express': 'badge-error',
+    'Woolworths': 'badge-success',
+    'United': 'badge-primary',
+    'Puma': 'badge-secondary',
+  };
+  return brandClassMap[brand] || 'badge-secondary';
+};
+
+// Search category interface
+interface SearchCategory {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+// Advanced Search Bar component (simplified for now)
+function AdvancedSearchBar({
+  data,
+  searchKeys,
+  placeholder,
+  onSearch,
+  onCategoryChange,
+  categories,
+  selectedCategory,
+  maxSuggestions,
+  debounceDelay,
+  enableRecentSearches,
+  renderResult
+}: any) {
+  const [query, setQuery] = useState('');
+
+  const handleSearch = (value: string) => {
+    setQuery(value);
+    onSearch(value, data);
+  };
+
+  return (
+    <div className="relative">
+      <input
+        type="search"
+        placeholder={placeholder}
+        value={query}
+        onChange={(e) => handleSearch(e.target.value)}
+        className="input w-full"
+        aria-label="Search stations"
+      />
+    </div>
+  );
+}
 
 export function StationDirectoryClient({ initialStations, metadata }: Props) {
   const [filters, setFilters] = useState<SearchFilters>({
@@ -440,15 +512,17 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                     itemType="https://schema.org/GasStation"
                   >
                     {/* Brand Header with Logo */}
-                    <div className={cn(
-                      "relative h-24 flex items-center justify-center",
-                      "bg-gradient-to-br from-gray-50 to-gray-100",
-                      "dark:from-gray-800 dark:to-gray-900",
-                      brandClass
-                    )}
-                    style={{
-                      background: `linear-gradient(135deg, ${brandInfo.color}15 0%, ${brandInfo.fallback}05 100%)`
-                    }}>
+                    <div
+                      className={cn(
+                        "relative h-24 flex items-center justify-center",
+                        "bg-gradient-to-br from-gray-50 to-gray-100",
+                        "dark:from-gray-800 dark:to-gray-900",
+                        brandClass
+                      )}
+                      style={{
+                        background: `linear-gradient(135deg, ${brandInfo.color}15 0%, ${brandInfo.fallback}05 100%)`
+                      }}
+                    >
                       <div className="relative w-32 h-16">
                         <Image
                           src={brandInfo.logo}

@@ -1,78 +1,31 @@
 /**
- * Suburb-Specific Station Directory Page
- * Static generation for each suburb to maximize SEO
- * Pure server-side rendering without client components
+ * Suburb Directory Client Component
+ * Handles interactive features like sorting and search params
+ * Wrapped in Suspense to prevent prerender errors
  */
 
-import type { Metadata } from 'next';
+'use client';
+
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import metadataJson from '@/data/stations-metadata.json';
-import stationsData from '@/data/stations.json';
+import { SortDropdown, type SortOption } from '@/components/molecules/SortDropdown';
 import { cn, patterns } from '@/styles/system/css-in-js';
 import type { Station } from '@/types/station';
 
 interface Props {
-  params: Promise<{ suburb: string }>;
+  suburb: string;
+  stations: Station[];
+  suburbName: string;
 }
 
-// Generate static pages for top suburbs
-export async function generateStaticParams() {
-  // Get top 200 suburbs by station count for static generation
-  // This covers more suburbs while keeping build times reasonable
-  const suburbCounts = Object.entries(metadataJson.stats.bySuburb)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 200);
-
-  return suburbCounts.map(([suburb]) => ({
-    suburb: suburb.toLowerCase().replace(/\s+/g, '-'),
-  }));
+interface SearchFilters {
+  sortBy: SortOption;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { suburb } = await params;
-  const suburbName = suburb.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-
-  const stations = (stationsData as Station[]).filter(
-    (s) => s.suburb.toLowerCase().replace(/\s+/g, '-') === suburb
-  );
-
-  if (stations.length === 0) {
-    return {
-      title: 'Suburb Not Found',
-    };
-  }
-
-  const avgPrice = stations
-    .filter(s => s.fuelPrices.unleaded)
-    .reduce((sum, s) => sum + (s.fuelPrices.unleaded || 0), 0) / stations.filter(s => s.fuelPrices.unleaded).length;
-
-  return {
-    title: `${suburbName} Petrol Stations - ${stations.length} Stations | Fuel Prices`,
-    description: `Find the cheapest petrol in ${suburbName}, VIC. Compare fuel prices across ${stations.length} stations. Average price: ${avgPrice.toFixed(1)}¢/L. Get directions and save money.`,
-    keywords: `${suburbName} petrol stations, ${suburbName} fuel prices, cheap petrol ${suburbName}, ${suburbName} BP, ${suburbName} Shell`,
-    openGraph: {
-      title: `${suburbName} Petrol Stations - ${stations.length} Stations`,
-      description: `Find the cheapest fuel prices in ${suburbName}. Compare ${stations.length} stations and save money.`,
-    },
-  };
-}
-
-export default async function SuburbDirectoryPage({ params }: Props) {
-  const { suburb } = await params;
-  const suburbName = suburb.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-
-  // Safe data access with null checks to prevent prerender crashes
-  const stations = (stationsData as Station[] || []).filter(
-    (s) => s?.suburb?.toLowerCase().replace(/\s+/g, '-') === suburb
-  );
-
-  if (stations.length === 0) {
-    notFound();
-  }
-
-  // Sort by unleaded price (lowest first)
+export function SuburbDirectoryClient({ suburb, stations, suburbName }: Props) {
+  // Sort by unleaded price (lowest first) by default
   const sortedStations = [...stations].sort((a, b) => {
     const priceA = a.fuelPrices.unleaded || Infinity;
     const priceB = b.fuelPrices.unleaded || Infinity;
@@ -121,7 +74,7 @@ export default async function SuburbDirectoryPage({ params }: Props) {
         </div>
       </header>
 
-      {/* Station Count Info */}
+      {/* Interactive Controls */}
       <section className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm">
         <div className={patterns.container()}>
           <div className="py-6">
@@ -129,8 +82,16 @@ export default async function SuburbDirectoryPage({ params }: Props) {
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {stations.length} station{stations.length !== 1 ? 's' : ''} in {suburbName}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Sorted by lowest price first
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Sort by:</span>
+                <Suspense fallback={<div className="w-48 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />}>
+                  <SortDropdown
+                    value="price-low"
+                    onChange={() => {}} // No-op since we're showing static sorted data
+                    syncWithUrl={false} // Disable URL sync for suburb pages
+                    className="w-48"
+                  />
+                </Suspense>
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -103,7 +104,9 @@ export default function RootLayout({
           </footer>
 
           {/* Analytics - Privacy-focused, bot-excluding, consent-based */}
-          <GoogleAnalytics />
+          <Suspense fallback={null}>
+            <GoogleAnalytics />
+          </Suspense>
           <CookieConsent />
           <Analytics />
           <SpeedInsights />
