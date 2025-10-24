@@ -9,8 +9,10 @@ import { notFound } from 'next/navigation';
 
 import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { HeroSection } from '@/components/molecules/HeroSection';
+import { StructuredData } from '@/components/StructuredData';
 import { Tabs } from '@/components/molecules/Tabs';
 import { getStationById, getAllStationIds, getNearbyStations } from '@/lib/data/stations';
+import { generateStationPageSchemas } from '@/lib/schema';
 import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
 
@@ -109,14 +111,22 @@ export default async function StationPage({ params }: StationPageProps) {
     ? `/images/stations/${station.brand.toLowerCase().replace(/\s+/g, '-')}-hero.jpg`
     : '/images/stations/default-hero.jpg';
 
+  // Generate structured data schemas
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const structuredDataSchemas = generateStationPageSchemas(station, baseUrl);
+
   return (
-    <DirectoryLayout
-      title={station.name}
-      description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
-      breadcrumbs={breadcrumbs}
-      showSidebar={false}
-    >
-      <div className="space-y-8">
+    <>
+      {/* Structured Data */}
+      <StructuredData data={structuredDataSchemas} />
+
+      <DirectoryLayout
+        title={station.name}
+        description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
+        breadcrumbs={breadcrumbs}
+        showSidebar={false}
+      >
+        <div className="space-y-8">
         {/* Hero Section */}
         <HeroSection
           title={station.name}
@@ -217,6 +227,7 @@ export default async function StationPage({ params }: StationPageProps) {
         </div>
       </div>
     </DirectoryLayout>
+    </>
   );
 }
 

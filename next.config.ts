@@ -22,18 +22,37 @@ const nextConfig: NextConfig = {
   compress: true,
   // swcMinify is default in Next.js 15+ and no longer needed
 
+  /* Bundle Optimization */
+  modularizeImports: {
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{member}}',
+    },
+    '@tanstack/react-query': {
+      transform: '@tanstack/react-query/{{member}}',
+    },
+  },
+
   /* Image Optimization */
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 31536000, // 1 year cache for static images
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**.baserow.io',
       },
+      {
+        protocol: 'https',
+        hostname: '**.mapbox.com',
+      },
     ],
+    // Optimize for Core Web Vitals
+    unoptimized: false,
+    loader: 'default',
   },
 
   /* Headers for Security and Performance */
@@ -69,6 +88,36 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(self)',
+          },
+        ],
+      },
+      // Cache static assets for 1 year
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache images for 1 year
+      {
+        source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache API responses for 1 hour
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, s-maxage=3600',
           },
         ],
       },

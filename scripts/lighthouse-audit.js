@@ -1,11 +1,9 @@
 #!/usr/bin/env node
+
 /**
  * Lighthouse Performance Audit Script
- * Runs Lighthouse audit and checks for 95+ performance score
- *
- * Usage:
- *   node scripts/lighthouse-audit.js [url]
- *   npm run lighthouse
+ * Runs Lighthouse audits and generates performance reports
+ * Targets 95+ scores for all metrics
  */
 
 const lighthouse = require('lighthouse');
@@ -13,174 +11,249 @@ const chromeLauncher = require('chrome-launcher');
 const fs = require('fs');
 const path = require('path');
 
-// Configuration
-const TARGET_SCORES = {
-  performance: 95,
-  accessibility: 90,
-  'best-practices': 90,
-  seo: 90,
-};
-
-const url = process.argv[2] || 'http://localhost:3000';
-
-// Lighthouse configuration
-const lighthouseConfig = {
+// Configuration for Lighthouse audit
+const config = {
   extends: 'lighthouse:default',
   settings: {
-    onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
-    formFactor: 'desktop',
+    onlyAudits: [
+      'first-contentful-paint',
+      'largest-contentful-paint',
+      'first-meaningful-paint',
+      'speed-index',
+      'cumulative-layout-shift',
+      'total-blocking-time',
+      'interactive',
+      'max-potential-fid',
+      'render-blocking-resources',
+      'unused-css-rules',
+      'unused-javascript',
+      'efficient-animated-content',
+      'preload-lcp-image',
+      'uses-optimized-images',
+      'uses-webp-images',
+      'uses-text-compression',
+      'uses-responsive-images',
+      'modern-image-formats',
+      'offscreen-images',
+      'unminified-css',
+      'unminified-javascript',
+      'uses-long-cache-ttl',
+      'total-byte-weight',
+      'uses-rel-preconnect',
+      'uses-rel-preload',
+      'critical-request-chains',
+      'user-timings',
+      'bootup-time',
+      'mainthread-work-breakdown',
+      'font-display',
+    ],
     throttling: {
       rttMs: 40,
       throughputKbps: 10240,
       cpuSlowdownMultiplier: 1,
-      requestLatencyMs: 0,
-      downloadThroughputKbps: 0,
-      uploadThroughputKbps: 0,
     },
-    screenEmulation: {
-      mobile: false,
-      width: 1350,
-      height: 940,
-      deviceScaleFactor: 1,
-      disabled: false,
-    },
+    emulatedFormFactor: 'mobile',
+    locale: 'en-US',
+    blockedUrlPatterns: null,
+    additionalTraceCategories: null,
+    extraHeaders: null,
+    precomputedLanternData: null,
+    skipAudits: [],
+    onlyCategories: ['performance'],
   },
 };
 
-/**
- * Launch Chrome and run Lighthouse
- */
-async function runLighthouse() {
-  console.log('\n🚀 Starting Lighthouse audit...\n');
-  console.log(`📍 URL: ${url}\n`);
+// Performance thresholds
+const thresholds = {
+  performance: 95,
+  'first-contentful-paint': 1000,
+  'largest-contentful-paint': 1200,
+  'first-meaningful-paint': 1000,
+  'speed-index': 1500,
+  'cumulative-layout-shift': 0.1,
+  'total-blocking-time': 200,
+  'interactive': 2000,
+  'max-potential-fid': 100,
+};
 
-  let chrome;
+async function runLighthouseAudit(url) {
+  console.log(`🚀 Starting Lighthouse audit for ${url}...`);
+
+  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+  const options = {
+    logLevel: 'info',
+    output: 'json',
+    onlyCategories: ['performance'],
+    port: chrome.port,
+  };
+
   try {
-    chrome = await chromeLauncher.launch({
-      chromeFlags: ['--headless', '--disable-gpu', '--no-sandbox'],
+    const runnerResult = await lighthouse(url, options, config);
+
+    // Extract performance metrics
+    const lhr = runnerResult.lhr;
+    const audits = lhr.audits;
+    const categories = lhr.categories;
+
+    console.log('\n📊 Performance Audit Results:');
+    console.log('================================');
+
+    // Overall performance score
+    const performanceScore = Math.round(categories.performance.score * 100);
+    console.log(`Overall Performance Score: ${performanceScore}/100`);
+
+    if (performanceScore >= thresholds.performance) {
+      console.log('✅ Performance score meets target (95+)');
+    } else {
+      console.log('❌ Performance score below target (95+)');
+    }
+
+    console.log('\n🎯 Core Web Vitals:');
+    console.log('-------------------');
+
+    // Check each Core Web Vital
+    const coreWebVitals = [
+      'first-contentful-paint',
+      'largest-contentful-paint',
+      'cumulative-layout-shift',
+      'total-blocking-time',
+      'interactive',
+    ];
+
+    let allVitalsPass = true;
+
+    coreWebVitals.forEach(vital => {
+      const audit = audits[vital];
+      if (audit) {
+        const value = audit.numericValue;
+        const threshold = thresholds[vital];
+        const status = value <= threshold ? '✅' : '❌';
+        const unit = vital === 'cumulative-layout-shift' ? '' : 'ms';
+
+        console.log(`${status} ${audit.title}: ${Math.round(value)}${unit} (target: ≤${threshold}${unit})`);
+
+        if (value > threshold) {
+          allVitalsPass = false;
+        }
+      }
     });
 
-    const lighthouseFlags = {
-      port: chrome.port,
-      output: ['html', 'json'],
-      logLevel: 'info',
-    };
+    console.log('\n🔍 Detailed Metrics:');
+    console.log('-------------------');
 
-    const results = await lighthouse(url, lighthouseFlags, lighthouseConfig);
+    // Additional important metrics
+    const additionalMetrics = [
+      'first-meaningful-paint',
+      'speed-index',
+      'max-potential-fid',
+    ];
 
-    // Save reports
-    const reportDir = path.join(process.cwd(), 'lighthouse-reports');
-    if (!fs.existsSync(reportDir)) {
-      fs.mkdirSync(reportDir, { recursive: true });
-    }
+    additionalMetrics.forEach(metric => {
+      const audit = audits[metric];
+      if (audit) {
+        const value = audit.numericValue;
+        const threshold = thresholds[metric];
+        const status = value <= threshold ? '✅' : '⚠️';
+        const unit = 'ms';
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const htmlPath = path.join(reportDir, `report-${timestamp}.html`);
-    const jsonPath = path.join(reportDir, `report-${timestamp}.json`);
-
-    fs.writeFileSync(htmlPath, results.report[0]);
-    fs.writeFileSync(jsonPath, results.report[1]);
-
-    console.log(`\n📊 Reports saved:`);
-    console.log(`   HTML: ${htmlPath}`);
-    console.log(`   JSON: ${jsonPath}\n`);
-
-    // Display scores
-    const categories = results.lhr.categories;
-    console.log('📈 Lighthouse Scores:\n');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-
-    let allPassed = true;
-    const scores = {};
-
-    for (const [key, category] of Object.entries(categories)) {
-      const score = Math.round(category.score * 100);
-      const target = TARGET_SCORES[key];
-      const passed = score >= target;
-      const emoji = passed ? '✅' : '❌';
-
-      scores[key] = score;
-      if (!passed) allPassed = false;
-
-      console.log(
-        `${emoji} ${category.title.padEnd(20)} ${score}/100 ${
-          target ? `(target: ${target})` : ''
-        }`
-      );
-    }
-
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
-
-    // Core Web Vitals
-    const audits = results.lhr.audits;
-    console.log('⚡ Core Web Vitals:\n');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-
-    const webVitals = {
-      'First Contentful Paint': audits['first-contentful-paint']?.displayValue,
-      'Largest Contentful Paint': audits['largest-contentful-paint']?.displayValue,
-      'Total Blocking Time': audits['total-blocking-time']?.displayValue,
-      'Cumulative Layout Shift': audits['cumulative-layout-shift']?.displayValue,
-      'Speed Index': audits['speed-index']?.displayValue,
-      'Time to Interactive': audits['interactive']?.displayValue,
-    };
-
-    for (const [metric, value] of Object.entries(webVitals)) {
-      if (value) {
-        console.log(`   ${metric.padEnd(30)} ${value}`);
+        console.log(`${status} ${audit.title}: ${Math.round(value)}${unit} (target: ≤${threshold}${unit})`);
       }
-    }
+    });
 
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+    console.log('\n💡 Optimization Opportunities:');
+    console.log('------------------------------');
 
-    // Performance opportunities
-    if (scores.performance < 95) {
-      console.log('💡 Performance Opportunities:\n');
+    // Check for optimization opportunities
+    const optimizationAudits = [
+      'render-blocking-resources',
+      'unused-css-rules',
+      'unused-javascript',
+      'efficient-animated-content',
+      'preload-lcp-image',
+      'uses-optimized-images',
+      'uses-webp-images',
+      'uses-text-compression',
+      'uses-responsive-images',
+      'modern-image-formats',
+      'offscreen-images',
+      'unminified-css',
+      'unminified-javascript',
+      'uses-long-cache-ttl',
+      'total-byte-weight',
+      'uses-rel-preconnect',
+      'uses-rel-preload',
+    ];
 
-      const opportunities = Object.values(audits)
-        .filter(audit => audit.details?.type === 'opportunity' && audit.score < 1)
-        .sort((a, b) => (b.details?.overallSavingsMs || 0) - (a.details?.overallSavingsMs || 0))
-        .slice(0, 5);
-
-      opportunities.forEach(audit => {
-        const savings = audit.details?.overallSavingsMs;
-        if (savings > 100) {
-          console.log(`   ⚠️  ${audit.title}`);
-          console.log(`       Potential savings: ${Math.round(savings)}ms\n`);
+    optimizationAudits.forEach(auditName => {
+      const audit = audits[auditName];
+      if (audit && audit.score < 0.9) {
+        const score = Math.round(audit.score * 100);
+        console.log(`⚠️  ${audit.title}: ${score}/100`);
+        if (audit.details && audit.details.overallSavingsMs) {
+          console.log(`   Potential savings: ${Math.round(audit.details.overallSavingsMs)}ms`);
         }
-      });
-    }
+      }
+    });
 
-    // Final result
-    if (allPassed) {
-      console.log('✅ All targets met! Great job! 🎉\n');
+    // Generate report
+    const reportData = {
+      url,
+      timestamp: new Date().toISOString(),
+      performance: {
+        score: performanceScore,
+        meetsTarget: performanceScore >= thresholds.performance,
+      },
+      coreWebVitals: coreWebVitals.reduce((acc, vital) => {
+        const audit = audits[vital];
+        if (audit) {
+          acc[vital] = {
+            value: audit.numericValue,
+            threshold: thresholds[vital],
+            passes: audit.numericValue <= thresholds[vital],
+            title: audit.title,
+          };
+        }
+        return acc;
+      }, {}),
+      allVitalsPass,
+      recommendations: optimizationAudits
+        .filter(auditName => audits[auditName] && audits[auditName].score < 0.9)
+        .map(auditName => ({
+          name: auditName,
+          title: audits[auditName].title,
+          score: Math.round(audits[auditName].score * 100),
+          savings: audits[auditName].details?.overallSavingsMs || 0,
+        })),
+    };
+
+    // Save report
+    const reportPath = path.join(process.cwd(), 'lighthouse-report.json');
+    fs.writeFileSync(reportPath, JSON.stringify(reportData, null, 2));
+    console.log(`\n📄 Report saved to: ${reportPath}`);
+
+    // Final summary
+    console.log('\n🎯 Summary:');
+    console.log('===========');
+    console.log(`Performance Score: ${performanceScore}/100 ${performanceScore >= 95 ? '✅' : '❌'}`);
+    console.log(`Core Web Vitals: ${allVitalsPass ? '✅ All pass' : '❌ Some fail'}`);
+    console.log(`Optimization Opportunities: ${reportData.recommendations.length}`);
+
+    if (performanceScore >= 95 && allVitalsPass) {
+      console.log('\n🎉 Excellent! All performance targets met!');
       process.exit(0);
     } else {
-      console.log('❌ Some targets not met. Review the reports for details.\n');
+      console.log('\n⚠️  Performance improvements needed.');
       process.exit(1);
     }
+
   } catch (error) {
-    console.error('\n❌ Lighthouse audit failed:', error.message);
+    console.error('❌ Lighthouse audit failed:', error);
     process.exit(1);
   } finally {
-    if (chrome) {
       await chrome.kill();
-    }
   }
 }
 
-// Check if lighthouse is installed
-try {
-  require.resolve('lighthouse');
-  require.resolve('chrome-launcher');
-} catch (e) {
-  console.error('\n❌ Lighthouse not installed!');
-  console.error('\n📦 Install with: npm install --save-dev lighthouse chrome-launcher\n');
-  process.exit(1);
-}
-
-// Run the audit
-runLighthouse().catch((error) => {
-  console.error('\n❌ Unexpected error:', error);
-  process.exit(1);
-});
+// Main execution
+const url = process.argv[2] || 'http://localhost:3000';
+runLighthouseAudit(url);

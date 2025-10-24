@@ -1,42 +1,27 @@
-/**
- * Optimized Image Component
- *
- * SEO and performance-optimized image component with Next.js Image
- * Includes lazy loading, responsive sizing, and proper alt text
- *
- * @module components/common/OptimizedImage
- */
-
 import Image from 'next/image';
-import type { ImageProps } from 'next/image';
-import React from 'react';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
-interface OptimizedImageProps extends Omit<ImageProps, 'alt'> {
-  alt: string; // Make alt required for SEO
+interface OptimizedImageProps {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
   priority?: boolean;
-  loading?: 'lazy' | 'eager';
+  className?: string;
   sizes?: string;
   quality?: number;
+  placeholder?: 'blur' | 'empty';
+  blurDataURL?: string;
+  fill?: boolean;
+  style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
 /**
  * OptimizedImage Component
- *
- * Wraps Next.js Image with SEO best practices:
- * - Required alt text
- * - Lazy loading by default
- * - Responsive sizing
- * - Quality optimization
- * - Mobile-first approach
- *
- * @example
- * <OptimizedImage
- *   src="/images/station.jpg"
- *   alt="Shell Petrol Station on Main Street"
- *   width={800}
- *   height={600}
- *   priority={false}
- * />
+ * Replaces all img tags with Next.js Image component for better performance
+ * Includes lazy loading, priority loading, and responsive optimization
  */
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   src,
@@ -44,121 +29,78 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   width,
   height,
   priority = false,
-  loading = 'lazy',
-  sizes,
-  quality = 85,
   className,
-  ...props
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  quality = 85,
+  placeholder = 'empty',
+  blurDataURL,
+  fill = false,
+  style,
+  onClick,
 }) => {
-  // Generate responsive sizes if not provided
-  const responsiveSizes = sizes || `
-    (max-width: 640px) 100vw,
-    (max-width: 768px) 90vw,
-    (max-width: 1024px) 80vw,
-    (max-width: 1280px) 70vw,
-    60vw
-  `.trim().replace(/\s+/g, ' ');
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-  // Validate alt text (SEO requirement)
-  if (!alt || alt.trim().length === 0) {
-    console.warn('OptimizedImage: Missing or empty alt text. This is required for SEO and accessibility.');
+  // Handle image load completion
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
+
+  // Handle image load error
+  const handleError = () => {
+    setIsLoading(false);
+    setHasError(true);
+  };
+
+  // Generate blur data URL if not provided
+  const defaultBlurDataURL = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=';
+
+  if (hasError) {
+    return (
+      <div
+        className={cn(
+          'flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400',
+          className
+        )}
+      >
+        <span className="text-sm">Image unavailable</span>
+      </div>
+    );
   }
 
   return (
-    <Image
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      priority={priority}
-      loading={loading}
-      sizes={responsiveSizes}
-      quality={quality}
-      className={className}
-      placeholder="blur"
-      blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiLz48L3N2Zz4="
-      {...props}
-    />
+    <div className={cn('relative overflow-hidden', className)}>
+      {isLoading && (
+        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-gray-300 dark:border-gray-600 border-t-primary-600 rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      <Image
+        src={src}
+        alt={alt}
+        width={fill ? undefined : width}
+        height={fill ? undefined : height}
+        fill={fill}
+        priority={priority}
+        sizes={sizes}
+        quality={quality}
+        placeholder={placeholder}
+        blurDataURL={blurDataURL || defaultBlurDataURL}
+        className={cn(
+          'transition-opacity duration-300',
+          isLoading ? 'opacity-0' : 'opacity-100',
+          onClick && 'cursor-pointer'
+        )}
+        onLoad={handleLoad}
+        onError={handleError}
+        onClick={onClick}
+        // Optimize for Core Web Vitals
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    </div>
   );
 };
-
-/**
- * Hero Image Component
- *
- * Optimized for above-the-fold hero images
- * Uses eager loading and high priority
- */
-export const HeroImage: React.FC<OptimizedImageProps> = (props) => (
-  <OptimizedImage
-    {...props}
-    priority={true}
-    loading="eager"
-    quality={90}
-    sizes="100vw"
-  />
-);
-
-/**
- * Thumbnail Image Component
- *
- * Optimized for small thumbnail images
- * Lower quality for faster loading
- */
-export const ThumbnailImage: React.FC<OptimizedImageProps> = (props) => (
-  <OptimizedImage
-    {...props}
-    priority={false}
-    loading="lazy"
-    quality={75}
-    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-  />
-);
-
-/**
- * Generate image alt text from filename
- * Fallback when alt text is not provided
- */
-export function generateAltFromFilename(filename: string): string {
-  return filename
-    .replace(/\.[^/.]+$/, '') // Remove extension
-    .replace(/[-_]/g, ' ') // Replace hyphens/underscores with spaces
-    .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize words
-}
-
-/**
- * Validate image for SEO
- */
-export function validateImageSEO(image: {
-  src: string;
-  alt: string;
-  width?: number;
-  height?: number;
-}): { isValid: boolean; warnings: string[] } {
-  const warnings: string[] = [];
-
-  // Check alt text
-  if (!image.alt || image.alt.trim().length === 0) {
-    warnings.push('Missing alt text (critical for SEO and accessibility)');
-  } else if (image.alt.length < 5) {
-    warnings.push('Alt text too short (< 5 characters)');
-  } else if (image.alt.length > 125) {
-    warnings.push('Alt text too long (> 125 characters)');
-  }
-
-  // Check dimensions
-  if (!image.width || !image.height) {
-    warnings.push('Missing width/height (causes layout shift, affects SEO)');
-  }
-
-  // Check file format
-  if (image.src.match(/\.(jpg|jpeg|png)$/i)) {
-    warnings.push('Consider using WebP or AVIF format for better performance');
-  }
-
-  return {
-    isValid: warnings.length === 0,
-    warnings,
-  };
-}
 
 export default OptimizedImage;

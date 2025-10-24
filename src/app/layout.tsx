@@ -10,6 +10,7 @@ import '../styles/brand-styles.css';
 import { SkipToContent } from '@/components/accessibility';
 import { CookieConsent } from '@/components/analytics/CookieConsent';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { PerformanceMonitor } from '@/components/common/PerformanceMonitor';
 
 import { Providers } from './providers';
 
@@ -110,6 +111,9 @@ export default function RootLayout({
           <CookieConsent />
           <Analytics />
           <SpeedInsights />
+
+          {/* Performance Monitoring */}
+          <PerformanceMonitor />
         </Providers>
       </body>
     </html>

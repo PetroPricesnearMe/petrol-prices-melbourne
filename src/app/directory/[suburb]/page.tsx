@@ -12,6 +12,8 @@ import metadataJson from '@/data/stations-metadata.json';
 import stationsData from '@/data/stations.json';
 import { cn, patterns } from '@/styles/system/css-in-js';
 import type { Station } from '@/types/station';
+import { StructuredData } from '@/components/StructuredData';
+import { generateDirectoryPageSchemas } from '@/lib/schema';
 
 interface Props {
   params: Promise<{ suburb: string }>;
@@ -92,10 +94,18 @@ export default async function SuburbDirectoryPage({ params }: Props) {
     return 'text-error-600 dark:text-error-400';
   };
 
+  // Generate structured data schemas
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const structuredDataSchemas = generateDirectoryPageSchemas(suburbName, stations.length, baseUrl);
+
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <header className="bg-gradient-primary text-white py-12">
+    <>
+      {/* Structured Data */}
+      <StructuredData data={structuredDataSchemas} />
+
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Header */}
+        <header className="bg-gradient-primary text-white py-12">
         <div className={patterns.container()}>
           <Link
             href="/directory"
@@ -230,5 +240,6 @@ export default async function SuburbDirectoryPage({ params }: Props) {
         </div>
       </section>
     </main>
+    </>
   );
 }

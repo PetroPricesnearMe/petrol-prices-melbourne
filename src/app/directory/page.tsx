@@ -7,11 +7,10 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { LoadingCard } from '@/components/ui/LoadingSpinner';
+import { StructuredData } from '@/components/StructuredData';
+import { InfiniteScrollDirectory } from '@/components/directory/InfiniteScrollDirectory';
 import metadataJson from '@/data/stations-metadata.json';
-import stationsData from '@/data/stations.json';
-
-import { StationDirectoryClient } from './StationDirectoryClient';
+import { generateWebSiteSchema } from '@/lib/schema';
 
 
 export const metadata: Metadata = {
@@ -43,15 +42,45 @@ export const metadata: Metadata = {
 export const revalidate = 86400;
 
 export default function DirectoryPage() {
+  // Generate structured data schemas
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const structuredDataSchemas = generateWebSiteSchema(baseUrl);
+
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <>
+      {/* Structured Data */}
+      <StructuredData data={structuredDataSchemas} />
+      
+      {/* Header */}
+      <header className="bg-gradient-primary text-white py-12 print-hidden">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4">
+              Melbourne Petrol Stations Directory
+            </h1>
+            <p className="text-lg md:text-xl text-white/90 text-center max-w-2xl mx-auto mb-6">
+              Browse {metadataJson.totalStations}+ stations across {metadataJson.suburbs.length}+ suburbs with live fuel prices
+            </p>
+            <div className="flex gap-4 flex-wrap justify-center text-sm">
+              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                <strong>{metadataJson.totalStations}</strong> Total Stations
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                <strong>{metadataJson.suburbs.length}+</strong> Suburbs
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+                Average Price: <strong>{metadataJson.priceRange.unleaded.average}¢/L</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Infinite Scroll Directory */}
       <Suspense fallback={<DirectoryLoading />}>
-        <StationDirectoryClient
-          initialStations={stationsData}
-          metadata={metadataJson}
-        />
+        <InfiniteScrollDirectory />
       </Suspense>
-    </main>
+    </>
   );
 }
 

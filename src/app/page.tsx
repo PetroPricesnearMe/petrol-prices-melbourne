@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Hero } from '@/components/organisms/Hero';
+import { StructuredData } from '@/components/StructuredData';
 import { cn, patterns, animations } from '@/styles/system/css-in-js';
+import { generateWebSiteSchema } from '@/lib/schema';
 
 export const metadata: Metadata = {
   title: 'Find Cheapest Petrol Prices Near You | Melbourne Fuel Price Comparison',
