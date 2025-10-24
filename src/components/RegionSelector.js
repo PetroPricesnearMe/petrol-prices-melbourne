@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MotionDiv } from './MotionComponents';
+
 import { MELBOURNE_REGIONS, getRegionCounts } from '../config/regions';
 import dataSourceManager from '../services/DataSourceManager';
+
+import { MotionDiv } from './MotionComponents';
 // CSS imported in pages/_app.js for Next.js compatibility
 
 const RegionSelector = () => {

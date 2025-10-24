@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AdvancedSearchBar, SearchCategory } from '@/components/molecules/AdvancedSearchBar';
+
+import type { SearchCategory } from '@/components/molecules/AdvancedSearchBar';
+import { AdvancedSearchBar } from '@/components/molecules/AdvancedSearchBar';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
 // Mock station data for testing

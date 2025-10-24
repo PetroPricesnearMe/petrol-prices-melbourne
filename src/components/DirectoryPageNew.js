@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { MotionDiv } from './MotionComponents';
-import dataSourceManager from '../services/DataSourceManager';
+
 import { MELBOURNE_REGIONS, getStationRegion } from '../config/regions';
-import AdvancedFilters from './AdvancedFilters';
-import StationMap from './StationMap';
-import StationCards from './StationCards';
-import Breadcrumbs from './Breadcrumbs';
-import SEO, { generateFuelPriceListingData } from './SEO';
+import dataSourceManager from '../services/DataSourceManager';
 import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../utils/analytics';
+
+import AdvancedFilters from './AdvancedFilters';
+import Breadcrumbs from './Breadcrumbs';
 import Pagination from './common/Pagination';
-import ViewToggle from './ViewToggle';
 import InteractiveStationMap from './InteractiveStationMap';
+import { MotionDiv } from './MotionComponents';
+import SEO, { generateFuelPriceListingData } from './SEO';
+import StationCards from './StationCards';
+import StationMap from './StationMap';
+import ViewToggle from './ViewToggle';
 // CSS imported in pages/_app.js
 
 /**

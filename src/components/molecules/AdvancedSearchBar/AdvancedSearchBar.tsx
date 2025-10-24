@@ -13,8 +13,9 @@
 
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Fuse from 'fuse.js';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+
 import { FocusTrap } from '@/components/accessibility/FocusTrap';
 import './AdvancedSearchBar.css';
 
@@ -270,7 +271,7 @@ export function AdvancedSearchBar<T = any>({
   const highlightMatch = (text: string, matches: any[] = []) => {
     if (!matches.length) return text;
 
-    let result = text;
+    const result = text;
     const indices: Array<[number, number]> = [];
 
     matches.forEach((match) => {

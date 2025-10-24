@@ -1,5 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { useResponsive } from '../hooks/useResponsive';
 
 /**
@@ -82,7 +83,7 @@ const ResponsiveImage = ({
         className={className}
         loading={loading}
         decoding={decoding}
-        fetchpriority={fetchpriority}
+        fetchPriority={fetchpriority}
         width={width}
         height={height}
         onLoad={onLoad}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
 import googlePlacesService from '../services/GooglePlacesService';
+
 import { MotionDiv } from './MotionComponents';
 // CSS imported in pages/_app.js
 

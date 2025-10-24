@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+
 import { useFuelPriceUpdates } from '../hooks/useMCPUpdates';
 import './RealTimePriceMonitor.css';
 

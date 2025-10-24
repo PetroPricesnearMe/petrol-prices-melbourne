@@ -8,6 +8,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+
 import { getTheme, setTheme, getActiveTheme } from '../utils/darkMode';
 
 const ThemeToggle = ({ variant = 'button', className = '' }) => {

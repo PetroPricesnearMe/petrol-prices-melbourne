@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+
 import dataSourceManager from '../services/DataSourceManager';
 import { trackSearch, trackFilter } from '../utils/analytics';
 

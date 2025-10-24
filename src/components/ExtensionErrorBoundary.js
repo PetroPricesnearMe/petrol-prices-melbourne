@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react';
+
 import extensionMessageHandler from '../utils/extensionMessageHandler';
 
 class ExtensionErrorBoundary extends Component {

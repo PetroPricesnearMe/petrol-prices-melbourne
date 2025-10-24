@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 // CSS imported in pages/_app.js
 

@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+
 import { useExtensionMessage, useBfcacheHandler } from '../hooks/useExtensionMessage';
 
 const ExtensionStatus = () => {

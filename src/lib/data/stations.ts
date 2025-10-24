@@ -2,10 +2,10 @@
  * Station Data Access Layer
  * Provides functions to fetch station data with caching and error handling
  */
+import stationsData from '@/data/stations.json';
 import type { Station } from '@/types/station';
 
 // Import station data
-import stationsData from '@/data/stations.json';
 
 /**
  * Get all stations

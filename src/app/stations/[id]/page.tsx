@@ -3,9 +3,9 @@
  * Dynamic route: /stations/[id]
  */
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { HeroSection } from '@/components/molecules/HeroSection';

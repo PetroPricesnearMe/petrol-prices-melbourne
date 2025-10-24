@@ -6,9 +6,9 @@
 
 'use client';
 
+import { usePathname, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
 
 interface GoogleAnalyticsProps {
   measurementId?: string;

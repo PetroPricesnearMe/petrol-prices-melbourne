@@ -9,9 +9,10 @@
  * - Recent searches
  */
 
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/user event';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { AdvancedSearchBar } from '../AdvancedSearchBar';
 
 // Mock data

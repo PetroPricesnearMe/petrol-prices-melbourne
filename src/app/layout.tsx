@@ -1,15 +1,15 @@
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import '../styles/globals.css';
 import '../styles/accessibility/focus-visible.css';
 import '../styles/brand-styles.css';
 import { SkipToContent } from '@/components/accessibility';
-import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { CookieConsent } from '@/components/analytics/CookieConsent';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 
 import { Providers } from './providers';
 

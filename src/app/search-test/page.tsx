@@ -5,7 +5,8 @@
  * Tests all features: autocomplete, fuzzy search, categories, keyboard nav
  */
 
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+
 import { SearchTestClient } from './SearchTestClient';
 
 export const metadata: Metadata = {

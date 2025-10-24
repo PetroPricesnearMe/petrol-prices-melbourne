@@ -1,10 +1,13 @@
+import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Image from 'next/image';
+
+import { trackPageView } from '../utils/analytics';
+
 import { MotionDiv, MotionH1, MotionP, MotionSection, containerVariants, itemVariants } from './MotionComponents';
 import RegionSelector from './RegionSelector';
 import SEO from './SEO';
-import { trackPageView } from '../utils/analytics';
+
 
 /**
  * HomePage Component - Fully Responsive with Tailwind CSS
@@ -197,7 +200,7 @@ const HomePage = () => {
                       className="w-full h-auto opacity-0 transition-opacity duration-300"
                       loading="eager"
                       decoding="async"
-                      fetchpriority="high"
+                      fetchPriority="high"
                       onLoad={(e) => {
                         e.target.style.opacity = '1';
                       }}

@@ -1,12 +1,13 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import ErrorBoundary from './components/ErrorBoundary';
 import ExtensionErrorBoundary from './components/ExtensionErrorBoundary';
+import HomePage from './components/HomePage';
 import LoadingSpinner from './components/LoadingSpinner';
 import Navbar from './components/Navbar';
 import NetworkStatus from './components/NetworkStatus';
-import HomePage from './components/HomePage';
 import { ModernFooter } from './components/organisms/Footer/ModernFooter';
 import { footerConfig } from './config/footerConfig';
 

@@ -44,9 +44,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const avgPrice = stations
-    .filter(s => s.fuelPrices.unleaded)
-    .reduce((sum, s) => sum + (s.fuelPrices.unleaded || 0), 0) / stations.filter(s => s.fuelPrices.unleaded).length;
+  const stationsWithUnleaded = stations.filter(s => s.fuelPrices.unleaded);
+  const avgPrice = stationsWithUnleaded.length > 0
+    ? stationsWithUnleaded.reduce((sum, s) => sum + (s.fuelPrices.unleaded || 0), 0) / stationsWithUnleaded.length
+    : 0;
 
   return {
     title: `${suburbName} Petrol Stations - ${stations.length} Stations | Fuel Prices`,
@@ -66,22 +67,23 @@ export default async function SuburbDirectoryPage({ params }: Props) {
   // Safe data access with null checks to prevent prerender crashes
   const stations = (stationsData as Station[] || []).filter(
     (s) => s?.suburb?.toLowerCase().replace(/\s+/g, '-') === suburb
-  );
+  ).filter(Boolean); // Remove any null/undefined entries
 
   if (stations.length === 0) {
     notFound();
   }
 
-  // Sort by unleaded price (lowest first)
+  // Sort by unleaded price (lowest first) with safety checks
   const sortedStations = [...stations].sort((a, b) => {
-    const priceA = a.fuelPrices.unleaded || Infinity;
-    const priceB = b.fuelPrices.unleaded || Infinity;
+    const priceA = a?.fuelPrices?.unleaded || Infinity;
+    const priceB = b?.fuelPrices?.unleaded || Infinity;
     return priceA - priceB;
   });
 
-  const avgPrice = stations
-    .filter(s => s.fuelPrices.unleaded)
-    .reduce((sum, s) => sum + (s.fuelPrices.unleaded || 0), 0) / stations.filter(s => s.fuelPrices.unleaded).length;
+  const stationsWithUnleaded = stations.filter(s => s?.fuelPrices?.unleaded);
+  const avgPrice = stationsWithUnleaded.length > 0
+    ? stationsWithUnleaded.reduce((sum, s) => sum + (s?.fuelPrices?.unleaded || 0), 0) / stationsWithUnleaded.length
+    : 0;
 
   const getPriceColor = (price: number | null): string => {
     if (price === null) return 'text-gray-400';
@@ -115,7 +117,7 @@ export default async function SuburbDirectoryPage({ params }: Props) {
               Average Price: <strong>{avgPrice.toFixed(1)}¢/L</strong>
             </div>
             <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-              Lowest: <strong>{sortedStations[0].fuelPrices.unleaded?.toFixed(1) || 'N/A'}¢/L</strong>
+              Lowest: <strong>{sortedStations.length > 0 ? (sortedStations[0].fuelPrices.unleaded?.toFixed(1) || 'N/A') : 'N/A'}¢/L</strong>
             </div>
           </div>
         </div>
@@ -141,7 +143,11 @@ export default async function SuburbDirectoryPage({ params }: Props) {
       <section className="py-12">
         <div className={patterns.container()}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sortedStations.map((station, index) => (
+            {sortedStations.map((station, index) => {
+              // Safety check for station data
+              if (!station || !station.id) return null;
+
+              return (
               <article
                 key={station.id}
                 className="card card-hover"
@@ -152,20 +158,20 @@ export default async function SuburbDirectoryPage({ params }: Props) {
                 <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-start justify-between mb-3">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-white" itemProp="name">
-                      {station.name}
+                      {station.name || 'Unknown Station'}
                     </h2>
                     {index === 0 && (
                       <span className="badge badge-success text-xs">Cheapest</span>
                     )}
                   </div>
-                  <span className="badge badge-primary">{station.brand}</span>
+                  <span className="badge badge-primary">{station.brand || 'Unknown Brand'}</span>
                 </div>
 
                 {/* Content */}
                 <div className="p-6 space-y-4">
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <p>📍 {station.address}</p>
-                    <p className="mt-1">{station.suburb} {station.postcode}</p>
+                    <p>📍 {station.address || 'Address not available'}</p>
+                    <p className="mt-1">{station.suburb || 'Suburb not available'} {station.postcode || 'Postcode not available'}</p>
                   </div>
 
                   {/* Fuel Prices */}
@@ -174,8 +180,8 @@ export default async function SuburbDirectoryPage({ params }: Props) {
                       Current Prices
                     </h3>
                     <div className="space-y-2">
-                      {Object.entries(station.fuelPrices).map(([type, price]) => {
-                        if (price === null) return null;
+                      {station.fuelPrices && Object.entries(station.fuelPrices).map(([type, price]) => {
+                        if (price === null || price === undefined) return null;
                         return (
                           <div key={type} className="flex justify-between items-center">
                             <span className="text-gray-600 dark:text-gray-400 capitalize text-sm">
@@ -194,7 +200,7 @@ export default async function SuburbDirectoryPage({ params }: Props) {
                 {/* Footer */}
                 <div className="p-6 border-t border-gray-200 dark:border-gray-700">
                   <a
-                    href={`https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`}
+                    href={`https://www.google.com/maps/search/${encodeURIComponent((station.address || '') + ' ' + (station.suburb || ''))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-primary w-full btn-sm"
@@ -203,7 +209,8 @@ export default async function SuburbDirectoryPage({ params }: Props) {
                   </a>
                 </div>
               </article>
-            ))}
+              );
+            })}
           </div>
 
           {/* SEO Content */}
