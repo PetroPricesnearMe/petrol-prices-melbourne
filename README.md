@@ -48,22 +48,26 @@
 ### Quick Start
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/petrol-price-near-me.git
    cd petrol-price-near-me
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    ```
 
    Edit `.env` with your configuration:
+
    ```env
    NEXT_PUBLIC_APP_URL=http://localhost:3000
    BASEROW_API_TOKEN=your_baserow_token
@@ -72,12 +76,14 @@
    ```
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    ```
 
 5. **Open your browser**
-   ```
+
+   ```text
    http://localhost:3000
    ```
 
@@ -98,7 +104,7 @@
 
 ## 📁 Project Structure
 
-```
+```text
 ├── src/
 │   ├── app/              # Next.js App Router pages
 │   ├── components/       # React components (Atomic Design)
@@ -122,6 +128,7 @@ For detailed structure documentation, see [PROJECT_STRUCTURE.md](PROJECT_STRUCTU
 This project follows enterprise-level architecture patterns:
 
 ### Atomic Design Pattern
+
 - **Atoms**: Button, Input, Card, Badge
 - **Molecules**: SearchBar, StationCard
 - **Organisms**: Hero, SearchSection, FeaturesSection

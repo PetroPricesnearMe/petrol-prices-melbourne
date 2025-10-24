@@ -166,7 +166,7 @@ export function SortDropdown({
           !disabled && 'hover:border-primary-500 dark:hover:border-primary-400'
         )}
         aria-haspopup="listbox"
-        aria-expanded={isOpen ? 'true' : 'false'}
+        aria-expanded={isOpen}
         aria-label="Sort options"
       >
         <div className="flex items-center gap-2">

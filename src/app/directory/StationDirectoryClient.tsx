@@ -474,7 +474,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
       <section className="py-12">
         <div className={patterns.container()}>
           {/* Quick Sort Bar */}
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-5 lg:mb-6">
             <QuickSortBar
               sortValue={filters.sortBy}
               onSortChange={(value) => handleFilterChange('sortBy', value)}
@@ -499,7 +499,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className={patterns.grid(4, 'md')}>
                 {paginatedStations.map((station) => {
                   const brandInfo = getBrandInfo(station.brand);
                   const brandClass = getBrandClass(station.brand);
@@ -507,14 +507,14 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                   return (
                   <article
                     key={station.id}
-                    className="card card-hover print-avoid-break overflow-hidden"
+                    className="card card-hover print-avoid-break overflow-hidden h-full flex flex-col"
                     itemScope
                     itemType="https://schema.org/GasStation"
                   >
                     {/* Brand Header with Logo */}
                     <div
                       className={cn(
-                        "relative h-24 flex items-center justify-center",
+                        "relative h-20 sm:h-24 flex items-center justify-center flex-shrink-0",
                         "bg-gradient-to-br from-gray-50 to-gray-100",
                         "dark:from-gray-800 dark:to-gray-900",
                         brandClass
@@ -523,7 +523,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                         background: `linear-gradient(135deg, ${brandInfo.color}15 0%, ${brandInfo.fallback}05 100%)`
                       }}
                     >
-                      <div className="relative w-32 h-16">
+                      <div className="relative w-24 sm:w-32 h-12 sm:h-16">
                         <Image
                           src={brandInfo.logo}
                           alt={`${brandInfo.name} logo`}
@@ -536,25 +536,25 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                         />
                       </div>
                       {station.verified && (
-                        <div className="absolute top-2 right-2 bg-white dark:bg-gray-800 rounded-full p-1 shadow-sm">
-                          <span className="text-success-600 text-lg" title="Verified">✓</span>
+                        <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 bg-white dark:bg-gray-800 rounded-full p-0.5 sm:p-1 shadow-sm">
+                          <span className="text-success-600 text-sm sm:text-lg" title="Verified">✓</span>
                         </div>
                       )}
                     </div>
 
                     {/* Station Info */}
-                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                      <div className="flex items-start justify-between gap-3 mb-2">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white" itemProp="name">
+                    <div className="p-4 sm:p-5 lg:p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-tight" itemProp="name">
                           {station.name}
                         </h3>
                       </div>
-                      <span className={cn("badge", brandClass)}>{station.brand}</span>
+                      <span className={cn("badge text-xs", brandClass)}>{station.brand}</span>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 space-y-4">
-                      <div className="text-sm text-gray-600 dark:text-gray-400" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                    <div className="p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4 flex-grow">
+                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
                         <p itemProp="streetAddress">📍 {station.address}</p>
                         <p className="mt-1">
                           <span itemProp="addressLocality">{station.suburb}</span> <span itemProp="postalCode">{station.postcode}</span>
@@ -563,10 +563,10 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                       {/* Fuel Prices */}
                       <div>
-                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        <h4 className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                           Current Prices
                         </h4>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5 sm:space-y-2">
                           {Object.entries(station.fuelPrices).map(([type, price]) => {
                             if (price === null) return null;
                             const isSelected = type === filters.fuelType;
@@ -578,10 +578,10 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                                   isSelected && 'font-semibold'
                                 )}
                               >
-                                <span className="text-gray-600 dark:text-gray-400 capitalize text-sm">
+                                <span className="text-gray-600 dark:text-gray-400 capitalize text-xs sm:text-sm">
                                   {type === 'premium95' ? 'Premium 95' : type === 'premium98' ? 'Premium 98' : type}
                                 </span>
-                                <span className={cn('text-lg font-bold', getPriceColor(price))}>
+                                <span className={cn('text-sm sm:text-lg font-bold', getPriceColor(price))}>
                                   {price.toFixed(1)}¢
                                 </span>
                               </div>
@@ -596,12 +596,12 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                     </div>
 
                     {/* Footer */}
-                    <div className="p-6 border-t border-gray-200 dark:border-gray-700 print-hidden">
+                    <div className="p-4 sm:p-5 lg:p-6 border-t border-gray-200 dark:border-gray-700 print-hidden flex-shrink-0">
                       <a
                         href={`https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn btn-primary w-full btn-sm"
+                        className="btn btn-primary w-full btn-sm text-xs sm:text-sm"
                       >
                         🧭 Get Directions
                       </a>
@@ -613,17 +613,17 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-12 flex items-center justify-center gap-2 print-hidden">
+                <div className="mt-8 sm:mt-10 lg:mt-12 flex items-center justify-center gap-2 print-hidden">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="btn btn-outline"
+                    className="btn btn-outline btn-sm"
                     aria-label="Previous page"
                   >
                     ← Previous
                   </button>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-1 sm:gap-2">
                     {[...Array(Math.min(totalPages, 7))].map((_, i) => {
                       let page;
                       if (totalPages <= 7) {
@@ -641,7 +641,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                           key={page}
                           onClick={() => setCurrentPage(page)}
                           className={cn(
-                            'btn',
+                            'btn btn-sm',
                             currentPage === page ? 'btn-primary' : 'btn-ghost'
                           )}
                           aria-label={`Page ${page}`}
@@ -656,7 +656,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="btn btn-outline"
+                    className="btn btn-outline btn-sm"
                     aria-label="Next page"
                   >
                     Next →

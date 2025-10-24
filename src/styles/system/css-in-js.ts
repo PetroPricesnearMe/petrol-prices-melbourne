@@ -247,13 +247,13 @@ export const patterns = {
   },
 
   /**
-   * Grid pattern
+   * Grid pattern with responsive spacing
    */
   grid: (cols: 1 | 2 | 3 | 4 = 3, gap: 'sm' | 'md' | 'lg' = 'md') => {
     const gaps = {
-      sm: 'gap-4',
-      md: 'gap-6',
-      lg: 'gap-8',
+      sm: 'gap-3 sm:gap-4',
+      md: 'gap-4 sm:gap-5 lg:gap-6',
+      lg: 'gap-5 sm:gap-6 lg:gap-8',
     };
 
     const columns = {
