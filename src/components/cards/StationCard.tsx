@@ -110,10 +110,8 @@ const BrandHeader = memo<BrandHeaderProps>(({ brand, brandLogo, verified, classN
         brandClass,
         className
       )}
-      style={{
-        '--brand-color': brandInfo.color,
-        '--brand-fallback': brandInfo.fallback,
-      } as React.CSSProperties}
+      data-brand-color={brandInfo.color}
+      data-brand-fallback={brandInfo.fallback}
     >
       <div className="relative w-24 sm:w-32 h-12 sm:h-16">
         <Image

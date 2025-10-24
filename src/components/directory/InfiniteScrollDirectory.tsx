@@ -1,9 +1,9 @@
 /**
  * Infinite Scroll Directory Component
- * 
+ *
  * Main directory component with infinite scrolling, smooth transitions,
  * and optimized performance
- * 
+ *
  * @module components/directory/InfiniteScrollDirectory
  */
 
@@ -13,6 +13,8 @@ import { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { LoadingSpinner, SkeletonGrid } from '@/components/transitions/SmoothTransitions';
 import { StationGrid } from '@/components/cards/StationCard';
+import { StationDetailsModal } from '@/components/modals/Modal';
+import { ViewToggle, DirectoryView, StationCardGrid, StationCardList } from '@/components/toggle/ViewToggle';
 import { useAdvancedInfiniteStations } from '@/hooks/useInfiniteStations';
 import { cn } from '@/lib/utils/cn';
 import type { Station } from '@/types/station';
@@ -38,6 +40,8 @@ interface FilterBarProps {
   filters: any;
   onFiltersChange: (filters: any) => void;
   totalCount: number;
+  currentView: 'grid' | 'list';
+  onViewChange: (view: 'grid' | 'list') => void;
   className?: string;
 }
 
@@ -55,7 +59,7 @@ interface LoadingStatesProps {
 /**
  * Filter bar component for the directory
  */
-function FilterBar({ filters, onFiltersChange, totalCount, className }: FilterBarProps) {
+function FilterBar({ filters, onFiltersChange, totalCount, currentView, onViewChange, className }: FilterBarProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleFilterChange = useCallback((key: string, value: any) => {
@@ -102,19 +106,29 @@ function FilterBar({ filters, onFiltersChange, totalCount, className }: FilterBa
               </span>
             )}
           </div>
-          <button
-            onClick={() => setShowAdvanced(!showAdvanced)}
-            className={cn(
-              'btn',
-              showAdvanced ? 'btn-primary' : 'btn-outline',
-              'whitespace-nowrap'
-            )}
-          >
-            ⚙️ Filters
-            {activeFilterCount > 0 && (
-              <span className="badge badge-secondary ml-2">{activeFilterCount}</span>
-            )}
-          </button>
+
+          <div className="flex items-center space-x-4">
+            {/* View Toggle */}
+            <ViewToggle
+              currentView={currentView}
+              onViewChange={onViewChange}
+              size="sm"
+            />
+
+            <button
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className={cn(
+                'btn',
+                showAdvanced ? 'btn-primary' : 'btn-outline',
+                'whitespace-nowrap'
+              )}
+            >
+              ⚙️ Filters
+              {activeFilterCount > 0 && (
+                <span className="badge badge-secondary ml-2">{activeFilterCount}</span>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Advanced Filters */}
@@ -259,7 +273,7 @@ function LoadingStates({ isInitialLoading, isLoadingMore, loadingProgress, class
           <p className="text-gray-600 dark:text-gray-400">Loading stations...</p>
         </div>
       )}
-      
+
       {isLoadingMore && (
         <div className="text-center py-4">
           <LoadingSpinner size="md" className="mx-auto mb-2" />
@@ -292,6 +306,10 @@ export function InfiniteScrollDirectory({
     ...initialFilters,
   });
 
+  const [currentView, setCurrentView] = useState<'grid' | 'list'>('grid');
+  const [selectedStation, setSelectedStation] = useState<Station | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     data: stations,
     isLoading,
@@ -318,10 +336,18 @@ export function InfiniteScrollDirectory({
   }, []);
 
   const handleStationClick = useCallback((station: Station) => {
+    setSelectedStation(station);
+    setIsModalOpen(true);
+
     if (onStationClick) {
       onStationClick(station);
     }
   }, [onStationClick]);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedStation(null);
+  }, []);
 
   // Error state
   if (isError) {
@@ -348,6 +374,8 @@ export function InfiniteScrollDirectory({
         filters={filters}
         onFiltersChange={handleFiltersChange}
         totalCount={totalCount}
+        currentView={currentView}
+        onViewChange={setCurrentView}
       />
 
       {/* Content */}
@@ -359,13 +387,27 @@ export function InfiniteScrollDirectory({
           loadingProgress={0}
         />
 
-        {/* Stations Grid */}
+        {/* Stations Grid/List */}
         {!isLoading && stations.length > 0 && (
           <Suspense fallback={<SkeletonGrid count={12} />}>
-            <StationGrid
-              stations={stations}
-              showTransitions={true}
-              onCardClick={handleStationClick}
+            <DirectoryView
+              view={currentView}
+              items={stations}
+              renderItem={(station, index) =>
+                currentView === 'grid' ? (
+                  <StationCardGrid
+                    key={station.id}
+                    station={station}
+                    onCardClick={handleStationClick}
+                  />
+                ) : (
+                  <StationCardList
+                    key={station.id}
+                    station={station}
+                    onCardClick={handleStationClick}
+                  />
+                )
+              }
             />
           </Suspense>
         )}
@@ -380,7 +422,7 @@ export function InfiniteScrollDirectory({
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Try adjusting your filters or search criteria
             </p>
-            <button 
+            <button
               onClick={() => setFilters({
                 search: '',
                 fuelType: 'unleaded',
@@ -422,6 +464,13 @@ export function InfiniteScrollDirectory({
           </div>
         )}
       </div>
+
+      {/* Station Details Modal */}
+      <StationDetailsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        station={selectedStation}
+      />
     </div>
   );
 }

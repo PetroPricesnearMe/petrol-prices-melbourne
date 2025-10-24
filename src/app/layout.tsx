@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import '../styles/globals.css';
 import '../styles/accessibility/focus-visible.css';
 import '../styles/brand-styles.css';
+import '../styles/brand-colors.css';
 import { SkipToContent } from '@/components/accessibility';
 import { CookieConsent } from '@/components/analytics/CookieConsent';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
