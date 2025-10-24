@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/api/stations/[id]/route": "app/api/stations/[id]/route.js",
+  "/api/stations/nearby/route": "app/api/stations/nearby/route.js",
+  "/api/stations/route": "app/api/stations/route.js",
+  "/page": "app/page.js"
+}
