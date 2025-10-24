@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import ErrorBoundary from './components/ErrorBoundary';
+import ExtensionErrorBoundary from './components/ExtensionErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 import Navbar from './components/Navbar';
 import NetworkStatus from './components/NetworkStatus';
@@ -31,49 +32,51 @@ function App() {
   return (
     <HelmetProvider>
       <ErrorBoundary>
-        <Router
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
-          <div className="App">
-            {/* Skip to main content for keyboard navigation */}
-            <a href="#main-content" className="skip-link">
-              Skip to main content
-            </a>
-            
-            <NetworkStatus />
-            
-            {/* Header with navigation */}
-            <header role="banner">
-              <Navbar />
-            </header>
-            
-            {/* Main content area */}
-            <main id="main-content" role="main" tabIndex={-1}>
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/directory" element={<DirectoryPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
-                  <Route path="/station-amenities" element={<StationAmenitiesPage />} />
-                  <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
-                  <Route path="/blog" element={<BlogPage />} />
-                  <Route path="/faq" element={<FAQPage />} />
-                  <Route path="/chat" element={<AIChat />} />
-                  <Route path="/google-places" element={<GooglePlacesSearch />} />
-                </Routes>
-              </Suspense>
-            </main>
-            
-            {/* Footer - can be added later when needed */}
-          </div>
-        </Router>
+        <ExtensionErrorBoundary>
+          <Router
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <div className="App">
+              {/* Skip to main content for keyboard navigation */}
+              <a href="#main-content" className="skip-link">
+                Skip to main content
+              </a>
+
+              <NetworkStatus />
+
+              {/* Header with navigation */}
+              <header role="banner">
+                <Navbar />
+              </header>
+
+              {/* Main content area */}
+              <main id="main-content" role="main" tabIndex={-1}>
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/directory" element={<DirectoryPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
+                    <Route path="/station-amenities" element={<StationAmenitiesPage />} />
+                    <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
+                    <Route path="/blog" element={<BlogPage />} />
+                    <Route path="/faq" element={<FAQPage />} />
+                    <Route path="/chat" element={<AIChat />} />
+                    <Route path="/google-places" element={<GooglePlacesSearch />} />
+                  </Routes>
+                </Suspense>
+              </main>
+
+              {/* Footer - can be added later when needed */}
+            </div>
+          </Router>
+        </ExtensionErrorBoundary>
       </ErrorBoundary>
     </HelmetProvider>
   );
 }
 
-export default App; 
+export default App;
