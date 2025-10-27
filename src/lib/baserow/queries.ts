@@ -1,6 +1,6 @@
 /**
  * Baserow Query Functions
- * 
+ *
  * Optimized server-side data fetching with:
  * - ISR support
  * - Error boundaries
@@ -76,9 +76,9 @@ export async function fetchNearbyStations(
   // Note: Baserow doesn't have built-in geo queries
   // We fetch all stations and filter client-side
   // For production, consider using PostGIS extension in Baserow
-  
+
   const { stations } = await fetchPetrolStations();
-  
+
   return stations.filter((station) => {
     const distance = calculateDistance(
       latitude,
@@ -153,9 +153,9 @@ export async function fetchPricesForStation(
  */
 export async function searchStations(query: string): Promise<PetrolStation[]> {
   const { stations } = await fetchPetrolStations();
-  
+
   const lowerQuery = query.toLowerCase();
-  
+
   return stations.filter((station) => {
     return (
       station.Station_Name?.toLowerCase().includes(lowerQuery) ||
@@ -177,17 +177,17 @@ function calculateDistance(
   const R = 6371; // Radius of the Earth in km
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
-  
+
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(toRad(lat1)) *
       Math.cos(toRad(lat2)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
-  
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = R * c;
-  
+
   return distance;
 }
 
@@ -205,7 +205,7 @@ export const REVALIDATE_TIME = 3600; // 1 hour
  */
 export async function generateStaticParams() {
   const { stations } = await fetchPetrolStations();
-  
+
   return stations.map((station) => ({
     id: station.id.toString(),
   }));

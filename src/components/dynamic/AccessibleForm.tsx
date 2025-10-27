@@ -1,6 +1,6 @@
 /**
  * AccessibleForm - Production-Ready Accessible Form Component
- * 
+ *
  * Features:
  * - WCAG 2.1 AA compliant
  * - Keyboard navigation
@@ -84,7 +84,7 @@ export function AccessibleForm({
   // Handle input change
   const handleChange = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => {
@@ -119,11 +119,11 @@ export function AccessibleForm({
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      
+
       // Focus first error field
       const firstErrorField = document.getElementById(`field-${Object.keys(newErrors)[0]}`);
       firstErrorRef.current = firstErrorField;
-      
+
       return;
     }
 
@@ -135,7 +135,7 @@ export function AccessibleForm({
       setSubmitMessage('Form submitted successfully!');
       formRef.current?.reset();
       setFormData({});
-      
+
       // Focus submit button after success
       setTimeout(() => {
         const submitButton = formRef.current?.querySelector('button[type="submit"]');

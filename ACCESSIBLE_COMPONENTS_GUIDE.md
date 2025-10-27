@@ -263,6 +263,6 @@ For accessibility issues or questions:
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: January 2025  
+**Version**: 1.0.0
+**Last Updated**: January 2025
 **Status**: Production Ready ✅

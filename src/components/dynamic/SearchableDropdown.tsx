@@ -1,6 +1,6 @@
 /**
  * SearchableDropdown - Fully Accessible Searchable Dropdown
- * 
+ *
  * Features:
  * - WCAG 2.1 AA compliant
  * - Keyboard navigation (Arrow keys, Enter, Escape)
@@ -48,7 +48,7 @@ export function SearchableDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [focusedIndex, setFocusedIndex] = useState(-1);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -255,7 +255,7 @@ export function SearchableDropdown({
                       {value === option.value && (
                         <Check className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
                       )}
-                      
+
                       {/* Option Content */}
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">

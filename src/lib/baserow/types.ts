@@ -1,6 +1,6 @@
 /**
  * Baserow Type Definitions
- * 
+ *
  * Type-safe interfaces for Baserow data structures
  */
 
@@ -47,10 +47,10 @@ export interface FetchOptions {
 
 export interface BaserowFilter {
   field: string;
-  type: 
-    | 'equal' 
-    | 'not_equal' 
-    | 'contains' 
+  type:
+    | 'equal'
+    | 'not_equal'
+    | 'contains'
     | 'contains_not'
     | 'filename_contains'
     | 'has_file_type'

@@ -1,6 +1,6 @@
 /**
  * Performance-Optimized Root Layout
- * 
+ *
  * Features:
  * - Optimized script loading strategy
  * - Web Vitals tracking
@@ -15,7 +15,7 @@ import Script from 'next/script';
 
 import '../globals.css';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
@@ -97,10 +97,10 @@ export default function RootLayout({
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* DNS Prefetch for performance */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        
+
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
@@ -109,10 +109,10 @@ export default function RootLayout({
       </head>
       <body className={`antialiased ${inter.className}`}>
         {/* Critical CSS loaded inline above the fold */}
-        
+
         {/* Main content */}
         {children}
-        
+
         {/* Performance Monitoring - After Interactive */}
         {process.env.NODE_ENV === 'production' && (
           <Script
@@ -122,7 +122,7 @@ export default function RootLayout({
             {`
               (function() {
                 if (typeof window === 'undefined') return;
-                
+
                 // Track Web Vitals
                 if (typeof window !== 'undefined' && window.addEventListener) {
                   window.addEventListener('load', function() {
@@ -138,7 +138,7 @@ export default function RootLayout({
                     });
                   });
                 }
-                
+
                 function trackMetric(metric) {
                   // Send to analytics
                   if (typeof gtag !== 'undefined') {
@@ -148,7 +148,7 @@ export default function RootLayout({
                       non_interaction: true,
                     });
                   }
-                  
+
                   // Store in localStorage for dashboard
                   try {
                     var metrics = JSON.parse(localStorage.getItem('web-vitals') || '{}');

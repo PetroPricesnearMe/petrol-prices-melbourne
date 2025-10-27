@@ -1,6 +1,6 @@
 /**
  * EnhancedNavbar Component
- * 
+ *
  * A world-class navigation bar with:
  * - Sticky positioning with backdrop blur
  * - Smooth scroll animations

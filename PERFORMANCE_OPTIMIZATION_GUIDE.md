@@ -115,7 +115,7 @@ warnLargeImport('chart.js', 150); // 150KB
 ```tsx
 import { Inter } from 'next/font/google';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap', // Prevents FOIT
   variable: '--font-inter',
@@ -187,7 +187,7 @@ useEffect(() => {
 
 #### Images Below the Fold
 ```tsx
-<Image 
+<Image
   src="/image.jpg"
   loading="lazy" // Default, but explicit
 />

@@ -1,6 +1,6 @@
 /**
  * Performance Utilities
- * 
+ *
  * Comprehensive performance optimization utilities including:
  * - Web Vitals tracking
  * - Resource timing analysis
@@ -96,7 +96,7 @@ export function analyzeResourceTiming(): ResourceTiming[] {
   }
 
   const resources = window.performance.getEntriesByType('resource') as PerformanceResourceTiming[];
-  
+
   return resources
     .map((resource) => ({
       name: resource.name,
@@ -149,7 +149,7 @@ export function getResponsiveSizes(breakpoints: {
   large?: number;
 } = {}): string {
   const { mobile = 640, tablet = 768, desktop = 1024, large = 1280 } = breakpoints;
-  
+
   return `(max-width: ${mobile}px) ${mobile}px, (max-width: ${tablet}px) ${tablet}px, (max-width: ${desktop}px) ${desktop}px, ${large}px`;
 }
 
@@ -195,18 +195,18 @@ export function shouldPreload(preloadProbability: number = 0.5): boolean {
   // Preload based on connection speed
   if (typeof navigator !== 'undefined' && (navigator as any).connection) {
     const connection = (navigator as any).connection;
-    
+
     // Don't preload on slow connections
     if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
       return false;
     }
-    
+
     // Always preload on fast connections
     if (connection.effectiveType === '4g') {
       return true;
     }
   }
-  
+
   return Math.random() < preloadProbability;
 }
 
@@ -249,16 +249,16 @@ export function measurePerformance<T>(
     const start = performance.now();
     const result = fn();
     const end = performance.now();
-    
+
     const duration = end - start;
-    
+
     if (duration > 100) {
       console.warn(`[Performance] Slow operation "${label}": ${duration.toFixed(2)}ms`);
     }
-    
+
     return result;
   }
-  
+
   return fn();
 }
 
@@ -273,16 +273,16 @@ export async function measureAsyncPerformance<T>(
     const start = performance.now();
     const result = await fn();
     const end = performance.now();
-    
+
     const duration = end - start;
-    
+
     if (duration > 1000) {
       console.warn(`[Performance] Slow async operation "${label}": ${duration.toFixed(2)}ms`);
     }
-    
+
     return result;
   }
-  
+
   return fn();
 }
 
@@ -294,17 +294,17 @@ export function debounce<T extends (...args: any[]) => any>(
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null;
-  
+
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
       timeout = null;
       func(...args);
     };
-    
+
     if (timeout) {
       clearTimeout(timeout);
     }
-    
+
     timeout = setTimeout(later, wait);
   };
 }
@@ -317,7 +317,7 @@ export function throttle<T extends (...args: any[]) => any>(
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
-  
+
   return function executedFunction(...args: Parameters<T>) {
     if (!inThrottle) {
       func(...args);
@@ -336,27 +336,27 @@ export function throttle<T extends (...args: any[]) => any>(
  */
 export class MemoryCache<T> {
   private cache = new Map<string, { value: T; expiry: number }>();
-  
+
   set(key: string, value: T, ttlMs: number) {
     this.cache.set(key, {
       value,
       expiry: Date.now() + ttlMs,
     });
   }
-  
+
   get(key: string): T | undefined {
     const item = this.cache.get(key);
-    
+
     if (!item) return undefined;
-    
+
     if (Date.now() > item.expiry) {
       this.cache.delete(key);
       return undefined;
     }
-    
+
     return item.value;
   }
-  
+
   clear() {
     this.cache.clear();
   }
@@ -367,7 +367,7 @@ export class MemoryCache<T> {
  */
 export function getCacheHeaders(assetType: 'static' | 'dynamic' | 'api') {
   const headers: Record<string, string> = {};
-  
+
   switch (assetType) {
     case 'static':
       headers['Cache-Control'] = 'public, max-age=31536000, immutable';
@@ -379,7 +379,7 @@ export function getCacheHeaders(assetType: 'static' | 'dynamic' | 'api') {
       headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
       break;
   }
-  
+
   return headers;
 }
 
@@ -401,48 +401,48 @@ export function generatePerformanceReport(): PerformanceReport {
   const metrics = getStoredMetrics();
   const resources = analyzeResourceTiming();
   const recommendations: string[] = [];
-  
+
   // Calculate performance score (0-100)
   let score = 100;
-  
+
   // Check LCP (target: < 2.5s)
   if (metrics.LCP && metrics.LCP > 2500) {
     score -= 20;
     recommendations.push('LCP is slow. Optimize images and reduce render-blocking resources.');
   }
-  
+
   // Check FID (target: < 100ms)
   if (metrics.FID && metrics.FID > 100) {
     score -= 15;
     recommendations.push('FID is high. Reduce JavaScript execution time and code splitting.');
   }
-  
+
   // Check CLS (target: < 0.1)
   if (metrics.CLS && metrics.CLS > 0.1) {
     score -= 15;
     recommendations.push('CLS is high. Reserve space for images and avoid shifting content.');
   }
-  
+
   // Check TTFB (target: < 800ms)
   if (metrics.TTFB && metrics.TTFB > 800) {
     score -= 10;
     recommendations.push('TTFB is slow. Consider using a CDN or edge caching.');
   }
-  
+
   // Check for large resources
   const largeResources = resources.filter(r => r.size > 500 * 1024); // > 500KB
   if (largeResources.length > 0) {
     score -= 5 * largeResources.length;
     recommendations.push(`Found ${largeResources.length} large resources (>500KB). Optimize images and enable compression.`);
   }
-  
+
   // Check for slow resources
   const slowResources = resources.filter(r => r.duration > 1000); // > 1s
   if (slowResources.length > 0) {
     score -= 5 * slowResources.length;
     recommendations.push(`Found ${slowResources.length} slow-loading resources (>1s). Use CDN and optimize.`);
   }
-  
+
   return {
     metrics,
     resources,

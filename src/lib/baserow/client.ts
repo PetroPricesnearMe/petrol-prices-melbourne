@@ -1,6 +1,6 @@
 /**
  * Baserow API Client
- * 
+ *
  * Production-ready client for fetching dynamic content from Baserow with:
  * - Automatic caching with ISR support
  * - Comprehensive error handling
@@ -72,7 +72,7 @@ class BaserowClient {
       }
 
       const url = `${this.config.baseUrl}/api/database/rows/table/${tableId}/?${params.toString()}`;
-      
+
       const response = await fetch(url, {
         headers: {
           Authorization: `Token ${this.config.apiToken}`,
@@ -88,10 +88,10 @@ class BaserowClient {
       }
 
       const data: BaserowResponse<T> = await response.json();
-      
+
       // Cache the result
       this.setCache(cacheKey, data.results);
-      
+
       return data.results;
     } catch (error) {
       console.error('Baserow fetch error:', error);
@@ -107,13 +107,13 @@ class BaserowClient {
     rowId: number
   ): Promise<T | null> {
     const cacheKey = `row_${tableId}_${rowId}`;
-    
+
     const cached = this.getFromCache<T>(cacheKey);
     if (cached) return cached;
 
     try {
       const url = `${this.config.baseUrl}/api/database/rows/table/${tableId}/${rowId}/`;
-      
+
       const response = await fetch(url, {
         headers: {
           Authorization: `Token ${this.config.apiToken}`,
@@ -131,7 +131,7 @@ class BaserowClient {
 
       const data = await response.json();
       this.setCache(cacheKey, data);
-      
+
       return data;
     } catch (error) {
       console.error('Baserow fetch error:', error);
@@ -147,7 +147,7 @@ class BaserowClient {
     data: T
   ): Promise<BaserowRow> {
     const url = `${this.config.baseUrl}/api/database/rows/table/${tableId}/`;
-    
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -173,7 +173,7 @@ class BaserowClient {
     data: Partial<T>
   ): Promise<BaserowRow> {
     const url = `${this.config.baseUrl}/api/database/rows/table/${tableId}/${rowId}/`;
-    
+
     const response = await fetch(url, {
       method: 'PATCH',
       headers: {
@@ -189,7 +189,7 @@ class BaserowClient {
 
     // Invalidate cache
     this.invalidateCache(tableId, rowId);
-    
+
     return response.json();
   }
 
@@ -198,7 +198,7 @@ class BaserowClient {
    */
   async deleteRow(tableId: string, rowId: number): Promise<void> {
     const url = `${this.config.baseUrl}/api/database/rows/table/${tableId}/${rowId}/`;
-    
+
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
@@ -219,14 +219,14 @@ class BaserowClient {
    */
   private getFromCache<T>(key: string): T | null {
     const cached = this.cache.get(key);
-    
+
     if (!cached) return null;
-    
+
     if (Date.now() > cached.expiry) {
       this.cache.delete(key);
       return null;
     }
-    
+
     return cached.data as T;
   }
 
@@ -246,7 +246,7 @@ class BaserowClient {
       const key = `row_${tableId}_${rowId}`;
       this.cache.delete(key);
     }
-    
+
     // Invalidate all entries for this table
     for (const key of this.cache.keys()) {
       if (key.includes(`table_${tableId}`)) {
@@ -281,14 +281,14 @@ export function getBaserowClient(): BaserowClient {
     if (!process.env.BASEROW_API_TOKEN || !process.env.BASEROW_API_URL) {
       throw new Error('Baserow API credentials not configured');
     }
-    
+
     baserowClient = new BaserowClient({
       apiToken: process.env.BASEROW_API_TOKEN,
       baseUrl: process.env.BASEROW_API_URL,
       cacheTime: parseInt(process.env.BASEROW_CACHE_TIME || '3600'),
     });
   }
-  
+
   return baserowClient;
 }
 

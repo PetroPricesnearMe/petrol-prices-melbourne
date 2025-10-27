@@ -1,6 +1,6 @@
 /**
  * EnhancedFooter Component
- * 
+ *
  * A world-class footer with:
  * - Multi-column responsive layout
  * - WCAG 2.1 AA accessibility

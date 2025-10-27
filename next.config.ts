@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
-  
+
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -14,12 +14,12 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: false,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  
+
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
-  
+
   // Headers for caching and performance
   async headers() {
     return [
@@ -77,13 +77,13 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  
+
   // Production optimizations
   ...(process.env.NODE_ENV === 'production' && {
     swcMinify: true,
     productionBrowserSourceMaps: false,
   }),
-  
+
   // TypeScript and ESLint
   typescript: {
     ignoreBuildErrors: false,
@@ -91,7 +91,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  
+
   // Webpack optimizations
   webpack: (config, { isServer }) => {
     // Optimize bundle size
@@ -137,7 +137,7 @@ const nextConfig: NextConfig = {
         },
       };
     }
-    
+
     return config;
   },
 };

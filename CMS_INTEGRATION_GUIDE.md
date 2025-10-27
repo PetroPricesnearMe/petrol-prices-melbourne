@@ -96,7 +96,7 @@ useEffect(() => {
       // ... other keys
     }
   };
-  
+
   window.addEventListener('keydown', handleKeyDown);
   return () => window.removeEventListener('keydown', handleKeyDown);
 }, [stations, focusedIndex]);
@@ -188,9 +188,9 @@ export const revalidate = 3600; // Revalidate every hour
 
 export default async function StationsPage() {
   const { stations } = await fetchPetrolStations();
-  
+
   return (
-    <StationListCMS 
+    <StationListCMS
       stations={stations}
       onStationClick={handleClick}
     />
@@ -207,7 +207,7 @@ import { fetchPetrolStations } from '@/lib/baserow/queries';
 
 export async function GET() {
   const { stations } = await fetchPetrolStations();
-  
+
   return NextResponse.json(stations, {
     headers: {
       'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
@@ -238,7 +238,7 @@ useEffect(() => {
       setIsLoading(false);
     }
   }
-  
+
   loadStations();
 }, []);
 ```
