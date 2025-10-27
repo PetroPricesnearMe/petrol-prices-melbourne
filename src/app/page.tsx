@@ -26,7 +26,7 @@ export default function HomePage() {
     <>
       {/* Structured Data */}
       <StructuredData data={structuredDataSchemas} />
-      
+
       {/* Landing Page */}
       <LandingPage />
     </>

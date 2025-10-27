@@ -12,12 +12,15 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import Map, { Marker, Popup, Source, Layer, MapRef } from 'react-map-gl';
+import Map, { Marker, Popup, Source, Layer, MapRef } from 'react-map-gl/mapbox';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { cn } from '@/styles/system/css-in-js';
+
+// Import Mapbox CSS
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Mapbox access token - should be in environment variables
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 'pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUifQ.example';

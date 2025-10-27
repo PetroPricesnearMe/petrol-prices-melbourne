@@ -1,9 +1,9 @@
 /**
  * Landing Page Component
- * 
+ *
  * Visually appealing landing page with hero section, directory highlights,
  * call-to-action buttons, and gradient layered backgrounds
- * 
+ *
  * @module components/pages/LandingPage
  */
 
@@ -69,11 +69,11 @@ function HeroSection({ className }: HeroSectionProps) {
       <div className="absolute inset-0">
         {/* Base gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800" />
-        
+
         {/* Overlay gradients */}
         <div className="absolute inset-0 bg-gradient-to-r from-primary-600/90 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary-800/50 to-transparent" />
-        
+
         {/* Animated gradient orbs */}
         <motion.div
           className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full blur-3xl"
@@ -117,7 +117,7 @@ function HeroSection({ className }: HeroSectionProps) {
       <div className="relative z-10 container mx-auto px-4 py-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            
+
             {/* Left Column - Text Content */}
             <motion.div
               className="text-white"
@@ -157,7 +157,7 @@ function HeroSection({ className }: HeroSectionProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Compare real-time fuel prices from 250+ stations across Melbourne. 
+                Compare real-time fuel prices from 250+ stations across Melbourne.
                 Save money on every fill-up with live unleaded, diesel, and premium prices.
               </motion.p>
 
@@ -300,7 +300,7 @@ function FeatureCard({ icon, title, description, delay = 0 }: FeatureCardProps) 
     >
       {/* Gradient Background on Hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
+
       <div className="relative z-10">
         {/* Icon */}
         <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -398,7 +398,7 @@ function DirectoryHighlights() {
                     className="object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  
+
                   {/* Stats Badge */}
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
                     <span className="text-sm font-bold text-gray-900">
@@ -562,7 +562,7 @@ function CTASection() {
               Ready to Start Saving?
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Join thousands of drivers who are already saving money on fuel. 
+              Join thousands of drivers who are already saving money on fuel.
               Find the cheapest petrol prices near you in just a few clicks.
             </p>
 

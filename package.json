@@ -4,8 +4,8 @@
   "description": "Enterprise-level petrol station finder with real-time fuel prices",
   "private": true,
   "engines": {
-    "node": "20.x",
-    "npm": ">=9.0.0"
+    "node": "22.x",
+    "npm": ">=10.0.0"
   },
   "scripts": {
     "dev": "next dev",
