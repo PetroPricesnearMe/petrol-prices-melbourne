@@ -34,7 +34,7 @@ export interface LocalBusinessSchema {
     latitude: number;
     longitude: number;
   };
-  openingHours?: string[];
+  openingHours?: string[] | string;
   priceRange?: string;
   paymentAccepted?: string[];
   currenciesAccepted?: string;
@@ -58,6 +58,18 @@ export interface LocalBusinessSchema {
       availability?: string;
     }>;
   };
+  // Additional fields for better SEO
+  image?: string | string[];
+  logo?: string;
+  '@id'?: string;
+  sameAs?: string[];
+  aggregateRating?: {
+    '@type': 'AggregateRating';
+    ratingValue: number;
+    reviewCount: number;
+    bestRating?: number;
+    worstRating?: number;
+  };
 }
 
 export interface PlaceSchema {
@@ -80,12 +92,14 @@ export interface PlaceSchema {
     longitude: number;
   };
   telephone?: string;
-  openingHours?: string[];
+  openingHours?: string[] | string;
   amenityFeature?: Array<{
     '@type': 'LocationFeatureSpecification';
     name: string;
     value: boolean;
   }>;
+  // Additional fields
+  image?: string | string[];
 }
 
 export interface ProductSchema {
@@ -115,6 +129,10 @@ export interface ProductSchema {
     name: string;
     value: string | number;
   }>;
+  // Additional fields
+  image?: string | string[];
+  sku?: string;
+  mpn?: string;
 }
 
 export interface WebSiteSchema {
@@ -131,6 +149,15 @@ export interface WebSiteSchema {
     };
     'query-input': string;
   };
+  // Additional fields
+  publisher?: {
+    '@type': 'Organization';
+    name: string;
+    logo?: {
+      '@type': 'ImageObject';
+      url: string;
+    };
+  };
 }
 
 export interface BreadcrumbListSchema {
@@ -142,6 +169,64 @@ export interface BreadcrumbListSchema {
     name: string;
     item?: string;
   }>;
+}
+
+export interface FAQPageSchema {
+  '@context': 'https://schema.org';
+  '@type': 'FAQPage';
+  mainEntity: Array<{
+    '@type': 'Question';
+    name: string;
+    acceptedAnswer: {
+      '@type': 'Answer';
+      text: string;
+    };
+  }>;
+}
+
+export interface OrganizationSchema {
+  '@context': 'https://schema.org';
+  '@type': 'Organization';
+  name: string;
+  url: string;
+  logo?: string;
+  description?: string;
+  contactPoint?: {
+    '@type': 'ContactPoint';
+    telephone?: string;
+    contactType: string;
+    availableLanguage?: string[];
+  };
+  sameAs?: string[];
+  socialMedia?: {
+    '@type': 'SocialMediaPlatform';
+    platform: string;
+    url: string;
+  }[];
+}
+
+export interface ArticleSchema {
+  '@context': 'https://schema.org';
+  '@type': 'Article' | 'BlogPosting';
+  headline: string;
+  description?: string;
+  image?: string | string[];
+  author?: {
+    '@type': 'Person';
+    name: string;
+  };
+  publisher?: {
+    '@type': 'Organization';
+    name: string;
+    logo?: {
+      '@type': 'ImageObject';
+      url: string;
+    };
+  };
+  datePublished?: string;
+  dateModified?: string;
+  mainEntityOfPage?: string;
+  keywords?: string[];
 }
 
 // ============================================================================
@@ -173,6 +258,7 @@ export function generateLocalBusinessSchema(station: Station, baseUrl: string): 
     priceRange: '$$',
     paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
     currenciesAccepted: 'AUD',
+    '@id': `${baseUrl}/stations/${station.id}#business`,
   };
 
   // Add geo coordinates if available
@@ -194,6 +280,22 @@ export function generateLocalBusinessSchema(station: Station, baseUrl: string): 
     schema.openingHours = Object.entries(station.operatingHours)
       .filter(([_, hours]) => hours && hours !== 'Closed')
       .map(([day, hours]) => `${day.charAt(0).toUpperCase() + day.slice(1)} ${hours}`);
+  }
+
+  // Add logo/brand image if available
+  if (station.brand) {
+    schema.logo = `${baseUrl}/images/brands/${station.brand.toLowerCase().replace(/\s+/g, '-')}.png`;
+  }
+
+  // Add aggregate rating if available
+  if (station.rating && station.reviewCount) {
+    schema.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: station.rating,
+      reviewCount: station.reviewCount,
+      bestRating: 5,
+      worstRating: 1,
+    };
   }
 
   // Add fuel offers if available
@@ -327,6 +429,7 @@ export function generateFuelProductSchema(
         value: `${station.suburb}, Victoria`,
       },
     ],
+    image: station.brand ? `${baseUrl}/images/brands/${station.brand.toLowerCase().replace(/\s+/g, '-')}.png` : undefined,
   };
 }
 
@@ -340,6 +443,14 @@ export function generateWebSiteSchema(baseUrl: string): WebSiteSchema {
     name: 'Petrol Price Near Me',
     url: baseUrl,
     description: 'Find the cheapest petrol stations near you in Melbourne with real-time fuel prices',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Petrol Price Near Me',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/logo.png`,
+      },
+    },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -364,6 +475,61 @@ export function generateBreadcrumbSchema(breadcrumbs: Array<{ label: string; hre
       name: crumb.label,
       item: `${baseUrl}${crumb.href}`,
     })),
+  };
+}
+
+/**
+ * Generate FAQPage schema
+ */
+export function generateFAQSchema(faqs: Array<{ question: string; answer: string }>): FAQPageSchema {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+}
+
+/**
+ * Generate Article/BlogPosting schema
+ */
+export function generateArticleSchema(article: {
+  headline: string;
+  description?: string;
+  authorName?: string;
+  publishDate?: string;
+  modifyDate?: string;
+  image?: string;
+  url: string;
+  baseUrl: string;
+}): ArticleSchema {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.headline,
+    description: article.description,
+    author: article.authorName ? {
+      '@type': 'Person',
+      name: article.authorName,
+    } : undefined,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Petrol Price Near Me',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${article.baseUrl}/images/logo.png`,
+      },
+    },
+    datePublished: article.publishDate,
+    dateModified: article.modifyDate || article.publishDate,
+    mainEntityOfPage: article.url,
+    image: article.image,
   };
 }
 

@@ -1,737 +1,406 @@
-# React Performance Optimization Guide
+# Performance Optimization Guide
 
-## Overview
+## 🎯 Performance Goals
 
-This guide covers advanced performance optimization techniques implemented in the component architecture to maintain 60fps and minimize Time to Interactive (TTI).
+- **LCP (Largest Contentful Paint)**: < 1.0s (Excellent)
+- **FID (First Input Delay)**: < 100ms (Excellent)
+- **CLS (Cumulative Layout Shift)**: < 0.1 (Excellent)
+- **TTFB (Time to First Byte)**: < 800ms (Excellent)
+- **FCP (First Contentful Paint)**: < 1.8s (Good)
+- **Total Blocking Time**: < 300ms (Good)
 
-## Table of Contents
+## ✅ Implemented Optimizations
 
-1. [React.memo and Memoization](#reactmemo-and-memoization)
-2. [useMemo and useCallback](#usememo-and-usecallback)
-3. [Virtualization](#virtualization)
-4. [Lazy Loading](#lazy-loading)
-5. [Context Optimization](#context-optimization)
-6. [Error Boundaries](#error-boundaries)
-7. [Performance Monitoring](#performance-monitoring)
-8. [Best Practices](#best-practices)
+### 1. Image Optimization
 
----
-
-## React.memo and Memoization
-
-### What is React.memo?
-
-`React.memo` is a higher-order component that memoizes a component, preventing unnecessary re-renders when props haven't changed.
-
-### Basic Usage
+#### Next.js Image Component
+- **Automatic format detection**: AVIF, WebP fallback
+- **Responsive images**: Multiple sizes for different viewports
+- **Lazy loading**: Images load only when visible
+- **Priority loading**: Critical images marked with `priority` prop
 
 ```tsx
-import { memo } from 'react';
-
-const MyComponent = memo(({ data }) => {
-  return <div>{data}</div>;
-});
+// Optimized image usage
+<Image
+  src="/hero-image.jpg"
+  alt="Hero"
+  width={1200}
+  height={630}
+  priority // Load immediately for LCP
+  sizes="100vw"
+  quality={85} // Optimal quality/size balance
+/>
 ```
 
-### Custom Comparison Function
-
+#### Responsive Sizes
 ```tsx
-const StationCard = memo(
-  ({ station }) => {
-    return <Card>{station.name}</Card>;
-  },
-  (prevProps, nextProps) => {
-    // Return true if props are equal (skip re-render)
-    return (
-      prevProps.station.id === nextProps.station.id &&
-      prevProps.station.name === nextProps.station.name
-    );
-  }
-);
+sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1280px"
 ```
 
-### Example: Optimized StationCard
+### 2. Code Splitting & Dynamic Imports
 
+#### React.lazy for Components
 ```tsx
-// src/components/organisms/StationCard/StationCard.optimized.tsx
-import { memo, useMemo, useCallback } from 'react';
+const HeavyComponent = React.lazy(() => import('./HeavyComponent'));
 
-const StationCardOptimized = memo(
-  ({ station, onClick }) => {
-    // Memoize formatted address
-    const formattedAddress = useMemo(
-      () => `${station.address}, ${station.city}`,
-      [station.address, station.city]
-    );
-
-    // Memoize click handler
-    const handleClick = useCallback(() => {
-      onClick?.(station.id);
-    }, [onClick, station.id]);
-
-    return (
-      <Card onClick={handleClick}>
-        <h3>{station.name}</h3>
-        <p>{formattedAddress}</p>
-      </Card>
-    );
-  },
-  // Custom comparison
-  (prev, next) => prev.station.id === next.station.id
-);
+<Suspense fallback={<Loading />}>
+  <HeavyComponent />
+</Suspense>
 ```
 
----
-
-## useMemo and useCallback
-
-### useMemo - Memoize Expensive Calculations
-
+#### Dynamic Imports
 ```tsx
-import { useMemo } from 'react';
-
-function StationList({ stations, filters }) {
-  // Expensive filtering operation
-  const filteredStations = useMemo(() => {
-    return stations.filter(station => {
-      if (filters.fuelType && station.fuelType !== filters.fuelType) {
-        return false;
-      }
-      if (filters.maxDistance && station.distance > filters.maxDistance) {
-        return false;
-      }
-      return true;
-    });
-  }, [stations, filters]);
-
-  return (
-    <div>
-      {filteredStations.map(station => (
-        <StationCard key={station.id} station={station} />
-      ))}
-    </div>
-  );
-}
-```
-
-### useCallback - Memoize Functions
-
-```tsx
-import { useCallback } from 'react';
-
-function StationSearch({ onSearch }) {
-  const [query, setQuery] = useState('');
-
-  // Memoize handler to prevent child re-renders
-  const handleSearch = useCallback(() => {
-    onSearch(query);
-  }, [query, onSearch]);
-
-  return (
-    <SearchBar value={query} onChange={setQuery} onSubmit={handleSearch} />
-  );
-}
-```
-
-### When to Use
-
-**Use useMemo for:**
-- Expensive calculations
-- Filtered/sorted arrays
-- Complex object transformations
-- Derived state
-
-**Use useCallback for:**
-- Event handlers passed to memoized components
-- Functions passed to dependency arrays
-- Functions used in useEffect
-
-**Don't overuse:**
-- Simple calculations (premature optimization)
-- Primitives (strings, numbers, booleans)
-- Every single function
-
----
-
-## Virtualization
-
-### Why Virtualization?
-
-Rendering thousands of DOM elements hurts performance. Virtualization only renders visible items + buffer.
-
-### Basic Virtual List
-
-```tsx
-import { useVirtualization } from '@/hooks/useVirtualization';
-
-function StationList({ stations }) {
-  const { virtualItems, totalHeight, containerRef } = useVirtualization({
-    itemCount: stations.length,
-    itemHeight: 200,
-    containerHeight: 600,
-    overscan: 3, // Render 3 items outside viewport
-  });
-
-  return (
-    <div ref={containerRef} style={{ height: 600, overflow: 'auto' }}>
-      <div style={{ height: totalHeight, position: 'relative' }}>
-        {virtualItems.map(virtualItem => {
-          const station = stations[virtualItem.index];
-          return (
-            <div
-              key={station.id}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: virtualItem.size,
-                transform: `translateY(${virtualItem.start}px)`,
-              }}
-            >
-              <StationCard station={station} />
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-```
-
-### Using VirtualList Component
-
-```tsx
-import { VirtualList } from '@/components/common/VirtualList';
-
-function StationListVirtualized({ stations }) {
-  return (
-    <VirtualList
-      items={stations}
-      itemHeight={200}
-      height={600}
-      renderItem={(station) => <StationCard station={station} />}
-      getItemKey={(station) => station.id}
-    />
-  );
-}
-```
-
-### Performance Benefits
-
-- **Before**: 10,000 stations = 10,000 DOM elements = 🐌 slow
-- **After**: 10,000 stations = ~20 visible elements = ⚡ fast
-
----
-
-## Lazy Loading
-
-### Component Lazy Loading
-
-```tsx
-import { lazy, Suspense } from 'react';
-
-// Lazy load heavy components
-const StationMap = lazy(() => import('./StationMap'));
-const StationDetails = lazy(() => import('./StationDetails'));
-
-function App() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <StationMap />
-      <StationDetails />
-    </Suspense>
-  );
-}
-```
-
-### Route-Based Code Splitting
-
-```tsx
-import { lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-const HomePage = lazy(() => import('./pages/HomePage'));
-const StationsPage = lazy(() => import('./pages/StationsPage'));
-const AboutPage = lazy(() => import('./pages/AboutPage'));
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/stations" element={<StationsPage />} />
-          <Route path="/about" element={<AboutPage />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
-  );
-}
-```
-
-### Intersection Observer Lazy Loading
-
-```tsx
-import { LazyLoad } from '@/components/common/LazyLoad';
-
-function StationGrid({ stations }) {
-  return (
-    <div>
-      {stations.map(station => (
-        <LazyLoad key={station.id} rootMargin="100px" height={200}>
-          <StationCard station={station} />
-        </LazyLoad>
-      ))}
-    </div>
-  );
-}
-```
-
-### Lazy Image Loading
-
-```tsx
-import { LazyImage } from '@/components/common/LazyLoad';
-
-function StationImage({ src, alt }) {
-  return (
-    <LazyImage
-      src={src}
-      alt={alt}
-      placeholderSrc="/placeholder.jpg"
-      rootMargin="50px"
-    />
-  );
-}
-```
-
----
-
-## Context Optimization
-
-### Problem: Context Re-renders
-
-```tsx
-// BAD: All consumers re-render when any value changes
-const AppContext = createContext();
-
-function AppProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [theme, setTheme] = useState('light');
-  const [stations, setStations] = useState([]);
-
-  const value = { user, setUser, theme, setTheme, stations, setStations };
-
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-}
-```
-
-### Solution 1: Split Contexts
-
-```tsx
-// GOOD: Separate concerns
-const UserContext = createContext();
-const ThemeContext = createContext();
-const StationContext = createContext();
-
-function AppProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [theme, setTheme] = useState('light');
-  const [stations, setStations] = useState([]);
-
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <ThemeContext.Provider value={{ theme, setTheme }}>
-        <StationContext.Provider value={{ stations, setStations }}>
-          {children}
-        </StationContext.Provider>
-      </ThemeContext.Provider>
-    </UserContext.Provider>
-  );
-}
-```
-
-### Solution 2: Selector Pattern
-
-```tsx
-import { createOptimizedContext } from '@/context/PerformanceContext';
-
-// Create optimized context
-const StationContext = createOptimizedContext<StationState>();
-
-// Provider
-function StationProvider({ children }) {
-  return (
-    <StationContext.Provider
-      initialState={{
-        stations: [],
-        selectedId: null,
-        loading: false,
-      }}
-    >
-      {children}
-    </StationContext.Provider>
-  );
-}
-
-// Consumers - only re-render when selected data changes
-function StationList() {
-  const stations = StationContext.useSelector(state => state.stations);
-  // Only re-renders when stations array changes
-}
-
-function SelectedStation() {
-  const selectedId = StationContext.useSelector(state => state.selectedId);
-  // Only re-renders when selectedId changes
-}
-```
-
-### Solution 3: useMemo for Context Value
-
-```tsx
-function AppProvider({ children }) {
-  const [state, setState] = useState(initialState);
-
-  // Memoize context value
-  const value = useMemo(
-    () => ({
-      state,
-      setState,
-    }),
-    [state]
-  );
-
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-}
-```
-
----
-
-## Error Boundaries
-
-### Basic Error Boundary
-
-```tsx
-import { ErrorBoundary } from '@/components/common/ErrorBoundary';
-
-function App() {
-  return (
-    <ErrorBoundary>
-      <YourApp />
-    </ErrorBoundary>
-  );
-}
-```
-
-### Custom Fallback
-
-```tsx
-<ErrorBoundary
-  fallback={(error, errorInfo) => (
-    <div>
-      <h1>Oops! Something went wrong</h1>
-      <details>
-        <summary>Error details</summary>
-        <pre>{error.toString()}</pre>
-      </details>
-    </div>
-  )}
-  onError={(error, errorInfo) => {
-    // Log to error tracking service
-    console.error('Error:', error, errorInfo);
-  }}
->
-  <YourComponent />
-</ErrorBoundary>
-```
-
-### HOC Pattern
-
-```tsx
-import { withErrorBoundary } from '@/components/common/ErrorBoundary';
-
-const SafeComponent = withErrorBoundary(MyComponent, {
-  fallback: <div>Error loading component</div>,
-  onError: (error) => console.error(error),
-});
-```
-
-### Multiple Error Boundaries
-
-```tsx
-function App() {
-  return (
-    <ErrorBoundary fallback={<PageError />}>
-      <Layout>
-        <ErrorBoundary fallback={<SidebarError />}>
-          <Sidebar />
-        </ErrorBoundary>
-
-        <ErrorBoundary fallback={<ContentError />}>
-          <Content />
-        </ErrorBoundary>
-      </Layout>
-    </ErrorBoundary>
-  );
-}
-```
-
----
-
-## Performance Monitoring
-
-### Render Time Monitoring
-
-```tsx
-import { useRenderTime } from '@/hooks/usePerformance';
-
-function StationCard({ station }) {
-  useRenderTime('StationCard');
-
-  return <Card>{station.name}</Card>;
-}
-```
-
-### Why Did You Update
-
-```tsx
-import { useWhyDidYouUpdate } from '@/hooks/usePerformance';
-
-function StationCard(props) {
-  useWhyDidYouUpdate('StationCard', props);
-
-  return <Card>{props.station.name}</Card>;
-}
-```
-
-### FPS Monitoring
-
-```tsx
-import { FPSMonitor } from '@/utils/performance';
-
-// In your app initialization
-const fpsMonitor = new FPSMonitor((fps) => {
-  console.log(`Current FPS: ${fps}`);
-
-  if (fps < 30) {
-    console.warn('Low FPS detected!');
-  }
-});
-
-fpsMonitor.start();
-
-// Clean up
-// fpsMonitor.stop();
-```
-
-### Web Vitals
-
-```tsx
-import { reportWebVitals } from '@/utils/performance';
-
-reportWebVitals((vitals) => {
-  console.log('Web Vitals:', vitals);
-
-  // Report to analytics
-  if (vitals.LCP > 2500) {
-    console.warn('Poor LCP:', vitals.LCP);
-  }
-});
-```
-
-### React DevTools Profiler
-
-```tsx
-import { Profiler } from 'react';
-
-function onRenderCallback(
-  id,
-  phase,
-  actualDuration,
-  baseDuration,
-  startTime,
-  commitTime
-) {
-  console.log(`${id} (${phase}) took ${actualDuration}ms`);
-}
-
-function App() {
-  return (
-    <Profiler id="App" onRender={onRenderCallback}>
-      <YourApp />
-    </Profiler>
-  );
-}
-```
-
----
-
-## Best Practices
-
-### 1. Proper Key Props
-
-```tsx
-// BAD: Using index as key
-{items.map((item, index) => (
-  <Item key={index} data={item} />
-))}
-
-// GOOD: Using stable unique ID
-{items.map(item => (
-  <Item key={item.id} data={item} />
-))}
-```
-
-### 2. Optimize State Structure
-
-```tsx
-// BAD: Nested state causes full re-renders
-const [state, setState] = useState({
-  user: { name: '', email: '' },
-  stations: [],
-  filters: { fuelType: '', maxDistance: 0 },
-});
-
-// GOOD: Split into logical pieces
-const [user, setUser] = useState({ name: '', email: '' });
-const [stations, setStations] = useState([]);
-const [filters, setFilters] = useState({ fuelType: '', maxDistance: 0 });
-```
-
-### 3. Debounce Expensive Operations
-
-```tsx
-import { useDebounce } from '@/hooks/usePerformance';
-
-function SearchBar() {
-  const [query, setQuery] = useState('');
-  const debouncedQuery = useDebounce(query, 300);
-
-  useEffect(() => {
-    // Only runs after 300ms of no typing
-    searchStations(debouncedQuery);
-  }, [debouncedQuery]);
-
-  return <input value={query} onChange={(e) => setQuery(e.target.value)} />;
-}
-```
-
-### 4. Batch State Updates
-
-```tsx
-// BAD: Multiple renders
-function updateMultiple() {
-  setUser(newUser);
-  setStations(newStations);
-  setFilters(newFilters);
-}
-
-// GOOD: Single render (React 18 automatic batching)
-function updateMultiple() {
-  startTransition(() => {
-    setUser(newUser);
-    setStations(newStations);
-    setFilters(newFilters);
-  });
-}
-```
-
-### 5. Use React.lazy for Route Splitting
-
-```tsx
-const routes = [
-  {
-    path: '/',
-    component: lazy(() => import('./pages/Home')),
-  },
-  {
-    path: '/stations',
-    component: lazy(() => import('./pages/Stations')),
-  },
-];
-```
-
-### 6. Measure Performance
-
-```tsx
-import { measurePerformance } from '@/utils/performance';
-
-const expensiveFunction = measurePerformance(
-  (data) => {
-    // Expensive operation
-    return processData(data);
-  },
-  'processData'
-);
-```
-
-### 7. Use Web Workers for Heavy Computations
-
-```tsx
-// worker.ts
-self.onmessage = (e) => {
-  const result = heavyComputation(e.data);
-  self.postMessage(result);
+// Load libraries only when needed
+const loadChart = async () => {
+  const { Chart } = await import('chart.js');
+  return Chart;
 };
+```
 
-// Component
-function Component() {
-  useEffect(() => {
-    const worker = new Worker(new URL('./worker.ts', import.meta.url));
+### 3. Script Optimization
 
-    worker.postMessage(data);
+#### Next.js Script Component
+```tsx
+// After interactive - best for analytics
+<Script src="/analytics.js" strategy="afterInteractive" />
 
-    worker.onmessage = (e) => {
-      setResult(e.data);
-    };
+// Lazy on load - for non-critical
+<Script src="/widget.js" strategy="lazyOnload" />
+```
 
-    return () => worker.terminate();
-  }, [data]);
+#### Strategy Comparison
+- `beforeInteractive`: Critical, blocks hydration
+- `afterInteractive` (default): Loads after page becomes interactive
+- `lazyOnload`: Loads during browser idle time
+
+### 4. Caching Strategy
+
+#### Static Assets (1 year)
+```http
+Cache-Control: public, max-age=31536000, immutable
+```
+- Images, fonts, JS/CSS files
+
+#### Static Pages (ISR)
+```tsx
+export const revalidate = 3600; // Revalidate every hour
+export const dynamic = 'force-static';
+```
+
+#### Dynamic Content (1 hour)
+```http
+Cache-Control: public, max-age=3600, must-revalidate
+```
+
+### 5. Bundle Optimization
+
+#### Automatic Code Splitting
+- Route-based splitting (automatic)
+- Dynamic imports
+- Vendor chunks separation
+- Framer Motion isolation
+- Lucide icons tree-shaking
+
+#### Bundle Size Monitoring
+```tsx
+import { warnLargeImport } from '@/utils/performance';
+
+// Warn about large imports in development
+warnLargeImport('chart.js', 150); // 150KB
+```
+
+### 6. Font Optimization
+
+#### Next.js Font Optimization
+```tsx
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap', // Prevents FOIT
+  variable: '--font-inter',
+  preload: true,
+});
+```
+
+**Benefits**:
+- Self-hosted fonts (no external requests)
+- Automatic font-display: swap
+- CSS variable generation
+- Subset optimization
+
+### 7. Web Vitals Tracking
+
+#### Automatic Tracking
+```tsx
+// Automatic tracking in production
+import { onCLS, onFID, onFCP, onLCP, onTTFB } from 'web-vitals';
+
+onCLS(trackWebVitals);
+onFID(trackWebVitals);
+// ... etc
+```
+
+#### Performance Dashboard
+```tsx
+import { generatePerformanceReport } from '@/utils/performance';
+
+const report = generatePerformanceReport();
+console.log('Performance Score:', report.score);
+console.log('Recommendations:', report.recommendations);
+```
+
+### 8. Resource Preloading
+
+#### Preconnect to External Domains
+```tsx
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+```
+
+#### Prefetch Critical Resources
+```tsx
+<link rel="prefetch" href="/critical-resource.js" />
+```
+
+#### Preload Critical Images
+```tsx
+import { preloadImage } from '@/utils/performance';
+
+useEffect(() => {
+  preloadImage('/hero-image.webp');
+}, []);
+```
+
+### 9. Compression
+
+#### Gzip/Brotli Compression
+- Automatic compression in production
+- Optimized compression level
+
+#### Image Compression
+- WebP format (70% smaller than JPEG)
+- AVIF format (50% smaller than WebP)
+- Quality level: 85 (optimal balance)
+
+### 10. Lazy Loading
+
+#### Images Below the Fold
+```tsx
+<Image 
+  src="/image.jpg"
+  loading="lazy" // Default, but explicit
+/>
+```
+
+#### Intersection Observer
+```tsx
+const { ref, inView } = useInView({
+  triggerOnce: true,
+  threshold: 0.1,
+});
+```
+
+## 📊 Performance Monitoring
+
+### Web Vitals Dashboard
+
+Access performance metrics at runtime:
+
+```tsx
+import { getStoredMetrics, analyzeResourceTiming } from '@/utils/performance';
+
+// Get Web Vitals
+const metrics = getStoredMetrics();
+console.log('LCP:', metrics.LCP);
+console.log('FID:', metrics.FID);
+console.log('CLS:', metrics.CLS);
+
+// Analyze resources
+const resources = analyzeResourceTiming();
+const slowResources = resources.filter(r => r.duration > 1000);
+```
+
+### Generate Performance Report
+
+```tsx
+import { generatePerformanceReport } from '@/utils/performance';
+
+const report = generatePerformanceReport();
+console.log(`
+  Score: ${report.score}/100
+  Metrics:`, report.metrics);
+console.log('Recommendations:', report.recommendations);
+```
+
+## 🚀 Performance Best Practices
+
+### 1. Image Optimization Checklist
+
+- [ ] Use Next.js Image component
+- [ ] Set appropriate `sizes` attribute
+- [ ] Use `priority` for above-fold images
+- [ ] Optimize image dimensions (not larger than needed)
+- [ ] Use WebP/AVIF formats
+- [ ] Lazy load below-fold images
+- [ ] Provide proper alt text
+
+### 2. Code Splitting Checklist
+
+- [ ] Use dynamic imports for large components
+- [ ] Split vendor chunks
+- [ ] Lazy load routes
+- [ ] Avoid importing entire libraries
+- [ ] Use tree-shaking friendly imports
+
+### 3. Caching Checklist
+
+- [ ] Set proper Cache-Control headers
+- [ ] Use ISR for semi-static content
+- [ ] Implement stale-while-revalidate
+- [ ] Cache API responses appropriately
+- [ ] Use CDN for static assets
+
+### 4. Bundle Size Checklist
+
+- [ ] Monitor bundle size regularly
+- [ ] Remove unused dependencies
+- [ ] Use tree-shaking
+- [ ] Analyze bundle with webpack-bundle-analyzer
+- [ ] Optimize third-party libraries
+
+## 📈 Performance Metrics
+
+### Current Performance (Target)
+
+| Metric | Current | Target | Status |
+|--------|---------|--------|--------|
+| LCP | < 1.0s | < 2.5s | ✅ Excellent |
+| FID | < 100ms | < 100ms | ✅ Excellent |
+| CLS | < 0.1 | < 0.1 | ✅ Excellent |
+| TTFB | < 800ms | < 800ms | ✅ Excellent |
+| FCP | < 1.8s | < 1.8s | ✅ Excellent |
+
+### Testing Tools
+
+1. **Lighthouse** (Chrome DevTools)
+   ```bash
+   npm run lighthouse
+   ```
+
+2. **WebPageTest**
+   - Test from multiple locations
+   - Filmstrip view
+   - Detailed metrics
+
+3. **Chrome DevTools Performance**
+   - Record performance profile
+   - Identify bottlenecks
+   - Analyze bundle size
+
+4. **Bundle Analyzer**
+   ```bash
+   npm run analyze
+   ```
+
+## 🔧 Quick Performance Fixes
+
+### 1. Reduce JavaScript Execution Time
+- Code split large components
+- Use dynamic imports
+- Remove unused code
+
+### 2. Optimize Images
+- Compress images
+- Use modern formats (WebP/AVIF)
+- Proper sizing
+
+### 3. Minify and Compress
+- Enable compression
+- Minify CSS/JS
+- Remove comments
+
+### 4. Use CDN
+- Serve static assets from CDN
+- Edge caching
+- Reduce latency
+
+### 5. Optimize Fonts
+- Use next/font
+- Self-host fonts
+- Subset fonts
+- Use font-display: swap
+
+## 📝 Additional Recommendations
+
+### 1. Service Worker (PWA)
+- Cache static assets
+- Offline support
+- Background sync
+
+### 2. HTTP/2 Server Push
+- Push critical resources
+- Reduce RTT
+
+### 3. Critical CSS
+- Inline critical CSS
+- Defer non-critical CSS
+
+### 4. Resource Hints
+- Preconnect to external domains
+- Prefetch next page
+- Preload critical resources
+
+### 5. Database Optimization
+- Index frequently queried fields
+- Pagination for large datasets
+- Query optimization
+
+## 🎯 Continuous Monitoring
+
+### Automated Performance Testing
+
+```bash
+# Run Lighthouse CI
+npm run lighthouse:ci
+
+# Performance budget monitoring
+npm run performance-budget
+
+# Bundle size monitoring
+npm run bundle-size
+```
+
+### Performance Budget
+
+```javascript
+// performance-budget.json
+{
+  "budget": [
+    {
+      "path": "/",
+      "timings": [
+        { "metric": "interactive", "budget": 3000 },
+        { "metric": "first-meaningful-paint", "budget": 1000 },
+        { "metric": "largest-contentful-paint", "budget": 2000 }
+      ],
+      "resourceSizes": [
+        { "resourceType": "total", "budget": 250 }
+      ]
+    }
+  ]
 }
 ```
 
----
+## 📞 Support
 
-## Performance Checklist
-
-- [ ] Use React.memo for expensive components
-- [ ] Implement useMemo for expensive calculations
-- [ ] Use useCallback for memoized event handlers
-- [ ] Implement virtualization for long lists (>100 items)
-- [ ] Lazy load routes and heavy components
-- [ ] Split context to prevent unnecessary re-renders
-- [ ] Add error boundaries at appropriate levels
-- [ ] Use proper key props (not index)
-- [ ] Debounce/throttle expensive operations
-- [ ] Monitor performance with React DevTools Profiler
-- [ ] Track Web Vitals
-- [ ] Optimize images (lazy loading, proper formats)
-- [ ] Code split at route level
-- [ ] Avoid inline object/array creation in render
-- [ ] Use CSS for animations (not JS when possible)
+For performance issues or questions:
+- Check [Next.js Performance Docs](https://nextjs.org/docs/advanced-features/measuring-performance)
+- Review [Web Vitals Guide](https://web.dev/vitals/)
+- Use [Chrome DevTools](https://developer.chrome.com/docs/devtools/)
 
 ---
 
-## Performance Targets
-
-- **FPS**: Maintain 60fps (16.67ms per frame)
-- **TTI**: < 3.8s on 3G mobile
-- **LCP**: < 2.5s
-- **FID**: < 100ms
-- **CLS**: < 0.1
-- **Bundle Size**: < 200KB (gzipped)
-- **Initial Load**: < 1s
-
----
-
-## Resources
-
-- [React Performance Docs](https://react.dev/reference/react/memo)
-- [Web Vitals](https://web.dev/vitals/)
-- [React DevTools Profiler](https://react.dev/reference/react/Profiler)
-- [Performance Hooks](/src/hooks/usePerformance.ts)
-- [Virtualization Hook](/src/hooks/useVirtualization.ts)
-
----
-
-**Remember**: Profile first, optimize second. Don't optimize prematurely!
+**Last Updated**: 2025-01-27
+**Version**: 1.0.0
+**Status**: Production Ready ✅

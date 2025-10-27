@@ -12,577 +12,449 @@
 
 - [Overview](#overview)
 - [Features](#features)
-- [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Quick Start](#quick-start)
-- [Development Setup](#development-setup)
+- [Component Library](#component-library)
+- [SEO & Performance](#seo--performance)
 - [Project Structure](#project-structure)
 - [Environment Variables](#environment-variables)
-- [Testing](#testing)
 - [Deployment](#deployment)
-- [Performance](#performance)
-- [Accessibility](#accessibility)
 - [Contributing](#contributing)
-- [Support](#support)
 
 ## 🎯 Overview
 
-Petrol Price Near Me is a comprehensive, enterprise-level web application that helps users find the cheapest petrol stations in Australia. Built with modern web technologies, it provides real-time fuel price comparisons, interactive maps, and advanced search capabilities.
+**Petrol Price Near Me** is a comprehensive, enterprise-level web application designed to help Australian motorists find the cheapest petrol stations in their area. Built with modern web technologies and SEO best practices, it provides real-time fuel price comparisons, interactive maps, and advanced search capabilities.
 
-### Key Highlights
+### Why This Project Exists
 
-- 🚀 **High Performance**: Optimized for Core Web Vitals with 90+ Lighthouse scores
-- ♿ **Fully Accessible**: WCAG 2.1 AA compliant with comprehensive keyboard navigation
-- 📱 **Responsive Design**: Fluid layouts that work seamlessly across all devices
-- 🔍 **Advanced Search**: Smart filtering and sorting with fuzzy search capabilities
-- 🗺️ **Interactive Maps**: Real-time station locations with clustering and custom markers
-- ⚡ **Real-time Data**: Live fuel prices updated from multiple sources
-- 🌙 **Dark Mode**: System-aware theme switching with smooth transitions
+With rising fuel costs, finding the cheapest petrol near you can save significant money over time. Our platform aggregates real-time fuel price data from 250+ stations across Australia, providing users with:
+
+- **Instant price comparisons** at a glance
+- **Location-based recommendations** using geolocation
+- **Multiple fuel types** including unleaded, premium, diesel, and LPG
+- **Advanced search filters** by price, distance, brand, and amenities
+- **Mobile-first responsive design** for on-the-go access
 
 ## ✨ Features
 
 ### Core Functionality
-- 🗺️ **Interactive Map** - Find stations on an interactive map with clustering
-- 💰 **Price Comparison** - Compare fuel prices across different stations
-- 📍 **Location-Based** - Find stations near your current location with geolocation
-- ⛽ **Multiple Fuel Types** - Unleaded, Premium, Diesel, LPG, and more
-- 🔍 **Advanced Search** - Filter by price, distance, brand, and amenities
-- 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile
+- 🗺️ **Interactive Map** - Find stations with clustering and custom markers
+- 💰 **Price Comparison** - Real-time fuel price comparisons across stations
+- 📍 **Location-Based** - Geolocation-powered nearby station discovery
+- ⛽ **Multiple Fuel Types** - Unleaded (91/95/98), Diesel, LPG, E10, E85
+- 🔍 **Advanced Search** - Filter by price, distance, brand, amenities
+- 📱 **Responsive Design** - Optimized for desktop, tablet, and mobile
 
 ### Advanced Features
-- ⚡ **Real-Time Data** - Up-to-date fuel prices from multiple sources
+- ⚡ **Real-Time Data** - Live fuel prices from multiple sources
 - 🌙 **Dark Mode** - System-aware theme switching
-- ♿ **Accessible** - WCAG 2.1 AA compliant with keyboard navigation
-- 🚀 **Fast Performance** - Optimized for speed with lazy loading
-- 📄 **Smart Pagination** - Smooth, animated page transitions
-- 🎨 **Fluid Grid Layout** - Responsive design with uniform card heights
-- 🔄 **ISR Support** - Incremental Static Regeneration for optimal performance
-- 📊 **Analytics** - Privacy-focused analytics with user insights
+- ♿ **WCAG 2.1 AA** - Full accessibility compliance
+- 🚀 **Core Web Vitals** - 90+ Lighthouse scores
+- 📄 **ISR Support** - Incremental Static Regeneration
+- 📊 **Privacy-Focused Analytics** - User insights without tracking
+- 🎯 **Advanced SEO** - Structured data, meta tags, Open Graph
 
-## 🏗️ Architecture
+## 🏗️ Tech Stack
 
-### System Architecture
-
-```mermaid
-graph TB
-    subgraph "Frontend Layer"
-        A[Next.js 15 App Router] --> B[React 19 Components]
-        B --> C[Tailwind CSS]
-        B --> D[Framer Motion]
-    end
-
-    subgraph "State Management"
-        E[TanStack Query] --> F[SWR]
-        G[React Context] --> H[Custom Hooks]
-    end
-
-    subgraph "Data Layer"
-        I[Baserow API] --> J[Data Validation]
-        K[Local Storage] --> L[Cache Management]
-    end
-
-    subgraph "Services"
-        M[Google Places API] --> N[Geolocation Service]
-        O[Analytics Service] --> P[Performance Monitoring]
-    end
-
-    A --> E
-    E --> I
-    I --> M
-```
-
-### Design Patterns
-
-#### Atomic Design Structure
-```
-src/components/
-├── atoms/           # Basic building blocks (Button, Input, Badge)
-├── molecules/       # Simple combinations (SearchBar, StationCard)
-├── organisms/       # Complex components (Hero, SearchSection)
-├── templates/       # Page layouts (MainLayout)
-└── pages/          # Full page components
-```
-
-#### Layered Architecture
-```
-UI Layer (Components)
-    ↓
-Hooks Layer (State Management)
-    ↓
-Service Layer (Business Logic)
-    ↓
-Repository Layer (Data Access)
-    ↓
-API Layer (External Services)
-```
-
-### Key Principles
-- ✅ **Separation of Concerns** - Clear boundaries between layers
-- ✅ **Single Responsibility** - Each component has one clear purpose
-- ✅ **DRY (Don't Repeat Yourself)** - Reusable components and utilities
-- ✅ **Type Safety** - Full TypeScript coverage
-- ✅ **Testability** - Comprehensive testing strategy
-- ✅ **Performance** - Optimized for speed and efficiency
-- ✅ **Accessibility** - Built with accessibility in mind
-
-## 🛠️ Tech Stack
-
-### Core Technologies
-- **Framework**: [Next.js 15](https://nextjs.org/) with App Router
-- **UI Library**: [React 19](https://reactjs.org/)
-- **Language**: [TypeScript 5.3](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS 3.4](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **React 19** - UI library with Server Components
+- **TypeScript 5.3** - Type safety and better DX
+- **Tailwind CSS 3.4** - Utility-first styling
+- **Framer Motion** - Smooth animations
+- **Lucide React** - Icon library
 
 ### State Management & Data
-- **State Management**: [TanStack Query](https://tanstack.com/query) + [SWR](https://swr.vercel.app/)
-- **Forms**: React Hook Form with Zod validation
-- **Database**: [Baserow](https://baserow.io/) (API-based)
-- **Maps**: [React Leaflet](https://react-leaflet.js.org/)
+- **TanStack Query** - Server state management
+- **SWR** - Data fetching and caching
+- **React Context** - Global state management
+- **Zod** - Runtime type validation
 
-### Development & Quality
-- **Testing**: [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/)
-- **E2E Testing**: [Playwright](https://playwright.dev/)
-- **Code Quality**: [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)
-- **Type Checking**: [TypeScript](https://www.typescriptlang.org/)
-- **Git Hooks**: [Husky](https://typicode.github.io/husky/) + [lint-staged](https://github.com/okonet/lint-staged)
+### UI Component Library
+- **Atomic Design** - Atoms → Molecules → Organisms
+- **shadcn/ui** - Reusable UI primitives
+- **Radix UI** - Accessible component primitives
+- **class-variance-authority** - Component variants
 
-### Performance & Analytics
-- **Performance**: [Web Vitals](https://web.dev/vitals/) monitoring
-- **Analytics**: [Vercel Analytics](https://vercel.com/analytics) + [Google Analytics](https://analytics.google.com/)
-- **Bundle Analysis**: [Next.js Bundle Analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)
-- **Lighthouse**: Automated performance auditing
+### SEO & Performance
+- **Next.js Metadata API** - Advanced SEO configuration
+- **JSON-LD Schema** - Structured data markup
+- **next/image** - Optimized image loading
+- **Core Web Vitals** - Performance monitoring
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
-- **Node.js**: 20.x or higher
-- **npm**: 9.0 or higher
-- **Git**: Latest version
+- Node.js 22.x or higher
+- npm 10.x or higher
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/petrol-price-near-me.git
-   cd petrol-price-near-me
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/petrol-price-near-me.git
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Navigate to project directory
+cd petrol-price-near-me
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
+# Install dependencies
+npm install
 
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
+# Copy environment variables
+cp .env.example .env.local
 
-5. **Open your browser**
-   ```
-   http://localhost:3000
-   ```
-
-## 🔧 Development Setup
-
-### Environment Variables
-
-Create a `.env.local` file with the following variables:
-
-```env
-# Application
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_APP_VERSION=2.0.0
-
-# Baserow Configuration
-BASEROW_API_TOKEN=your_baserow_token
-BASEROW_PETROL_STATIONS_TABLE_ID=623329
-BASEROW_FUEL_PRICES_TABLE_ID=623330
-
-# Authentication (Optional)
-NEXTAUTH_SECRET=your_nextauth_secret
-NEXTAUTH_URL=http://localhost:3000
-
-# Analytics (Optional)
-NEXT_PUBLIC_GA_TRACKING_ID=your_ga_tracking_id
-NEXT_PUBLIC_GTM_ID=your_gtm_id
-
-# Google Places API (Optional)
-NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your_google_places_key
-
-# Performance Monitoring (Optional)
-NEXT_PUBLIC_VERCEL_ANALYTICS_ID=your_vercel_analytics_id
+# Start development server
+npm run dev
 ```
 
-### Available Scripts
+Visit [http://localhost:3000](http://localhost:3000) to see the application.
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint issues |
-| `npm run format` | Format code with Prettier |
-| `npm run type-check` | Check TypeScript types |
-| `npm run test` | Run tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Run tests with coverage |
-| `npm run test:e2e` | Run end-to-end tests |
-| `npm run analyze` | Analyze bundle size |
-| `npm run lighthouse` | Run Lighthouse audit |
+### Build for Production
 
-### Development Workflow
+```bash
+# Build the application
+npm run build
 
-1. **Create a feature branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+# Start production server
+npm start
+```
 
-2. **Make your changes**
-   - Write code following the established patterns
-   - Add tests for new functionality
-   - Update documentation as needed
+## 🧩 Component Library
 
-3. **Run quality checks**
-   ```bash
-   npm run quality
-   ```
+### Button Component
 
-4. **Commit your changes**
-   ```bash
-   git add .
-   git commit -m "feat: add your feature description"
-   ```
+```tsx
+import { Button } from '@/components/ui/button';
+import { Plus, Download } from 'lucide-react';
 
-5. **Push and create PR**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+// Variants
+<Button variant="default">Default</Button>
+<Button variant="destructive">Delete</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="link">Link</Button>
+<Button variant="gradient">Gradient</Button>
+
+// Sizes
+<Button size="sm">Small</Button>
+<Button size="default">Default</Button>
+<Button size="lg">Large</Button>
+
+// With Icons
+<Button leftIcon={<Plus />}>Add Item</Button>
+<Button rightIcon={<Download />}>Download</Button>
+
+// Loading State
+<Button loading>Loading...</Button>
+```
+
+### Card Component
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
+
+<Card>
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Card description goes here</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Main card content
+  </CardContent>
+  <CardFooter>
+    <Button>Action</Button>
+  </CardFooter>
+</Card>
+```
+
+### Input Component
+
+```tsx
+import { Input } from '@/components/ui/input';
+import { Search, Mail } from 'lucide-react';
+
+<Input
+  label="Email Address"
+  type="email"
+  placeholder="you@example.com"
+  leftIcon={<Mail />}
+  helperText="We'll never share your email"
+/>
+
+<Input
+  label="Search"
+  error={hasError}
+  errorMessage="This field is required"
+  leftIcon={<Search />}
+/>
+
+<Input
+  label="Password"
+  type="password"
+  rightIcon={<Eye />}
+/>
+```
+
+### Modal/Dialog Component
+
+```tsx
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Open Dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you absolutely sure?</DialogTitle>
+      <DialogDescription>
+        This action cannot be undone.
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button variant="destructive">Delete</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+### Navbar Component
+
+```tsx
+import { Navbar } from '@/components/ui/navbar';
+
+<Navbar
+  brand={{
+    name: 'Petrol Price Near Me',
+    logo: '/logo.svg',
+    href: '/',
+  }}
+  items={[
+    { label: 'Directory', href: '/directory' },
+    { label: 'Map', href: '/map' },
+    {
+      label: 'More',
+      href: '/',
+      children: [
+        { label: 'About', href: '/about' },
+        { label: 'FAQ', href: '/faq' },
+      ],
+    },
+  ]}
+  cta={{
+    label: 'Find Stations',
+    href: '/directory',
+  }}
+/>
+```
+
+## 🔍 SEO & Performance
+
+### SEO Optimizations
+
+#### 1. Metadata Configuration
+- **Title templates** for consistent branding
+- **Open Graph tags** for social sharing
+- **Twitter Cards** for rich previews
+- **Canonical URLs** to prevent duplicate content
+- **Structured data** (JSON-LD) for rich snippets
+
+#### 2. Core Web Vitals
+- **LCP** < 2.5s (Largest Contentful Paint)
+- **FID** < 100ms (First Input Delay)
+- **CLS** < 0.1 (Cumulative Layout Shift)
+- **FCP** < 1.8s (First Contentful Paint)
+
+#### 3. Image Optimization
+- **next/image** with automatic WebP/AVIF conversion
+- **Priority loading** for above-fold images
+- **Lazy loading** for below-fold content
+- **Blur placeholders** for smooth loading
+- **Responsive sizes** based on viewport
+
+#### 4. Structured Data
+```tsx
+import { StructuredData } from '@/components/StructuredData';
+import { generateWebSiteSchema } from '@/lib/schema';
+
+const schemas = generateWebSiteSchema(baseUrl);
+<StructuredData data={schemas} />
+```
+
+Available schemas:
+- WebSite (with SearchAction)
+- LocalBusiness
+- Place
+- Product (fuel offers)
+- FAQPage
+- Article/BlogPosting
+- BreadcrumbList
+
+### Performance Best Practices
+
+```tsx
+// Priority loading for hero images
+<Image
+  src="/hero.jpg"
+  alt="Hero"
+  priority
+  quality={90}
+/>
+
+// Lazy loading for below-fold images
+<Image
+  src="/content.jpg"
+  alt="Content"
+  loading="lazy"
+  quality={75}
+/>
+
+// Dynamic imports for heavy components
+const StationMap = dynamic(() => import('./StationMap'), {
+  loading: () => <LoadingSpinner />,
+  ssr: false,
+});
+```
 
 ## 📁 Project Structure
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes
-│   ├── directory/         # Station directory pages
-│   ├── stations/          # Individual station pages
-│   └── globals.css        # Global styles
-├── components/            # React components (Atomic Design)
-│   ├── atoms/            # Basic UI components
-│   ├── molecules/        # Composite components
-│   ├── organisms/        # Complex components
-│   ├── templates/        # Page layouts
-│   └── common/           # Shared components
-├── hooks/                # Custom React hooks
-├── lib/                  # Library code and utilities
-├── services/             # API services
-├── types/                # TypeScript type definitions
-├── utils/                # Utility functions
-├── styles/               # Global styles and design system
-└── data/                 # Static data files
+├── app/                      # Next.js App Router
+│   ├── layout.tsx           # Root layout with metadata
+│   ├── page.tsx             # Home page
+│   ├── stations/[id]/       # Dynamic station pages
+│   └── api/                 # API routes
+├── components/
+│   ├── ui/                  # Base UI components
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── input.tsx
+│   │   ├── dialog.tsx
+│   │   └── navbar.tsx
+│   ├── atoms/               # Atomic design - atoms
+│   ├── molecules/           # Atomic design - molecules
+│   ├── organisms/           # Atomic design - organisms
+│   └── pages/               # Page-level components
+├── lib/
+│   ├── seo/
+│   │   └── metadata.ts      # SEO metadata utilities
+│   ├── schema.ts            # JSON-LD structured data
+│   └── utils.ts             # Utility functions
+├── styles/
+│   └── globals.css          # Global styles
+└── types/
+    └── station.ts           # TypeScript types
 ```
 
-### Key Directories
+## 🔐 Environment Variables
 
-- **`src/components/`**: All React components organized by Atomic Design principles
-- **`src/hooks/`**: Custom React hooks for state management and side effects
-- **`src/lib/`**: Shared utilities, API clients, and business logic
-- **`src/services/`**: External service integrations (APIs, analytics, etc.)
-- **`src/types/`**: TypeScript type definitions and interfaces
-- **`src/utils/`**: Pure utility functions for formatting, validation, etc.
+Create a `.env.local` file:
 
-## 🧪 Testing
+```env
+# App Configuration
+NEXT_PUBLIC_APP_URL=https://petrolpricenearme.com.au
 
-### Testing Strategy
+# Google Services
+GOOGLE_SITE_VERIFICATION=your_verification_code
+NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your_api_key
 
-The project uses a comprehensive testing strategy with multiple levels:
+# Baserow (Data Source)
+BASEROW_URL=your_baserow_url
+BASEROW_TOKEN=your_baserow_token
 
-#### Unit Tests
-- **Framework**: Jest + React Testing Library
-- **Coverage**: Components, hooks, utilities, and services
-- **Location**: `src/__tests__/` and `*.test.tsx` files
+# Analytics
+NEXT_PUBLIC_GA_ID=your_ga_id
 
-#### Integration Tests
-- **Framework**: Jest + React Testing Library
-- **Coverage**: Component interactions and data flow
-- **Location**: `src/__tests__/integration/`
+# Optional
+YANDEX_VERIFICATION=your_yandex_code
+BING_VERIFICATION=your_bing_code
+```
 
-#### End-to-End Tests
-- **Framework**: Playwright
-- **Coverage**: Critical user journeys
-- **Location**: `e2e/` directory
+## 🚢 Deployment
 
-#### Accessibility Tests
-- **Framework**: Jest + jest-axe
-- **Coverage**: WCAG 2.1 AA compliance
-- **Location**: `src/__tests__/a11y/`
+### Vercel (Recommended)
 
-### Running Tests
+1. Push code to GitHub
+2. Import project in Vercel
+3. Add environment variables
+4. Deploy automatically on push
+
+### Docker
 
 ```bash
-# Run all tests
-npm run test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run end-to-end tests
-npm run test:e2e
-
-# Run accessibility tests
-npm run test:a11y
+docker build -t petrol-price-near-me .
+docker run -p 3000:3000 petrol-price-near-me
 ```
 
-### Test Configuration
-
-- **Jest**: Configured in `jest.config.js`
-- **Playwright**: Configured in `playwright.config.ts`
-- **Coverage**: Minimum 80% coverage required
-- **CI/CD**: Tests run automatically on every PR
-
-## 🚀 Deployment
-
-### Production Deployment
-
-#### Vercel (Recommended)
-
-1. **Connect to Vercel**
-   - Import project from GitHub
-   - Configure environment variables
-   - Deploy automatically
-
-2. **Environment Variables**
-   ```bash
-   # Set in Vercel dashboard
-   BASEROW_API_TOKEN=your_production_token
-   NEXT_PUBLIC_APP_URL=https://your-domain.com
-   # ... other variables
-   ```
-
-3. **Custom Domain** (Optional)
-   - Configure custom domain in Vercel dashboard
-   - Update DNS settings as instructed
-
-#### Docker Deployment
-
-1. **Build Docker image**
-   ```bash
-   docker build -t petrol-price-app .
-   ```
-
-2. **Run container**
-   ```bash
-   docker run -p 3000:3000 petrol-price-app
-   ```
-
-#### Manual Deployment
-
-1. **Build for production**
-   ```bash
-   npm run build
-   ```
-
-2. **Start production server**
-   ```bash
-   npm run start
-   ```
-
-### Deployment Checklist
-
-- [ ] Environment variables configured
-- [ ] Database connections tested
-- [ ] Performance optimizations enabled
-- [ ] Analytics configured
-- [ ] Error monitoring set up
-- [ ] SSL certificate installed
-- [ ] CDN configured (if applicable)
-
-## ⚡ Performance
-
-### Performance Optimizations
-
-#### Core Web Vitals
-- **LCP (Largest Contentful Paint)**: < 2.5s
-- **FID (First Input Delay)**: < 100ms
-- **CLS (Cumulative Layout Shift)**: < 0.1
-
-#### Optimization Strategies
-- **Code Splitting**: Automatic route-based splitting
-- **Lazy Loading**: Components and images loaded on demand
-- **Image Optimization**: Next.js Image component with WebP/AVIF
-- **Bundle Optimization**: Tree shaking and dead code elimination
-- **Caching**: Aggressive caching for static assets
-- **CDN**: Global content delivery network
-
-#### Performance Monitoring
-- **Web Vitals**: Real-time performance monitoring
-- **Lighthouse**: Automated performance auditing
-- **Bundle Analysis**: Regular bundle size monitoring
-- **Core Web Vitals**: Google Search Console integration
-
-### Performance Commands
+## 📝 Available Scripts
 
 ```bash
-# Run Lighthouse audit
-npm run lighthouse
+# Development
+npm run dev              # Start dev server
+npm run build            # Build for production
+npm start                # Start production server
 
-# Analyze bundle size
-npm run analyze
+# Code Quality
+npm run lint             # Run ESLint
+npm run lint:fix         # Fix ESLint errors
+npm run type-check       # TypeScript type checking
+npm run format           # Format with Prettier
 
-# Performance audit
-npm run performance:audit
+# Testing
+npm run test             # Run tests
+npm run test:watch       # Watch mode
+npm run test:coverage    # Coverage report
+npm run test:e2e         # E2E tests
+
+# Performance
+npm run analyze          # Bundle analysis
+npm run lighthouse       # Lighthouse audit
 ```
-
-## ♿ Accessibility
-
-### Accessibility Features
-
-- **WCAG 2.1 AA Compliant**: Meets accessibility standards
-- **Keyboard Navigation**: Full keyboard support
-- **Screen Reader Support**: Semantic HTML and ARIA labels
-- **Color Contrast**: High contrast ratios for readability
-- **Focus Management**: Clear focus indicators
-- **Alternative Text**: Descriptive alt text for images
-
-### Accessibility Testing
-
-```bash
-# Run accessibility tests
-npm run test:a11y
-
-# Check accessibility with Lighthouse
-npm run lighthouse -- --only-categories=accessibility
-```
-
-### Accessibility Guidelines
-
-1. **Semantic HTML**: Use proper HTML elements
-2. **ARIA Labels**: Provide descriptive labels
-3. **Keyboard Navigation**: Ensure all functionality is keyboard accessible
-4. **Color Contrast**: Maintain high contrast ratios
-5. **Focus Management**: Clear focus indicators and logical tab order
 
 ## 🤝 Contributing
 
-### Getting Started
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
 
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Make your changes**
-4. **Run tests**
-   ```bash
-   npm run test
-   ```
-5. **Commit your changes**
-   ```bash
-   git commit -m "feat: add amazing feature"
-   ```
-6. **Push to your branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-7. **Open a Pull Request**
-
-### Development Guidelines
-
-#### Code Style
-- Use TypeScript for all new code
-- Follow ESLint and Prettier configurations
-- Write meaningful commit messages
-- Add tests for new functionality
-
-#### Component Guidelines
-- Follow Atomic Design principles
-- Use semantic HTML elements
-- Implement proper accessibility features
-- Write comprehensive tests
-
-#### Pull Request Process
-1. Ensure all tests pass
-2. Update documentation as needed
-3. Request review from maintainers
-4. Address feedback promptly
-
-### Code of Conduct
-
-This project follows the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct. Please read and follow these guidelines when contributing.
-
-## 📞 Support
-
-### Getting Help
-
-- **Documentation**: Check this README and inline code comments
-- **Issues**: [GitHub Issues](https://github.com/yourusername/petrol-price-near-me/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/petrol-price-near-me/discussions)
-- **Email**: contact@petrolpricenearme.com.au
-
-### Contact Information
-
-- **Developer**: Al T
-- **Mobile**: 0423 530 204
-- **Email**: contact@petrolpricenearme.com.au
-- **Website**: https://petrolpricenearme.com.au
-
-### Reporting Issues
-
-When reporting issues, please include:
-- Description of the problem
-- Steps to reproduce
-- Expected behavior
-- Actual behavior
-- Browser and device information
-- Screenshots (if applicable)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 📞 Support
+
+- **Documentation**: [Full Documentation](https://docs.petrolpricenearme.com.au)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/petrol-price-near-me/issues)
+- **Email**: support@petrolpricenearme.com.au
+
 ## 🙏 Acknowledgments
 
-- **Next.js Team** - For the amazing framework
-- **Vercel** - For hosting and analytics
-- **Baserow** - For the database solution
-- **OpenStreetMap** - For map tiles
-- **All Contributors** - For their valuable contributions
-
-## 🗺️ Roadmap
-
-### Upcoming Features
-- [ ] Mobile app (React Native)
-- [ ] Price alerts and notifications
-- [ ] User accounts and favorites
-- [ ] Price history and trends
-- [ ] API for developers
-- [ ] Integration with fuel card providers
-
-### Performance Improvements
-- [ ] Service Worker implementation
-- [ ] Advanced caching strategies
-- [ ] Image optimization improvements
-- [ ] Bundle size reduction
-
-### Developer Experience
-- [ ] Storybook documentation
-- [ ] Component testing improvements
-- [ ] CI/CD pipeline enhancements
-- [ ] Developer tooling improvements
+- [Next.js](https://nextjs.org/) - The React framework
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+- [shadcn/ui](https://ui.shadcn.com/) - UI component library
+- [Lucide](https://lucide.dev/) - Icon library
 
 ---
 
-**Made with ❤️ in Australia**
-
-*Find the cheapest petrol prices near you with our comprehensive, accessible, and performant web application.*
+Made with ❤️ by the Petrol Price Near Me team

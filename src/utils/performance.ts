@@ -1,240 +1,473 @@
 /**
- * Performance Optimization Utilities
- * Tools for measuring and improving app performance
+ * Performance Utilities
+ * 
+ * Comprehensive performance optimization utilities including:
+ * - Web Vitals tracking
+ * - Resource timing analysis
+ * - Image optimization helpers
+ * - Bundle size monitoring
+ * - Performance reporting
  */
 
-/**
- * Dynamically load scripts without blocking
- */
-export function loadScriptAsync(src: string, id?: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (id && document.getElementById(id)) {
-      resolve();
-      return;
-    }
+import type { Metric } from 'web-vitals';
 
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = true;
-    if (id) script.id = id;
+// ============================================================================
+// Web Vitals Tracking
+// ============================================================================
 
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-
-    document.body.appendChild(script);
-  });
+export interface PerformanceMetrics {
+  LCP?: number; // Largest Contentful Paint
+  FID?: number; // First Input Delay
+  CLS?: number; // Cumulative Layout Shift
+  TTFB?: number; // Time to First Byte
+  FCP?: number; // First Contentful Paint
+  INP?: number; // Interaction to Next Paint
 }
 
 /**
- * Preload critical resources
+ * Track Web Vitals performance metrics
  */
-export function preloadResource(href: string, as: string, type?: string) {
-  const link = document.createElement('link');
-  link.rel = 'preload';
-  link.href = href;
-  link.as = as;
-  if (type) link.type = type;
-  document.head.appendChild(link);
-}
+export function trackWebVitals(metric: Metric) {
+  const { name, value, id, delta } = metric;
 
-/**
- * Prefetch resources for future navigation
- */
-export function prefetchResource(href: string) {
-  const link = document.createElement('link');
-  link.rel = 'prefetch';
-  link.href = href;
-  document.head.appendChild(link);
-}
+  // Log to console in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[Web Vitals] ${name}:`, {
+      value: Math.round(value * 100) / 100,
+      delta: Math.round(delta * 100) / 100,
+      id,
+    });
+  }
 
-/**
- * Preconnect to external domains
- */
-export function preconnect(href: string, crossorigin: boolean = false) {
-  const link = document.createElement('link');
-  link.rel = 'preconnect';
-  link.href = href;
-  if (crossorigin) link.crossOrigin = 'anonymous';
-  document.head.appendChild(link);
-}
+  // Send to analytics (e.g., Google Analytics, Vercel Analytics)
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', name, {
+      value: Math.round(value),
+      event_label: id,
+      non_interaction: true,
+    });
+  }
 
-/**
- * DNS prefetch for external domains
- */
-export function dnsPrefetch(href: string) {
-  const link = document.createElement('link');
-  link.rel = 'dns-prefetch';
-  link.href = href;
-  document.head.appendChild(link);
-}
-
-/**
- * Measure First Contentful Paint (FCP)
- */
-export function measureFCP(callback: (value: number) => void) {
-  if (typeof window === 'undefined') return;
-
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      if (entry.name === 'first-contentful-paint') {
-        callback(entry.startTime);
-        observer.disconnect();
-      }
-    }
-  });
-
+  // Store in localStorage for performance dashboard
   try {
-    observer.observe({ entryTypes: ['paint'] });
+    const metrics = JSON.parse(localStorage.getItem('web-vitals') || '{}');
+    metrics[name] = {
+      value,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem('web-vitals', JSON.stringify(metrics));
   } catch (e) {
-    console.warn('PerformanceObserver not supported');
+    // Ignore localStorage errors
   }
 }
 
 /**
- * Measure Largest Contentful Paint (LCP)
+ * Get stored Web Vitals metrics
  */
-export function measureLCP(callback: (value: number) => void) {
-  if (typeof window === 'undefined') return;
-
-  const observer = new PerformanceObserver((list) => {
-    const entries = list.getEntries();
-    const lastEntry = entries[entries.length - 1];
-    callback(lastEntry.startTime);
-  });
-
+export function getStoredMetrics(): Partial<PerformanceMetrics> {
   try {
-    observer.observe({ entryTypes: ['largest-contentful-paint'] });
-  } catch (e) {
-    console.warn('PerformanceObserver not supported');
+    const metrics = JSON.parse(localStorage.getItem('web-vitals') || '{}');
+    return Object.keys(metrics).reduce((acc, key) => {
+      acc[key as keyof PerformanceMetrics] = metrics[key].value;
+      return acc;
+    }, {} as Partial<PerformanceMetrics>);
+  } catch {
+    return {};
   }
 }
 
-/**
- * Measure First Input Delay (FID)
- */
-export function measureFID(callback: (value: number) => void) {
-  if (typeof window === 'undefined') return;
+// ============================================================================
+// Resource Timing Analysis
+// ============================================================================
 
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      const firstInput = entry as PerformanceEventTiming;
-      callback(firstInput.processingStart - firstInput.startTime);
-      observer.disconnect();
-    }
-  });
-
-  try {
-    observer.observe({ entryTypes: ['first-input'] });
-  } catch (e) {
-    console.warn('PerformanceObserver not supported');
-  }
-}
-
-/**
- * Measure Cumulative Layout Shift (CLS)
- */
-export function measureCLS(callback: (value: number) => void) {
-  if (typeof window === 'undefined') return;
-
-  let clsValue = 0;
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      if (!(entry as any).hadRecentInput) {
-        clsValue += (entry as any).value;
-        callback(clsValue);
-      }
-    }
-  });
-
-  try {
-    observer.observe({ entryTypes: ['layout-shift'] });
-  } catch (e) {
-    console.warn('PerformanceObserver not supported');
-  }
-}
-
-/**
- * Report all Web Vitals
- */
-export function reportWebVitals(onReport: (metric: {
+export interface ResourceTiming {
   name: string;
-  value: number;
-  rating: 'good' | 'needs-improvement' | 'poor';
-}) => void) {
-  measureFCP((value) => {
-    onReport({
-      name: 'FCP',
-      value,
-      rating: value < 1800 ? 'good' : value < 3000 ? 'needs-improvement' : 'poor',
-    });
-  });
-
-  measureLCP((value) => {
-    onReport({
-      name: 'LCP',
-      value,
-      rating: value < 2500 ? 'good' : value < 4000 ? 'needs-improvement' : 'poor',
-    });
-  });
-
-  measureFID((value) => {
-    onReport({
-      name: 'FID',
-      value,
-      rating: value < 100 ? 'good' : value < 300 ? 'needs-improvement' : 'poor',
-    });
-  });
-
-  measureCLS((value) => {
-    onReport({
-      name: 'CLS',
-      value,
-      rating: value < 0.1 ? 'good' : value < 0.25 ? 'needs-improvement' : 'poor',
-    });
-  });
+  duration: number;
+  size: number;
+  type: string;
 }
 
 /**
- * Defer non-critical JavaScript
+ * Analyze resource timing for optimization insights
  */
-export function deferNonCritical(fn: () => void) {
-  if (typeof window === 'undefined') return;
+export function analyzeResourceTiming(): ResourceTiming[] {
+  if (typeof window === 'undefined' || !window.performance) {
+    return [];
+  }
 
-  if ('requestIdleCallback' in window) {
-    (window as any).requestIdleCallback(fn);
-  } else {
-    setTimeout(fn, 1);
+  const resources = window.performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+  
+  return resources
+    .map((resource) => ({
+      name: resource.name,
+      duration: resource.duration,
+      size: (resource as any).transferSize || 0,
+      type: (resource as any).initiatorType || 'unknown',
+    }))
+    .sort((a, b) => b.duration - a.duration)
+    .slice(0, 10); // Top 10 slowest resources
+}
+
+/**
+ * Get largest resources for optimization
+ */
+export function getLargestResources(count: number = 5): ResourceTiming[] {
+  const resources = analyzeResourceTiming();
+  return resources
+    .sort((a, b) => b.size - a.size)
+    .slice(0, count);
+}
+
+// ============================================================================
+// Image Optimization
+// ============================================================================
+
+/**
+ * Generate optimized Next.js Image src with proper sizing
+ */
+export function generateImageSrc(
+  src: string,
+  width: number = 1200,
+  quality: number = 85
+): string {
+  // If already absolute URL, return as-is
+  if (src.startsWith('http://') || src.startsWith('https://')) {
+    return src;
+  }
+
+  // Return optimized Next.js image path
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`;
+}
+
+/**
+ * Get responsive image sizes for different viewports
+ */
+export function getResponsiveSizes(breakpoints: {
+  mobile?: number;
+  tablet?: number;
+  desktop?: number;
+  large?: number;
+} = {}): string {
+  const { mobile = 640, tablet = 768, desktop = 1024, large = 1280 } = breakpoints;
+  
+  return `(max-width: ${mobile}px) ${mobile}px, (max-width: ${tablet}px) ${tablet}px, (max-width: ${desktop}px) ${desktop}px, ${large}px`;
+}
+
+/**
+ * Preload critical images for LCP optimization
+ */
+export function preloadImage(href: string, as: 'image' = 'image') {
+  if (typeof document !== 'undefined') {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = as;
+    link.href = href;
+    document.head.appendChild(link);
+  }
+}
+
+// ============================================================================
+// Code Splitting & Lazy Loading
+// ============================================================================
+
+/**
+ * Dynamic import with loading state
+ */
+export async function dynamicImport<T>(
+  importFn: () => Promise<{ default: T }>,
+  fallback?: React.ComponentType
+): Promise<{ default: T }> {
+  try {
+    return await importFn();
+  } catch (error) {
+    console.error('Dynamic import failed:', error);
+    if (fallback) {
+      return { default: fallback as unknown as T };
+    }
+    throw error;
   }
 }
 
 /**
- * Check if connection is slow (useful for adaptive loading)
+ * Check if component should be preloaded
  */
-export function isSlowConnection(): boolean {
-  if (typeof navigator === 'undefined' || !(navigator as any).connection) {
-    return false;
+export function shouldPreload(preloadProbability: number = 0.5): boolean {
+  // Preload based on connection speed
+  if (typeof navigator !== 'undefined' && (navigator as any).connection) {
+    const connection = (navigator as any).connection;
+    
+    // Don't preload on slow connections
+    if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+      return false;
+    }
+    
+    // Always preload on fast connections
+    if (connection.effectiveType === '4g') {
+      return true;
+    }
   }
+  
+  return Math.random() < preloadProbability;
+}
 
-  const connection = (navigator as any).connection;
-  return (
-    connection.saveData ||
-    connection.effectiveType === 'slow-2g' ||
-    connection.effectiveType === '2g'
-  );
+// ============================================================================
+// Bundle Size Analysis
+// ============================================================================
+
+/**
+ * Estimate bundle size impact
+ */
+export function estimateBundleSize(kb: number): 'small' | 'medium' | 'large' {
+  if (kb < 50) return 'small';
+  if (kb < 100) return 'medium';
+  return 'large';
 }
 
 /**
- * Get device memory (for adaptive loading)
+ * Warn about large imports
  */
-export function getDeviceMemory(): number | undefined {
-  if (typeof navigator === 'undefined') return undefined;
-  return (navigator as any).deviceMemory;
+export function warnLargeImport(packageName: string, size: number) {
+  if (process.env.NODE_ENV === 'development' && size > 100) {
+    console.warn(
+      `[Performance] Large import detected: ${packageName} (${size}KB). Consider lazy loading.`
+    );
+  }
+}
+
+// ============================================================================
+// Performance Monitoring
+// ============================================================================
+
+/**
+ * Measure function execution time
+ */
+export function measurePerformance<T>(
+  fn: () => T,
+  label: string
+): T {
+  if (typeof window !== 'undefined' && window.performance) {
+    const start = performance.now();
+    const result = fn();
+    const end = performance.now();
+    
+    const duration = end - start;
+    
+    if (duration > 100) {
+      console.warn(`[Performance] Slow operation "${label}": ${duration.toFixed(2)}ms`);
+    }
+    
+    return result;
+  }
+  
+  return fn();
 }
 
 /**
- * Check if device has low memory (< 4GB)
+ * Async performance measurement
  */
-export function hasLowMemory(): boolean {
-  const memory = getDeviceMemory();
-  return memory !== undefined && memory < 4;
+export async function measureAsyncPerformance<T>(
+  fn: () => Promise<T>,
+  label: string
+): Promise<T> {
+  if (typeof window !== 'undefined' && window.performance) {
+    const start = performance.now();
+    const result = await fn();
+    const end = performance.now();
+    
+    const duration = end - start;
+    
+    if (duration > 1000) {
+      console.warn(`[Performance] Slow async operation "${label}": ${duration.toFixed(2)}ms`);
+    }
+    
+    return result;
+  }
+  
+  return fn();
 }
+
+/**
+ * Debounce function for performance optimization
+ */
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout | null = null;
+  
+  return function executedFunction(...args: Parameters<T>) {
+    const later = () => {
+      timeout = null;
+      func(...args);
+    };
+    
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    
+    timeout = setTimeout(later, wait);
+  };
+}
+
+/**
+ * Throttle function for performance optimization
+ */
+export function throttle<T extends (...args: any[]) => any>(
+  func: T,
+  limit: number
+): (...args: Parameters<T>) => void {
+  let inThrottle: boolean;
+  
+  return function executedFunction(...args: Parameters<T>) {
+    if (!inThrottle) {
+      func(...args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+
+// ============================================================================
+// Caching Utilities
+// ============================================================================
+
+/**
+ * Simple in-memory cache with TTL
+ */
+export class MemoryCache<T> {
+  private cache = new Map<string, { value: T; expiry: number }>();
+  
+  set(key: string, value: T, ttlMs: number) {
+    this.cache.set(key, {
+      value,
+      expiry: Date.now() + ttlMs,
+    });
+  }
+  
+  get(key: string): T | undefined {
+    const item = this.cache.get(key);
+    
+    if (!item) return undefined;
+    
+    if (Date.now() > item.expiry) {
+      this.cache.delete(key);
+      return undefined;
+    }
+    
+    return item.value;
+  }
+  
+  clear() {
+    this.cache.clear();
+  }
+}
+
+/**
+ * Get cache control headers for static assets
+ */
+export function getCacheHeaders(assetType: 'static' | 'dynamic' | 'api') {
+  const headers: Record<string, string> = {};
+  
+  switch (assetType) {
+    case 'static':
+      headers['Cache-Control'] = 'public, max-age=31536000, immutable';
+      break;
+    case 'dynamic':
+      headers['Cache-Control'] = 'public, max-age=3600, must-revalidate';
+      break;
+    case 'api':
+      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      break;
+  }
+  
+  return headers;
+}
+
+// ============================================================================
+// Performance Report Generation
+// ============================================================================
+
+export interface PerformanceReport {
+  metrics: Partial<PerformanceMetrics>;
+  resources: ResourceTiming[];
+  recommendations: string[];
+  score: number;
+}
+
+/**
+ * Generate comprehensive performance report
+ */
+export function generatePerformanceReport(): PerformanceReport {
+  const metrics = getStoredMetrics();
+  const resources = analyzeResourceTiming();
+  const recommendations: string[] = [];
+  
+  // Calculate performance score (0-100)
+  let score = 100;
+  
+  // Check LCP (target: < 2.5s)
+  if (metrics.LCP && metrics.LCP > 2500) {
+    score -= 20;
+    recommendations.push('LCP is slow. Optimize images and reduce render-blocking resources.');
+  }
+  
+  // Check FID (target: < 100ms)
+  if (metrics.FID && metrics.FID > 100) {
+    score -= 15;
+    recommendations.push('FID is high. Reduce JavaScript execution time and code splitting.');
+  }
+  
+  // Check CLS (target: < 0.1)
+  if (metrics.CLS && metrics.CLS > 0.1) {
+    score -= 15;
+    recommendations.push('CLS is high. Reserve space for images and avoid shifting content.');
+  }
+  
+  // Check TTFB (target: < 800ms)
+  if (metrics.TTFB && metrics.TTFB > 800) {
+    score -= 10;
+    recommendations.push('TTFB is slow. Consider using a CDN or edge caching.');
+  }
+  
+  // Check for large resources
+  const largeResources = resources.filter(r => r.size > 500 * 1024); // > 500KB
+  if (largeResources.length > 0) {
+    score -= 5 * largeResources.length;
+    recommendations.push(`Found ${largeResources.length} large resources (>500KB). Optimize images and enable compression.`);
+  }
+  
+  // Check for slow resources
+  const slowResources = resources.filter(r => r.duration > 1000); // > 1s
+  if (slowResources.length > 0) {
+    score -= 5 * slowResources.length;
+    recommendations.push(`Found ${slowResources.length} slow-loading resources (>1s). Use CDN and optimize.`);
+  }
+  
+  return {
+    metrics,
+    resources,
+    recommendations,
+    score: Math.max(0, score),
+  };
+}
+
+// Export all utilities
+export const performanceUtils = {
+  trackWebVitals,
+  getStoredMetrics,
+  analyzeResourceTiming,
+  getLargestResources,
+  generateImageSrc,
+  getResponsiveSizes,
+  preloadImage,
+  dynamicImport,
+  shouldPreload,
+  estimateBundleSize,
+  warnLargeImport,
+  measurePerformance,
+  measureAsyncPerformance,
+  debounce,
+  throttle,
+  generatePerformanceReport,
+  getCacheHeaders,
+};
