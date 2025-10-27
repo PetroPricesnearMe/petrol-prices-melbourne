@@ -1,6 +1,6 @@
 /**
  * Responsive Footer Component
- * 
+ *
  * A comprehensive, responsive footer with:
  * - Multi-column navigation sections
  * - Contact information display
@@ -8,7 +8,7 @@
  * - Adaptive grid layout
  * - Newsletter subscription
  * - Mobile-first responsive design
- * 
+ *
  * Features:
  * - Responsive grid that adapts from 1 to 4 columns
  * - Staggered entrance animations
@@ -439,4 +439,3 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
 };
 
 export default ResponsiveFooter;
-

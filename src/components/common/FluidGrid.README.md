@@ -4,13 +4,13 @@ A responsive, fluid grid system with consistent gutter spacing, uniform card hei
 
 ## Features
 
-✅ **Responsive Grid Columns**: 1 → 2 → 3 → 4 columns  
-✅ **Consistent Gutter Spacing**: Equal negative space using Tailwind gap utilities  
-✅ **Uniform Card Heights**: All cards maintain equal height in each row  
-✅ **Vertical Rhythm**: Consistent spacing between rows  
-✅ **Staggered Animations**: Smooth entrance animations with customizable delay  
-✅ **Fluid Gap Spacing**: Optional responsive gap sizes that scale with viewport  
-✅ **Mobile-First**: Designed for smallest screens first, then enhanced  
+✅ **Responsive Grid Columns**: 1 → 2 → 3 → 4 columns
+✅ **Consistent Gutter Spacing**: Equal negative space using Tailwind gap utilities
+✅ **Uniform Card Heights**: All cards maintain equal height in each row
+✅ **Vertical Rhythm**: Consistent spacing between rows
+✅ **Staggered Animations**: Smooth entrance animations with customizable delay
+✅ **Fluid Gap Spacing**: Optional responsive gap sizes that scale with viewport
+✅ **Mobile-First**: Designed for smallest screens first, then enhanced
 
 ## Quick Start
 
@@ -86,7 +86,7 @@ import { FluidGrid, GridItem } from '@/components/common';
 
 function BasicGrid() {
   const items = [/* your data */];
-  
+
   return (
     <FluidGrid>
       {items.map((item) => (
@@ -388,4 +388,3 @@ For issues or questions, please refer to:
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 - [Framer Motion Docs](https://www.framer.com/motion/)
 - Project README
-

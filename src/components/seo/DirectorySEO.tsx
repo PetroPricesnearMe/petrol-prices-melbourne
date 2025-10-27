@@ -1,6 +1,6 @@
 /**
  * Directory Listing SEO Component
- * 
+ *
  * Comprehensive SEO management for directory listings using next-seo
  * Features:
  * - Dynamic meta tags
@@ -9,7 +9,7 @@
  * - Twitter cards
  * - Open Graph tags
  * - Breadcrumb navigation schema
- * 
+ *
  * @module components/seo/DirectorySEO
  */
 
@@ -299,4 +299,3 @@ export const DefaultDirectorySEO: React.FC = () => {
 };
 
 export default DirectorySEO;
-

@@ -1,6 +1,6 @@
 /**
  * Fluid Responsive Grid Component
- * 
+ *
  * Implements a responsive grid with:
  * - Fluid columns: 1 → 2 → 3 → 4
  * - Consistent gutter spacing
@@ -179,4 +179,3 @@ export const GridItem: React.FC<{
 };
 
 export default FluidGrid;
-

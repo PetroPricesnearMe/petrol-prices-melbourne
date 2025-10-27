@@ -1,6 +1,6 @@
 /**
  * FluidGrid Usage Examples
- * 
+ *
  * This file demonstrates how to use the FluidGrid component
  * with different configurations for station cards and other content.
  */
@@ -104,4 +104,3 @@ export function StationCardsIntegrationExample() {
 const StationCard = ({ station, className, ...props }: any) => (
   <div className={className}>{/* Card content */}</div>
 );
-

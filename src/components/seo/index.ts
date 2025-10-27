@@ -1,6 +1,6 @@
 /**
  * SEO Components
- * 
+ *
  * Export all SEO-related components and utilities
  */
 
@@ -9,4 +9,3 @@ export { StructuredData, MultipleStructuredData } from './StructuredDataNext';
 export { DirectorySEO, DefaultDirectorySEO } from './DirectorySEO';
 
 export type { DirectorySEOProps } from './DirectorySEO';
-
