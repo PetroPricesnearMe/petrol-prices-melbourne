@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 
 import { StructuredData } from '@/components/StructuredData';
 import { InfiniteScrollDirectory } from '@/components/directory/InfiniteScrollDirectory';
+import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import metadataJson from '@/data/stations-metadata.json';
 import { generateWebSiteSchema } from '@/lib/schema';
 
@@ -50,7 +51,7 @@ export default function DirectoryPage() {
     <>
       {/* Structured Data */}
       <StructuredData data={structuredDataSchemas} />
-      
+
       {/* Header */}
       <header className="bg-gradient-primary text-white py-12 print-hidden">
         <div className="container mx-auto px-4">

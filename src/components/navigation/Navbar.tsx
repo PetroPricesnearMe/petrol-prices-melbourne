@@ -1,8 +1,8 @@
 /**
  * Responsive Navbar Component
- * 
+ *
  * Sticky navbar with center-aligned search, logo on left, dark mode toggle on right
- * 
+ *
  * @module components/navigation/Navbar
  */
 
@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 import { useTheme } from '@/components/providers/ThemeProvider';
 
 // ============================================================================
@@ -98,7 +98,7 @@ function SearchBar({ onSearch, placeholder = "Search stations...", className }: 
           )}
           aria-label="Search petrol stations"
         />
-        
+
         {/* Search Icon */}
         <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
           <svg
@@ -263,11 +263,11 @@ function DarkModeToggle({ className }: DarkModeToggleProps) {
 /**
  * Responsive sticky navbar with center search
  */
-export function Navbar({ 
-  className, 
-  onSearch, 
+export function Navbar({
+  className,
+  onSearch,
   searchPlaceholder = "Search stations...",
-  showSearch = true 
+  showSearch = true
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -307,7 +307,7 @@ export function Navbar({
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          
+
           {/* Logo - Left Side */}
           <motion.div
             className="flex-shrink-0"
@@ -397,9 +397,9 @@ export function Navbar({
                 </svg>
               </motion.button>
             )}
-            
+
             <DarkModeToggle />
-            
+
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"

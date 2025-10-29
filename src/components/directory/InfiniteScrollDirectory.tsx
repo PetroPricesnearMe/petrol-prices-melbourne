@@ -16,7 +16,7 @@ import { StationGrid } from '@/components/cards/StationCard';
 import { StationDetailsModal } from '@/components/modals/Modal';
 import { ViewToggle, DirectoryView, StationCardGrid, StationCardList } from '@/components/toggle/ViewToggle';
 import { useAdvancedInfiniteStations } from '@/hooks/useInfiniteStations';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 import type { Station } from '@/types/station';
 
 // ============================================================================
@@ -59,7 +59,7 @@ interface LoadingStatesProps {
 /**
  * Filter bar component for the directory
  */
-function FilterBar({ filters, onFiltersChange, totalCount, currentView, onViewChange, className }: FilterBarProps) {
+export function FilterBar({ filters, onFiltersChange, totalCount, currentView, onViewChange, className }: FilterBarProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleFilterChange = useCallback((key: string, value: any) => {
@@ -262,7 +262,7 @@ function FilterBar({ filters, onFiltersChange, totalCount, currentView, onViewCh
 /**
  * Loading states component
  */
-function LoadingStates({ isInitialLoading, isLoadingMore, loadingProgress, className }: LoadingStatesProps) {
+export function LoadingStates({ isInitialLoading, isLoadingMore, loadingProgress, className }: LoadingStatesProps) {
   if (!isInitialLoading && !isLoadingMore) return null;
 
   return (
@@ -479,5 +479,4 @@ export function InfiniteScrollDirectory({
 // EXPORTS
 // ============================================================================
 
-export { InfiniteScrollDirectory, FilterBar, LoadingStates };
 export type { InfiniteScrollDirectoryProps };

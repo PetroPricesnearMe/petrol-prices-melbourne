@@ -1,9 +1,9 @@
 /**
  * Detailed Listing Page Component
- * 
+ *
  * Comprehensive listing page with hero image, tabs for description/reviews/map,
  * and responsive sections
- * 
+ *
  * @module components/pages/DetailedListingPage
  */
 
@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES
@@ -123,7 +123,7 @@ function Tab({ id, label, icon, content, active, onClick }: TabProps) {
 /**
  * Hero section with image, title, and key information
  */
-function HeroSection({
+export function HeroSection({
   title,
   subtitle,
   heroImage,
@@ -268,7 +268,7 @@ function HeroSection({
                     {currency}{price.toLocaleString()}
                   </div>
                   <div className="text-white/80 text-sm">
-                    {availability.status === 'available' ? 'Available Now' : 
+                    {availability.status === 'available' ? 'Available Now' :
                      availability.status === 'pending' ? 'Pending' : 'Sold'}
                   </div>
                 </div>
@@ -306,7 +306,7 @@ function HeroSection({
 /**
  * Description tab content
  */
-function DescriptionContent({ listing }: { listing: DetailedListingPageProps['listing'] }) {
+export function DescriptionContent({ listing }: { listing: DetailedListingPageProps['listing'] }) {
   return (
     <motion.div
       className="space-y-8"
@@ -402,7 +402,7 @@ function DescriptionContent({ listing }: { listing: DetailedListingPageProps['li
 /**
  * Reviews tab content
  */
-function ReviewsContent({ listing }: { listing: DetailedListingPageProps['listing'] }) {
+export function ReviewsContent({ listing }: { listing: DetailedListingPageProps['listing'] }) {
   return (
     <motion.div
       className="space-y-8"
@@ -521,7 +521,7 @@ function ReviewsContent({ listing }: { listing: DetailedListingPageProps['listin
 /**
  * Map tab content
  */
-function MapContent({ listing }: { listing: DetailedListingPageProps['listing'] }) {
+export function MapContent({ listing }: { listing: DetailedListingPageProps['listing'] }) {
   return (
     <motion.div
       className="space-y-6"
@@ -771,5 +771,4 @@ export function DetailedListingPage({ listing, className }: DetailedListingPageP
 // EXPORTS
 // ============================================================================
 
-export { DetailedListingPage, HeroSection, DescriptionContent, ReviewsContent, MapContent };
 export type { DetailedListingPageProps, HeroSectionProps };

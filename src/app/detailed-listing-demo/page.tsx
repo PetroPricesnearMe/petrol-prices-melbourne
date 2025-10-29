@@ -4,7 +4,7 @@
  */
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import { HeroSection } from '@/components/molecules/HeroSection';
 import { Tabs } from '@/components/molecules/Tabs';
@@ -69,8 +69,6 @@ const mockNearbyStations = [
 ];
 
 export default function DetailedListingDemo() {
-  const [activeTab, setActiveTab] = useState('description');
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
@@ -145,7 +143,6 @@ export default function DetailedListingDemo() {
               ]}
               defaultActiveTab="description"
               className="w-full"
-              onTabChange={setActiveTab}
             />
           </div>
 

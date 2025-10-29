@@ -55,6 +55,8 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.0",
+    "@headlessui/react": "^2.2.9",
+    "@heroicons/react": "^2.2.0",
     "@tanstack/react-query": "^5.18.0",
     "@types/mapbox-gl": "^3.4.1",
     "@vercel/analytics": "^1.1.1",

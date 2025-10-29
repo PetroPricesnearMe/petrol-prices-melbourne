@@ -1,8 +1,8 @@
 /**
  * Smooth Transition Components
- * 
+ *
  * Provides smooth animations and transitions for infinite scroll content
- * 
+ *
  * @module components/transitions/SmoothTransitions
  */
 
@@ -11,7 +11,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES
@@ -289,7 +289,7 @@ export function SkeletonCard({ className }: SkeletonCardProps) {
     >
       {/* Brand header skeleton */}
       <div className="h-20 bg-gray-200" />
-      
+
       {/* Content skeleton */}
       <div className="p-6 space-y-4">
         <div className="h-6 bg-gray-200 rounded w-3/4" />
@@ -384,17 +384,5 @@ export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) 
 }
 
 // ============================================================================
-// EXPORT ALL COMPONENTS
+// EXPORTS
 // ============================================================================
-
-export {
-  SmoothTransition,
-  StaggeredTransition,
-  FadeInTransition,
-  ScaleTransition,
-  InfiniteScrollTransition,
-  SkeletonCard,
-  SkeletonGrid,
-  ProgressIndicator,
-  LoadingSpinner,
-};

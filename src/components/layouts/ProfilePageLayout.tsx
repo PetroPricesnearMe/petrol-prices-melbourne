@@ -1,8 +1,8 @@
 /**
  * Directory Profile Page Layout
- * 
+ *
  * Comprehensive profile page with banner, image gallery, about section, and contact form
- * 
+ *
  * @module components/layouts/ProfilePageLayout
  */
 
@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES
@@ -153,7 +153,7 @@ function ImageGallery({ images, className }: ImageGalleryProps) {
                 className="object-contain max-h-[80vh] rounded-lg"
                 onClick={(e) => e.stopPropagation()}
               />
-              
+
               {/* Navigation */}
               <button
                 onClick={(e) => {
@@ -166,7 +166,7 @@ function ImageGallery({ images, className }: ImageGalleryProps) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              
+
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -178,7 +178,7 @@ function ImageGallery({ images, className }: ImageGalleryProps) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
-              
+
               {/* Close Button */}
               <button
                 onClick={closeLightbox}
@@ -188,7 +188,7 @@ function ImageGallery({ images, className }: ImageGalleryProps) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-              
+
               {/* Image Counter */}
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/20 rounded-full px-4 py-2">
                 <span className="text-white text-sm">
@@ -248,11 +248,11 @@ function ContactForm({ onSubmit, className }: ContactFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    
+
     try {
       await onSubmit(formData);
       // Reset form on success
@@ -273,7 +273,7 @@ function ContactForm({ onSubmit, className }: ContactFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (errors[name as keyof ContactFormData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
@@ -457,10 +457,10 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
   const handleContactSubmit = async (data: ContactFormData) => {
     // Handle form submission - integrate with your backend
     console.log('Contact form submitted:', data);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Show success message (you can implement a toast notification here)
     alert('Message sent successfully!');
   };
@@ -481,10 +481,10 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
           className="object-cover"
           priority
         />
-        
+
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40" />
-        
+
         {/* Banner Content */}
         <div className="absolute inset-0 flex items-end">
           <div className="container mx-auto px-4 pb-8">
@@ -503,7 +503,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                   className="object-cover"
                 />
               </motion.div>
-              
+
               {/* Profile Info */}
               <div className="text-white">
                 <motion.h1
@@ -539,10 +539,10 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col lg:flex-row gap-12">
-          
+
           {/* Left Column - Main Content */}
           <div className="flex-1 space-y-12">
-            
+
             {/* About Section */}
             <motion.section
               className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm"
@@ -558,7 +558,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                   {profile.about}
                 </p>
               </div>
-              
+
               {/* Services */}
               {profile.services && profile.services.length > 0 && (
                 <div className="mt-8">
@@ -600,7 +600,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
 
           {/* Right Column - Sidebar */}
           <div className="lg:w-80 space-y-8">
-            
+
             {/* Stats Cards */}
             <motion.div
               className="grid grid-cols-2 gap-4"
@@ -616,7 +616,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                   Years Experience
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm">
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                   {profile.stats.projectsCompleted}+
@@ -625,7 +625,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                   Projects
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm">
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                   {profile.stats.clientsServed}+
@@ -634,7 +634,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                   Happy Clients
                 </div>
               </div>
-              
+
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm">
                 <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                   {profile.stats.rating}
@@ -655,7 +655,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 Contact Information
               </h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
@@ -670,7 +670,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                     {profile.contact.email}
                   </a>
                 </div>
-                
+
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
                     <svg className="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -684,7 +684,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                     {profile.contact.phone}
                   </a>
                 </div>
-                
+
                 <div className="flex items-start space-x-3">
                   <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mt-1">
                     <svg className="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -696,7 +696,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                     {profile.contact.address}
                   </span>
                 </div>
-                
+
                 {profile.contact.website && (
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
@@ -735,7 +735,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                         </svg>
                       </a>
                     )}
-                    
+
                     {profile.contact.socialMedia.twitter && (
                       <a
                         href={profile.contact.socialMedia.twitter}
@@ -748,7 +748,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                         </svg>
                       </a>
                     )}
-                    
+
                     {profile.contact.socialMedia.linkedin && (
                       <a
                         href={profile.contact.socialMedia.linkedin}
@@ -761,7 +761,7 @@ export function ProfilePageLayout({ profile, className }: ProfilePageLayoutProps
                         </svg>
                       </a>
                     )}
-                    
+
                     {profile.contact.socialMedia.instagram && (
                       <a
                         href={profile.contact.socialMedia.instagram}

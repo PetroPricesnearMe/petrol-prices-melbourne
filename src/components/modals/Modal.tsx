@@ -14,7 +14,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES
@@ -388,5 +388,4 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
 // EXPORTS
 // ============================================================================
 
-export { Modal, StationDetailsModal };
 export type { ModalProps, StationDetailsModalProps };

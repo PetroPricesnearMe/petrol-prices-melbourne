@@ -1,8 +1,8 @@
 /**
  * Enhanced Station Card Component
- * 
+ *
  * Optimized station card with smooth transitions and infinite scroll support
- * 
+ *
  * @module components/cards/StationCard
  */
 
@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { memo } from 'react';
 
 import { ScaleTransition } from '@/components/transitions/SmoothTransitions';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 import type { Station } from '@/types/station';
 
 // ============================================================================
@@ -146,7 +146,7 @@ const FuelPriceDisplay = memo<FuelPriceDisplayProps>(({ fuelPrices, selectedFuel
       {Object.entries(fuelPrices).map(([type, price]) => {
         if (price === null) return null;
         const isSelected = type === selectedFuelType;
-        
+
         return (
           <div
             key={type}
@@ -156,8 +156,8 @@ const FuelPriceDisplay = memo<FuelPriceDisplayProps>(({ fuelPrices, selectedFuel
             )}
           >
             <span className="text-gray-600 dark:text-gray-400 capitalize text-xs sm:text-sm">
-              {type === 'premium95' ? 'Premium 95' : 
-               type === 'premium98' ? 'Premium 98' : 
+              {type === 'premium95' ? 'Premium 95' :
+               type === 'premium98' ? 'Premium 98' :
                type}
             </span>
             <span className={cn('text-sm sm:text-lg font-bold', getPriceColor(price))}>
@@ -218,8 +218,8 @@ export const StationCard = memo<StationCardProps>(({
       {/* Station Info */}
       <div className="p-4 sm:p-5 lg:p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
         <div className="flex items-start justify-between gap-3 mb-3">
-          <h3 
-            className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-tight" 
+          <h3
+            className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-tight"
             itemProp="name"
           >
             {station.name}
@@ -233,10 +233,10 @@ export const StationCard = memo<StationCardProps>(({
       {/* Content */}
       <div className="p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4 flex-grow">
         {/* Address */}
-        <div 
-          className="text-xs sm:text-sm text-gray-600 dark:text-gray-400" 
-          itemProp="address" 
-          itemScope 
+        <div
+          className="text-xs sm:text-sm text-gray-600 dark:text-gray-400"
+          itemProp="address"
+          itemScope
           itemType="https://schema.org/PostalAddress"
         >
           <p itemProp="streetAddress">📍 {station.address}</p>
