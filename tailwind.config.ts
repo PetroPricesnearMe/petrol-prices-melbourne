@@ -17,42 +17,11 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-
-  // Enable purge for production builds to reduce CSS bundle size
-  purge: {
-    enabled: process.env.NODE_ENV === 'production',
-    content: [
-      './src/**/*.{js,ts,jsx,tsx,mdx}',
-      './public/**/*.html',
-    ],
-    options: {
-      safelist: [
-        // Keep critical classes that might be dynamically generated
-        'animate-spin',
-        'animate-pulse',
-        'animate-bounce',
-        'animate-fade-in',
-        'animate-slide-in',
-        'animate-scale-in',
-        // Keep dark mode classes
-        'dark:bg-gray-800',
-        'dark:bg-gray-900',
-        'dark:text-white',
-        'dark:text-gray-300',
-        'dark:text-gray-400',
-        // Keep responsive classes
-        'sm:grid-cols-2',
-        'md:grid-cols-3',
-        'lg:grid-cols-4',
-        'xl:grid-cols-6',
-      ],
-    },
-  },
 
   // Dark mode configuration - uses class strategy for manual control
   // Supports system preferences via ThemeProvider

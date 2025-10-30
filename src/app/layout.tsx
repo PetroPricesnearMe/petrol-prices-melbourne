@@ -12,6 +12,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { Providers } from './providers';
 import '../styles/globals.css';
@@ -48,7 +50,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://petrolpricenearme.com.au'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'),
   alternates: {
     canonical: '/',
   },
@@ -109,12 +111,25 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`antialiased ${inter.className}`}>
+        {/* Accessibility: Skip to content */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[9999] bg-white text-black rounded px-3 py-2"
+        >
+          Skip to main content
+        </a>
         {/* Critical CSS loaded inline above the fold */}
 
         {/* Main content */}
         <Providers>
-          {children}
+          <main id="main-content" role="main">
+            {children}
+          </main>
         </Providers>
+
+        {/* Analytics */}
+        <Analytics />
+        <SpeedInsights />
 
         {/* Performance Monitoring - After Interactive */}
         {process.env.NODE_ENV === 'production' && (

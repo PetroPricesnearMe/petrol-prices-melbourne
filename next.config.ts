@@ -83,12 +83,12 @@ const nextConfig: NextConfig = {
     productionBrowserSourceMaps: false,
   }),
 
-  // TypeScript and ESLint
+  // TypeScript and ESLint - enforce quality in builds
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
 
   // Webpack optimizations
