@@ -1,0 +1,102 @@
+/**
+ * Skeleton Loading Styles with Shimmer Effect
+ */
+
+.skeleton {
+  background-color: #E5E7EB;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Variant Styles */
+.skeleton--text {
+  height: 1rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  transform-origin: 0 55%;
+  transform: scale(1, 0.6);
+}
+
+.skeleton--circular {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.skeleton--rectangular {
+  border-radius: 0;
+}
+
+.skeleton--rounded {
+  border-radius: 8px;
+}
+
+/* Pulse Animation */
+.skeleton--pulse {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Wave Animation (Shimmer Effect) */
+.skeleton--wave::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: skeleton-wave 1.6s linear infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes skeleton-wave {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background-color: #374151;
+  }
+
+  .skeleton--wave::after {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton--pulse {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .skeleton--wave::after {
+    animation: none;
+    display: none;
+  }
+}

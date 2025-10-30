@@ -1,22 +1,56 @@
+# *
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /private/
+Disallow: /hero-example
+Disallow: /map-demo
+Disallow: /*?sort=*
+Disallow: /*?filter=*
+Disallow: /*?filters=*
+Disallow: /*?page=*
+Disallow: /*?search=*
+Disallow: /*?q=*
+Disallow: /*?s=*
+Disallow: /*?category=*
+Disallow: /*?brand=*
+Disallow: /*?fuel=*
+Disallow: /*?amenity=*
 
-# Sitemap
-Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
+# Googlebot
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /hero-example
+Disallow: /map-demo
+Crawl-delay: 0.5
 
-# Crawl-delay for respectful crawling
+# Bingbot
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /hero-example
+Disallow: /map-demo
 Crawl-delay: 1
 
-# Allow all important pages
-Allow: /map
-Allow: /directory
-Allow: /blog
+# GPTBot
+User-agent: GPTBot
+Disallow: /
 
-# Disallow admin or private areas (if any)
-Disallow: /admin/
-Disallow: /private/
-Disallow: /api/
+# CCBot
+User-agent: CCBot
+Disallow: /
 
-# Allow search engines to index all content
-Allow: /images/
-Allow: /static/ 
+# Host
+Host: https://petrolpricenearme.com.au
+
+# Sitemaps
+Sitemap: https://petrolpricenearme.com.au/sitemap.xml
+Sitemap: https://petrolpricenearme.com.au/server-sitemap.xml

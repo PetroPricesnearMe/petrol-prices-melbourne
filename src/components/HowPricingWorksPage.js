@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './HowPricingWorksPage.css';
+
+import { trackPageView } from '../utils/analytics';
+
+import Breadcrumbs from './Breadcrumbs';
+import SEO from './SEO';
+// CSS imported in pages/_app.js
 
 const HowPricingWorksPage = () => {
   const [activeSection, setActiveSection] = useState('overview');
+
+  // Track page view on mount
+  useEffect(() => {
+    trackPageView('How Pricing Works');
+  }, []);
 
   const sections = [
     { key: 'overview', label: 'Overview', icon: '📊' },
@@ -23,12 +33,12 @@ const HowPricingWorksPage = () => {
           <div className="intro-card">
             <h3>Fuel Pricing in Australia</h3>
             <p>
-              Australia's fuel pricing system is influenced by a complex interplay of global oil markets, 
-              local competition, government policies, and regional factors. Understanding these dynamics 
+              Australia's fuel pricing system is influenced by a complex interplay of global oil markets,
+              local competition, government policies, and regional factors. Understanding these dynamics
               can help you make informed decisions about when and where to fill up.
             </p>
           </div>
-          
+
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-icon">🌍</div>
@@ -67,12 +77,12 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact high">High Impact</span>
               </div>
               <p>
-                The largest component of fuel pricing. Global oil prices fluctuate based on supply, 
-                demand, geopolitical events, and economic conditions. Changes in international 
+                The largest component of fuel pricing. Global oil prices fluctuate based on supply,
+                demand, geopolitical events, and economic conditions. Changes in international
                 prices typically take 1-2 weeks to affect Australian pump prices.
               </p>
             </div>
-            
+
             <div className="factor-item">
               <div className="factor-header">
                 <span className="factor-icon">🏛️</span>
@@ -80,12 +90,12 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact high">High Impact</span>
               </div>
               <p>
-                Federal excise duty (currently ~42¢ per liter) plus GST (10%) and state levies. 
-                These are fixed costs that don't change with oil prices, making up approximately 
+                Federal excise duty (currently ~42¢ per liter) plus GST (10%) and state levies.
+                These are fixed costs that don't change with oil prices, making up approximately
                 40% of the total fuel cost.
               </p>
             </div>
-            
+
             <div className="factor-item">
               <div className="factor-header">
                 <span className="factor-icon">🏭</span>
@@ -93,12 +103,12 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact medium">Medium Impact</span>
               </div>
               <p>
-                Costs for refining crude oil into petrol, transportation from refineries to 
-                terminals, and distribution to service stations. These costs are relatively 
+                Costs for refining crude oil into petrol, transportation from refineries to
+                terminals, and distribution to service stations. These costs are relatively
                 stable but can vary with distance and infrastructure.
               </p>
             </div>
-            
+
             <div className="factor-item">
               <div className="factor-header">
                 <span className="factor-icon">🏪</span>
@@ -106,12 +116,12 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact medium">Medium Impact</span>
               </div>
               <p>
-                Station density, local competition, and location significantly affect pricing. 
-                Stations near highways or in high-rent areas often charge more due to 
+                Station density, local competition, and location significantly affect pricing.
+                Stations near highways or in high-rent areas often charge more due to
                 convenience premiums and higher operating costs.
               </p>
             </div>
-            
+
             <div className="factor-item">
               <div className="factor-header">
                 <span className="factor-icon">💱</span>
@@ -119,12 +129,12 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact medium">Medium Impact</span>
               </div>
               <p>
-                Since oil is traded in US dollars, the AUD/USD exchange rate affects the 
-                cost of imported crude oil. A weaker Australian dollar increases fuel costs 
+                Since oil is traded in US dollars, the AUD/USD exchange rate affects the
+                cost of imported crude oil. A weaker Australian dollar increases fuel costs
                 for consumers.
               </p>
             </div>
-            
+
             <div className="factor-item">
               <div className="factor-header">
                 <span className="factor-icon">📅</span>
@@ -132,8 +142,8 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact low">Low Impact</span>
               </div>
               <p>
-                Higher demand during holiday periods, school holidays, and summer driving 
-                seasons can lead to temporary price increases, though the effect is usually 
+                Higher demand during holiday periods, school holidays, and summer driving
+                seasons can lead to temporary price increases, though the effect is usually
                 modest compared to other factors.
               </p>
             </div>
@@ -149,12 +159,12 @@ const HowPricingWorksPage = () => {
           <div className="cycle-explanation">
             <h3>Australia's Weekly Price Cycle</h3>
             <p>
-              Unlike many countries, Australia has a predictable weekly price cycle where 
-              prices rise and fall in a regular pattern. This cycle varies by city and 
+              Unlike many countries, Australia has a predictable weekly price cycle where
+              prices rise and fall in a regular pattern. This cycle varies by city and
               can be used to your advantage.
             </p>
           </div>
-          
+
           <div className="cycle-timeline">
             <div className="timeline-item">
               <div className="timeline-day">Monday</div>
@@ -206,7 +216,7 @@ const HowPricingWorksPage = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="cycle-tips">
             <h3>Using the Cycle to Your Advantage</h3>
             <div className="tips-grid">
@@ -243,12 +253,12 @@ const HowPricingWorksPage = () => {
           <div className="regulations-overview">
             <h3>Government Role in Fuel Pricing</h3>
             <p>
-              The Australian government plays a significant role in fuel pricing through 
-              taxation, regulation, and monitoring. Understanding these policies helps 
+              The Australian government plays a significant role in fuel pricing through
+              taxation, regulation, and monitoring. Understanding these policies helps
               explain why fuel costs what it does.
             </p>
           </div>
-          
+
           <div className="regulations-list">
             <div className="regulation-item">
               <div className="regulation-header">
@@ -260,12 +270,12 @@ const HowPricingWorksPage = () => {
                 <p><strong>Purpose:</strong> Infrastructure funding and general revenue</p>
                 <p><strong>Indexation:</strong> Adjusted twice yearly with CPI</p>
                 <p>
-                  This is the largest single component of fuel pricing, making up approximately 
+                  This is the largest single component of fuel pricing, making up approximately
                   25-30% of the total cost. It's a fixed cost that doesn't change with oil prices.
                 </p>
               </div>
             </div>
-            
+
             <div className="regulation-item">
               <div className="regulation-header">
                 <span className="regulation-icon">📊</span>
@@ -276,12 +286,12 @@ const HowPricingWorksPage = () => {
                 <p><strong>Scope:</strong> Applied to the total price including excise</p>
                 <p><strong>Purpose:</strong> General government revenue</p>
                 <p>
-                  GST is applied to the final retail price, including the excise duty, 
+                  GST is applied to the final retail price, including the excise duty,
                   effectively creating a tax on a tax. This adds approximately 10-15¢ per liter.
                 </p>
               </div>
             </div>
-            
+
             <div className="regulation-item">
               <div className="regulation-header">
                 <span className="regulation-icon">🏛️</span>
@@ -292,12 +302,12 @@ const HowPricingWorksPage = () => {
                 <p><strong>Examples:</strong> NSW fuel levy, WA fuel levy</p>
                 <p><strong>Purpose:</strong> State infrastructure and transport funding</p>
                 <p>
-                  Some states impose additional levies on fuel, typically 1-3¢ per liter. 
+                  Some states impose additional levies on fuel, typically 1-3¢ per liter.
                   These vary significantly between states and can affect regional pricing.
                 </p>
               </div>
             </div>
-            
+
             <div className="regulation-item">
               <div className="regulation-header">
                 <span className="regulation-icon">📋</span>
@@ -308,13 +318,13 @@ const HowPricingWorksPage = () => {
                 <p><strong>Price Reporting:</strong> Mandatory price reporting in some states</p>
                 <p><strong>Consumer Protection:</strong> Anti-competitive behavior prevention</p>
                 <p>
-                  The Australian Competition and Consumer Commission (ACCC) monitors fuel 
+                  The Australian Competition and Consumer Commission (ACCC) monitors fuel
                   pricing to ensure competitive markets and prevent anti-competitive behavior.
                 </p>
               </div>
             </div>
           </div>
-          
+
           <div className="policy-impact">
             <h3>Policy Impact on Consumers</h3>
             <div className="impact-grid">
@@ -347,12 +357,12 @@ const HowPricingWorksPage = () => {
           <div className="tips-intro">
             <h3>Maximize Your Fuel Savings</h3>
             <p>
-              Beyond finding the cheapest prices, there are many ways to reduce your 
-              overall fuel costs through better driving habits, vehicle maintenance, 
+              Beyond finding the cheapest prices, there are many ways to reduce your
+              overall fuel costs through better driving habits, vehicle maintenance,
               and smart planning.
             </p>
           </div>
-          
+
           <div className="tips-categories">
             <div className="tip-category">
               <h4>🚗 Driving Habits</h4>
@@ -387,7 +397,7 @@ const HowPricingWorksPage = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="tip-category">
               <h4>🔧 Vehicle Maintenance</h4>
               <div className="tip-list">
@@ -421,7 +431,7 @@ const HowPricingWorksPage = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="tip-category">
               <h4>📱 Smart Planning</h4>
               <div className="tip-list">
@@ -456,7 +466,7 @@ const HowPricingWorksPage = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="savings-calculator">
             <h3>Calculate Your Potential Savings</h3>
             <div className="calculator-grid">
@@ -484,93 +494,105 @@ const HowPricingWorksPage = () => {
   };
 
   return (
-    <motion.div 
-      className="how-pricing-works-page"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="pricing-header">
-        <div className="container">
-          <motion.div 
-            className="header-content"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1>How Fuel Pricing Works in Australia</h1>
-            <p>Understanding the factors that influence petrol prices to help you save money</p>
-          </motion.div>
-        </div>
-      </div>
-
-      <div className="pricing-content">
-        <div className="container">
-          <div className="content-layout">
-            <motion.div 
-              className="sidebar"
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+    <>
+      <SEO
+        title="How Fuel Pricing Works in Australia | Melbourne Petrol Price Guide"
+        description="Understand how petrol prices work in Australia. Learn about price cycles, factors affecting fuel costs, regulations, and expert tips to save money on every fill-up."
+        keywords="how fuel pricing works, petrol price cycle australia, fuel price factors, petrol regulations, fuel pricing explained, melbourne fuel guide"
+        canonical="/how-pricing-works"
+      />
+      <motion.div
+        className="how-pricing-works-page"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Breadcrumbs customCrumbs={[
+          { label: 'Home', path: '/', icon: '🏠' },
+          { label: 'How Pricing Works', path: '/how-pricing-works', isActive: true }
+        ]} />
+        <div className="pricing-header">
+          <div className="container">
+            <motion.div
+              className="header-content"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              <nav className="section-nav">
-                {sections.map(section => (
-                  <button
-                    key={section.key}
-                    className={`nav-item ${activeSection === section.key ? 'active' : ''}`}
-                    onClick={() => setActiveSection(section.key)}
-                  >
-                    <span className="nav-icon">{section.icon}</span>
-                    <span className="nav-label">{section.label}</span>
-                  </button>
-                ))}
-              </nav>
+              <h1>How Fuel Pricing Works in Australia</h1>
+              <p>Understanding the factors that influence petrol prices to help you save money</p>
             </motion.div>
+          </div>
+        </div>
 
-            <motion.div 
-              className="main-content"
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
+        <div className="pricing-content">
+          <div className="container">
+            <div className="content-layout">
+              <motion.div
+                className="sidebar"
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <nav className="section-nav">
+                  {sections.map(section => (
+                    <button
+                      key={section.key}
+                      className={`nav-item ${activeSection === section.key ? 'active' : ''}`}
+                      onClick={() => setActiveSection(section.key)}
+                    >
+                      <span className="nav-icon">{section.icon}</span>
+                      <span className="nav-label">{section.label}</span>
+                    </button>
+                  ))}
+                </nav>
+              </motion.div>
+
+              <motion.div
+                className="main-content"
+                initial={{ x: 20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <div className="content-header">
+                  <h2>{content[activeSection].title}</h2>
+                  <p>{content[activeSection].description}</p>
+                </div>
+
+                <div className="content-body">
+                  {content[activeSection].content}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Call to Action */}
+            <motion.div
+              className="cta-section"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
             >
-              <div className="content-header">
-                <h2>{content[activeSection].title}</h2>
-                <p>{content[activeSection].description}</p>
-              </div>
-              
-              <div className="content-body">
-                {content[activeSection].content}
+              <h3>Ready to Find the Best Fuel Prices?</h3>
+              <p>Put your knowledge to use with our live price comparison tools</p>
+              <div className="cta-buttons">
+                <Link to="/map" className="btn btn-primary">
+                  <span className="btn-text">View Live Map</span>
+                  <span className="btn-icon">🗺️</span>
+                </Link>
+                <Link to="/directory" className="btn btn-secondary">
+                  <span className="btn-text">Browse Directory</span>
+                  <span className="btn-icon">📋</span>
+                </Link>
+                <Link to="/fuel-price-trends" className="btn btn-outline">
+                  <span className="btn-text">View Trends</span>
+                  <span className="btn-icon">📈</span>
+                </Link>
               </div>
             </motion.div>
           </div>
-
-          {/* Call to Action */}
-          <motion.div 
-            className="cta-section"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <h3>Ready to Find the Best Fuel Prices?</h3>
-            <p>Put your knowledge to use with our live price comparison tools</p>
-            <div className="cta-buttons">
-              <Link to="/map" className="btn btn-primary">
-                <span className="btn-text">View Live Map</span>
-                <span className="btn-icon">🗺️</span>
-              </Link>
-              <Link to="/directory" className="btn btn-secondary">
-                <span className="btn-text">Browse Directory</span>
-                <span className="btn-icon">📋</span>
-              </Link>
-              <Link to="/fuel-price-trends" className="btn btn-outline">
-                <span className="btn-text">View Trends</span>
-                <span className="btn-icon">📈</span>
-              </Link>
-            </div>
-          </motion.div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 

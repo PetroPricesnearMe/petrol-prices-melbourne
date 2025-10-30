@@ -1,12 +1,22 @@
-import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import './StationAmenitiesPage.css';
+
+import { trackPageView } from '../utils/analytics';
+
+import Breadcrumbs from './Breadcrumbs';
+import SEO from './SEO';
+// CSS imported in pages/_app.js
 
 const StationAmenitiesPage = () => {
   const [selectedAmenity, setSelectedAmenity] = useState('all');
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Track page view on mount
+  useEffect(() => {
+    trackPageView('Station Amenities');
+  }, []);
 
   const amenitiesList = useMemo(() => [
     { key: 'all', label: 'All Amenities', icon: '🏪', count: 0 },
@@ -85,7 +95,7 @@ const StationAmenitiesPage = () => {
       setLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
       setStations(mockStations);
-      
+
       // Count amenities
       const amenityCounts = { ...amenitiesList.reduce((acc, amenity) => ({ ...acc, [amenity.key]: 0 }), {}) };
       mockStations.forEach(station => {
@@ -95,24 +105,24 @@ const StationAmenitiesPage = () => {
           }
         });
       });
-      
+
       // Update amenities with counts (for display purposes)
       const updatedAmenities = amenitiesList.map(amenity => ({
         ...amenity,
         count: amenityCounts[amenity.key] || 0
       }));
-      
+
       // Log the updated amenities for debugging
       console.log('Updated amenities with counts:', updatedAmenities);
       setLoading(false);
     };
-    
+
     loadStations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amenitiesList]);
 
-  const filteredStations = selectedAmenity === 'all' 
-    ? stations 
+  const filteredStations = selectedAmenity === 'all'
+    ? stations
     : stations.filter(station => station.amenities.includes(selectedAmenity));
 
   const getBrandColor = (brand) => {
@@ -138,226 +148,238 @@ const StationAmenitiesPage = () => {
   };
 
   return (
-    <motion.div 
-      className="station-amenities-page"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="amenities-header">
-        <div className="container">
-          <motion.div 
-            className="header-content"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1>Station Amenities</h1>
-            <p>Find petrol stations with the services and facilities you need</p>
-          </motion.div>
+    <>
+      <SEO
+        title="Petrol Station Amenities Melbourne | Find Stations with Facilities"
+        description="Find Melbourne petrol stations with specific amenities: car wash, ATM, food, toilets, EV charging, and more. Filter by facilities to find the perfect station for your needs."
+        keywords="petrol station amenities melbourne, car wash petrol station, atm fuel station, 24 hour petrol station, ev charging stations, truck friendly petrol"
+        canonical="/station-amenities"
+      />
+      <motion.div
+        className="station-amenities-page"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Breadcrumbs customCrumbs={[
+          { label: 'Home', path: '/', icon: '🏠' },
+          { label: 'Station Amenities', path: '/station-amenities', isActive: true }
+        ]} />
+        <div className="amenities-header">
+          <div className="container">
+            <motion.div
+              className="header-content"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1>Station Amenities</h1>
+              <p>Find petrol stations with the services and facilities you need</p>
+            </motion.div>
 
-          <motion.div 
-            className="amenities-filters"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="amenity-buttons">
-              {amenitiesList.map(amenity => (
-                <button
-                  key={amenity.key}
-                  className={`amenity-btn ${selectedAmenity === amenity.key ? 'active' : ''}`}
-                  onClick={() => setSelectedAmenity(amenity.key)}
-                >
-                  <span className="amenity-icon">{amenity.icon}</span>
-                  <span className="amenity-label">{amenity.label}</span>
-                  {amenity.count > 0 && (
-                    <span className="amenity-count">{amenity.count}</span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </motion.div>
+            <motion.div
+              className="amenities-filters"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="amenity-buttons">
+                {amenitiesList.map(amenity => (
+                  <button
+                    key={amenity.key}
+                    className={`amenity-btn ${selectedAmenity === amenity.key ? 'active' : ''}`}
+                    onClick={() => setSelectedAmenity(amenity.key)}
+                  >
+                    <span className="amenity-icon">{amenity.icon}</span>
+                    <span className="amenity-label">{amenity.label}</span>
+                    {amenity.count > 0 && (
+                      <span className="amenity-count">{amenity.count}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
-      </div>
 
-      <div className="amenities-content">
-        <div className="container">
-          {loading ? (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <h3>Loading station amenities...</h3>
-            </div>
-          ) : (
-            <motion.div 
-              className="stations-grid"
+        <div className="amenities-content">
+          <div className="container">
+            {loading ? (
+              <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <h3>Loading station amenities...</h3>
+              </div>
+            ) : (
+              <motion.div
+                className="stations-grid"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                {filteredStations.map((station, index) => (
+                  <motion.div
+                    key={station.id}
+                    className="station-card"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * (index % 10) }}
+                    whileHover={{ y: -5, scale: 1.02 }}
+                  >
+                    <div className="card-header">
+                      <div
+                        className="brand-badge"
+                        style={{ backgroundColor: getBrandColor(station.brand) }}
+                      >
+                        {station.brand}
+                      </div>
+                      <div className="station-location">
+                        <span className="suburb">{station.suburb}</span>
+                      </div>
+                    </div>
+
+                    <div className="card-content">
+                      <h3 className="station-name">{station.name}</h3>
+                      <p className="station-address">{station.address}</p>
+
+                      <div className="amenities-list">
+                        <h4>Available Amenities</h4>
+                        <div className="amenities-grid">
+                          {station.amenities.map(amenity => (
+                            <div key={amenity} className="amenity-item">
+                              <span className="amenity-icon">{getAmenityIcon(amenity)}</span>
+                              <span className="amenity-text">{getAmenityLabel(amenity)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="fuel-prices">
+                        <h4>Current Prices</h4>
+                        <div className="prices-grid">
+                          <div className="price-item">
+                            <span>⛽ Unleaded</span>
+                            <span>{station.prices.unleaded}¢</span>
+                          </div>
+                          <div className="price-item">
+                            <span>🔋 Premium</span>
+                            <span>{station.prices.premium}¢</span>
+                          </div>
+                          <div className="price-item">
+                            <span>🚛 Diesel</span>
+                            <span>{station.prices.diesel}¢</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="card-actions">
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => {
+                          const url = `https://www.google.com/maps/dir/?api=1&destination=${station.address}`;
+                          window.open(url, '_blank');
+                        }}
+                      >
+                        🗺️ Get Directions
+                      </button>
+                      <Link
+                        to="/map"
+                        className="btn btn-secondary btn-sm"
+                      >
+                        📍 View on Map
+                      </Link>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {filteredStations.length === 0 && (
+                  <div className="no-results">
+                    <div className="no-results-icon">🔍</div>
+                    <h3>No stations found</h3>
+                    <p>Try selecting a different amenity or check back later for more stations.</p>
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* Amenity Guide */}
+            <motion.div
+              className="amenity-guide"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.6 }}
             >
-              {filteredStations.map((station, index) => (
-                <motion.div
-                  key={station.id}
-                  className="station-card"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * (index % 10) }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                >
-                  <div className="card-header">
-                    <div 
-                      className="brand-badge"
-                      style={{ backgroundColor: getBrandColor(station.brand) }}
-                    >
-                      {station.brand}
-                    </div>
-                    <div className="station-location">
-                      <span className="suburb">{station.suburb}</span>
-                    </div>
+              <h3>Understanding Station Amenities</h3>
+              <div className="guide-grid">
+                <div className="guide-item">
+                  <span className="guide-icon">🚿</span>
+                  <div>
+                    <h4>Car Wash</h4>
+                    <p>Self-service or automated car wash facilities available</p>
                   </div>
-
-                  <div className="card-content">
-                    <h3 className="station-name">{station.name}</h3>
-                    <p className="station-address">{station.address}</p>
-                    
-                    <div className="amenities-list">
-                      <h4>Available Amenities</h4>
-                      <div className="amenities-grid">
-                        {station.amenities.map(amenity => (
-                          <div key={amenity} className="amenity-item">
-                            <span className="amenity-icon">{getAmenityIcon(amenity)}</span>
-                            <span className="amenity-text">{getAmenityLabel(amenity)}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="fuel-prices">
-                      <h4>Current Prices</h4>
-                      <div className="prices-grid">
-                        <div className="price-item">
-                          <span>⛽ Unleaded</span>
-                          <span>{station.prices.unleaded}¢</span>
-                        </div>
-                        <div className="price-item">
-                          <span>🔋 Premium</span>
-                          <span>{station.prices.premium}¢</span>
-                        </div>
-                        <div className="price-item">
-                          <span>🚛 Diesel</span>
-                          <span>{station.prices.diesel}¢</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="card-actions">
-                    <button 
-                      className="btn btn-primary btn-sm"
-                      onClick={() => {
-                        const url = `https://www.google.com/maps/dir/?api=1&destination=${station.address}`;
-                        window.open(url, '_blank');
-                      }}
-                    >
-                      🗺️ Get Directions
-                    </button>
-                    <Link 
-                      to="/map" 
-                      className="btn btn-secondary btn-sm"
-                    >
-                      📍 View on Map
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-
-              {filteredStations.length === 0 && (
-                <div className="no-results">
-                  <div className="no-results-icon">🔍</div>
-                  <h3>No stations found</h3>
-                  <p>Try selecting a different amenity or check back later for more stations.</p>
                 </div>
-              )}
+                <div className="guide-item">
+                  <span className="guide-icon">🏧</span>
+                  <div>
+                    <h4>ATM</h4>
+                    <p>ATM machines for cash withdrawals and banking services</p>
+                  </div>
+                </div>
+                <div className="guide-item">
+                  <span className="guide-icon">🍔</span>
+                  <div>
+                    <h4>Food & Drinks</h4>
+                    <p>Convenience store with snacks, drinks, and food items</p>
+                  </div>
+                </div>
+                <div className="guide-item">
+                  <span className="guide-icon">🚻</span>
+                  <div>
+                    <h4>Toilets</h4>
+                    <p>Public restroom facilities for customer use</p>
+                  </div>
+                </div>
+                <div className="guide-item">
+                  <span className="guide-icon">💨</span>
+                  <div>
+                    <h4>Air & Water</h4>
+                    <p>Free air and water services for tire inflation and cleaning</p>
+                  </div>
+                </div>
+                <div className="guide-item">
+                  <span className="guide-icon">🔥</span>
+                  <div>
+                    <h4>LPG</h4>
+                    <p>Liquefied Petroleum Gas refueling available</p>
+                  </div>
+                </div>
+                <div className="guide-item">
+                  <span className="guide-icon">🚛</span>
+                  <div>
+                    <h4>Truck Friendly</h4>
+                    <p>Accommodates large vehicles and trucks with appropriate facilities</p>
+                  </div>
+                </div>
+                <div className="guide-item">
+                  <span className="guide-icon">🕐</span>
+                  <div>
+                    <h4>24 Hours</h4>
+                    <p>Open 24 hours a day, 7 days a week</p>
+                  </div>
+                </div>
+                <div className="guide-item">
+                  <span className="guide-icon">⚡</span>
+                  <div>
+                    <h4>EV Charging</h4>
+                    <p>Electric vehicle charging stations available</p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
-          )}
-
-          {/* Amenity Guide */}
-          <motion.div 
-            className="amenity-guide"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <h3>Understanding Station Amenities</h3>
-            <div className="guide-grid">
-              <div className="guide-item">
-                <span className="guide-icon">🚿</span>
-                <div>
-                  <h4>Car Wash</h4>
-                  <p>Self-service or automated car wash facilities available</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">🏧</span>
-                <div>
-                  <h4>ATM</h4>
-                  <p>ATM machines for cash withdrawals and banking services</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">🍔</span>
-                <div>
-                  <h4>Food & Drinks</h4>
-                  <p>Convenience store with snacks, drinks, and food items</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">🚻</span>
-                <div>
-                  <h4>Toilets</h4>
-                  <p>Public restroom facilities for customer use</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">💨</span>
-                <div>
-                  <h4>Air & Water</h4>
-                  <p>Free air and water services for tire inflation and cleaning</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">🔥</span>
-                <div>
-                  <h4>LPG</h4>
-                  <p>Liquefied Petroleum Gas refueling available</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">🚛</span>
-                <div>
-                  <h4>Truck Friendly</h4>
-                  <p>Accommodates large vehicles and trucks with appropriate facilities</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">🕐</span>
-                <div>
-                  <h4>24 Hours</h4>
-                  <p>Open 24 hours a day, 7 days a week</p>
-                </div>
-              </div>
-              <div className="guide-item">
-                <span className="guide-icon">⚡</span>
-                <div>
-                  <h4>EV Charging</h4>
-                  <p>Electric vehicle charging stations available</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 

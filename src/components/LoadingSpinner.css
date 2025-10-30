@@ -14,6 +14,7 @@
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   z-index: 9999;
 }
@@ -123,18 +124,37 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 @keyframes progress {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
 }
 
 /* Dark mode support */
@@ -142,18 +162,105 @@
   .loading-container.fullscreen {
     background: rgba(17, 24, 39, 0.95);
   }
-  
+
   .loading-message h3 {
     color: #f9fafb;
   }
-  
+
   .loading-tip {
     color: #9ca3af;
   }
-  
+
   .progress-bar {
     background: #374151;
   }
+}
+
+/* Error State Styles */
+.loading-content.error-state {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 2px solid #fecaca;
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: shake 0.5s ease-in-out;
+}
+
+.error-tip {
+  color: #dc2626 !important;
+  font-style: normal;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.retry-button,
+.home-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.retry-button {
+  background: #2563eb;
+  color: white;
+}
+
+.retry-button:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.retry-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.home-button {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.home-button:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.timeout-message {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.elapsed-time {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+  font-family: monospace;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
 }
 
 /* Mobile responsiveness */
@@ -161,21 +268,30 @@
   .loading-container {
     padding: 1rem;
   }
-  
+
   .loading-spinner {
     width: 60px;
     height: 60px;
   }
-  
+
   .fuel-icon {
     font-size: 1.5rem;
   }
-  
+
   .loading-message h3 {
     font-size: 1.1rem;
   }
-  
+
   .loading-tip {
     font-size: 0.85rem;
+  }
+
+  .error-actions {
+    flex-direction: column;
+  }
+
+  .retry-button,
+  .home-button {
+    width: 100%;
   }
 }

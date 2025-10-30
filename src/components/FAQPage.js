@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import './FAQPage.css';
+import React, { useState, useEffect } from 'react';
+
+import { trackPageView } from '../utils/analytics';
+
+import Breadcrumbs from './Breadcrumbs';
+import SEO from './SEO';
+// CSS imported in pages/_app.js
 
 const faqs = [
   {
@@ -68,107 +73,143 @@ const FAQPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Track page view on mount
+  useEffect(() => {
+    trackPageView('FAQ');
+  }, []);
+
   // Get unique categories
   const categories = ['All', ...new Set(faqs.map(faq => faq.category))];
 
   // Filter FAQs based on category and search term
   const filteredFaqs = faqs.filter(faq => {
     const matchesCategory = selectedCategory === 'All' || faq.category === selectedCategory;
-    const matchesSearch = faq.q.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         faq.a.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = faq.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      faq.a.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
+  // Generate FAQ structured data for SEO
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  };
+
   return (
-    <div className="faq-page">
-      <div className="faq-header">
-        <div className="container">
-          <header>
-            <h1>Frequently Asked Questions</h1>
-            <p>Find answers to common questions about fuel prices, our service, and how to save money</p>
-          </header>
+    <>
+      <SEO
+        title="FAQ - Melbourne Petrol Prices | Frequently Asked Questions"
+        description="Find answers to common questions about fuel prices in Melbourne. Learn about price cycles, data sources, coverage areas, and how to save money on petrol."
+        keywords="petrol prices faq, fuel price questions, melbourne petrol help, fuel price cycle, petrol station finder, fuel savings tips"
+        canonical="/faq"
+        structuredData={faqStructuredData}
+      />
+      <div className="faq-page">
+        <Breadcrumbs customCrumbs={[
+          { label: 'Home', path: '/', icon: '🏠' },
+          { label: 'FAQ', path: '/faq', isActive: true }
+        ]} />
+        <div className="faq-header">
+          <div className="container">
+            <header>
+              <h1>Frequently Asked Questions</h1>
+              <p>Find answers to common questions about fuel prices, our service, and how to save money</p>
+            </header>
 
-          <div className="faq-controls">
-            <div className="search-box">
-              <span className="search-icon">🔍</span>
-              <input
-                type="text"
-                placeholder="Search FAQs..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-            </div>
-
-            <div className="category-filter">
-              <label>Filter by category:</label>
-              <select 
-                value={selectedCategory} 
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="category-select"
-              >
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="faq-content">
-        <div className="container">
-          <div className="faq-grid">
-            {filteredFaqs.map((item, idx) => (
-              <div key={idx} className="faq-item">
-                <div className="faq-question">
-                  <span className="faq-category">{item.category}</span>
-                  <h3>{item.q}</h3>
-                </div>
-                <div className="faq-answer">
-                  <p>{item.a}</p>
-                </div>
+            <div className="faq-controls">
+              <div className="search-box">
+                <span className="search-icon">🔍</span>
+                <input
+                  type="text"
+                  name="faq-search"
+                  placeholder="Search FAQs..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                  aria-label="Search FAQs"
+                />
               </div>
-            ))}
-          </div>
 
-          {filteredFaqs.length === 0 && (
-            <div className="no-results">
-              <div className="no-results-icon">🔍</div>
-              <h3>No FAQs found</h3>
-              <p>Try adjusting your search terms or category filter</p>
-            </div>
-          )}
-
-          {/* Additional Help Section */}
-          <div className="help-section">
-            <h2>Still need help?</h2>
-            <div className="help-options">
-              <div className="help-option">
-                <span className="help-icon">📧</span>
-                <h3>Email Support</h3>
-                <p>Get personalized help from our support team</p>
-                <a href="mailto:support@petrolpricesnearme.com.au" className="help-link">
-                  support@petrolpricesnearme.com.au
-                </a>
-              </div>
-              <div className="help-option">
-                <span className="help-icon">💬</span>
-                <h3>Live Chat</h3>
-                <p>Chat with us in real-time during business hours</p>
-                <button className="help-link">Start Chat</button>
-              </div>
-              <div className="help-option">
-                <span className="help-icon">📚</span>
-                <h3>Learn More</h3>
-                <p>Explore our comprehensive guides and resources</p>
-                <a href="/how-pricing-works" className="help-link">View Guides</a>
+              <div className="category-filter">
+                <label htmlFor="faq-category-filter">Filter by category:</label>
+                <select
+                  id="faq-category-filter"
+                  name="faq-category-filter"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="category-select"
+                >
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
         </div>
+
+        <div className="faq-content">
+          <div className="container">
+            <div className="faq-grid">
+              {filteredFaqs.map((item, idx) => (
+                <div key={idx} className="faq-item">
+                  <div className="faq-question">
+                    <span className="faq-category">{item.category}</span>
+                    <h3>{item.q}</h3>
+                  </div>
+                  <div className="faq-answer">
+                    <p>{item.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {filteredFaqs.length === 0 && (
+              <div className="no-results">
+                <div className="no-results-icon">🔍</div>
+                <h3>No FAQs found</h3>
+                <p>Try adjusting your search terms or category filter</p>
+              </div>
+            )}
+
+            {/* Additional Help Section */}
+            <div className="help-section">
+              <h2>Still need help?</h2>
+              <div className="help-options">
+                <div className="help-option">
+                  <span className="help-icon">📧</span>
+                  <h3>Email Support</h3>
+                  <p>Get personalized help from our support team</p>
+                  <a href="mailto:support@petrolpricesnearme.com.au" className="help-link">
+                    support@petrolpricesnearme.com.au
+                  </a>
+                </div>
+                <div className="help-option">
+                  <span className="help-icon">💬</span>
+                  <h3>Live Chat</h3>
+                  <p>Chat with us in real-time during business hours</p>
+                  <button className="help-link">Start Chat</button>
+                </div>
+                <div className="help-option">
+                  <span className="help-icon">📚</span>
+                  <h3>Learn More</h3>
+                  <p>Explore our comprehensive guides and resources</p>
+                  <a href="/how-pricing-works" className="help-link">View Guides</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

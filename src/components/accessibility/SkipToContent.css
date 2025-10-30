@@ -1,0 +1,144 @@
+/**
+ * Skip to Content Styles
+ *
+ * Ensures skip links are:
+ * - Hidden until focused
+ * - Highly visible when focused
+ * - Easy to access with keyboard
+ * - Properly positioned
+ */
+
+/* Skip Navigation Container */
+.skip-to-content {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Skip Link Base Styles */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 16px 24px;
+  background: #3B82F6;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 3px solid #ffffff;
+  border-radius: 0 0 8px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: top 0.3s ease, transform 0.2s ease;
+  pointer-events: auto;
+  z-index: 10001;
+  white-space: nowrap;
+}
+
+/* Multiple Skip Links */
+.skip-link:nth-child(2) {
+  left: auto;
+  right: 0;
+  border-radius: 0 0 0 8px;
+}
+
+.skip-link:nth-child(3) {
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 0 0 8px 8px;
+}
+
+/* Show on Focus */
+.skip-link:focus,
+.skip-link:active {
+  top: 0;
+  outline: 4px solid #FCD34D;
+  outline-offset: 4px;
+}
+
+/* Hover Effect (for when visible) */
+.skip-link:hover {
+  background: #2563EB;
+  transform: scale(1.02);
+}
+
+/* Active/Pressed State */
+.skip-link:active {
+  background: #1E40AF;
+  transform: scale(0.98);
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .skip-link {
+    border-width: 4px;
+    font-weight: 700;
+  }
+
+  .skip-link:focus {
+    outline-width: 6px;
+    outline-offset: 6px;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .skip-link {
+    background: #1E40AF;
+    border-color: #E5E7EB;
+    color: #F9FAFB;
+  }
+
+  .skip-link:focus {
+    outline-color: #FCD34D;
+  }
+
+  .skip-link:hover {
+    background: #1E3A8A;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
+
+/* Screen Reader Only Helper */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .skip-link {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .skip-link:nth-child(2),
+  .skip-link:nth-child(3) {
+    position: relative;
+    left: 0;
+    right: auto;
+    transform: none;
+    margin-top: 4px;
+  }
+}
+
+/* Ensure skip links work with sticky headers */
+.skip-link:focus {
+  position: fixed;
+}

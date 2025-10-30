@@ -1,0 +1,60 @@
+name: Deploy Preview
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Determine artifact path (CRA vs Next.js)
+        id: detect
+        run: |
+          if [ -d build ]; then
+            echo "artifact_path=build" >> "$GITHUB_OUTPUT"
+          elif [ -d .next ]; then
+            echo "artifact_path=.next" >> "$GITHUB_OUTPUT"
+          elif [ -d out ]; then
+            echo "artifact_path=out" >> "$GITHUB_OUTPUT"
+          else
+            echo "No known build output directory found (build/, .next/, out/)" >&2
+            exit 1
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: ${{ steps.detect.outputs.artifact_path }}
+          if-no-files-found: error
+
+  # Optional: sanity check job that downloads the artifact
+  verify-artifact:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: artifact
+
+      - name: List downloaded files
+        run: |
+          echo "Downloaded files:" && ls -la artifact || true

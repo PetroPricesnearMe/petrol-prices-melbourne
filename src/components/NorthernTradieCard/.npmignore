@@ -1,0 +1,12 @@
+__tests__
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+*.stories.tsx
+*.stories.ts
+.storybook
+coverage
+*.md
+!README.md
+

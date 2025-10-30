@@ -1,14 +1,14 @@
 import React from 'react';
-import './ErrorBoundary.css';
+// CSS imported in pages/_app.js for Next.js compatibility
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      hasError: false, 
-      error: null, 
+    this.state = {
+      hasError: false,
+      error: null,
       errorInfo: null,
-      retryCount: 0 
+      retryCount: 0
     };
   }
 
@@ -20,7 +20,7 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     // Log the error to console and external services
     console.error('Error caught by boundary:', error, errorInfo);
-    
+
     this.setState({
       error: error,
       errorInfo: errorInfo
@@ -49,17 +49,17 @@ class ErrorBoundary extends React.Component {
             <p className="error-message">
               We encountered an unexpected error. Don't worry, we're working to fix it!
             </p>
-            
+
             <div className="error-actions">
-              <button 
+              <button
                 className="retry-button"
                 onClick={this.handleRetry}
                 disabled={this.state.retryCount >= 3}
               >
                 {this.state.retryCount >= 3 ? 'Please refresh page' : 'Try Again'}
               </button>
-              
-              <button 
+
+              <button
                 className="home-button"
                 onClick={() => window.location.href = '/'}
               >
@@ -72,7 +72,7 @@ class ErrorBoundary extends React.Component {
               <pre className="error-stack">
                 {this.state.error && this.state.error.toString()}
                 <br />
-                {this.state.errorInfo.componentStack}
+                {this.state.errorInfo?.componentStack || 'No component stack available'}
               </pre>
             </details>
 

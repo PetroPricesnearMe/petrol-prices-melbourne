@@ -1,0 +1,49 @@
+name: Daily Database Backup
+
+on:
+  schedule:
+    # Run every day at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  backup:
+    name: Backup Database
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Make backup script executable
+        run: chmod +x scripts/backup-database.sh
+
+      - name: Run backup
+        env:
+          BASEROW_API_TOKEN: ${{ secrets.BASEROW_API_TOKEN }}
+          BASEROW_STATIONS_TABLE_ID: ${{ secrets.BASEROW_STATIONS_TABLE_ID }}
+          BASEROW_FUEL_PRICES_TABLE_ID: ${{ secrets.BASEROW_FUEL_PRICES_TABLE_ID }}
+        run: |
+          ./scripts/backup-database.sh
+
+      - name: Upload backup artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: database-backup-${{ github.run_number }}
+          path: backups/*.json.gz
+          retention-days: 30
+
+      - name: Notify on failure
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: 'Database backup failed!'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true
