@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/robots.txt/route": "/robots.txt",
+  "/sitemap.xml/route": "/sitemap.xml",
+  "/api/health/route": "/api/health",
+  "/api/stations/[id]/route": "/api/stations/[id]",
+  "/api/stations/nearby/route": "/api/stations/nearby",
+  "/api/stations/route": "/api/stations",
+  "/page": "/"
+}
