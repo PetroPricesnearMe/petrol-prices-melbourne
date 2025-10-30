@@ -1,5 +1,3 @@
-<<<<<<< Current (Your changes)
-=======
 /**
  * Tailwind CSS Configuration
  * Comprehensive design system with theming support
@@ -571,4 +569,3 @@ const config: Config = {
 };
 
 export default config;
->>>>>>> Incoming (Background Agent changes)

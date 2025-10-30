@@ -1,5 +1,3 @@
-<<<<<<< Current (Your changes)
-=======
 /**
  * Performance-Optimized Root Layout
  *
@@ -189,4 +187,3 @@ export default function RootLayout({
     </html>
   );
 }
->>>>>>> Incoming (Background Agent changes)
