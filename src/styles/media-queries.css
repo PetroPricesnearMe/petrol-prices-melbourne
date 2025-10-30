@@ -1,0 +1,445 @@
+/**
+ * Advanced Media Queries
+ * Comprehensive responsive and adaptive design patterns
+ */
+
+/* ========================================
+ * STANDARD BREAKPOINTS
+ * Mobile-first approach
+ * ======================================== */
+
+/* Extra small devices (portrait phones) */
+@media (min-width: 475px) {
+  :root {
+    --container-padding: 1rem;
+  }
+}
+
+/* Small devices (landscape phones, small tablets) */
+@media (min-width: 640px) {
+  :root {
+    --container-padding: 1.5rem;
+  }
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 768px) {
+  :root {
+    --container-padding: 2rem;
+  }
+}
+
+/* Large devices (laptops) */
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: 2rem;
+  }
+}
+
+/* Extra large devices (desktops) */
+@media (min-width: 1280px) {
+  :root {
+    --container-padding: 2rem;
+  }
+}
+
+/* 2XL devices (large desktops) */
+@media (min-width: 1536px) {
+  :root {
+    --container-padding: 2.5rem;
+  }
+}
+
+/* ========================================
+ * ORIENTATION QUERIES
+ * ======================================== */
+
+@media (orientation: portrait) {
+  .orientation-aware {
+    flex-direction: column;
+  }
+}
+
+@media (orientation: landscape) {
+  .orientation-aware {
+    flex-direction: row;
+  }
+}
+
+/* ========================================
+ * DEVICE CAPABILITIES
+ * ======================================== */
+
+/* Hover-capable devices (mouse/trackpad) */
+@media (hover: hover) and (pointer: fine) {
+  .hover-effects:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .interactive-card:hover {
+    cursor: pointer;
+  }
+}
+
+/* Touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .touch-optimized {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Larger touch targets */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  /* Remove hover effects on touch */
+  .hover-effects:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Fine pointer (mouse, stylus) */
+@media (pointer: fine) {
+  .fine-pointer-only {
+    display: block;
+  }
+}
+
+/* Coarse pointer (touch) */
+@media (pointer: coarse) {
+  .touch-only {
+    display: block;
+  }
+}
+
+/* ========================================
+ * DISPLAY FEATURES
+ * ======================================== */
+
+/* High resolution displays (Retina, 4K) */
+@media (-webkit-min-device-pixel-ratio: 2),
+       (min-resolution: 192dpi),
+       (min-resolution: 2dppx) {
+  .high-res-image {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* HDR displays */
+@media (dynamic-range: high) {
+  :root {
+    /* Enhanced colors for HDR displays */
+    --primary-color: color(display-p3 0.231 0.51 0.965);
+  }
+}
+
+/* Wide color gamut */
+@media (color-gamut: p3) {
+  .wide-gamut {
+    color: color(display-p3 0.231 0.51 0.965);
+  }
+}
+
+/* ========================================
+ * ACCESSIBILITY QUERIES
+ * ======================================== */
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable parallax effects */
+  .parallax {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-on-scroll {
+    animation: fadeIn 0.6s ease-out;
+  }
+}
+
+/* Reduced transparency preference */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-dark,
+  .translucent {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    opacity: 1 !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --border-width: 2px;
+  }
+
+  button,
+  .btn,
+  input,
+  select,
+  textarea {
+    border-width: 2px;
+  }
+
+  .card {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Low contrast mode */
+@media (prefers-contrast: low) {
+  :root {
+    --border-width: 1px;
+  }
+
+  .shadow-lg {
+    box-shadow: none;
+  }
+}
+
+/* Dark mode preference */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-background: #111827;
+    --color-text: #f9fafb;
+  }
+}
+
+/* Light mode preference */
+@media (prefers-color-scheme: light) {
+  :root:not(.dark) {
+    --color-background: #ffffff;
+    --color-text: #111827;
+  }
+}
+
+/* Inverted colors */
+@media (inverted-colors: inverted) {
+  img,
+  video,
+  picture {
+    filter: invert(1);
+  }
+}
+
+/* ========================================
+ * BANDWIDTH & PERFORMANCE
+ * ======================================== */
+
+/* Save data preference */
+@media (prefers-reduced-data: reduce) {
+  /* Disable background images */
+  .hero-background,
+  .parallax-image {
+    background-image: none !important;
+  }
+
+  /* Disable animations */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Disable videos */
+  video {
+    display: none;
+  }
+
+  /* Use lower quality images */
+  img[srcset] {
+    /* Browser will select lowest resolution */
+  }
+}
+
+/* ========================================
+ * CONTAINER QUERIES
+ * Modern responsive design
+ * ======================================== */
+
+.container-query {
+  container-type: inline-size;
+}
+
+@container (min-width: 320px) {
+  .container-content {
+    padding: 1rem;
+  }
+}
+
+@container (min-width: 480px) {
+  .container-content {
+    padding: 1.5rem;
+  }
+}
+
+@container (min-width: 640px) {
+  .container-content {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container (min-width: 1024px) {
+  .container-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ========================================
+ * ASPECT RATIO QUERIES
+ * ======================================== */
+
+/* Ultra-wide screens */
+@media (min-aspect-ratio: 21/9) {
+  .content-container {
+    max-width: 90vw;
+  }
+}
+
+/* Square-ish screens */
+@media (aspect-ratio: 1/1) {
+  .square-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ========================================
+ * DISPLAY MODE QUERIES
+ * Progressive Web Apps
+ * ======================================== */
+
+/* Standalone mode (PWA) */
+@media (display-mode: standalone) {
+  .pwa-only {
+    display: block;
+  }
+
+  /* Add safe area insets for notched devices */
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Fullscreen mode */
+@media (display-mode: fullscreen) {
+  header,
+  footer {
+    display: none;
+  }
+}
+
+/* Browser mode */
+@media (display-mode: browser) {
+  .browser-only {
+    display: block;
+  }
+}
+
+/* ========================================
+ * SCRIPTING QUERIES
+ * Detect JavaScript availability
+ * ======================================== */
+
+@media (scripting: none) {
+  /* Styles when JavaScript is disabled */
+  .requires-js {
+    display: none;
+  }
+
+  .no-js-fallback {
+    display: block;
+  }
+}
+
+@media (scripting: enabled) {
+  .requires-js {
+    display: block;
+  }
+
+  .no-js-fallback {
+    display: none;
+  }
+}
+
+/* ========================================
+ * UTILITY CLASSES FOR MEDIA QUERIES
+ * ======================================== */
+
+/* Responsive visibility */
+.hidden-xs {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .hidden-xs {
+    display: revert;
+  }
+  .hidden-sm {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .hidden-sm {
+    display: revert;
+  }
+  .hidden-md {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hidden-md {
+    display: revert;
+  }
+  .hidden-lg {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hidden-lg {
+    display: revert;
+  }
+  .hidden-xl {
+    display: none;
+  }
+}
+
+/* Responsive text alignment */
+@media (max-width: 767px) {
+  .text-center-mobile {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-left-tablet {
+    text-align: left;
+  }
+}

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import SEO from './SEO';
-import Breadcrumbs from './Breadcrumbs';
+
 import { trackPageView } from '../utils/analytics';
-import './FuelPriceTrendsPage.css';
+
+import Breadcrumbs from './Breadcrumbs';
+import SEO from './SEO';
+// CSS imported in pages/_app.js
 
 const FuelPriceTrendsPage = () => {
   const [selectedFuelType, setSelectedFuelType] = useState('unleaded');

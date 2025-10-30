@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './LoadingSpinner.css';
+// CSS imported in pages/_app.js for Next.js compatibility
 
 const LoadingSpinner = ({ 
   message = "Loading...", 
@@ -51,7 +51,7 @@ const LoadingSpinner = ({
     };
   }, [timeout, onTimeout, message]);
 
-  const containerClass = `loading-container ${fullScreen ? 'fullscreen' : ''} ${size}`;
+  const containerClass = ['loading-container', fullScreen && 'fullscreen', size].filter(Boolean).join(' ');
 
   // Show timeout message if timed out
   if (timedOut) {

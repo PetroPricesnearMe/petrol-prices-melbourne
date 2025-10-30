@@ -1,44 +1,56 @@
-# Robots.txt for Petrol Prices Near Me
-# Updated: 2025-01-10
-
+# *
 User-agent: *
 Allow: /
-Allow: /map
-Allow: /directory
-Allow: /about
-Allow: /fuel-price-trends
-Allow: /station-amenities
-Allow: /how-pricing-works
-Allow: /blog
-Allow: /faq
-Allow: /chat
-
-# Disallow admin and private areas
-Disallow: /admin/
-Disallow: /account/
-Disallow: /sign-in
 Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /private/
+Disallow: /hero-example
+Disallow: /map-demo
+Disallow: /*?sort=*
+Disallow: /*?filter=*
+Disallow: /*?filters=*
+Disallow: /*?page=*
+Disallow: /*?search=*
+Disallow: /*?q=*
+Disallow: /*?s=*
+Disallow: /*?category=*
+Disallow: /*?brand=*
+Disallow: /*?fuel=*
+Disallow: /*?amenity=*
 
-# Sitemap location
-Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
-Sitemap: https://www.petrolpricesnearme.com.au/sitemap.xml
-
-# Crawl delay (be nice to our servers)
-Crawl-delay: 1
-
-# Specific rules for major bots
+# Googlebot
 User-agent: Googlebot
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /hero-example
+Disallow: /map-demo
 Crawl-delay: 0.5
 
+# Bingbot
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /hero-example
+Disallow: /map-demo
 Crawl-delay: 1
 
-User-agent: Slurp
-Allow: /
-Crawl-delay: 1
+# GPTBot
+User-agent: GPTBot
+Disallow: /
 
-User-agent: DuckDuckBot
-Allow: /
-Crawl-delay: 1
+# CCBot
+User-agent: CCBot
+Disallow: /
+
+# Host
+Host: https://petrolpricenearme.com.au
+
+# Sitemaps
+Sitemap: https://petrolpricenearme.com.au/sitemap.xml
+Sitemap: https://petrolpricenearme.com.au/server-sitemap.xml

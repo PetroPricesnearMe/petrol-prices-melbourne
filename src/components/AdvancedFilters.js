@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './AdvancedFilters.css';
+// CSS imported in pages/_app.js
 
 /**
  * Advanced Filters Component
  * Provides comprehensive filtering and search for station listings
- * 
+ *
  * @component
  * @param {Object} props - Component props
  * @param {Function} props.onFilterChange - Callback when filters change
@@ -29,7 +29,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
     stations.map(s => s.brand).filter(Boolean)
   )];
 
-  const regions = ['all', 'North Melbourne', 'South Melbourne', 'East Melbourne', 'West Melbourne', 'CBD'];
+  const regions = ['all', 'Northern Suburbs', 'South Eastern Suburbs', 'Inner East Melbourne', 'Western Suburbs', 'CBD'];
 
   // Update parent component when filters change
   useEffect(() => {
@@ -279,4 +279,3 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
 };
 
 export default AdvancedFilters;
-

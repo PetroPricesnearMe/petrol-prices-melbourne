@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="ampolGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E31837;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C41230;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="95" fill="url(#ampolGrad)"/>
+  <polygon points="100,45 130,90 115,90 145,135 55,135 85,90 70,90" fill="white"/>
+  <text x="100" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="white">AMPOL</text>
+</svg>
+

@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { MotionDiv } from './MotionComponents';
-import dataSourceManager from '../services/DataSourceManager';
+
 import { MELBOURNE_REGIONS, getStationRegion } from '../config/regions';
-import AdvancedFilters from './AdvancedFilters';
-import StationMap from './StationMap';
-import StationCards from './StationCards';
-import Breadcrumbs from './Breadcrumbs';
-import SEO, { generateFuelPriceListingData } from './SEO';
+import dataSourceManager from '../services/DataSourceManager';
 import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../utils/analytics';
-import './DirectoryPageNew.css';
+
+import AdvancedFilters from './AdvancedFilters';
+import Breadcrumbs from './Breadcrumbs';
+import Pagination from './common/Pagination';
+import InteractiveStationMap from './InteractiveStationMap';
+import { MotionDiv } from './MotionComponents';
+import SEO, { generateFuelPriceListingData } from './SEO';
+import StationCards from './StationCards';
+import StationMap from './StationMap';
+import ViewToggle from './ViewToggle';
+// CSS imported in pages/_app.js
 
 /**
  * Directory Page Component
@@ -46,10 +51,21 @@ const getBrandClass = (brand) => {
 const getBrandImage = (brand) => {
   if (!brand) return BRAND_IMAGES.default;
   const brandLower = (typeof brand === 'string' ? brand : '').toLowerCase();
+
+  // Check for exact matches first
+  if (BRAND_IMAGES[brandLower]) return BRAND_IMAGES[brandLower];
+
+  // Check for partial matches
   if (brandLower.includes('shell')) return BRAND_IMAGES.shell;
   if (brandLower.includes('bp')) return BRAND_IMAGES.bp;
   if (brandLower.includes('7') || brandLower.includes('seven')) return BRAND_IMAGES['7-eleven'];
   if (brandLower.includes('mobil')) return BRAND_IMAGES.mobil;
+  if (brandLower.includes('coles')) return BRAND_IMAGES['coles express'];
+  if (brandLower.includes('united')) return BRAND_IMAGES.united;
+  if (brandLower.includes('liberty')) return BRAND_IMAGES.liberty;
+  if (brandLower.includes('apco')) return BRAND_IMAGES.apco;
+  if (brandLower.includes('caltex') || brandLower.includes('ampol')) return BRAND_IMAGES.caltex;
+
   return BRAND_IMAGES.default;
 };
 
@@ -60,8 +76,9 @@ const DirectoryPageNew = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeFilters, setActiveFilters] = useState({});
-  const [viewMode, setViewMode] = useState('cards'); // 'cards', 'grid', or 'map'
+  const [viewMode, setViewMode] = useState('grid'); // 'list', 'grid', or 'map'
   const [selectedStation, setSelectedStation] = useState(null);
+  const [isMapFullScreen, setIsMapFullScreen] = useState(false);
 
   const regionParam = searchParams.get('region');
   const selectedRegion = regionParam ? MELBOURNE_REGIONS[regionParam.toUpperCase()] : null;
@@ -84,14 +101,14 @@ const DirectoryPageNew = () => {
       try {
         console.log('⏳ Starting to load stations...');
         setLoading(true);
-        
+
         // Add timeout to prevent infinite loading
-        const timeoutPromise = new Promise((_, reject) => 
+        const timeoutPromise = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Loading timeout')), 10000)
         );
-        
+
         const dataPromise = dataSourceManager.fetchStations();
-        
+
         // Race between data fetch and timeout
         const data = await Promise.race([dataPromise, timeoutPromise]);
         console.log('✅ Data loaded successfully:', data.length, 'stations');
@@ -240,10 +257,9 @@ const DirectoryPageNew = () => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentStations = filteredStations.slice(startIndex, endIndex);
 
-  const goToPage = (page) => {
+  const goToPage = useCallback((page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
   // Handle station interactions
   const handleStationClick = (station) => {
@@ -334,56 +350,155 @@ const DirectoryPageNew = () => {
           </div>
         </div>
 
-        {/* Advanced Filters */}
-        <div className="container">
-          <AdvancedFilters
-            onFilterChange={handleFilterChange}
-            stations={stations}
-            activeFilters={activeFilters}
-          />
+        {/* Note: StationCards view has its own built-in filters, so we only show filters for Grid and Map views */}
+        {viewMode !== 'cards' && (
+          <div className="container">
+            <AdvancedFilters
+              onFilterChange={handleFilterChange}
+              stations={stations}
+              activeFilters={activeFilters}
+            />
+          </div>
+        )}
 
-          {/* View Toggle */}
-          <div className="view-toggle">
-            <button
-              className={`view-btn ${viewMode === 'cards' ? 'active' : ''}`}
-              onClick={() => setViewMode('cards')}
-              aria-label="Cards view"
-              aria-pressed={viewMode === 'cards'}
-            >
-              <span>🃏</span> Cards
-            </button>
-            <button
-              className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-              onClick={() => setViewMode('grid')}
-              aria-label="Grid view"
-              aria-pressed={viewMode === 'grid'}
-            >
-              <span>⊞</span> Grid
-            </button>
-            <button
-              className={`view-btn ${viewMode === 'map' ? 'active' : ''}`}
-              onClick={() => setViewMode('map')}
-              aria-label="Map view"
-              aria-pressed={viewMode === 'map'}
-            >
-              <span>🗺️</span> Map
-            </button>
+        {/* View Toggle */}
+        <div className="container">
+          <div className="flex justify-between items-center mb-6">
+            <ViewToggle
+              currentView={viewMode}
+              onViewChange={setViewMode}
+              showGrid={true}
+              size="md"
+            />
+
+            {viewMode === 'map' && (
+              <button
+                onClick={() => setIsMapFullScreen(!isMapFullScreen)}
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                aria-label={isMapFullScreen ? 'Exit fullscreen' : 'Fullscreen map'}
+              >
+                {isMapFullScreen ? '⊗ Exit Fullscreen' : '⛶ Fullscreen'}
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Cards View */}
-        {viewMode === 'cards' && (
-          <StationCards />
+        {/* List View */}
+        {viewMode === 'list' && (
+          <div className="container">
+            <div className="space-y-4">
+              {currentStations.map((station, index) => {
+                const brandClass = getBrandClass(station.brand);
+                const brandImage = getBrandImage(station.brand);
+
+                return (
+                  <MotionDiv
+                    key={station.id}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: Math.min(index * 0.05, 0.3) }}
+                  >
+                    <div className="flex flex-col sm:flex-row">
+                      {/* Station Image */}
+                      <div className="sm:w-48 h-32 sm:h-auto">
+                        <img
+                          src={brandImage}
+                          alt={`${station.brand || 'Petrol'} station`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.src = '/images/fuel-nozzles.svg';
+                          }}
+                        />
+                      </div>
+
+                      {/* Station Content */}
+                      <div className="flex-1 p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              {station.name}
+                            </h3>
+                            {station.brand && (
+                              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded mt-1 ${brandClass}`}>
+                                {station.brand}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                          📍 {station.address}
+                          {station.city && <>, {station.city} {station.postalCode}</>}
+                        </p>
+
+                        {station.fuelPrices && station.fuelPrices.length > 0 && (
+                          <div className="flex flex-wrap gap-3 mb-3">
+                            {station.fuelPrices
+                              .filter(fp => fp.price > 0)
+                              .slice(0, 4)
+                              .map((fp, i) => (
+                                <div key={i} className="flex items-center gap-2">
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">{fp.fuelType}:</span>
+                                  <span className="text-sm font-bold text-green-600 dark:text-green-400">
+                                    ${fp.price.toFixed(2)}
+                                  </span>
+                                </div>
+                              ))}
+                          </div>
+                        )}
+
+                        {station.latitude && station.longitude && (
+                          <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                            onClick={() => handleDirectionsClick(station)}
+                            aria-label={`Get directions to ${station.name}`}
+                          >
+                            <span aria-hidden="true">🧭</span>
+                            <span>Get Directions</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </MotionDiv>
+                );
+              })}
+            </div>
+
+            {/* Pagination for List View */}
+            {totalPages > 1 && (
+              <div className="mt-8">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={goToPage}
+                  totalItems={filteredStations.length}
+                  itemsPerPage={ITEMS_PER_PAGE}
+                  showItemsInfo={true}
+                  scrollToTop={true}
+                  size="md"
+                  animationType="fade"
+                />
+              </div>
+            )}
+          </div>
         )}
 
-        {/* Map View */}
+        {/* Interactive Map View */}
         {viewMode === 'map' && (
-          <div className="container">
-            <StationMap
+          <div className={isMapFullScreen ? '' : 'container'}>
+            <InteractiveStationMap
               stations={filteredStations}
               onStationClick={handleStationClick}
               selectedStation={selectedStation}
-              height={600}
+              height={isMapFullScreen ? '100vh' : 600}
+              fullScreen={isMapFullScreen}
+              onFullScreenToggle={() => setIsMapFullScreen(!isMapFullScreen)}
+              showUserLocation={true}
             />
           </div>
         )}
@@ -403,7 +518,8 @@ const DirectoryPageNew = () => {
                 </div>
               ) : (
                 <>
-                  <div className="stations-grid">
+                  {/* Responsive Grid with Fluid Columns */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
                     {currentStations.map((station, index) => {
                       const brandClass = getBrandClass(station.brand);
                       const brandImage = getBrandImage(station.brand);
@@ -411,7 +527,7 @@ const DirectoryPageNew = () => {
                       return (
                         <MotionDiv
                           key={station.id}
-                          className="station-card"
+                          className="station-card h-full flex flex-col"
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: Math.min(index * 0.05, 0.3) }}
@@ -438,48 +554,50 @@ const DirectoryPageNew = () => {
                           </div>
 
                           {/* Station Content */}
-                          <div className="station-content">
+                          <div className="station-content flex-1 flex flex-col">
                             <div className="station-header">
                               <h3 className="station-name">{station.name}</h3>
                             </div>
 
-                            <div className="station-details">
-                              <div className="detail-item">
-                                <span className="detail-icon" aria-hidden="true">📍</span>
-                                <span className="detail-text">
-                                  {station.address}
-                                  {station.city && (
-                                    <>
-                                      <br />
-                                      {station.city} {station.postalCode}
-                                    </>
-                                  )}
-                                </span>
-                              </div>
-
-                              {station.fuelPrices && station.fuelPrices.length > 0 && (
-                                <div className="station-prices">
-                                  <strong>💰 Current Prices</strong>
-                                  <div className="prices-list">
-                                    {station.fuelPrices
-                                      .filter(fp => fp.price > 0)
-                                      .slice(0, 3)
-                                      .map((fp, i) => (
-                                        <div key={i} className="price-item">
-                                          <span className="fuel-type">{fp.fuelType}</span>
-                                          <span className="fuel-price">${fp.price.toFixed(2)}</span>
-                                        </div>
-                                      ))}
-                                  </div>
+                            <div className="station-details flex-1 flex flex-col justify-between">
+                              <div>
+                                <div className="detail-item">
+                                  <span className="detail-icon" aria-hidden="true">📍</span>
+                                  <span className="detail-text">
+                                    {station.address}
+                                    {station.city && (
+                                      <>
+                                        <br />
+                                        {station.city} {station.postalCode}
+                                      </>
+                                    )}
+                                  </span>
                                 </div>
-                              )}
+
+                                {station.fuelPrices && station.fuelPrices.length > 0 && (
+                                  <div className="station-prices mt-4">
+                                    <strong>💰 Current Prices</strong>
+                                    <div className="prices-list">
+                                      {station.fuelPrices
+                                        .filter(fp => fp.price > 0)
+                                        .slice(0, 3)
+                                        .map((fp, i) => (
+                                          <div key={i} className="price-item">
+                                            <span className="fuel-type">{fp.fuelType}</span>
+                                            <span className="fuel-price">${fp.price.toFixed(2)}</span>
+                                          </div>
+                                        ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
 
                               {station.latitude && station.longitude && (
                                 <a
                                   href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="btn btn-primary btn-sm directions-btn"
+                                  className="btn btn-primary btn-sm directions-btn mt-4"
                                   onClick={() => handleDirectionsClick(station)}
                                   aria-label={`Get directions to ${station.name}`}
                                 >
@@ -494,60 +612,25 @@ const DirectoryPageNew = () => {
                     })}
                   </div>
 
-                  {/* Pagination */}
+                  {/* Modern Pagination with Accessibility */}
                   {totalPages > 1 && (
-                    <div className="pagination" role="navigation" aria-label="Pagination">
-                      <button
-                        onClick={() => goToPage(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="pagination-btn"
-                        aria-label="Previous page"
-                      >
-                        ← Previous
-                      </button>
-
-                      <div className="pagination-pages">
-                        {Array.from({ length: totalPages }, (_, i) => i + 1)
-                          .filter(page => {
-                            return (
-                              page === 1 ||
-                              page === totalPages ||
-                              Math.abs(page - currentPage) <= 1
-                            );
-                          })
-                          .map((page, index, array) => (
-                            <React.Fragment key={page}>
-                              {index > 0 && array[index - 1] !== page - 1 && (
-                                <span className="pagination-ellipsis" aria-hidden="true">...</span>
-                              )}
-                              <button
-                                onClick={() => goToPage(page)}
-                                className={`pagination-number ${page === currentPage ? 'active' : ''}`}
-                                aria-label={`Page ${page}`}
-                                aria-current={page === currentPage ? 'page' : undefined}
-                              >
-                                {page}
-                              </button>
-                            </React.Fragment>
-                          ))}
-                      </div>
-
-                      <button
-                        onClick={() => goToPage(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="pagination-btn"
-                        aria-label="Next page"
-                      >
-                        Next →
-                      </button>
+                    <div className="mt-8">
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={goToPage}
+                        totalItems={filteredStations.length}
+                        itemsPerPage={ITEMS_PER_PAGE}
+                        showItemsInfo={true}
+                        scrollToTop={true}
+                        size="md"
+                        animationType="fade"
+                        siblingCount={1}
+                        showFirstLast={true}
+                        showPrevNext={true}
+                      />
                     </div>
                   )}
-
-                  {/* Results Info */}
-                  <div className="results-info" role="status" aria-live="polite">
-                    Showing {startIndex + 1}-{Math.min(endIndex, filteredStations.length)} of {filteredStations.length} stations
-                    {totalPages > 1 && ` (Page ${currentPage} of ${totalPages})`}
-                  </div>
                 </>
               )}
             </div>

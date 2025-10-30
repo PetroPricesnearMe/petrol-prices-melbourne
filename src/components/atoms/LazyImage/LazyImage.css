@@ -1,0 +1,190 @@
+/**
+ * LazyImage CSS Styles
+ *
+ * Styles for intersection observer-based lazy loading
+ * Includes loading states, animations, and responsive design
+ */
+
+.lazy-image-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Common aspect ratios */
+.lazy-image-container--3-2 {
+  aspect-ratio: 3/2;
+}
+
+.lazy-image-container--16-9 {
+  aspect-ratio: 16/9;
+}
+
+.lazy-image-container--4-3 {
+  aspect-ratio: 4/3;
+}
+
+.lazy-image-container--1-1 {
+  aspect-ratio: 1/1;
+}
+
+.lazy-image-container--120-80 {
+  aspect-ratio: 120/80;
+}
+
+.lazy-image {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.lazy-image--contain {
+  object-fit: contain;
+}
+
+.lazy-image--cover {
+  object-fit: cover;
+}
+
+.lazy-image--fill {
+  object-fit: fill;
+}
+
+.lazy-image--none {
+  object-fit: none;
+}
+
+.lazy-image--scale-down {
+  object-fit: scale-down;
+}
+
+.lazy-image--loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.lazy-image--error {
+  opacity: 0.5;
+}
+
+/* Loading skeleton */
+.lazy-image-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.lazy-image-skeleton-shimmer {
+  width: 100%;
+  height: 100%;
+  background: inherit;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Error state */
+.lazy-image-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+  color: #9ca3af;
+}
+
+.lazy-image-error-icon {
+  width: 48px;
+  height: 48px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .lazy-image-container {
+    border-radius: 6px;
+  }
+
+  .lazy-image-error-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .lazy-image-container {
+    background-color: #374151;
+  }
+
+  .lazy-image-skeleton {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  }
+
+  .lazy-image-error {
+    background-color: #1f2937;
+    color: #6b7280;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .lazy-image-container {
+    border: 2px solid currentColor;
+  }
+
+  .lazy-image-skeleton {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      currentColor 10px,
+      currentColor 20px
+    );
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .lazy-image {
+    transition: opacity 0.1s ease-in-out;
+  }
+
+  .lazy-image-skeleton {
+    animation: none;
+    background: #f3f4f6;
+  }
+}
+
+/* Print styles */
+@media print {
+  .lazy-image-skeleton,
+  .lazy-image-error {
+    display: none;
+  }
+
+  .lazy-image {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './StationMap.css';
+// CSS imported in pages/_app.js
 
 /**
  * Station Map Component

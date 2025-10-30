@@ -1,0 +1,89 @@
+{
+  "timestamp": "2025-10-22T14:48:06.373Z",
+  "analysis": {
+    "chunks": [
+      {
+        "name": "framework-3a5d542f3eddd3a9.js",
+        "size": 189765,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\framework-3a5d542f3eddd3a9.js"
+      },
+      {
+        "name": "4bd1b696-21f374d1156f834a.js",
+        "size": 173019,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\4bd1b696-21f374d1156f834a.js"
+      },
+      {
+        "name": "58-0bd7371775d4c4ca.js",
+        "size": 166188,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\58-0bd7371775d4c4ca.js"
+      },
+      {
+        "name": "main-650b933f061db468.js",
+        "size": 121030,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\main-650b933f061db468.js"
+      },
+      {
+        "name": "167-54d6d3c1e48f7f96.js",
+        "size": 112807,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\167-54d6d3c1e48f7f96.js"
+      },
+      {
+        "name": "polyfills-42372ed130431b0a.js",
+        "size": 112594,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\polyfills-42372ed130431b0a.js"
+      },
+      {
+        "name": "682.080b634337187b5b.js",
+        "size": 36453,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\682.080b634337187b5b.js"
+      },
+      {
+        "name": "587.4a879e905c8f50e6.js",
+        "size": 9960,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\587.4a879e905c8f50e6.js"
+      },
+      {
+        "name": "687-6b0d78c39e03245c.js",
+        "size": 7359,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\687-6b0d78c39e03245c.js"
+      },
+      {
+        "name": "619-00f41837e1c5aeca.js",
+        "size": 5444,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\619-00f41837e1c5aeca.js"
+      },
+      {
+        "name": "646.f342b7cffc01feb0.js",
+        "size": 5444,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\646.f342b7cffc01feb0.js"
+      },
+      {
+        "name": "webpack-049887bbd246312d.js",
+        "size": 3393,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\webpack-049887bbd246312d.js"
+      },
+      {
+        "name": "973.152aa6507775bc97.js",
+        "size": 2907,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\973.152aa6507775bc97.js"
+      },
+      {
+        "name": "106.a2333f5f56745334.js",
+        "size": 2720,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\106.a2333f5f56745334.js"
+      },
+      {
+        "name": "139.7a5a8e93a21948c1.js",
+        "size": 740,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\139.7a5a8e93a21948c1.js"
+      },
+      {
+        "name": "main-app-c1532ef50aa77d54.js",
+        "size": 126,
+        "path": "C:\\Users\\zenbo\\Desktop\\PPNM\\.next\\static\\chunks\\main-app-c1532ef50aa77d54.js"
+      }
+    ],
+    "totalSize": 949949
+  },
+  "recommendations": []
+}

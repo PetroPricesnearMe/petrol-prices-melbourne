@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import './Breadcrumbs.css';
+// CSS imported in pages/_app.js
 
 /**
  * Breadcrumbs Component

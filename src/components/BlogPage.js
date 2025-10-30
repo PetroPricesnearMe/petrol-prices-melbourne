@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import SEO from './SEO';
-import Breadcrumbs from './Breadcrumbs';
+
 import { trackPageView } from '../utils/analytics';
-import './BlogPage.css';
+
+import Breadcrumbs from './Breadcrumbs';
+import SEO from './SEO';
+// CSS imported in pages/_app.js
 
 const BlogPage = () => {
   // Track page view on mount
@@ -181,7 +183,7 @@ const BlogPage = () => {
                   <p>Average unleaded price: $1.77/L | Diesel: $1.74/L</p>
                 </div>
                 <div className="station-item">
-                  <h4>3. 7-Eleven - North Melbourne</h4>
+                  <h4>3. 7-Eleven - Northern Suburbs</h4>
                   <p>Average unleaded price: $1.78/L | Diesel: $1.75/L</p>
                 </div>
               </div>
@@ -313,4 +315,4 @@ const BlogPage = () => {
   );
 };
 
-export default BlogPage; 
+export default BlogPage;

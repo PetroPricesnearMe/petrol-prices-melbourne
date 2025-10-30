@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Monitor - Report Viewer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .card-title {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card-value {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .critical { color: #dc2626; }
+    .high { color: #ea580c; }
+    .medium { color: #f59e0b; }
+    .low { color: #84cc16; }
+    .info { color: #3b82f6; }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .status-healthy {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-issues {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .issues-section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+
+    .issue-item {
+      padding: 15px;
+      border-left: 4px solid #ddd;
+      margin-bottom: 15px;
+      background: #f9fafb;
+      border-radius: 4px;
+    }
+
+    .issue-item.critical { border-left-color: #dc2626; }
+    .issue-item.high { border-left-color: #ea580c; }
+    .issue-item.medium { border-left-color: #f59e0b; }
+    .issue-item.low { border-left-color: #84cc16; }
+
+    .issue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .issue-category {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .issue-severity {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .issue-file {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .issue-description {
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+    }
+
+    .info-item {
+      padding: 12px;
+      background: #f0fdf4;
+      border-radius: 6px;
+      border-left: 3px solid #22c55e;
+    }
+
+    .info-category {
+      font-weight: bold;
+      color: #166534;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .info-message {
+      color: #14532d;
+      font-size: 14px;
+    }
+
+    .refresh-button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .refresh-button:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .timestamp {
+      color: #666;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: white;
+      font-size: 18px;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .no-issues {
+      text-align: center;
+      padding: 40px;
+      color: #16a34a;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔍 Backend Monitoring Dashboard</h1>
+      <p class="subtitle">Real-time backend health monitoring and issue tracking</p>
+      <button class="refresh-button" onclick="loadReport()">🔄 Refresh Report</button>
+      <div class="timestamp" id="timestamp"></div>
+    </div>
+
+    <div id="loading" class="loading">
+      Loading report...
+    </div>
+
+    <div id="error" style="display: none;"></div>
+
+    <div id="summary" style="display: none;">
+      <div class="summary-cards">
+        <div class="card">
+          <div class="card-title">Total Issues</div>
+          <div class="card-value" id="total-issues">0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Critical</div>
+          <div class="card-value critical" id="critical">0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">High</div>
+          <div class="card-value high" id="high">0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Medium</div>
+          <div class="card-value medium" id="medium">0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Low</div>
+          <div class="card-value low" id="low">0</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Info</div>
+          <div class="card-value info" id="info">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="errors-section" style="display: none;" class="issues-section">
+      <h2 style="margin-bottom: 20px; color: #dc2626;">❌ Errors</h2>
+      <div id="errors-list"></div>
+    </div>
+
+    <div id="warnings-section" style="display: none;" class="issues-section">
+      <h2 style="margin-bottom: 20px; color: #f59e0b;">⚠️ Warnings</h2>
+      <div id="warnings-list"></div>
+    </div>
+
+    <div id="info-section" style="display: none;" class="issues-section">
+      <h2 style="margin-bottom: 20px; color: #3b82f6;">ℹ️ System Information</h2>
+      <div id="info-list" class="info-grid"></div>
+    </div>
+
+    <div id="no-issues" style="display: none;" class="issues-section">
+      <div class="no-issues">
+        <div class="icon">✅</div>
+        <div>No Issues Found!</div>
+        <div style="font-size: 14px; color: #666; margin-top: 10px;">Backend is healthy and operating normally.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadReport() {
+      const loading = document.getElementById('loading');
+      const error = document.getElementById('error');
+      const summary = document.getElementById('summary');
+      
+      loading.style.display = 'block';
+      error.style.display = 'none';
+      summary.style.display = 'none';
+
+      try {
+        // Load the latest report
+        const response = await fetch('../logs/backend-reports/latest.json');
+        
+        if (!response.ok) {
+          throw new Error('Report not found. Run a scan first: npm run monitor');
+        }
+
+        const report = await response.json();
+        
+        loading.style.display = 'none';
+        displayReport(report);
+      } catch (err) {
+        loading.style.display = 'none';
+        error.style.display = 'block';
+        error.className = 'error';
+        error.innerHTML = `
+          <strong>❌ Error Loading Report</strong><br>
+          ${err.message}<br><br>
+          <em>Make sure you've run at least one scan: <code>npm run monitor</code></em>
+        `;
+      }
+    }
+
+    function displayReport(report) {
+      // Update timestamp
+      document.getElementById('timestamp').textContent = 
+        `Last updated: ${new Date(report.timestamp).toLocaleString()}`;
+
+      // Update summary cards
+      document.getElementById('summary').style.display = 'block';
+      document.getElementById('total-issues').textContent = report.summary.totalIssues;
+      document.getElementById('critical').textContent = report.summary.critical;
+      document.getElementById('high').textContent = report.summary.high;
+      document.getElementById('medium').textContent = report.summary.medium;
+      document.getElementById('low').textContent = report.summary.low;
+      document.getElementById('info').textContent = report.summary.info;
+
+      // Display errors
+      const errorsSection = document.getElementById('errors-section');
+      const errorsList = document.getElementById('errors-list');
+      if (report.errors && report.errors.length > 0) {
+        errorsSection.style.display = 'block';
+        errorsList.innerHTML = report.errors.map(err => `
+          <div class="issue-item ${err.severity.toLowerCase()}">
+            <div class="issue-header">
+              <span class="issue-category">${err.category}</span>
+              <span class="issue-severity ${err.severity.toLowerCase()}">${err.severity}</span>
+            </div>
+            <div class="issue-file">📄 ${err.file}</div>
+            <div class="issue-description">${err.issue}</div>
+          </div>
+        `).join('');
+      } else {
+        errorsSection.style.display = 'none';
+      }
+
+      // Display warnings
+      const warningsSection = document.getElementById('warnings-section');
+      const warningsList = document.getElementById('warnings-list');
+      if (report.warnings && report.warnings.length > 0) {
+        warningsSection.style.display = 'block';
+        warningsList.innerHTML = report.warnings.map(warn => `
+          <div class="issue-item ${warn.severity.toLowerCase()}">
+            <div class="issue-header">
+              <span class="issue-category">${warn.category}</span>
+              <span class="issue-severity ${warn.severity.toLowerCase()}">${warn.severity}</span>
+            </div>
+            <div class="issue-file">📄 ${warn.file}</div>
+            <div class="issue-description">${warn.issue}</div>
+          </div>
+        `).join('');
+      } else {
+        warningsSection.style.display = 'none';
+      }
+
+      // Display info
+      const infoSection = document.getElementById('info-section');
+      const infoList = document.getElementById('info-list');
+      if (report.info && report.info.length > 0) {
+        infoSection.style.display = 'block';
+        infoList.innerHTML = report.info.map(info => `
+          <div class="info-item">
+            <div class="info-category">${info.category} - ${info.file}</div>
+            <div class="info-message">${info.message || info.status}</div>
+          </div>
+        `).join('');
+      }
+
+      // Show "no issues" message if everything is clean
+      const noIssues = document.getElementById('no-issues');
+      if (report.summary.totalIssues === 0) {
+        noIssues.style.display = 'block';
+      } else {
+        noIssues.style.display = 'none';
+      }
+    }
+
+    // Load report on page load
+    loadReport();
+
+    // Auto-refresh every 5 minutes
+    setInterval(loadReport, 5 * 60 * 1000);
+  </script>
+</body>
+</html>
+

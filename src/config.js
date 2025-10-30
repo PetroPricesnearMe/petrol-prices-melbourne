@@ -36,6 +36,13 @@ const config = {
     }
   },
 
+  // Google Places API Configuration
+  google: {
+    placesApiKey: process.env.REACT_APP_GOOGLE_PLACES_API_KEY || 'AIzaSyDfEKO1GZBpuUuhhL-gz1miug6jdlT1nFk',
+    placesApiUrl: 'https://places.googleapis.com/v1/places:searchText',
+    mapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'AIzaSyDfEKO1GZBpuUuhhL-gz1miug6jdlT1nFk'
+  },
+
   // Application Settings
   app: {
     name: process.env.REACT_APP_APP_NAME || 'Petrol Prices Near Me',

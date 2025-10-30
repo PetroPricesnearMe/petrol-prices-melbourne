@@ -6,8 +6,9 @@
  */
 
 import React from 'react';
+
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
-import './NetworkStatus.css';
+// CSS imported in pages/_app.js
 
 const NetworkStatus = () => {
   const { isOnline, wasOffline } = useNetworkStatus();

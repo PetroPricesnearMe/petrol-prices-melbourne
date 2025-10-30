@@ -1,0 +1,131 @@
+/**
+ * Filter Bar Component Styles
+ *
+ * Custom styles for filter bar components
+ */
+
+/* Category Chips */
+.category-chips {
+  @apply space-y-3;
+}
+
+.category-chips button {
+  @apply transition-all duration-200;
+}
+
+.category-chips button:focus-visible {
+  @apply ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* Price Range Slider */
+.price-range-slider {
+  @apply relative py-4;
+}
+
+.price-range-slider .slider-track {
+  @apply h-2 bg-gray-200 dark:bg-gray-700 rounded-full;
+}
+
+.price-range-slider .slider-thumb {
+  @apply w-6 h-6 rounded-full border-2 border-white shadow-lg;
+  @apply bg-primary-600 hover:bg-primary-700;
+  @apply cursor-grab active:cursor-grabbing;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+/* Rating Slider */
+.rating-slider {
+  @apply space-y-3;
+}
+
+.rating-slider button {
+  @apply transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+/* Filter Bar */
+.filter-bar {
+  @apply relative z-40;
+  @apply transition-all duration-300;
+}
+
+/* Filter Sidebar */
+.filter-sidebar {
+  @apply flex-col;
+}
+
+.filter-section button {
+  @apply focus:outline-none;
+}
+
+/* Active filter indicators */
+.filter-indicator {
+  @apply inline-block w-2 h-2 rounded-full bg-primary-500;
+}
+
+/* Mobile drawer overlay */
+.filter-backdrop {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-40;
+}
+
+/* Search highlight */
+.search-highlight {
+  @apply bg-yellow-200 dark:bg-yellow-900 px-0.5 rounded;
+}
+
+/* Animation keyframes */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+/* Custom scrollbar for filter containers */
+.filter-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.filter-container::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800 rounded-full;
+}
+
+.filter-container::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-600 rounded-full;
+  @apply hover:bg-gray-500 dark:hover:bg-gray-500;
+}
+
+/* Touch target optimization */
+@media (pointer: coarse) {
+  .category-chips button,
+  .rating-slider button {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .category-chips,
+  .rating-slider,
+  .filter-bar,
+  .filter-sidebar {
+    @apply transition-none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .category-chips button,
+  .rating-slider button {
+    @apply border-2;
+  }
+}

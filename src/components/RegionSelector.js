@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MotionDiv } from './MotionComponents';
+
 import { MELBOURNE_REGIONS, getRegionCounts } from '../config/regions';
 import dataSourceManager from '../services/DataSourceManager';
-import './RegionSelector.css';
+
+import { MotionDiv } from './MotionComponents';
+// CSS imported in pages/_app.js for Next.js compatibility
 
 const RegionSelector = () => {
   const [regionCounts, setRegionCounts] = useState({});
@@ -80,16 +82,37 @@ const RegionSelector = () => {
                       <p className="modern-region-description">{region.description}</p>
                     </div>
 
-                    {/* Station Count Badge */}
-                    <div className="region-count-badge" style={{ backgroundColor: region.color }}>
-                      {loading ? (
-                        <span className="count-loading">...</span>
-                      ) : (
-                        <>
-                          <span className="count-number">{regionCounts[region.id.toUpperCase()] || 0}</span>
-                          <span className="count-label">Stations</span>
-                        </>
-                      )}
+                    {/* Fuel Pump Station Counter */}
+                    <div className="fuel-pump-counter" style={{ '--region-color': region.color }}>
+                      <div className="pump-display">
+                        <div className="pump-screen">
+                          <div className="pump-screen-content">
+                            <div className="pump-icon">⛽</div>
+                            <div className="pump-stats">
+                              {loading ? (
+                                <div className="pump-loading">
+                                  <div className="loading-dots">
+                                    <span></span><span></span><span></span>
+                                  </div>
+                                </div>
+                              ) : (
+                                <>
+                                  <div className="station-count">
+                                    <span className="count-number">{regionCounts[region.id.toUpperCase()] || 0}</span>
+                                    <span className="count-unit">Stations</span>
+                                  </div>
+                                  <div className="fuel-price-display">
+                                    <span className="price-label">Avg Price</span>
+                                    <span className="price-value">$1.85</span>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="pump-handle"></div>
+                      </div>
+                      <div className="pump-base"></div>
                     </div>
 
                     {/* Hover Effect Overlay */}

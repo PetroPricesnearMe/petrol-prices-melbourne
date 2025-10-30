@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+bower_components/
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+*.min.js
+*.bundle.js
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Cache
+.cache/
+.eslintcache
+.tsbuildinfo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+
+# Generated files
+public/sw.js
+**/*.d.ts
+
+# Large data files
+*.csv
+*.json
+!package.json
+!tsconfig.json
+!.prettierrc.json
+!.eslintrc.json
+
+# Documentation (format manually)
+CHANGELOG.md
+LICENSE.md

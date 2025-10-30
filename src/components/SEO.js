@@ -27,7 +27,8 @@ const SEO = ({
   noindex = false,
 }) => {
   const siteUrl = 'https://www.petrolpricesnearme.com.au';
-  const fullCanonical = canonical ? `${siteUrl}${canonical}` : `${siteUrl}${window.location.pathname}`;
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const fullCanonical = canonical ? `${siteUrl}${canonical}` : `${siteUrl}${currentPath}`;
   const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 
   // Default structured data for the organization

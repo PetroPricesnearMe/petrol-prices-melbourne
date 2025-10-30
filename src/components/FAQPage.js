@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import SEO from './SEO';
-import Breadcrumbs from './Breadcrumbs';
+
 import { trackPageView } from '../utils/analytics';
-import './FAQPage.css';
+
+import Breadcrumbs from './Breadcrumbs';
+import SEO from './SEO';
+// CSS imported in pages/_app.js
 
 const faqs = [
   {
