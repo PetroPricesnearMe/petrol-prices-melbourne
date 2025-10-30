@@ -1,0 +1,8 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+Host: https://petrolpricenearme.com.au
+Sitemap: https://petrolpricenearme.com.au/sitemap.xml
