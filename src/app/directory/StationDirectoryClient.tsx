@@ -10,6 +10,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useCallback, useMemo } from 'react';
 
+import {
+} from '@/components/icons/FilterIcons';
 import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
@@ -55,7 +57,7 @@ interface Props {
 
 interface SearchFilters {
   search: string;
-  fuelType: keyof FuelPrices;
+  fuelType: keyof FuelPrices | 'all';
   brand: string;
   suburb: string;
   sortBy: SortOption;
@@ -138,7 +140,7 @@ function AdvancedSearchBar({
 export function StationDirectoryClient({ initialStations, metadata }: Props) {
   const [filters, setFilters] = useState<SearchFilters>({
     search: '',
-    fuelType: 'unleaded',
+    fuelType: 'all',
     brand: 'all',
     suburb: 'all',
     sortBy: 'price-low',
@@ -197,30 +199,58 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
       result = result.filter((s) => s.suburb === filters.suburb);
     }
 
-    // Price filter (only show stations with selected fuel type)
-    result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+    // Fuel type filter (only apply if a specific fuel type is selected)
+    if (filters.fuelType !== 'all') {
+      result = result.filter((s) => s.fuelPrices[filters.fuelType as keyof FuelPrices] !== null);
+    }
 
     // Max price filter
     if (filters.priceMax) {
       const maxPrice = parseFloat(filters.priceMax);
-      result = result.filter((s) => {
-        const price = s.fuelPrices[filters.fuelType];
-        return price !== null && price <= maxPrice;
-      });
+      if (filters.fuelType !== 'all') {
+        result = result.filter((s) => {
+          const price = s.fuelPrices[filters.fuelType as keyof FuelPrices];
+          return price !== null && price <= maxPrice;
+        });
+      } else {
+        // If 'all' is selected, check all fuel types
+        result = result.filter((s) => {
+          const prices = Object.values(s.fuelPrices).filter(p => p !== null) as number[];
+          return prices.length > 0 && Math.min(...prices) <= maxPrice;
+        });
+      }
     }
 
     // Sort
     result.sort((a, b) => {
       switch (filters.sortBy) {
         case 'price-low': {
-          const priceA = a.fuelPrices[filters.fuelType] || Infinity;
-          const priceB = b.fuelPrices[filters.fuelType] || Infinity;
-          return priceA - priceB;
+          if (filters.fuelType !== 'all') {
+            const priceA = a.fuelPrices[filters.fuelType as keyof FuelPrices] || Infinity;
+            const priceB = b.fuelPrices[filters.fuelType as keyof FuelPrices] || Infinity;
+            return priceA - priceB;
+          } else {
+            // If 'all' is selected, use minimum price across all fuel types
+            const pricesA = Object.values(a.fuelPrices).filter(p => p !== null) as number[];
+            const pricesB = Object.values(b.fuelPrices).filter(p => p !== null) as number[];
+            const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : Infinity;
+            const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
+            return minPriceA - minPriceB;
+          }
         }
         case 'price-high': {
-          const priceA = a.fuelPrices[filters.fuelType] || 0;
-          const priceB = b.fuelPrices[filters.fuelType] || 0;
-          return priceB - priceA;
+          if (filters.fuelType !== 'all') {
+            const priceA = a.fuelPrices[filters.fuelType as keyof FuelPrices] || 0;
+            const priceB = b.fuelPrices[filters.fuelType as keyof FuelPrices] || 0;
+            return priceB - priceA;
+          } else {
+            // If 'all' is selected, use minimum price across all fuel types
+            const pricesA = Object.values(a.fuelPrices).filter(p => p !== null) as number[];
+            const pricesB = Object.values(b.fuelPrices).filter(p => p !== null) as number[];
+            const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : 0;
+            const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : 0;
+            return minPriceB - minPriceA;
+          }
         }
         case 'suburb':
           return a.suburb.localeCompare(b.suburb) || a.name.localeCompare(b.name);
@@ -260,7 +290,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   const clearFilters = useCallback(() => {
     setFilters({
       search: '',
-      fuelType: 'unleaded',
+      fuelType: 'all',
       brand: 'all',
       suburb: 'all',
       sortBy: 'price-low',
@@ -270,7 +300,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   }, []);
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value && value !== 'all' && value !== 'unleaded' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
+    ([key, value]) => value && value !== 'all' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
   ).length;
 
   // Get price color based on value
@@ -308,10 +338,14 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
         </div>
       </header>
 
-      {/* Filters */}
-      <section className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 print-hidden sticky top-0 z-10 shadow-sm">
+      {/* Filters Section - Enhanced with improved spacing, icons, and accessibility */}
+      <section
+        className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 print-hidden sticky top-0 z-10 shadow-sm"
+        role="search"
+        aria-label="Station filters and search"
+      >
         <div className={patterns.container()}>
-          <div className="py-6 space-y-4">
+          <div className="py-6 md:py-8 space-y-6 md:space-y-8">
             {/* Advanced Search Bar */}
             <div className="mb-4">
               <AdvancedSearchBar
@@ -351,22 +385,70 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={cn(
-                  'btn',
-                  showFilters ? 'btn-primary' : 'btn-outline',
-                  'whitespace-nowrap'
+                  // Base styles
+                  'inline-flex items-center justify-center gap-2 sm:gap-3',
+                  'px-4 sm:px-6 py-2.5 sm:py-3',
+                  'min-h-[44px]', // Touch-friendly minimum height
+                  'rounded-lg md:rounded-xl',
+                  'font-medium text-sm sm:text-base',
+                  'whitespace-nowrap',
+                  'transition-all duration-200 ease-in-out',
+                  'focus:outline-none focus:ring-2 focus:ring-offset-2',
+                  'touch-manipulation', // Optimize for touch devices
+                  // Active/Selected state
+                  showFilters
+                    ? 'bg-primary-600 text-white shadow-lg shadow-primary-500/30 focus:ring-primary-500 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-400'
+                    : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-2 border-gray-300 dark:border-gray-600 shadow-sm focus:ring-primary-500 hover:bg-gray-50 dark:hover:bg-gray- ced600 hover:border-primary-400 dark:hover:border-primary-500',
+                  // Disabled state (if needed in future)
+                  'disabled:opacity-50 disabled:cursor-not-allowed'
                 )}
+                aria-expanded={showFilters}
+                aria-controls="advanced-filters-panel"
+                aria-label={`${showFilters ? 'Hide' : 'Show'} filter options`}
               >
-                ⚙️ Filters
+                <FilterIcon
+                  className="w-5 h-5 flex-shrink instinctively-0"
+                  ariaHidden={true}
+                />
+                <span>Filters</span>
                 {activeFilterCount > 0 && (
-                  <span className="badge badge-secondary ml-2">{activeFilterCount}</span>
+                  <span
+                    className={cn(
+                      'inline-flex items-center justify-center',
+                      'min-w-[20px] h-5 px-1.5',
+                      'rounded-full text-xs font-bold',
+                      showFilters
+                        ? 'bg-white/20 text-white'
+                        : 'bg-primary-600 text-white dark:bg-primary-500'
+                    )}
+                    aria-label={`${activeFilterCount} active filter${activeFilterCount !== 1 ? 's' : ''}`}
+                  >
+                    {activeFilterCount}
+                  </span>
                 )}
               </button>
             </div>
 
-            {/* Advanced Filters */}
+            {/* Advanced Filters Panel - Enhanced with better spacing and layout */}
             {showFilters && (
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 space-y-4 animate-fade-in">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div
+                id="advanced-filters-panel"
+                className={cn(
+                  'bg-gray-50 dark:bg-gray-900',
+                  'rounded-xl md:rounded-2xl',
+                  'p-6 md:p-8',
+                  'space-y-6 md:space-y-8',
+                  'border border-gray-200 dark:border-gray-700',
+                  'shadow-lg',
+                  'animate-fade-in',
+                  // Improved accessibility
+                  'focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2'
+                )}
+                role="region"
+                aria-label="Filter options"
+              >
+                {/* Filter Grid - Enhanced spacing and responsive layout */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                   {/* Fuel Type */}
                   <div>
                     <label htmlFor="fuel-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -375,9 +457,10 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                     <select
                       id="fuel-type"
                       value={filters.fuelType}
-                      onChange={(e) => handleFilterChange('fuelType', e.target.value as keyof FuelPrices)}
+                      onChange={(e) => handleFilterChange('fuelType', e.target.value)}
                       className="input w-full"
                     >
+                      <option value="all">All Fuel Types</option>
                       <option value="unleaded">Unleaded 91</option>
                       <option value="diesel">Diesel</option>
                       <option value="premium95">Premium 95</option>
@@ -569,7 +652,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                         <div className="space-y-1.5 sm:space-y-2">
                           {Object.entries(station.fuelPrices).map(([type, price]) => {
                             if (price === null) return null;
-                            const isSelected = type === filters.fuelType;
+                            const isSelected = filters.fuelType !== 'all' && type === filters.fuelType;
                             return (
                               <div
                                 key={type}

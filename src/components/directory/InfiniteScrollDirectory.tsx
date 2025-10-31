@@ -11,13 +11,13 @@
 
 import { Suspense, useCallback, useEffect, useState } from 'react';
 
-import { LoadingSpinner, SkeletonGrid } from '@/components/transitions/SmoothTransitions';
 import { StationGrid } from '@/components/cards/StationCard';
 import { StationDetailsModal } from '@/components/modals/Modal';
 import { ViewToggle, DirectoryView, StationCardGrid, StationCardList } from '@/components/toggle/ViewToggle';
+import { LoadingSpinner, SkeletonGrid } from '@/components/transitions/SmoothTransitions';
 import { useAdvancedInfiniteStations } from '@/hooks/useInfiniteStations';
-import { cn } from '@/utils/cn';
 import type { Station } from '@/types/station';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES
@@ -26,7 +26,7 @@ import type { Station } from '@/types/station';
 interface InfiniteScrollDirectoryProps {
   initialFilters?: {
     search?: string;
-    fuelType?: keyof Station['fuelPrices'];
+    fuelType?: keyof Station['fuelPrices'] | 'all';
     brand?: string;
     suburb?: string;
     sortBy?: 'price-low' | 'price-high' | 'name' | 'suburb';
@@ -69,7 +69,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
   const clearFilters = useCallback(() => {
     onFiltersChange({
       search: '',
-      fuelType: 'unleaded',
+      fuelType: 'all',
       brand: 'all',
       suburb: 'all',
       sortBy: 'price-low',
@@ -78,7 +78,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
   }, [onFiltersChange]);
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value && value !== 'all' && value !== 'unleaded' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
+    ([key, value]) => value && value !== 'all' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
   ).length;
 
   return (
@@ -142,10 +142,11 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
                 </label>
                 <select
                   id="fuel-type"
-                  value={filters.fuelType || 'unleaded'}
+                  value={filters.fuelType || 'all'}
                   onChange={(e) => handleFilterChange('fuelType', e.target.value)}
                   className="input w-full"
                 >
+                  <option value="all">All Fuel Types</option>
                   <option value="unleaded">Unleaded 91</option>
                   <option value="diesel">Diesel</option>
                   <option value="premium95">Premium 95</option>
@@ -298,7 +299,7 @@ export function InfiniteScrollDirectory({
 }: InfiniteScrollDirectoryProps) {
   const [filters, setFilters] = useState({
     search: '',
-    fuelType: 'unleaded' as keyof Station['fuelPrices'],
+    fuelType: 'all' as keyof Station['fuelPrices'] | 'all',
     brand: 'all',
     suburb: 'all',
     sortBy: 'price-low' as const,
@@ -425,7 +426,7 @@ export function InfiniteScrollDirectory({
             <button
               onClick={() => setFilters({
                 search: '',
-                fuelType: 'unleaded',
+                fuelType: 'all',
                 brand: 'all',
                 suburb: 'all',
                 sortBy: 'price-low',

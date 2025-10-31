@@ -12,21 +12,25 @@
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, Suspense, lazy } from 'react';
+import { useRef } from 'react';
+// Suspense and lazy removed - no longer needed for testimonials/pricing sections
 
 import { cn } from '@/lib/utils';
 
 // ============================================================================
 // LAZY LOADED COMPONENTS
+// SEO OPTIMIZATION: Testimonials and Pricing sections removed
 // ============================================================================
 
-const LazyTestimonialsSection = lazy(() =>
-  import('./TestimonialsSection').then(module => ({ default: module.TestimonialsSection }))
-);
+// Commented out - removed for SEO optimization
+// const LazyTestimonialsSection = lazy(() =>
+//   import('./TestimonialsSection').then(module => ({ default: module.TestimonialsSection }))
+// );
 
-const LazyPricingSection = lazy(() =>
-  import('./PricingSection').then(module => ({ default: module.PricingSection }))
-);
+// Commented out - removed (no subscription offers)
+// const LazyPricingSection = lazy(() =>
+//   import('./PricingSection').then(module => ({ default: module.PricingSection }))
+// );
 
 // ============================================================================
 // TYPES
@@ -41,7 +45,7 @@ interface PerformanceOptimizedLandingPageProps {
 // ============================================================================
 
 function usePerformanceMonitoring() {
-  const startTime = useRef<number>(Date.now());
+  const _startTime = useRef<number>(Date.now());
 
   // Monitor Core Web Vitals
   if (typeof window !== 'undefined') {
@@ -56,7 +60,13 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
-        console.log('FID:', entry.processingStart - entry.startTime);
+        const timingEntry = entry as PerformanceEntry & {
+          processingStart?: number;
+          startTime: number;
+        };
+        if (typeof timingEntry.processingStart === 'number') {
+          console.log('FID:', timingEntry.processingStart - timingEntry.startTime);
+        }
       });
     }).observe({ entryTypes: ['first-input'] });
 
@@ -64,8 +74,12 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
-        if (!entry.hadRecentInput) {
-          console.log('CLS:', entry.value);
+        const layoutShiftEntry = entry as PerformanceEntry & {
+          value?: number;
+          hadRecentInput?: boolean;
+        };
+        if (!layoutShiftEntry.hadRecentInput && typeof layoutShiftEntry.value === 'number') {
+          console.log('CLS:', layoutShiftEntry.value);
         }
       });
     }).observe({ entryTypes: ['layout-shift'] });
@@ -93,7 +107,7 @@ function OptimizedHeroSection() {
 
         {/* Static gradient orbs for better performance */}
         <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-purple-500/20 rounded-full blur-3xl animate-pulse [animation-delay:2s]" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-20">
@@ -454,7 +468,7 @@ function OptimizedCTASection() {
       {/* Optimized background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-yellow-400/10 to-orange-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-pink-400/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-pink-400/10 to-purple-500/10 rounded-full blur-3xl animate-pulse [animation-delay:2s]" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -623,40 +637,8 @@ export function PerformanceOptimizedLandingPage({ className }: PerformanceOptimi
       {/* Features Section */}
       <OptimizedFeaturesSection />
 
-      {/* Lazy loaded sections for better performance */}
-      <Suspense fallback={
-        <div className="py-20 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center">
-                <div className="animate-pulse">
-                  <div className="h-8 bg-gray-300 rounded w-1/3 mx-auto mb-4"></div>
-                  <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      }>
-        <LazyTestimonialsSection />
-      </Suspense>
-
-      <Suspense fallback={
-        <div className="py-20 bg-white dark:bg-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center">
-                <div className="animate-pulse">
-                  <div className="h-8 bg-gray-300 rounded w-1/3 mx-auto mb-4"></div>
-                  <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      }>
-        <LazyPricingSection />
-      </Suspense>
+      {/* Testimonials and Pricing sections removed for SEO optimization */}
+      {/* Lazy loaded sections commented out - no longer needed */}
 
       {/* Stats Section */}
       <OptimizedStatsSection />

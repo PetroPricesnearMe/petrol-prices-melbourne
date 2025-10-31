@@ -1,6 +1,6 @@
 {
   "totalStations": 660,
-  "lastUpdated": "2025-10-23T06:58:17.786Z",
+  "lastUpdated": "2025-10-31T21:23:45.034Z",
   "suburbs": [
     "ABBOTSFORD",
     "ALBERT PARK",
@@ -397,8 +397,8 @@
   ],
   "priceRange": {
     "unleaded": {
-      "min": 185.1,
-      "max": 210,
+      "min": 185,
+      "max": 209.8,
       "average": "198.0"
     }
   },
