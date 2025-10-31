@@ -2,10 +2,20 @@
  * Pricing Section Component
  *
  * Pricing plans with features and CTAs
+ * (/subscription) - $4.99/month, $19.99/month
+ * - "Pro" plan ($4.99/month)
+ * - "Business" plan ($19.99/month)
+ * - Free tier mentioned (should be removed for SEO)
+ *
+ * SEO OPTIMIZATION: Commented out - subscription/pricing offers do not contribute
+ * to on-page SEO or search intent for a petrol price directory
  */
 
 'use client';
 
+// Commented out for SEO optimization - pricing/subscription doesn't contribute to search intent
+/* eslint-disable */
+/*
 import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
@@ -194,4 +204,11 @@ export function PricingSection() {
       </div>
     </section>
   );
+}
+*/
+/* eslint-enable */
+
+// SEO Optimization: Pricing/subscription section removed as it doesn't contribute to on-page SEO
+export function PricingSection() {
+  return null;
 }

@@ -312,6 +312,9 @@ export function BlogArticle() {
 }
 
 // Example 5: Responsive Pricing Cards
+// SEO OPTIMIZATION: Commented out - no subscription offers
+/* eslint-disable */
+/*
 export function PricingCards() {
   const plans = [
     {
@@ -431,8 +434,13 @@ export function PricingCards() {
     </section>
   );
 }
+*/
+/* eslint-enable */
 
 // Example 6: Testimonial Grid
+// SEO OPTIMIZATION: Commented out - testimonials don't contribute to SEO
+/* eslint-disable */
+/*
 export function TestimonialGrid() {
   const testimonials = [
     {
@@ -501,6 +509,8 @@ export function TestimonialGrid() {
     </section>
   );
 }
+*/
+/* eslint-enable */
 
 // Main demo component combining all examples
 export default function FluidLayoutExamples() {
@@ -509,8 +519,10 @@ export default function FluidLayoutExamples() {
       <FluidHeroSection />
       <FeatureGrid />
       <ProductGrid />
-      <PricingCards />
-      <TestimonialGrid />
+      {/* PricingCards - Removed (no subscription offers) */}
+      {/* <PricingCards /> */}
+      {/* TestimonialGrid - Removed for SEO optimization */}
+      {/* <TestimonialGrid /> */}
       <BlogArticle />
     </div>
   );

@@ -12,21 +12,25 @@
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, Suspense, lazy } from 'react';
+import { useRef } from 'react';
+// Suspense and lazy removed - no longer needed for testimonials/pricing sections
 
 import { cn } from '@/lib/utils';
 
 // ============================================================================
 // LAZY LOADED COMPONENTS
+// SEO OPTIMIZATION: Testimonials and Pricing sections removed
 // ============================================================================
 
-const LazyTestimonialsSection = lazy(() =>
-  import('./TestimonialsSection').then(module => ({ default: module.TestimonialsSection }))
-);
+// Commented out - removed for SEO optimization
+// const LazyTestimonialsSection = lazy(() =>
+//   import('./TestimonialsSection').then(module => ({ default: module.TestimonialsSection }))
+// );
 
-const LazyPricingSection = lazy(() =>
-  import('./PricingSection').then(module => ({ default: module.PricingSection }))
-);
+// Commented out - removed (no subscription offers)
+// const LazyPricingSection = lazy(() =>
+//   import('./PricingSection').then(module => ({ default: module.PricingSection }))
+// );
 
 // ============================================================================
 // TYPES
@@ -623,40 +627,8 @@ export function PerformanceOptimizedLandingPage({ className }: PerformanceOptimi
       {/* Features Section */}
       <OptimizedFeaturesSection />
 
-      {/* Lazy loaded sections for better performance */}
-      <Suspense fallback={
-        <div className="py-20 bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center">
-                <div className="animate-pulse">
-                  <div className="h-8 bg-gray-300 rounded w-1/3 mx-auto mb-4"></div>
-                  <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      }>
-        <LazyTestimonialsSection />
-      </Suspense>
-
-      <Suspense fallback={
-        <div className="py-20 bg-white dark:bg-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center">
-                <div className="animate-pulse">
-                  <div className="h-8 bg-gray-300 rounded w-1/3 mx-auto mb-4"></div>
-                  <div className="h-4 bg-gray-300 rounded w-1/2 mx-auto"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      }>
-        <LazyPricingSection />
-      </Suspense>
+      {/* Testimonials and Pricing sections removed for SEO optimization */}
+      {/* Lazy loaded sections commented out - no longer needed */}
 
       {/* Stats Section */}
       <OptimizedStatsSection />

@@ -2,10 +2,16 @@
  * Testimonials Section Component
  *
  * Customer testimonials with ratings and avatars
+ *
+ * SEO OPTIMIZATION: Commented out - testimonials do not contribute to on-page SEO
+ * or search intent for a petrol price directory
  */
 
 'use client';
 
+// Commented out for SEO optimization - testimonials don't contribute to search intent
+/* eslint-disable */
+/*
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
@@ -125,4 +131,11 @@ export function TestimonialsSection() {
       </div>
     </section>
   );
+}
+*/
+/* eslint-enable */
+
+// SEO Optimization: Testimonials section removed as it doesn't contribute to on-page SEO
+export function TestimonialsSection() {
+  return null;
 }

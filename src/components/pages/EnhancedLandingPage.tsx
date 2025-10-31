@@ -389,8 +389,12 @@ function FeaturesSection() {
 
 // ============================================================================
 // TESTIMONIALS SECTION COMPONENT
+// SEO OPTIMIZATION: Commented out - testimonials do not contribute to on-page SEO
 // ============================================================================
 
+// Commented out for SEO optimization
+/* eslint-disable */
+/*
 function TestimonialsSection() {
   const testimonials: TestimonialProps[] = [
     {
@@ -499,11 +503,22 @@ function TestimonialsSection() {
     </section>
   );
 }
+*/
+/* eslint-enable */
+
+// SEO Optimization: Testimonials section removed
+function TestimonialsSection() {
+  return null;
+}
 
 // ============================================================================
 // PRICING SECTION COMPONENT
+// SEO OPTIMIZATION: Commented out - pricing/subscription offers removed (no products to sell)
 // ============================================================================
 
+// Commented out for SEO optimization - no subscription offers
+/* eslint-disable */
+/*
 function PricingSection() {
   const plans: PricingPlanProps[] = [
     {
@@ -672,6 +687,13 @@ function PricingSection() {
       </div>
     </section>
   );
+}
+*/
+/* eslint-enable */
+
+// SEO Optimization: Pricing section removed - no subscription offers
+function PricingSection() {
+  return null;
 }
 
 // ============================================================================
@@ -965,11 +987,11 @@ export function EnhancedLandingPage({ className }: EnhancedLandingPageProps) {
       {/* Features Section */}
       <FeaturesSection />
 
-      {/* Testimonials Section */}
-      <TestimonialsSection />
+      {/* Testimonials Section - Removed for SEO optimization */}
+      {/* <TestimonialsSection /> */}
 
-      {/* Pricing Section */}
-      <PricingSection />
+      {/* Pricing Section - Removed (no subscription offers) */}
+      {/* <PricingSection /> */}
 
       {/* Stats Section */}
       <StatsSection />
@@ -987,5 +1009,6 @@ export function EnhancedLandingPage({ className }: EnhancedLandingPageProps) {
 // EXPORTS
 // ============================================================================
 
-export { EnhancedLandingPage, HeroSection, FeaturesSection, TestimonialsSection, PricingSection, StatsSection, CTASection, Footer };
-export type { EnhancedLandingPageProps, TestimonialProps, PricingPlanProps, FeatureProps };
+export { EnhancedLandingPage, HeroSection, FeaturesSection, StatsSection, CTASection, Footer };
+// TestimonialsSection and PricingSection removed for SEO optimization
+export type { EnhancedLandingPageProps, FeatureProps };

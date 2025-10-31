@@ -73,7 +73,7 @@ interface Props {
 
 interface SearchFilters {
   search: string;
-  fuelType: keyof FuelPrices;
+  fuelType: keyof FuelPrices | 'all';
   brand: string;
   suburb: string;
   sortBy: SortOption;
@@ -103,7 +103,7 @@ const convertStationForMap = (station: Station) => ({
 export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
   const [filters, setFilters] = useState<SearchFilters>({
     search: '',
-    fuelType: 'unleaded',
+    fuelType: 'all',
     brand: 'all',
     suburb: 'all',
     sortBy: 'price-low',
@@ -141,30 +141,58 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
       result = result.filter((s) => s.suburb === filters.suburb);
     }
 
-    // Price filter (only show stations with selected fuel type)
-    result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+    // Fuel type filter (only apply if a specific fuel type is selected)
+    if (filters.fuelType !== 'all') {
+      result = result.filter((s) => s.fuelPrices[filters.fuelType as keyof FuelPrices] !== null);
+    }
 
     // Max price filter
     if (filters.priceMax) {
       const maxPrice = parseFloat(filters.priceMax);
-      result = result.filter((s) => {
-        const price = s.fuelPrices[filters.fuelType];
-        return price !== null && price <= maxPrice;
-      });
+      if (filters.fuelType !== 'all') {
+        result = result.filter((s) => {
+          const price = s.fuelPrices[filters.fuelType as keyof FuelPrices];
+          return price !== null && price <= maxPrice;
+        });
+      } else {
+        // If 'all' is selected, check all fuel types
+        result = result.filter((s) => {
+          const prices = Object.values(s.fuelPrices).filter(p => p !== null) as number[];
+          return prices.length > 0 && Math.min(...prices) <= maxPrice;
+        });
+      }
     }
 
     // Sort
     result.sort((a, b) => {
       switch (filters.sortBy) {
         case 'price-low': {
-          const priceA = a.fuelPrices[filters.fuelType] || Infinity;
-          const priceB = b.fuelPrices[filters.fuelType] || Infinity;
-          return priceA - priceB;
+          if (filters.fuelType !== 'all') {
+            const priceA = a.fuelPrices[filters.fuelType as keyof FuelPrices] || Infinity;
+            const priceB = b.fuelPrices[filters.fuelType as keyof FuelPrices] || Infinity;
+            return priceA - priceB;
+          } else {
+            // If 'all' is selected, use minimum price across all fuel types
+            const pricesA = Object.values(a.fuelPrices).filter(p => p !== null) as number[];
+            const pricesB = Object.values(b.fuelPrices).filter(p => p !== null) as number[];
+            const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : Infinity;
+            const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
+            return minPriceA - minPriceB;
+          }
         }
         case 'price-high': {
-          const priceA = a.fuelPrices[filters.fuelType] || 0;
-          const priceB = b.fuelPrices[filters.fuelType] || 0;
-          return priceB - priceA;
+          if (filters.fuelType !== 'all') {
+            const priceA = a.fuelPrices[filters.fuelType as keyof FuelPrices] || 0;
+            const priceB = b.fuelPrices[filters.fuelType as keyof FuelPrices] || 0;
+            return priceB - priceA;
+          } else {
+            // If 'all' is selected, use minimum price across all fuel types
+            const pricesA = Object.values(a.fuelPrices).filter(p => p !== null) as number[];
+            const pricesB = Object.values(b.fuelPrices).filter(p => p !== null) as number[];
+            const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : 0;
+            const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : 0;
+            return minPriceB - minPriceA;
+          }
         }
         case 'suburb':
           return a.suburb.localeCompare(b.suburb) || a.name.localeCompare(b.name);
@@ -199,7 +227,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
   const clearFilters = useCallback(() => {
     setFilters({
       search: '',
-      fuelType: 'unleaded',
+      fuelType: 'all',
       brand: 'all',
       suburb: 'all',
       sortBy: 'price-low',
@@ -218,7 +246,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
   }, []);
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value && value !== 'all' && value !== 'unleaded' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
+    ([key, value]) => value && value !== 'all' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
   ).length;
 
   // Get price color based on value
@@ -304,18 +332,19 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
                     <label htmlFor="fuel-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       ⛽ Fuel Type
                     </label>
-                    <select
-                      id="fuel-type"
-                      value={filters.fuelType}
-                      onChange={(e) => handleFilterChange('fuelType', e.target.value as keyof FuelPrices)}
-                      className="input w-full"
-                    >
-                      <option value="unleaded">Unleaded 91</option>
-                      <option value="diesel">Diesel</option>
-                      <option value="premium95">Premium 95</option>
-                      <option value="premium98">Premium 98</option>
-                      <option value="lpg">LPG</option>
-                    </select>
+                      <select
+                        id="fuel-type"
+                        value={filters.fuelType}
+                        onChange={(e) => handleFilterChange('fuelType', e.target.value)}
+                        className="input w-full"
+                      >
+                        <option value="all">All Fuel Types</option>
+                        <option value="unleaded">Unleaded 91</option>
+                        <option value="diesel">Diesel</option>
+                        <option value="premium95">Premium 95</option>
+                        <option value="premium98">Premium 98</option>
+                        <option value="lpg">LPG</option>
+                      </select>
                   </div>
 
                   {/* Brand */}
@@ -510,7 +539,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
                           <div className="space-y-2">
                             {Object.entries(station.fuelPrices).map(([type, price]) => {
                               if (price === null) return null;
-                              const isSelected = type === filters.fuelType;
+                              const isSelected = filters.fuelType !== 'all' && type === filters.fuelType;
                               return (
                                 <div
                                   key={type}

@@ -1,9 +1,9 @@
 /**
  * Infinite Scroll Hook with React Query
- * 
+ *
  * Provides infinite scrolling functionality with smooth transitions
  * and optimized performance for directory listings
- * 
+ *
  * @module hooks/useInfiniteStations
  */
 
@@ -21,7 +21,7 @@ import type { Station } from '@/types/station';
 
 export interface InfiniteStationsFilters {
   search?: string;
-  fuelType?: keyof Station['fuelPrices'];
+  fuelType?: keyof Station['fuelPrices'] | 'all';
   brand?: string;
   suburb?: string;
   sortBy?: 'price-low' | 'price-high' | 'name' | 'suburb';
@@ -82,10 +82,10 @@ export function useInfiniteStations(
     queryKey: ['stations', 'infinite', filters],
     queryFn: async ({ pageParam = 0 }) => {
       const allStations = await getAllStations();
-      
+
       // Apply filters
       let filteredStations = [...allStations];
-      
+
       // Search filter
       if (filters.search) {
         const search = filters.search.toLowerCase();
@@ -108,8 +108,8 @@ export function useInfiniteStations(
         filteredStations = filteredStations.filter((s) => s.suburb === filters.suburb);
       }
 
-      // Fuel type filter (only show stations with selected fuel type)
-      if (filters.fuelType) {
+      // Fuel type filter (only apply if a specific fuel type is selected)
+      if (filters.fuelType && filters.fuelType !== 'all') {
         filteredStations = filteredStations.filter(
           (s) => s.fuelPrices?.[filters.fuelType!] !== null
         );
@@ -117,10 +117,18 @@ export function useInfiniteStations(
 
       // Price filter
       if (filters.priceMax) {
-        filteredStations = filteredStations.filter((s) => {
-          const price = s.fuelPrices?.[filters.fuelType || 'unleaded'];
-          return price !== null && price <= filters.priceMax!;
-        });
+        if (filters.fuelType && filters.fuelType !== 'all') {
+          filteredStations = filteredStations.filter((s) => {
+            const price = s.fuelPrices?.[filters.fuelType!];
+            return price !== null && price <= filters.priceMax!;
+          });
+        } else {
+          // If 'all' is selected, check all fuel types
+          filteredStations = filteredStations.filter((s) => {
+            const prices = Object.values(s.fuelPrices || {}).filter(p => p !== null) as number[];
+            return prices.length > 0 && Math.min(...prices) <= filters.priceMax!;
+          });
+        }
       }
 
       // Sort
@@ -128,14 +136,31 @@ export function useInfiniteStations(
         filteredStations.sort((a, b) => {
           switch (filters.sortBy) {
             case 'price-low': {
-              const priceA = a.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
-              const priceB = b.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
-              return priceA - priceB;
-            }
+              if (filters.fuelType && filters.fuelType !== 'all') {
+                const priceA = a.fuelPrices?.[filters.fuelType] || Infinity;
+                const priceB = b.fuelPrices?.[filters.fuelType] || Infinity;
+                return priceA - priceB;
+              } else {
+                // If 'all' is selected, use minimum price across all fuel types
+                const pricesA = Object.values(a.fuelPrices || {}).filter(p => p !== null) as number[];
+                const pricesB = Object.values(b.fuelPrices || {}).filter(p => p !== null) as number[];
+                const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : Infinity;
+                const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
+                return minPriceA - minPriceB;
+              }
             case 'price-high': {
-              const priceA = a.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
-              const priceB = b.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
-              return priceB - priceA;
+              if (filters.fuelType && filters.fuelType !== 'all') {
+                const priceA = a.fuelPrices?.[filters.fuelType] || 0;
+                const priceB = b.fuelPrices?.[filters.fuelType] || 0;
+                return priceB - priceA;
+              } else {
+                // If 'all' is selected, use minimum price across all fuel types
+                const pricesA = Object.values(a.fuelPrices || {}).filter(p => p !== null) as number[];
+                const pricesB = Object.values(b.fuelPrices || {}).filter(p => p !== null) as number[];
+                const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : 0;
+                const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : 0;
+                return minPriceB - minPriceA;
+              }
             }
             case 'suburb':
               return a.suburb?.localeCompare(b.suburb || '') || a.name.localeCompare(b.name);
@@ -261,7 +286,7 @@ export function useSmoothTransitions() {
   const startTransition = useCallback((direction: 'up' | 'down' = 'down') => {
     setTransitionDirection(direction);
     setIsTransitioning(true);
-    
+
     // Reset transition state after animation completes
     const timer = setTimeout(() => {
       setIsTransitioning(false);
@@ -303,7 +328,7 @@ export function useVirtualizedInfiniteScroll(
         totalItems - 1,
         Math.floor((scrollTop + containerHeight) / itemHeight) + overscan
       );
-      
+
       return { startIndex, endIndex };
     },
     [scrollTop, itemHeight, containerHeight, overscan]
