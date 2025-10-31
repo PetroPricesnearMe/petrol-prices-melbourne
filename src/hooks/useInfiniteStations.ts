@@ -15,13 +15,19 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { getAllStations } from '@/lib/data/stations';
 import type { Station } from '@/types/station';
 
+// Extended station type with fuel prices for filtering
+interface StationWithFuelPrices extends Station {
+  fuelPrices?: Record<string, number | null>;
+  suburb?: string;
+}
+
 // ============================================================================
 // TYPES
 // ============================================================================
 
 export interface InfiniteStationsFilters {
   search?: string;
-  fuelType?: keyof Station['fuelPrices'] | 'all';
+  fuelType?: string | 'all';
   brand?: string;
   suburb?: string;
   sortBy?: 'price-low' | 'price-high' | 'name' | 'suburb';
@@ -80,11 +86,11 @@ export function useInfiniteStations(
     refetch,
   } = useInfiniteQuery({
     queryKey: ['stations', 'infinite', filters],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async ({ pageParam = 0 }: { pageParam: number }) => {
       const allStations = await getAllStations();
 
       // Apply filters
-      let filteredStations = [...allStations];
+      let filteredStations = [...allStations] as StationWithFuelPrices[];
 
       // Search filter
       if (filters.search) {
@@ -92,7 +98,7 @@ export function useInfiniteStations(
         filteredStations = filteredStations.filter(
           (s) =>
             s.name?.toLowerCase().includes(search) ||
-            s.address?.toLowerCase().includes(search) ||
+            (s as StationWithFuelPrices & { address?: string }).address?.toLowerCase().includes(search) ||
             s.suburb?.toLowerCase().includes(search) ||
             s.brand?.toLowerCase().includes(search)
         );
@@ -111,7 +117,7 @@ export function useInfiniteStations(
       // Fuel type filter (only apply if a specific fuel type is selected)
       if (filters.fuelType && filters.fuelType !== 'all') {
         filteredStations = filteredStations.filter(
-          (s) => s.fuelPrices?.[filters.fuelType!] !== null
+          (s) => s.fuelPrices?.[filters.fuelType!] !== null && s.fuelPrices?.[filters.fuelType!] !== undefined
         );
       }
 
@@ -120,7 +126,7 @@ export function useInfiniteStations(
         if (filters.fuelType && filters.fuelType !== 'all') {
           filteredStations = filteredStations.filter((s) => {
             const price = s.fuelPrices?.[filters.fuelType!];
-            return price !== null && price <= filters.priceMax!;
+            return price !== null && price !== undefined && price <= filters.priceMax!;
           });
         } else {
           // If 'all' is selected, check all fuel types
@@ -148,6 +154,7 @@ export function useInfiniteStations(
                 const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
                 return minPriceA - minPriceB;
               }
+            }
             case 'price-high': {
               if (filters.fuelType && filters.fuelType !== 'all') {
                 const priceA = a.fuelPrices?.[filters.fuelType] || 0;
@@ -163,27 +170,28 @@ export function useInfiniteStations(
               }
             }
             case 'suburb':
-              return a.suburb?.localeCompare(b.suburb || '') || a.name.localeCompare(b.name);
+              return a.suburb?.localeCompare(b.suburb || '') || a.name?.localeCompare(b.name || '') || 0;
             case 'name':
             default:
-              return a.name.localeCompare(b.name);
+              return a.name?.localeCompare(b.name || '') || 0;
           }
         });
       }
 
       // Pagination
-      const startIndex = pageParam * pageSize;
+      const startIndex = Number(pageParam) * pageSize;
       const endIndex = startIndex + pageSize;
       const pageData = filteredStations.slice(startIndex, endIndex);
 
       return {
         data: pageData,
-        nextCursor: endIndex < filteredStations.length ? pageParam + 1 : undefined,
+        nextCursor: endIndex < filteredStations.length ? Number(pageParam) + 1 : undefined,
         totalCount: filteredStations.length,
         hasMore: endIndex < filteredStations.length,
       };
     },
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: { nextCursor?: number }) => lastPage.nextCursor,
     enabled,
     staleTime,
     gcTime,
@@ -192,8 +200,8 @@ export function useInfiniteStations(
   });
 
   // Flatten all pages data
-  const allStations = data?.pages.flatMap((page) => page.data) || [];
-  const totalCount = data?.pages[0]?.totalCount || 0;
+  const allStations = data?.pages.flatMap((page: { data: StationWithFuelPrices[] }) => page.data) || [];
+  const totalCount = (data?.pages[0] as { totalCount?: number })?.totalCount || 0;
 
   // Update loaded pages count
   useEffect(() => {
@@ -203,10 +211,10 @@ export function useInfiniteStations(
   }, [data?.pages]);
 
   return {
-    data: allStations,
+    data: allStations as Station[],
     isLoading,
     isError,
-    error,
+    error: error as Error | null,
     hasNextPage: hasNextPage || false,
     isFetchingNextPage,
     fetchNextPage,

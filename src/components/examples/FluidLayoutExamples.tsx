@@ -314,202 +314,197 @@ export function BlogArticle() {
 // Example 5: Responsive Pricing Cards
 // SEO OPTIMIZATION: Commented out - no subscription offers
 /* eslint-disable */
-/*
-export function PricingCards() {
-  const plans = [
-    {
-      name: 'Starter',
-      price: '$29',
-      period: '/month',
-      features: [
-        'Up to 10 team members',
-        '100GB storage',
-        'Basic analytics',
-        'Email support',
-      ],
-      highlighted: false,
-    },
-    {
-      name: 'Professional',
-      price: '$79',
-      period: '/month',
-      features: [
-        'Up to 50 team members',
-        '1TB storage',
-        'Advanced analytics',
-        'Priority support',
-        'Custom integrations',
-      ],
-      highlighted: true,
-    },
-    {
-      name: 'Enterprise',
-      price: 'Custom',
-      period: '',
-      features: [
-        'Unlimited team members',
-        'Unlimited storage',
-        'Enterprise analytics',
-        '24/7 phone support',
-        'Dedicated account manager',
-        'Custom SLA',
-      ],
-      highlighted: false,
-    },
-  ];
+// export function PricingCards() {
+//   const plans = [
+//     {
+//       name: 'Starter',
+//       price: '$29',
+//       period: '/month',
+//       features: [
+//         'Up to 10 team members',
+//         '100GB storage',
+//         'Basic analytics',
+//         'Email support',
+//       ],
+//       highlighted: false,
+//     },
+//     {
+//       name: 'Professional',
+//       price: '$79',
+//       period: '/month',
+//       features: [
+//         'Up to 50 team members',
+//         '1TB storage',
+//         'Advanced analytics',
+//         'Priority support',
+//         'Custom integrations',
+//       ],
+//       highlighted: true,
+//     },
+//     {
+//       name: 'Enterprise',
+//       price: 'Custom',
+//       period: '',
+//       features: [
+//         'Unlimited team members',
+//         'Unlimited storage',
+//         'Enterprise analytics',
+//         '24/7 phone support',
+//         'Dedicated account manager',
+//         'Custom SLA',
+//       ],
+//       highlighted: false,
+//     },
+//   ];
 
-  return (
-    <section className="section-spacing-lg bg-gray-50 dark:bg-gray-900">
-      <div className="container">
-        <div className="stack-xl">
-          <header className="text-center stack max-w-3xl mx-auto">
-            <h2 className="text-6xl font-bold text-balance text-gray-900 dark:text-white">
-              Choose Your Perfect Plan
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Flexible pricing that grows with your business
-            </p>
-          </header>
+//   return (
+//     <section className="section-spacing-lg bg-gray-50 dark:bg-gray-900">
+//       <div className="container">
+//         <div className="stack-xl">
+//           <header className="text-center stack max-w-3xl mx-auto">
+//             <h2 className="text-6xl font-bold text-balance text-gray-900 dark:text-white">
+//               Choose Your Perfect Plan
+//             </h2>
+//             <p className="text-xl text-gray-600 dark:text-gray-400">
+//               Flexible pricing that grows with your business
+//             </p>
+//           </header>
 
-          {/* Responsive pricing grid */}
-          <div className="grid-auto-fit-lg">
-            {plans.map((plan) => (
-              <div
-                key={plan.name}
-                className={`card p-fluid-md stack-lg relative ${
-                  plan.highlighted
-                    ? 'ring-4 ring-primary-500 shadow-2xl scale-105'
-                    : ''
-                }`}
-              >
-                {plan.highlighted && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary-600 to-secondary-600 text-white text-sm font-bold rounded-full shadow-lg">
-                    Most Popular
-                  </div>
-                )}
+//           <div className="grid-auto-fit-lg">
+//             {plans.map((plan) => (
+//               <div
+//                 key={plan.name}
+//                 className={`card p-fluid-md stack-lg relative ${
+//                   plan.highlighted
+//                     ? 'ring-4 ring-primary-500 shadow-2xl scale-105'
+//                     : ''
+//                 }`}
+//               >
+//                 {plan.highlighted && (
+//                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary-600 to-secondary-600 text-white text-sm font-bold rounded-full shadow-lg">
+//                     Most Popular
+//                   </div>
+//                 )}
 
-                <div className="stack">
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    {plan.name}
-                  </h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-5xl font-black text-gray-900 dark:text-white">
-                      {plan.price}
-                    </span>
-                    <span className="text-gray-600 dark:text-gray-400">
-                      {plan.period}
-                    </span>
-                  </div>
-                </div>
+//                 <div className="stack">
+//                   <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+//                     {plan.name}
+//                   </h3>
+//                   <div className="flex items-baseline gap-1">
+//                     <span className="text-5xl font-black text-gray-900 dark:text-white">
+//                       {plan.price}
+//                     </span>
+//                     <span className="text-gray-600 dark:text-gray-400">
+//                       {plan.period}
+//                     </span>
+//                   </div>
+//                 </div>
 
-                <ul className="stack-sm text-gray-600 dark:text-gray-400">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-3">
-                      <span className="text-primary-600 dark:text-primary-400 text-xl">
-                        ✓
-                      </span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+//                 <ul className="stack-sm text-gray-600 dark:text-gray-400">
+//                   {plan.features.map((feature, idx) => (
+//                     <li key={idx} className="flex items-center gap-3">
+//                       <span className="text-primary-600 dark:text-primary-400 text-xl">
+//                         ✓
+//                       </span>
+//                       {feature}
+//                     </li>
+//                   ))}
+//                 </ul>
 
-                <button
-                  className={`w-full px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
-                    plan.highlighted
-                      ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:shadow-xl hover:-translate-y-1'
-                      : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600'
-                  }`}
-                >
-                  Get Started
-                </button>
-              </div>
-            ))}
-          </div>
+//                 <button
+//                   className={`w-full px-6 py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
+//                     plan.highlighted
+//                       ? 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white hover:shadow-xl hover:-translate-y-1'
+//                       : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600'
+//                   }`}
+//                 >
+//                   Get Started
+//                 </button>
+//               </div>
+//             ))}
+//           </div>
 
-          <p className="text-center text-gray-600 dark:text-gray-400 text-measure mx-auto">
-            All plans include 14-day free trial. No credit card required.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-*/
+//           <p className="text-center text-gray-600 dark:text-gray-400 text-measure mx-auto">
+//             All plans include 14-day free trial. No credit card required.
+//           </p>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 /* eslint-enable */
 
 // Example 6: Testimonial Grid
 // SEO OPTIMIZATION: Commented out - testimonials don't contribute to SEO
 /* eslint-disable */
-/*
-export function TestimonialGrid() {
-  const testimonials = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      role: 'CEO, TechCorp',
-      content: 'This platform transformed how we operate. The scalability and performance are unmatched.',
-      avatar: '👩‍💼',
-    },
-    {
-      id: 2,
-      name: 'Michael Chen',
-      role: 'CTO, StartupXYZ',
-      content: 'Best decision we made this year. Our team productivity increased by 300%.',
-      avatar: '👨‍💻',
-    },
-    {
-      id: 3,
-      name: 'Emily Rodriguez',
-      role: 'Product Manager, InnovateCo',
-      content: 'The ease of use combined with powerful features is exactly what we needed.',
-      avatar: '👩‍🚀',
-    },
-  ];
+// export function TestimonialGrid() {
+//   const testimonials = [
+//     {
+//       id: 1,
+//       name: 'Sarah Johnson',
+//       role: 'CEO, TechCorp',
+//       content: 'This platform transformed how we operate. The scalability and performance are unmatched.',
+//       avatar: '👩‍💼',
+//     },
+//     {
+//       id: 2,
+//       name: 'Michael Chen',
+//       role: 'CTO, StartupXYZ',
+//       content: 'Best decision we made this year. Our team productivity increased by 300%.',
+//       avatar: '👨‍💻',
+//     },
+//     {
+//       id: 3,
+//       name: 'Emily Rodriguez',
+//       role: 'Product Manager, InnovateCo',
+//       content: 'The ease of use combined with powerful features is exactly what we needed.',
+//       avatar: '👩‍🚀',
+//     },
+//   ];
 
-  return (
-    <section className="section-spacing">
-      <div className="container">
-        <div className="stack-xl">
-          <header className="text-center stack">
-            <h2 className="text-6xl font-bold text-balance text-gray-900 dark:text-white">
-              Loved by Teams Worldwide
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 text-measure mx-auto">
-              Don't just take our word for it
-            </p>
-          </header>
+//   return (
+//     <section className="section-spacing">
+//       <div className="container">
+//         <div className="stack-xl">
+//           <header className="text-center stack">
+//             <h2 className="text-6xl font-bold text-balance text-gray-900 dark:text-white">
+//               Loved by Teams Worldwide
+//             </h2>
+//             <p className="text-xl text-gray-600 dark:text-gray-400 text-measure mx-auto">
+//               Don't just take our word for it
+//             </p>
+//           </header>
 
-          <div className="grid-auto-fit-md">
-            {testimonials.map((testimonial) => (
-              <blockquote
-                key={testimonial.id}
-                className="card p-fluid-md stack hover:shadow-xl transition-all duration-300"
-              >
-                <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed italic">
-                  "{testimonial.content}"
-                </p>
-                <footer className="flex items-center gap-4 mt-auto">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-2xl">
-                    {testimonial.avatar}
-                  </div>
-                  <div className="stack-sm">
-                    <cite className="text-base font-semibold text-gray-900 dark:text-white not-italic">
-                      {testimonial.name}
-                    </cite>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {testimonial.role}
-                    </p>
-                  </div>
-                </footer>
-              </blockquote>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-*/
+//           <div className="grid-auto-fit-md">
+//             {testimonials.map((testimonial) => (
+//               <blockquote
+//                 key={testimonial.id}
+//                 className="card p-fluid-md stack hover:shadow-xl transition-all duration-300"
+//               >
+//                 <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed italic">
+//                   "{testimonial.content}"
+//                 </p>
+//                 <footer className="flex items-center gap-4 mt-auto">
+//                   <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-2xl">
+//                     {testimonial.avatar}
+//                   </div>
+//                   <div className="stack-sm">
+//                     <cite className="text-base font-semibold text-gray-900 dark:text-white not-italic">
+//                       {testimonial.name}
+//                     </cite>
+//                     <p className="text-sm text-gray-600 dark:text-gray-400">
+//                       {testimonial.role}
+//                     </p>
+//                   </div>
+//                 </footer>
+//               </blockquote>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 /* eslint-enable */
 
 // Main demo component combining all examples

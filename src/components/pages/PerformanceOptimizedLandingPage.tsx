@@ -45,7 +45,7 @@ interface PerformanceOptimizedLandingPageProps {
 // ============================================================================
 
 function usePerformanceMonitoring() {
-  const startTime = useRef<number>(Date.now());
+  const _startTime = useRef<number>(Date.now());
 
   // Monitor Core Web Vitals
   if (typeof window !== 'undefined') {
@@ -60,7 +60,13 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
-        console.log('FID:', entry.processingStart - entry.startTime);
+        const timingEntry = entry as PerformanceEntry & {
+          processingStart?: number;
+          startTime: number;
+        };
+        if (typeof timingEntry.processingStart === 'number') {
+          console.log('FID:', timingEntry.processingStart - timingEntry.startTime);
+        }
       });
     }).observe({ entryTypes: ['first-input'] });
 
@@ -68,8 +74,12 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
-        if (!entry.hadRecentInput) {
-          console.log('CLS:', entry.value);
+        const layoutShiftEntry = entry as PerformanceEntry & {
+          value?: number;
+          hadRecentInput?: boolean;
+        };
+        if (!layoutShiftEntry.hadRecentInput && typeof layoutShiftEntry.value === 'number') {
+          console.log('CLS:', layoutShiftEntry.value);
         }
       });
     }).observe({ entryTypes: ['layout-shift'] });
@@ -97,7 +107,7 @@ function OptimizedHeroSection() {
 
         {/* Static gradient orbs for better performance */}
         <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-purple-500/20 rounded-full blur-3xl animate-pulse [animation-delay:2s]" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-20">
@@ -458,7 +468,7 @@ function OptimizedCTASection() {
       {/* Optimized background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-yellow-400/10 to-orange-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-pink-400/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-pink-400/10 to-purple-500/10 rounded-full blur-3xl animate-pulse [animation-delay:2s]" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">

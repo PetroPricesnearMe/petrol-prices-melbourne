@@ -394,116 +394,111 @@ function FeaturesSection() {
 
 // Commented out for SEO optimization
 /* eslint-disable */
-/*
-function TestimonialsSection() {
-  const testimonials: TestimonialProps[] = [
-    {
-      name: 'Sarah Johnson',
-      role: 'Marketing Manager',
-      company: 'TechCorp',
-      content: 'This app has saved me hundreds of dollars! I check it every morning before heading to work and always find the cheapest prices nearby.',
-      avatar: '/images/testimonials/sarah.jpg',
-      rating: 5,
-    },
-    {
-      name: 'Mike Chen',
-      role: 'Delivery Driver',
-      company: 'FastDelivery',
-      content: 'As someone who drives all day, finding cheap fuel is crucial. This platform makes it so easy to compare prices and plan my routes efficiently.',
-      avatar: '/images/testimonials/mike.jpg',
-      rating: 5,
-    },
-    {
-      name: 'Emma Wilson',
-      role: 'Student',
-      company: 'Melbourne University',
-      content: 'Being a student on a budget, every cent counts. This app helps me save money on fuel so I can spend it on more important things.',
-      avatar: '/images/testimonials/emma.jpg',
-      rating: 5,
-    },
-  ];
+// function TestimonialsSection() {
+//   const testimonials: TestimonialProps[] = [
+//     {
+//       name: 'Sarah Johnson',
+//       role: 'Marketing Manager',
+//       company: 'TechCorp',
+//       content: 'This app has saved me hundreds of dollars! I check it every morning before heading to work and always find the cheapest prices nearby.',
+//       avatar: '/images/testimonials/sarah.jpg',
+//       rating: 5,
+//     },
+//     {
+//       name: 'Mike Chen',
+//       role: 'Delivery Driver',
+//       company: 'FastDelivery',
+//       content: 'As someone who drives all day, finding cheap fuel is crucial. This platform makes it so easy to compare prices and plan my routes efficiently.',
+//       avatar: '/images/testimonials/mike.jpg',
+//       rating: 5,
+//     },
+//     {
+//       name: 'Emma Wilson',
+//       role: 'Student',
+//       company: 'Melbourne University',
+//       content: 'Being a student on a budget, every cent counts. This app helps me save money on fuel so I can spend it on more important things.',
+//       avatar: '/images/testimonials/emma.jpg',
+//       rating: 5,
+//     },
+//   ];
 
-  return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              What Our Users Say
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Join thousands of satisfied users who are already saving money on fuel every day.
-            </p>
-          </motion.div>
+//   return (
+//     <section className="py-20 bg-gray-50 dark:bg-gray-900">
+//       <div className="container mx-auto px-4">
+//         <div className="max-w-6xl mx-auto">
+//           <motion.div
+//             className="text-center mb-16"
+//             initial={{ opacity: 0, y: 30 }}
+//             whileInView={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.6 }}
+//             viewport={{ once: true }}
+//           >
+//             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+//               What Our Users Say
+//             </h2>
+//             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+//               Join thousands of satisfied users who are already saving money on fuel every day.
+//             </p>
+//           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
-              >
-                {/* Rating */}
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
+//           <motion.div
+//             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+//             variants={staggerContainer}
+//             initial="initial"
+//             whileInView="animate"
+//             viewport={{ once: true }}
+//           >
+//             {testimonials.map((testimonial, index) => (
+//               <motion.div
+//                 key={index}
+//                 className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
+//                 variants={fadeInUp}
+//                 whileHover={{ y: -5 }}
+//               >
+//                 <div className="flex items-center mb-4">
+//                   {[...Array(testimonial.rating)].map((_, i) => (
+//                     <svg
+//                       key={i}
+//                       className="w-5 h-5 text-yellow-400"
+//                       fill="currentColor"
+//                       viewBox="0 0 20 20"
+//                     >
+//                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+//                     </svg>
+//                   ))}
+//                 </div>
 
-                {/* Content */}
-                <blockquote className="text-gray-600 dark:text-gray-400 mb-6 italic">
-                  "{testimonial.content}"
-                </blockquote>
+//                 <blockquote className="text-gray-600 dark:text-gray-400 mb-6 italic">
+//                   "{testimonial.content}"
+//                 </blockquote>
 
-                {/* Author */}
-                <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                    <Image
-                      src={testimonial.avatar}
-                      alt={testimonial.name}
-                      width={48}
-                      height={48}
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 dark:text-white">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {testimonial.role} at {testimonial.company}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-*/
+//                 <div className="flex items-center">
+//                   <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+//                     <Image
+//                       src={testimonial.avatar}
+//                       alt={testimonial.name}
+//                       width={48}
+//                       height={48}
+//                       className="object-cover"
+//                     />
+//                   </div>
+//                   <div>
+//                     <div className="font-semibold text-gray-900 dark:text-white">
+//                       {testimonial.name}
+//                     </div>
+//                     <div className="text-sm text-gray-600 dark:text-gray-400">
+//                       {testimonial.role} at {testimonial.company}
+//                     </div>
+//                   </div>
+//                 </div>
+//               </motion.div>
+//             ))}
+//           </motion.div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 /* eslint-enable */
 
 // SEO Optimization: Testimonials section removed
@@ -518,177 +513,170 @@ function TestimonialsSection() {
 
 // Commented out for SEO optimization - no subscription offers
 /* eslint-disable */
-/*
-function PricingSection() {
-  const plans: PricingPlanProps[] = [
-    {
-      name: 'Free',
-      price: '$0',
-      period: 'forever',
-      description: 'Perfect for occasional users who want to save money on fuel',
-      features: [
-        'Access to all station prices',
-        'Basic search and filters',
-        'Mobile app access',
-        'Price alerts (5 per month)',
-        'Community support',
-      ],
-      ctaText: 'Get Started Free',
-      ctaLink: '/directory',
-      icon: '🆓',
-    },
-    {
-      name: 'Pro',
-      price: '$4.99',
-      period: 'per month',
-      description: 'Best for regular commuters who want advanced features',
-      features: [
-        'Everything in Free',
-        'Unlimited price alerts',
-        'Advanced analytics',
-        'Route optimization',
-        'Priority support',
-        'Historical price data',
-        'Export data to CSV',
-      ],
-      ctaText: 'Start Pro Trial',
-      ctaLink: '/pricing',
-      popular: true,
-      icon: '⭐',
-    },
-    {
-      name: 'Business',
-      price: '$19.99',
-      period: 'per month',
-      description: 'Ideal for fleet managers and delivery companies',
-      features: [
-        'Everything in Pro',
-        'Multi-user accounts',
-        'Fleet management tools',
-        'API access',
-        'Custom reporting',
-        'Dedicated support',
-        'White-label options',
-      ],
-      ctaText: 'Contact Sales',
-      ctaLink: '/contact',
-      icon: '🏢',
-    },
-  ];
+// function PricingSection() {
+//   const plans: PricingPlanProps[] = [
+//     {
+//       name: 'Free',
+//       price: '$0',
+//       period: 'forever',
+//       description: 'Perfect for occasional users who want to save money on fuel',
+//       features: [
+//         'Access to all station prices',
+//         'Basic search and filters',
+//         'Mobile app access',
+//         'Price alerts (5 per month)',
+//         'Community support',
+//       ],
+//       ctaText: 'Get Started Free',
+//       ctaLink: '/directory',
+//       icon: '🆓',
+//     },
+//     {
+//       name: 'Pro',
+//       price: '$4.99',
+//       period: 'per month',
+//       description: 'Best for regular commuters who want advanced features',
+//       features: [
+//         'Everything in Free',
+//         'Unlimited price alerts',
+//         'Advanced analytics',
+//         'Route optimization',
+//         'Priority support',
+//         'Historical price data',
+//         'Export data to CSV',
+//       ],
+//       ctaText: 'Start Pro Trial',
+//       ctaLink: '/pricing',
+//       popular: true,
+//       icon: '⭐',
+//     },
+//     {
+//       name: 'Business',
+//       price: '$19.99',
+//       period: 'per month',
+//       description: 'Ideal for fleet managers and delivery companies',
+//       features: [
+//         'Everything in Pro',
+//         'Multi-user accounts',
+//         'Fleet management tools',
+//         'API access',
+//         'Custom reporting',
+//         'Dedicated support',
+//         'White-label options',
+//       ],
+//       ctaText: 'Contact Sales',
+//       ctaLink: '/contact',
+//       icon: '🏢',
+//     },
+//   ];
 
-  return (
-    <section className="py-20 bg-white dark:bg-gray-800">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              Choose Your Plan
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Start saving money on fuel today. All plans include access to live price data and our mobile app.
-            </p>
-          </motion.div>
+//   return (
+//     <section className="py-20 bg-white dark:bg-gray-800">
+//       <div className="container mx-auto px-4">
+//         <div className="max-w-6xl mx-auto">
+//           <motion.div
+//             className="text-center mb-16"
+//             initial={{ opacity: 0, y: 30 }}
+//             whileInView={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.6 }}
+//             viewport={{ once: true }}
+//           >
+//             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+//               Choose Your Plan
+//             </h2>
+//             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+//               Start saving money on fuel today. All plans include access to live price data and our mobile app.
+//             </p>
+//           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-          >
-            {plans.map((plan, index) => (
-              <motion.div
-                key={index}
-                className={cn(
-                  'relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2',
-                  plan.popular
-                    ? 'border-primary-500 ring-2 ring-primary-500/20'
-                    : 'border-gray-200 dark:border-gray-700'
-                )}
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
-              >
-                {/* Popular Badge */}
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-primary-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
+//           <motion.div
+//             className="grid grid-cols-1 md:grid-cols-3 gap-8"
+//             variants={staggerContainer}
+//             initial="initial"
+//             whileInView="animate"
+//             viewport={{ once: true }}
+//           >
+//             {plans.map((plan, index) => (
+//               <motion.div
+//                 key={index}
+//                 className={cn(
+//                   'relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2',
+//                   plan.popular
+//                     ? 'border-primary-500 ring-2 ring-primary-500/20'
+//                     : 'border-gray-200 dark:border-gray-700'
+//                 )}
+//                 variants={fadeInUp}
+//                 whileHover={{ y: -5 }}
+//               >
+//                 {plan.popular && (
+//                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+//                     <span className="bg-primary-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+//                       Most Popular
+//                     </span>
+//                   </div>
+//                 )}
 
-                {/* Icon */}
-                <div className="text-center mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">{plan.icon}</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                    {plan.name}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    {plan.description}
-                  </p>
-                </div>
+//                 <div className="text-center mb-6">
+//                   <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+//                     <span className="text-2xl">{plan.icon}</span>
+//                   </div>
+//                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+//                     {plan.name}
+//                   </h3>
+//                   <p className="text-gray-600 dark:text-gray-400 text-sm">
+//                     {plan.description}
+//                   </p>
+//                 </div>
 
-                {/* Price */}
-                <div className="text-center mb-8">
-                  <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                    {plan.price}
-                  </div>
-                  <div className="text-gray-600 dark:text-gray-400">
-                    {plan.period}
-                  </div>
-                </div>
+//                 <div className="text-center mb-8">
+//                   <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+//                     {plan.price}
+//                   </div>
+//                   <div className="text-gray-600 dark:text-gray-400">
+//                     {plan.period}
+//                   </div>
+//                 </div>
 
-                {/* Features */}
-                <div className="space-y-4 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center">
-                      <svg
-                        className="w-5 h-5 text-green-500 mr-3 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="text-gray-600 dark:text-gray-400 text-sm">
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+//                 <div className="space-y-4 mb-8">
+//                   {plan.features.map((feature, featureIndex) => (
+//                     <div key={featureIndex} className="flex items-center">
+//                       <svg
+//                         className="w-5 h-5 text-green-500 mr-3 flex-shrink-0"
+//                         fill="currentColor"
+//                         viewBox="0 0 20 20"
+//                       >
+//                         <path
+//                           fillRule="evenodd"
+//                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+//                           clipRule="evenodd"
+//                         />
+//                       </svg>
+//                       <span className="text-gray-600 dark:text-gray-400 text-sm">
+//                         {feature}
+//                       </span>
+//                     </div>
+//                   ))}
+//                 </div>
 
-                {/* CTA Button */}
-                <Link
-                  href={plan.ctaLink}
-                  className={cn(
-                    'block w-full text-center px-6 py-3 rounded-xl font-semibold transition-all duration-300',
-                    plan.popular
-                      ? 'bg-primary-600 hover:bg-primary-700 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white'
-                  )}
-                >
-                  {plan.ctaText}
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-*/
+//                 <Link
+//                   href={plan.ctaLink}
+//                   className={cn(
+//                     'block w-full text-center px-6 py-3 rounded-xl font-semibold transition-all duration-300',
+//                     plan.popular
+//                       ? 'bg-primary-600 hover:bg-primary-700 text-white'
+//                       : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white'
+//                   )}
+//                 >
+//                   {plan.ctaText}
+//                 </Link>
+//               </motion.div>
+//             ))}
+//           </motion.div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
 /* eslint-enable */
 
 // SEO Optimization: Pricing section removed - no subscription offers
