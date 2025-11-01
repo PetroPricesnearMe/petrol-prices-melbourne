@@ -136,7 +136,7 @@ export function createOptimizedContext<T>() {
  * Example: Station Context with optimized selectors
  */
 interface StationState {
-  stations: any[];
+  stations: unknown[];
   selectedStationId: number | null;
   filters: {
     fuelType?: string;

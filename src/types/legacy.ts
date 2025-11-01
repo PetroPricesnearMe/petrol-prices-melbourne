@@ -38,7 +38,7 @@ export interface GeolocationState {
 export type ColorVariant = ColorScheme | Variant;
 
 export interface InteractiveProps {
-  onClick?: (...args: any[]) => void;
+  onClick?: (...args: unknown[]) => void;
   disabled?: boolean;
   loading?: boolean;
   style?: React.CSSProperties;

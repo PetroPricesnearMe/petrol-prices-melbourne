@@ -57,7 +57,7 @@ export function SearchTestClient() {
     setFilteredStations(mockData);
   }, []);
 
-  const handleSearch = (query: string, results: any[]) => {
+  const handleSearch = (query: string, results: unknown[]) => {
     console.log('🔍 Search Query:', query);
     console.log('📊 Results Count:', results.length);
     console.log('📋 Results:', results.slice(0, 5));
@@ -86,7 +86,7 @@ export function SearchTestClient() {
   };
 
   // Custom result renderer
-  const renderResult = (station: any) => (
+  const renderResult = (station: Record<string, unknown>) => (
     <div className="flex flex-col">
       <div className="font-semibold text-gray-900 dark:text-white">
         {station.name}

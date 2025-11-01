@@ -11,7 +11,7 @@ import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
 export const PerformanceMonitor = () => {
   useEffect(() => {
     // Monitor Core Web Vitals
-    const reportMetric = (metric: any) => {
+    const reportMetric = (metric: Record<string, unknown>) => {
       // Log to console in development
       if (process.env.NODE_ENV === 'development') {
         console.log(`[Performance] ${metric.name}:`, {

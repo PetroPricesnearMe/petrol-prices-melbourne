@@ -12,6 +12,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
 
 // ============================================================================
@@ -28,8 +29,8 @@ interface ViewToggleProps {
 
 interface DirectoryViewProps {
   view: 'grid' | 'list';
-  items: any[];
-  renderItem: (item: any, index: number) => React.ReactNode;
+  items: unknown[];
+  renderItem: (item: unknown, index: number) => React.ReactNode;
   className?: string;
 }
 
@@ -236,7 +237,7 @@ export function DirectoryView({
 /**
  * Grid variant of station card
  */
-export function StationCardGrid({ station, onCardClick }: { station: any; onCardClick?: (station: any) => void }) {
+export function StationCardGrid({ station, onCardClick }: { station: Station; onCardClick?: (station: Station) => void }) {
   return (
     <motion.div
       className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all duration-300 h-full"
@@ -305,7 +306,7 @@ export function StationCardGrid({ station, onCardClick }: { station: any; onCard
 /**
  * List variant of station card
  */
-export function StationCardList({ station, onCardClick }: { station: any; onCardClick?: (station: any) => void }) {
+export function StationCardList({ station, onCardClick }: { station: Station; onCardClick?: (station: Station) => void }) {
   return (
     <motion.div
       className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg cursor-pointer transition-all duration-300"

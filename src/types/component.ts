@@ -339,7 +339,7 @@ export interface GridProps extends BaseProps {
 /** Table component props */
 export interface TableProps extends BaseProps {
   /** Table data */
-  data: any[];
+  data: unknown[];
   /** Table columns */
   columns: TableColumn[];
   /** Loading state */
@@ -355,7 +355,7 @@ export interface TableProps extends BaseProps {
   /** Sort handler */
   onSort?: (column: string, direction: 'asc' | 'desc') => void;
   /** Row click handler */
-  onRowClick?: (row: any) => void;
+  onRowClick?: (row: Record<string, unknown>) => void;
   /** Striped rows */
   striped?: boolean;
   /** Hoverable rows */
@@ -369,7 +369,7 @@ export interface TableColumn {
   /** Column header */
   header: ReactNode;
   /** Cell renderer */
-  cell?: (row: any) => ReactNode;
+  cell?: (row: Record<string, unknown>) => ReactNode;
   /** Sortable */
   sortable?: boolean;
   /** Width */
@@ -381,15 +381,15 @@ export interface TableColumn {
 /** List component props */
 export interface ListProps extends BaseProps {
   /** List items */
-  items: any[];
+  items: unknown[];
   /** Item renderer */
-  renderItem: (item: any, index: number) => ReactNode;
+  renderItem: (item: unknown, index: number) => ReactNode;
   /** Loading state */
   isLoading?: boolean;
   /** Empty state */
   emptyMessage?: string;
   /** Item key extractor */
-  keyExtractor?: (item: any, index: number) => string | number;
+  keyExtractor?: (item: unknown, index: number) => string | number;
   /** Divider */
   divider?: boolean;
 }

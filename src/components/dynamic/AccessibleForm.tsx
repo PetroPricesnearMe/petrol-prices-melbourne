@@ -61,7 +61,7 @@ export function AccessibleForm({
   }, [errors]);
 
   // Validate field
-  const validateField = (field: FormField, value: any): string | null => {
+  const validateField = (field: FormField, value: unknown): string | null => {
     if (field.required && !value) {
       return `${field.label} is required`;
     }
@@ -82,7 +82,7 @@ export function AccessibleForm({
   };
 
   // Handle input change
-  const handleChange = (name: string, value: any) => {
+  const handleChange = (name: string, value: unknown) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     // Clear error when user starts typing
@@ -96,7 +96,7 @@ export function AccessibleForm({
   };
 
   // Handle blur for validation
-  const handleBlur = (field: FormField, value: any) => {
+  const handleBlur = (field: FormField, value: unknown) => {
     const error = validateField(field, value);
     if (error) {
       setErrors((prev) => ({ ...prev, [field.name]: error }));
@@ -141,7 +141,7 @@ export function AccessibleForm({
         const submitButton = formRef.current?.querySelector('button[type="submit"]');
         (submitButton as HTMLElement)?.focus();
       }, 100);
-    } catch (error: any) {
+    } catch (error: unknown) {
       setSubmitStatus('error');
       setSubmitMessage(error.message || 'Failed to submit form. Please try again.');
     } finally {
@@ -240,10 +240,10 @@ export function AccessibleForm({
  */
 interface FormFieldProps {
   field: FormField;
-  value: any;
+  value: unknown;
   error?: string;
-  onChange: (value: any) => void;
-  onBlur: (value: any) => void;
+  onChange: (value: unknown) => void;
+  onBlur: (value: unknown) => void;
 }
 
 function FormField({ field, value, error, onChange, onBlur }: FormFieldProps) {

@@ -208,7 +208,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
     setCurrentPage(1);
   }, []);
 
-  const handleStationClick = useCallback((station: any) => {
+  const handleStationClick = useCallback((station: Record<string, unknown>) => {
     setSelectedStation(station);
     console.log('Station clicked:', station);
   }, []);

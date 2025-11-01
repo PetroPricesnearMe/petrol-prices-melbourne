@@ -8,7 +8,7 @@ export interface BaserowRow {
   id: number;
   created_on: string;
   updated_on: string;
-  [fieldName: string]: any;
+  [fieldName: string]: unknown;
 }
 
 // Petrol Stations Table
@@ -67,7 +67,7 @@ export interface BaserowFilter {
     | 'boolean'
     | 'empty'
     | 'not_empty';
-  value: any;
+  value: unknown;
 }
 
 export interface BaserowResponse<T> {

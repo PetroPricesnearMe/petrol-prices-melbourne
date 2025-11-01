@@ -104,7 +104,7 @@ declare global {
       targetId: string,
       config?: Record<string, any>
     ) => void;
-    dataLayer: any[];
+    dataLayer: unknown[];
   }
 }
 

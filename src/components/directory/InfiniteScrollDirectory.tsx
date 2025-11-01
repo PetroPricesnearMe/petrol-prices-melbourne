@@ -37,8 +37,8 @@ interface InfiniteScrollDirectoryProps {
 }
 
 interface FilterBarProps {
-  filters: any;
-  onFiltersChange: (filters: any) => void;
+  filters: Record<string, unknown>;
+  onFiltersChange: (filters: Record<string, unknown>) => void;
   totalCount: number;
   currentView: 'grid' | 'list';
   onViewChange: (view: 'grid' | 'list') => void;
@@ -62,7 +62,7 @@ interface LoadingStatesProps {
 export function FilterBar({ filters, onFiltersChange, totalCount, currentView, onViewChange, className }: FilterBarProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const handleFilterChange = useCallback((key: string, value: any) => {
+  const handleFilterChange = useCallback((key: string, value: unknown) => {
     onFiltersChange({ ...filters, [key]: value });
   }, [filters, onFiltersChange]);
 
@@ -331,7 +331,7 @@ export function InfiniteScrollDirectory({
     gcTime: 10 * 60 * 1000,
   });
 
-  const handleFiltersChange = useCallback((newFilters: any) => {
+  const handleFiltersChange = useCallback((newFilters: Record<string, unknown>) => {
     setFilters(newFilters);
   }, []);
 

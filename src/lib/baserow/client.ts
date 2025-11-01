@@ -24,12 +24,12 @@ interface BaserowResponse<T> {
 
 interface BaserowRow {
   id: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 class BaserowClient {
   private config: BaserowConfig;
-  private cache: Map<string, { data: any; expiry: number }> = new Map();
+  private cache: Map<string, { data: unknown; expiry: number }> = new Map();
 
   constructor(config: BaserowConfig) {
     this.config = {
@@ -50,7 +50,7 @@ class BaserowClient {
       filters?: Array<{
         field: string;
         type: string;
-        value: any;
+        value: unknown;
       }>;
       orderBy?: string;
     } = {}
@@ -258,7 +258,7 @@ class BaserowClient {
   /**
    * Build cache key
    */
-  private buildCacheKey(databaseId: string, tableId: string, options: any): string {
+  private buildCacheKey(databaseId: string, tableId: string, options: Record<string, unknown>): string {
     return `table_${databaseId}_${tableId}_${JSON.stringify(options)}`;
   }
 

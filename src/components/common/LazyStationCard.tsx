@@ -25,7 +25,7 @@ const StationCard = dynamic(
 );
 
 interface LazyStationCardProps {
-  station: any;
+  station: Record<string, unknown>;
   onClick?: () => void;
   threshold?: number;
   rootMargin?: string;

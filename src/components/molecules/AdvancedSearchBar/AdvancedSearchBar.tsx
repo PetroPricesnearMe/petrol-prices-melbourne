@@ -28,7 +28,7 @@ export interface SearchCategory {
 export interface SearchResult<T = any> {
   item: T;
   score?: number;
-  matches?: any[];
+  matches?: unknown[];
 }
 
 export interface AdvancedSearchBarProps<T = any> {
@@ -268,7 +268,7 @@ export function AdvancedSearchBar<T = any>({
   }, []);
 
   // Highlight matching text
-  const highlightMatch = (text: string, matches: any[] = []) => {
+  const highlightMatch = (text: string, matches: unknown[] = []) => {
     if (!matches.length) return text;
 
     const result = text;

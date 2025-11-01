@@ -242,7 +242,7 @@ export interface BaserowStationResponse {
   Latitude?: string;
   Longitude?: string;
   Category?: number;
-  brand?: any[];
+  brand?: unknown[];
   'Location Details'?: string;
   'Fuel Prices'?: number[];
 }

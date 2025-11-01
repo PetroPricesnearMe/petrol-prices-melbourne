@@ -40,7 +40,7 @@ export type ArrayElement<T> = T extends (infer E)[] ? E : never;
 export type NonNullable<T> = Exclude<T, null | undefined>;
 
 /** Async function type */
-export type AsyncFunction<T = void> = (...args: any[]) => Promise<T>;
+export type AsyncFunction<T = void> = (...args: unknown[]) => Promise<T>;
 
 // ============================================================================
 // Component Types

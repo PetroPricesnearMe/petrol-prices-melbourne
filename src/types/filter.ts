@@ -189,9 +189,9 @@ export interface FilterChangeEvent {
   /** Filter key that changed */
   key: keyof FilterState;
   /** New value */
-  value: any;
+  value: unknown;
   /** Previous value */
-  previousValue?: any;
+  previousValue?: unknown;
 }
 
 // ============================================================================

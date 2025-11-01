@@ -19,12 +19,12 @@ const InteractiveStationMap = dynamic(
 );
 
 interface DynamicMapProps {
-  stations: any[];
+  stations: Array<Record<string, unknown>>;
   center?: [number, number];
   zoom?: number;
   className?: string;
   showUserLocation?: boolean;
-  onStationClick?: (station: any) => void;
+  onStationClick?: (station: Record<string, unknown>) => void;
 }
 
 export function DynamicMap(props: DynamicMapProps) {

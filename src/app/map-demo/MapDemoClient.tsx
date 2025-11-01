@@ -74,7 +74,7 @@ export function MapDemoClient() {
     }, 500);
   }, []);
 
-  const handleStationClick = (station: any) => {
+  const handleStationClick = (station: Record<string, unknown>) => {
     setSelectedStation(station);
     console.log('Station clicked:', station);
   };
@@ -230,7 +230,7 @@ export function MapDemoClient() {
                     </p>
                     {station.fuelPrices && (
                       <div className="space-y-2">
-                        {station.fuelPrices.slice(0, 3).map((fp: any, idx: number) => (
+                        {station.fuelPrices.slice(0, 3).map((fp: Record<string, unknown>, idx: number) => (
                           <div key={idx} className="flex justify-between text-sm">
                             <span>{fp.fuelType}</span>
                             <span className="font-bold">${fp.price.toFixed(2)}</span>
@@ -275,7 +275,7 @@ export function MapDemoClient() {
                       <div className="flex flex-col md:flex-row gap-4">
                         {station.fuelPrices && (
                           <div className="space-y-2">
-                            {station.fuelPrices.map((fp: any, idx: number) => (
+                            {station.fuelPrices.map((fp: Record<string, unknown>, idx: number) => (
                               <div key={idx} className="flex justify-between gap-8 text-sm">
                                 <span className="text-gray-600 dark:text-gray-400">{fp.fuelType}:</span>
                                 <span className="font-bold">${fp.price.toFixed(2)}</span>

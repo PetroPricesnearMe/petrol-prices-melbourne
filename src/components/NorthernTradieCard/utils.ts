@@ -116,7 +116,7 @@ export const getAnimationVariants = (delay: number = 0) => ({
 /**
  * Debounce function for performance optimization
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
@@ -145,7 +145,7 @@ export const generateId = (prefix: string = 'card'): string => {
 /**
  * Validates card props
  */
-export const validateProps = (props: any): string[] => {
+export const validateProps = (props: Record<string, unknown>): string[] => {
   const errors: string[] = [];
 
   if (props.variant && !['default', 'elevated', 'outlined', 'filled', 'interactive', 'featured'].includes(props.variant)) {

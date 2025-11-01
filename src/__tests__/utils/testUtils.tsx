@@ -91,7 +91,7 @@ export const mockMatchMedia = (matches: boolean = false) => {
 /**
  * Create mock for fetch
  */
-export const mockFetch = (response: any) => {
+export const mockFetch = (response: unknown) => {
   global.fetch = jest.fn(() =>
     Promise.resolve({
       ok: true,

@@ -7,8 +7,8 @@
 import type { Station, FuelPrice } from '@/types/station';
 
 interface LocalBusinessSchemaProps {
-  station: any; // Using simplified station type
-  fuelPrices?: any;
+  station: Record<string, unknown>; // Using simplified station type
+  fuelPrices?: Record<string, unknown>;
 }
 
 export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchemaProps) {

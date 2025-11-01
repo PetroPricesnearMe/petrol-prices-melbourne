@@ -226,7 +226,7 @@ describe('Button Component', () => {
   describe('Performance', () => {
     it('does not re-render unnecessarily', () => {
       const renderSpy = jest.fn();
-      const TestButton = (props: any) => {
+      const TestButton = (props: Record<string, unknown>) => {
         renderSpy();
         return <Button {...props}>Test</Button>;
       };

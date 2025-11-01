@@ -681,7 +681,7 @@ function PricesTab({ station }: { station: Station }) {
 /**
  * Amenities Grid Component
  */
-function AmenitiesGrid({ amenities }: { amenities: any }) {
+function AmenitiesGrid({ amenities }: { amenities: Record<string, unknown> }) {
   const amenityItems = [
     { key: 'hasCarWash', label: 'Car Wash', icon: '🚿' },
     { key: 'hasShop', label: 'Convenience Store', icon: '🏪' },
@@ -717,7 +717,7 @@ function AmenitiesGrid({ amenities }: { amenities: any }) {
 /**
  * Operating Hours Table Component
  */
-function OperatingHoursTable({ hours }: { hours: any }) {
+function OperatingHoursTable({ hours }: { hours: Record<string, unknown> }) {
   const days = [
     { key: 'monday', label: 'Monday' },
     { key: 'tuesday', label: 'Tuesday' },

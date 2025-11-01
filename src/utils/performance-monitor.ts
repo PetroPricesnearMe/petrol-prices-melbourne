@@ -306,10 +306,18 @@ export function usePerformanceTracking(
 // Web Vitals Integration
 // ============================================================================
 
+interface WebVitalsMetric {
+  name: string;
+  value: number;
+  id: string;
+  rating?: string;
+  delta?: number;
+}
+
 /**
  * Report web vitals to performance monitor
  */
-export function reportWebVitals(metric: any): void {
+export function reportWebVitals(metric: WebVitalsMetric): void {
   const monitor = PerformanceMonitor.getInstance();
 
   monitor.recordMetric({

@@ -113,7 +113,7 @@ function AdvancedSearchBar({
   debounceDelay,
   enableRecentSearches,
   renderResult
-}: any) {
+}: Record<string, unknown>) {
   const [query, setQuery] = useState('');
 
   const handleSearch = (value: string) => {

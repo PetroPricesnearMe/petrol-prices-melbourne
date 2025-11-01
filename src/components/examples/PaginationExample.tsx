@@ -10,7 +10,7 @@ import { PaginatedGrid } from '../common/PaginatedGrid';
 import Pagination from '../common/Pagination';
 
 // Example card component
-const ExampleCard: React.FC<{ item: any }> = ({ item }) => (
+const ExampleCard: React.FC<{ item: Record<string, unknown> }> = ({ item }) => (
   <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 h-full flex flex-col">
     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
       {item.title}

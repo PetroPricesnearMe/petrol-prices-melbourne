@@ -34,7 +34,7 @@ export interface StationCardOptimizedProps {
 }
 
 // Memoized price display component
-const PriceDisplay = memo<{ prices: any[]; compact: boolean }>(({ prices, compact }) => {
+const PriceDisplay = memo<{ prices: Array<Record<string, unknown>>; compact: boolean }>(({ prices, compact }) => {
   const cheapestPrice = useMemo(() => {
     if (prices.length === 0) return null;
     return Math.min(...prices.map(fp => fp.pricePerLiter));

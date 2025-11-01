@@ -280,7 +280,7 @@ export interface BaserowPetrolStation {
   Latitude?: string | number | null;
   Longitude?: string | number | null;
   Category?: number;
-  brand?: any[];
+  brand?: unknown[];
   'Location Details'?: string;
   'Fuel Prices'?: number[];
 }
