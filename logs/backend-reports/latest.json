@@ -1,0 +1,125 @@
+{
+  "timestamp": "2025-10-17T03:12:28.219Z",
+  "summary": {
+    "totalIssues": 1,
+    "critical": 0,
+    "high": 0,
+    "medium": 1,
+    "low": 0,
+    "info": 16
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "category": "ENV",
+      "file": ".env.local",
+      "issue": "Missing or empty NEXT_PUBLIC_MAPBOX_TOKEN",
+      "severity": "MEDIUM"
+    }
+  ],
+  "info": [
+    {
+      "category": "API",
+      "file": "pages/api/health.js",
+      "status": "OK",
+      "message": "Health Check API file exists and is readable"
+    },
+    {
+      "category": "API",
+      "file": "pages/api/stations.js",
+      "status": "OK",
+      "message": "Stations API file exists and is readable"
+    },
+    {
+      "category": "DATA",
+      "file": "public/data/stations.geojson",
+      "status": "OK",
+      "message": "Valid GeoJSON with 734 features"
+    },
+    {
+      "category": "DATA",
+      "file": "public/data/stations.csv",
+      "status": "OK",
+      "message": "File exists (120.73 KB)"
+    },
+    {
+      "category": "DATA",
+      "file": "database/Petrol_Stations.geojson",
+      "status": "OK",
+      "message": "Valid GeoJSON with 734 features"
+    },
+    {
+      "category": "ENV",
+      "file": ".env.local",
+      "status": "OK",
+      "message": "ANTHROPIC_API_KEY is configured"
+    },
+    {
+      "category": "ENV",
+      "file": ".env.example",
+      "status": "OK",
+      "message": "Example environment file exists"
+    },
+    {
+      "category": "SERVER",
+      "file": "server.js",
+      "status": "OK",
+      "message": "Express Server exists and is readable"
+    },
+    {
+      "category": "SERVER",
+      "file": "next.config.js",
+      "status": "OK",
+      "message": "Next.js Config exists and is readable"
+    },
+    {
+      "category": "SERVER",
+      "file": "package.json",
+      "status": "OK",
+      "message": "26 dependencies configured"
+    },
+    {
+      "category": "SERVER",
+      "file": "package.json",
+      "status": "OK",
+      "message": "Package Config exists and is readable"
+    },
+    {
+      "category": "DATABASE",
+      "file": "mcp.json",
+      "status": "OK",
+      "message": "1 MCP server(s) configured"
+    },
+    {
+      "category": "ASSETS",
+      "file": "public/favicon.ico",
+      "status": "OK",
+      "message": "Asset exists"
+    },
+    {
+      "category": "ASSETS",
+      "file": "public/manifest.json",
+      "status": "OK",
+      "message": "Asset exists"
+    },
+    {
+      "category": "ASSETS",
+      "file": "public/robots.txt",
+      "status": "OK",
+      "message": "Asset exists"
+    },
+    {
+      "category": "DEPENDENCIES",
+      "file": "node_modules/",
+      "status": "OK",
+      "message": "Dependencies are installed"
+    }
+  ],
+  "reportLog": [
+    {
+      "type": "scan_start",
+      "timestamp": "2025-10-17T03:12:28.219Z",
+      "message": "Backend monitoring scan initiated"
+    }
+  ]
+}

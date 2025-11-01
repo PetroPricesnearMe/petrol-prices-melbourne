@@ -1,0 +1,109 @@
+
+ArcGIS REST Services Directory	Login | Get Token
+Home > services > Liquid_Fuel_Facilities (MapServer) > Petrol_Stations	Help | API Reference
+JSON
+Layer: Petrol_Stations (ID: 3)
+Name: Petrol_Stations
+
+Display Field: station_name
+
+Type: Feature Layer
+
+Geometry Type: esriGeometryPoint
+
+Description: The petrol stations were digitized in 2011/2012 from the library of imagery held within Geoscience Australia. Imagery used ranged from 0.15m to 2.5m resolution. The first version of this database was subsequently released on the GA website in March 2015. The Liquid Fuel Refineries Database was reviewed and subsequently revised in August 2022 using a number of state based APIs.
+
+Copyright Text: © Commonwealth of Australia (Geoscience Australia) 2022. This product is released under the Creative Commons Attribution 4.0 International Licence. http://creativecommons.org/licenses/by/4.0/legalcode
+
+Default Visibility: true
+
+MaxRecordCount: 2000
+
+Supported Query Formats: JSON, geoJSON, PBF
+
+Min Scale: 0.0
+
+Max Scale: 0.0
+
+Supports Advanced Queries: true
+
+Supports Statistics: true
+
+Has Labels: false
+
+Can Modify Layer: true
+
+Can Scale Symbols: false
+
+Use Standardized Queries: true
+
+Supports Datum Transformation: true
+
+Extent:
+XMin: 113.5371990000001
+YMin: -43.312122999999985
+XMax: 153.612838
+YMax: -9.750394999999969
+Spatial Reference: 4283  (4283)  LatestVCSWkid(0)
+
+
+Drawing Info:
+Renderer:
+Simple Renderer:
+Symbol:
+Picture Symbol
+Label: Petrol Stations
+Description: N/A
+Transparency: 0
+Labeling Info:
+Advanced Query Capabilities:
+Supports Statistics: true
+Supports OrderBy: true
+Supports Distinct: true
+Supports Pagination: true
+Supports TrueCurve: true
+Supports Returning Query Extent: true
+Supports Query With Distance: true
+Supports Sql Expression: true
+Supports Query With ResultType: false
+Supports Returning Geometry Centroid: false
+Supports Binning LOD: false
+Supports Query With LOD Spatial Reference: false
+
+HasZ: false
+
+HasM: false
+
+Has Attachments: false
+
+HTML Popup Type: esriServerHTMLPopupTypeAsHTMLText
+
+Type ID Field: null
+
+Fields:
+objectid ( type: esriFieldTypeOID, alias: OBJECTID )
+feature_type ( type: esriFieldTypeString, alias: FEATURE_TYPE, length: 50 )
+industry_id ( type: esriFieldTypeString, alias: INDUSTRY_ID, length: 150 )
+station_name ( type: esriFieldTypeString, alias: STATION_NAME, length: 100 )
+station_owner ( type: esriFieldTypeString, alias: STATION_OWNER, length: 150 )
+station_description ( type: esriFieldTypeString, alias: STATION_DESCRIPTION, length: 250 )
+station_address ( type: esriFieldTypeString, alias: STATION_ADDRESS, length: 100 )
+station_suburb ( type: esriFieldTypeString, alias: STATION_SUBURB, length: 50 )
+station_postcode ( type: esriFieldTypeString, alias: STATION_POSTCODE, length: 10 )
+station_state ( type: esriFieldTypeString, alias: STATION_STATE, length: 10 )
+operational_status ( type: esriFieldTypeString, alias: OPERATIONAL_STATUS, length: 50 )
+spatial_confidence ( type: esriFieldTypeString, alias: SPATIAL_CONFIDENCE, length: 20 )
+gnaf_assignment_method ( type: esriFieldTypeString, alias: GNAF_ASSIGNMENT_METHOD, length: 40 )
+station_revised_date ( type: esriFieldTypeString, alias: STATION_REVISED_DATE, length: 20 )
+gnaf_formatted_address ( type: esriFieldTypeString, alias: GNAF_FORMATTED_ADDRESS, length: 200 )
+gnaf_address_detail_pid ( type: esriFieldTypeString, alias: GNAF_ADDRESS_DETAIL_PID, length: 15 )
+gnaf_confidence ( type: esriFieldTypeString, alias: GNAF_CONFIDENCE, length: 6 )
+gnaf_suburb ( type: esriFieldTypeString, alias: GNAF_SUBURB, length: 40 )
+gnaf_postcode ( type: esriFieldTypeString, alias: GNAF_POSTCODE, length: 8 )
+distance_to_gnaf ( type: esriFieldTypeDouble, alias: DISTANCE_TO_GNAF )
+shape ( type: esriFieldTypeGeometry, alias: SHAPE )
+
+Supported Operations:   Query   Query Attachments   Query Analytic   Generate Renderer   Return Updates
+
+  Iteminfo   Thumbnail   Metadata
+

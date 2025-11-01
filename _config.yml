@@ -1,0 +1,37 @@
+# Jekyll Configuration for GitHub Pages
+
+# Exclude design system documentation and other non-site files
+exclude:
+  - DESIGN_SYSTEM_IMPLEMENTATION.md
+  - DESIGN_SYSTEM_SUMMARY.md
+  - DESIGN_SYSTEM_EXAMPLES.md
+  - node_modules/
+  - .next/
+  - build/
+  - src/
+  - pages/
+  - components/
+  - lib/
+  - scripts/
+  - public/
+  - "*.json"
+  - "*.js"
+  - "*.ts"
+  - "*.tsx"
+  - "*.lock"
+  - .git/
+  - .github/
+  - .vscode/
+  - .env*
+
+# If you want to exclude ALL .md files except specific ones:
+# include:
+#   - README.md
+#   - docs/
+
+# Theme (optional)
+theme: jekyll-theme-primer
+
+# Basic settings
+title: Petrol Prices Near Me
+description: Find the best petrol prices near you

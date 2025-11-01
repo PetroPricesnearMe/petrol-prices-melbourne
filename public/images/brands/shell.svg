@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="shellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD100;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E5A922;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="95" fill="url(#shellGrad)"/>
+  <path d="M100,30 C75,30 55,45 55,65 C55,85 75,100 100,100 C125,100 145,85 145,65 C145,45 125,30 100,30 Z M100,95 C80,95 65,80 65,65 C65,50 80,35 100,35 C120,35 135,50 135,65 C135,80 120,95 100,95 Z" fill="#DD1E25"/>
+  <text x="100" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#DD1E25">SHELL</text>
+</svg>

@@ -1,0 +1,59 @@
+/**
+ * MainLayout Template Styles
+ */
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ============================================================================
+ * Content
+ * ============================================================================ */
+
+.main-layout__content {
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.main-layout__content--sm {
+  max-width: 640px;
+}
+
+.main-layout__content--md {
+  max-width: 768px;
+}
+
+.main-layout__content--lg {
+  max-width: 1024px;
+}
+
+.main-layout__content--xl {
+  max-width: 1280px;
+}
+
+.main-layout__content--full {
+  max-width: 100%;
+}
+
+/* Default padding */
+.main-layout__content:not(.main-layout__content--no-padding) {
+  padding: 2rem 1.5rem;
+}
+
+.main-layout__content--no-padding {
+  padding: 0;
+}
+
+/* ============================================================================
+ * Responsive
+ * ============================================================================ */
+
+@media (max-width: 768px) {
+  .main-layout__content:not(.main-layout__content--no-padding) {
+    padding: 1.5rem 1rem;
+  }
+}
+

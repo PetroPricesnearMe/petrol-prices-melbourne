@@ -1,0 +1,33 @@
+# Code Owners
+# These owners will be the default owners for everything in the repo.
+# Unless a later match takes precedence, these owners will be requested for
+# review when someone opens a pull request.
+
+# Global owners
+* @your-github-username
+
+# Component owners
+/src/components/ @frontend-team
+/src/design-system/ @design-team
+
+# API and backend
+/src/services/ @backend-team
+/pages/api/ @backend-team
+
+# Testing
+/__tests__/ @qa-team
+/e2e/ @qa-team
+/cypress/ @qa-team
+
+# Configuration
+*.json @devops-team
+*.yml @devops-team
+*.yaml @devops-team
+
+# Documentation
+*.md @documentation-team
+/docs/ @documentation-team
+
+# CI/CD
+/.github/ @devops-team
+
