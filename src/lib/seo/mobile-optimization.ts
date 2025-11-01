@@ -1,13 +1,13 @@
 /**
  * Mobile-First Optimization Utilities
- * 
+ *
  * Utilities for optimizing mobile experience:
  * - Mobile viewport configuration
  * - Touch optimization
  * - Mobile-specific performance
  * - Responsive breakpoints
  * - Mobile SEO
- * 
+ *
  * @module lib/seo/mobile-optimization
  */
 
@@ -59,7 +59,7 @@ export function generateResponsiveSizes(config: {
   default: string;
 }): string {
   const sizes: string[] = [];
-  
+
   if (config.sm) {
     sizes.push(`(max-width: ${BREAKPOINTS.sm}px) ${config.sm}`);
   }
@@ -73,7 +73,7 @@ export function generateResponsiveSizes(config: {
     sizes.push(`(max-width: ${BREAKPOINTS.xl}px) ${config.xl}`);
   }
   sizes.push(config.default);
-  
+
   return sizes.join(', ');
 }
 
@@ -90,9 +90,9 @@ export function matchesBreakpoint(breakpoint: Breakpoint): boolean {
  */
 export function getCurrentBreakpoint(): Breakpoint | null {
   if (typeof window === 'undefined') return null;
-  
+
   const width = window.innerWidth;
-  
+
   if (width >= BREAKPOINTS['2xl']) return '2xl';
   if (width >= BREAKPOINTS.xl) return 'xl';
   if (width >= BREAKPOINTS.lg) return 'lg';
@@ -110,7 +110,7 @@ export function getCurrentBreakpoint(): Breakpoint | null {
  */
 export function isMobileDevice(): boolean {
   if (typeof window === 'undefined') return false;
-  
+
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   );
@@ -121,7 +121,7 @@ export function isMobileDevice(): boolean {
  */
 export function isIOSDevice(): boolean {
   if (typeof window === 'undefined') return false;
-  
+
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
 }
 
@@ -130,7 +130,7 @@ export function isIOSDevice(): boolean {
  */
 export function isAndroidDevice(): boolean {
   if (typeof window === 'undefined') return false;
-  
+
   return /Android/i.test(navigator.userAgent);
 }
 
@@ -139,7 +139,7 @@ export function isAndroidDevice(): boolean {
  */
 export function hasTouchCapability(): boolean {
   if (typeof window === 'undefined') return false;
-  
+
   return (
     'ontouchstart' in window ||
     navigator.maxTouchPoints > 0 ||
@@ -178,21 +178,21 @@ export function meetsTouchTargetSize(
  */
 export function preventIOSZoomOnFocus() {
   if (!isIOSDevice()) return;
-  
+
   const viewport = document.querySelector('meta[name="viewport"]');
   if (viewport) {
     let content = viewport.getAttribute('content') || '';
-    
+
     // Add maximum-scale=1 on input focus
     const inputs = document.querySelectorAll('input, select, textarea');
-    
+
     inputs.forEach(input => {
       input.addEventListener('focus', () => {
         if (!content.includes('maximum-scale')) {
           viewport.setAttribute('content', `${content}, maximum-scale=1`);
         }
       });
-      
+
       input.addEventListener('blur', () => {
         viewport.setAttribute('content', content);
       });
@@ -205,12 +205,12 @@ export function preventIOSZoomOnFocus() {
  */
 export function optimizeTapDelay() {
   if (typeof document === 'undefined') return;
-  
+
   // Modern browsers remove this automatically, but add for legacy support
   const meta = document.createElement('meta');
   meta.name = 'viewport';
   meta.content = 'width=device-width, initial-scale=1, viewport-fit=cover';
-  
+
   // Add CSS to remove tap highlight
   const style = document.createElement('style');
   style.innerHTML = `
@@ -231,7 +231,7 @@ export function optimizeTapDelay() {
  */
 export function hasLowMemory(): boolean {
   if (typeof navigator === 'undefined') return false;
-  
+
   const memory = (navigator as any).deviceMemory;
   return memory !== undefined && memory < 4; // Less than 4GB
 }
@@ -241,13 +241,13 @@ export function hasLowMemory(): boolean {
  */
 export function hasSlowConnection(): boolean {
   if (typeof navigator === 'undefined') return false;
-  
+
   const connection = (navigator as any).connection ||
                      (navigator as any).mozConnection ||
                      (navigator as any).webkitConnection;
-  
+
   if (!connection) return false;
-  
+
   // Check for slow connection types
   const slowTypes = ['slow-2g', '2g'];
   return slowTypes.includes(connection.effectiveType) ||
@@ -259,11 +259,11 @@ export function hasSlowConnection(): boolean {
  */
 export function shouldUseReducedData(): boolean {
   if (typeof navigator === 'undefined') return false;
-  
+
   const connection = (navigator as any).connection ||
                      (navigator as any).mozConnection ||
                      (navigator as any).webkitConnection;
-  
+
   return connection?.saveData === true || hasSlowConnection();
 }
 
@@ -274,11 +274,11 @@ export function getMobileImageQuality(): number {
   if (hasSlowConnection() || shouldUseReducedData()) {
     return 65; // Lower quality for slow connections
   }
-  
+
   if (hasLowMemory()) {
     return 75; // Medium quality for low memory
   }
-  
+
   return 85; // Standard quality
 }
 
@@ -340,7 +340,7 @@ export const SAFE_AREA_INSETS = {
  */
 export function applySafeAreaInsets(element: HTMLElement) {
   if (typeof window === 'undefined') return;
-  
+
   Object.entries(SAFE_AREA_INSETS).forEach(([property, value]) => {
     element.style[property as any] = value;
   });
@@ -374,7 +374,7 @@ export function getAccessibleFontSize(size: keyof typeof MOBILE_FONT_SIZES): num
  */
 export function ensureInputFontSize() {
   if (typeof document === 'undefined') return;
-  
+
   const style = document.createElement('style');
   style.innerHTML = `
     input, select, textarea {
@@ -395,9 +395,9 @@ export type Orientation = 'portrait' | 'landscape';
  */
 export function getOrientation(): Orientation {
   if (typeof window === 'undefined') return 'portrait';
-  
-  return window.matchMedia('(orientation: portrait)').matches 
-    ? 'portrait' 
+
+  return window.matchMedia('(orientation: portrait)').matches
+    ? 'portrait'
     : 'landscape';
 }
 
@@ -406,15 +406,15 @@ export function getOrientation(): Orientation {
  */
 export function onOrientationChange(callback: (orientation: Orientation) => void) {
   if (typeof window === 'undefined') return () => {};
-  
+
   const mediaQuery = window.matchMedia('(orientation: portrait)');
-  
+
   const handleChange = (e: MediaQueryListEvent) => {
     callback(e.matches ? 'portrait' : 'landscape');
   };
-  
+
   mediaQuery.addEventListener('change', handleChange);
-  
+
   return () => mediaQuery.removeEventListener('change', handleChange);
 }
 

@@ -637,11 +637,11 @@ export default function Page() {
   {/* Preconnect to external domains */}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-  
+
   {/* DNS prefetch */}
   <link rel="dns-prefetch" href="https://www.google-analytics.com" />
   <link rel="dns-prefetch" href="https://maps.googleapis.com" />
-  
+
   {/* Preload critical fonts */}
   <link
     rel="preload"
@@ -706,7 +706,7 @@ export const revalidate = 3600;
 
 export default async function StationPage({ params }) {
   const station = await getStationById(params.id);
-  
+
   if (!station) {
     notFound();
   }
@@ -717,7 +717,7 @@ export default async function StationPage({ params }) {
   return (
     <>
       <StructuredData data={schemas} />
-      
+
       <article className="max-w-7xl mx-auto px-4 py-8">
         {/* Proper heading hierarchy */}
         <header>
@@ -784,7 +784,7 @@ export default function HomePage() {
   return (
     <>
       <StructuredData data={schemas} />
-      
+
       <main>
         {/* Hero Section */}
         <section className="relative h-screen">
@@ -908,4 +908,3 @@ npm run analyze
 ---
 
 Made with ❤️ for optimal SEO and performance
-

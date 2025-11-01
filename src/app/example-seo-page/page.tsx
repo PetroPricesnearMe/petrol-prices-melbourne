@@ -1,9 +1,9 @@
 /**
  * Example SEO-Optimized Page
- * 
+ *
  * This is a complete example showing how to implement
  * all SEO and performance best practices in a Next.js 14+ page.
- * 
+ *
  * Use this as a template for creating new pages.
  */
 
@@ -107,7 +107,7 @@ export default function ExampleSEOPage() {
             priority
             quality={90}
           />
-          
+
           {/* Hero Content Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40 flex items-center justify-center">
             <div className="max-w-4xl mx-auto px-4 text-center text-white">
@@ -115,11 +115,11 @@ export default function ExampleSEOPage() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
                 Complete SEO &amp; Performance Optimization Guide
               </h1>
-              
+
               <p className="text-xl md:text-2xl mb-8 text-gray-200">
                 Best practices for Next.js 14+ with metadata, structured data, and Core Web Vitals optimization
               </p>
-              
+
               {/* Call-to-Action Button (min 44x44px touch target) */}
               <Link
                 href="#content"
@@ -160,12 +160,12 @@ export default function ExampleSEOPage() {
             <h2 className="text-3xl font-bold mb-4">
               Why SEO &amp; Performance Matter
             </h2>
-            
+
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <p>
                 Search Engine Optimization (SEO) and performance optimization are crucial for:
               </p>
-              
+
               <ul>
                 <li><strong>Better Rankings:</strong> Google uses Core Web Vitals as ranking signals</li>
                 <li><strong>User Experience:</strong> Fast, accessible sites keep users engaged</li>
@@ -281,7 +281,7 @@ export default function ExampleSEOPage() {
             <h2 className="text-3xl font-bold mb-6">
               Optimized Image Gallery
             </h2>
-            
+
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Below-the-fold images are lazy-loaded automatically. First few images get priority for faster perceived performance.
             </p>
@@ -355,11 +355,11 @@ export default function ExampleSEOPage() {
             <h2 className="text-3xl font-bold mb-4">
               Ready to Optimize Your Site?
             </h2>
-            
+
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
               Use this template as a starting point for creating SEO-optimized pages in your Next.js application.
             </p>
-            
+
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/documentation"
@@ -367,7 +367,7 @@ export default function ExampleSEOPage() {
               >
                 Read Full Documentation
               </Link>
-              
+
               <Link
                 href="/examples"
                 className="btn btn-outline min-h-[44px]"
@@ -384,7 +384,7 @@ export default function ExampleSEOPage() {
             <h2 className="text-2xl font-bold mb-6">
               Related Resources
             </h2>
-            
+
             <div className="grid md:grid-cols-3 gap-6">
               {/* Related Link 1 */}
               <Link
@@ -431,4 +431,3 @@ export default function ExampleSEOPage() {
     </>
   );
 }
-

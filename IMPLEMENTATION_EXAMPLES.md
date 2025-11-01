@@ -47,7 +47,7 @@ export default function HomePage() {
     <>
       {/* Structured Data */}
       <StructuredData data={schemas} />
-      
+
       <main>
         {/* Hero Section - LCP Optimized */}
         <section className="relative h-screen">
@@ -57,17 +57,17 @@ export default function HomePage() {
             fill
             quality={90}
           />
-          
+
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="text-center text-white max-w-4xl px-4">
               <h1 className="text-5xl md:text-6xl font-bold mb-6">
                 Find Cheapest Petrol Prices Near You
               </h1>
-              
+
               <p className="text-xl md:text-2xl mb-8">
                 Save up to 20c/L with real-time price comparison
               </p>
-              
+
               <button className="btn btn-primary btn-lg">
                 Search Now
               </button>
@@ -81,7 +81,7 @@ export default function HomePage() {
             <h2 className="text-4xl font-bold text-center mb-12">
               Why Choose Us
             </h2>
-            
+
             <div className="grid md:grid-cols-3 gap-8">
               {/* Feature 1 */}
               <div className="card p-6 text-center">
@@ -99,7 +99,7 @@ export default function HomePage() {
                   Updated every 5 minutes from multiple sources
                 </p>
               </div>
-              
+
               {/* Feature 2 */}
               <div className="card p-6 text-center">
                 <SEOImage
@@ -116,7 +116,7 @@ export default function HomePage() {
                   Complete coverage across Melbourne
                 </p>
               </div>
-              
+
               {/* Feature 3 */}
               <div className="card p-6 text-center">
                 <SEOImage
@@ -176,7 +176,7 @@ export const revalidate = 3600;
 
 export default async function StationPage({ params }) {
   const station = await getStationById(params.id);
-  
+
   if (!station) {
     notFound();
   }
@@ -188,7 +188,7 @@ export default async function StationPage({ params }) {
     <>
       {/* Structured Data */}
       <StructuredData data={schemas} />
-      
+
       <article className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumbs */}
         <nav className="mb-6">
@@ -313,7 +313,7 @@ export default async function DirectoryPage({ params }) {
   return (
     <>
       <StructuredData data={schemas} />
-      
+
       <main className="max-w-7xl mx-auto px-4 py-8">
         <header className="mb-8">
           <h1 className="text-4xl font-bold mb-2">
@@ -395,7 +395,7 @@ export default async function BlogPostPage({ params }) {
   return (
     <>
       <StructuredData data={schemas} />
-      
+
       <article className="max-w-4xl mx-auto px-4 py-12">
         <header className="mb-8">
           {/* Hero Image */}
@@ -487,7 +487,7 @@ export default function FAQPage() {
   return (
     <>
       <StructuredData data={schemas} />
-      
+
       <main className="max-w-4xl mx-auto px-4 py-12">
         <header className="mb-12">
           <h1 className="text-5xl font-bold mb-4">
@@ -599,4 +599,3 @@ For each page, ensure:
 ---
 
 **See also:** `SEO_PERFORMANCE_OPTIMIZATION_GUIDE.md` for detailed explanations
-

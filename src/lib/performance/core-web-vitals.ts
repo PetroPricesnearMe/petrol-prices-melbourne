@@ -112,7 +112,8 @@ class WebVitalsReporter {
     this.metrics.set(metric.name, metric);
 
     // Debug logging
-    if (this.config.debug) {
+    if (this.config.debug && process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.log(`[Web Vitals] ${metric.name}:`, {
         value: metric.value,
         rating: metric.rating,
@@ -139,8 +140,8 @@ class WebVitalsReporter {
    */
   private sendToAnalytics(metric: WebVitalsMetric) {
     // Google Analytics 4
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', metric.name, {
+    if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
+      (window as Window & { gtag: (...args: unknown[]) => void }).gtag('event', metric.name, {
         value: Math.round(metric.value),
         metric_id: metric.id,
         metric_value: metric.value,
@@ -353,7 +354,7 @@ export function reserveSpace(minHeight: number): React.CSSProperties {
 /**
  * Defer non-critical JavaScript execution
  */
-export function deferExecution<T extends (...args: any[]) => any>(
+export function deferExecution<T extends (...args: unknown[]) => unknown>(
   fn: T,
   delay = 0
 ): (...args: Parameters<T>) => void {
@@ -369,7 +370,7 @@ export function deferExecution<T extends (...args: any[]) => any>(
 /**
  * Debounce function for input handlers
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   fn: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -384,7 +385,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function for scroll/resize handlers
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   fn: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -402,6 +403,11 @@ export function throttle<T extends (...args: any[]) => any>(
 // ============================================================================
 // Performance Monitoring
 // ============================================================================
+
+interface LayoutShift extends PerformanceEntry {
+  hadRecentInput: boolean;
+  value: number;
+}
 
 /**
  * Monitor long tasks that can impact INP
@@ -435,8 +441,8 @@ export function monitorLayoutShifts(callback: (shift: number) => void) {
 
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
-      if ((entry as any).hadRecentInput) continue;
-      callback((entry as any).value);
+      if ((entry as LayoutShift).hadRecentInput) continue;
+      callback((entry as LayoutShift).value);
     }
   });
 
