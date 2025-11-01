@@ -1,0 +1,27 @@
+{
+  "short_name": "Petrol Prices",
+  "name": "Petrol Prices Near Me - Melbourne Fuel Finder",
+  "description": "Find the cheapest petrol prices in Melbourne with real-time updates from 250+ stations",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "images/fuel-icon-192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
+  "categories": ["utilities", "finance", "travel"],
+  "lang": "en-AU",
+  "dir": "ltr"
+}

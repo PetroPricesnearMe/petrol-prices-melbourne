@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Preconnect to external domains - MUST be early -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://api.mapbox.com" />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="https://petrolpricesnearme.com.au" />
+
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#667eea" />
+
+  <!-- Primary Meta Tags -->
+  <title>Melbourne Petrol Prices - Find Cheapest Fuel Near You | Live Price Comparison</title>
+  <meta name="title" content="Melbourne Petrol Prices - Find Cheapest Fuel Near You | Live Price Comparison" />
+  <meta name="description"
+    content="Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today!" />
+  <meta name="keywords"
+    content="melbourne petrol prices, cheapest fuel melbourne, petrol prices near me, fuel price comparison melbourne, live petrol prices, melbourne fuel prices today, petrol stations melbourne, diesel prices melbourne, unleaded prices melbourne, e10 prices melbourne, 91 octane melbourne, 95 octane melbourne, 98 octane melbourne" />
+  <meta name="author" content="Petrol Prices Near Me" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://petrolpricesnearme.com.au/" />
+
+  <!-- Additional SEO Meta Tags -->
+  <meta name="geo.region" content="AU-VIC" />
+  <meta name="geo.placename" content="Melbourne" />
+  <meta name="geo.position" content="-37.8136;144.9631" />
+  <meta name="ICBM" content="-37.8136, 144.9631" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://petrolpricesnearme.com.au/" />
+  <meta property="og:title" content="Melbourne Petrol Prices - Find Cheapest Fuel Near You" />
+  <meta property="og:description"
+    content="Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find cheapest fuel today!" />
+  <meta property="og:image" content="https://petrolpricesnearme.com.au/images/fuel-nozzles.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt"
+    content="Fuel nozzles at petrol station showing different fuel types available in Melbourne" />
+  <meta property="og:site_name" content="Melbourne Fuel - Petrol Prices Near Me" />
+  <meta property="og:locale" content="en_AU" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://petrolpricesnearme.com.au/" />
+  <meta name="twitter:title" content="Melbourne Petrol Prices - Find Cheapest Fuel Near You" />
+  <meta name="twitter:description"
+    content="Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time updates!" />
+  <meta name="twitter:image" content="https://petrolpricesnearme.com.au/images/fuel-nozzles.svg" />
+  <meta name="twitter:image:alt" content="Fuel nozzles showing different petrol types at Melbourne service station" />
+
+  <!-- Structured Data for Organization and WebSite -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Melbourne Fuel - Petrol Prices Near Me",
+      "alternateName": "Petrol Prices Monitoring",
+      "url": "https://petrolpricesnearme.com.au/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://petrolpricesnearme.com.au/images/fuel-nozzles.svg",
+        "width": 1200,
+        "height": 630
+      },
+      "description": "Australia's leading petrol price monitoring service providing real-time fuel prices across Melbourne. Compare prices from 250+ stations and save up to 20c per liter on every fill-up.",
+      "areaServed": {
+        "@type": "City",
+        "name": "Melbourne",
+        "containedIn": {
+          "@type": "State",
+          "name": "Victoria",
+          "containedIn": {
+            "@type": "Country",
+            "name": "Australia"
+          }
+        }
+      },
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Fuel Price Monitoring",
+            "description": "Real-time monitoring of petrol prices across Melbourne",
+            "category": "Price Monitoring",
+            "provider": {
+              "@type": "Organization",
+              "name": "Melbourne Fuel - Petrol Prices Near Me"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Petrol Price Comparison",
+            "description": "Compare fuel prices from 250+ petrol stations",
+            "category": "Price Comparison",
+            "provider": {
+              "@type": "Organization",
+              "name": "Melbourne Fuel - Petrol Prices Near Me"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Location-Based Fuel Search",
+            "description": "Find cheapest fuel prices near your location",
+            "category": "Location-Based Service",
+            "provider": {
+              "@type": "Organization",
+              "name": "Melbourne Fuel - Petrol Prices Near Me"
+            }
+          }
+        }
+      ],
+      "knowsAbout": "Petrol Prices"
+    }
+    </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Melbourne Fuel - Petrol Prices Near Me",
+      "url": "https://petrolpricesnearme.com.au/",
+      "description": "Compare live petrol prices from 250+ stations in Melbourne. Find the cheapest fuel near you with real-time price updates and interactive maps.",
+      "inLanguage": "en-AU",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://petrolpricesnearme.com.au/directory?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Melbourne Fuel Price Finder",
+      "url": "https://petrolpricesnearme.com.au/",
+      "description": "Real-time petrol price comparison tool for Melbourne. Find cheapest fuel prices from 250+ stations with live updates.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "AUD"
+      },
+      "featureList": [
+        "Real-time fuel price updates",
+        "Interactive map with 250+ petrol stations",
+        "Location-based search",
+        "Price comparison and savings calculator",
+        "Multiple fuel types (Unleaded, Diesel, Premium)",
+        "24/7 monitoring"
+      ]
+    }
+    </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I find the cheapest petrol prices in Melbourne?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use our live interactive map or directory to compare real-time petrol prices from over 250 stations across Melbourne. Filter by fuel type and location to find the cheapest prices near you."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often are fuel prices updated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our fuel prices are updated in real-time, 24/7. Prices are sourced directly from petrol stations and updated whenever they change, ensuring you always have the most current information."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What fuel types can I compare?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can compare prices for Unleaded (91 Octane), Premium Unleaded (95 and 98 Octane), Diesel, E10, and LPG across all Melbourne petrol stations in our database."
+          }
+        }
+      ]
+    }
+    </script>
+
+  <!-- Critical CSS Inlined - Optimized for LCP -->
+  <style>
+    /* Reset and Variables */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    :root {
+      --primary-color: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary-color: #10b981;
+      --accent-color: #f59e0b;
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --text-light: #6b7280;
+      --background: #ffffff;
+      --background-gray: #f9fafb;
+      --border-color: #e5e7eb;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)
+    }
+
+    /* Font Face */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2) format('woff2')
+    }
+
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7SUc.woff2) format('woff2')
+    }
+
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 600;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2) format('woff2')
+    }
+
+    /* Base Styles */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--background);
+      color: var(--text-primary);
+      line-height: 1.6;
+      font-size: 16px
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem
+    }
+
+    @media (min-width:640px) {
+      .container {
+        padding: 0 2rem
+      }
+    }
+
+    /* Buttons - WCAG Compliant Touch Targets (min 44x44px) */
+    .btn {
+      padding: 0.875rem 1.5rem;
+      /* Increased from 0.75rem to ensure 44px height */
+      min-height: 44px;
+      /* Explicit minimum height for mobile accessibility */
+      border-radius: .5rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      /* Changed to flex for better alignment */
+      align-items: center;
+      justify-content: center;
+      transition: all .3s ease;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+      line-height: 1.5;
+      -webkit-tap-highlight-color: transparent;
+      /* Remove tap highlight on mobile */
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: var(--shadow)
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      outline: 2px solid var(--primary-dark);
+      outline-offset: 2px
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color)
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-2px);
+      outline: 2px solid var(--primary-dark);
+      outline-offset: 2px
+    }
+
+    /* Focus Indicators for Accessibility */
+    a:focus,
+    button:focus,
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px
+    }
+
+    /* Animations */
+    .fade-up {
+      animation: fadeUp .8s ease-out
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* Global Components */
+    .leaflet-container {
+      border-radius: 1rem;
+      box-shadow: var(--shadow-lg)
+    }
+
+    #root {
+      min-height: 100vh
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, .95);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 1rem 0
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.25rem;
+      min-height: 44px
+    }
+
+    /* Touch target compliance */
+    .logo-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center
+    }
+
+    /* Reduced gap on mobile */
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      position: relative;
+      transition: color .3s ease;
+      padding: .75rem .5rem;
+      min-height: 44px;
+      display: flex;
+      align-items: center
+    }
+
+    /* Touch target compliance */
+    .nav-link:hover,
+    .nav-link:focus,
+    .nav-link.active {
+      color: var(--primary-color)
+    }
+
+    /* Homepage */
+    .home-page {
+      min-height: 100vh
+    }
+
+    .hero-section {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden
+    }
+
+    .hero-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      z-index: -2
+    }
+
+    .hero-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+      opacity: .9;
+      z-index: -1
+    }
+
+    .hero-section .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem
+    }
+
+    .hero-content {
+      text-align: center;
+      color: white;
+      max-width: 600px;
+      flex: 1
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, .3)
+    }
+
+    /* Reduced min size for mobile */
+    .hero-subtitle {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      margin-bottom: 3rem;
+      opacity: .9;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      flex-wrap: wrap
+    }
+
+    .hero-btn {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: 1rem 2rem;
+      min-height: 48px;
+      font-size: 1.1rem;
+      border-radius: .75rem;
+      transition: all .3s ease;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      min-width: 180px;
+      justify-content: center
+    }
+
+    .hero-btn.btn-primary {
+      background: rgba(255, 255, 255, .25);
+      border: 2px solid rgba(255, 255, 255, .3);
+      color: white
+    }
+
+    .hero-btn.btn-primary:hover,
+    .hero-btn.btn-primary:focus {
+      background: rgba(255, 255, 255, .35);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .3)
+    }
+
+    .hero-image-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center
+    }
+
+    .fuel-nozzles-image {
+      position: relative;
+      max-width: 400px;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2)
+    }
+
+    .nozzles-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 1rem;
+      object-fit: cover;
+      object-position: center
+    }
+
+    /* Mobile Optimizations - Enhanced for touch targets and readability */
+    @media (max-width:768px) {
+      body {
+        font-size: 16px
+      }
+
+      /* Minimum readable font size */
+      .hero-section .container {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem
+      }
+
+      .hero-content {
+        padding: 1rem;
+        order: 1
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto
+      }
+
+      .hero-btn {
+        width: 100%;
+        min-height: 48px
+      }
+
+      /* Larger touch target on mobile */
+      .hero-image-container {
+        order: 2;
+        max-width: 300px;
+        width: 100%
+      }
+
+      .fuel-nozzles-image {
+        max-width: 100%
+      }
+
+      .nav-links {
+        gap: 0.5rem
+      }
+
+      .nav-link {
+        padding: .75rem .4rem;
+        font-size: 0.9rem
+      }
+    }
+
+    /* Reduced motion for accessibility */
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important
+      }
+    }
+  </style>
+
+  <!-- Critical Resources -->
+
+  <!-- Preload critical font files directly -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" as="font"
+    type="font/woff2" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2JL7SUc.woff2"
+    as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa25L7SUc.woff2"
+    as="font" type="font/woff2" crossorigin />
+
+  <!-- Mapbox CSS is loaded automatically by react-map-gl -->
+
+  <!-- Script to defer main CSS bundle -->
+  <script>
+    // Intercept CSS loading and defer non-critical styles
+    (function () {
+      var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          mutation.addedNodes.forEach(function (node) {
+            if (node.tagName === 'LINK' && node.rel === 'stylesheet' &&
+              node.href && (node.href.includes('main.') || node.href.includes('static/css/'))) {
+              // Defer loading by changing media attribute
+              node.media = 'print';
+              node.onload = function () {
+                this.media = 'all';
+                this.onload = null;
+              };
+            }
+          });
+        });
+      });
+
+      observer.observe(document.head, { childList: true });
+
+      // Also check existing links on DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function () {
+          var links = document.querySelectorAll('link[rel="stylesheet"]');
+          links.forEach(function (link) {
+            if (link.href && (link.href.includes('main.') || link.href.includes('static/css/')) &&
+              !link.href.includes('leaflet') && !link.href.includes('fonts')) {
+              link.media = 'print';
+              link.onload = function () { this.media = 'all'; this.onload = null; };
+            }
+          });
+        }, 50);
+      });
+    })();
+
+    // Performance monitoring - Core Web Vitals
+    window.addEventListener('load', function () {
+      // Report Core Web Vitals using modern API
+      if ('PerformanceObserver' in window) {
+        try {
+          // Observe LCP (Largest Contentful Paint)
+          const lcpObserver = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              console.log('LCP:', entry.startTime);
+            }
+          });
+          lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+
+          // Observe FID (First Input Delay) - using modern 'first-input' API
+          const fidObserver = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              const fid = entry.processingStart - entry.startTime;
+              console.log('FID:', fid);
+            }
+          });
+          fidObserver.observe({ type: 'first-input', buffered: true });
+        } catch (e) {
+          console.debug('Performance monitoring not fully supported:', e);
+        }
+      }
+    });
+  </script>
+
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/images/fuel-icon-192.svg" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" crossorigin="use-credentials" />
+
+  <!-- Suppress IDE deprecation warnings in development -->
+  <script>
+    // Suppress unload event warnings from IDE/extensions during development
+    // Only applies in non-production environments
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const originalWarn = console.warn;
+      console.warn = function (...args) {
+        const message = args[0]?.toString() || '';
+        if (message.includes('Unload event listeners are deprecated')) {
+          return; // Suppress IDE/extension warnings
+        }
+        originalWarn.apply(console, args);
+      };
+    }
+  </script>
+
+  <!-- Google Analytics - Loaded by React App -->
+  <!-- GA4 is initialized in src/utils/googleAnalytics.js with environment variables -->
+  <!-- This ensures proper configuration and prevents hardcoded IDs -->
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+</body>
+
+</html>

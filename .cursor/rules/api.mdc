@@ -1,0 +1,10 @@
+---
+description: Agent for API routes and backend logic
+globs:
+  - src/api/**
+  - server/**
+alwaysApply: false
+---
+- Manage all API logic and backend endpoint code.
+- Never modify frontend, UI, or style files.
+- Can coordinate with database agent for data handling.

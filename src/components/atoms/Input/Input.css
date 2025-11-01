@@ -1,0 +1,201 @@
+/**
+ * Input Component Styles
+ */
+
+.input-container {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.input-container--full-width {
+  width: 100%;
+}
+
+/* ============================================================================
+ * Label
+ * ============================================================================ */
+
+.input-label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #424242;
+  margin-bottom: 0.25rem;
+}
+
+.input-label__required {
+  color: #F44336;
+  margin-left: 0.25rem;
+}
+
+/* ============================================================================
+ * Input Wrapper
+ * ============================================================================ */
+
+.input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 2px solid #E0E0E0;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease-out;
+  width: 100%;
+}
+
+.input-wrapper:hover:not(.input-wrapper--disabled) {
+  border-color: #BDBDBD;
+}
+
+.input-wrapper--focused {
+  border-color: #2196F3;
+  outline: 2px solid rgba(33, 150, 243, 0.2);
+  outline-offset: 0;
+}
+
+.input-wrapper--error {
+  border-color: #F44336;
+}
+
+.input-wrapper--error.input-wrapper--focused {
+  outline-color: rgba(244, 67, 54, 0.2);
+}
+
+.input-wrapper--success {
+  border-color: #4CAF50;
+}
+
+.input-wrapper--disabled {
+  background-color: #F5F5F5;
+  border-color: #E0E0E0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ============================================================================
+ * Size Variants
+ * ============================================================================ */
+
+.input-wrapper--sm {
+  height: 2rem;
+  padding: 0 0.75rem;
+}
+
+.input-wrapper--sm .input {
+  font-size: 0.875rem;
+}
+
+.input-wrapper--md {
+  height: 2.5rem;
+  padding: 0 1rem;
+}
+
+.input-wrapper--md .input {
+  font-size: 1rem;
+}
+
+.input-wrapper--lg {
+  height: 3rem;
+  padding: 0 1.25rem;
+}
+
+.input-wrapper--lg .input {
+  font-size: 1.125rem;
+}
+
+/* ============================================================================
+ * Input Element
+ * ============================================================================ */
+
+.input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  color: #212121;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: #9E9E9E;
+}
+
+.input:disabled {
+  cursor: not-allowed;
+}
+
+/* Remove number input spinners */
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ============================================================================
+ * Icons
+ * ============================================================================ */
+
+.input-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #757575;
+}
+
+.input-icon svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+.input-icon--start {
+  margin-right: 0.5rem;
+}
+
+.input-icon--end {
+  margin-left: 0.5rem;
+}
+
+.input-wrapper--with-start-icon .input {
+  padding-left: 0;
+}
+
+.input-wrapper--with-end-icon .input {
+  padding-right: 0;
+}
+
+/* ============================================================================
+ * Helper/Error Messages
+ * ============================================================================ */
+
+.input-message {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.input-message--helper {
+  color: #757575;
+}
+
+.input-message--error {
+  color: #F44336;
+}
+
+/* ============================================================================
+ * Autofill Styles
+ * ============================================================================ */
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset;
+  box-shadow: 0 0 0 1000px #FFFFFF inset;
+  -webkit-text-fill-color: #212121;
+}
+

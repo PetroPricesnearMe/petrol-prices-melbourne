@@ -1,0 +1,123 @@
+[33mb17ba30[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m hopeful
+[33m61a70b9[m fix orgiveup
+[33m640fe1b[m git commit -m "small"
+[33m3a8d7e1[m badboy1
+[33m659fa8d[m big date
+[33m486e057[m big date
+[33m2fdb71c[m big date
+[33m4976598[m big date
+[33m6589cf9[m big date
+[33m2c64149[m big update
+[33mebea98e[m big update
+[33m206c0f3[m big update
+[33mc854678[m feat: Implement comprehensive performance optimizations
+[33m87ce3a1[m Force Vercel redeploy with explicit framework setting
+[33m42fe4a8[m Fix: Use explicit routes instead of rewrites for static asset handling
+[33m8aba63b[m Fix: Exclude static assets from Vercel rewrites to resolve MIME type errors
+[33m4e095cd[m finish
+[33m8c21579[m vote to extend
+[33mfbbb2a7[m commit
+[33m7565e95[m 7447
+[33mc14f0db[m challenged
+[33ma10ceb0[m feat: Revert to original blue/green color scheme and optimize SEO
+[33m3cad937[m challenge
+[33mba735eb[m f5
+[33me184e2b[m f
+[33m2a658aa[m colours and cards
+[33m7e1c565[m origin main
+[33mab5de8e[m new update
+[33m10f4c64[m colour theme
+[33me6fe6be[m update1
+[33me3558ea[m critical
+[33m9a1e1c1[m cards graphics colours theme
+[33mef4472d[m letsseeupdate
+[33mda837d8[m update394
+[33me332161[m realiserealeyesrealisze
+[33m7284516[m the latest update map legion
+[33m99b1d28[m Complete Safari and browser compatibility fixes - Add -webkit-backdrop-filter to critical inlined CSS (navbar, hero-btn, fuel-nozzles-image) - Add modern text-size-adjust property alongside vendor prefixes - Fix all CSS compatibility warnings for cross-browser support
+[33mf06bf1c[m Fix Safari backdrop-filter support and manifest icon errors - Add -webkit-backdrop-filter prefix across all components - Replace corrupted logo192.png with SVG icon in manifest and structured data
+[33m906e5c2[m Fix manifest icon error - replace corrupted logo192.png with SVG icon
+[33m8528999[m 1234124324
+[33mdc15ea3[m Petrol Prices around Melb
+[33m998898f[m petrol Prices near ME
+[33mcf4fe7a[m and another one
+[33m618ac1f[m main
+[33m0bb32fc[m update 8347347348
+[33m8f0684d[m update 284u4
+[33m17ed903[m first big update extra
+[33mfd35368[m first big update
+[33md3e1c06[m retry this
+[33mc492520[m chore: Remove outdated documentation and scripts
+[33m24f46dc[m calude update
+[33m8505f1e[m fix: Update vercel.json to modern configuration format
+[33m7ec8475[m fix: Remove unused @vercel/speed-insights to resolve console errors
+[33m482b0bf[m static update2
+[33m7ee50dd[m Update audit script for local testing
+[33mae8d55a[m static update
+[33mf4a3e11[m final update
+[33m5969cdb[m ðŸš€ SEO & Accessibility Improvements - Fix all issues for first-page ranking
+[33m2226856[m chore: Update frontend agent rules and configuration
+[33m51c2b59[m feat: Update agent rules to exact specifications
+[33ma16bb96[m feat: Add comprehensive multi-agent development framework
+[33m4e904e3[m fix: Remove Vercel Speed Insights to resolve MobX State Tree errors and improve manifest.json
+[33m3463d5c[m Merge pull request #1 from PetroPricesnearMe/cursor/commit-and-push-changes-f4cd
+[33mef68fd8[m fix: Resolve console errors and implement Speed Insights
+[33med70114[m Implement comprehensive cross-browser layout optimization
+[33m5000207[m Fix duplicate function declaration error in DirectoryPage.js
+[33mcf7bff8[m Enhance directory page with cascade layout and station listings
+[33m51b43ff[m Fix React rendering error and missing API endpoint
+[33mb2816b6[m Apply user-accepted changes: Complete project optimization
+[33md72cc71[m Implement separation of concerns for Baserow and Mapbox integration
+[33m1782199[m[33m ([m[1;31morigin/cursor/commit-and-push-changes-f4cd[m[33m)[m Fix: Remove unused 'sameAs' property from schema
+[33macc605c[m feat: Complete frontend audit fixes and improvements
+[33m66d8b72[m fix: Remove image preload to fix console warning
+[33m8ad7419[m perf: Optimize map loading, fix preload warnings, and improve modern styling
+[33maa0fd2b[m feat: Add comprehensive website audit tools and documentation
+[33m7256b4b[m fix: Resolve ESLint errors in StationAmenitiesPage.js
+[33m8525400[m feat: Update Baserow configuration with correct token and MCP SSE URL
+[33md4b961b[m fix: Resolve CORS issues with Baserow API and improve error handling
+[33m145ef93[m feat: Improve navigation design and remove emoji graphics for professional appearance
+[33m758e287[m feat: Implement centralized data source management and enhanced Mapbox integration
+[33mccc2994[m large update
+[33m0d154b0[m  COMPREHENSIVE WEBSITE AUDIT & OPTIMIZATION
+[33m478d53e[m update mapbox api
+[33m0803752[m  Complete website functionality fixes and SEO optimization
+[33m67ecf35[m FIX: Correct react-map-gl v8 import syntax for Mapbox GL JS 3.14+ - build now succeeds
+[33m77d815b[m MIGRATE TO MAPBOX: Replace Leaflet with Mapbox for performance - now shows ALL 661 stations with clustering
+[33m79e969b[m Major JavaScript optimization: implement lazy loading, optimize Framer Motion imports, defer Google Analytics
+[33m24209b0[m Revert to Google Analytics: remove Vercel Analytics and restore Google Analytics implementation
+[33m16ababa[m Add Vercel Analytics integration and remove Google Analytics for better performance
+[33mdcf292c[m SEO optimisations
+[33m84f2d08[m Major performance optimization: inline critical above-the-fold CSS, defer main CSS bundle with MutationObserver
+[33ma058532[m Eliminate Google Fonts dependency: inline all font-faces, preload font files directly, optimize preconnect positioning
+[33m29de5ea[m Further optimize performance: add preconnect hints, reduce font weights, inline font-face
+[33m141eeb2[m Optimize performance: inline critical CSS and defer non-critical resources to eliminate render-blocking
+[33m5bf6f68[m Fix sitemap.xml MIME type - serve as XML instead of HTML
+[33m660132f[m Update sitemap.xml to use .au domain for petrolpricesnearme.com.au
+[33m9616757[m indexc.html updated
+[33mc0861ee[m header update Pages and new links
+[33meb9649c[m Big update: Complete SEO optimization with enhanced meta tags, blog content, sitemap, robots.txt, and fuel nozzle image integration
+[33m4b04390[m Update API configuration with new token and database details - Database ID: 265358, Token: WXGOdiCeNmvdj5NszzAdvIug3InwQQXP
+[33m36303f7[m Fix Vercel deployment: update static file routing and production API handling
+[33m4e49cc1[m Fix Baserow endpoints, add React Router v7 transition, and add manifest.json
+[33m125d602[m Fix Vercel deployment configuration
+[33m709f04e[m Add Baserow endpoint verification report
+[33m1a830da[m Remove old baserow.js file and add troubleshooting guide
+[33mdefa5c4[m Update fetchAllStationsDirect to use cleaner cursor-based pagination
+[33m1969b95[m Fix Baserow API pagination: Use cursor-based pagination with next URL
+[33m1b565ed[m Describe your changes here
+[33mb430d77[m indexc.html updated
+[33m9877063[m  Fix Baserow fetch logic and remove broken backend dependency
+[33mbf00cba[m Complete Baserow integration with new table structure
+[33m493c4cd[m Improve error handling and backend connectivity
+[33md6ff8ee[m Fix CORS configuration for frontend-backend communication
+[33m83b7a27[m Fix CORS configuration for frontend-backend communication
+[33m9c7351b[m Integrate Baserow table 265358 with DirectoryPage and MapPage
+[33m1638eac[m Implement Baserow pagination for fetching all stations
+[33m4dbc479[m Add Baserow API integration with environment configuration
+[33m0629679[m Fix Vercel routing: properly serve static assets instead of redirecting to index.html
+[33m00322fb[m Fix ESLint warnings: wrap sampleStations in useMemo to prevent unnecessary re-renders
+[33me0d195d[m Fix Vercel configuration: remove conflicting functions property
+[33m49d16a8[m first update
+[33m7f39855[m big update
+[33m88cea38[m Initial commit: Melbourne Petrol Stations web directory with React frontend and Node.js backend

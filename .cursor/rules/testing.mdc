@@ -1,0 +1,11 @@
+---
+description: Agent for tests and automation
+globs:
+  - src/tests/**
+  - .github/workflows/**
+  - test-utils/**
+alwaysApply: false
+---
+- Create and enhance tests.
+- Modify deployment workflows and automation only.
+- Do not edit application code or config.

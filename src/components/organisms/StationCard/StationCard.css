@@ -1,0 +1,173 @@
+/**
+ * StationCard Component Styles
+ */
+
+.station-card {
+  height: 100%;
+}
+
+.station-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ============================================================================
+ * Header
+ * ============================================================================ */
+
+.station-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.station-card__title-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.station-card__name {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.station-card__brand {
+  margin-top: 0.125rem;
+}
+
+.station-card__distance {
+  flex-shrink: 0;
+  padding: 0.375rem 0.75rem;
+  background-color: rgba(33, 150, 243, 0.1);
+  border-radius: 0.375rem;
+}
+
+/* ============================================================================
+ * Badges
+ * ============================================================================ */
+
+.station-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ============================================================================
+ * Address
+ * ============================================================================ */
+
+.station-card__address {
+  line-height: 1.5;
+}
+
+/* ============================================================================
+ * Fuel Prices
+ * ============================================================================ */
+
+.station-card__prices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #E0E0E0;
+}
+
+.station-card__prices-title {
+  margin: 0;
+}
+
+.station-card__price-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.station-card__price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ============================================================================
+ * Cheap Price (Compact)
+ * ============================================================================ */
+
+.station-card__cheap-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #E0E0E0;
+}
+
+/* ============================================================================
+ * Amenities
+ * ============================================================================ */
+
+.station-card__amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.station-card__amenity {
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: help;
+}
+
+/* ============================================================================
+ * Footer/Actions
+ * ============================================================================ */
+
+.station-card__footer {
+  background-color: #FAFAFA;
+}
+
+.station-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ============================================================================
+ * Compact Variant
+ * ============================================================================ */
+
+.station-card--compact .station-card__body {
+  gap: 0.5rem;
+}
+
+.station-card--compact .station-card__name {
+  font-size: 1rem;
+}
+
+/* ============================================================================
+ * Responsive
+ * ============================================================================ */
+
+@media (max-width: 768px) {
+  .station-card__header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .station-card__distance {
+    align-self: flex-start;
+  }
+
+  .station-card__actions {
+    flex-direction: column;
+  }
+
+  .station-card__actions button {
+    width: 100%;
+  }
+}
+

@@ -1,0 +1,168 @@
+/**
+ * Card Component Styles
+ */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  transition: all 0.25s ease-out;
+  overflow: hidden;
+}
+
+/* When card is a button */
+button.card {
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button.card:focus-visible {
+  outline: 2px solid #2196F3;
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+ * Elevation (Shadow) Variants
+ * ============================================================================ */
+
+.card--elevation-none {
+  box-shadow: none;
+}
+
+.card--elevation-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.card--elevation-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.card--elevation-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================================
+ * Padding Variants
+ * ============================================================================ */
+
+.card--padding-none {
+  padding: 0;
+}
+
+.card--padding-sm {
+  padding: 0.75rem;
+}
+
+.card--padding-md {
+  padding: 1rem;
+}
+
+.card--padding-lg {
+  padding: 1.5rem;
+}
+
+/* Special case: when card has sections, remove padding */
+.card:has(.card__header, .card__body, .card__footer) {
+  padding: 0;
+}
+
+/* ============================================================================
+ * Bordered Variant
+ * ============================================================================ */
+
+.card--bordered {
+  border: 1px solid #E0E0E0;
+}
+
+/* ============================================================================
+ * Hoverable State
+ * ============================================================================ */
+
+.card--hoverable {
+  cursor: pointer;
+}
+
+.card--hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.15);
+}
+
+.card--hoverable:active {
+  transform: translateY(0);
+}
+
+/* ============================================================================
+ * Card Sections
+ * ============================================================================ */
+
+.card__header {
+  padding: 1rem;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.card__body {
+  padding: 1rem;
+  flex: 1;
+}
+
+.card__footer {
+  padding: 1rem;
+  border-top: 1px solid #E0E0E0;
+}
+
+/* ============================================================================
+ * Card Media
+ * ============================================================================ */
+
+.card__media {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #F5F5F5;
+}
+
+.card__media-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Media first in card */
+.card__media:first-child {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Media last in card */
+.card__media:last-child {
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* Media only child */
+.card__media:only-child {
+  border-radius: 0.5rem;
+}
+
+/* ============================================================================
+ * Responsive
+ * ============================================================================ */
+
+@media (max-width: 768px) {
+  .card--padding-md {
+    padding: 0.875rem;
+  }
+
+  .card--padding-lg {
+    padding: 1.25rem;
+  }
+
+  .card__header,
+  .card__body,
+  .card__footer {
+    padding: 0.875rem;
+  }
+}
+

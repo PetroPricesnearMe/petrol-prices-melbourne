@@ -1,0 +1,213 @@
+/**
+ * Badge Component Styles
+ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* ============================================================================
+ * Size Variants
+ * ============================================================================ */
+
+.badge--xs {
+  padding: 0.125rem 0.375rem;
+  font-size: 0.625rem;
+}
+
+.badge--sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.badge--md {
+  padding: 0.375rem 0.625rem;
+  font-size: 0.875rem;
+}
+
+.badge--lg {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+}
+
+/* ============================================================================
+ * Appearance Variants - Solid
+ * ============================================================================ */
+
+.badge--solid.badge--primary {
+  background-color: #2196F3;
+  color: white;
+}
+
+.badge--solid.badge--secondary {
+  background-color: #9C27B0;
+  color: white;
+}
+
+.badge--solid.badge--success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.badge--solid.badge--warning {
+  background-color: #FF9800;
+  color: white;
+}
+
+.badge--solid.badge--error {
+  background-color: #F44336;
+  color: white;
+}
+
+.badge--solid.badge--info {
+  background-color: #03A9F4;
+  color: white;
+}
+
+.badge--solid.badge--neutral {
+  background-color: #757575;
+  color: white;
+}
+
+/* ============================================================================
+ * Appearance Variants - Outlined
+ * ============================================================================ */
+
+.badge--outlined {
+  background-color: transparent;
+  border: 1px solid currentColor;
+}
+
+.badge--outlined.badge--primary {
+  color: #2196F3;
+}
+
+.badge--outlined.badge--secondary {
+  color: #9C27B0;
+}
+
+.badge--outlined.badge--success {
+  color: #4CAF50;
+}
+
+.badge--outlined.badge--warning {
+  color: #FF9800;
+}
+
+.badge--outlined.badge--error {
+  color: #F44336;
+}
+
+.badge--outlined.badge--info {
+  color: #03A9F4;
+}
+
+.badge--outlined.badge--neutral {
+  color: #757575;
+}
+
+/* ============================================================================
+ * Appearance Variants - Soft
+ * ============================================================================ */
+
+.badge--soft.badge--primary {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: #1565C0;
+}
+
+.badge--soft.badge--secondary {
+  background-color: rgba(156, 39, 176, 0.1);
+  color: #6A1B9A;
+}
+
+.badge--soft.badge--success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #2E7D32;
+}
+
+.badge--soft.badge--warning {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #EF6C00;
+}
+
+.badge--soft.badge--error {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #C62828;
+}
+
+.badge--soft.badge--info {
+  background-color: rgba(3, 169, 244, 0.1);
+  color: #0277BD;
+}
+
+.badge--soft.badge--neutral {
+  background-color: rgba(117, 117, 117, 0.1);
+  color: #424242;
+}
+
+/* ============================================================================
+ * Dot Indicator
+ * ============================================================================ */
+
+.badge__dot {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+/* ============================================================================
+ * Icon
+ * ============================================================================ */
+
+.badge__icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.badge__icon svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* ============================================================================
+ * Remove Button
+ * ============================================================================ */
+
+.badge__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-left: 0.125rem;
+  background: none;
+  border: none;
+  color: currentColor;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s ease-out;
+  border-radius: 50%;
+}
+
+.badge__remove:hover {
+  opacity: 1;
+}
+
+.badge__remove:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+.badge__remove svg {
+  display: block;
+}
+
