@@ -1,6 +1,6 @@
 /**
  * SEO-Optimized Image Component
- * 
+ *
  * Enhanced Next.js Image component with:
  * - Automatic lazy loading
  * - Priority loading for LCP images
@@ -9,7 +9,7 @@
  * - Core Web Vitals optimization
  * - Proper alt text handling
  * - Schema.org ImageObject support
- * 
+ *
  * @module components/seo/SEOImage
  */
 
@@ -29,75 +29,75 @@ export interface SEOImageProps extends Omit<ImageProps, 'alt'> {
    * Alt text for accessibility and SEO (REQUIRED)
    */
   alt: string;
-  
+
   /**
    * Is this a hero/LCP image?
    * Enables priority loading and eager fetching
    */
   isHero?: boolean;
-  
+
   /**
    * Is this above the fold?
    * Enables priority loading
    */
   isAboveFold?: boolean;
-  
+
   /**
    * Show loading skeleton
    */
   showSkeleton?: boolean;
-  
+
   /**
    * Skeleton class name
    */
   skeletonClassName?: string;
-  
+
   /**
    * Caption for the image (for SEO)
    */
   caption?: string;
-  
+
   /**
    * Credit/attribution for the image
    */
   credit?: string;
-  
+
   /**
    * Generate ImageObject schema
    */
   generateSchema?: boolean;
-  
+
   /**
    * Image dimensions for CLS prevention
    */
   aspectRatio?: string;
-  
+
   /**
    * Quality (1-100)
    * Default: 85 for regular images, 90 for hero images
    */
   quality?: number;
-  
+
   /**
    * Responsive sizes
    */
   sizes?: string;
-  
+
   /**
    * Object fit
    */
   objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
-  
+
   /**
    * Container class name
    */
   containerClassName?: string;
-  
+
   /**
    * Loading error callback
    */
   onError?: () => void;
-  
+
   /**
    * Loading complete callback
    */
@@ -110,7 +110,7 @@ export interface SEOImageProps extends Omit<ImageProps, 'alt'> {
 
 /**
  * SEO-Optimized Image Component
- * 
+ *
  * Usage:
  * ```tsx
  * // Hero image (LCP)
@@ -122,7 +122,7 @@ export interface SEOImageProps extends Omit<ImageProps, 'alt'> {
  *   isHero
  *   priority
  * />
- * 
+ *
  * // Regular image (lazy loaded)
  * <SEOImage
  *   src="/image.jpg"
@@ -131,7 +131,7 @@ export interface SEOImageProps extends Omit<ImageProps, 'alt'> {
  *   height={600}
  *   sizes="(max-width: 768px) 100vw, 50vw"
  * />
- * 
+ *
  * // With caption
  * <SEOImage
  *   src="/photo.jpg"
@@ -174,13 +174,13 @@ export function SEOImage({
 
   // Determine priority loading
   const shouldPriority = priority ?? (isHero || isAboveFold);
-  
+
   // Determine quality
   const imageQuality = quality ?? (isHero ? 90 : 85);
-  
+
   // Determine sizes
   const imageSizes = sizes ?? (
-    isHero 
+    isHero
       ? '100vw'
       : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
   );
@@ -229,7 +229,7 @@ export function SEOImage({
   }, [isHero, props.src]);
 
   return (
-    <figure 
+    <figure
       className={cn('relative', containerClassName)}
       style={calculatedAspectRatio ? { aspectRatio: calculatedAspectRatio } : undefined}
     >
@@ -406,7 +406,7 @@ export function GalleryImage({
 }: SEOImageProps & { index?: number }) {
   // First few images get higher priority
   const isEarlyImage = index !== undefined && index < 4;
-  
+
   return (
     <SEOImage
       {...props}
@@ -454,4 +454,3 @@ export function getOptimizedQuality(width: number): number {
   if (width < 1200) return 85;
   return 90;
 }
-

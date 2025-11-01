@@ -1,88 +1,44 @@
 /**
- * Mobile-First SEO Optimization
- *
- * Utilities for mobile-first indexing and mobile UX optimization
+ * Mobile-First Optimization Utilities
+ * 
+ * Utilities for optimizing mobile experience:
+ * - Mobile viewport configuration
+ * - Touch optimization
+ * - Mobile-specific performance
+ * - Responsive breakpoints
+ * - Mobile SEO
+ * 
  * @module lib/seo/mobile-optimization
  */
+
+import type { Viewport } from 'next';
 
 // ============================================================================
 // Mobile Viewport Configuration
 // ============================================================================
 
 /**
- * Optimal viewport configuration for mobile-first indexing
+ * Optimal mobile viewport configuration
  */
-export const MOBILE_VIEWPORT = {
+export const mobileViewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5, // Allow zoom for accessibility
   minimumScale: 1,
-  userScalable: true, // Never disable zoom
-  viewportFit: 'cover', // For iPhone X+ notch
-} as const;
-
-/**
- * Generate viewport meta tag content
- */
-export function getViewportContent(options?: Partial<typeof MOBILE_VIEWPORT>): string {
-  const config = { ...MOBILE_VIEWPORT, ...options };
-
-  const parts = [
-    `width=${config.width}`,
-    `initial-scale=${config.initialScale}`,
-    `maximum-scale=${config.maximumScale}`,
-    `minimum-scale=${config.minimumScale}`,
-    `user-scalable=${config.userScalable ? 'yes' : 'no'}`,
-    `viewport-fit=${config.viewportFit}`,
-  ];
-
-  return parts.join(', ');
-}
-
-// ============================================================================
-// Touch Target Optimization
-// ============================================================================
-
-/**
- * Minimum touch target sizes for mobile (in pixels)
- * Based on WCAG 2.1 Level AAA and Google guidelines
- */
-export const TOUCH_TARGET_SIZES = {
-  minimum: 44, // Apple Human Interface Guidelines
-  recommended: 48, // Material Design
-  comfortable: 56, // Large touch targets
-} as const;
-
-/**
- * Check if element meets touch target size requirements
- */
-export function validateTouchTarget(
-  width: number,
-  height: number,
-  level: keyof typeof TOUCH_TARGET_SIZES = 'recommended'
-): { isValid: boolean; message?: string } {
-  const minSize = TOUCH_TARGET_SIZES[level];
-
-  if (width < minSize || height < minSize) {
-    return {
-      isValid: false,
-      message: `Touch target too small: ${width}×${height}px (minimum: ${minSize}×${minSize}px)`,
-    };
-  }
-
-  return { isValid: true };
-}
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#1f2937' },
+  ],
+};
 
 // ============================================================================
 // Responsive Breakpoints
 // ============================================================================
 
-/**
- * Standard breakpoints for mobile-first design
- * Aligned with Tailwind CSS defaults
- */
 export const BREAKPOINTS = {
-  xs: 0,
+  xs: 320,
   sm: 640,
   md: 768,
   lg: 1024,
@@ -90,38 +46,180 @@ export const BREAKPOINTS = {
   '2xl': 1536,
 } as const;
 
+export type Breakpoint = keyof typeof BREAKPOINTS;
+
 /**
- * Generate media query string
+ * Generate responsive sizes string
  */
-export function getMediaQuery(breakpoint: keyof typeof BREAKPOINTS, type: 'min' | 'max' = 'min'): string {
-  const size = BREAKPOINTS[breakpoint];
-  return type === 'min'
-    ? `(min-width: ${size}px)`
-    : `(max-width: ${size - 1}px)`;
+export function generateResponsiveSizes(config: {
+  sm?: string;
+  md?: string;
+  lg?: string;
+  xl?: string;
+  default: string;
+}): string {
+  const sizes: string[] = [];
+  
+  if (config.sm) {
+    sizes.push(`(max-width: ${BREAKPOINTS.sm}px) ${config.sm}`);
+  }
+  if (config.md) {
+    sizes.push(`(max-width: ${BREAKPOINTS.md}px) ${config.md}`);
+  }
+  if (config.lg) {
+    sizes.push(`(max-width: ${BREAKPOINTS.lg}px) ${config.lg}`);
+  }
+  if (config.xl) {
+    sizes.push(`(max-width: ${BREAKPOINTS.xl}px) ${config.xl}`);
+  }
+  sizes.push(config.default);
+  
+  return sizes.join(', ');
 }
 
 /**
- * Check if viewport is mobile
+ * Check if current viewport matches breakpoint
  */
-export function isMobileViewport(): boolean {
+export function matchesBreakpoint(breakpoint: Breakpoint): boolean {
   if (typeof window === 'undefined') return false;
-  return window.innerWidth < BREAKPOINTS.md;
+  return window.matchMedia(`(min-width: ${BREAKPOINTS[breakpoint]}px)`).matches;
 }
 
 /**
- * Check if viewport is tablet
+ * Get current breakpoint
  */
-export function isTabletViewport(): boolean {
+export function getCurrentBreakpoint(): Breakpoint | null {
+  if (typeof window === 'undefined') return null;
+  
+  const width = window.innerWidth;
+  
+  if (width >= BREAKPOINTS['2xl']) return '2xl';
+  if (width >= BREAKPOINTS.xl) return 'xl';
+  if (width >= BREAKPOINTS.lg) return 'lg';
+  if (width >= BREAKPOINTS.md) return 'md';
+  if (width >= BREAKPOINTS.sm) return 'sm';
+  return 'xs';
+}
+
+// ============================================================================
+// Mobile Detection
+// ============================================================================
+
+/**
+ * Check if device is mobile
+ */
+export function isMobileDevice(): boolean {
   if (typeof window === 'undefined') return false;
-  return window.innerWidth >= BREAKPOINTS.md && window.innerWidth < BREAKPOINTS.lg;
+  
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
 }
 
 /**
- * Check if viewport is desktop
+ * Check if device is iOS
  */
-export function isDesktopViewport(): boolean {
+export function isIOSDevice(): boolean {
   if (typeof window === 'undefined') return false;
-  return window.innerWidth >= BREAKPOINTS.lg;
+  
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+}
+
+/**
+ * Check if device is Android
+ */
+export function isAndroidDevice(): boolean {
+  if (typeof window === 'undefined') return false;
+  
+  return /Android/i.test(navigator.userAgent);
+}
+
+/**
+ * Check if device has touch capability
+ */
+export function hasTouchCapability(): boolean {
+  if (typeof window === 'undefined') return false;
+  
+  return (
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    (navigator as any).msMaxTouchPoints > 0
+  );
+}
+
+// ============================================================================
+// Touch Optimization
+// ============================================================================
+
+/**
+ * Minimum touch target size (44x44px per WCAG)
+ */
+export const MIN_TOUCH_TARGET_SIZE = 44;
+
+/**
+ * Recommended touch target size (48x48px per Material Design)
+ */
+export const RECOMMENDED_TOUCH_TARGET_SIZE = 48;
+
+/**
+ * Check if element meets touch target size requirements
+ */
+export function meetsTouchTargetSize(
+  width: number,
+  height: number,
+  strict = false
+): boolean {
+  const minSize = strict ? RECOMMENDED_TOUCH_TARGET_SIZE : MIN_TOUCH_TARGET_SIZE;
+  return width >= minSize && height >= minSize;
+}
+
+/**
+ * Prevent zoom on input focus (iOS)
+ */
+export function preventIOSZoomOnFocus() {
+  if (!isIOSDevice()) return;
+  
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (viewport) {
+    let content = viewport.getAttribute('content') || '';
+    
+    // Add maximum-scale=1 on input focus
+    const inputs = document.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+      input.addEventListener('focus', () => {
+        if (!content.includes('maximum-scale')) {
+          viewport.setAttribute('content', `${content}, maximum-scale=1`);
+        }
+      });
+      
+      input.addEventListener('blur', () => {
+        viewport.setAttribute('content', content);
+      });
+    });
+  }
+}
+
+/**
+ * Optimize tap delay (remove 300ms delay)
+ */
+export function optimizeTapDelay() {
+  if (typeof document === 'undefined') return;
+  
+  // Modern browsers remove this automatically, but add for legacy support
+  const meta = document.createElement('meta');
+  meta.name = 'viewport';
+  meta.content = 'width=device-width, initial-scale=1, viewport-fit=cover';
+  
+  // Add CSS to remove tap highlight
+  const style = document.createElement('style');
+  style.innerHTML = `
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 // ============================================================================
@@ -129,202 +227,218 @@ export function isDesktopViewport(): boolean {
 // ============================================================================
 
 /**
- * Performance budgets for mobile devices
+ * Check if device has low memory
  */
-export const MOBILE_PERFORMANCE_BUDGETS = {
-  // Page weight
-  maxPageWeight: 1.5 * 1024 * 1024, // 1.5 MB
-  maxJavaScript: 500 * 1024, // 500 KB
-  maxCSS: 100 * 1024, // 100 KB
-  maxImages: 800 * 1024, // 800 KB
-  maxFonts: 100 * 1024, // 100 KB
-
-  // Performance metrics
-  maxFirstContentfulPaint: 1800, // 1.8s
-  maxLargestContentfulPaint: 2500, // 2.5s
-  maxTimeToInteractive: 3800, // 3.8s
-  maxCumulativeLayoutShift: 0.1,
-  maxFirstInputDelay: 100, // 100ms
-
-  // Network
-  maxRequests: 50,
-  maxDomainLookups: 6,
-} as const;
+export function hasLowMemory(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  
+  const memory = (navigator as any).deviceMemory;
+  return memory !== undefined && memory < 4; // Less than 4GB
+}
 
 /**
- * Check if resource meets mobile performance budget
+ * Check if connection is slow
  */
-export function checkPerformanceBudget(
-  resourceSize: number,
-  resourceType: keyof typeof MOBILE_PERFORMANCE_BUDGETS
-): { withinBudget: boolean; percentage: number } {
-  const budget = MOBILE_PERFORMANCE_BUDGETS[resourceType] as number;
-  const percentage = (resourceSize / budget) * 100;
+export function hasSlowConnection(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  
+  const connection = (navigator as any).connection ||
+                     (navigator as any).mozConnection ||
+                     (navigator as any).webkitConnection;
+  
+  if (!connection) return false;
+  
+  // Check for slow connection types
+  const slowTypes = ['slow-2g', '2g'];
+  return slowTypes.includes(connection.effectiveType) ||
+         connection.downlink < 1; // Less than 1 Mbps
+}
 
-  return {
-    withinBudget: resourceSize <= budget,
-    percentage: Math.round(percentage),
-  };
+/**
+ * Check if device should use reduced data mode
+ */
+export function shouldUseReducedData(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  
+  const connection = (navigator as any).connection ||
+                     (navigator as any).mozConnection ||
+                     (navigator as any).webkitConnection;
+  
+  return connection?.saveData === true || hasSlowConnection();
+}
+
+/**
+ * Get optimal image quality for mobile
+ */
+export function getMobileImageQuality(): number {
+  if (hasSlowConnection() || shouldUseReducedData()) {
+    return 65; // Lower quality for slow connections
+  }
+  
+  if (hasLowMemory()) {
+    return 75; // Medium quality for low memory
+  }
+  
+  return 85; // Standard quality
 }
 
 // ============================================================================
-// Mobile-Specific Meta Tags
+// Mobile SEO
 // ============================================================================
 
 /**
- * Generate mobile-specific meta tags
+ * Generate mobile-optimized meta tags
  */
 export function getMobileMeta() {
-  return {
-    // Apple-specific
-    'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'default',
-    'apple-mobile-web-app-title': 'Petrol Prices',
+  return [
+    { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=5' },
+    { name: 'mobile-web-app-capable', content: 'yes' },
+    { name: 'apple-mobile-web-app-capable', content: 'yes' },
+    { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+    { name: 'format-detection', content: 'telephone=no' },
+    { name: 'format-detection', content: 'date=no' },
+    { name: 'format-detection', content: 'address=no' },
+    { name: 'format-detection', content: 'email=no' },
+  ];
+}
 
-    // Android-specific
-    'mobile-web-app-capable': 'yes',
-    'theme-color': '#2196F3',
+/**
+ * Generate AMP link (if applicable)
+ */
+export function getAMPLink(url: string): string {
+  return `${url}/amp`;
+}
 
-    // Windows-specific
-    'msapplication-TileColor': '#2196F3',
-    'msapplication-config': '/browserconfig.xml',
-
-    // Format detection
-    'format-detection': 'telephone=yes, address=yes, email=no',
-  };
+/**
+ * Check if page should have AMP version
+ */
+export function shouldHaveAMP(pathname: string): boolean {
+  // AMP is useful for:
+  // - Blog posts
+  // - Article pages
+  // - News pages
+  const ampPatterns = ['/blog/', '/articles/', '/news/'];
+  return ampPatterns.some(pattern => pathname.includes(pattern));
 }
 
 // ============================================================================
-// Touch Gesture Support
+// Safe Area Insets (for notched devices)
 // ============================================================================
 
 /**
- * Touch gesture event types
+ * CSS for safe area insets
  */
-export type TouchGesture = 'tap' | 'swipe-left' | 'swipe-right' | 'swipe-up' | 'swipe-down' | 'pinch' | 'long-press';
-
-/**
- * Touch gesture configuration
- */
-export const TOUCH_GESTURES = {
-  swipeThreshold: 50, // pixels
-  longPressDelay: 500, // ms
-  doubleTapDelay: 300, // ms
-  pinchThreshold: 0.1, // scale difference
+export const SAFE_AREA_INSETS = {
+  paddingTop: 'max(1rem, env(safe-area-inset-top))',
+  paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+  paddingLeft: 'max(1rem, env(safe-area-inset-left))',
+  paddingRight: 'max(1rem, env(safe-area-inset-right))',
 } as const;
 
-// ============================================================================
-// Mobile SEO Checklist
-// ============================================================================
-
 /**
- * Validate page for mobile-first indexing
+ * Apply safe area insets
  */
-export function validateMobileSEO(page: {
-  hasViewport: boolean;
-  hasResponsiveImages: boolean;
-  hasTouchTargets: boolean;
-  hasReadableFont: boolean;
-  hasNoFlash: boolean;
-  hasNoPopups: boolean;
-  loadTime: number;
-}): { score: number; issues: string[] } {
-  const issues: string[] = [];
-  let score = 100;
-
-  if (!page.hasViewport) {
-    issues.push('Missing viewport meta tag (critical)');
-    score -= 20;
-  }
-
-  if (!page.hasResponsiveImages) {
-    issues.push('Images not responsive');
-    score -= 15;
-  }
-
-  if (!page.hasTouchTargets) {
-    issues.push('Touch targets too small');
-    score -= 15;
-  }
-
-  if (!page.hasReadableFont) {
-    issues.push('Font size too small for mobile');
-    score -= 10;
-  }
-
-  if (!page.hasNoFlash) {
-    issues.push('Flash content detected (not supported on mobile)');
-    score -= 15;
-  }
-
-  if (!page.hasNoPopups) {
-    issues.push('Intrusive interstitials detected');
-    score -= 10;
-  }
-
-  if (page.loadTime > 3000) {
-    issues.push(`Slow load time: ${page.loadTime}ms (target: <3000ms)`);
-    score -= 15;
-  }
-
-  return { score: Math.max(0, score), issues };
+export function applySafeAreaInsets(element: HTMLElement) {
+  if (typeof window === 'undefined') return;
+  
+  Object.entries(SAFE_AREA_INSETS).forEach(([property, value]) => {
+    element.style[property as any] = value;
+  });
 }
 
 // ============================================================================
-// Mobile Content Optimization
+// Mobile Accessibility
 // ============================================================================
 
 /**
- * Optimize text for mobile reading
+ * Font size ranges for mobile accessibility
  */
-export function optimizeTextForMobile(text: string, maxLength: number = 150): string {
-  if (text.length <= maxLength) return text;
+export const MOBILE_FONT_SIZES = {
+  min: 16, // Minimum to prevent iOS zoom
+  base: 16,
+  lg: 18,
+  xl: 20,
+  '2xl': 24,
+  '3xl': 30,
+} as const;
 
-  // Break at sentence
-  const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-  let result = '';
+/**
+ * Get accessible font size for mobile
+ */
+export function getAccessibleFontSize(size: keyof typeof MOBILE_FONT_SIZES): number {
+  return MOBILE_FONT_SIZES[size];
+}
 
-  for (const sentence of sentences) {
-    if ((result + sentence).length > maxLength) {
-      break;
+/**
+ * Ensure input font size meets mobile requirements
+ */
+export function ensureInputFontSize() {
+  if (typeof document === 'undefined') return;
+  
+  const style = document.createElement('style');
+  style.innerHTML = `
+    input, select, textarea {
+      font-size: 16px !important; /* Prevent iOS zoom on focus */
     }
-    result += sentence;
-  }
+  `;
+  document.head.appendChild(style);
+}
 
-  return result.trim() || text.substring(0, maxLength) + '...';
+// ============================================================================
+// Orientation Detection
+// ============================================================================
+
+export type Orientation = 'portrait' | 'landscape';
+
+/**
+ * Get current device orientation
+ */
+export function getOrientation(): Orientation {
+  if (typeof window === 'undefined') return 'portrait';
+  
+  return window.matchMedia('(orientation: portrait)').matches 
+    ? 'portrait' 
+    : 'landscape';
 }
 
 /**
- * Generate mobile-friendly table of contents
+ * Listen for orientation changes
  */
-export function generateMobileTOC(headings: Array<{ level: number; text: string; id: string }>) {
-  return headings
-    .filter(h => h.level <= 3) // Only show h1-h3 on mobile
-    .map(h => ({
-      ...h,
-      indent: (h.level - 1) * 16, // 16px per level
-    }));
+export function onOrientationChange(callback: (orientation: Orientation) => void) {
+  if (typeof window === 'undefined') return () => {};
+  
+  const mediaQuery = window.matchMedia('(orientation: portrait)');
+  
+  const handleChange = (e: MediaQueryListEvent) => {
+    callback(e.matches ? 'portrait' : 'landscape');
+  };
+  
+  mediaQuery.addEventListener('change', handleChange);
+  
+  return () => mediaQuery.removeEventListener('change', handleChange);
 }
 
 // ============================================================================
-// Export
+// Mobile-First CSS Utilities
 // ============================================================================
 
-export {
-  MOBILE_VIEWPORT,
-  BREAKPOINTS,
-  TOUCH_TARGET_SIZES,
-  TOUCH_GESTURES,
-  MOBILE_PERFORMANCE_BUDGETS,
-  getViewportContent,
-  validateTouchTarget,
-  getMediaQuery,
-  isMobileViewport,
-  isTabletViewport,
-  isDesktopViewport,
-  getMobileMeta,
-  validateMobileSEO,
-  optimizeTextForMobile,
-  generateMobileTOC,
-  checkPerformanceBudget,
-};
+/**
+ * Generate mobile-first media queries
+ */
+export function mobileFirst(breakpoint: Breakpoint): string {
+  return `@media (min-width: ${BREAKPOINTS[breakpoint]}px)`;
+}
+
+/**
+ * Generate desktop-first media queries
+ */
+export function desktopFirst(breakpoint: Breakpoint): string {
+  return `@media (max-width: ${BREAKPOINTS[breakpoint] - 1}px)`;
+}
+
+/**
+ * Generate between breakpoints media query
+ */
+export function between(min: Breakpoint, max: Breakpoint): string {
+  return `@media (min-width: ${BREAKPOINTS[min]}px) and (max-width: ${BREAKPOINTS[max] - 1}px)`;
+}

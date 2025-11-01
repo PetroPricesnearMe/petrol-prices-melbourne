@@ -1,6 +1,6 @@
 /**
  * SEO Head Component
- * 
+ *
  * Comprehensive SEO head component with:
  * - Meta tags
  * - Open Graph
@@ -8,7 +8,7 @@
  * - Canonical URLs
  * - Structured Data
  * - Resource hints
- * 
+ *
  * @module components/seo/SEOHead
  */
 
@@ -27,52 +27,52 @@ export interface SEOHeadProps {
    * Page title
    */
   title?: string;
-  
+
   /**
    * Page description
    */
   description?: string;
-  
+
   /**
    * Keywords
    */
   keywords?: string[];
-  
+
   /**
    * Canonical URL (relative or absolute)
    */
   canonical?: string;
-  
+
   /**
    * Open Graph image
    */
   ogImage?: string;
-  
+
   /**
    * Open Graph type
    */
   ogType?: 'website' | 'article' | 'profile';
-  
+
   /**
    * Twitter card type
    */
   twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
-  
+
   /**
    * Disable indexing
    */
   noIndex?: boolean;
-  
+
   /**
    * Disable following
    */
   noFollow?: boolean;
-  
+
   /**
    * Structured data (JSON-LD)
    */
   structuredData?: object | object[];
-  
+
   /**
    * Article metadata
    */
@@ -83,7 +83,7 @@ export interface SEOHeadProps {
     section?: string;
     tags?: string[];
   };
-  
+
   /**
    * Additional meta tags
    */
@@ -92,7 +92,7 @@ export interface SEOHeadProps {
     property?: string;
     content: string;
   }>;
-  
+
   /**
    * Additional link tags
    */
@@ -109,7 +109,7 @@ export interface SEOHeadProps {
 
 /**
  * SEO Head Component
- * 
+ *
  * Usage:
  * ```tsx
  * <SEOHead
@@ -137,27 +137,27 @@ export function SEOHead({
   additionalLinks = [],
 }: SEOHeadProps) {
   const pathname = usePathname();
-  
+
   // Generate full title
-  const fullTitle = title 
+  const fullTitle = title
     ? `${title} | ${SITE_CONFIG.name}`
     : SITE_CONFIG.title;
-  
+
   // Generate canonical URL
   const canonicalUrl = canonical
     ? canonical.startsWith('http')
       ? canonical
       : `${SITE_CONFIG.url}${canonical}`
     : `${SITE_CONFIG.url}${pathname || ''}`;
-  
+
   // Generate OG image URL
   const ogImageUrl = ogImage.startsWith('http')
     ? ogImage
     : `${SITE_CONFIG.url}${ogImage}`;
-  
+
   // Combine keywords
   const allKeywords = [...new Set([...SITE_CONFIG.keywords, ...keywords])];
-  
+
   // Generate robots content
   const robotsContent = noIndex || noFollow
     ? [noIndex && 'noindex', noFollow && 'nofollow'].filter(Boolean).join(', ')
@@ -170,14 +170,14 @@ export function SEOHead({
       <meta name="description" content={description} />
       <meta name="keywords" content={allKeywords.join(', ')} />
       <meta name="author" content={SITE_CONFIG.appInfo.author} />
-      
+
       {/* Robots */}
       <meta name="robots" content={robotsContent} />
       <meta name="googlebot" content={robotsContent} />
-      
+
       {/* Canonical URL */}
       <link rel="canonical" href={canonicalUrl} />
-      
+
       {/* Open Graph */}
       <meta property="og:type" content={ogType} />
       <meta property="og:site_name" content={SITE_CONFIG.name} />
@@ -189,7 +189,7 @@ export function SEOHead({
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content={title || SITE_CONFIG.name} />
       <meta property="og:locale" content={SITE_CONFIG.locale} />
-      
+
       {/* Article Meta (if applicable) */}
       {article && ogType === 'article' && (
         <>
@@ -210,7 +210,7 @@ export function SEOHead({
           ))}
         </>
       )}
-      
+
       {/* Twitter Card */}
       <meta name="twitter:card" content={twitterCard} />
       <meta name="twitter:site" content={SITE_CONFIG.social.twitter} />
@@ -219,7 +219,7 @@ export function SEOHead({
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImageUrl} />
       <meta name="twitter:image:alt" content={title || SITE_CONFIG.name} />
-      
+
       {/* Mobile Meta */}
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       <meta name="theme-color" content={SITE_CONFIG.themeColor} />
@@ -227,7 +227,7 @@ export function SEOHead({
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <meta name="apple-mobile-web-app-title" content={SITE_CONFIG.shortName} />
-      
+
       {/* Additional Meta Tags */}
       {additionalMeta.map((meta, index) => (
         <meta
@@ -237,19 +237,19 @@ export function SEOHead({
           content={meta.content}
         />
       ))}
-      
+
       {/* Additional Link Tags */}
       {additionalLinks.map((link, index) => (
         <link key={index} {...link} />
       ))}
-      
+
       {/* Structured Data (JSON-LD) */}
       {structuredData && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
-              Array.isArray(structuredData) 
+              Array.isArray(structuredData)
                 ? { '@context': 'https://schema.org', '@graph': structuredData }
                 : structuredData
             ),
@@ -379,4 +379,3 @@ export function LocalBusinessSEOHead({
     />
   );
 }
-
