@@ -9,8 +9,8 @@ import { notFound } from 'next/navigation';
 
 import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { HeroSection } from '@/components/molecules/HeroSection';
-import { StructuredData } from '@/components/StructuredData';
 import { Tabs } from '@/components/molecules/Tabs';
+import { StructuredData } from '@/components/StructuredData';
 import { getStationById, getAllStationIds, getNearbyStations } from '@/lib/data/stations';
 import { generateStationPageSchemas } from '@/lib/schema';
 import type { Station } from '@/types/station';

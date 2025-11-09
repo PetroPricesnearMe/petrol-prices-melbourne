@@ -8,13 +8,13 @@
 
 'use client';
 
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
-import { cn } from '@/utils/cn';
 import { useTheme } from '@/components/providers/ThemeProvider';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES

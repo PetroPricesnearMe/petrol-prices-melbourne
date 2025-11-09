@@ -11,11 +11,15 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+
 import { cn } from '@/lib/utils';
-import { CategoryChips, Category } from '../FilterBar/CategoryChips';
-import { PriceRangeSlider, PriceRange } from '../FilterBar/PriceRangeSlider';
+
+import type { Category } from '../FilterBar/CategoryChips';
+import { CategoryChips } from '../FilterBar/CategoryChips';
+import type { PriceRange } from '../FilterBar/PriceRangeSlider';
+import { PriceRangeSlider } from '../FilterBar/PriceRangeSlider';
 import { RatingSlider } from '../FilterBar/RatingSlider';
 
 export interface FilterSidebarProps {

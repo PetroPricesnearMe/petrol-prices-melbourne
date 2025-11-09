@@ -5,8 +5,8 @@
 
 'use client';
 
-import { useCallback, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useCallback, useEffect, useMemo } from 'react';
 
 export interface FilterState {
   search: string;

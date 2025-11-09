@@ -181,7 +181,7 @@ export function preventIOSZoomOnFocus() {
 
   const viewport = document.querySelector('meta[name="viewport"]');
   if (viewport) {
-    let content = viewport.getAttribute('content') || '';
+    const content = viewport.getAttribute('content') || '';
 
     // Add maximum-scale=1 on input focus
     const inputs = document.querySelectorAll('input, select, textarea');

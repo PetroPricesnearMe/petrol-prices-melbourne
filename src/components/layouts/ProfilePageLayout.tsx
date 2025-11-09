@@ -8,9 +8,9 @@
 
 'use client';
 
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 import { cn } from '@/utils/cn';
 

@@ -3,8 +3,9 @@
  * Loads Google Analytics 4 script
  */
 
-import React from 'react';
 import Script from 'next/script';
+import React from 'react';
+
 import { GA_MEASUREMENT_ID } from '@/lib/seo/analytics';
 
 export const GoogleAnalytics: React.FC = () => {

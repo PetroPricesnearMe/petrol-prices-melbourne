@@ -3,7 +3,8 @@
  * Dynamic sitemap generation for better SEO
  */
 
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
+
 import { BASE_URL } from './metadata';
 
 export interface SitemapEntry {

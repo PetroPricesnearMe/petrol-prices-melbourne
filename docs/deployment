@@ -1,0 +1,410 @@
+# 🚀 Vercel Deployment Guide
+
+**Project:** Petrol Prices Melbourne  
+**Project ID:** `prj_p1cxbUIZBrMYCIlJOXPAu5L0RhCM`  
+**URL:** https://vercel.com/zenbos-projects-1f045bac/petrol-prices-melbourne
+
+---
+
+## ⚠️ **CRITICAL: Before You Deploy**
+
+**Your project currently has 120 blocking issues** that will cause Vercel deployment to fail:
+
+- ❌ 42 ESLint errors
+- ❌ 78 TypeScript errors  
+- ⚠️ Missing environment variables
+
+**See `PRE_COMMIT_QA_REPORT.md` for detailed fixes.**
+
+---
+
+## 🔧 **Pre-Deployment Checklist**
+
+### 1. Fix Code Quality Issues
+
+```bash
+# Auto-fix what we can
+npm run lint:fix
+
+# Install missing types
+npm install --save-dev @types/jest-axe
+
+# Verify build succeeds
+npm run build
+```
+
+### 2. Configure Environment Variables in Vercel
+
+Go to: https://vercel.com/zenbos-projects-1f045bac/petrol-prices-melbourne/settings/environment-variables
+
+Add these **REQUIRED** variables:
+
+#### Production Environment:
+```bash
+# Google Maps API
+NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your_production_key
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_production_key
+
+# Baserow API
+BASEROW_API_URL=https://api.baserow.io
+BASEROW_API_TOKEN=your_secure_token
+BASEROW_DATABASE_ID=your_db_id
+BASEROW_STATIONS_TABLE_ID=623329
+BASEROW_PRICES_TABLE_ID=623330
+BASEROW_CACHE_TIME=3600
+
+# NextAuth (CRITICAL - Generate secure secret!)
+NEXTAUTH_URL=https://your-domain.vercel.app
+NEXTAUTH_SECRET=YOUR_SECURE_SECRET_HERE
+
+# Application
+NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
+NEXT_PUBLIC_ENV=production
+NODE_ENV=production
+```
+
+#### Generate Secure NEXTAUTH_SECRET:
+```bash
+openssl rand -base64 32
+```
+
+### 3. Update Domain Settings
+
+After first deployment:
+1. Go to: Settings → Domains
+2. Add your custom domain: `petrolpricenearme.com.au`
+3. Update DNS records as instructed by Vercel
+4. Update `NEXTAUTH_URL` and `NEXT_PUBLIC_APP_URL` with custom domain
+
+---
+
+## 🚀 **Deployment Methods**
+
+### Method 1: Deploy via Vercel CLI (Recommended)
+
+```bash
+# Install Vercel CLI (if not already installed)
+npm i -g vercel
+
+# Login to Vercel
+vercel login
+
+# Link project (already configured in vercel.json)
+vercel link --yes
+
+# Deploy to preview
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+### Method 2: Deploy via Git Push
+
+```bash
+# Commit your changes
+git add .
+git commit -m "feat: configure Vercel deployment"
+
+# Push to main branch
+git push origin main
+
+# Vercel will auto-deploy from main branch
+```
+
+### Method 3: Deploy via Vercel Dashboard
+
+1. Go to: https://vercel.com/zenbos-projects-1f045bac
+2. Click "petrol-prices-melbourne"
+3. Click "Deployments" → "Deploy"
+4. Select branch and click "Deploy"
+
+---
+
+## 📋 **Vercel Configuration Overview**
+
+### Current Setup (vercel.json):
+
+```json
+{
+  "name": "petrol-prices-melbourne",
+  "projectId": "prj_p1cxbUIZBrMYCIlJOXPAu5L0RhCM",
+  "framework": "nextjs",
+  "regions": ["syd1"],  // Sydney region for AU users
+  "functions": {
+    "memory": 1024,
+    "maxDuration": 10
+  }
+}
+```
+
+### Build Settings:
+- **Framework:** Next.js 15
+- **Build Command:** `npm run build`
+- **Output Directory:** `.next`
+- **Install Command:** `npm install`
+- **Node Version:** 22.x (from package.json)
+
+### Regions:
+- **Primary:** Sydney (syd1) - Closest to Australian users
+- **Fallback:** Edge Network (automatic)
+
+---
+
+## ⚡ **Optimization Tips**
+
+### 1. Enable Vercel Analytics
+```bash
+# Already installed in package.json
+@vercel/analytics
+@vercel/speed-insights
+```
+
+Add to Vercel dashboard:
+- Settings → Analytics → Enable
+- Settings → Speed Insights → Enable
+
+### 2. Configure Caching
+
+Already configured in `vercel.json`:
+- Static assets: Cached at edge
+- API routes: 10s timeout, 1GB memory
+- Sitemap: 1 hour cache
+
+### 3. Image Optimization
+
+Next.js Image component automatically uses Vercel Image Optimization:
+- Automatic WebP/AVIF conversion
+- Responsive images
+- Lazy loading
+
+---
+
+## 🔍 **Monitoring & Logs**
+
+### View Deployment Logs:
+```bash
+# Via CLI
+vercel logs
+
+# Via Dashboard
+https://vercel.com/zenbos-projects-1f045bac/petrol-prices-melbourne/deployments
+```
+
+### Monitor Performance:
+- **Analytics:** https://vercel.com/.../analytics
+- **Speed Insights:** https://vercel.com/.../speed-insights
+- **Runtime Logs:** https://vercel.com/.../logs
+
+---
+
+## 🐛 **Common Deployment Issues**
+
+### Issue 1: Build Fails with ESLint Errors
+```bash
+# Solution: Fix lint errors first
+npm run lint:fix
+npm run build  # Verify locally
+```
+
+### Issue 2: TypeScript Errors
+```bash
+# Solution: Fix type errors
+npm run type-check
+# See PRE_COMMIT_QA_REPORT.md for fixes
+```
+
+### Issue 3: Environment Variables Not Working
+```bash
+# Solution: Ensure variables are set in Vercel dashboard
+# AND start with NEXT_PUBLIC_ for client-side access
+```
+
+### Issue 4: API Routes Timeout
+```bash
+# Solution: Already configured in vercel.json
+# If still timing out, optimize database queries
+```
+
+### Issue 5: Images Not Loading
+```bash
+# Solution: Update next.config.ts with image domains
+images: {
+  domains: ['your-cdn-domain.com'],
+}
+```
+
+---
+
+## 🔒 **Security Configuration**
+
+### Headers (Already Configured):
+✅ X-Content-Type-Options: nosniff  
+✅ X-Frame-Options: DENY  
+✅ X-XSS-Protection  
+✅ Referrer-Policy  
+✅ Permissions-Policy
+
+### Secrets Management:
+- ✅ Never commit `.env.local`
+- ✅ Use Vercel Environment Variables
+- ✅ Rotate API keys regularly
+- ✅ Use different keys for prod/preview/dev
+
+---
+
+## 📊 **Post-Deployment Verification**
+
+After deployment succeeds:
+
+### 1. Test Core Features:
+```bash
+# Check these URLs:
+✓ https://your-domain.vercel.app
+✓ https://your-domain.vercel.app/directory
+✓ https://your-domain.vercel.app/map
+✓ https://your-domain.vercel.app/api/stations
+✓ https://your-domain.vercel.app/sitemap.xml
+```
+
+### 2. Run Lighthouse Audit:
+```bash
+npm run lighthouse:prod
+```
+
+### 3. Check Analytics:
+- Verify Analytics tracking works
+- Check Speed Insights data
+- Monitor error rates
+
+### 4. Test on Mobile:
+- Open on mobile device
+- Test map functionality
+- Verify responsive design
+
+---
+
+## 🔄 **Continuous Deployment**
+
+### Auto-Deploy Setup:
+1. ✅ Connected to GitHub (already configured)
+2. ✅ Auto-deploy on push to `main`
+3. ✅ Preview deployments for PRs
+
+### Branch Strategy:
+```
+main → Production (auto-deploy)
+develop → Preview (auto-deploy)
+feature/* → Preview on PR
+```
+
+### Deployment Protection:
+Recommended: Enable in Vercel dashboard
+- Settings → Git → Deployment Protection
+- ✅ Require review before deploying
+
+---
+
+## 📞 **Quick Commands Reference**
+
+```bash
+# Deploy to preview
+vercel
+
+# Deploy to production
+vercel --prod
+
+# Check deployment status
+vercel ls
+
+# View logs
+vercel logs
+
+# Pull environment variables
+vercel env pull
+
+# Add environment variable
+vercel env add
+
+# View project info
+vercel inspect
+
+# Cancel deployment
+vercel rm deployment_url
+```
+
+---
+
+## ⚠️ **IMPORTANT REMINDERS**
+
+1. **Fix 120 QA issues BEFORE deploying** (see PRE_COMMIT_QA_REPORT.md)
+2. **Set all environment variables** in Vercel dashboard
+3. **Generate secure NEXTAUTH_SECRET** for production
+4. **Update NEXTAUTH_URL** after getting deployment URL
+5. **Test locally** with `npm run build && npm start` before deploying
+6. **Monitor first deployment** for errors in Vercel logs
+
+---
+
+## 🎯 **Deployment Workflow**
+
+### Step-by-Step:
+
+```bash
+# 1. Fix all QA issues
+npm run lint:fix
+npm install --save-dev @types/jest-axe
+# ... fix TypeScript errors (see QA report)
+
+# 2. Verify build locally
+npm run build
+npm start
+# Test at http://localhost:3000
+
+# 3. Set environment variables in Vercel
+# (Via Vercel dashboard)
+
+# 4. Deploy to preview
+vercel
+
+# 5. Test preview deployment
+# Click the preview URL and test all features
+
+# 6. Deploy to production
+vercel --prod
+
+# 7. Verify production
+# Test live URL
+# Check analytics
+# Monitor logs
+
+# 8. Update DNS (if using custom domain)
+# Add domain in Vercel dashboard
+# Update DNS records with your registrar
+```
+
+---
+
+## ✅ **Ready to Deploy Checklist**
+
+Before running `vercel --prod`:
+
+- [ ] All ESLint errors fixed (0 errors)
+- [ ] All TypeScript errors fixed (0 errors)
+- [ ] Local build succeeds (`npm run build`)
+- [ ] Environment variables set in Vercel dashboard
+- [ ] NEXTAUTH_SECRET generated and set
+- [ ] Google API keys configured
+- [ ] Tested locally (`npm start`)
+- [ ] Git changes committed
+- [ ] Team notified of deployment
+
+---
+
+**Need Help?**
+- Vercel Docs: https://vercel.com/docs
+- Next.js Deployment: https://nextjs.org/docs/deployment
+- Support: https://vercel.com/support
+
+**Last Updated:** November 8, 2025
+

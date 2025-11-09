@@ -9,10 +9,11 @@
 
 'use client';
 
-import { Fragment, ReactNode } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Fragment } from 'react';
+import type { ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 

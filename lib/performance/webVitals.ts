@@ -3,7 +3,8 @@
  * Track Core Web Vitals and custom performance metrics
  */
 
-import { onCLS, onFCP, onINP, onLCP, onTTFB, Metric } from 'web-vitals';
+import type { Metric } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB } from 'web-vitals';
 
 // Types
 export type WebVitalsMetric = Metric;

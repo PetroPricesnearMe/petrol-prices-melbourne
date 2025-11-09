@@ -3,8 +3,8 @@
  * Renders JSON-LD structured data for SEO
  */
 
-import React from 'react';
 import Script from 'next/script';
+import React from 'react';
 
 interface StructuredDataProps {
   data: Record<string, any> | Record<string, any>[];

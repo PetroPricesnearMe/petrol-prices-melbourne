@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React, { useState, useCallback } from 'react';
 
 const NavbarNext = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);

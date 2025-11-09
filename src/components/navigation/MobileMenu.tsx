@@ -12,12 +12,13 @@
 
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
 
 import { cn } from '@/styles/system/css-in-js';
+
 import { MobileMenuOverlay } from './MobileMenuOverlay';
 
 interface MobileMenuProps {

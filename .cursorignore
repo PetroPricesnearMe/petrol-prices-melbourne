@@ -1,0 +1,76 @@
+# Cursor IDE Ignore File
+# Files and directories to exclude from Cursor AI indexing
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+.vercel/
+
+# Testing
+coverage/
+.jest-cache/
+playwright-report/
+test-results/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files (security)
+.env
+.env*.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database files
+database/
+*.db
+*.sqlite
+
+# Large binary files
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Build artifacts
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Package locks (too large)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+next-env.d.ts
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Documentation (optional - uncomment if causing issues)
+# docs/
+# *.md
+

@@ -1,0 +1,87 @@
+# Vercel Ignore File
+# Files and directories to exclude from Vercel deployment
+
+# Dependencies
+node_modules/
+
+# Testing
+coverage/
+.jest-cache/
+e2e/
+**/__tests__/
+**/*.test.ts
+**/*.test.tsx
+**/*.test.js
+**/*.test.jsx
+**/*.spec.ts
+**/*.spec.tsx
+playwright-report/
+test-results/
+
+# Documentation
+docs/
+*.md
+!README.md
+CONTRIBUTING.md
+
+# Scripts
+scripts/
+!scripts/generate-sitemap.js
+
+# Development files
+.env.local
+.env.development
+.env.test
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# Storybook
+.storybook/
+storybook-static/
+
+# Database
+database/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+test-output.*
+*-report.json
+
+# Git
+.git/
+.gitignore
+.husky/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.circleci/
+
+# Component library
+components/features/
+components/layout/
+lib/services/BaserowServerService.js
+
+# Legacy files
+src/App.js
+src/config.js
+src/index.js
+src/index.css
+server.js
+setup-ai-sdk.js
+

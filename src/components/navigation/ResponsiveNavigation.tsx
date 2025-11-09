@@ -11,14 +11,15 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
-import { MobileMenu } from './MobileMenu';
 import { HamburgerIcon } from '@/components/ui/HamburgerIcon';
 import { cn } from '@/styles/system/css-in-js';
+
+import { MobileMenu } from './MobileMenu';
 
 interface ResponsiveNavigationProps {
   className?: string;

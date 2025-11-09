@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 
 // Default breadcrumb configurations for common pages
 const DEFAULT_BREADCRUMBS = {

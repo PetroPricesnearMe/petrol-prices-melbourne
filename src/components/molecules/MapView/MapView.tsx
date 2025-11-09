@@ -11,11 +11,12 @@
 
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import Map, { Marker, Popup, Source, Layer, MapRef } from 'react-map-gl/mapbox';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import Map, { Marker, Popup, Source, Layer } from 'react-map-gl/mapbox';
+import type { MapRef } from 'react-map-gl/mapbox';
 
 import { cn } from '@/styles/system/css-in-js';
 

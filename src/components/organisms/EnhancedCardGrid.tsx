@@ -16,9 +16,10 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { useMemo, type ReactNode } from 'react';
-import { buildGridClasses, type GapSize, type ResponsiveColumns } from '@/utils/responsive-grid';
-import { staggerContainer, staggerItem, type Variants } from '@/utils/animations';
+
 import { cn } from '@/lib/utils';
+import { staggerContainer, staggerItem, type Variants } from '@/utils/animations';
+import { buildGridClasses, type GapSize, type ResponsiveColumns } from '@/utils/responsive-grid';
 
 export interface EnhancedCardGridProps {
   /** Grid items to render */

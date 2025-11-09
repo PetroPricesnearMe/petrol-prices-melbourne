@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 
 // Dynamic import for InteractiveStationMap with loading fallback
 const InteractiveStationMap = dynamic(

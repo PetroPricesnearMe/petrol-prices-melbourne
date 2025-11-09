@@ -1,4 +1,7 @@
 {
+  "version": 2,
+  "name": "petrol-prices-melbourne",
+  "projectId": "prj_p1cxbUIZBrMYCIlJOXPAu5L0RhCM",
   "buildCommand": "next build",
   "devCommand": "next dev",
   "installCommand": "npm install",

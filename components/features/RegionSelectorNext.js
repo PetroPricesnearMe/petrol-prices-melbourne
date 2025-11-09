@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
+
 import { MotionDiv } from '../../src/components/MotionComponents';
 import { MELBOURNE_REGIONS } from '../../src/config/regions';
 

@@ -10,8 +10,8 @@
 
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useCallback, useMemo } from 'react';
 
 import { MapView } from '@/components/molecules/MapView/MapView';
 import { SortDropdown, type SortOption } from '@/components/molecules/SortDropdown';

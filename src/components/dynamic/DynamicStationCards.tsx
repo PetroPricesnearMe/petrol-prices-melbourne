@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 
 // Dynamic import for StationCards with loading fallback
 const StationCards = dynamic(

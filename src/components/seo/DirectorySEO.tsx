@@ -15,8 +15,8 @@
 
 'use client';
 
-import React from 'react';
 import { NextSeo, DefaultSeo } from 'next-seo';
+import React from 'react';
 
 export interface DirectorySEOProps {
   /** Page title */

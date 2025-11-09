@@ -12,8 +12,9 @@
 
 'use client';
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+
 import { cn } from '@/lib/utils';
 
 export interface PriceRange {

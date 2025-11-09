@@ -13,8 +13,8 @@ import Link from 'next/link';
 import { memo } from 'react';
 
 import { ScaleTransition } from '@/components/transitions/SmoothTransitions';
-import { cn } from '@/utils/cn';
 import type { Station } from '@/types/station';
+import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES

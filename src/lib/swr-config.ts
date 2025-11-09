@@ -3,7 +3,7 @@
  * Global configuration for SWR data fetching with error handling and revalidation
  */
 
-import { SWRConfiguration } from 'swr';
+import type { SWRConfiguration } from 'swr';
 
 // Custom fetcher function
 export const fetcher = async (url: string) => {

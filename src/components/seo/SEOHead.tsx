@@ -16,6 +16,7 @@
 
 import Head from 'next/head';
 import { usePathname } from 'next/navigation';
+
 import { SITE_CONFIG } from '@/lib/seo/advanced-metadata';
 
 // ============================================================================

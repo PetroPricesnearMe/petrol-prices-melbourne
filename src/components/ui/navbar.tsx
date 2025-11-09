@@ -1,8 +1,9 @@
 'use client';
 
-import * as React from 'react';
-import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
+import * as React from 'react';
+
 import { cn } from '@/lib/utils';
 
 export interface NavItem {

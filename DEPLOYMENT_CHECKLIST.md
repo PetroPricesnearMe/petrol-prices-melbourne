@@ -1,376 +1,372 @@
-# 🚀 Next.js Deployment Checklist - Vercel
+# ✅ Pre-Deployment Checklist
 
-## Pre-Deployment Setup
+**Project:** petrol-prices-melbourne  
+**Vercel Project ID:** prj_p1cxbUIZBrMYCIlJOXPAu5L0RhCM  
+**Status:** ⚠️ **NOT READY** - 120 blocking issues
 
-### 1. Environment Variables
+---
 
-Set the following in **Vercel Dashboard** → **Project Settings** → **Environment Variables**:
+## 🔧 **Vercel Configuration Status**
 
-#### Required (Production)
+### ✅ Configuration Files Updated:
+
+| File | Status | Details |
+|------|--------|---------|
+| `vercel.json` | ✅ Updated | Project ID and name configured |
+| `.vercelignore` | ✅ Created | Excludes test/docs from deployment |
+| Build Settings | ✅ Verified | Matches Vercel dashboard |
+
+### ✅ Vercel Project Settings (Confirmed):
+
+```
+Framework Preset: Next.js
+Build Command:    npm run build
+Install Command:  npm install  
+Output Directory: .next
+Node Version:     22.x (from package.json)
+Region:           Sydney (syd1)
+```
+
+**Configuration Status:** ✅ **READY**
+
+---
+
+## 🚨 **CRITICAL: Code Issues MUST Be Fixed**
+
+### ❌ Blocking Deployment:
+
+Even though Vercel is configured, **your build WILL FAIL** due to:
+
+1. **42 ESLint Errors** → Build stops during lint phase
+2. **78 TypeScript Errors** → Type safety failures
+3. **Missing Environment Variables** → App features broken
+
+**See:** `PRE_COMMIT_QA_REPORT.md` for all fixes
+
+---
+
+## 🎯 **MANDATORY FIXES (Before Any Deployment)**
+
+### ⚡ Quick Auto-Fixes (5 minutes):
+
 ```bash
-# Application URLs
-NEXT_PUBLIC_APP_URL=https://petrolpricenearme.com.au
-NEXT_PUBLIC_SITE_URL=https://petrolpricenearme.com.au
-NODE_ENV=production
+# 1. Auto-fix ESLint import order issues (~20 fixes)
+npm run lint:fix
 
-# Baserow Integration (REQUIRED)
-BASEROW_API_TOKEN=WXGOdiCeNmvdj5NszzAdvIug3InwQQXP
+# 2. Install missing type definitions
+npm install --save-dev @types/jest-axe
+
+# 3. Verify what's left
+npm run lint
+npm run type-check
+```
+
+### 🔨 Critical Manual Fixes (1-2 hours):
+
+#### Fix #1: Update Station Type Definition
+**File:** `src/types/station.ts`
+
+```typescript
+export interface Station {
+  id: number;
+  name: string;
+  brand: string;
+  address: string;
+  suburb: string;          // ← ADD THIS LINE
+  city: string;
+  postcode: string;
+  region: string;
+  latitude: number | null; // ← ADD | null
+  longitude: number | null; // ← ADD | null
+  category: StationCategory;
+  fuelPrices: FuelPrice[];
+  amenities: StationAmenities;
+  operatingHours?: OperatingHours;
+  lastUpdated: string;
+}
+```
+
+**Impact:** Fixes 10+ TypeScript errors
+
+#### Fix #2: Remove Unused Imports
+**Files to edit:**
+
+`src/app/directory/StationDirectoryClient.tsx` (Line 10):
+```typescript
+// DELETE THIS LINE:
+import Link from 'next/link';
+```
+
+`src/app/directory/StationDirectoryWithMap.tsx` (Lines 15-16):
+```typescript
+// DELETE THIS LINE:
+import Link from 'next/link';
+
+// CHANGE THIS:
+import { useState, useEffect } from 'react';
+// TO THIS:
+import { useState } from 'react';
+```
+
+`src/app/map/page.tsx` (Line 15):
+```typescript
+// DELETE THIS LINE:
+import LoadingCard from '@/components/ui/LoadingCard';
+```
+
+**Impact:** Fixes 9 unused variable errors
+
+#### Fix #3: Fix Unused Function Parameters
+**File:** `src/app/directory/StationDirectoryClient.tsx` (Lines 106-115)
+
+```typescript
+// CHANGE THIS:
+const SearchBar = ({
+  onSearch,
+  searchKeys,
+  placeholder = 'Search...',
+  onCategoryChange,
+  categories = [],
+  selectedCategory = null,
+  maxSuggestions = 5,
+  debounceDelay = 300,
+  enableRecentSearches = false,
+  renderResult,
+}) => {
+
+// TO THIS (prefix unused with underscore):
+const SearchBar = ({
+  onSearch,
+  _searchKeys,              // ← Add _
+  placeholder = 'Search...',
+  _onCategoryChange,        // ← Add _
+  _categories = [],         // ← Add _
+  _selectedCategory = null, // ← Add _
+  _maxSuggestions = 5,      // ← Add _
+  _debounceDelay = 300,     // ← Add _
+  _enableRecentSearches = false, // ← Add _
+  _renderResult,            // ← Add _
+}) => {
+```
+
+**Impact:** Fixes 8 unused parameter errors
+
+#### Fix #4: Fix Mock Data Types
+**File:** `src/__tests__/mocks/mockData.ts`
+
+```typescript
+// Add import at top:
+import { StationCategory } from '@/types/station';
+
+// For each mock station, CHANGE:
+category: 'petrol-station',
+// TO:
+category: StationCategory.PETROL_STATION,
+
+// AND ADD:
+suburb: 'Melbourne',
+```
+
+**Impact:** Fixes 9 type errors
+
+#### Fix #5: Replace `any` with Proper Types
+
+`components/seo/StructuredData.tsx` (Line 10):
+```typescript
+// BEFORE:
+export function StructuredData({ data }: { data: any | any[] }) {
+
+// AFTER:
+export function StructuredData({ 
+  data 
+}: { 
+  data: Record<string, unknown> | Array<Record<string, unknown>> 
+}) {
+```
+
+`src/app/api/auth/[...nextauth]/route.ts` (Lines 55, 61-62):
+```typescript
+// BEFORE (Line 55):
+token.role = (user as any).role;
+
+// AFTER:
+token.role = (user as { role?: string }).role;
+
+// BEFORE (Lines 61-62):
+(session.user as any).id = token.id as string;
+(session.user as any).role = token.role as string;
+
+// AFTER:
+if (session.user) {
+  session.user.id = token.id as string;
+  (session.user as any).role = token.role as string; // Keep this one if User type doesn't have role
+}
+```
+
+**Impact:** Fixes 10 `any` type errors
+
+---
+
+## 🔐 **Environment Variables Setup**
+
+### Required for Vercel Dashboard:
+
+Go to: **Settings → Environment Variables**
+
+Add for **Production** environment:
+
+```bash
+# Authentication (CRITICAL)
+NEXTAUTH_URL=https://petrol-prices-melbourne.vercel.app
+NEXTAUTH_SECRET=<GENERATE_SECURE_SECRET>
+
+# Google Maps (Required for maps to work)
+NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=<YOUR_KEY>
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=<YOUR_KEY>
+
+# Baserow Database
 BASEROW_API_URL=https://api.baserow.io
+BASEROW_API_TOKEN=ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE
 BASEROW_STATIONS_TABLE_ID=623329
 BASEROW_PRICES_TABLE_ID=623330
+BASEROW_CACHE_TIME=3600
 
-# Map Services
-NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoicGV0cm9scHJpY2VzIiwiYSI6ImNtZW82a2ZkbzEzZzEycHB4bnN2a3d6MWYifQ.hOEEwKVHFhA2_IAxvj59SA
-
-# Authentication
-NEXTAUTH_SECRET=generate_secure_random_32_char_string
-NEXTAUTH_URL=https://petrolpricenearme.com.au
+# Application
+NEXT_PUBLIC_APP_URL=https://petrol-prices-melbourne.vercel.app
+NEXT_PUBLIC_ENV=production
+NODE_ENV=production
 ```
 
-#### Optional
+### Generate NEXTAUTH_SECRET:
+
+**Option 1 - PowerShell:**
+```powershell
+-join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | ForEach-Object {[char]$_})
+```
+
+**Option 2 - Online:**
+Visit: https://generate-secret.vercel.app/32
+
+---
+
+## 📝 **Deployment Workflow**
+
+### Step 1: Fix Code Issues ⚠️ REQUIRED
 ```bash
-# Analytics
-NEXT_PUBLIC_GA_TRACKING_ID=G-XXXXXXXXXX
-NEXT_PUBLIC_ENABLE_ANALYTICS=true
+# Run auto-fixes
+npm run lint:fix
+npm install --save-dev @types/jest-axe
 
-# Monitoring
-SENTRY_DSN=your_sentry_dsn
+# Fix manual issues (see PRE_COMMIT_QA_REPORT.md)
+# - Update Station interface
+# - Remove unused imports
+# - Fix mock data types
+# - Replace any types
+
+# Verify all fixed
+npm run build  # Must succeed
 ```
 
-### 2. Build Optimization
-
-✅ **Verify Next.js configuration** (`next.config.ts`):
-- ✅ SWC minification enabled (default in Next.js 15+)
-- ✅ Image optimization configured
-- ✅ Static asset caching headers
-- ✅ Security headers configured
-- ✅ Standalone output mode for faster cold starts
-
-### 3. SEO Files
-
-✅ **Verify SEO files exist**:
-- ✅ `public/sitemap.xml` (auto-generated by next-sitemap)
-- ✅ `public/robots.txt` (auto-generated by next-sitemap)
-- ✅ `src/app/robots.ts` (Next.js robots handler)
-- ✅ `src/app/manifest.json` (PWA manifest)
-
-### 4. Analytics Setup
-
-✅ **Vercel Analytics** (Automatic):
-- No setup required - auto-enabled on Vercel deployments
-
-✅ **Google Analytics** (Optional):
-1. Add `NEXT_PUBLIC_GA_TRACKING_ID` environment variable
-2. Code is already integrated in `src/components/analytics/`
-
----
-
-## Deployment Steps
-
-### Automatic Deployment (Recommended)
-
-1. **Push to GitHub/Main**:
-   ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push origin main
-   ```
-
-2. **Vercel will automatically**:
-   - Detect the push
-   - Run `npm run build`
-   - Generate sitemap (via `postbuild` script)
-   - Deploy to production
-
-### Manual Deployment
-
-1. **Install Vercel CLI** (if not installed):
-   ```bash
-   npm i -g vercel
-   ```
-
-2. **Login to Vercel**:
-   ```bash
-   vercel login
-   ```
-
-3. **Deploy to Production**:
-   ```bash
-   vercel --prod
-   ```
-
-4. **Verify deployment**:
-   ```bash
-   vercel ls
-   ```
-
----
-
-## Post-Deployment Verification
-
-### ✅ Critical Checks
-
-#### 1. Homepage Loads
-- [ ] Visit `https://petrolpricenearme.com.au`
-- [ ] No console errors
-- [ ] Page loads quickly (< 2s)
-
-#### 2. Data Loads Correctly
-- [ ] Station directory shows stations
-- [ ] Prices are displayed
-- [ ] Search functionality works
-- [ ] Filters work correctly
-
-#### 3. Maps Load
-- [ ] Map page is accessible
-- [ ] Markers appear on map
-- [ ] No Mapbox errors in console
-
-#### 4. SEO Files
-- [ ] `https://petrolpricenearme.com.au/sitemap.xml` is accessible
-- [ ] `https://petrolpricenearme.com.au/robots.txt` is accessible
-- [ ] Sitemap contains all pages
-
-#### 5. Performance
-- [ ] Run Lighthouse audit (score > 90)
-- [ ] Check Core Web Vitals
-- [ ] Mobile responsive works
-
-#### 6. Security Headers
-- [ ] Check headers via: `curl -I https://petrolpricenearme.com.au`
-- [ ] Verify security headers are present:
-  - `Strict-Transport-Security`
-  - `X-Frame-Options`
-  - `X-Content-Type-Options`
-  - `Referrer-Policy`
-
-### 📊 Analytics Verification
-
-#### 1. Vercel Analytics
-- [ ] Dashboard shows page views
-- [ ] Real user monitoring data appears
-
-#### 2. Google Analytics (if enabled)
+### Step 2: Configure Environment Variables
 ```bash
-# In browser console (production):
-gtag('config', 'G-XXXXXXXXXX')
+# Add all required variables in Vercel dashboard
+# Settings → Environment Variables → Add Variable
 ```
 
-#### 3. Web Vitals
-- [ ] Check Vercel Analytics → Web Vitals tab
-- [ ] LCP < 2.5s
-- [ ] FID < 100ms
-- [ ] CLS < 0.1
-
----
-
-## Build Scripts Reference
-
+### Step 3: Deploy
 ```bash
-# Development
-npm run dev              # Start dev server (localhost:3000)
+# Commit your fixes
+git add .
+git commit -m "fix: resolve all QA issues for production"
+git push origin main
 
-# Production Build
-npm run build            # Build for production
-npm run start            # Start production server locally
-
-# Quality Checks
-npm run lint             # Run ESLint
-npm run type-check       # TypeScript checking
-npm run quality          # All quality checks
-npm run quality:fix      # Auto-fix issues
-
-# Testing
-npm run test             # Run unit tests
-npm run test:e2e         # End-to-end tests
-npm run test:coverage    # Generate coverage report
-
-# Analysis
-npm run analyze         # Bundle analysis
-npm run lighthouse       # Performance audit
-
-# Deployment
-npm run build            # Build for Vercel
+# Vercel auto-deploys on push to main
+# Monitor: https://vercel.com/al-s-projects-1f045bac/petrol-prices-melbourne/deployments
 ```
 
----
-
-## Troubleshooting
-
-### Build Fails
-
-**Issue**: TypeScript errors block build
-**Solution**: Already configured to ignore during build
-```typescript
-// next.config.ts
-typescript: { ignoreBuildErrors: true }
-```
-
-**Issue**: ESLint errors block build
-**Solution**: Already configured to ignore during build
-```typescript
-// next.config.ts
-eslint: { ignoreDuringBuilds: true }
-```
-
-### Environment Variables Not Loading
-
-**Symptoms**:
-- Station data doesn't load
-- Maps don't work
-- API calls fail
-
-**Solution**:
-1. Check Vercel Dashboard → Environment Variables
-2. Ensure all required variables are set
-3. Verify production environment is selected
-4. Redeploy after changing variables
-
-### Sitemap Not Generating
-
-**Check**:
-- `next-sitemap.config.js` exists
-- `postbuild` script in `package.json`
-- Build completes successfully
-
-**Manual regeneration**:
+### Step 4: Verify Deployment
 ```bash
-npm run sitemap:generate
+# Check deployment succeeded
+vercel ls
+
+# Test production URL
+# Visit: https://petrol-prices-melbourne.vercel.app
+
+# Check Vercel logs for errors
+vercel logs
 ```
 
 ---
 
-## Recommended Settings
+## 🚦 **Deployment Status**
 
-### Vercel Dashboard
-
-**Project Settings** → **General**:
-- Framework Preset: `Next.js`
-- Build Command: `next build`
-- Output Directory: `.next`
-- Install Command: `npm install`
-- Node Version: `22.x`
-
-**Project Settings** → **Functions**:
-- Memory: `1024 MB` (for API routes)
-- Max Duration: `10 seconds`
-
-**Project Settings** → **Deploy Hooks**:
-- None required (automatic on git push)
+| Requirement | Status | Action Needed |
+|-------------|--------|---------------|
+| Vercel Config | ✅ Ready | None |
+| Build Settings | ✅ Configured | None |
+| ESLint | ❌ 42 errors | **Fix before deploy** |
+| TypeScript | ❌ 78 errors | **Fix before deploy** |
+| Env Variables | ⚠️ Missing | **Add in dashboard** |
+| Local Build | ❌ Fails | **Fix code issues first** |
+| **Ready to Deploy** | ❌ **NO** | **Complete fixes above** |
 
 ---
 
-## Performance Targets
+## ⏱️ **Timeline to Deploy**
 
-- ✅ First Contentful Paint (FCP): < 1.8s
-- ✅ Largest Contentful Paint (LCP): < 2.5s
-- ✅ Time to Interactive (TTI): < 3.8s
-- ✅ Cumulative Layout Shift (CLS): < 0.1
-- ✅ First Input Delay (FID): < 100ms
-- ✅ Lighthouse Performance Score: > 90
+1. **Quick Fixes:** 5 minutes (auto-fix lint, install types)
+2. **Manual Fixes:** 1-2 hours (TypeScript errors)
+3. **Testing:** 30 minutes (verify build, test locally)
+4. **Environment Setup:** 15 minutes (add vars to Vercel)
+5. **Deployment:** 5 minutes (push to GitHub)
 
----
-
-## Security Checklist
-
-- ✅ HTTPS enforced
-- ✅ Security headers configured
-- ✅ CORS properly configured
-- ✅ Rate limiting enabled
-- ✅ Input validation on all inputs
-- ✅ XSS protection enabled
-- ✅ CSRF protection enabled
-- ✅ Environment variables secured
-- ✅ No sensitive data in client bundle
+**Total Estimated Time:** 2-3 hours
 
 ---
 
-## Monitoring
+## 🎯 **Immediate Next Steps**
 
-### Vercel Dashboard
-- Monitor deployments
-- View function logs
-- Check build logs
-- Monitor edge network status
+### Option A: Let AI Fix Issues (Fastest)
+I can automatically fix most of the 120 issues for you:
+- Import ordering
+- Unused imports
+- Type definitions
+- Mock data
 
-### Analytics
-- Vercel Analytics (automatic)
-- Google Analytics (if configured)
-- Web Vitals tracking
+**Time:** 15-20 minutes with my help
 
-### Error Tracking
-- Sentry (if configured)
-- Browser console errors
-- Server logs in Vercel
+### Option B: Manual Fix (Learn as you go)
+Follow the PRE_COMMIT_QA_REPORT.md step by step
 
----
+**Time:** 2-3 hours
 
-## Rollback Procedure
+### Option C: Deploy with Errors (NOT RECOMMENDED)
+Force deploy despite errors - **will likely fail or crash**
 
-If deployment has issues:
-
-1. **Via Vercel Dashboard**:
-   - Go to Deployments
-   - Find previous successful deployment
-   - Click "⋯" → "Promote to Production"
-
-2. **Via CLI**:
-   ```bash
-   vercel rollback
-   ```
-
-3. **Via Git**:
-   ```bash
-   git revert HEAD
-   git push origin main
-   ```
+**Time:** 5 minutes, then hours debugging in production 💥
 
 ---
 
-## Maintenance
+## 💡 **Recommendation**
 
-### Regular Tasks
+**Choose Option A** - Let me fix the issues automatically, then you can:
+1. Review the changes
+2. Test locally
+3. Deploy with confidence
+4. Have a working production app
 
-- [ ] Weekly: Check error rates in Vercel
-- [ ] Monthly: Review analytics data
-- [ ] Quarterly: Update dependencies
-- [ ] Quarterly: Security audit
-- [ ] Annually: SSL certificate renewal (automatic on Vercel)
+**Want me to start fixing the 120 issues now?** I can:
+- Fix all import orders
+- Remove unused variables
+- Update type definitions
+- Fix mock data
+- Replace `any` types
+- Update Station interface
 
-### Updates
-
-```bash
-# Update dependencies
-npm update
-
-# Update Next.js specifically
-npm install next@latest react@latest react-dom@latest
-
-# Run tests after updates
-npm run test:all
-
-# Verify build still works
-npm run build
-```
+Just say "yes" and I'll begin! 🚀
 
 ---
 
-## Success Criteria
-
-Your deployment is successful when:
-
-✅ Production site is live at `https://petrolpricenearme.com.au`
-✅ All environment variables are configured
-✅ Station data loads correctly
-✅ Maps are functional
-✅ SEO files are accessible
-✅ Analytics is tracking
-✅ Performance scores are > 90
-✅ No console errors
-✅ Mobile responsive
-✅ Security headers are present
-
----
-
-**Last Updated**: December 2024
-**Next Review**: January 2025
+**Current Status:** Vercel ✅ configured, Code ❌ not ready  
+**Next Action:** Fix code issues OR add environment variables  
+**Deployment URL:** Will be available after successful build
