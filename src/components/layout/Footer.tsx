@@ -120,7 +120,7 @@ export function Footer() {
         <div className="border-t border-gray-800 pt-8">
           <div className={patterns.flex.between + ' flex-col md:flex-row gap-4'}>
             <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Petrol Price Near Me. All rights reserved.
+              © {currentYear} Petrol Price Near Me. All rights reserved.
             </p>
             <p className="text-gray-400 text-sm">
               Made with ❤️ in Melbourne, Australia

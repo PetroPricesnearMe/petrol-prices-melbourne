@@ -93,14 +93,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
-        {/* Preconnect to external domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* DNS Prefetch for performance */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        {/* 
+          NOTE: Google Fonts preconnect removed - next/font handles optimization automatically.
+          Removing unnecessary preconnect improves Core Web Vitals (FCP, LCP).
+        */}
 
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -108,7 +106,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`antialiased ${inter.className}`}>
+      <body className={`antialiased ${inter.className}`} suppressHydrationWarning>
         {/* Critical CSS loaded inline above the fold */}
 
         {/* Main content */}

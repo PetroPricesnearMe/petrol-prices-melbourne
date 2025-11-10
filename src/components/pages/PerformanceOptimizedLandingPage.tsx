@@ -213,6 +213,17 @@ function OptimizedHeroSection() {
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                 >
+                  {/* Gradient placeholder until hero image is available */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-500">
+                    {/* Decorative floating elements */}
+                    <div className="absolute inset-0 opacity-20">
+                      <div className="absolute top-10 left-10 w-32 h-32 bg-white/30 rounded-full blur-3xl animate-pulse-slow" />
+                      <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
+                      <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white/25 rounded-full blur-2xl animate-pulse-slow" style={{ animationDelay: '0.5s' }} />
+                    </div>
+                  </div>
+                  
+                  {/* TODO: Replace with actual hero image once available:
                   <Image
                     src="/images/hero-petrol-station.jpg"
                     alt="Modern petrol station with fuel pumps showing competitive prices"
@@ -222,6 +233,7 @@ function OptimizedHeroSection() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     quality={85}
                   />
+                  */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </motion.div>
 

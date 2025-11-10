@@ -51,7 +51,11 @@
     "sitemap:generate": "node scripts/generate-sitemap.js",
     "clean": "rm -rf .next node_modules",
     "prepare": "husky install",
-    "update:data": "node scripts/convert-stations.js"
+    "update:data": "node scripts/convert-stations.js",
+    "verify:performance": "node scripts/verify-performance.js",
+    "verify:build": "npm run build && node scripts/verify-performance.js",
+    "test:vitals": "npm run build && npm start & sleep 5 && lighthouse http://localhost:3000 --only-categories=performance --view",
+    "test:preload": "npm run build && npm start & sleep 5 && lighthouse http://localhost:3000 --view && npm run verify:performance"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.0",

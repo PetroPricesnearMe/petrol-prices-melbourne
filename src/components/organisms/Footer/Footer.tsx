@@ -6,6 +6,7 @@
 
 import React from 'react';
 
+import { useMounted } from '@/hooks/useMounted';
 import { cn } from '@/design-system/utils/styled';
 import type { BaseProps } from '@/types/index';
 
@@ -48,7 +49,8 @@ export const Footer: React.FC<FooterProps> = ({
   testId,
 }) => {
   const classNames = cn('footer', className);
-  const currentYear = new Date().getFullYear();
+  const mounted = useMounted();
+  const currentYear = mounted ? new Date().getFullYear() : 2025;
 
   return (
     <footer className={classNames} style={style} data-testid={testId}>

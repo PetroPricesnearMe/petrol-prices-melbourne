@@ -58,7 +58,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    // Use React's useId hook for SSR-safe, stable IDs (prevents hydration mismatch)
+    const generatedId = React.useId();
+    const inputId = id || generatedId;
     const helperId = `${inputId}-helper`;
     const errorId = `${inputId}-error`;
 

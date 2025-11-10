@@ -47,7 +47,8 @@ export function Modal({
   ariaDescribedBy,
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
-  const titleId = useRef(`modal-title-${Math.random().toString(36).substr(2, 9)}`);
+  // Use React's useId hook for SSR-safe, stable IDs (prevents hydration mismatch)
+  const titleId = React.useId();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -109,14 +110,14 @@ export function Modal({
         <div
           ref={modalRef}
           className={`modal modal--${size} ${className}`}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleId.current}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={titleId}
           aria-describedby={ariaDescribedBy}
         >
           {/* Modal Header */}
           <div className="modal-header">
-            <h2 id={titleId.current} className="modal-title">
+            <h2 id={titleId} className="modal-title">
               {title}
             </h2>
             {showCloseButton && (

@@ -17,6 +17,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 import { type ReactNode } from 'react';
 
+import { useMounted } from '@/hooks/useMounted';
+
 export interface SocialLink {
   name: string;
   href: string;
@@ -112,7 +114,8 @@ export function EnhancedFooter({
   className = '',
 }: EnhancedFooterProps) {
   const shouldReduceMotion = useReducedMotion();
-  const currentYear = new Date().getFullYear();
+  const mounted = useMounted();
+  const currentYear = mounted ? new Date().getFullYear() : 2025;
 
   const containerVariants = {
     hidden: { opacity: 0 },

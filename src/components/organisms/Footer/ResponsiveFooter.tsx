@@ -22,6 +22,7 @@
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 
+import { useMounted } from '@/hooks/useMounted';
 import { cn } from '@/lib/utils';
 
 export interface FooterLink {
@@ -101,7 +102,8 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
-  const currentYear = new Date().getFullYear();
+  const mounted = useMounted();
+  const currentYear = mounted ? new Date().getFullYear() : 2025;
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
