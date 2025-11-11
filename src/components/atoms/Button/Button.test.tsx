@@ -4,7 +4,7 @@
  * Comprehensive unit tests for Button component
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import React from 'react';
@@ -124,7 +124,10 @@ describe('Button Component', () => {
       const handleClick = jest.fn();
       render(<Button onClick={handleClick}>Click Me</Button>);
 
-      await userEvent.click(screen.getByRole('button'));
+      // ACT REQUIRED: userEvent.click triggers onClick handler which may cause state updates or re-renders
+      await act(async () => {
+        await userEvent.click(screen.getByRole('button'));
+      });
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
@@ -132,7 +135,10 @@ describe('Button Component', () => {
       const handleClick = jest.fn();
       render(<Button onClick={handleClick} disabled>Disabled</Button>);
 
-      await userEvent.click(screen.getByRole('button'));
+      // ACT REQUIRED: even though disabled, userEvent processes the interaction through React's event system
+      await act(async () => {
+        await userEvent.click(screen.getByRole('button'));
+      });
       expect(handleClick).not.toHaveBeenCalled();
     });
 
@@ -140,7 +146,10 @@ describe('Button Component', () => {
       const handleClick = jest.fn();
       render(<Button onClick={handleClick} loading>Loading</Button>);
 
-      await userEvent.click(screen.getByRole('button'));
+      // ACT REQUIRED: click interaction may trigger internal state checks (loading state validation)
+      await act(async () => {
+        await userEvent.click(screen.getByRole('button'));
+      });
       expect(handleClick).not.toHaveBeenCalled();
     });
 
@@ -149,10 +158,16 @@ describe('Button Component', () => {
       render(<Button onClick={handleClick}>Keyboard</Button>);
 
       const button = screen.getByRole('button');
-      button.focus();
+      // ACT REQUIRED: focus() may trigger onFocus handlers and focus state updates
+      act(() => {
+        button.focus();
+      });
       expect(button).toHaveFocus();
 
-      fireEvent.keyDown(button, { key: 'Enter' });
+      // ACT REQUIRED: keyDown with Enter triggers onClick handler
+      act(() => {
+        fireEvent.keyDown(button, { key: 'Enter' });
+      });
       expect(handleClick).toHaveBeenCalled();
     });
   });
@@ -265,7 +280,11 @@ describe('Button Component', () => {
       render(<Button onClick={handleClick}>Rapid Click</Button>);
 
       const button = screen.getByRole('button');
-      await userEvent.tripleClick(button);
+      // ACT REQUIRED: tripleClick triggers multiple onClick events in rapid succession
+      // Each click may cause state updates that need to be processed
+      await act(async () => {
+        await userEvent.tripleClick(button);
+      });
 
       expect(handleClick).toHaveBeenCalled();
     });

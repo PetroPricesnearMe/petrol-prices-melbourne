@@ -3,7 +3,7 @@
  * Comprehensive test suite for the card component
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import React from 'react';
 
 import '@testing-library/jest-dom';
@@ -122,7 +122,11 @@ describe('NorthernTradieCard', () => {
       );
       
       const card = screen.getByText('Content').closest('div');
-      fireEvent.click(card!);
+      // ACT REQUIRED: clicking may trigger internal state updates or animations (framer-motion)
+      // Wrapping ensures React finishes processing the event and any state changes
+      act(() => {
+        fireEvent.click(card!);
+      });
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
@@ -135,7 +139,11 @@ describe('NorthernTradieCard', () => {
       );
       
       const card = screen.getByText('Content').closest('div');
-      fireEvent.click(card!);
+      // ACT REQUIRED: even when disabled, the click event is processed by React
+      // though it shouldn't trigger the handler due to disabled check
+      act(() => {
+        fireEvent.click(card!);
+      });
       expect(handleClick).not.toHaveBeenCalled();
     });
 
@@ -148,7 +156,10 @@ describe('NorthernTradieCard', () => {
       );
       
       const card = screen.getByText('Content').closest('div');
-      fireEvent.keyDown(card!, { key: 'Enter' });
+      // ACT REQUIRED: keyDown event triggers onClick handler and potential state updates
+      act(() => {
+        fireEvent.keyDown(card!, { key: 'Enter' });
+      });
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
@@ -161,7 +172,10 @@ describe('NorthernTradieCard', () => {
       );
       
       const card = screen.getByText('Content').closest('div');
-      fireEvent.keyDown(card!, { key: ' ' });
+      // ACT REQUIRED: Space key triggers onClick handler which may cause state updates
+      act(() => {
+        fireEvent.keyDown(card!, { key: ' ' });
+      });
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
@@ -174,7 +188,10 @@ describe('NorthernTradieCard', () => {
       );
       
       const card = screen.getByText('Content').closest('div');
-      fireEvent.keyDown(card!, { key: 'a' });
+      // ACT REQUIRED: keyDown triggers custom handler which may update state or trigger animations
+      act(() => {
+        fireEvent.keyDown(card!, { key: 'a' });
+      });
       expect(handleKeyPress).toHaveBeenCalled();
     });
 
@@ -187,7 +204,10 @@ describe('NorthernTradieCard', () => {
       );
       
       const card = screen.getByText('Content').closest('div');
-      fireEvent.focus(card!);
+      // ACT REQUIRED: focus event may trigger internal focus state or styling updates
+      act(() => {
+        fireEvent.focus(card!);
+      });
       expect(handleFocus).toHaveBeenCalled();
     });
 
@@ -200,7 +220,10 @@ describe('NorthernTradieCard', () => {
       );
       
       const card = screen.getByText('Content').closest('div');
-      fireEvent.blur(card!);
+      // ACT REQUIRED: blur event may trigger internal state cleanup or styling changes
+      act(() => {
+        fireEvent.blur(card!);
+      });
       expect(handleBlur).toHaveBeenCalled();
     });
   });

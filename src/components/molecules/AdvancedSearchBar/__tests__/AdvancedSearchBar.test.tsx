@@ -11,7 +11,7 @@
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { act } from 'react';
 
 import { AdvancedSearchBar } from '../AdvancedSearchBar';
 
@@ -54,6 +54,9 @@ describe('AdvancedSearchBar', () => {
     mockOnSearch = jest.fn();
     mockOnCategoryChange = jest.fn();
     localStorage.clear();
+    
+    // Mock scrollIntoView which is not implemented in jsdom
+    Element.prototype.scrollIntoView = jest.fn();
   });
 
   describe('Basic Rendering', () => {
@@ -97,10 +100,12 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell');
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
+      });
 
       await waitFor(() => {
-        expect(screen.getByText('Shell Carlton')).toBeInTheDocument();
+        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
       });
     });
 
@@ -114,7 +119,10 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell');
+      // ACT REQUIRED: typing triggers debounced search which updates component state asynchronously
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
+      });
 
       await waitFor(() => {
         expect(mockOnSearch).toHaveBeenCalled();
@@ -134,14 +142,18 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell');
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
+      });
 
       await waitFor(() => {
-        expect(screen.getByText('Shell Carlton')).toBeInTheDocument();
+        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
       });
 
       const clearButton = screen.getByLabelText('Clear search');
-      await userEvent.click(clearButton);
+      await act(async () => {
+        await userEvent.click(clearButton);
+      });
 
       expect(input).toHaveValue('');
     });
@@ -158,7 +170,10 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shel'); // Typo: missing 'l'
+      // ACT REQUIRED: fuzzy search triggers debounced async state updates
+      await act(async () => {
+        await userEvent.type(input, 'Shel'); // Typo: missing 'l'
+      });
 
       await waitFor(() => {
         expect(mockOnSearch).toHaveBeenCalled();
@@ -177,7 +192,10 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Carl'); // Partial: "Carlton"
+      // ACT REQUIRED: partial match search triggers debounced state updates
+      await act(async () => {
+        await userEvent.type(input, 'Carl'); // Partial: "Carlton"
+      });
 
       await waitFor(() => {
         const results = mockOnSearch.mock.calls[mockOnSearch.mock.calls.length - 1][1];
@@ -200,7 +218,10 @@ describe('AdvancedSearchBar', () => {
       );
 
       const brandButton = screen.getByLabelText('Filter by Brand');
-      await userEvent.click(brandButton);
+      // ACT REQUIRED: clicking category button may trigger re-render with new props
+      await act(async () => {
+        await userEvent.click(brandButton);
+      });
 
       expect(mockOnCategoryChange).toHaveBeenCalledWith('brand');
     });
@@ -233,17 +254,23 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell');
-
-      await waitFor(() => {
-        expect(screen.getByText('Shell Carlton')).toBeInTheDocument();
+      // ACT REQUIRED: typing triggers debounced performSearch() with setTimeout
+      // which asynchronously updates setSuggestions and setShowSuggestions state
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
       });
 
-      // Press down arrow
-      fireEvent.keyDown(input, { key: 'ArrowDown' });
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+      });
+
+      // ACT REQUIRED: ArrowDown keypress triggers setSelectedIndex state update
+      act(() => {
+        fireEvent.keyDown(input, { key: 'ArrowDown' });
+      });
 
       // First suggestion should be selected
-      const firstSuggestion = screen.getByRole('option', { name: /Shell Carlton/i });
+      const firstSuggestion = screen.getByRole('option', { name: /Shell.*Carlton/i });
       expect(firstSuggestion).toHaveClass('selected');
     });
 
@@ -257,16 +284,28 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell');
-
-      await waitFor(() => {
-        expect(screen.getByText('Shell Carlton')).toBeInTheDocument();
+      // ACT REQUIRED: typing triggers debounced state updates via performSearch setTimeout
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
       });
 
-      fireEvent.keyDown(input, { key: 'ArrowDown' });
-      fireEvent.keyDown(input, { key: 'Enter' });
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+      });
 
-      expect(input).toHaveValue('Shell Carlton');
+      // ACT REQUIRED: ArrowDown updates selectedIndex, Enter updates query/suggestions/showSuggestions
+      // and triggers saveRecentSearch which calls setRecentSearches
+      act(() => {
+        fireEvent.keyDown(input, { key: 'ArrowDown' });
+      });
+      
+      act(() => {
+        fireEvent.keyDown(input, { key: 'Enter' });
+      });
+
+      await waitFor(() => {
+        expect(input).toHaveValue('Shell Carlton');
+      });
     });
 
     it('should close dropdown with Escape key', async () => {
@@ -279,16 +318,22 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell');
-
-      await waitFor(() => {
-        expect(screen.getByText('Shell Carlton')).toBeInTheDocument();
+      // ACT REQUIRED: typing triggers debounced search with async state updates
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
       });
 
-      fireEvent.keyDown(input, { key: 'Escape' });
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+      });
+
+      // ACT REQUIRED: Escape key triggers setShowSuggestions(false) and setSelectedIndex(-1)
+      act(() => {
+        fireEvent.keyDown(input, { key: 'Escape' });
+      });
 
       await waitFor(() => {
-        expect(screen.queryByText('Shell Carlton')).not.toBeInTheDocument();
+        expect(screen.queryByRole('option', { name: /Shell.*Carlton/i })).not.toBeInTheDocument();
       });
     });
   });
@@ -305,14 +350,30 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell Carlton');
-      fireEvent.keyDown(input, { key: 'Enter' });
+      // ACT REQUIRED: typing triggers debounced performSearch with setTimeout
+      // which calls setSuggestions asynchronously
+      await act(async () => {
+        await userEvent.type(input, 'Shell Carlton');
+      });
+      
+      // Wait for suggestions to appear
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: /Shell Carlton/i })).toBeInTheDocument();
+      });
+      
+      // ACT REQUIRED: Enter key triggers saveRecentSearch which updates setRecentSearches state
+      // and also calls setShowSuggestions to close the dropdown
+      act(() => {
+        fireEvent.keyDown(input, { key: 'Enter' });
+      });
 
       // Check localStorage
-      const stored = localStorage.getItem('advanced_search_recent');
-      expect(stored).toBeTruthy();
-      const recent = JSON.parse(stored!);
-      expect(recent).toContain('Shell Carlton');
+      await waitFor(() => {
+        const stored = localStorage.getItem('advanced_search_recent');
+        expect(stored).toBeTruthy();
+        const recent = JSON.parse(stored!);
+        expect(recent).toContain('Shell Carlton');
+      });
     });
 
     it('should show recent searches when input is focused and empty', async () => {
@@ -329,7 +390,11 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.click(input);
+      // ACT REQUIRED: clicking triggers onFocus which calls setIsFocused(true) and setShowSuggestions(true)
+      // These state updates must happen within act() to avoid warnings
+      await act(async () => {
+        await userEvent.click(input);
+      });
 
       await waitFor(() => {
         expect(screen.getByText('Shell')).toBeInTheDocument();
@@ -366,7 +431,11 @@ describe('AdvancedSearchBar', () => {
       const input = screen.getByRole('combobox');
       expect(input).toHaveAttribute('aria-expanded', 'false');
 
-      await userEvent.type(input, 'Shell');
+      // ACT REQUIRED: typing triggers debounced search which updates setShowSuggestions(true)
+      // This changes aria-expanded attribute, so must be wrapped in act()
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
+      });
 
       await waitFor(() => {
         expect(input).toHaveAttribute('aria-expanded', 'true');
@@ -383,7 +452,10 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'Shell');
+      // ACT REQUIRED: typing triggers debounced search which updates state asynchronously
+      await act(async () => {
+        await userEvent.type(input, 'Shell');
+      });
 
       await waitFor(() => {
         const suggestion = screen.getByRole('option', { name: /Shell Carlton/i });
@@ -416,7 +488,11 @@ describe('AdvancedSearchBar', () => {
       );
 
       const input = screen.getByRole('combobox');
-      await userEvent.type(input, 'NonexistentStation');
+      // ACT REQUIRED: typing triggers debounced search with setTimeout
+      // which updates setSuggestions([]) and setShowSuggestions(true)
+      await act(async () => {
+        await userEvent.type(input, 'NonexistentStation');
+      });
 
       await waitFor(() => {
         expect(screen.getByText(/no results found/i)).toBeInTheDocument();
