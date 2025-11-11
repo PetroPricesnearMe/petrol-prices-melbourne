@@ -91,7 +91,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
     fuelType: 'unleaded',
     brand: 'all',
     suburb: 'all',
-    sortBy: 'price-low',
+    sortBy: 'name',
     priceMax: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -126,8 +126,15 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
       result = result.filter((s) => s.suburb === filters.suburb);
     }
 
-    // Price filter (only show stations with selected fuel type)
-    result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+    // ONLY filter by fuel type when user is actively sorting by price or filtering by max price
+    // This ensures all stations show by default instead of just those with the selected fuel type
+    const isPriceSorting = filters.sortBy === 'price-low' || filters.sortBy === 'price-high';
+    const hasPriceFilter = filters.priceMax !== '';
+    
+    if (isPriceSorting || hasPriceFilter) {
+      // Only show stations with selected fuel type when price sorting/filtering is active
+      result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+    }
 
     // Max price filter
     if (filters.priceMax) {

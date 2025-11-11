@@ -111,8 +111,8 @@
     "@types/node": "^20.11.5",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "autoprefixer": "^10.4.17",
     "chrome-launcher": "^1.2.1",
     "cypress": "^15.5.0",
@@ -136,7 +136,7 @@
     "sitemap": "^8.0.1",
     "storybook": "^9.1.13",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "typescript": "5.3.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
