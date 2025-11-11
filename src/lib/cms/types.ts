@@ -27,7 +27,7 @@ export interface CMSConfig {
 export interface CMSQueryOptions {
   page?: number;
   pageSize?: number;
-  filters?: Record<string, any>;
+  filters?: Record<string, unknown>;
   sort?: {
     field: string;
     order: 'asc' | 'desc';
@@ -80,7 +80,7 @@ export interface CMSContent {
   publishedAt?: Date;
   slug?: string;
   status?: 'draft' | 'published' | 'archived';
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**

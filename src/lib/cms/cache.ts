@@ -9,7 +9,7 @@
  * - LRU eviction (optional)
  */
 
-interface CacheEntry<T> {
+interface CacheEntry<T = unknown> {
   data: T;
   expiry: number;
   staleExpiry?: number;
@@ -25,7 +25,7 @@ interface CacheStats {
 }
 
 export class CMSCache {
-  private cache: Map<string, CacheEntry<any>>;
+  private cache: Map<string, CacheEntry>;
   private tagIndex: Map<string, Set<string>>; // tag -> Set of cache keys
   private stats: CacheStats;
   private maxSize: number;
@@ -65,13 +65,13 @@ export class CMSCache {
     // Check if fresh
     if (now <= entry.expiry) {
       this.stats.hits++;
-      return entry.data;
+      return entry.data as T;
     }
 
     // Check if stale but still usable
     if (entry.staleExpiry && now <= entry.staleExpiry) {
       this.stats.hits++;
-      return entry.data; // Return stale data, caller should revalidate
+      return entry.data as T; // Return stale data, caller should revalidate
     }
 
     this.delete(key);
@@ -276,7 +276,7 @@ export function getCMSCache(): CMSCache {
 export function generateCacheKey(
   provider: string,
   collection: string,
-  params?: Record<string, any>
+  params?: Record<string, unknown>
 ): string {
   const paramsStr = params ? JSON.stringify(params) : '';
   return `cms:${provider}:${collection}:${paramsStr}`;
