@@ -1,12 +1,16 @@
 /**
- * Performance-Optimized Root Layout
+ * Root Layout - Production-Ready Architecture
  *
- * Features:
- * - Optimized script loading strategy
- * - Web Vitals tracking
- * - Proper meta tags for SEO and performance
- * - Performance monitoring
- * - Resource hints
+ * This is the root layout component that wraps all pages in the application.
+ * It handles global configuration including:
+ * 
+ * - Font optimization with next/font
+ * - Global metadata and SEO
+ * - Theme configuration
+ * - Analytics and performance monitoring
+ * - Global providers (theme, query client, etc.)
+ * 
+ * @see {@link https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts}
  */
 
 import type { Metadata, Viewport } from 'next';
@@ -14,104 +18,103 @@ import { Inter } from 'next/font/google';
 import Script from 'next/script';
 
 import { Providers } from './providers';
-import '../styles/globals.css';
+import { defaultMetadata, siteConfig } from '@/config/metadata';
+import '@/styles/globals.css';
 
+/**
+ * Font Configuration
+ * 
+ * Inter is loaded with optimal settings:
+ * - Subset: Latin characters only
+ * - Display: swap (prevent invisible text during load)
+ * - Variable: CSS variable for easy access
+ * - Preload: Load font ASAP for faster rendering
+ */
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
   preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
+/**
+ * Viewport Configuration
+ * 
+ * Defines how the page should be rendered on mobile devices.
+ * Includes responsive theme colors for light/dark mode.
+ */
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  userScalable: true,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#1f2937' },
   ],
 };
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Fuel Finder - Find the Cheapest Petrol Near You',
-    template: '%s | Fuel Finder',
-  },
-  description: 'Find the cheapest petrol prices near you with real-time updates from 250+ stations across Melbourne.',
-  keywords: ['petrol', 'fuel', 'prices', 'gas station', 'melbourne', 'australia'],
-  authors: [{ name: 'Fuel Finder Team' }],
-  creator: 'Fuel Finder',
-  publisher: 'Fuel Finder',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://petrolpricenearme.com.au'),
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_AU',
-    url: '/',
-    siteName: 'Fuel Finder',
-    title: 'Fuel Finder - Find the Cheapest Petrol Near You',
-    description: 'Find the cheapest petrol prices near you with real-time updates.',
-    images: [
-      {
-        url: '/images/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Fuel Finder',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Fuel Finder - Find the Cheapest Petrol Near You',
-    description: 'Find the cheapest petrol prices near you with real-time updates.',
-    images: ['/images/twitter-image.jpg'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-};
+/**
+ * Metadata Configuration
+ * 
+ * Comprehensive SEO and social media metadata.
+ * Centralized in @/config/metadata for easy maintenance.
+ */
+export const metadata: Metadata = defaultMetadata;
 
-export default function RootLayout({
-  children,
-}: {
+/**
+ * Root Layout Props
+ */
+interface RootLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+/**
+ * Root Layout Component
+ * 
+ * The main layout wrapper for the entire application.
+ * Provides global context, styles, and scripts.
+ */
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html 
+      lang="en" 
+      className={inter.variable} 
+      suppressHydrationWarning
+    >
       <head>
         {/* 
-          NOTE: Google Fonts preconnect removed - next/font handles optimization automatically.
-          Removing unnecessary preconnect improves Core Web Vitals (FCP, LCP).
+          Resource Hints
+          Note: next/font handles font optimization automatically.
+          Only add preconnect for external domains we fetch from.
         */}
-
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
+        
+        {/* DNS Prefetch for external services (if needed) */}
+        {/* <link rel="dns-prefetch" href="https://api.example.com" /> */}
+        
+        {/* Preconnect for critical third-party origins */}
+        {/* <link rel="preconnect" href="https://api.example.com" crossOrigin="anonymous" /> */}
       </head>
-      <body className={`antialiased ${inter.className}`} suppressHydrationWarning>
-        {/* Critical CSS loaded inline above the fold */}
+      
+      <body 
+        className={`antialiased ${inter.className}`} 
+        suppressHydrationWarning
+      >
+        {/* Skip to main content link for accessibility */}
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg"
+        >
+          Skip to main content
+        </a>
 
-        {/* Main content */}
+        {/* Global Providers (Theme, Query Client, etc.) */}
         <Providers>
-          {children}
+          {/* Main content wrapper */}
+          <div id="main-content">
+            {children}
+          </div>
         </Providers>
 
         {/* Performance Monitoring - After Interactive */}

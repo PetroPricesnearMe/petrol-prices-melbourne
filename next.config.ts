@@ -1,23 +1,70 @@
 import type { NextConfig } from 'next';
 
-const nextConfig: NextConfig = {
-  // Performance optimizations
-  compress: true,
-  poweredByHeader: false,
+/**
+ * Next.js Configuration - Production-Ready Setup
+ * 
+ * This configuration optimizes for:
+ * - Performance: Compression, caching, code splitting
+ * - Security: Headers, CSP, XSS protection
+ * - SEO: Metadata, structured data
+ * - Developer Experience: TypeScript, ESLint
+ */
 
-  // Image optimization
+const nextConfig: NextConfig = {
+  // ========================================
+  // PERFORMANCE OPTIMIZATIONS
+  // ========================================
+  
+  // Enable gzip/brotli compression
+  compress: true,
+  
+  // Remove X-Powered-By header for security
+  poweredByHeader: false,
+  
+  // Enable React strict mode for better debugging
+  reactStrictMode: true,
+  
+  // Optimize CSS imports
+  optimizeFonts: true,
+
+  // ========================================
+  // IMAGE OPTIMIZATION
+  // Serve modern formats with optimal sizes
+  // ========================================
   images: {
+    // Modern image formats (AVIF first for best compression)
     formats: ['image/avif', 'image/webp'],
+    
+    // Responsive breakpoints for different devices
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 31536000, // 1 year
+    
+    // Cache optimized images for 1 year
+    minimumCacheTTL: 31536000,
+    
+    // Security: Disable SVG support to prevent XSS
     dangerouslyAllowSVG: false,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    
+    // Add remote image domains if needed (commented for security)
+    // remotePatterns: [
+    //   {
+    //     protocol: 'https',
+    //     hostname: 'example.com',
+    //   },
+    // ],
   },
 
-  // Experimental features for better performance
+  // ========================================
+  // EXPERIMENTAL FEATURES
+  // Enable cutting-edge optimizations
+  // ========================================
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    // Optimize imports for specific packages
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@headlessui/react'],
+    
+    // Use optimized CSS
+    optimizeCss: true,
   },
 
   // Headers for caching and performance

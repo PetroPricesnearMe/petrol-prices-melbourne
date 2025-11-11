@@ -1,192 +1,167 @@
 /**
- * Design System - Color Tokens
+ * Color Tokens - Design System
  * 
- * Centralized color palette following accessibility guidelines (WCAG 2.1 AA)
- * All colors are tested for proper contrast ratios
+ * All colors are WCAG AA compliant for accessibility.
+ * Use these tokens throughout the application for consistency.
+ * 
+ * @module design-system/tokens/colors
  */
 
-export const colors = {
-  // ============================================================================
-  // Primary Colors - Brand Identity
-  // ============================================================================
-  primary: {
-    50: '#E3F2FD',
-    100: '#BBDEFB',
-    200: '#90CAF9',
-    300: '#64B5F6',
-    400: '#42A5F5',
-    500: '#2196F3', // Main brand color
-    600: '#1E88E5',
-    700: '#1976D2',
-    800: '#1565C0',
-    900: '#0D47A1',
-  },
+/**
+ * Primary brand colors - Trust & Energy
+ * Use for: Main actions, links, brand elements
+ */
+export const primary = {
+  50: '#EFF6FF',
+  100: '#DBEAFE',
+  200: '#BFDBFE',
+  300: '#93C5FD',
+  400: '#60A5FA',
+  500: '#3B82F6',  // Main primary
+  600: '#2563EB',  // Primary hover/active
+  700: '#1D4ED8',
+  800: '#1E40AF',
+  900: '#1E3A8A',
+  950: '#172554',
+} as const;
 
-  // ============================================================================
-  // Secondary Colors - Supporting Brand
-  // ============================================================================
-  secondary: {
-    50: '#F3E5F5',
-    100: '#E1BEE7',
-    200: '#CE93D8',
-    300: '#BA68C8',
-    400: '#AB47BC',
-    500: '#9C27B0',
-    600: '#8E24AA',
-    700: '#7B1FA2',
-    800: '#6A1B9A',
-    900: '#4A148C',
-  },
+/**
+ * Secondary colors - Fresh & Eco-friendly
+ * Use for: Success states, positive actions, eco-friendly features
+ */
+export const secondary = {
+  50: '#ECFDF5',
+  100: '#D1FAE5',
+  200: '#A7F3D0',
+  300: '#6EE7B7',
+  400: '#34D399',
+  500: '#10B981',  // Main secondary
+  600: '#059669',
+  700: '#047857',
+  800: '#065F46',
+  900: '#064E3B',
+  950: '#022C22',
+} as const;
 
-  // ============================================================================
-  // Semantic Colors - Status & Feedback
-  // ============================================================================
+/**
+ * Accent colors - Warm & Call-to-action
+ * Use for: Highlights, warnings, featured content
+ */
+export const accent = {
+  50: '#FFF7ED',
+  100: '#FFEDD5',
+  200: '#FED7AA',
+  300: '#FDBA74',
+  400: '#FB923C',
+  500: '#F97316',  // Main accent
+  600: '#EA580C',
+  700: '#C2410C',
+  800: '#9A3412',
+  900: '#7C2D12',
+  950: '#431407',
+} as const;
+
+/**
+ * Neutral grays - Professional & Clean
+ * Use for: Text, backgrounds, borders
+ */
+export const gray = {
+  50: '#F9FAFB',
+  100: '#F3F4F6',
+  200: '#E5E7EB',
+  300: '#D1D5DB',
+  400: '#9CA3AF',
+  500: '#6B7280',
+  600: '#4B5563',
+  700: '#374151',
+  800: '#1F2937',
+  900: '#111827',
+  950: '#030712',
+} as const;
+
+/**
+ * Semantic colors for UI states
+ */
+export const semantic = {
   success: {
-    50: '#E8F5E9',
-    100: '#C8E6C9',
-    200: '#A5D6A7',
-    300: '#81C784',
-    400: '#66BB6A',
-    500: '#4CAF50',
-    600: '#43A047',
-    700: '#388E3C',
-    800: '#2E7D32',
-    900: '#1B5E20',
+    light: '#D1FAE5',
+    DEFAULT: '#10B981',
+    dark: '#047857',
   },
-
-  warning: {
-    50: '#FFF3E0',
-    100: '#FFE0B2',
-    200: '#FFCC80',
-    300: '#FFB74D',
-    400: '#FFA726',
-    500: '#FF9800',
-    600: '#FB8C00',
-    700: '#F57C00',
-    800: '#EF6C00',
-    900: '#E65100',
-  },
-
   error: {
-    50: '#FFEBEE',
-    100: '#FFCDD2',
-    200: '#EF9A9A',
-    300: '#E57373',
-    400: '#EF5350',
-    500: '#F44336',
-    600: '#E53935',
-    700: '#D32F2F',
-    800: '#C62828',
-    900: '#B71C1C',
+    light: '#FEE2E2',
+    DEFAULT: '#EF4444',
+    dark: '#B91C1C',
   },
-
+  warning: {
+    light: '#FEF3C7',
+    DEFAULT: '#F59E0B',
+    dark: '#B45309',
+  },
   info: {
-    50: '#E1F5FE',
-    100: '#B3E5FC',
-    200: '#81D4FA',
-    300: '#4FC3F7',
-    400: '#29B6F6',
-    500: '#03A9F4',
-    600: '#039BE5',
-    700: '#0288D1',
-    800: '#0277BD',
-    900: '#01579B',
-  },
-
-  // ============================================================================
-  // Neutral Colors - Text & Backgrounds
-  // ============================================================================
-  neutral: {
-    0: '#FFFFFF',
-    50: '#FAFAFA',
-    100: '#F5F5F5',
-    200: '#EEEEEE',
-    300: '#E0E0E0',
-    400: '#BDBDBD',
-    500: '#9E9E9E',
-    600: '#757575',
-    700: '#616161',
-    800: '#424242',
-    900: '#212121',
-    1000: '#000000',
-  },
-
-  // ============================================================================
-  // Fuel Type Colors - Domain-Specific
-  // ============================================================================
-  fuel: {
-    unleaded: '#4CAF50',      // Green
-    premium: '#9C27B0',       // Purple
-    diesel: '#FF9800',        // Orange
-    lpg: '#2196F3',          // Blue
-    e10: '#8BC34A',          // Light Green
-    e85: '#CDDC39',          // Lime
-    electric: '#00BCD4',     // Cyan
-  },
-
-  // ============================================================================
-  // Functional Colors - UI Elements
-  // ============================================================================
-  background: {
-    default: '#FFFFFF',
-    paper: '#FAFAFA',
-    elevated: '#FFFFFF',
-    overlay: 'rgba(0, 0, 0, 0.5)',
-  },
-
-  text: {
-    primary: '#212121',
-    secondary: '#757575',
-    disabled: '#BDBDBD',
-    inverse: '#FFFFFF',
-  },
-
-  border: {
-    light: '#E0E0E0',
-    main: '#BDBDBD',
-    dark: '#9E9E9E',
-  },
-
-  action: {
-    active: '#2196F3',
-    hover: 'rgba(33, 150, 243, 0.08)',
-    selected: 'rgba(33, 150, 243, 0.16)',
-    disabled: 'rgba(0, 0, 0, 0.26)',
-    disabledBackground: 'rgba(0, 0, 0, 0.12)',
-    focus: 'rgba(33, 150, 243, 0.24)',
-  },
-
-  // ============================================================================
-  // Shadow Colors
-  // ============================================================================
-  shadow: {
-    light: 'rgba(0, 0, 0, 0.1)',
-    medium: 'rgba(0, 0, 0, 0.2)',
-    dark: 'rgba(0, 0, 0, 0.3)',
+    light: '#DBEAFE',
+    DEFAULT: '#3B82F6',
+    dark: '#1D4ED8',
   },
 } as const;
 
 /**
- * Type for color keys
+ * Fuel brand colors for station cards
  */
-export type ColorKey = keyof typeof colors;
+export const fuelBrands = {
+  shell: { primary: '#E31E24', secondary: '#FFD700' },
+  bp: { primary: '#00A651', secondary: '#FFD700' },
+  caltex: { primary: '#E31E24', secondary: '#0066CC' },
+  ampol: { primary: '#E31E24', secondary: '#0066CC' },
+  sevenEleven: { primary: '#FF6600', secondary: '#00A651' },
+  mobil: { primary: '#E31E24', secondary: '#0066CC' },
+  united: { primary: '#004C97', secondary: '#0066CC' },
+  liberty: { primary: '#E31E24', secondary: '#FFD700' },
+  metro: { primary: '#FF6B35', secondary: '#0066CC' },
+  costco: { primary: '#0066B2', secondary: '#FFD700' },
+} as const;
 
 /**
- * Type for color shade
+ * Fuel type colors for price display
  */
-export type ColorShade = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+export const fuelTypes = {
+  unleaded: '#22C55E',
+  premium: '#EF4444',
+  diesel: '#374151',
+  lpg: '#3B82F6',
+  e10: '#F59E0B',
+  '98': '#DC2626',
+  '95': '#F59E0B',
+  '91': '#1D4ED8',
+} as const;
 
 /**
- * Utility function to get color value
+ * Essential colors
  */
-export const getColor = (key: ColorKey, shade?: number | string): string => {
-  const colorGroup = colors[key];
-  if (!colorGroup) return colors.neutral[500];
-  
-  if (shade && typeof colorGroup === 'object' && shade in colorGroup) {
-    return colorGroup[shade as keyof typeof colorGroup] as string;
-  }
-  
-  return typeof colorGroup === 'string' ? colorGroup : colorGroup[500] || colors.neutral[500];
-};
+export const essential = {
+  white: '#FFFFFF',
+  black: '#000000',
+  transparent: 'transparent',
+  current: 'currentColor',
+} as const;
 
+/**
+ * Export all color tokens
+ */
+export const colors = {
+  primary,
+  secondary,
+  accent,
+  gray,
+  semantic,
+  fuelBrands,
+  fuelTypes,
+  ...essential,
+} as const;
+
+/**
+ * Type helper for color tokens
+ */
+export type ColorToken = typeof colors;
+export type ColorScale = keyof typeof primary;
+export type SemanticColor = keyof typeof semantic;
