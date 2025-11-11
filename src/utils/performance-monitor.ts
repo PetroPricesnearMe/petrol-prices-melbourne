@@ -59,7 +59,7 @@ class PerformanceMonitor {
     try {
       const layoutShiftObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const layoutShift = entry as any;
+          const layoutShift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
           this.recordMetric({
             name: 'layout-shift',
             value: layoutShift.value,
@@ -291,11 +291,13 @@ export function usePerformanceTracking(
   componentName: string,
   props?: Record<string, unknown>
 ): void {
-  if (typeof window === 'undefined') return;
-
+  // Always call hooks at the top level
   const renderStart = React.useRef(performance.now());
 
   React.useEffect(() => {
+    // Skip if not in browser
+    if (typeof window === 'undefined') return;
+    
     const renderTime = performance.now() - renderStart.current;
     trackComponentRender(componentName, renderTime, props || {});
     renderStart.current = performance.now();
@@ -382,11 +384,24 @@ export function getMemoryUsage(): {
   totalJSHeapSize: number;
   jsHeapSizeLimit: number;
 } | null {
-  if (typeof performance === 'undefined' || !(performance as any).memory) {
+  if (typeof performance === 'undefined') {
     return null;
   }
 
-  const memory = (performance as any).memory;
+  // Type assertion for Chrome's memory extension
+  const perfWithMemory = performance as Performance & {
+    memory?: {
+      usedJSHeapSize: number;
+      totalJSHeapSize: number;
+      jsHeapSizeLimit: number;
+    };
+  };
+
+  if (!perfWithMemory.memory) {
+    return null;
+  }
+
+  const memory = perfWithMemory.memory;
   return {
     usedJSHeapSize: memory.usedJSHeapSize,
     totalJSHeapSize: memory.totalJSHeapSize,

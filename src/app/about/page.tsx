@@ -124,7 +124,7 @@ export default function AboutPage() {
                       href="tel:0423530204"
                       className="text-primary-600 hover:text-primary-700 dark:text-primary-400 hover:underline"
                     >
-                      0423 530 204
+                      0423 *** 204
                     </a>
                   </div>
                 </div>
@@ -139,6 +139,13 @@ export default function AboutPage() {
                     >
                       petrolpricesnearme@gmail.com
                     </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg md:col-span-2">
+                  <span className="text-2xl">🏢</span>
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white">ABN</p>
+                    <p className="text-gray-600 dark:text-gray-400">22 177 321 155</p>
                   </div>
                 </div>
               </div>

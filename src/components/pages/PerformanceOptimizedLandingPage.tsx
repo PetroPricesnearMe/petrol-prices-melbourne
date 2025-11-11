@@ -10,11 +10,13 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
 
 import { cn } from '@/lib/utils';
+
+// Components
+import { MelbourneMapSection } from './LandingPage/MelbourneMapSection';
 
 // ============================================================================
 // LAZY LOADED COMPONENTS
@@ -35,34 +37,22 @@ interface PerformanceOptimizedLandingPageProps {
 // ============================================================================
 
 function usePerformanceMonitoring() {
-  const startTime = useRef<number>(Date.now());
-
-  // Monitor Core Web Vitals
+  // Monitor Core Web Vitals (browser-only)
   if (typeof window !== 'undefined') {
-    // LCP (Largest Contentful Paint)
-    new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      const lastEntry = entries[entries.length - 1];
-      console.log('LCP:', lastEntry.startTime);
-    }).observe({ entryTypes: ['largest-contentful-paint'] });
-
-    // FID (First Input Delay)
-    new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      entries.forEach((entry) => {
-        console.log('FID:', entry.processingStart - entry.startTime);
-      });
-    }).observe({ entryTypes: ['first-input'] });
-
-    // CLS (Cumulative Layout Shift)
-    new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      entries.forEach((entry) => {
-        if (!entry.hadRecentInput) {
-          console.log('CLS:', entry.value);
+    try {
+      // LCP (Largest Contentful Paint)
+      new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        // Performance tracking would go here (e.g., analytics)
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.debug('LCP:', lastEntry.startTime);
         }
-      });
-    }).observe({ entryTypes: ['layout-shift'] });
+      }).observe({ entryTypes: ['largest-contentful-paint'] });
+    } catch (error) {
+      // PerformanceObserver not supported, fail silently
+    }
   }
 }
 
@@ -212,8 +202,8 @@ function OptimizedHeroSection() {
                     {/* Decorative floating elements */}
                     <div className="absolute inset-0 opacity-20">
                       <div className="absolute top-10 left-10 w-32 h-32 bg-white/30 rounded-full blur-3xl animate-pulse-slow" />
-                      <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
-                      <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white/25 rounded-full blur-2xl animate-pulse-slow" style={{ animationDelay: '0.5s' }} />
+                      <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/20 rounded-full blur-3xl animate-pulse-slow animation-delay-1000" />
+                      <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white/25 rounded-full blur-2xl animate-pulse-slow animation-delay-500" />
                     </div>
                   </div>
                   
@@ -628,6 +618,9 @@ export function PerformanceOptimizedLandingPage({ className }: PerformanceOptimi
 
       {/* Features Section */}
       <OptimizedFeaturesSection />
+
+      {/* Melbourne Coverage Map Section */}
+      <MelbourneMapSection />
 
       {/* Stats Section */}
       <OptimizedStatsSection />

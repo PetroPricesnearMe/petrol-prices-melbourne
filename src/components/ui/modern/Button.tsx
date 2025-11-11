@@ -215,7 +215,6 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
             className={baseClasses}
             aria-label={ariaLabel}
             onClick={handleClick}
-            ref={ref as any}
           >
             {content}
           </Link>
@@ -231,7 +230,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         disabled={disabled || loading}
         className={baseClasses}
         aria-label={ariaLabel}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLButtonElement>}
         whileHover={{ scale: disabled || loading ? 1 : 1.02 }}
         whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
       >

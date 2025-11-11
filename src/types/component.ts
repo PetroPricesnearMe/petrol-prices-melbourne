@@ -8,7 +8,7 @@
 import type React from 'react';
 import { type ReactNode, type CSSProperties, type AriaAttributes } from 'react';
 
-import type { BaseProps, WithLoadingState, WithErrorState } from './common';
+import type { BaseProps } from './common';
 
 // ============================================================================
 // Variant Types
@@ -524,7 +524,7 @@ export type PolymorphicProps<E extends React.ElementType> = {
 export type ExtractProps<T> = T extends React.ComponentType<infer P> ? P : never;
 
 /** Component with children */
-export type WithChildren<P = {}> = P & { children?: ReactNode };
+export type WithChildren<P = Record<string, never>> = P & { children?: ReactNode };
 
 /** Component ref type */
 export type ComponentRef<T extends React.ElementType> = React.ComponentPropsWithRef<T>['ref'];

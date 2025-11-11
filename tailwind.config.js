@@ -379,6 +379,18 @@ module.exports = {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
 
+      // Animation delays
+      animationDelay: {
+        '0': '0ms',
+        '100': '100ms',
+        '200': '200ms',
+        '300': '300ms',
+        '500': '500ms',
+        '700': '700ms',
+        '1000': '1000ms',
+        '2000': '2000ms',
+      },
+
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
@@ -523,6 +535,15 @@ module.exports = {
             outline: '3px solid white',
             outlineOffset: '2px',
           },
+        },
+        '.animation-delay-500': {
+          animationDelay: '0.5s',
+        },
+        '.animation-delay-1000': {
+          animationDelay: '1s',
+        },
+        '.animation-delay-2000': {
+          animationDelay: '2s',
         },
       });
     },

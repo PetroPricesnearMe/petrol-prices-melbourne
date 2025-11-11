@@ -59,7 +59,6 @@ export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonPr
           href={href}
           className={classes}
           aria-label={ariaLabel}
-          ref={ref as any}
         >
           {content}
         </Link>
@@ -74,7 +73,7 @@ export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonPr
         className={classes}
         aria-label={ariaLabel}
         disabled={disabled}
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLButtonElement>}
       >
         {content}
       </button>

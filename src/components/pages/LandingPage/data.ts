@@ -218,3 +218,53 @@ export const BRAND = {
   copyright: `© ${new Date().getFullYear()} Petrol Price Near Me. All rights reserved.`,
 };
 
+// ============================================================================
+// Melbourne Regions Data
+// ============================================================================
+
+export interface RegionData {
+  name: string;
+  slug: string;
+  color: string;
+  stations: number;
+  description: string;
+}
+
+export const MELBOURNE_REGIONS: RegionData[] = [
+  {
+    name: 'Melbourne CBD',
+    slug: 'melbourne',
+    color: 'from-purple-500 to-purple-600',
+    stations: 45,
+    description: 'Central business district with convenient city stations',
+  },
+  {
+    name: 'Northern Suburbs',
+    slug: 'northern-suburbs',
+    color: 'from-red-500 to-red-600',
+    stations: 68,
+    description: 'Including Preston, Coburg, Brunswick, and surrounds',
+  },
+  {
+    name: 'Western Suburbs',
+    slug: 'western-suburbs',
+    color: 'from-gray-500 to-gray-600',
+    stations: 52,
+    description: 'Footscray, Sunshine, Werribee, and western regions',
+  },
+  {
+    name: 'Eastern Suburbs',
+    slug: 'eastern-suburbs',
+    color: 'from-pink-500 to-pink-600',
+    stations: 61,
+    description: 'Richmond, Box Hill, Glen Waverley, and eastern areas',
+  },
+  {
+    name: 'South Eastern Suburbs',
+    slug: 'south-eastern-suburbs',
+    color: 'from-orange-500 to-orange-600',
+    stations: 47,
+    description: 'Dandenong, Clayton, Oakleigh, and south-east regions',
+  },
+];
+
