@@ -133,10 +133,11 @@ export default function AboutPage() {
                   <div>
                     <p className="font-semibold text-gray-900 dark:text-white">Email</p>
                     <a
-                      href="mailto:contact@petrolpricenearme.com.au"
+                      href="mailto:petrolpricesnearme@gmail.com"
                       className="text-primary-600 hover:text-primary-700 dark:text-primary-400 hover:underline break-all"
+                      aria-label="Send email to petrolpricesnearme@gmail.com"
                     >
-                      contact@petrolpricenearme.com.au
+                      petrolpricesnearme@gmail.com
                     </a>
                   </div>
                 </div>
