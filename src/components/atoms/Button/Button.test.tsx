@@ -195,16 +195,21 @@ describe('Button Component', () => {
 
     it('does not navigate when disabled', () => {
       render(<Button href="/test" disabled>Disabled Link</Button>);
-      const link = screen.getByRole('link');
-      expect(link).not.toHaveAttribute('href');
+      // When disabled, Button renders as button, not link (correct behavior)
+      const button = screen.getByRole('button');
+      expect(button).toBeDisabled();
+      expect(button).not.toHaveAttribute('href');
     });
   });
 
   describe('Custom Props', () => {
     it('applies custom className', () => {
       render(<Button className="custom-class">Button</Button>);
-      expect(screen.getByRole('button')).toHaveClass('custom-class');
-      expect(screen.getByRole('button')).toHaveClass('button');
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('custom-class');
+      // Check for actual Tailwind classes that exist
+      expect(button).toHaveClass('inline-flex');
+      expect(button).toHaveClass('items-center');
     });
 
     it('applies custom styles', () => {
@@ -214,7 +219,8 @@ describe('Button Component', () => {
 
     it('supports fullWidth prop', () => {
       render(<Button fullWidth>Full Width</Button>);
-      expect(screen.getByRole('button')).toHaveClass('button--full-width');
+      // Check for the actual Tailwind class instead of BEM modifier
+      expect(screen.getByRole('button')).toHaveClass('w-full');
     });
 
     it('supports testId', () => {

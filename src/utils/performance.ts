@@ -12,6 +12,16 @@
 import type { Metric } from 'web-vitals';
 
 // ============================================================================
+// Type Declarations
+// ============================================================================
+
+declare global {
+  interface Window {
+    gtag?: (command: string, eventName: string, params: Record<string, unknown>) => void;
+  }
+}
+
+// ============================================================================
 // Web Vitals Tracking
 // ============================================================================
 
@@ -40,8 +50,8 @@ export function trackWebVitals(metric: Metric) {
   }
 
   // Send to analytics (e.g., Google Analytics, Vercel Analytics)
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', name, {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', name, {
       value: Math.round(value),
       event_label: id,
       non_interaction: true,
@@ -101,8 +111,8 @@ export function analyzeResourceTiming(): ResourceTiming[] {
     .map((resource) => ({
       name: resource.name,
       duration: resource.duration,
-      size: (resource as any).transferSize || 0,
-      type: (resource as any).initiatorType || 'unknown',
+      size: (resource as PerformanceResourceTiming & { transferSize?: number }).transferSize || 0,
+      type: (resource as PerformanceResourceTiming & { initiatorType?: string }).initiatorType || 'unknown',
     }))
     .sort((a, b) => b.duration - a.duration)
     .slice(0, 10); // Top 10 slowest resources
@@ -189,21 +199,37 @@ export async function dynamicImport<T>(
 }
 
 /**
+ * Network Information API types
+ */
+interface NetworkInformation {
+  effectiveType?: '4g' | '3g' | '2g' | 'slow-2g';
+  downlink?: number;
+  rtt?: number;
+  saveData?: boolean;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
+}
+
+/**
  * Check if component should be preloaded
  */
 export function shouldPreload(preloadProbability: number = 0.5): boolean {
   // Preload based on connection speed
-  if (typeof navigator !== 'undefined' && (navigator as any).connection) {
-    const connection = (navigator as any).connection;
+  if (typeof navigator !== 'undefined') {
+    const connection = (navigator as NavigatorWithConnection).connection;
+    
+    if (connection) {
+      // Don't preload on slow connections
+      if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+        return false;
+      }
 
-    // Don't preload on slow connections
-    if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
-      return false;
-    }
-
-    // Always preload on fast connections
-    if (connection.effectiveType === '4g') {
-      return true;
+      // Always preload on fast connections
+      if (connection.effectiveType === '4g') {
+        return true;
+      }
     }
   }
 
@@ -325,6 +351,37 @@ export function throttle<T extends (...args: unknown[]) => unknown>(
       setTimeout(() => (inThrottle = false), limit);
     }
   };
+}
+
+/**
+ * Request idle callback wrapper with proper browser detection
+ * Executes callback during browser idle time for non-critical work
+ */
+export function idleCallback(
+  callback: () => void,
+  options?: IdleRequestOptions
+): number {
+  // Properly detect browser support for requestIdleCallback
+  if (typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined') {
+    return window.requestIdleCallback(callback, options);
+  }
+
+  // Fallback to setTimeout for browsers that don't support requestIdleCallback
+  return setTimeout(callback, 1) as unknown as number;
+}
+
+/**
+ * Cancel idle callback with proper browser detection
+ * Cancels a previously scheduled idle callback
+ */
+export function cancelIdleCallback(id: number): void {
+  // Properly detect browser support for cancelIdleCallback
+  if (typeof window !== 'undefined' && typeof window.cancelIdleCallback !== 'undefined') {
+    window.cancelIdleCallback(id);
+  } else {
+    // Fallback to clearTimeout
+    clearTimeout(id);
+  }
 }
 
 // ============================================================================

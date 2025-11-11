@@ -15,7 +15,7 @@ module.exports = {
     '^@/types/(.*)$': '<rootDir>/src/types/$1',
     '^@/design-system/(.*)$': '<rootDir>/src/design-system/$1',
     '^@/context/(.*)$': '<rootDir>/src/context/$1',
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '\\.(css|less|scss|sass)$': '<rootDir>/__mocks__/fileMock.js',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
 
@@ -56,6 +56,8 @@ module.exports = {
     '/.next/',
     '/build/',
     '/dist/',
+    '/e2e/',
+    '/playwright/',
   ],
 
   // Module file extensions
@@ -67,11 +69,11 @@ module.exports = {
   //   'jest-watch-typeahead/testname',
   // ],
 
-  // Globals
+  // Globals - Use modern JSX transform
   globals: {
     'ts-jest': {
       tsconfig: {
-        jsx: 'react',
+        jsx: 'react-jsx',
       },
     },
   },

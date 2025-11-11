@@ -20,7 +20,8 @@ describe('NorthernTradieCard', () => {
       const { container } = render(
         <NorthernTradieCard className="custom-class">Content</NorthernTradieCard>
       );
-      expect(container.firstChild?.firstChild).toHaveClass('custom-class');
+      // className is applied to the motion.div (firstChild), not its child
+      expect(container.firstChild).toHaveClass('custom-class');
     });
 
     it('renders with testId', () => {
@@ -83,7 +84,7 @@ describe('NorthernTradieCard', () => {
         </NorthernTradieCard>
       );
       expect(screen.getByRole('status')).toBeInTheDocument();
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
+      expect(screen.getAllByText('Loading...').length).toBeGreaterThan(0);
     });
 
     it('renders error state with message', () => {
@@ -257,24 +258,24 @@ describe('NorthernTradieCard', () => {
       render(
         <NorthernTradieCard clickable>Content</NorthernTradieCard>
       );
-      const card = screen.getByText('Content').closest('div');
-      expect(card).toHaveAttribute('tabIndex', '0');
+      const card = screen.getByRole('button');
+      expect(card).toHaveAttribute('tabindex', '0');
     });
 
     it('is not keyboard accessible when disabled', () => {
       render(
         <NorthernTradieCard clickable disabled>Content</NorthernTradieCard>
       );
-      const card = screen.getByText('Content').closest('div');
-      expect(card).toHaveAttribute('tabIndex', '-1');
+      const card = screen.getByRole('button');
+      expect(card).toHaveAttribute('tabindex', '-1');
     });
 
     it('has custom tabIndex when provided', () => {
       render(
         <NorthernTradieCard tabIndex={5}>Content</NorthernTradieCard>
       );
-      const card = screen.getByText('Content').closest('div');
-      expect(card).toHaveAttribute('tabIndex', '5');
+      const card = screen.getByRole('article');
+      expect(card).toHaveAttribute('tabindex', '5');
     });
   });
 
@@ -328,7 +329,7 @@ describe('NorthernTradieCard', () => {
           />
         </NorthernTradieCard>
       );
-      const img = screen.getByAlt('Test Image');
+      const img = screen.getByAltText('Test Image');
       expect(img).toBeInTheDocument();
     });
 
@@ -341,7 +342,7 @@ describe('NorthernTradieCard', () => {
           <NorthernTradieCard.Footer>Footer</NorthernTradieCard.Footer>
         </NorthernTradieCard>
       );
-      expect(screen.getByAlt('Test')).toBeInTheDocument();
+      expect(screen.getByAltText('Test')).toBeInTheDocument();
       expect(screen.getByText('Title')).toBeInTheDocument();
       expect(screen.getByText('Content')).toBeInTheDocument();
       expect(screen.getByText('Footer')).toBeInTheDocument();

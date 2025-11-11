@@ -12,7 +12,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 
 import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
@@ -46,9 +45,11 @@ interface Station {
   suburb: string;
   postcode: string;
   region: string;
-  latitude?: number;
-  longitude?: number;
+  category?: string;
+  latitude: number | null;
+  longitude: number | null;
   fuelPrices: FuelPrices;
+  amenities?: any;
   lastUpdated: string;
   verified: boolean;
 }
@@ -83,22 +84,6 @@ interface SearchFilters {
 type ViewMode = 'list' | 'grid' | 'map';
 
 const ITEMS_PER_PAGE = 24;
-
-// Convert station format for map component
-const convertStationForMap = (station: Station) => ({
-  id: station.id,
-  name: station.name,
-  address: station.address,
-  city: station.suburb,
-  latitude: station.latitude || 0,
-  longitude: station.longitude || 0,
-  brand: station.brand,
-  fuelPrices: [
-    station.fuelPrices.unleaded && { fuelType: 'Unleaded 91', price: station.fuelPrices.unleaded / 100 },
-    station.fuelPrices.diesel && { fuelType: 'Diesel', price: station.fuelPrices.diesel / 100 },
-    station.fuelPrices.premium95 && { fuelType: 'Premium 95', price: station.fuelPrices.premium95 / 100 },
-  ].filter(Boolean),
-});
 
 export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
   const [filters, setFilters] = useState<SearchFilters>({
@@ -179,9 +164,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
 
   // Filter stations with valid coordinates for map
   const mapStations = useMemo(() => {
-    return filteredStations
-      .filter(s => s.latitude && s.longitude)
-      .map(convertStationForMap);
+    return filteredStations.filter(s => s.latitude && s.longitude);
   }, [filteredStations]);
 
   // Pagination
@@ -542,7 +525,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
                           <>
                             <button
                               onClick={() => {
-                                setSelectedStation(convertStationForMap(station));
+                                setSelectedStation(station);
                                 setViewMode('map');
                               }}
                               className="btn btn-outline btn-sm flex-1"

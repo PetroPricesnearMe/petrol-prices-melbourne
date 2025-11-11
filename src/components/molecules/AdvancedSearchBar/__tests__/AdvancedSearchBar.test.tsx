@@ -9,7 +9,7 @@
  * - Recent searches
  */
 
-import { render, screen, fireEvent, waitFor } from '@testing-library/user event';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 

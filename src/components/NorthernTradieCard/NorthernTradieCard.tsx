@@ -209,14 +209,36 @@ const NorthernTradieCardBase = memo<NorthernTradieCardProps>(({
   if (animated) {
     return (
       <motion.div
+        ref={cardRef}
         initial="hidden"
         animate="visible"
         exit="exit"
         whileHover={hoverable && !disabled ? "hover" : undefined}
         whileTap={clickable && !disabled ? "tap" : undefined}
         variants={animationVariants}
+        className={cn(
+          cardClasses,
+          bgColor && `bg-${bgColor}`,
+          isFocused && 'ring-2 ring-blue-500 ring-offset-2'
+        )}
+        onClick={clickable ? handleClick : undefined}
+        onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        data-testid={testId}
+        {...accessibilityProps}
+        {...props}
       >
-        {cardElement}
+        {/* Loading overlay */}
+        <AnimatePresence>
+          {state === 'loading' && renderLoadingState()}
+        </AnimatePresence>
+
+        {/* Card content */}
+        <div className={cn(state === 'loading' && 'opacity-50')}>
+          {renderErrorState()}
+          {children}
+        </div>
       </motion.div>
     );
   }

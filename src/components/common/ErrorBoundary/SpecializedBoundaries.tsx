@@ -44,7 +44,7 @@ const ApiErrorFallback: React.FC<ApiErrorFallbackProps> = ({ error, onRetry }) =
             Unable to Load Data
           </h3>
           <p className="text-sm text-red-700 mb-4">
-            We're having trouble connecting to our servers. This might be a temporary issue.
+            We&apos;re having trouble connecting to our servers. This might be a temporary issue.
           </p>
           <p className="text-xs text-red-600 mb-4 font-mono bg-red-100 p-2 rounded">
             {error.message}
@@ -107,7 +107,7 @@ const MapErrorFallback: React.FC<MapErrorFallbackProps> = ({ error }) => (
           Map Unavailable
         </h3>
         <p className="text-sm text-gray-600 max-w-sm">
-          We couldn't load the map at this time. You can still view station listings below.
+          We couldn&apos;t load the map at this time. You can still view station listings below.
         </p>
         {process.env.NODE_ENV === 'development' && (
           <p className="text-xs text-gray-500 mt-4 font-mono">{error.message}</p>

@@ -237,7 +237,7 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
       {/* No results */}
       {searchQuery && filteredCategories.length === 0 && (
         <div className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-          No categories found matching "{searchQuery}"
+          No categories found matching &quot;{searchQuery}&quot;
         </div>
       )}
     </div>

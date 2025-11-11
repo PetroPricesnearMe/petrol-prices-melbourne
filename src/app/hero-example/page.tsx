@@ -136,7 +136,7 @@ export default function Page() {
               semantic HTML elements (<code className="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">header</code>,{' '}
               <code className="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">h1</code>,{' '}
               <code className="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">p</code>),
-              proper ARIA labels, keyboard navigation support, and respects user's
+              proper ARIA labels, keyboard navigation support, and respects user&apos;s
               motion preferences.
             </p>
           </div>
@@ -148,7 +148,7 @@ export default function Page() {
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               All animations use GPU-accelerated properties (transform, opacity) for
-              smooth 60fps performance. The component automatically respects the user's
+              smooth 60fps performance. The component automatically respects the user&apos;s
               <code className="text-sm bg-white dark:bg-gray-800 px-2 py-1 rounded mx-1">
                 prefers-reduced-motion
               </code>

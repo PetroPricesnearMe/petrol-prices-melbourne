@@ -468,7 +468,7 @@ function TestimonialsSection() {
 
                 {/* Content */}
                 <blockquote className="text-gray-600 dark:text-gray-400 mb-6 italic">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </blockquote>
 
                 {/* Author */}

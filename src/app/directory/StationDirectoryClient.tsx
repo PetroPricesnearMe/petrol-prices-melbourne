@@ -344,7 +344,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                 {filteredStations.length} station{filteredStations.length !== 1 ? 's' : ''} found
                 {filters.search && (
                   <span className="ml-2">
-                    for <strong>"{filters.search}"</strong>
+                    for <strong>&quot;{filters.search}&quot;</strong>
                   </span>
                 )}
               </div>

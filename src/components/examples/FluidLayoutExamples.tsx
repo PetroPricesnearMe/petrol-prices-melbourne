@@ -217,8 +217,8 @@ export function BlogArticle() {
         {/* Content with vertical rhythm and optimal line length */}
         <div className="content-spacing text-lg leading-relaxed text-gray-700 dark:text-gray-300 text-measure">
           <p className="text-2xl font-medium text-gray-900 dark:text-white">
-            In today's fast-paced digital landscape, building scalable web
-            applications is more important than ever. Let's explore the key
+            In today&apos;s fast-paced digital landscape, building scalable web
+            applications is more important than ever. Let&apos;s explore the key
             principles and modern techniques.
           </p>
 
@@ -227,7 +227,7 @@ export function BlogArticle() {
           </h2>
 
           <p>
-            Scalability isn't just about handling more users—it's about
+            Scalability isn&apos;t just about handling more users—it&apos;s about
             maintaining performance, reliability, and user experience as your
             application grows. A well-architected scalable system can adapt to
             changing demands without requiring complete rewrites.
@@ -253,8 +253,8 @@ export function BlogArticle() {
           </ul>
 
           <blockquote className="border-l-4 border-primary-500 pl-6 py-4 bg-gray-50 dark:bg-gray-800 rounded-r-lg italic text-gray-900 dark:text-white">
-            "The best time to think about scalability was yesterday. The second
-            best time is now."
+            &quot;The best time to think about scalability was yesterday. The second
+            best time is now.&quot;
           </blockquote>
 
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mt-fluid-lg">
@@ -262,7 +262,7 @@ export function BlogArticle() {
           </h2>
 
           <p>
-            Today's scalable applications often employ microservices
+            Today&apos;s scalable applications often employ microservices
             architectures, serverless functions, and edge computing to distribute
             load and improve response times. These patterns allow teams to scale
             specific components independently based on demand.
@@ -286,7 +286,7 @@ export function BlogArticle() {
           <p>
             Building scalable applications requires thoughtful architecture,
             proper tooling, and continuous optimization. By following these
-            principles and patterns, you'll be well-equipped to handle growth
+            principles and patterns, you&apos;ll be well-equipped to handle growth
             and deliver exceptional user experiences at any scale.
           </p>
         </div>
@@ -467,7 +467,7 @@ export function TestimonialGrid() {
               Loved by Teams Worldwide
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 text-measure mx-auto">
-              Don't just take our word for it
+              Don&apos;t just take our word for it
             </p>
           </header>
 
@@ -478,7 +478,7 @@ export function TestimonialGrid() {
                 className="card p-fluid-md stack hover:shadow-xl transition-all duration-300"
               >
                 <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed italic">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
                 <footer className="flex items-center gap-4 mt-auto">
                   <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-2xl">

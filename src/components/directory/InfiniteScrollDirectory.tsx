@@ -102,7 +102,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
             {totalCount} station{totalCount !== 1 ? 's' : ''} found
             {filters.search && (
               <span className="ml-2">
-                for <strong>"{filters.search}"</strong>
+                for <strong>&quot;{filters.search}&quot;</strong>
               </span>
             )}
           </div>
@@ -456,7 +456,7 @@ export function InfiniteScrollDirectory({
         {!hasNextPage && stations.length > 0 && (
           <div className="text-center py-8">
             <p className="text-gray-500 dark:text-gray-400">
-              You've reached the end of the results
+              You&apos;ve reached the end of the results
             </p>
             <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
               {totalCount} stations loaded across {loadedPages} pages

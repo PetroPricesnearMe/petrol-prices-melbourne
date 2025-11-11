@@ -133,8 +133,8 @@ export function SearchTestClient() {
                 🧪 How to Test
               </h2>
               <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
-                <li><strong>Autocomplete:</strong> Start typing "Shell" or "Carlton" - suggestions appear</li>
-                <li><strong>Fuzzy Search:</strong> Try typos like "Shel" or "Carton" - still finds matches!</li>
+                <li><strong>Autocomplete:</strong> Start typing &quot;Shell&quot; or &quot;Carlton&quot; - suggestions appear</li>
+                <li><strong>Fuzzy Search:</strong> Try typos like &quot;Shel&quot; or &quot;Carton&quot; - still finds matches!</li>
                 <li><strong>Category Filter:</strong> Click category buttons to filter by brand/suburb/fuel</li>
                 <li><strong>Keyboard Nav:</strong> Use ↑ ↓ arrows, Enter to select, ESC to close</li>
                 <li><strong>Recent Searches:</strong> Click input when empty to see recent searches</li>
@@ -169,7 +169,7 @@ export function SearchTestClient() {
                 <div className="text-sm text-gray-600 dark:text-gray-400">
                   {searchQuery ? (
                     <span>
-                      Query: <strong className="text-blue-600 dark:text-blue-400">"{searchQuery}"</strong>
+                      Query: <strong className="text-blue-600 dark:text-blue-400">&quot;{searchQuery}&quot;</strong>
                       {' '}• {filteredStations.length} results
                     </span>
                   ) : (

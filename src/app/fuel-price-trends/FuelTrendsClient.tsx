@@ -143,6 +143,7 @@ export function FuelTrendsClient() {
             </div>
           </div>
         ) : (
+          trendData ? (
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -251,6 +252,14 @@ export function FuelTrendsClient() {
               </div>
             </div>
           </div>
+          ) : (
+            <div className={patterns.flex.center + ' py-20'}>
+              <div className="text-center">
+                <div className="text-6xl mb-4">📊</div>
+                <p className="text-gray-600 dark:text-gray-400">No trend data available</p>
+              </div>
+            </div>
+          )
         )}
       </div>
     </main>
