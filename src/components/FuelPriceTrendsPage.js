@@ -1,3 +1,12 @@
+/**
+ * FuelPriceTrendsPage - Legacy component
+ * 
+ * NOTE: This component uses framer-motion and requires 'use client' directive
+ * for Next.js 15+ App Router compatibility.
+ */
+
+'use client';
+
 import { motion } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';

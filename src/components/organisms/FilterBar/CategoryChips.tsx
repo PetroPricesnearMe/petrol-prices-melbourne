@@ -10,6 +10,8 @@
  * - Mobile responsive
  */
 
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useState, useEffect, useCallback } from 'react';
 

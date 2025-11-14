@@ -101,8 +101,8 @@ import debounce from 'lodash-es/debounce';  // 2 KB
 **Framer Motion:**
 ```javascript
 // webpack config
-config.resolve.alias['framer-motion'] = 
-  'framer-motion/dist/es/index.mjs';
+// Note: In Framer Motion 11+, top-level imports are already optimized
+// No custom alias needed - Next.js handles ESM/CJS automatically
 ```
 **Savings:** 145 KB (-81%)
 

@@ -9,6 +9,8 @@
  * - Mobile-first responsive design
  */
 
+'use client';
+
 import { motion } from 'framer-motion';
 import React from 'react';
 import type { ReactNode } from 'react';

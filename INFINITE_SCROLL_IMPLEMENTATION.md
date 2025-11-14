@@ -343,7 +343,7 @@ if (isError) {
 ```typescript
 // Ensure proper CSS imports
 import '../styles/brand-colors.css';
-import 'framer-motion/dist/framer-motion.css';
+// Note: Framer Motion 11+ doesn't require CSS import - styles are included automatically
 ```
 
 ### Performance Monitoring

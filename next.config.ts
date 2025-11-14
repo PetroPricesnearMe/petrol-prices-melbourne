@@ -257,14 +257,9 @@ const nextConfig: NextConfig = {
       };
 
       // Optimize module resolution
-      config.resolve = {
-        ...config.resolve,
-        alias: {
-          ...config.resolve.alias,
-          // Reduce bundle size by using ESM versions
-          'framer-motion': 'framer-motion/dist/es',
-        },
-      };
+      // Note: In Framer Motion 11+, top-level imports are already optimized
+      // No need for custom alias - Next.js handles ESM/CJS automatically
+      // Removed deprecated 'framer-motion/dist/es' alias
     }
 
     // Production-only optimizations

@@ -12,6 +12,8 @@
  * - Customizable appearance
  */
 
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useCallback, useEffect, useRef } from 'react';
 

@@ -10,6 +10,8 @@
  * - ARIA accessibility
  */
 
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ReactNode } from 'react';
 import React, { useState, useCallback } from 'react';

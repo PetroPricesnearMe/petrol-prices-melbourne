@@ -11,6 +11,8 @@
  * ```
  */
 
+'use client';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { memo, useMemo, useCallback, useState, useEffect, useRef } from 'react';
 

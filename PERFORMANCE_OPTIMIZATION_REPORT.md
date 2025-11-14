@@ -132,7 +132,7 @@ import * as framerMotion from 'framer-motion';  // 180 KB
 ```javascript
 import debounce from 'lodash-es/debounce';  // 2 KB
 import { format } from 'date-fns';          // 5 KB
-import { motion } from 'framer-motion/dist/es/index.mjs';  // 35 KB
+import { motion } from 'framer-motion';  // Optimized in Framer Motion 11+
 ```
 
 **Configuration:**
@@ -140,8 +140,8 @@ import { motion } from 'framer-motion/dist/es/index.mjs';  // 35 KB
 // next.config.optimized.js
 webpack: (config, { dev, isServer }) => {
   if (!dev && !isServer) {
-    config.resolve.alias['framer-motion'] = 
-      'framer-motion/dist/es/index.mjs';
+    // Note: In Framer Motion 11+, top-level imports are already optimized
+    // No custom alias needed - Next.js handles ESM/CJS automatically
   }
   return config;
 }
