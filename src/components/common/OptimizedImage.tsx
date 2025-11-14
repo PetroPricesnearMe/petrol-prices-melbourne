@@ -1,187 +1,368 @@
+/**
+ * Optimized Image Component
+ * 
+ * Production-ready image component optimized for Core Web Vitals:
+ * - LCP optimization (priority loading, preload)
+ * - CLS prevention (aspect ratio, dimensions)
+ * - Image format optimization (AVIF, WebP)
+ * - Responsive image sizing
+ * - Lazy loading strategies
+ * - Blur placeholders
+ * - Error handling
+ * 
+ * Performance Features:
+ * - Automatic format optimization (AVIF > WebP > JPG)
+ * - Responsive image sizing
+ * - Lazy loading for below-fold images
+ * - Priority loading for hero/LCP images
+ * - Blur placeholders for better perceived performance
+ * - Aspect ratio preservation to prevent CLS
+ * 
+ * @module components/common/OptimizedImage
+ */
+
+'use client';
+
 import Image from 'next/image';
-import { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
+import {
+  generateBlurPlaceholder,
+  getOptimalQuality,
+  getOptimalSizes,
+  getImageLoadingStrategy,
+  preloadImage,
+  isLikelyLCPElement,
+} from '@/lib/performance/image-optimization';
 
-interface OptimizedImageProps {
+/**
+ * Optimized Image Props
+ */
+export interface OptimizedImageProps {
+  /**
+   * Image source URL
+   */
   src: string;
+  
+  /**
+   * Image alt text (required for accessibility)
+   */
   alt: string;
+  
+  /**
+   * Image width
+   */
   width?: number;
+  
+  /**
+   * Image height
+   */
   height?: number;
-  priority?: boolean;
-  className?: string;
-  sizes?: string;
-  quality?: number;
-  placeholder?: 'blur' | 'empty';
-  blurDataURL?: string;
+  
+  /**
+   * Fill container (use with aspect ratio)
+   */
   fill?: boolean;
-  style?: React.CSSProperties;
-  onClick?: () => void;
-  // Add support for object-fit
-  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
-  // Add support for aspect ratio
+  
+  /**
+   * Image quality (1-100, default: 85)
+   */
+  quality?: number;
+  
+  /**
+   * Image priority (for LCP optimization)
+   */
+  priority?: boolean;
+  
+  /**
+   * Loading strategy
+   */
+  loading?: 'lazy' | 'eager';
+  
+  /**
+   * Fetch priority
+   */
+  fetchPriority?: 'high' | 'auto' | 'low';
+  
+  /**
+   * Image usage type (affects quality and sizing)
+   */
+  usage?: 'hero' | 'thumbnail' | 'card' | 'icon' | 'background';
+  
+  /**
+   * Responsive sizes string
+   */
+  sizes?: string;
+  
+  /**
+   * Aspect ratio (e.g., "16/9")
+   */
   aspectRatio?: string;
-  // Add support for loading state
-  showLoader?: boolean;
+  
+  /**
+   * Object fit
+   */
+  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
+  
+  /**
+   * Blur placeholder
+   */
+  blurDataURL?: string;
+  
+  /**
+   * Show loading skeleton
+   */
+  showSkeleton?: boolean;
+  
+  /**
+   * Custom className
+   */
+  className?: string;
+  
+  /**
+   * Custom style
+   */
+  style?: React.CSSProperties;
+  
+  /**
+   * Click handler
+   */
+  onClick?: () => void;
+  
+  /**
+   * Load handler
+   */
+  onLoad?: () => void;
+  
+  /**
+   * Error handler
+   */
+  onError?: (error: Error) => void;
 }
 
 /**
- * OptimizedImage Component
- * Replaces all img tags with Next.js Image component for better performance
- * Includes lazy loading, priority loading, and responsive optimization
- *
- * Performance optimizations:
- * - Automatic WebP/AVIF format conversion
- * - Lazy loading for below-fold images
- * - Priority loading for LCP images
- * - Blur placeholders for better perceived performance
- * - Responsive image sizing for different viewports
- * - Proper aspect ratio handling to prevent CLS
- *
- * Core Web Vitals optimization:
- * - LCP: Priority loading for hero images
- * - CLS: Fixed aspect ratio and dimensions
- * - FID: Proper image dimensions to prevent layout shift
+ * Optimized Image Component
+ * 
+ * Production-ready image component with Core Web Vitals optimization
  */
-export const OptimizedImage: React.FC<OptimizedImageProps> = ({
+export function OptimizedImage({
   src,
   alt,
   width,
   height,
-  priority = false,
-  className,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  quality = 85,
-  placeholder = 'empty',
-  blurDataURL,
   fill = false,
+  quality,
+  priority = false,
+  loading,
+  fetchPriority,
+  usage = 'card',
+  sizes,
+  aspectRatio,
+  objectFit = 'cover',
+  blurDataURL,
+  showSkeleton = true,
+  className,
   style,
   onClick,
-  objectFit = 'cover',
-  aspectRatio,
-  showLoader = true,
-}) => {
-  const [isLoading, setIsLoading] = useState(true);
+  onLoad,
+  onError,
+}: OptimizedImageProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
 
-  // Handle image load completion
+  // Determine optimal quality based on usage
+  const optimalQuality = quality ?? getOptimalQuality(usage);
+
+  // Determine optimal sizes based on usage
+  const optimalSizes = sizes ?? getOptimalSizes(usage);
+
+  // Determine loading strategy
+  const loadingStrategy = getImageLoadingStrategy(
+    priority || usage === 'hero',
+    !priority,
+    priority
+  );
+
+  // Use provided loading strategy or determine automatically
+  const finalLoading = loading ?? loadingStrategy.loading;
+  const finalFetchPriority = fetchPriority ?? loadingStrategy.fetchPriority;
+
+  // Generate blur placeholder
+  const defaultBlurDataURL = blurDataURL ?? generateBlurPlaceholder(
+    width || 10,
+    height || 10
+  );
+
+  // Preload image if it's a priority/LCP image
+  useEffect(() => {
+    if (priority && src) {
+      preloadImage(src);
+    }
+  }, [priority, src]);
+
+  // Check if image is likely LCP element
+  useEffect(() => {
+    if (imageRef.current && !priority) {
+      const isLCP = isLikelyLCPElement(imageRef.current);
+      if (isLCP) {
+        preloadImage(src);
+      }
+    }
+  }, [src, priority]);
+
+  // Handle image load
   const handleLoad = () => {
-    setIsLoading(false);
+    setIsLoaded(true);
+    setHasError(false);
+    onLoad?.();
   };
 
-  // Handle image load error
-  const handleError = () => {
-    setIsLoading(false);
+  // Handle image error
+  const handleError = (error: Error) => {
     setHasError(true);
+    setIsLoaded(false);
+    onError?.(error);
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Image failed to load:', src, error);
+    }
   };
 
-  // Generate blur data URL if not provided
-  const defaultBlurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTdlYSIvPgo8L3N2Zz4K';
+  // Calculate aspect ratio style
+  const aspectRatioStyle = aspectRatio
+    ? { aspectRatio, ...style }
+    : style;
 
-  // Calculate aspect ratio styles
-  const aspectRatioStyle = aspectRatio ? { aspectRatio } : {};
-
+  // Render error state
   if (hasError) {
     return (
       <div
         className={cn(
-          'flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400',
+          'flex items-center justify-center bg-gray-200 dark:bg-gray-700',
+          aspectRatio && `aspect-[${aspectRatio}]`,
           className
         )}
-        style={{ ...aspectRatioStyle, ...style }}
+        style={aspectRatioStyle}
       >
-        <span className="text-sm">Image unavailable</span>
+        <div className="text-center p-4">
+          <svg
+            className="w-12 h-12 mx-auto text-gray-400 mb-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Failed to load image
+          </p>
+        </div>
       </div>
     );
   }
 
+  // Render image with Next.js Image component
   return (
     <div
-      className={cn('relative overflow-hidden', className)}
-      style={{ ...aspectRatioStyle, ...style }}
+      className={cn(
+        'relative overflow-hidden',
+        className
+      )}
+      style={aspectRatioStyle}
     >
-      {showLoader && isLoading && (
-        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center z-0">
-          <div className="w-8 h-8 border-2 border-gray-300 dark:border-gray-600 border-t-primary-600 rounded-full animate-spin"></div>
+      {/* Loading skeleton */}
+      {showSkeleton && !isLoaded && (
+        <div
+          className={cn(
+            'absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse',
+            'flex items-center justify-center'
+          )}
+          aria-hidden="true"
+        >
+          <div className="w-8 h-8 border-2 border-gray-300 dark:border-gray-600 border-t-primary-600 rounded-full animate-spin" />
         </div>
       )}
 
+      {/* Next.js Image component */}
       <Image
         src={src}
         alt={alt}
         width={fill ? undefined : width}
         height={fill ? undefined : height}
         fill={fill}
-        priority={priority}
-        sizes={sizes}
-        quality={quality}
-        placeholder={placeholder}
-        blurDataURL={blurDataURL || defaultBlurDataURL}
+        quality={optimalQuality}
+        priority={priority || loadingStrategy.priority}
+        loading={finalLoading}
+        sizes={optimalSizes}
+        placeholder="blur"
+        blurDataURL={defaultBlurDataURL}
         className={cn(
           'transition-opacity duration-300',
-          isLoading ? 'opacity-0' : 'opacity-100',
+          isLoaded ? 'opacity-100' : 'opacity-0',
           onClick && 'cursor-pointer',
           `object-${objectFit}`
         )}
-        style={aspectRatio ? { aspectRatio, objectFit } : { objectFit }}
+        style={{
+          objectFit,
+          ...style,
+        }}
         onLoad={handleLoad}
-        onError={handleError}
+        onError={() => handleError(new Error(`Failed to load image: ${src}`))}
         onClick={onClick}
-        // Optimize for Core Web Vitals
-        loading={priority ? 'eager' : 'lazy'}
-        decoding="async"
-        // Reduce CLS by providing explicit dimensions
-        fetchPriority={priority ? 'high' : 'auto'}
+        // Prevent layout shift
+        unoptimized={false}
       />
     </div>
   );
-};
+}
 
 /**
- * HeroImage Component
- * Specifically optimized for hero/LCP images with priority loading
+ * Hero Image Component (optimized for LCP)
  */
-export const HeroImage: React.FC<Omit<OptimizedImageProps, 'priority'>> = (props) => {
+export function HeroImage(props: Omit<OptimizedImageProps, 'priority' | 'usage'>) {
   return (
     <OptimizedImage
       {...props}
       priority={true}
-      quality={90}
-      placeholder="blur"
-      sizes="100vw"
-      objectFit="cover"
+      usage="hero"
+      loading="eager"
+      fetchPriority="high"
     />
   );
-};
+}
 
 /**
- * ResponsiveImage Component
- * Optimized for responsive design with proper breakpoint handling
+ * Card Image Component (optimized for cards)
  */
-export const ResponsiveImage: React.FC<OptimizedImageProps & {
-  mobileSrc?: string;
-  tabletSrc?: string;
-  desktopSrc?: string;
-}> = ({ mobileSrc, tabletSrc, desktopSrc, src, ...props }) => {
-  // In a production app, you'd use a <picture> element with Next.js Image
-  // For now, we'll use the appropriate src based on viewport (handled by Next.js Image optimization)
-  return <OptimizedImage src={src} {...props} />;
-};
-
-/**
- * Avatar Image Component
- * Optimized for small circular profile images
- */
-export const AvatarImage: React.FC<Omit<OptimizedImageProps, 'className' | 'objectFit'>> = (props) => {
+export function CardImage(props: Omit<OptimizedImageProps, 'usage'>) {
   return (
     <OptimizedImage
       {...props}
-      className="rounded-full"
-      objectFit="cover"
-      sizes="(max-width: 768px) 64px, 96px"
-      quality={80}
+      usage="card"
+      loading="lazy"
+      fetchPriority="auto"
     />
   );
-};
+}
 
-export default OptimizedImage;
+/**
+ * Thumbnail Image Component (optimized for thumbnails)
+ */
+export function ThumbnailImage(props: Omit<OptimizedImageProps, 'usage'>) {
+  return (
+    <OptimizedImage
+      {...props}
+      usage="thumbnail"
+      loading="lazy"
+      fetchPriority="auto"
+    />
+  );
+}

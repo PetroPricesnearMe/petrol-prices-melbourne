@@ -10,6 +10,10 @@ module.exports = {
   // Dark mode configuration
   darkMode: ['class', '[data-theme="dark"]'],
   
+  // Optimize for production (remove unused styles)
+  // This is handled automatically by Tailwind CSS v3+ with JIT mode
+  // No need for PurgeCSS - Tailwind CSS handles this automatically
+  
   theme: {
     // ========================================
     // RESPONSIVE BREAKPOINTS
@@ -223,6 +227,7 @@ module.exports = {
 
     fontFamily: {
       sans: [
+        'var(--font-inter)',
         'Inter',
         '-apple-system',
         'BlinkMacSystemFont',
@@ -552,11 +557,20 @@ module.exports = {
   // ========================================
   // SAFELIST
   // Ensure these classes are never purged
+  // Note: Tailwind CSS v3+ uses JIT mode and automatically purges unused styles
+  // This safelist is only needed for dynamic classes that can't be detected statically
   // ========================================
   safelist: [
     'sr-only',
     'focus-ring',
     'focus-ring-white',
+    // Dynamic aspect ratio classes (if needed)
+    {
+      pattern: /aspect-(square|video|4\/3|21\/9)/,
+    },
+    // Animation delay classes
+    {
+      pattern: /animation-delay-(0|100|200|300|500|700|1000|2000)/,
+    },
   ],
 };
-

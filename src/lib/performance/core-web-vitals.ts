@@ -1,547 +1,246 @@
 /**
- * Core Web Vitals Optimization Utilities
- *
- * Utilities for optimizing and measuring Google Core Web Vitals:
- * - LCP (Largest Contentful Paint) - < 2.5s
- * - FID (First Input Delay) / INP (Interaction to Next Paint) - < 100ms / < 200ms
- * - CLS (Cumulative Layout Shift) - < 0.1
- * - FCP (First Contentful Paint) - < 1.8s
- * - TTFB (Time to First Byte) - < 600ms
- *
+ * Core Web Vitals Tracking and Monitoring
+ * 
+ * Comprehensive tracking of Core Web Vitals metrics:
+ * - LCP (Largest Contentful Paint)
+ * - CLS (Cumulative Layout Shift)
+ * - FID (First Input Delay) / INP (Interaction to Next Paint)
+ * - TTFB (Time to First Byte)
+ * - FCP (First Contentful Paint)
+ * 
  * @module lib/performance/core-web-vitals
  */
 
-// ============================================================================
-// Types
-// ============================================================================
-
-export interface WebVitalsMetric {
-  name: 'CLS' | 'FCP' | 'FID' | 'INP' | 'LCP' | 'TTFB';
+/**
+ * Core Web Vitals Metric Types
+ */
+export interface WebVitalMetric {
+  name: string;
   value: number;
-  rating: 'good' | 'needs-improvement' | 'poor';
-  delta: number;
   id: string;
-  navigationType: 'navigate' | 'reload' | 'back-forward' | 'prerender';
+  delta?: number;
+  rating?: 'good' | 'needs-improvement' | 'poor';
+  navigationType?: string;
 }
 
-export interface PerformanceConfig {
-  enableReporting: boolean;
-  sampleRate: number;
-  debug: boolean;
-  endpoint?: string;
-}
-
-// ============================================================================
-// Web Vitals Thresholds
-// ============================================================================
-
+/**
+ * Core Web Vitals Thresholds (Google's recommended values)
+ */
 export const WEB_VITALS_THRESHOLDS = {
   LCP: {
-    good: 2500,
-    poor: 4000,
-  },
-  FID: {
-    good: 100,
-    poor: 300,
-  },
-  INP: {
-    good: 200,
-    poor: 500,
+    good: 2500, // 2.5 seconds
+    needsImprovement: 4000, // 4 seconds
   },
   CLS: {
     good: 0.1,
-    poor: 0.25,
+    needsImprovement: 0.25,
   },
-  FCP: {
-    good: 1800,
-    poor: 3000,
+  FID: {
+    good: 100, // 100 milliseconds
+    needsImprovement: 300, // 300 milliseconds
+  },
+  INP: {
+    good: 200, // 200 milliseconds
+    needsImprovement: 500, // 500 milliseconds
   },
   TTFB: {
-    good: 600,
-    poor: 1500,
+    good: 600, // 600 milliseconds
+    needsImprovement: 800, // 800 milliseconds
+  },
+  FCP: {
+    good: 1800, // 1.8 seconds
+    needsImprovement: 3000, // 3 seconds
   },
 } as const;
 
-// ============================================================================
-// Rating Functions
-// ============================================================================
-
 /**
- * Get rating for a metric value
+ * Get rating for a Web Vital metric
  */
-export function getRating(
-  metricName: WebVitalsMetric['name'],
+export function getMetricRating(
+  name: string,
   value: number
 ): 'good' | 'needs-improvement' | 'poor' {
-  const thresholds = WEB_VITALS_THRESHOLDS[metricName];
+  const thresholds = WEB_VITALS_THRESHOLDS[name as keyof typeof WEB_VITALS_THRESHOLDS];
+  
+  if (!thresholds) {
+    return 'good';
+  }
 
-  if (value <= thresholds.good) return 'good';
-  if (value <= thresholds.poor) return 'needs-improvement';
+  if (value <= thresholds.good) {
+    return 'good';
+  }
+  
+  if (value <= thresholds.needsImprovement) {
+    return 'needs-improvement';
+  }
+  
   return 'poor';
 }
 
 /**
- * Check if metric meets "good" threshold
+ * Track Web Vital metric
  */
-export function isGoodScore(metricName: WebVitalsMetric['name'], value: number): boolean {
-  return value <= WEB_VITALS_THRESHOLDS[metricName].good;
-}
-
-// ============================================================================
-// Web Vitals Reporter
-// ============================================================================
-
-class WebVitalsReporter {
-  private config: PerformanceConfig;
-  private metrics: Map<string, WebVitalsMetric> = new Map();
-
-  constructor(config: Partial<PerformanceConfig> = {}) {
-    this.config = {
-      enableReporting: config.enableReporting ?? true,
-      sampleRate: config.sampleRate ?? 1,
-      debug: config.debug ?? false,
-      endpoint: config.endpoint,
-    };
+export function trackWebVital(metric: WebVitalMetric): void {
+  if (typeof window === 'undefined') {
+    return;
   }
 
-  /**
-   * Report a metric
-   */
-  report(metric: WebVitalsMetric) {
-    // Store metric
-    this.metrics.set(metric.name, metric);
+  const rating = getMetricRating(metric.name, metric.value);
 
-    // Debug logging
-    if (this.config.debug && process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      console.log(`[Web Vitals] ${metric.name}:`, {
-        value: metric.value,
-        rating: metric.rating,
-        delta: metric.delta,
-      });
-    }
-
-    // Sample rate check
-    if (Math.random() > this.config.sampleRate) {
-      return;
-    }
-
-    // Report to analytics
-    if (this.config.enableReporting) {
-      this.sendToAnalytics(metric);
-    }
-
-    // Store in localStorage for dashboard
-    this.storeLocally(metric);
+  // Send to Google Analytics (if available)
+  if (typeof (window as any).gtag !== 'undefined') {
+    (window as any).gtag('event', metric.name, {
+      value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+      event_label: metric.id,
+      event_category: 'Web Vitals',
+      event_value: Math.round(metric.value),
+      non_interaction: true,
+      metric_rating: rating,
+      metric_delta: metric.delta,
+    });
   }
 
-  /**
-   * Send metric to analytics
-   */
-  private sendToAnalytics(metric: WebVitalsMetric) {
-    // Google Analytics 4
-    if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-      (window as Window & { gtag: (...args: unknown[]) => void }).gtag('event', metric.name, {
-        value: Math.round(metric.value),
-        metric_id: metric.id,
-        metric_value: metric.value,
-        metric_delta: metric.delta,
-        metric_rating: metric.rating,
-        event_category: 'Web Vitals',
-        event_label: metric.id,
-        non_interaction: true,
-      });
-    }
+  // Send to Vercel Analytics (automatic with @vercel/analytics)
+  // The Analytics component handles this automatically
 
-    // Custom endpoint
-    if (this.config.endpoint) {
-      const url = this.config.endpoint;
-      const body = JSON.stringify({
-        metric: metric.name,
+  // Store in localStorage for debugging
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const metrics = JSON.parse(
+        localStorage.getItem('web-vitals') || '{}'
+      );
+      metrics[metric.name] = {
         value: metric.value,
-        rating: metric.rating,
-        delta: metric.delta,
         id: metric.id,
+        rating,
         timestamp: Date.now(),
-        url: window.location.href,
-        userAgent: navigator.userAgent,
-      });
-
-      // Use sendBeacon for reliability
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(url, body);
-      } else {
-        fetch(url, {
-          method: 'POST',
-          body,
-          headers: { 'Content-Type': 'application/json' },
-          keepalive: true,
-        }).catch(() => {
-          // Silently fail
-        });
-      }
-    }
-  }
-
-  /**
-   * Store metric locally for dashboard
-   */
-  private storeLocally(metric: WebVitalsMetric) {
-    if (typeof window === 'undefined') return;
-
-    try {
-      const key = `web-vitals-${metric.name}`;
-      const data = {
-        value: metric.value,
-        rating: metric.rating,
-        timestamp: Date.now(),
+        delta: metric.delta,
       };
-      localStorage.setItem(key, JSON.stringify(data));
-    } catch (error) {
-      // Ignore localStorage errors
+      localStorage.setItem('web-vitals', JSON.stringify(metrics));
+    }
+  } catch (error) {
+    // Ignore localStorage errors
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Failed to store Web Vital metric:', error);
     }
   }
 
-  /**
-   * Get all metrics
-   */
-  getMetrics(): WebVitalsMetric[] {
-    return Array.from(this.metrics.values());
-  }
-
-  /**
-   * Get metric by name
-   */
-  getMetric(name: WebVitalsMetric['name']): WebVitalsMetric | undefined {
-    return this.metrics.get(name);
-  }
-
-  /**
-   * Get metrics summary
-   */
-  getSummary() {
-    const metrics = this.getMetrics();
-    return {
-      total: metrics.length,
-      good: metrics.filter(m => m.rating === 'good').length,
-      needsImprovement: metrics.filter(m => m.rating === 'needs-improvement').length,
-      poor: metrics.filter(m => m.rating === 'poor').length,
-      metrics: metrics.reduce((acc, metric) => {
-        acc[metric.name] = {
-          value: metric.value,
-          rating: metric.rating,
-        };
-        return acc;
-      }, {} as Record<string, { value: number; rating: string }>),
-    };
+  // Log in development
+  if (process.env.NODE_ENV === 'development') {
+    const displayValue = metric.name === 'CLS' 
+      ? (metric.value * 1000).toFixed(2) + ' (scaled)'
+      : Math.round(metric.value) + 'ms';
+    
+    console.log(
+      `[Web Vitals] ${metric.name}: ${displayValue} (${rating})`
+    );
   }
 }
 
-// Global reporter instance
-let reporter: WebVitalsReporter | null = null;
-
 /**
- * Initialize Web Vitals reporter
+ * Initialize Web Vitals tracking
  */
-export function initWebVitalsReporter(config?: Partial<PerformanceConfig>) {
-  if (typeof window === 'undefined') return;
-
-  reporter = new WebVitalsReporter(config);
-  return reporter;
-}
-
-/**
- * Get Web Vitals reporter instance
- */
-export function getWebVitalsReporter(): WebVitalsReporter {
-  if (!reporter) {
-    reporter = new WebVitalsReporter();
-  }
-  return reporter;
-}
-
-// ============================================================================
-// LCP Optimization Utilities
-// ============================================================================
-
-/**
- * Preload critical images for LCP optimization
- */
-export function preloadLCPImage(src: string, options?: {
-  as?: 'image';
-  type?: string;
-  fetchPriority?: 'high' | 'low' | 'auto';
-}) {
-  if (typeof document === 'undefined') return;
-
-  const link = document.createElement('link');
-  link.rel = 'preload';
-  link.as = options?.as || 'image';
-  link.href = src;
-
-  if (options?.type) {
-    link.type = options.type;
+export function initWebVitalsTracking(): void {
+  if (typeof window === 'undefined') {
+    return;
   }
 
-  if (options?.fetchPriority) {
-    link.setAttribute('fetchpriority', options.fetchPriority);
-  }
+  // Dynamically import web-vitals to reduce initial bundle size
+  import('web-vitals').then(({ onCLS, onFID, onFCP, onLCP, onTTFB, onINP }) => {
+    // Track all Core Web Vitals
+    onCLS((metric) => {
+      trackWebVital({
+        name: 'CLS',
+        value: metric.value,
+        id: metric.id,
+        delta: metric.delta,
+        rating: metric.rating,
+      });
+    });
 
-  document.head.appendChild(link);
-}
+    onFID((metric) => {
+      trackWebVital({
+        name: 'FID',
+        value: metric.value,
+        id: metric.id,
+        delta: metric.delta,
+        rating: metric.rating,
+      });
+    });
 
-/**
- * Preconnect to external domains for faster resource loading
- */
-export function preconnect(domains: string[]) {
-  if (typeof document === 'undefined') return;
+    onFCP((metric) => {
+      trackWebVital({
+        name: 'FCP',
+        value: metric.value,
+        id: metric.id,
+        delta: metric.delta,
+        rating: metric.rating,
+      });
+    });
 
-  domains.forEach(domain => {
-    const link = document.createElement('link');
-    link.rel = 'preconnect';
-    link.href = domain;
-    link.crossOrigin = 'anonymous';
-    document.head.appendChild(link);
-  });
-}
+    onLCP((metric) => {
+      trackWebVital({
+        name: 'LCP',
+        value: metric.value,
+        id: metric.id,
+        delta: metric.delta,
+        rating: metric.rating,
+      });
+    });
 
-/**
- * DNS prefetch for external domains
- */
-export function dnsPrefetch(domains: string[]) {
-  if (typeof document === 'undefined') return;
+    onTTFB((metric) => {
+      trackWebVital({
+        name: 'TTFB',
+        value: metric.value,
+        id: metric.id,
+        delta: metric.delta,
+        rating: metric.rating,
+      });
+    });
 
-  domains.forEach(domain => {
-    const link = document.createElement('link');
-    link.rel = 'dns-prefetch';
-    link.href = domain;
-    document.head.appendChild(link);
-  });
-}
-
-// ============================================================================
-// CLS Optimization Utilities
-// ============================================================================
-
-/**
- * Calculate aspect ratio for images to prevent CLS
- */
-export function calculateAspectRatio(width: number, height: number): string {
-  return `${width} / ${height}`;
-}
-
-/**
- * Get placeholder for images to prevent CLS
- */
-export function getImagePlaceholder(width: number, height: number, color = '#e0e0e0'): string {
-  return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${width} ${height}'%3E%3Crect width='${width}' height='${height}' fill='${color}'/%3E%3C/svg%3E`;
-}
-
-/**
- * Reserve space for dynamic content to prevent CLS
- */
-export function reserveSpace(minHeight: number): React.CSSProperties {
-  return {
-    minHeight: `${minHeight}px`,
-    contentVisibility: 'auto',
-  };
-}
-
-// ============================================================================
-// FID/INP Optimization Utilities
-// ============================================================================
-
-/**
- * Defer non-critical JavaScript execution
- */
-export function deferExecution<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  delay = 0
-): (...args: Parameters<T>) => void {
-  return (...args: Parameters<T>) => {
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(() => fn(...args), { timeout: 1000 + delay });
-    } else {
-      setTimeout(() => fn(...args), delay);
-    }
-  };
-}
-
-/**
- * Debounce function for input handlers
- */
-export function debounce<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  wait: number
-): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
-
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn(...args), wait);
-  };
-}
-
-/**
- * Throttle function for scroll/resize handlers
- */
-export function throttle<T extends (...args: unknown[]) => unknown>(
-  fn: T,
-  limit: number
-): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
-
-  return (...args: Parameters<T>) => {
-    if (!inThrottle) {
-      fn(...args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
-}
-
-// ============================================================================
-// Performance Monitoring
-// ============================================================================
-
-interface LayoutShift extends PerformanceEntry {
-  hadRecentInput: boolean;
-  value: number;
-}
-
-/**
- * Monitor long tasks that can impact INP
- */
-export function monitorLongTasks(callback: (duration: number) => void) {
-  if (typeof window === 'undefined') return;
-
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      // Long tasks are > 50ms
-      if (entry.duration > 50) {
-        callback(entry.duration);
-      }
+    onINP((metric) => {
+      trackWebVital({
+        name: 'INP',
+        value: metric.value,
+        id: metric.id,
+        delta: metric.delta,
+        rating: metric.rating,
+      });
+    });
+  }).catch((error) => {
+    // Web Vitals not available, fail silently
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Web Vitals tracking not available:', error);
     }
   });
+}
+
+/**
+ * Get stored Web Vitals metrics
+ */
+export function getStoredWebVitals(): Record<string, any> {
+  if (typeof window === 'undefined') {
+    return {};
+  }
 
   try {
-    observer.observe({ entryTypes: ['longtask'] });
+    return JSON.parse(localStorage.getItem('web-vitals') || '{}');
   } catch (error) {
-    // Long task API not supported
+    return {};
   }
-
-  return () => observer.disconnect();
 }
 
 /**
- * Monitor layout shifts
+ * Clear stored Web Vitals metrics
  */
-export function monitorLayoutShifts(callback: (shift: number) => void) {
-  if (typeof window === 'undefined') return;
-
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      if ((entry as LayoutShift).hadRecentInput) continue;
-      callback((entry as LayoutShift).value);
-    }
-  });
+export function clearStoredWebVitals(): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
 
   try {
-    observer.observe({ entryTypes: ['layout-shift'] });
+    localStorage.removeItem('web-vitals');
   } catch (error) {
-    // Layout shift API not supported
+    // Ignore errors
   }
-
-  return () => observer.disconnect();
 }
-
-// ============================================================================
-// Resource Hints
-// ============================================================================
-
-/**
- * Generate resource hints for critical resources
- */
-export function getResourceHints() {
-  return {
-    preconnect: [
-      'https://fonts.googleapis.com',
-      'https://fonts.gstatic.com',
-      'https://www.google-analytics.com',
-    ],
-    dnsPrefetch: [
-      'https://www.googletagmanager.com',
-      'https://maps.googleapis.com',
-    ],
-  };
-}
-
-// ============================================================================
-// Performance Budget
-// ============================================================================
-
-export const PERFORMANCE_BUDGET = {
-  // Time budgets (milliseconds)
-  time: {
-    LCP: 2500,
-    FID: 100,
-    INP: 200,
-    FCP: 1800,
-    TTFB: 600,
-  },
-  // Size budgets (kilobytes)
-  size: {
-    totalPageSize: 1500,
-    javascript: 350,
-    css: 100,
-    images: 800,
-    fonts: 100,
-    other: 150,
-  },
-  // Request count budgets
-  requests: {
-    total: 50,
-    javascript: 10,
-    css: 5,
-    images: 25,
-    fonts: 5,
-    other: 5,
-  },
-} as const;
-
-/**
- * Check if performance budget is met
- */
-export function checkPerformanceBudget(metrics: {
-  LCP?: number;
-  FID?: number;
-  INP?: number;
-  FCP?: number;
-  TTFB?: number;
-}) {
-  const results: Record<string, boolean> = {};
-
-  Object.entries(metrics).forEach(([metric, value]) => {
-    if (value !== undefined) {
-      const budget = PERFORMANCE_BUDGET.time[metric as keyof typeof PERFORMANCE_BUDGET.time];
-      results[metric] = value <= budget;
-    }
-  });
-
-  return {
-    passed: Object.values(results).every(Boolean),
-    results,
-  };
-}
-
-// ============================================================================
-// Export reporter utilities
-// ============================================================================
-
-export const webVitalsReporter = {
-  init: initWebVitalsReporter,
-  get: getWebVitalsReporter,
-  report: (metric: WebVitalsMetric) => getWebVitalsReporter().report(metric),
-  getMetrics: () => getWebVitalsReporter().getMetrics(),
-  getSummary: () => getWebVitalsReporter().getSummary(),
-};

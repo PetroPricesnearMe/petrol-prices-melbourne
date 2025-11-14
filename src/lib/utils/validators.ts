@@ -4,8 +4,23 @@
  * Pure functions for validating data.
  * All functions return boolean values.
  * 
+ * Consolidated from securityUtils.js and enhanced with TypeScript.
+ * 
  * @module lib/utils/validators
  */
+
+/**
+ * Validation patterns
+ */
+const PATTERNS = {
+  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  phone: /^[\+]?[\d\s\-\(\)]+$/,
+  postcode: /^[0-9]{4}$/,
+  coordinates: /^-?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)$/,
+  alphanumeric: /^[a-zA-Z0-9\s\-_]+$/,
+  searchQuery: /^[a-zA-Z0-9\s\-_.,&'()]+$/,
+  url: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/,
+} as const;
 
 /**
  * Validate email address
@@ -20,15 +35,15 @@
  * ```
  */
 export function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  if (!email || typeof email !== 'string') return false;
+  return PATTERNS.email.test(email) && email.length <= 254;
 }
 
 /**
- * Validate Australian phone number
+ * Validate phone number (Australian format)
  * 
  * @param phone - Phone number string
- * @returns True if valid Australian phone
+ * @returns True if valid phone number
  * 
  * @example
  * ```typescript
@@ -37,6 +52,24 @@ export function isValidEmail(email: string): boolean {
  * ```
  */
 export function isValidPhone(phone: string): boolean {
+  if (!phone || typeof phone !== 'string') return false;
+  return PATTERNS.phone.test(phone);
+}
+
+/**
+ * Validate Australian phone number (strict)
+ * 
+ * @param phone - Phone number string
+ * @returns True if valid Australian phone
+ * 
+ * @example
+ * ```typescript
+ * isValidAustralianPhone('0412345678'); // true
+ * isValidAustralianPhone('123');        // false
+ * ```
+ */
+export function isValidAustralianPhone(phone: string): boolean {
+  if (!phone || typeof phone !== 'string') return false;
   const cleaned = phone.replace(/\D/g, '');
   // Australian mobile (04XX XXX XXX) or landline (0X XXXX XXXX)
   return /^0[2-478]\d{8}$/.test(cleaned);
@@ -76,7 +109,54 @@ export function isValidUrl(url: string): boolean {
  * ```
  */
 export function isValidPostcode(postcode: string): boolean {
-  return /^[0-9]{4}$/.test(postcode);
+  if (!postcode || typeof postcode !== 'string') return false;
+  return PATTERNS.postcode.test(postcode);
+}
+
+/**
+ * Validate search query input
+ * 
+ * @param query - Search query string
+ * @returns True if valid search query
+ * 
+ * @example
+ * ```typescript
+ * isValidSearchQuery('petrol station'); // true
+ * isValidSearchQuery('a');              // false (too short)
+ * ```
+ */
+export function isValidSearchQuery(query: string): boolean {
+  if (!query || typeof query !== 'string') return false;
+  // Basic sanitization: trim and limit length
+  const sanitized = query.trim().slice(0, 100);
+  return PATTERNS.searchQuery.test(sanitized) && sanitized.length >= 2;
+}
+
+/**
+ * Validate coordinates (latitude/longitude)
+ * 
+ * @param lat - Latitude
+ * @param lng - Longitude
+ * @returns True if valid coordinates
+ * 
+ * @example
+ * ```typescript
+ * isValidCoordinates(-37.8136, 144.9631); // true
+ * isValidCoordinates(91, 0);              // false
+ * ```
+ */
+export function isValidCoordinates(lat: number | string, lng: number | string): boolean {
+  const latNum = typeof lat === 'string' ? parseFloat(lat) : lat;
+  const lngNum = typeof lng === 'string' ? parseFloat(lng) : lng;
+  
+  return (
+    !isNaN(latNum) &&
+    !isNaN(lngNum) &&
+    latNum >= -90 &&
+    latNum <= 90 &&
+    lngNum >= -180 &&
+    lngNum <= 180
+  );
 }
 
 /**

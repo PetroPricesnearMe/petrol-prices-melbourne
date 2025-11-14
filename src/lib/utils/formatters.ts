@@ -4,6 +4,8 @@
  * Pure functions for formatting data into human-readable strings.
  * All functions are type-safe and handle edge cases.
  * 
+ * Consolidated from multiple utility files for DRY principles.
+ * 
  * @module lib/utils/formatters
  */
 

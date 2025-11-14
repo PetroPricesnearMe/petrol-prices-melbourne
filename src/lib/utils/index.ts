@@ -2,10 +2,11 @@
  * Utility Functions - Central Export
  * 
  * All utility functions in one place for easy importing.
+ * Consolidated from multiple files to eliminate duplication.
  * 
  * @example
  * ```typescript
- * import { formatPrice, debounce, isValidEmail } from '@/lib/utils';
+ * import { formatPrice, debounce, isValidEmail, sanitizeString } from '@/lib/utils';
  * ```
  * 
  * @module lib/utils
@@ -19,6 +20,9 @@ export * from './validators';
 
 // Export all helpers
 export * from './helpers';
+
+// Export all sanitizers
+export * from './sanitizers';
 
 // Re-export commonly used utilities
 export {
