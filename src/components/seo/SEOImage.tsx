@@ -19,7 +19,7 @@ import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
-import { calculateAspectRatio, getImagePlaceholder } from '@/lib/performance/core-web-vitals';
+import { calculateAspectRatio, generateBlurPlaceholder } from '@/lib/performance/image-optimization';
 import { cn } from '@/lib/utils';
 
 // ============================================================================
@@ -197,7 +197,7 @@ export function SEOImage({
   // Generate blur placeholder
   const generatedBlurDataURL = blurDataURL || (
     width && height && !fill
-      ? getImagePlaceholder(Number(width), Number(height))
+      ? generateBlurPlaceholder(Number(width), Number(height))
       : undefined
   );
 
