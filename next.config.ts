@@ -176,15 +176,10 @@ const nextConfig: NextConfig = {
   // Customize Webpack configuration for bundle optimization
   // ========================================
   webpack: (config, { isServer, dev }) => {
-    // Client-side optimizations only
+    // Client-side code splitting customization only
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
-        // Tree shaking is automatically enabled by Next.js 15
-        // Explicitly setting usedExports conflicts with cacheUnaffected optimization
-        // sideEffects: false is kept for packages that declare no side effects
-        sideEffects: false,
-
         // Code splitting strategy
         splitChunks: {
           chunks: 'all',
