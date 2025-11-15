@@ -149,7 +149,8 @@ export class AirtableProvider implements ICMSProvider {
         throw response;
       }
 
-      const result: AirtableRecord = await response.json();
+      const responseData: AirtableResponse = await response.json();
+      const result = responseData.records[0];
       this.cache.invalidateByTags([collection]);
 
       return this.normalizeResponse<T>(result);
@@ -178,7 +179,8 @@ export class AirtableProvider implements ICMSProvider {
         throw response;
       }
 
-      const result: AirtableRecord = await response.json();
+      const responseData: AirtableResponse = await response.json();
+      const result = responseData.records[0];
       this.cache.invalidateByTags([collection, `${collection}:${id}`]);
 
       return this.normalizeResponse<T>(result);

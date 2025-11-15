@@ -8,10 +8,12 @@ elif [ -d "/c/Program Files (x86)/Git/cmd" ]; then
   export PATH="/c/Program Files (x86)/Git/cmd:$PATH"
 fi
 
-# Commit message validation
-npx --yes --no-install commitlint --edit ${1} || {
-  echo "❌ Commit message doesn't meet standards."
-  echo "Format: type(scope): description"
-  echo "Example: feat(api): add new endpoint"
-  exit 1
-}
+echo "🔄 Post-merge: Updating dependencies if needed..."
+
+# Reinstall Husky hooks after merge (in case they were updated)
+if [ -f "package.json" ]; then
+  npm run prepare 2>/dev/null || true
+fi
+
+echo "✅ Post-merge complete!"
+
