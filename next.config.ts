@@ -180,8 +180,9 @@ const nextConfig: NextConfig = {
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
-        // Enable tree shaking
-        usedExports: true,
+        // Tree shaking is handled automatically by Next.js 15
+        // Removed usedExports: true to avoid conflict with cacheUnaffected
+        // Keep sideEffects: false for optimal tree shaking
         sideEffects: false,
 
         // Code splitting strategy
