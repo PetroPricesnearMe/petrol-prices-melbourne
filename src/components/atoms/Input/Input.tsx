@@ -1,6 +1,6 @@
 /**
  * Input Component (Atom)
- * 
+ *
  * Accessible form input with validation states
  */
 
@@ -10,7 +10,9 @@ import { cn } from '@/design-system/utils/styled';
 import type { BaseProps } from '@/types/index';
 import './Input.css';
 
-export interface InputProps extends BaseProps, Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface InputProps
+  extends BaseProps,
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Input size */
   size?: 'sm' | 'md' | 'lg';
   /** Error state */
@@ -81,30 +83,35 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       endIcon && 'input-wrapper--with-end-icon'
     );
 
-    const describedBy = [
-      ariaDescribedBy,
-      errorMessage ? errorId : null,
-      helperText ? helperId : null,
-    ]
-      .filter(Boolean)
-      .join(' ') || undefined;
+    const describedBy =
+      [
+        ariaDescribedBy,
+        errorMessage ? errorId : null,
+        helperText ? helperId : null,
+      ]
+        .filter(Boolean)
+        .join(' ') || undefined;
 
     return (
       <div className={containerClasses} style={style}>
         {label && (
           <label htmlFor={inputId} className="input-label">
             {label}
-            {required && <span className="input-label__required" aria-label="required">*</span>}
+            {required && (
+              <span className="input-label__required" aria-label="required">
+                *
+              </span>
+            )}
           </label>
         )}
-        
+
         <div className={wrapperClasses}>
           {startIcon && (
             <span className="input-icon input-icon--start" aria-hidden="true">
               {startIcon}
             </span>
           )}
-          
+
           <input
             ref={ref}
             id={inputId}
@@ -119,7 +126,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             onBlur={() => setIsFocused(false)}
             {...restProps}
           />
-          
+
           {endIcon && (
             <span className="input-icon input-icon--end" aria-hidden="true">
               {endIcon}
@@ -128,11 +135,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
 
         {errorMessage && (
-          <p id={errorId} className="input-message input-message--error" role="alert">
+          <p
+            id={errorId}
+            className="input-message input-message--error"
+            role="alert"
+          >
             {errorMessage}
           </p>
         )}
-        
+
         {!errorMessage && helperText && (
           <p id={helperId} className="input-message input-message--helper">
             {helperText}

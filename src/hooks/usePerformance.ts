@@ -9,7 +9,10 @@ import { useEffect, useRef, useCallback, useMemo } from 'react';
 /**
  * Hook to measure component render time
  */
-export function useRenderTime(componentName: string, enabled = process.env.NODE_ENV === 'development') {
+export function useRenderTime(
+  componentName: string,
+  enabled = process.env.NODE_ENV === 'development'
+) {
   const renderCount = useRef(0);
   const startTime = useRef(performance.now());
 
@@ -20,7 +23,8 @@ export function useRenderTime(componentName: string, enabled = process.env.NODE_
     const endTime = performance.now();
     const renderTime = endTime - startTime.current;
 
-    if (renderTime > 16) { // More than one frame (60fps)
+    if (renderTime > 16) {
+      // More than one frame (60fps)
       console.warn(
         `[Performance] ${componentName} render #${renderCount.current} took ${renderTime.toFixed(2)}ms`
       );
@@ -86,12 +90,15 @@ export function useThrottle<T>(value: T, limit: number): T {
   const lastRan = useRef(Date.now());
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      if (Date.now() - lastRan.current >= limit) {
-        setThrottledValue(value);
-        lastRan.current = Date.now();
-      }
-    }, limit - (Date.now() - lastRan.current));
+    const handler = setTimeout(
+      () => {
+        if (Date.now() - lastRan.current >= limit) {
+          setThrottledValue(value);
+          lastRan.current = Date.now();
+        }
+      },
+      limit - (Date.now() - lastRan.current)
+    );
 
     return () => {
       clearTimeout(handler);
@@ -153,7 +160,10 @@ export function usePrevious<T>(value: T): T | undefined {
 /**
  * RAF (RequestAnimationFrame) hook for smooth animations
  */
-export function useAnimationFrame(callback: (deltaTime: number) => void, deps: React.DependencyList = []) {
+export function useAnimationFrame(
+  callback: (deltaTime: number) => void,
+  deps: React.DependencyList = []
+) {
   const requestRef = useRef<number>();
   const previousTimeRef = useRef<number>();
 

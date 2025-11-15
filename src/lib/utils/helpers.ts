@@ -1,18 +1,18 @@
 /**
  * Helper Utilities
- * 
+ *
  * General-purpose utility functions for common tasks.
- * 
+ *
  * @module lib/utils/helpers
  */
 
 /**
  * Debounce function calls
- * 
+ *
  * @param fn - Function to debounce
  * @param delay - Delay in milliseconds
  * @returns Debounced function
- * 
+ *
  * @example
  * ```typescript
  * const debouncedSearch = debounce((query) => {
@@ -25,7 +25,7 @@ export function debounce<T extends (...args: any[]) => any>(
   delay: number
 ): (...args: Parameters<T>) => void {
   let timeoutId: NodeJS.Timeout;
-  
+
   return function (this: any, ...args: Parameters<T>) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn.apply(this, args), delay);
@@ -34,11 +34,11 @@ export function debounce<T extends (...args: any[]) => any>(
 
 /**
  * Throttle function calls
- * 
+ *
  * @param fn - Function to throttle
  * @param limit - Time limit in milliseconds
  * @returns Throttled function
- * 
+ *
  * @example
  * ```typescript
  * const throttledScroll = throttle(() => {
@@ -51,7 +51,7 @@ export function throttle<T extends (...args: any[]) => any>(
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
-  
+
   return function (this: any, ...args: Parameters<T>) {
     if (!inThrottle) {
       fn.apply(this, args);
@@ -63,10 +63,10 @@ export function throttle<T extends (...args: any[]) => any>(
 
 /**
  * Deep clone an object
- * 
+ *
  * @param obj - Object to clone
  * @returns Cloned object
- * 
+ *
  * @example
  * ```typescript
  * const cloned = deepClone({ a: 1, b: { c: 2 } });
@@ -75,7 +75,7 @@ export function throttle<T extends (...args: any[]) => any>(
 export function deepClone<T>(obj: T): T {
   if (obj === null || typeof obj !== 'object') return obj;
   if (obj instanceof Date) return new Date(obj.getTime()) as any;
-  if (obj instanceof Array) return obj.map(item => deepClone(item)) as any;
+  if (obj instanceof Array) return obj.map((item) => deepClone(item)) as any;
   if (obj instanceof Object) {
     const clonedObj: any = {};
     for (const key in obj) {
@@ -90,18 +90,21 @@ export function deepClone<T>(obj: T): T {
 
 /**
  * Deep merge objects
- * 
+ *
  * @param target - Target object
  * @param sources - Source objects
  * @returns Merged object
- * 
+ *
  * @example
  * ```typescript
  * const result = deepMerge({ a: 1 }, { b: 2 }, { c: 3 });
  * // { a: 1, b: 2, c: 3 }
  * ```
  */
-export function deepMerge<T extends object>(target: T, ...sources: Partial<T>[]): T {
+export function deepMerge<T extends object>(
+  target: T,
+  ...sources: Partial<T>[]
+): T {
   if (!sources.length) return target;
   const source = sources.shift();
 
@@ -123,7 +126,7 @@ export function deepMerge<T extends object>(target: T, ...sources: Partial<T>[])
 
 /**
  * Check if value is a plain object
- * 
+ *
  * @param item - Value to check
  * @returns True if plain object
  */
@@ -133,10 +136,10 @@ function isObject(item: any): item is object {
 
 /**
  * Generate unique ID
- * 
+ *
  * @param prefix - Optional prefix
  * @returns Unique ID string
- * 
+ *
  * @example
  * ```typescript
  * generateId(); // "abc123def456"
@@ -150,27 +153,27 @@ export function generateId(prefix?: string): string {
 
 /**
  * Sleep/delay execution
- * 
+ *
  * @param ms - Milliseconds to sleep
  * @returns Promise that resolves after delay
- * 
+ *
  * @example
  * ```typescript
  * await sleep(1000); // Wait 1 second
  * ```
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
  * Retry async function
- * 
+ *
  * @param fn - Async function to retry
  * @param retries - Number of retries
  * @param delay - Delay between retries
  * @returns Promise with function result
- * 
+ *
  * @example
  * ```typescript
  * const data = await retry(fetchData, 3, 1000);
@@ -192,11 +195,11 @@ export async function retry<T>(
 
 /**
  * Group array by key
- * 
+ *
  * @param array - Array to group
  * @param key - Key to group by
  * @returns Grouped object
- * 
+ *
  * @example
  * ```typescript
  * const users = [
@@ -208,23 +211,26 @@ export async function retry<T>(
  * ```
  */
 export function groupBy<T>(array: T[], key: keyof T): Record<string, T[]> {
-  return array.reduce((result, item) => {
-    const groupKey = String(item[key]);
-    if (!result[groupKey]) {
-      result[groupKey] = [];
-    }
-    result[groupKey].push(item);
-    return result;
-  }, {} as Record<string, T[]>);
+  return array.reduce(
+    (result, item) => {
+      const groupKey = String(item[key]);
+      if (!result[groupKey]) {
+        result[groupKey] = [];
+      }
+      result[groupKey].push(item);
+      return result;
+    },
+    {} as Record<string, T[]>
+  );
 }
 
 /**
  * Pick properties from object
- * 
+ *
  * @param obj - Source object
  * @param keys - Keys to pick
  * @returns New object with picked properties
- * 
+ *
  * @example
  * ```typescript
  * const user = { name: 'Alice', age: 30, email: 'alice@example.com' };
@@ -237,7 +243,7 @@ export function pick<T extends object, K extends keyof T>(
   keys: K[]
 ): Pick<T, K> {
   const result = {} as Pick<T, K>;
-  keys.forEach(key => {
+  keys.forEach((key) => {
     if (key in obj) {
       result[key] = obj[key];
     }
@@ -247,11 +253,11 @@ export function pick<T extends object, K extends keyof T>(
 
 /**
  * Omit properties from object
- * 
+ *
  * @param obj - Source object
  * @param keys - Keys to omit
  * @returns New object without omitted properties
- * 
+ *
  * @example
  * ```typescript
  * const user = { name: 'Alice', age: 30, password: 'secret' };
@@ -264,7 +270,7 @@ export function omit<T extends object, K extends keyof T>(
   keys: K[]
 ): Omit<T, K> {
   const result = { ...obj };
-  keys.forEach(key => {
+  keys.forEach((key) => {
     delete result[key];
   });
   return result;
@@ -272,11 +278,11 @@ export function omit<T extends object, K extends keyof T>(
 
 /**
  * Check if arrays are equal (shallow comparison)
- * 
+ *
  * @param arr1 - First array
  * @param arr2 - Second array
  * @returns True if arrays are equal
- * 
+ *
  * @example
  * ```typescript
  * areArraysEqual([1, 2, 3], [1, 2, 3]); // true
@@ -290,10 +296,10 @@ export function areArraysEqual<T>(arr1: T[], arr2: T[]): boolean {
 
 /**
  * Remove duplicates from array
- * 
+ *
  * @param array - Array with potential duplicates
  * @returns Array without duplicates
- * 
+ *
  * @example
  * ```typescript
  * unique([1, 2, 2, 3, 3, 3]); // [1, 2, 3]
@@ -305,11 +311,11 @@ export function unique<T>(array: T[]): T[] {
 
 /**
  * Chunk array into smaller arrays
- * 
+ *
  * @param array - Array to chunk
  * @param size - Chunk size
  * @returns Array of chunks
- * 
+ *
  * @example
  * ```typescript
  * chunk([1, 2, 3, 4, 5], 2); // [[1, 2], [3, 4], [5]]
@@ -325,10 +331,10 @@ export function chunk<T>(array: T[], size: number): T[][] {
 
 /**
  * Shuffle array
- * 
+ *
  * @param array - Array to shuffle
  * @returns Shuffled array (new array)
- * 
+ *
  * @example
  * ```typescript
  * shuffle([1, 2, 3, 4, 5]); // [3, 1, 5, 2, 4]
@@ -345,10 +351,10 @@ export function shuffle<T>(array: T[]): T[] {
 
 /**
  * Calculate average of numbers
- * 
+ *
  * @param numbers - Array of numbers
  * @returns Average value
- * 
+ *
  * @example
  * ```typescript
  * average([1, 2, 3, 4, 5]); // 3
@@ -361,12 +367,12 @@ export function average(numbers: number[]): number {
 
 /**
  * Clamp number between min and max
- * 
+ *
  * @param value - Value to clamp
  * @param min - Minimum value
  * @param max - Maximum value
  * @returns Clamped value
- * 
+ *
  * @example
  * ```typescript
  * clamp(15, 0, 10); // 10
@@ -377,4 +383,3 @@ export function average(numbers: number[]): number {
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
-

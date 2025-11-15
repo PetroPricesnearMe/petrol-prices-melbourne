@@ -1,12 +1,15 @@
 /**
  * Centralized Data Source Manager
- * 
+ *
  * This service manages all data sources and ensures only one source is active at a time.
  * It prevents conflicts between different data sources and provides a unified interface.
  */
 
 import { baserowAPI } from '../config';
-import { validateAndTransformStation, getUserFriendlyError } from '../utils/validation';
+import {
+  validateAndTransformStation,
+  getUserFriendlyError,
+} from '../utils/validation';
 
 import localDataService from './LocalDataService';
 // validateStations currently unused - commented out to fix ESLint warning
@@ -33,7 +36,9 @@ class DataSourceManager {
    * @param {string} source - Data source name ('baserow', 'airtable', 'mock')
    */
   setActiveSource(source) {
-    console.log(`🔄 Switching data source from ${this.activeSource} to ${source}`);
+    console.log(
+      `🔄 Switching data source from ${this.activeSource} to ${source}`
+    );
     this.activeSource = source;
     this.clearCache(); // Clear cache when switching sources
   }
@@ -99,13 +104,15 @@ class DataSourceManager {
         lat,
         lng,
         stationId: station.id,
-        stationName: station['Station Name'] || station.station_name || station.name,
-        availableFields: Object.keys(station).filter(k =>
-          k.toLowerCase().includes('lat') ||
-          k.toLowerCase().includes('long') ||
-          k.toLowerCase().includes('x') ||
-          k.toLowerCase().includes('y')
-        )
+        stationName:
+          station['Station Name'] || station.station_name || station.name,
+        availableFields: Object.keys(station).filter(
+          (k) =>
+            k.toLowerCase().includes('lat') ||
+            k.toLowerCase().includes('long') ||
+            k.toLowerCase().includes('x') ||
+            k.toLowerCase().includes('y')
+        ),
       });
       return { valid: false, reason: 'Invalid coordinates' };
     }
@@ -115,7 +122,7 @@ class DataSourceManager {
       console.warn(`⚠️ Station ${index + 1} outside Australia:`, {
         lat,
         lng,
-        name: station['Station Name'] || station.station_name || station.name
+        name: station['Station Name'] || station.station_name || station.name,
       });
       return { valid: false, reason: 'Coordinates outside Australia' };
     }
@@ -142,7 +149,10 @@ class DataSourceManager {
     const result = validateAndTransformStation(station, index);
 
     if (!result.valid) {
-      console.warn(`⚠️ Skipping invalid station at index ${index}:`, result.errors);
+      console.warn(
+        `⚠️ Skipping invalid station at index ${index}:`,
+        result.errors
+      );
       return null;
     }
 
@@ -157,8 +167,8 @@ class DataSourceManager {
       source: this.activeSource,
       // Ensure fuelPrices is always an array
       fuelPrices: Array.isArray(result.station.fuelPrices)
-        ? result.station.fuelPrices.filter(f => f && typeof f === 'object')
-        : []
+        ? result.station.fuelPrices.filter((f) => f && typeof f === 'object')
+        : [],
     };
 
     return transformedStation;
@@ -184,17 +194,23 @@ class DataSourceManager {
       return new Promise((resolve, reject) => {
         const startTime = Date.now();
         const maxWaitTime = 15000; // 15 seconds max wait
-        
+
         const checkLoading = () => {
           const elapsed = Date.now() - startTime;
-          
+
           if (!this.isLoading) {
             console.log(`✅ Wait completed after ${elapsed}ms`);
             resolve(this.dataCache.get(cacheKey) || []);
           } else if (elapsed >= maxWaitTime) {
-            console.error(`⏰ Wait timeout after ${elapsed}ms - isLoading flag stuck!`);
+            console.error(
+              `⏰ Wait timeout after ${elapsed}ms - isLoading flag stuck!`
+            );
             this.isLoading = false; // Force reset the flag
-            reject(new Error('Data fetch wait timeout - concurrent request took too long'));
+            reject(
+              new Error(
+                'Data fetch wait timeout - concurrent request took too long'
+              )
+            );
           } else {
             setTimeout(checkLoading, 100);
           }
@@ -214,12 +230,18 @@ class DataSourceManager {
           try {
             rawStations = await localDataService.fetchStations();
           } catch (error) {
-            console.warn('⚠️ Local data failed, trying Baserow...', error.message);
+            console.warn(
+              '⚠️ Local data failed, trying Baserow...',
+              error.message
+            );
             this.setActiveSource('baserow');
             try {
               rawStations = await baserowAPI.fetchAllStations();
             } catch (baserowError) {
-              console.warn('⚠️ Baserow also failed, using mock data', baserowError.message);
+              console.warn(
+                '⚠️ Baserow also failed, using mock data',
+                baserowError.message
+              );
               this.setActiveSource('mock');
               rawStations = this.getMockStations();
             }
@@ -229,7 +251,10 @@ class DataSourceManager {
           try {
             rawStations = await baserowAPI.fetchAllStations();
           } catch (error) {
-            console.warn('⚠️ Baserow API failed, falling back to mock data:', error.message);
+            console.warn(
+              '⚠️ Baserow API failed, falling back to mock data:',
+              error.message
+            );
             console.log('🔄 Switching to mock data source due to API issues');
             this.setActiveSource('mock');
             rawStations = this.getMockStations();
@@ -245,7 +270,9 @@ class DataSourceManager {
           throw new Error(`Unknown data source: ${this.activeSource}`);
       }
 
-      console.log(`📊 Raw data received: ${rawStations.length} stations from ${this.activeSource}`);
+      console.log(
+        `📊 Raw data received: ${rawStations.length} stations from ${this.activeSource}`
+      );
 
       // Validate that we received data
       if (!Array.isArray(rawStations) || rawStations.length === 0) {
@@ -255,12 +282,14 @@ class DataSourceManager {
       // Transform and validate all station data
       const transformedStations = rawStations
         .map((station, index) => this.transformStationData(station, index))
-        .filter(station => station !== null); // Remove invalid stations
+        .filter((station) => station !== null); // Remove invalid stations
 
       console.log(`📈 Data transformation complete:`);
       console.log(`   - Raw stations: ${rawStations.length}`);
       console.log(`   - Valid stations: ${transformedStations.length}`);
-      console.log(`   - Invalid stations: ${rawStations.length - transformedStations.length}`);
+      console.log(
+        `   - Invalid stations: ${rawStations.length - transformedStations.length}`
+      );
 
       // Validate that we have enough valid stations
       if (transformedStations.length === 0) {
@@ -268,18 +297,24 @@ class DataSourceManager {
       }
 
       if (transformedStations.length < 10) {
-        console.warn(`⚠️ Only ${transformedStations.length} valid stations found - this may indicate data quality issues`);
+        console.warn(
+          `⚠️ Only ${transformedStations.length} valid stations found - this may indicate data quality issues`
+        );
       }
 
       // Cache the transformed data
       this.dataCache.set(cacheKey, transformedStations);
       this.lastFetchTime = Date.now();
 
-      console.log(`✅ Successfully loaded ${transformedStations.length} stations from ${this.activeSource}`);
+      console.log(
+        `✅ Successfully loaded ${transformedStations.length} stations from ${this.activeSource}`
+      );
       return transformedStations;
-
     } catch (error) {
-      console.error(`❌ Error fetching stations from ${this.activeSource}:`, error);
+      console.error(
+        `❌ Error fetching stations from ${this.activeSource}:`,
+        error
+      );
 
       // Create user-friendly error message
       const userMessage = getUserFriendlyError(error, 'loading station data');
@@ -289,7 +324,7 @@ class DataSourceManager {
       this.lastError = {
         technical: error.message,
         userFriendly: userMessage,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       // Return fallback data if available
@@ -301,7 +336,6 @@ class DataSourceManager {
       // Return mock data as last resort
       console.log('🔄 Returning mock data as fallback');
       return this.getMockStations();
-
     } finally {
       this.isLoading = false;
     }
@@ -318,34 +352,52 @@ class DataSourceManager {
         name: 'Shell Melbourne CBD',
         lat: -37.8136,
         lng: 144.9631,
-        prices: { unleaded: 185.9, premium: 195.9, premium98: 210.5, diesel: 179.9, gas: 95.2 },
+        prices: {
+          unleaded: 185.9,
+          premium: 195.9,
+          premium98: 210.5,
+          diesel: 179.9,
+          gas: 95.2,
+        },
         address: '123 Collins Street, Melbourne',
         city: 'Melbourne',
         source: 'mock',
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date().toISOString(),
       },
       {
         id: 2,
         name: 'BP South Yarra',
         lat: -37.8387,
         lng: 144.9924,
-        prices: { unleaded: 182.5, premium: 192.5, premium98: 207.8, diesel: 176.8, gas: 92.1 },
+        prices: {
+          unleaded: 182.5,
+          premium: 192.5,
+          premium98: 207.8,
+          diesel: 176.8,
+          gas: 92.1,
+        },
         address: '456 Toorak Road, South Yarra',
         city: 'South Yarra',
         source: 'mock',
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date().toISOString(),
       },
       {
         id: 3,
         name: 'Caltex Richmond',
         lat: -37.8197,
         lng: 145.0058,
-        prices: { unleaded: 188.9, premium: 198.9, premium98: 213.2, diesel: 183.2, gas: 97.5 },
+        prices: {
+          unleaded: 188.9,
+          premium: 198.9,
+          premium98: 213.2,
+          diesel: 183.2,
+          gas: 97.5,
+        },
         address: '789 Swan Street, Richmond',
         city: 'Richmond',
         source: 'mock',
-        lastUpdated: new Date().toISOString()
-      }
+        lastUpdated: new Date().toISOString(),
+      },
     ];
   }
 
@@ -376,7 +428,7 @@ class DataSourceManager {
       cacheValid: this.isCacheValid(),
       cacheSize: this.dataCache.size,
       availableSources: ['local', 'baserow', 'airtable', 'mock'],
-      lastError: this.lastError
+      lastError: this.lastError,
     };
   }
 
@@ -390,10 +442,15 @@ class DataSourceManager {
         case 'local':
           // Test if local files are accessible
           try {
-            const response = await fetch('/data/stations.geojson', { method: 'HEAD' });
+            const response = await fetch('/data/stations.geojson', {
+              method: 'HEAD',
+            });
             return { connected: response.ok, source: 'local (GeoJSON)' };
           } catch {
-            return { connected: false, error: 'Local data files not accessible' };
+            return {
+              connected: false,
+              error: 'Local data files not accessible',
+            };
           }
         case 'baserow':
           return await baserowAPI.testConnection();
@@ -405,7 +462,10 @@ class DataSourceManager {
           throw new Error(`Unknown data source: ${this.activeSource}`);
       }
     } catch (error) {
-      console.error(`❌ Connection test failed for ${this.activeSource}:`, error);
+      console.error(
+        `❌ Connection test failed for ${this.activeSource}:`,
+        error
+      );
       return { connected: false, error: error.message };
     }
   }

@@ -1,6 +1,6 @@
 /**
  * StationAmenitiesPage - Legacy component
- * 
+ *
  * NOTE: This component uses framer-motion and requires 'use client' directive
  * for Next.js 15+ App Router compatibility.
  */
@@ -27,18 +27,21 @@ const StationAmenitiesPage = () => {
     trackPageView('Station Amenities');
   }, []);
 
-  const amenitiesList = useMemo(() => [
-    { key: 'all', label: 'All Amenities', icon: '🏪', count: 0 },
-    { key: 'car_wash', label: 'Car Wash', icon: '🚿', count: 0 },
-    { key: 'atm', label: 'ATM', icon: '🏧', count: 0 },
-    { key: 'food', label: 'Food & Drinks', icon: '🍔', count: 0 },
-    { key: 'toilets', label: 'Toilets', icon: '🚻', count: 0 },
-    { key: 'air_water', label: 'Air & Water', icon: '💨', count: 0 },
-    { key: 'lpg', label: 'LPG', icon: '🔥', count: 0 },
-    { key: 'truck_friendly', label: 'Truck Friendly', icon: '🚛', count: 0 },
-    { key: '24_hours', label: '24 Hours', icon: '🕐', count: 0 },
-    { key: 'ev_charging', label: 'EV Charging', icon: '⚡', count: 0 }
-  ], []);
+  const amenitiesList = useMemo(
+    () => [
+      { key: 'all', label: 'All Amenities', icon: '🏪', count: 0 },
+      { key: 'car_wash', label: 'Car Wash', icon: '🚿', count: 0 },
+      { key: 'atm', label: 'ATM', icon: '🏧', count: 0 },
+      { key: 'food', label: 'Food & Drinks', icon: '🍔', count: 0 },
+      { key: 'toilets', label: 'Toilets', icon: '🚻', count: 0 },
+      { key: 'air_water', label: 'Air & Water', icon: '💨', count: 0 },
+      { key: 'lpg', label: 'LPG', icon: '🔥', count: 0 },
+      { key: 'truck_friendly', label: 'Truck Friendly', icon: '🚛', count: 0 },
+      { key: '24_hours', label: '24 Hours', icon: '🕐', count: 0 },
+      { key: 'ev_charging', label: 'EV Charging', icon: '⚡', count: 0 },
+    ],
+    []
+  );
 
   // Mock station data with amenities
   const mockStations = [
@@ -48,8 +51,15 @@ const StationAmenitiesPage = () => {
       address: '123 Collins Street, Melbourne',
       suburb: 'Melbourne',
       brand: 'Shell',
-      amenities: ['car_wash', 'atm', 'food', 'toilets', 'air_water', '24_hours'],
-      prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 }
+      amenities: [
+        'car_wash',
+        'atm',
+        'food',
+        'toilets',
+        'air_water',
+        '24_hours',
+      ],
+      prices: { unleaded: 185.9, premium: 195.9, diesel: 179.9 },
     },
     {
       id: 2,
@@ -58,7 +68,7 @@ const StationAmenitiesPage = () => {
       suburb: 'South Yarra',
       brand: 'BP',
       amenities: ['atm', 'food', 'toilets', 'air_water', 'lpg'],
-      prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 }
+      prices: { unleaded: 182.5, premium: 192.5, diesel: 176.8 },
     },
     {
       id: 3,
@@ -66,8 +76,16 @@ const StationAmenitiesPage = () => {
       address: '789 Swan Street, Richmond',
       suburb: 'Richmond',
       brand: 'Caltex',
-      amenities: ['car_wash', 'atm', 'food', 'toilets', 'air_water', 'truck_friendly', '24_hours'],
-      prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 }
+      amenities: [
+        'car_wash',
+        'atm',
+        'food',
+        'toilets',
+        'air_water',
+        'truck_friendly',
+        '24_hours',
+      ],
+      prices: { unleaded: 188.9, premium: 198.9, diesel: 183.2 },
     },
     {
       id: 4,
@@ -76,7 +94,7 @@ const StationAmenitiesPage = () => {
       suburb: 'Fitzroy',
       brand: '7-Eleven',
       amenities: ['atm', 'food', 'toilets', '24_hours'],
-      prices: { unleaded: 180.5, premium: 190.5, diesel: 175.5 }
+      prices: { unleaded: 180.5, premium: 190.5, diesel: 175.5 },
     },
     {
       id: 5,
@@ -84,8 +102,16 @@ const StationAmenitiesPage = () => {
       address: '654 Acland Street, St Kilda',
       suburb: 'St Kilda',
       brand: 'United',
-      amenities: ['car_wash', 'atm', 'food', 'toilets', 'air_water', 'lpg', 'ev_charging'],
-      prices: { unleaded: 187.2, premium: 197.2, diesel: 182.2 }
+      amenities: [
+        'car_wash',
+        'atm',
+        'food',
+        'toilets',
+        'air_water',
+        'lpg',
+        'ev_charging',
+      ],
+      prices: { unleaded: 187.2, premium: 197.2, diesel: 182.2 },
     },
     {
       id: 6,
@@ -94,21 +120,26 @@ const StationAmenitiesPage = () => {
       suburb: 'Carlton',
       brand: 'Ampol',
       amenities: ['atm', 'food', 'toilets', 'air_water', 'truck_friendly'],
-      prices: { unleaded: 184.8, premium: 194.8, diesel: 179.8 }
-    }
+      prices: { unleaded: 184.8, premium: 194.8, diesel: 179.8 },
+    },
   ];
 
   useEffect(() => {
     // Simulate loading
     const loadStations = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setStations(mockStations);
 
       // Count amenities
-      const amenityCounts = { ...amenitiesList.reduce((acc, amenity) => ({ ...acc, [amenity.key]: 0 }), {}) };
-      mockStations.forEach(station => {
-        station.amenities.forEach(amenity => {
+      const amenityCounts = {
+        ...amenitiesList.reduce(
+          (acc, amenity) => ({ ...acc, [amenity.key]: 0 }),
+          {}
+        ),
+      };
+      mockStations.forEach((station) => {
+        station.amenities.forEach((amenity) => {
           if (amenityCounts[amenity] !== undefined) {
             amenityCounts[amenity]++;
           }
@@ -116,9 +147,9 @@ const StationAmenitiesPage = () => {
       });
 
       // Update amenities with counts (for display purposes)
-      const updatedAmenities = amenitiesList.map(amenity => ({
+      const updatedAmenities = amenitiesList.map((amenity) => ({
         ...amenity,
-        count: amenityCounts[amenity.key] || 0
+        count: amenityCounts[amenity.key] || 0,
       }));
 
       // Log the updated amenities for debugging
@@ -130,29 +161,32 @@ const StationAmenitiesPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amenitiesList]);
 
-  const filteredStations = selectedAmenity === 'all'
-    ? stations
-    : stations.filter(station => station.amenities.includes(selectedAmenity));
+  const filteredStations =
+    selectedAmenity === 'all'
+      ? stations
+      : stations.filter((station) =>
+          station.amenities.includes(selectedAmenity)
+        );
 
   const getBrandColor = (brand) => {
     const colors = {
-      'Shell': '#FFD100',
-      'BP': '#00A651',
-      'Caltex': '#E31837',
+      Shell: '#FFD100',
+      BP: '#00A651',
+      Caltex: '#E31837',
       '7-Eleven': '#FF6600',
-      'United': '#0066CC',
-      'Ampol': '#E31837'
+      United: '#0066CC',
+      Ampol: '#E31837',
     };
     return colors[brand] || '#6B7280';
   };
 
   const getAmenityIcon = (amenityKey) => {
-    const amenity = amenitiesList.find(a => a.key === amenityKey);
+    const amenity = amenitiesList.find((a) => a.key === amenityKey);
     return amenity ? amenity.icon : '❓';
   };
 
   const getAmenityLabel = (amenityKey) => {
-    const amenity = amenitiesList.find(a => a.key === amenityKey);
+    const amenity = amenitiesList.find((a) => a.key === amenityKey);
     return amenity ? amenity.label : amenityKey;
   };
 
@@ -170,10 +204,16 @@ const StationAmenitiesPage = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Breadcrumbs customCrumbs={[
-          { label: 'Home', path: '/', icon: '🏠' },
-          { label: 'Station Amenities', path: '/station-amenities', isActive: true }
-        ]} />
+        <Breadcrumbs
+          customCrumbs={[
+            { label: 'Home', path: '/', icon: '🏠' },
+            {
+              label: 'Station Amenities',
+              path: '/station-amenities',
+              isActive: true,
+            },
+          ]}
+        />
         <div className="amenities-header">
           <div className="container">
             <motion.div
@@ -183,7 +223,9 @@ const StationAmenitiesPage = () => {
               transition={{ duration: 0.6 }}
             >
               <h1>Station Amenities</h1>
-              <p>Find petrol stations with the services and facilities you need</p>
+              <p>
+                Find petrol stations with the services and facilities you need
+              </p>
             </motion.div>
 
             <motion.div
@@ -193,7 +235,7 @@ const StationAmenitiesPage = () => {
               transition={{ delay: 0.3 }}
             >
               <div className="amenity-buttons">
-                {amenitiesList.map(amenity => (
+                {amenitiesList.map((amenity) => (
                   <button
                     key={amenity.key}
                     className={`amenity-btn ${selectedAmenity === amenity.key ? 'active' : ''}`}
@@ -237,7 +279,9 @@ const StationAmenitiesPage = () => {
                     <div className="card-header">
                       <div
                         className="brand-badge"
-                        style={{ backgroundColor: getBrandColor(station.brand) }}
+                        style={{
+                          backgroundColor: getBrandColor(station.brand),
+                        }}
                       >
                         {station.brand}
                       </div>
@@ -253,10 +297,14 @@ const StationAmenitiesPage = () => {
                       <div className="amenities-list">
                         <h4>Available Amenities</h4>
                         <div className="amenities-grid">
-                          {station.amenities.map(amenity => (
+                          {station.amenities.map((amenity) => (
                             <div key={amenity} className="amenity-item">
-                              <span className="amenity-icon">{getAmenityIcon(amenity)}</span>
-                              <span className="amenity-text">{getAmenityLabel(amenity)}</span>
+                              <span className="amenity-icon">
+                                {getAmenityIcon(amenity)}
+                              </span>
+                              <span className="amenity-text">
+                                {getAmenityLabel(amenity)}
+                              </span>
                             </div>
                           ))}
                         </div>
@@ -283,7 +331,7 @@ const StationAmenitiesPage = () => {
 
                     <div className="card-actions">
                       <button
-                        className="btn btn-primary btn-sm"
+                        className="btn-primary btn-sm btn"
                         onClick={() => {
                           const url = `https://www.google.com/maps/dir/?api=1&destination=${station.address}`;
                           window.open(url, '_blank');
@@ -291,10 +339,7 @@ const StationAmenitiesPage = () => {
                       >
                         🗺️ Get Directions
                       </button>
-                      <Link
-                        to="/map"
-                        className="btn btn-secondary btn-sm"
-                      >
+                      <Link to="/map" className="btn-secondary btn-sm btn">
                         📍 View on Map
                       </Link>
                     </div>
@@ -305,7 +350,10 @@ const StationAmenitiesPage = () => {
                   <div className="no-results">
                     <div className="no-results-icon">🔍</div>
                     <h3>No stations found</h3>
-                    <p>Try selecting a different amenity or check back later for more stations.</p>
+                    <p>
+                      Try selecting a different amenity or check back later for
+                      more stations.
+                    </p>
                   </div>
                 )}
               </motion.div>
@@ -324,14 +372,18 @@ const StationAmenitiesPage = () => {
                   <span className="guide-icon">🚿</span>
                   <div>
                     <h4>Car Wash</h4>
-                    <p>Self-service or automated car wash facilities available</p>
+                    <p>
+                      Self-service or automated car wash facilities available
+                    </p>
                   </div>
                 </div>
                 <div className="guide-item">
                   <span className="guide-icon">🏧</span>
                   <div>
                     <h4>ATM</h4>
-                    <p>ATM machines for cash withdrawals and banking services</p>
+                    <p>
+                      ATM machines for cash withdrawals and banking services
+                    </p>
                   </div>
                 </div>
                 <div className="guide-item">
@@ -352,7 +404,10 @@ const StationAmenitiesPage = () => {
                   <span className="guide-icon">💨</span>
                   <div>
                     <h4>Air & Water</h4>
-                    <p>Free air and water services for tire inflation and cleaning</p>
+                    <p>
+                      Free air and water services for tire inflation and
+                      cleaning
+                    </p>
                   </div>
                 </div>
                 <div className="guide-item">
@@ -366,7 +421,10 @@ const StationAmenitiesPage = () => {
                   <span className="guide-icon">🚛</span>
                   <div>
                     <h4>Truck Friendly</h4>
-                    <p>Accommodates large vehicles and trucks with appropriate facilities</p>
+                    <p>
+                      Accommodates large vehicles and trucks with appropriate
+                      facilities
+                    </p>
                   </div>
                 </div>
                 <div className="guide-item">

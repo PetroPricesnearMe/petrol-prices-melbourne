@@ -2,13 +2,13 @@
 
 /**
  * Melbourne Map Image Optimization Script
- * 
+ *
  * This script optimizes the melbourne-map-vector.png image for web performance
  * by creating multiple optimized versions and formats.
- * 
+ *
  * Requirements:
  * - sharp: npm install sharp
- * 
+ *
  * Usage:
  * node scripts/optimize-melbourne-map.js
  */
@@ -18,24 +18,36 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const INPUT_PATH = path.join(__dirname, '..', 'public', 'images', 'melbourne-map-vector.png');
+const INPUT_PATH = path.join(
+  __dirname,
+  '..',
+  'public',
+  'images',
+  'melbourne-map-vector.png'
+);
 const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'images', 'optimized');
-const BACKUP_PATH = path.join(__dirname, '..', 'public', 'images', 'melbourne-map-vector-original.png');
+const BACKUP_PATH = path.join(
+  __dirname,
+  '..',
+  'public',
+  'images',
+  'melbourne-map-vector-original.png'
+);
 
 // Responsive sizes for different viewports
 const SIZES = [
-  { width: 640, suffix: 'mobile' },      // Mobile
-  { width: 1024, suffix: 'tablet' },     // Tablet
-  { width: 1920, suffix: 'desktop' },    // Desktop
-  { width: 2560, suffix: 'large' },      // Large screens
+  { width: 640, suffix: 'mobile' }, // Mobile
+  { width: 1024, suffix: 'tablet' }, // Tablet
+  { width: 1920, suffix: 'desktop' }, // Desktop
+  { width: 2560, suffix: 'large' }, // Large screens
 ];
 
 // Optimization settings
 const QUALITY = {
-  webp: 85,     // WebP quality (recommended: 80-90)
-  avif: 75,     // AVIF quality (recommended: 70-80)
-  png: 90,      // PNG quality (recommended: 85-95)
-  jpeg: 85,     // JPEG quality (recommended: 80-90)
+  webp: 85, // WebP quality (recommended: 80-90)
+  avif: 75, // AVIF quality (recommended: 70-80)
+  png: 90, // PNG quality (recommended: 85-95)
+  jpeg: 85, // JPEG quality (recommended: 80-90)
 };
 
 /**
@@ -70,7 +82,9 @@ async function optimizeImage() {
     console.log('📊 Original Image Information:');
     console.log(`   Format: ${metadata.format}`);
     console.log(`   Dimensions: ${metadata.width}x${metadata.height}`);
-    console.log(`   Size: ${(fs.statSync(INPUT_PATH).size / 1024).toFixed(2)} KB`);
+    console.log(
+      `   Size: ${(fs.statSync(INPUT_PATH).size / 1024).toFixed(2)} KB`
+    );
     console.log(`   Channels: ${metadata.channels}`);
     console.log(`   Has Alpha: ${metadata.hasAlpha}\n`);
 
@@ -87,9 +101,9 @@ async function optimizeImage() {
     console.log('\n✅ Optimization Complete!\n');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
     console.log('📦 Generated Files:');
-    
+
     const files = fs.readdirSync(OUTPUT_DIR);
-    files.forEach(file => {
+    files.forEach((file) => {
       const filePath = path.join(OUTPUT_DIR, file);
       const stats = fs.statSync(filePath);
       console.log(`   ${file}: ${(stats.size / 1024).toFixed(2)} KB`);
@@ -100,7 +114,6 @@ async function optimizeImage() {
     console.log('   2. Replace original with optimized version if satisfied');
     console.log('   3. Update Next.js Image component if using specific sizes');
     console.log('   4. Test on different devices and browsers\n');
-
   } catch (error) {
     console.error('❌ Error during optimization:', error.message);
     process.exit(1);
@@ -112,7 +125,7 @@ async function optimizeImage() {
  */
 async function processSize(size, originalMetadata) {
   const { width, suffix } = size;
-  
+
   console.log(`📐 Processing ${suffix} (${width}px)...`);
 
   // Skip if original is smaller than target width
@@ -150,7 +163,11 @@ async function processSize(size, originalMetadata) {
         withoutEnlargement: true,
         fit: 'inside',
       })
-      .png({ quality: QUALITY.png, compressionLevel: 9, adaptiveFiltering: true })
+      .png({
+        quality: QUALITY.png,
+        compressionLevel: 9,
+        adaptiveFiltering: true,
+      })
       .toFile(path.join(OUTPUT_DIR, `${baseFilename}.png`));
     console.log(`   ✓ Generated optimized PNG`);
 
@@ -169,11 +186,11 @@ async function createOptimizedOriginal(metadata) {
   try {
     // Optimized PNG (replace original)
     await sharp(INPUT_PATH)
-      .png({ 
-        quality: QUALITY.png, 
+      .png({
+        quality: QUALITY.png,
         compressionLevel: 9,
         adaptiveFiltering: true,
-        palette: true // Use palette-based PNG if beneficial
+        palette: true, // Use palette-based PNG if beneficial
       })
       .toFile(path.join(OUTPUT_DIR, 'melbourne-map-optimized.png'));
     console.log('   ✓ Generated optimized PNG');
@@ -189,7 +206,6 @@ async function createOptimizedOriginal(metadata) {
       .avif({ quality: QUALITY.avif, effort: 6 })
       .toFile(path.join(OUTPUT_DIR, 'melbourne-map-optimized.avif'));
     console.log('   ✓ Generated optimized AVIF');
-
   } catch (error) {
     console.error('   ❌ Error creating optimized original:', error.message);
   }
@@ -199,11 +215,10 @@ async function createOptimizedOriginal(metadata) {
  * Run the optimization
  */
 if (require.main === module) {
-  optimizeImage().catch(error => {
+  optimizeImage().catch((error) => {
     console.error('Fatal error:', error);
     process.exit(1);
   });
 }
 
 module.exports = { optimizeImage };
-

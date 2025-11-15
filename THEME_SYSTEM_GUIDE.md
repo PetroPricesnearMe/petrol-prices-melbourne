@@ -31,6 +31,7 @@ The PPNM theme system provides a comprehensive design foundation with:
 ### Brand Colors
 
 #### Primary (Blue)
+
 Main brand color used for primary actions, links, and focus states.
 
 ```css
@@ -48,13 +49,15 @@ primary-950: #172554  /* Darkest */
 ```
 
 **Usage:**
+
 ```tsx
-<button className="bg-primary-500 hover:bg-primary-600 text-white">
+<button className="bg-primary-500 text-white hover:bg-primary-600">
   Primary Button
 </button>
 ```
 
 #### Secondary (Purple)
+
 Accent brand color for secondary actions and visual variety.
 
 ```css
@@ -72,6 +75,7 @@ secondary-950: #3b0764
 ```
 
 **Usage:**
+
 ```tsx
 <div className="bg-gradient-to-r from-primary-500 to-secondary-500">
   Gradient Background
@@ -79,6 +83,7 @@ secondary-950: #3b0764
 ```
 
 #### Accent (Cyan/Teal)
+
 Highlight color for CTAs, badges, and special elements.
 
 ```css
@@ -96,13 +101,13 @@ accent-950: #083344
 ```
 
 **Usage:**
+
 ```tsx
-<span className="bg-accent-100 text-accent-800 px-2 py-1 rounded">
-  Badge
-</span>
+<span className="rounded bg-accent-100 px-2 py-1 text-accent-800">Badge</span>
 ```
 
 #### Neutral (Gray)
+
 Foundation colors for text, borders, and backgrounds.
 
 ```css
@@ -147,9 +152,7 @@ function ThemeSwitcher() {
   return (
     <div>
       {/* Simple toggle */}
-      <button onClick={toggleTheme}>
-        Toggle Theme
-      </button>
+      <button onClick={toggleTheme}>Toggle Theme</button>
 
       {/* Specific theme selection */}
       <button onClick={() => setTheme('light')}>Light</button>
@@ -192,13 +195,14 @@ Use semantic tokens instead of hardcoded colors for automatic dark mode adaptati
 
 ```tsx
 /* Light Mode → Dark Mode */
-bg-primary     /* white → #0a0a0a (main background) */
-bg-secondary   /* #f9fafb → #171717 (sections) */
-bg-tertiary    /* #f3f4f6 → #262626 (subtle backgrounds) */
-bg-inverse     /* #111827 → white (inverse elements) */
+bg - primary; /* white → #0a0a0a (main background) */
+bg - secondary; /* #f9fafb → #171717 (sections) */
+bg - tertiary; /* #f3f4f6 → #262626 (subtle backgrounds) */
+bg - inverse; /* #111827 → white (inverse elements) */
 ```
 
 **Usage:**
+
 ```tsx
 <div className="bg-primary">
   Main content area
@@ -212,29 +216,29 @@ bg-inverse     /* #111827 → white (inverse elements) */
 #### Surface Colors (Cards & Panels)
 
 ```tsx
-surface           /* Card backgrounds */
-surface-secondary /* Nested cards */
-surface-elevated  /* Modal/dialog backgrounds */
-surface-overlay   /* Overlay backgrounds */
+surface; /* Card backgrounds */
+surface - secondary; /* Nested cards */
+surface - elevated; /* Modal/dialog backgrounds */
+surface - overlay; /* Overlay backgrounds */
 ```
 
 **Usage:**
+
 ```tsx
-<div className="bg-surface rounded-lg shadow-md p-6">
-  Card content
-</div>
+<div className="bg-surface rounded-lg p-6 shadow-md">Card content</div>
 ```
 
 #### Text Colors
 
 ```tsx
-text-primary   /* Main text */
-text-secondary /* Muted text */
-text-tertiary  /* Subtle text */
-text-inverse   /* Contrast text */
+text - primary; /* Main text */
+text - secondary; /* Muted text */
+text - tertiary; /* Subtle text */
+text - inverse; /* Contrast text */
 ```
 
 **Usage:**
+
 ```tsx
 <h1 className="text-text-primary">Heading</h1>
 <p className="text-text-secondary">Description</p>
@@ -250,10 +254,9 @@ border-strong    /* Emphasized borders */
 ```
 
 **Usage:**
+
 ```tsx
-<div className="border border-default rounded-lg">
-  Bordered element
-</div>
+<div className="border-default rounded-lg border">Bordered element</div>
 ```
 
 ### State Colors
@@ -279,16 +282,21 @@ bg-info-900 text-info-100
 ```
 
 **Usage:**
-```tsx
-{/* Success Message */}
-<div className="bg-success-50 dark:bg-success-900 text-success-700 dark:text-success-100 p-4 rounded">
-  Success! Your changes have been saved.
-</div>
 
-{/* Error Message */}
-<div className="bg-error-50 dark:bg-error-900 text-error-700 dark:text-error-100 p-4 rounded">
+```tsx
+{
+  /* Success Message */
+}
+<div className="dark:bg-success-900 rounded bg-success-50 p-4 text-success-700 dark:text-success-100">
+  Success! Your changes have been saved.
+</div>;
+
+{
+  /* Error Message */
+}
+<div className="dark:bg-error-900 rounded bg-error-50 p-4 text-error-700 dark:text-error-100">
   Error: Something went wrong.
-</div>
+</div>;
 ```
 
 ---
@@ -325,6 +333,7 @@ text-display-xl  /* 96px → 144px */
 ```
 
 **Usage:**
+
 ```tsx
 <h1 className="text-5xl font-bold text-text-primary">
   Main Heading
@@ -342,15 +351,15 @@ text-display-xl  /* 96px → 144px */
 ### Font Weights
 
 ```tsx
-font-thin       /* 100 */
-font-extralight /* 200 */
-font-light      /* 300 */
-font-normal     /* 400 - Body text default */
-font-medium     /* 500 - Buttons, labels */
-font-semibold   /* 600 - Subheadings */
-font-bold       /* 700 - Headings */
-font-extrabold  /* 800 - Important headings */
-font-black      /* 900 - Display text */
+font - thin; /* 100 */
+font - extralight; /* 200 */
+font - light; /* 300 */
+font - normal; /* 400 - Body text default */
+font - medium; /* 500 - Buttons, labels */
+font - semibold; /* 600 - Subheadings */
+font - bold; /* 700 - Headings */
+font - extrabold; /* 800 - Important headings */
+font - black; /* 900 - Display text */
 ```
 
 ---
@@ -363,28 +372,28 @@ Extended spacing scale from Tailwind defaults:
 
 ```tsx
 /* Micro spacing */
-space-0.5  /* 2px */
-space-1    /* 4px */
-space-1.5  /* 6px */
-space-2    /* 8px */
-space-2.5  /* 10px */
-space-3    /* 12px */
-space-4    /* 16px */
-space-5    /* 20px */
-space-6    /* 24px */
-space-8    /* 32px */
-space-10   /* 40px */
-space-12   /* 48px */
-space-16   /* 64px */
-space-20   /* 80px */
-space-24   /* 96px */
-space-32   /* 128px */
+space - 0.5; /* 2px */
+space - 1; /* 4px */
+space - 1.5; /* 6px */
+space - 2; /* 8px */
+space - 2.5; /* 10px */
+space - 3; /* 12px */
+space - 4; /* 16px */
+space - 5; /* 20px */
+space - 6; /* 24px */
+space - 8; /* 32px */
+space - 10; /* 40px */
+space - 12; /* 48px */
+space - 16; /* 64px */
+space - 20; /* 80px */
+space - 24; /* 96px */
+space - 32; /* 128px */
 
 /* Extended spacing */
-space-40   /* 160px */
-space-48   /* 192px */
-space-56   /* 224px */
-space-64   /* 256px */
+space - 40; /* 160px */
+space - 48; /* 192px */
+space - 56; /* 224px */
+space - 64; /* 256px */
 ```
 
 ### Fluid Spacing
@@ -402,17 +411,20 @@ space-fluid-3xl /* 128px → 192px */
 ```
 
 **Usage:**
-```tsx
-{/* Section with fluid padding */}
-<section className="py-fluid-lg px-4">
-  Content
-</section>
 
-{/* Stack with fluid gap */}
-<div className="flex flex-col gap-fluid-md">
+```tsx
+{
+  /* Section with fluid padding */
+}
+<section className="py-fluid-lg px-4">Content</section>;
+
+{
+  /* Stack with fluid gap */
+}
+<div className="gap-fluid-md flex flex-col">
   <div>Item 1</div>
   <div>Item 2</div>
-</div>
+</div>;
 ```
 
 ---
@@ -436,6 +448,7 @@ rounded-full   /* 9999px - Circles */
 ```
 
 **Usage:**
+
 ```tsx
 <div className="bg-surface rounded-lg">Card</div>
 <button className="rounded-md">Button</button>
@@ -451,22 +464,20 @@ rounded-full   /* 9999px - Circles */
 ```tsx
 function Card({ title, description, children }) {
   return (
-    <div className="
+    <div
+      className="
       bg-surface
-      border border-default
-      rounded-lg
+      border-default rounded-lg
+      border
+      p-6
       shadow-md
-      hover:shadow-lg
       transition-shadow
       duration-200
-      p-6
-    ">
-      <h3 className="text-xl font-semibold text-text-primary mb-2">
-        {title}
-      </h3>
-      <p className="text-text-secondary mb-4">
-        {description}
-      </p>
+      hover:shadow-lg
+    "
+    >
+      <h3 className="text-text-primary mb-2 text-xl font-semibold">{title}</h3>
+      <p className="text-text-secondary mb-4">{description}</p>
       {children}
     </div>
   );
@@ -480,15 +491,16 @@ function Button({ variant = 'primary', children, ...props }) {
   const variants = {
     primary: 'bg-primary-500 hover:bg-primary-600 text-white',
     secondary: 'bg-secondary-500 hover:bg-secondary-600 text-white',
-    outline: 'border-2 border-primary-500 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-950',
+    outline:
+      'border-2 border-primary-500 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-950',
   };
 
   return (
     <button
       className={`
         ${variants[variant]}
-        px-4 py-2
-        rounded-lg
+        rounded-lg px-4
+        py-2
         font-medium
         transition-colors
         duration-200
@@ -510,20 +522,25 @@ function Button({ variant = 'primary', children, ...props }) {
 ```tsx
 function Alert({ type = 'info', children }) {
   const styles = {
-    success: 'bg-success-50 dark:bg-success-900 text-success-700 dark:text-success-100 border-success-200 dark:border-success-700',
-    warning: 'bg-warning-50 dark:bg-warning-900 text-warning-700 dark:text-warning-100 border-warning-200 dark:border-warning-700',
-    error: 'bg-error-50 dark:bg-error-900 text-error-700 dark:text-error-100 border-error-200 dark:border-error-700',
+    success:
+      'bg-success-50 dark:bg-success-900 text-success-700 dark:text-success-100 border-success-200 dark:border-success-700',
+    warning:
+      'bg-warning-50 dark:bg-warning-900 text-warning-700 dark:text-warning-100 border-warning-200 dark:border-warning-700',
+    error:
+      'bg-error-50 dark:bg-error-900 text-error-700 dark:text-error-100 border-error-200 dark:border-error-700',
     info: 'bg-info-50 dark:bg-info-900 text-info-700 dark:text-info-100 border-info-200 dark:border-info-700',
   };
 
   return (
-    <div className={`
+    <div
+      className={`
       ${styles[type]}
-      p-4
-      rounded-lg
-      border
-      flex items-start gap-3
-    `}>
+      flex
+      items-start
+      gap-3
+      rounded-lg border p-4
+    `}
+    >
       {children}
     </div>
   );
@@ -535,16 +552,14 @@ function Alert({ type = 'info', children }) {
 ```tsx
 function PageLayout({ children }) {
   return (
-    <div className="min-h-screen bg-primary dark:bg-neutral-950">
-      <nav className="bg-surface border-b border-default">
+    <div className="bg-primary dark:bg-neutral-950 min-h-screen">
+      <nav className="bg-surface border-default border-b">
         {/* Navigation content */}
       </nav>
 
-      <main className="container mx-auto px-4 py-fluid-lg">
-        {children}
-      </main>
+      <main className="py-fluid-lg container mx-auto px-4">{children}</main>
 
-      <footer className="bg-secondary border-t border-default">
+      <footer className="bg-secondary border-default border-t">
         {/* Footer content */}
       </footer>
     </div>
@@ -559,15 +574,15 @@ function PageLayout({ children }) {
 ### 1. Use Semantic Tokens
 
 ✅ **DO:**
+
 ```tsx
-<div className="bg-surface text-text-primary border-default">
-  Content
-</div>
+<div className="bg-surface text-text-primary border-default">Content</div>
 ```
 
 ❌ **DON'T:**
+
 ```tsx
-<div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-200 dark:border-gray-700">
+<div className="border-gray-200 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
   Content
 </div>
 ```
@@ -575,12 +590,14 @@ function PageLayout({ children }) {
 ### 2. Prefer Fluid Scales for Responsive Design
 
 ✅ **DO:**
+
 ```tsx
 <h1 className="text-5xl font-bold">Hero Title</h1>
 <section className="py-fluid-lg">Content</section>
 ```
 
 ❌ **DON'T:**
+
 ```tsx
 <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold">Hero Title</h1>
 <section className="py-8 md:py-12 lg:py-16">Content</section>
@@ -598,11 +615,15 @@ function PageLayout({ children }) {
 Always ensure text meets WCAG AA contrast standards:
 
 ```tsx
-{/* Good contrast */}
-<p className="text-text-primary bg-primary">High contrast text</p>
+{
+  /* Good contrast */
+}
+<p className="text-text-primary bg-primary">High contrast text</p>;
 
-{/* Test contrast for custom combinations */}
-<p className="text-primary-700 dark:text-primary-300">Accessible text</p>
+{
+  /* Test contrast for custom combinations */
+}
+<p className="text-primary-700 dark:text-primary-300">Accessible text</p>;
 ```
 
 ### 5. Leverage CSS Custom Properties
@@ -678,9 +699,7 @@ Add to `src/styles/theme-vars.css`:
 Use in components:
 
 ```tsx
-<div style={{ color: 'rgb(var(--custom-color))' }}>
-  Custom colored text
-</div>
+<div style={{ color: 'rgb(var(--custom-color))' }}>Custom colored text</div>
 ```
 
 ---
@@ -689,41 +708,46 @@ Use in components:
 
 ### Color Classes
 
-| Purpose | Light Mode | Dark Mode |
-|---------|-----------|-----------|
-| Main background | `bg-primary` | `bg-neutral-950` |
-| Card background | `bg-surface` | `bg-neutral-900` |
-| Primary text | `text-text-primary` | `text-neutral-50` |
-| Secondary text | `text-text-secondary` | `text-neutral-400` |
-| Border | `border-default` | `border-neutral-800` |
-| Primary button | `bg-primary-500` | `bg-primary-600` |
+| Purpose         | Light Mode            | Dark Mode            |
+| --------------- | --------------------- | -------------------- |
+| Main background | `bg-primary`          | `bg-neutral-950`     |
+| Card background | `bg-surface`          | `bg-neutral-900`     |
+| Primary text    | `text-text-primary`   | `text-neutral-50`    |
+| Secondary text  | `text-text-secondary` | `text-neutral-400`   |
+| Border          | `border-default`      | `border-neutral-800` |
+| Primary button  | `bg-primary-500`      | `bg-primary-600`     |
 
 ### Typography Classes
 
-| Element | Class |
-|---------|-------|
-| Display heading | `text-display-lg font-black` |
-| Page heading | `text-5xl font-bold` |
-| Section heading | `text-3xl font-semibold` |
-| Subsection | `text-2xl font-semibold` |
-| Body text | `text-base` |
-| Small text | `text-sm text-text-secondary` |
+| Element         | Class                         |
+| --------------- | ----------------------------- |
+| Display heading | `text-display-lg font-black`  |
+| Page heading    | `text-5xl font-bold`          |
+| Section heading | `text-3xl font-semibold`      |
+| Subsection      | `text-2xl font-semibold`      |
+| Body text       | `text-base`                   |
+| Small text      | `text-sm text-text-secondary` |
 
 ### Component Patterns
 
 **Card:**
+
 ```tsx
-className="bg-surface border border-default rounded-lg shadow-md p-6"
+className = 'bg-surface border border-default rounded-lg shadow-md p-6';
 ```
 
 **Button:**
+
 ```tsx
-className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg"
+className =
+  'bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg';
 ```
 
 **Input:**
+
 ```tsx
-className="bg-primary border border-default rounded-md px-3 py-2 text-text-primary"
+className =
+  'bg-primary border border-default rounded-md px-3 py-2 text-text-primary';
 ```
 
 ---

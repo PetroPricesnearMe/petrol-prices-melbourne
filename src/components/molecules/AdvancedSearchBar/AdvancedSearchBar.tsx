@@ -14,7 +14,13 @@
 'use client';
 
 import Fuse from 'fuse.js';
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 
 import { FocusTrap } from '@/components/accessibility/FocusTrap';
 import './AdvancedSearchBar.css';
@@ -118,46 +124,55 @@ export function AdvancedSearchBar<T = any>({
   }, [enableRecentSearches]);
 
   // Save recent search
-  const saveRecentSearch = useCallback((searchQuery: string) => {
-    if (!enableRecentSearches || !searchQuery.trim()) return;
+  const saveRecentSearch = useCallback(
+    (searchQuery: string) => {
+      if (!enableRecentSearches || !searchQuery.trim()) return;
 
-    setRecentSearches((prev) => {
-      const updated = [searchQuery, ...prev.filter((s) => s !== searchQuery)].slice(0, MAX_RECENT_SEARCHES);
+      setRecentSearches((prev) => {
+        const updated = [
+          searchQuery,
+          ...prev.filter((s) => s !== searchQuery),
+        ].slice(0, MAX_RECENT_SEARCHES);
 
-      try {
-        localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
-      } catch (error) {
-        console.error('Error saving recent search:', error);
-      }
+        try {
+          localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+        } catch (error) {
+          console.error('Error saving recent search:', error);
+        }
 
-      return updated;
-    });
-  }, [enableRecentSearches]);
+        return updated;
+      });
+    },
+    [enableRecentSearches]
+  );
 
   // Perform fuzzy search with debounce
-  const performSearch = useCallback((searchQuery: string) => {
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current);
-    }
-
-    debounceTimer.current = setTimeout(() => {
-      if (!searchQuery.trim()) {
-        setSuggestions([]);
-        setShowSuggestions(false);
-        onSearch('', data);
-        return;
+  const performSearch = useCallback(
+    (searchQuery: string) => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
       }
 
-      // Perform fuzzy search
-      const results = fuse.search(searchQuery).slice(0, maxSuggestions);
-      setSuggestions(results);
-      setShowSuggestions(true);
+      debounceTimer.current = setTimeout(() => {
+        if (!searchQuery.trim()) {
+          setSuggestions([]);
+          setShowSuggestions(false);
+          onSearch('', data);
+          return;
+        }
 
-      // Callback with all matching results
-      const allResults = fuse.search(searchQuery).map((r) => r.item);
-      onSearch(searchQuery, allResults);
-    }, debounceDelay);
-  }, [data, fuse, maxSuggestions, debounceDelay, onSearch]);
+        // Perform fuzzy search
+        const results = fuse.search(searchQuery).slice(0, maxSuggestions);
+        setSuggestions(results);
+        setShowSuggestions(true);
+
+        // Callback with all matching results
+        const allResults = fuse.search(searchQuery).map((r) => r.item);
+        onSearch(searchQuery, allResults);
+      }, debounceDelay);
+    },
+    [data, fuse, maxSuggestions, debounceDelay, onSearch]
+  );
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -207,7 +222,9 @@ export function AdvancedSearchBar<T = any>({
       return;
     }
 
-    const totalItems = suggestions.length + (recentSearches.length > 0 && !query ? recentSearches.length : 0);
+    const totalItems =
+      suggestions.length +
+      (recentSearches.length > 0 && !query ? recentSearches.length : 0);
 
     switch (e.key) {
       case 'ArrowDown':
@@ -224,7 +241,10 @@ export function AdvancedSearchBar<T = any>({
         e.preventDefault();
         if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
           handleSuggestionClick(suggestions[selectedIndex]);
-        } else if (selectedIndex >= suggestions.length && recentSearches.length > 0) {
+        } else if (
+          selectedIndex >= suggestions.length &&
+          recentSearches.length > 0
+        ) {
           const recentIndex = selectedIndex - suggestions.length;
           handleRecentSearchClick(recentSearches[recentIndex]);
         } else if (query.trim()) {
@@ -310,38 +330,44 @@ export function AdvancedSearchBar<T = any>({
         <div
           className="suggestion-title"
           dangerouslySetInnerHTML={{
-            __html: highlightMatch(name, result.matches)
+            __html: highlightMatch(name, result.matches),
           }}
         />
-        {subtitle && (
-          <div className="suggestion-subtitle">{subtitle}</div>
-        )}
+        {subtitle && <div className="suggestion-subtitle">{subtitle}</div>}
       </div>
     );
   };
 
-  const showRecentInDropdown = !query.trim() && recentSearches.length > 0 && isFocused;
+  const showRecentInDropdown =
+    !query.trim() && recentSearches.length > 0 && isFocused;
 
   return (
     <div className={`advanced-search-bar ${className}`}>
       {/* Category Filters */}
       {categories.length > 0 && (
-        <div className="search-categories" role="group" aria-label="Search categories">
+        <div
+          className="search-categories"
+          role="group"
+          aria-label="Search categories"
+        >
           {categories.map((category) => {
             const isSelected = selectedCategory === category.id;
             return (
-            <button
-              key={category.id}
-              type="button"
-              aria-pressed={isSelected ? 'true' : 'false'}
-              aria-label={`Filter by ${category.label}`}
-              className={`category-btn ${isSelected ? 'active' : ''}`}
-              onClick={() => onCategoryChange?.(category.id)}
-            >
-              {category.icon && <span aria-hidden="true">{category.icon}</span>}
-              <span>{category.label}</span>
-            </button>
-          )})}
+              <button
+                key={category.id}
+                type="button"
+                aria-pressed={isSelected ? 'true' : 'false'}
+                aria-label={`Filter by ${category.label}`}
+                className={`category-btn ${isSelected ? 'active' : ''}`}
+                onClick={() => onCategoryChange?.(category.id)}
+              >
+                {category.icon && (
+                  <span aria-hidden="true">{category.icon}</span>
+                )}
+                <span>{category.label}</span>
+              </button>
+            );
+          })}
         </div>
       )}
 
@@ -381,7 +407,9 @@ export function AdvancedSearchBar<T = any>({
             aria-autocomplete="list"
             aria-expanded={showSuggestions ? 'true' : 'false'}
             aria-controls="search-suggestions"
-            aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
+            aria-activedescendant={
+              selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined
+            }
             aria-label="Search"
           />
 
@@ -446,17 +474,19 @@ export function AdvancedSearchBar<T = any>({
                     const itemIndex = suggestions.length + index;
                     const isSelected = selectedIndex === itemIndex;
                     return (
-                    <div
-                      key={`recent-${index}`}
-                      data-index={itemIndex}
-                      className={`suggestion-item ${isSelected ? 'selected' : ''}`}
-                      onClick={() => handleRecentSearchClick(search)}
-                      role="option"
-                      aria-selected={isSelected ? 'true' : 'false'}
-                    >
-                      <span className="suggestion-icon" aria-hidden="true">🕐</span>
-                      <span className="suggestion-text">{search}</span>
-                    </div>
+                      <div
+                        key={`recent-${index}`}
+                        data-index={itemIndex}
+                        className={`suggestion-item ${isSelected ? 'selected' : ''}`}
+                        onClick={() => handleRecentSearchClick(search)}
+                        role="option"
+                        aria-selected={isSelected ? 'true' : 'false'}
+                      >
+                        <span className="suggestion-icon" aria-hidden="true">
+                          🕐
+                        </span>
+                        <span className="suggestion-text">{search}</span>
+                      </div>
                     );
                   })}
                 </div>
@@ -473,23 +503,30 @@ export function AdvancedSearchBar<T = any>({
                   {suggestions.map((result, index) => {
                     const isSelected = selectedIndex === index;
                     return (
-                    <div
-                      key={`suggestion-${index}`}
-                      id={`suggestion-${index}`}
-                      data-index={index}
-                      className={`suggestion-item ${isSelected ? 'selected' : ''}`}
-                      onClick={() => handleSuggestionClick(result)}
-                      role="option"
-                      aria-selected={isSelected ? 'true' : 'false'}
-                    >
-                      <span className="suggestion-icon" aria-hidden="true">🔍</span>
-                      {renderResult ? renderResult(result.item) : defaultRenderResult(result)}
-                      {result.score !== undefined && (
-                        <span className="suggestion-score" title="Match quality">
-                          {Math.round((1 - result.score) * 100)}%
+                      <div
+                        key={`suggestion-${index}`}
+                        id={`suggestion-${index}`}
+                        data-index={index}
+                        className={`suggestion-item ${isSelected ? 'selected' : ''}`}
+                        onClick={() => handleSuggestionClick(result)}
+                        role="option"
+                        aria-selected={isSelected ? 'true' : 'false'}
+                      >
+                        <span className="suggestion-icon" aria-hidden="true">
+                          🔍
                         </span>
-                      )}
-                    </div>
+                        {renderResult
+                          ? renderResult(result.item)
+                          : defaultRenderResult(result)}
+                        {result.score !== undefined && (
+                          <span
+                            className="suggestion-score"
+                            title="Match quality"
+                          >
+                            {Math.round((1 - result.score) * 100)}%
+                          </span>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
@@ -498,7 +535,9 @@ export function AdvancedSearchBar<T = any>({
               {/* No Results */}
               {query.trim() && suggestions.length === 0 && !loading && (
                 <div className="no-results">
-                  <span className="no-results-icon" aria-hidden="true">🔍</span>
+                  <span className="no-results-icon" aria-hidden="true">
+                    🔍
+                  </span>
                   <div className="no-results-text">
                     <strong>No results found</strong>
                     <p>Try different keywords or check spelling</p>

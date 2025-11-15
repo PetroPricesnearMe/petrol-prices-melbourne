@@ -15,6 +15,7 @@ This guide covers the complete integration of Baserow CMS with Next.js for dynam
 ### 1. Baserow API Client (`src/lib/baserow/client.ts`)
 
 Production-ready client with:
+
 - ✅ Automatic caching with ISR support
 - ✅ Error handling and retry logic
 - ✅ Request deduplication
@@ -51,6 +52,7 @@ const results = await searchStations('BP');
 #### StationListCMS Component
 
 Fully accessible dynamic list with:
+
 - ✅ WCAG 2.1 AA compliance
 - ✅ Keyboard navigation (Arrow keys, Home, End, Enter, Space)
 - ✅ Proper ARIA labels and roles
@@ -66,21 +68,21 @@ import { StationListCMS } from '@/components/dynamic/StationListCMS';
   isLoading={isLoading}
   error={error}
   onStationClick={handleStationClick}
-/>
+/>;
 ```
 
 ## 🎹 Keyboard Navigation
 
 ### Station List Keyboard Controls
 
-| Key | Action |
-|-----|--------|
-| `↓` | Focus next station |
-| `↑` | Focus previous station |
-| `Home` | Jump to first station |
-| `End` | Jump to last station |
-| `Enter` / `Space` | Select station |
-| `Esc` | Close/exit |
+| Key               | Action                 |
+| ----------------- | ---------------------- |
+| `↓`               | Focus next station     |
+| `↑`               | Focus previous station |
+| `Home`            | Jump to first station  |
+| `End`             | Jump to last station   |
+| `Enter` / `Space` | Select station         |
+| `Esc`             | Close/exit             |
 
 ### Implementation
 
@@ -91,7 +93,7 @@ useEffect(() => {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setFocusedIndex(prev => prev < stations.length - 1 ? prev + 1 : 0);
+        setFocusedIndex((prev) => (prev < stations.length - 1 ? prev + 1 : 0));
         break;
       // ... other keys
     }
@@ -160,12 +162,12 @@ outline-offset: 2px;
 
 All colors meet WCAG 2.1 AA standards:
 
-| Element | Color | Background | Ratio | Status |
-|---------|-------|-----------|-------|--------|
-| Body text | `#374151` | `#ffffff` | 12.63:1 | ✅ AAA |
-| Primary button | `#ffffff` | `#3b82f6` | 4.5:1 | ✅ AA |
-| Error text | `#991b1b` | `#fef2f2` | 6.2:1 | ✅ AAA |
-| Link text | `#2563eb` | `#ffffff` | 4.86:1 | ✅ AA |
+| Element        | Color     | Background | Ratio   | Status |
+| -------------- | --------- | ---------- | ------- | ------ |
+| Body text      | `#374151` | `#ffffff`  | 12.63:1 | ✅ AAA |
+| Primary button | `#ffffff` | `#3b82f6`  | 4.5:1   | ✅ AA  |
+| Error text     | `#991b1b` | `#fef2f2`  | 6.2:1   | ✅ AAA |
+| Link text      | `#2563eb` | `#ffffff`  | 4.86:1  | ✅ AA  |
 
 ## 📱 Touch Targets
 
@@ -173,9 +175,7 @@ All interactive elements meet minimum 44×44px:
 
 ```tsx
 // Minimum touch target
-<button className="min-h-[44px] min-w-[44px] px-4 py-2">
-  Click me
-</button>
+<button className="min-h-[44px] min-w-[44px] px-4 py-2">Click me</button>
 ```
 
 ## 🚀 Data Fetching Patterns
@@ -310,7 +310,7 @@ async function fetchWithRetry(url: string, retries = 3) {
       return await fetch(url);
     } catch (error) {
       if (i === retries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 }
@@ -355,7 +355,7 @@ const MapComponent = React.lazy(() => import('./MapComponent'));
 
 <Suspense fallback={<Loading />}>
   <MapComponent stations={stations} />
-</Suspense>
+</Suspense>;
 ```
 
 ### Virtual Scrolling
@@ -368,7 +368,7 @@ import { VirtualList } from '@/components/common/VirtualList';
   items={stations}
   itemHeight={200}
   renderItem={(station) => <StationCard station={station} />}
-/>
+/>;
 ```
 
 ### Image Optimization
@@ -383,7 +383,7 @@ import Image from 'next/image';
   height={300}
   priority={index < 3} // Prioritize first 3
   loading={index < 3 ? 'eager' : 'lazy'}
-/>
+/>;
 ```
 
 ## 🎯 Best Practices

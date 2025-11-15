@@ -11,6 +11,7 @@
 ## 🔍 **Step 1: Check Deployment Status (2 minutes)**
 
 ### **Go to Vercel Dashboard:**
+
 1. Open: https://vercel.com/dashboard
 2. Find project: **petrol-prices-melbourne**
 3. Check status:
@@ -19,7 +20,9 @@
    - 🔴 **"Failed"** → Check build logs
 
 ### **Get Your Live URL:**
+
 Click on the deployment → Copy the URL
+
 ```
 Example: https://petrol-prices-melbourne.vercel.app
 ```
@@ -29,6 +32,7 @@ Example: https://petrol-prices-melbourne.vercel.app
 ## 🧪 **Step 2: Quick Functionality Test (5 minutes)**
 
 ### **Test 1: Homepage Loads**
+
 ```
 1. Open your Vercel URL
 2. Should see: Hero section with "Melbourne Petrol Prices"
@@ -37,6 +41,7 @@ Example: https://petrol-prices-melbourne.vercel.app
 ```
 
 ### **Test 2: Navigation Works**
+
 ```
 1. Click any region card (e.g., "Northern Suburbs")
 2. Should navigate to: /directory?region=northern
@@ -45,6 +50,7 @@ Example: https://petrol-prices-melbourne.vercel.app
 ```
 
 ### **Test 3: Data Loads**
+
 ```
 1. Go to: /directory
 2. Should see: 700+ petrol stations listed
@@ -61,6 +67,7 @@ Example: https://petrol-prices-melbourne.vercel.app
 ### **Go to:** Settings → Environment Variables
 
 **Add these if missing:**
+
 ```bash
 REACT_APP_BASEROW_TOKEN=WXGOdiCeNmvdj5NszzAdvIug3InwQQXP
 REACT_APP_BASEROW_API_URL=https://api.baserow.io/api
@@ -74,6 +81,7 @@ REACT_APP_BASEROW_SSE_URL=https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkI
 ## 🚨 **If Something's Wrong**
 
 ### **Symptom: Build Failed**
+
 ```bash
 1. Check Vercel build logs
 2. Look for error message
@@ -82,6 +90,7 @@ REACT_APP_BASEROW_SSE_URL=https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkI
 ```
 
 ### **Symptom: White Screen**
+
 ```bash
 1. Open browser console (F12)
 2. Look for red errors
@@ -91,6 +100,7 @@ REACT_APP_BASEROW_SSE_URL=https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkI
 ```
 
 ### **Symptom: 404 on Routes**
+
 ```bash
 1. Check vercel.json has SPA routing:
    "routes": [{"src": "/(.*)", "dest": "/index.html"}]
@@ -124,7 +134,7 @@ Once deployed, verify all these work:
 ✅ 10-second spinner timeout (no infinite loading)  
 ✅ DataSourceManager wait loop fix (critical bug!)  
 ✅ User-friendly error UI with retry buttons  
-✅ Comprehensive debugging logs  
+✅ Comprehensive debugging logs
 
 **All Your Features:**
 ✅ 700+ petrol stations with real data  
@@ -132,18 +142,20 @@ Once deployed, verify all these work:
 ✅ Advanced search and filters  
 ✅ Regional breakdown  
 ✅ Responsive design  
-✅ SEO optimized  
+✅ SEO optimized
 
 ---
 
 ## 🎉 **After Verification:**
 
 **Share your live site:**
+
 ```
 Your Production URL: https://[your-project].vercel.app
 ```
 
 **Monitor for 24 hours:**
+
 - Check for errors
 - Test on different devices
 - Collect feedback
@@ -155,6 +167,7 @@ Your Production URL: https://[your-project].vercel.app
 ## 📞 **Need Help?**
 
 **If anything's not working:**
+
 1. Copy the error message
 2. Screenshot the console (F12)
 3. Tell me your Vercel URL
@@ -165,4 +178,3 @@ Your Production URL: https://[your-project].vercel.app
 **Deployment Time:** Just now  
 **Next.js Migration:** Later (separate branch)  
 **Status:** 🎯 Focus on React first ✅
-

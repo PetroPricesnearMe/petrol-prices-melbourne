@@ -23,7 +23,7 @@ const GooglePlacesSearch = () => {
         (position) => {
           setUserLocation({
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
           });
         },
         (error) => {
@@ -47,12 +47,13 @@ const GooglePlacesSearch = () => {
         query: searchQuery,
         location: location,
         radius: 10000, // 10km radius
-        pageSize: 20
+        pageSize: 20,
       });
 
-      const formattedResults = results.places?.map(place => 
-        googlePlacesService.formatPlaceToStation(place)
-      ) || [];
+      const formattedResults =
+        results.places?.map((place) =>
+          googlePlacesService.formatPlaceToStation(place)
+        ) || [];
 
       setSearchResults(formattedResults);
     } catch (err) {
@@ -74,13 +75,14 @@ const GooglePlacesSearch = () => {
     setError(null);
 
     try {
-      const results = await googlePlacesService.searchPetrolStationsNearLocation(
-        userLocation,
-        5000, // 5km radius
-        20
-      );
+      const results =
+        await googlePlacesService.searchPetrolStationsNearLocation(
+          userLocation,
+          5000, // 5km radius
+          20
+        );
 
-      const formattedResults = results.map(place => 
+      const formattedResults = results.map((place) =>
         googlePlacesService.formatPlaceToStation(place)
       );
 
@@ -106,7 +108,7 @@ const GooglePlacesSearch = () => {
         20000 // 20km radius
       );
 
-      const formattedResults = results.map(place => 
+      const formattedResults = results.map((place) =>
         googlePlacesService.formatPlaceToStation(place)
       );
 
@@ -137,8 +139,8 @@ const GooglePlacesSearch = () => {
             className="search-input"
             disabled={loading}
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="search-btn"
             disabled={loading || !searchQuery.trim()}
           >
@@ -149,16 +151,16 @@ const GooglePlacesSearch = () => {
 
       {/* Quick Search Buttons */}
       <div className="quick-search">
-        <button 
+        <button
           onClick={searchNearbyStations}
           className="quick-btn"
           disabled={loading || !userLocation}
         >
           📍 Nearby Stations
         </button>
-        
+
         <div className="brand-buttons">
-          {['Shell', 'BP', '7-Eleven', 'Mobil', 'Caltex'].map(brand => (
+          {['Shell', 'BP', '7-Eleven', 'Mobil', 'Caltex'].map((brand) => (
             <button
               key={brand}
               onClick={() => searchByBrand(brand)}
@@ -196,10 +198,10 @@ const GooglePlacesSearch = () => {
                   <h4 className="station-name">{station.name}</h4>
                   <span className="station-brand">{station.brand}</span>
                 </div>
-                
+
                 <div className="card-content">
                   <p className="station-address">{station.address}</p>
-                  
+
                   {station.rating > 0 && (
                     <div className="station-rating">
                       <span className="rating-stars">
@@ -207,7 +209,8 @@ const GooglePlacesSearch = () => {
                         {'☆'.repeat(5 - Math.floor(station.rating))}
                       </span>
                       <span className="rating-text">
-                        {station.rating.toFixed(1)} ({station.userRatingCount} reviews)
+                        {station.rating.toFixed(1)} ({station.userRatingCount}{' '}
+                        reviews)
                       </span>
                     </div>
                   )}
@@ -217,9 +220,9 @@ const GooglePlacesSearch = () => {
                   )}
 
                   {station.website && (
-                    <a 
-                      href={station.website} 
-                      target="_blank" 
+                    <a
+                      href={station.website}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="station-website"
                     >
@@ -236,7 +239,7 @@ const GooglePlacesSearch = () => {
                     >
                       🧭 Directions
                     </a>
-                    
+
                     {station.photos && station.photos.length > 0 && (
                       <button className="action-btn photos-btn">
                         📸 Photos ({station.photos.length})

@@ -186,7 +186,8 @@ export const COLORS = {
     error: 'bg-red-500',
   },
   gradient: {
-    primary: 'bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800',
+    primary:
+      'bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800',
     secondary: 'bg-gradient-to-r from-primary-600 to-secondary-600',
     accent: 'bg-gradient-to-r from-yellow-400 to-orange-500',
   },
@@ -214,4 +215,3 @@ export const Z_INDEX = {
   modal: 30,
   tooltip: 40,
 } as const;
-

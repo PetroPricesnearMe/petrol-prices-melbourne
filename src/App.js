@@ -14,21 +14,25 @@ import { footerConfig } from './config/footerConfig';
 // Lazy load non-critical pages to reduce initial bundle size
 const DirectoryPage = React.lazy(() => import('./components/DirectoryPageNew'));
 const AboutPage = React.lazy(() => import('./components/AboutPage'));
-const FuelPriceTrendsPage = React.lazy(() => import('./components/FuelPriceTrendsPage'));
-const StationAmenitiesPage = React.lazy(() => import('./components/StationAmenitiesPage'));
-const HowPricingWorksPage = React.lazy(() => import('./components/HowPricingWorksPage'));
+const FuelPriceTrendsPage = React.lazy(
+  () => import('./components/FuelPriceTrendsPage')
+);
+const StationAmenitiesPage = React.lazy(
+  () => import('./components/StationAmenitiesPage')
+);
+const HowPricingWorksPage = React.lazy(
+  () => import('./components/HowPricingWorksPage')
+);
 const BlogPage = React.lazy(() => import('./components/BlogPage'));
 const FAQPage = React.lazy(() => import('./components/FAQPage'));
 const AIChat = React.lazy(() => import('./components/AIChat'));
-const GooglePlacesSearch = React.lazy(() => import('./components/GooglePlacesSearch'));
+const GooglePlacesSearch = React.lazy(
+  () => import('./components/GooglePlacesSearch')
+);
 
 // Loading component for lazy-loaded pages
 const PageLoader = () => (
-  <LoadingSpinner
-    message="Loading page..."
-    showTips={true}
-    size="medium"
-  />
+  <LoadingSpinner message="Loading page..." showTips={true} size="medium" />
 );
 
 function App() {
@@ -62,13 +66,25 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/directory" element={<DirectoryPage />} />
                     <Route path="/about" element={<AboutPage />} />
-                    <Route path="/fuel-price-trends" element={<FuelPriceTrendsPage />} />
-                    <Route path="/station-amenities" element={<StationAmenitiesPage />} />
-                    <Route path="/how-pricing-works" element={<HowPricingWorksPage />} />
+                    <Route
+                      path="/fuel-price-trends"
+                      element={<FuelPriceTrendsPage />}
+                    />
+                    <Route
+                      path="/station-amenities"
+                      element={<StationAmenitiesPage />}
+                    />
+                    <Route
+                      path="/how-pricing-works"
+                      element={<HowPricingWorksPage />}
+                    />
                     <Route path="/blog" element={<BlogPage />} />
                     <Route path="/faq" element={<FAQPage />} />
                     <Route path="/chat" element={<AIChat />} />
-                    <Route path="/google-places" element={<GooglePlacesSearch />} />
+                    <Route
+                      path="/google-places"
+                      element={<GooglePlacesSearch />}
+                    />
                   </Routes>
                 </Suspense>
               </main>

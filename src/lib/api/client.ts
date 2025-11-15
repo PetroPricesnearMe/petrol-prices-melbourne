@@ -24,9 +24,8 @@ const apiClient: AxiosInstance = axios.create(config);
 apiClient.interceptors.request.use(
   (config) => {
     // Add auth token if available
-    const token = typeof window !== 'undefined'
-      ? localStorage.getItem('authToken')
-      : null;
+    const token =
+      typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
 
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -61,7 +60,10 @@ apiClient.interceptors.response.use(
  * API Client Methods
  */
 export const api = {
-  get: async <T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+  get: async <T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> => {
     const response = await apiClient.get<ApiResponse<T>>(url, config);
     return response.data;
   },
@@ -93,7 +95,10 @@ export const api = {
     return response.data;
   },
 
-  delete: async <T>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+  delete: async <T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> => {
     const response = await apiClient.delete<ApiResponse<T>>(url, config);
     return response.data;
   },

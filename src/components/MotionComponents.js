@@ -31,9 +31,9 @@ export const containerVariants = {
     opacity: 1,
     transition: {
       duration: 0.6,
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 export const itemVariants = {
@@ -41,8 +41,8 @@ export const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6 }
-  }
+    transition: { duration: 0.6 },
+  },
 };
 
 export const fadeInUp = {
@@ -50,6 +50,6 @@ export const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: "easeOut" }
-  }
+    transition: { duration: 0.8, ease: 'easeOut' },
+  },
 };

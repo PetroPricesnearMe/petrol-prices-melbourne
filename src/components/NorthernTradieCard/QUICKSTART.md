@@ -20,9 +20,7 @@ import { NorthernTradieCard } from '@/components/NorthernTradieCard';
 function MyComponent() {
   return (
     <NorthernTradieCard>
-      <NorthernTradieCard.Content>
-        Hello World!
-      </NorthernTradieCard.Content>
+      <NorthernTradieCard.Content>Hello World!</NorthernTradieCard.Content>
     </NorthernTradieCard>
   );
 }
@@ -32,10 +30,7 @@ function MyComponent() {
 
 ```tsx
 <NorthernTradieCard>
-  <NorthernTradieCard.Header 
-    title="My Card" 
-    subtitle="Subtitle text"
-  />
+  <NorthernTradieCard.Header title="My Card" subtitle="Subtitle text" />
   <NorthernTradieCard.Content>
     Card content goes here
   </NorthernTradieCard.Content>
@@ -49,10 +44,7 @@ function MyComponent() {
 
 ```tsx
 <NorthernTradieCard variant="elevated">
-  <NorthernTradieCard.Media
-    src="/path/to/image.jpg"
-    alt="Description"
-  />
+  <NorthernTradieCard.Media src="/path/to/image.jpg" alt="Description" />
   <NorthernTradieCard.Header title="Card with Image" />
   <NorthernTradieCard.Content>
     Content below the image
@@ -63,14 +55,8 @@ function MyComponent() {
 ### 4. Interactive Card
 
 ```tsx
-<NorthernTradieCard
-  clickable
-  hoverable
-  onClick={() => alert('Clicked!')}
->
-  <NorthernTradieCard.Content>
-    Click me!
-  </NorthernTradieCard.Content>
+<NorthernTradieCard clickable hoverable onClick={() => alert('Clicked!')}>
+  <NorthernTradieCard.Content>Click me!</NorthernTradieCard.Content>
 </NorthernTradieCard>
 ```
 
@@ -83,10 +69,8 @@ const [loading, setLoading] = useState(true);
   state={loading ? 'loading' : 'idle'}
   loadingMessage="Loading..."
 >
-  <NorthernTradieCard.Content>
-    {data}
-  </NorthernTradieCard.Content>
-</NorthernTradieCard>
+  <NorthernTradieCard.Content>{data}</NorthernTradieCard.Content>
+</NorthernTradieCard>;
 ```
 
 ## Common Patterns
@@ -128,10 +112,8 @@ const [error, setError] = useState(null);
   state={error ? 'error' : 'idle'}
   errorMessage={error?.message}
 >
-  <NorthernTradieCard.Content>
-    {content}
-  </NorthernTradieCard.Content>
-</NorthernTradieCard>
+  <NorthernTradieCard.Content>{content}</NorthernTradieCard.Content>
+</NorthernTradieCard>;
 ```
 
 ## Tips
@@ -155,4 +137,3 @@ const [error, setError] = useState(null);
 - Check examples in EXAMPLES.md
 - View interactive demos in Storybook
 - Review the TypeScript types in types.ts
-

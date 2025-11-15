@@ -73,7 +73,7 @@
   flex-direction: column;
   gap: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #E0E0E0;
+  border-top: 1px solid #e0e0e0;
 }
 
 .station-card__prices-title {
@@ -102,7 +102,7 @@
   align-items: baseline;
   gap: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #E0E0E0;
+  border-top: 1px solid #e0e0e0;
 }
 
 /* ============================================================================
@@ -127,7 +127,7 @@
  * ============================================================================ */
 
 .station-card__footer {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 .station-card__actions {
@@ -170,4 +170,3 @@
     width: 100%;
   }
 }
-

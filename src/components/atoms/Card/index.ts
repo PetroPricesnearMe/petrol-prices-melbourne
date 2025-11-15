@@ -5,4 +5,3 @@ export type {
   CardTitleProps,
   CardContentProps,
 } from './Card';
-

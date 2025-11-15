@@ -17,29 +17,31 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className={patterns.flex.center + ' min-h-screen px-4 bg-gray-50 dark:bg-gray-900'}>
-      <div className="card max-w-2xl w-full p-8 text-center">
-        <div className="text-6xl mb-6">⚠️</div>
-        <h1 className={cn(patterns.text.h1, 'mb-4')}>
-          Something went wrong!
-        </h1>
+    <div
+      className={
+        patterns.flex.center + ' min-h-screen bg-gray-50 px-4 dark:bg-gray-900'
+      }
+    >
+      <div className="card w-full max-w-2xl p-8 text-center">
+        <div className="mb-6 text-6xl">⚠️</div>
+        <h1 className={cn(patterns.text.h1, 'mb-4')}>Something went wrong!</h1>
         <p className={cn(patterns.text.body, 'mb-8')}>
           We apologize for the inconvenience. Please try again.
         </p>
-        <div className="flex justify-center gap-4 flex-wrap">
-          <button onClick={() => reset()} className="btn btn-primary">
+        <div className="flex flex-wrap justify-center gap-4">
+          <button onClick={() => reset()} className="btn-primary btn">
             Try again
           </button>
-          <Link href="/" className="btn btn-outline">
+          <Link href="/" className="btn-outline btn">
             Go home
           </Link>
         </div>
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-8 text-left">
-            <summary className="cursor-pointer font-semibold text-sm text-gray-700 dark:text-gray-300">
+            <summary className="cursor-pointer text-sm font-semibold text-gray-700 dark:text-gray-300">
               Error Details (Development)
             </summary>
-            <pre className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded text-xs overflow-auto">
+            <pre className="mt-4 overflow-auto rounded bg-gray-100 p-4 text-xs dark:bg-gray-800">
               {error.message}
             </pre>
           </details>

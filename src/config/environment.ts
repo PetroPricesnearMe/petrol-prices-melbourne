@@ -45,7 +45,8 @@ interface EnvironmentConfig {
 }
 
 const getEnvironment = (): Environment => {
-  const env = process.env.NEXT_PUBLIC_ENV || process.env.NODE_ENV || 'development';
+  const env =
+    process.env.NEXT_PUBLIC_ENV || process.env.NODE_ENV || 'development';
 
   if (['development', 'test', 'preview', 'production'].includes(env)) {
     return env as Environment;
@@ -64,10 +65,11 @@ export const config: EnvironmentConfig = {
   isProduction: env === 'production',
 
   api: {
-    url: process.env.NEXT_PUBLIC_API_URL ||
-         (env === 'production'
-           ? 'https://your-production-url.com/api'
-           : 'http://localhost:3000/api'),
+    url:
+      process.env.NEXT_PUBLIC_API_URL ||
+      (env === 'production'
+        ? 'https://your-production-url.com/api'
+        : 'http://localhost:3000/api'),
     timeout: parseInt(process.env.API_TIMEOUT || '30000', 10),
   },
 
@@ -89,7 +91,8 @@ export const config: EnvironmentConfig = {
   monitoring: {
     sentryDsn: process.env.SENTRY_DSN,
     sentryEnv: process.env.SENTRY_ENV || env,
-    logLevel: (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') || 'info',
+    logLevel:
+      (process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error') || 'info',
   },
 
   security: {
@@ -112,7 +115,7 @@ if (config.isProduction) {
     'NEXTAUTH_SECRET',
   ];
 
-  const missing = required.filter(key => !process.env[key]);
+  const missing = required.filter((key) => !process.env[key]);
 
   if (missing.length > 0) {
     throw new Error(

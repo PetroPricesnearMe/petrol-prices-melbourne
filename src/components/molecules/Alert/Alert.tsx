@@ -1,6 +1,6 @@
 /**
  * Alert Component (Molecule)
- * 
+ *
  * Feedback message with icon and optional actions
  */
 
@@ -106,7 +106,12 @@ export const Alert: React.FC<AlertProps> = ({
 
       <div className="alert__content">
         {title && (
-          <Text as="div" variant="label" weight="semibold" className="alert__title">
+          <Text
+            as="div"
+            variant="label"
+            weight="semibold"
+            className="alert__title"
+          >
             {title}
           </Text>
         )}
@@ -147,4 +152,3 @@ export const Alert: React.FC<AlertProps> = ({
     </div>
   );
 };
-

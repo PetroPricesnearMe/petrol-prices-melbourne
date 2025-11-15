@@ -1,8 +1,8 @@
 /**
  * Performance Optimization Hook
- * 
+ *
  * Provides memory management and performance optimizations for infinite scroll
- * 
+ *
  * @module hooks/usePerformanceOptimization
  */
 
@@ -65,16 +65,19 @@ export function usePerformanceOptimization(
   /**
    * End performance measurement
    */
-  const endMeasurement = useCallback((itemCount: number) => {
-    const renderTime = performance.now() - renderStartTime.current;
-    
-    setMetrics(prev => ({
-      ...prev,
-      renderTime,
-      itemCount,
-      isOptimized: itemCount > cleanupThreshold,
-    }));
-  }, [cleanupThreshold]);
+  const endMeasurement = useCallback(
+    (itemCount: number) => {
+      const renderTime = performance.now() - renderStartTime.current;
+
+      setMetrics((prev) => ({
+        ...prev,
+        renderTime,
+        itemCount,
+        isOptimized: itemCount > cleanupThreshold,
+      }));
+    },
+    [cleanupThreshold]
+  );
 
   /**
    * Monitor memory usage
@@ -82,9 +85,11 @@ export function usePerformanceOptimization(
   const monitorMemoryUsage = useCallback(() => {
     if (typeof window !== 'undefined' && 'memory' in performance) {
       const memory = (performance as any).memory;
-      const memoryUsage = memory ? memory.usedJSHeapSize / memory.jsHeapSizeLimit : 0;
-      
-      setMetrics(prev => ({
+      const memoryUsage = memory
+        ? memory.usedJSHeapSize / memory.jsHeapSizeLimit
+        : 0;
+
+      setMetrics((prev) => ({
         ...prev,
         memoryUsage: memoryUsage * 100, // Convert to percentage
       }));
@@ -100,11 +105,11 @@ export function usePerformanceOptimization(
       if ('gc' in window) {
         (window as any).gc();
       }
-      
+
       // Clear any cached data
       if ('caches' in window) {
-        caches.keys().then(names => {
-          names.forEach(name => {
+        caches.keys().then((names) => {
+          names.forEach((name) => {
             if (name.includes('stations') || name.includes('infinite')) {
               caches.delete(name);
             }
@@ -117,14 +122,17 @@ export function usePerformanceOptimization(
   /**
    * Optimize data for rendering
    */
-  const optimizeData = useCallback(<T>(data: T[]): T[] => {
-    if (!enableMemoryManagement || data.length <= maxItems) {
-      return data;
-    }
+  const optimizeData = useCallback(
+    <T>(data: T[]): T[] => {
+      if (!enableMemoryManagement || data.length <= maxItems) {
+        return data;
+      }
 
-    // Keep only the most recent items
-    return data.slice(-maxItems);
-  }, [enableMemoryManagement, maxItems]);
+      // Keep only the most recent items
+      return data.slice(-maxItems);
+    },
+    [enableMemoryManagement, maxItems]
+  );
 
   /**
    * Virtualize items for large datasets
@@ -161,7 +169,12 @@ export function usePerformanceOptimization(
         }
       };
     }
-  }, [metrics.itemCount, cleanupThreshold, cleanupMemory, enableMemoryManagement]);
+  }, [
+    metrics.itemCount,
+    cleanupThreshold,
+    cleanupMemory,
+    enableMemoryManagement,
+  ]);
 
   return {
     metrics,
@@ -188,11 +201,7 @@ export function useOptimizedIntersectionObserver(
     enabled?: boolean;
   } = {}
 ) {
-  const {
-    threshold = 0.1,
-    rootMargin = '100px',
-    enabled = true,
-  } = options;
+  const { threshold = 0.1, rootMargin = '100px', enabled = true } = options;
 
   const observerRef = useRef<IntersectionObserver | null>(null);
   const elementRef = useRef<HTMLDivElement | null>(null);
@@ -257,7 +266,7 @@ export function useDebouncedScroll(
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
       const scrollTop = e.currentTarget.scrollTop;
-      
+
       // Only trigger if scroll position changed significantly
       if (Math.abs(scrollTop - lastScrollTop.current) < 10) {
         return;
@@ -302,7 +311,7 @@ export function useMemoryLeakPrevention() {
   }, []);
 
   const cleanup = useCallback(() => {
-    cleanupFunctions.current.forEach(fn => fn());
+    cleanupFunctions.current.forEach((fn) => fn());
     cleanupFunctions.current = [];
   }, []);
 
@@ -327,7 +336,7 @@ export function useRenderOptimization() {
 
   const queueRender = useCallback((renderFn: () => void) => {
     renderQueue.current.push(renderFn);
-    
+
     if (!isProcessingQueue.current) {
       processRenderQueue();
     }

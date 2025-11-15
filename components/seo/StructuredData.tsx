@@ -21,7 +21,11 @@ export const StructuredData: React.FC<StructuredDataProps> = ({ data }) => {
           id={`structured-data-${index}`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(item, null, process.env.NODE_ENV === 'development' ? 2 : 0),
+            __html: JSON.stringify(
+              item,
+              null,
+              process.env.NODE_ENV === 'development' ? 2 : 0
+            ),
           }}
         />
       ))}

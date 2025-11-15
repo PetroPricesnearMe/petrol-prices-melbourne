@@ -83,7 +83,9 @@ export const FluidGrid: React.FC<FluidGridProps> = ({
     const classes: string[] = [];
 
     if (columns.base !== undefined) {
-      classes.push(columns.base === 1 ? 'grid-cols-1' : `grid-cols-${columns.base}`);
+      classes.push(
+        columns.base === 1 ? 'grid-cols-1' : `grid-cols-${columns.base}`
+      );
     }
     if (columns.sm !== undefined) {
       classes.push(`sm:grid-cols-${columns.sm}`);
@@ -117,11 +119,7 @@ export const FluidGrid: React.FC<FluidGridProps> = ({
 
   // Without animation
   if (!animate) {
-    return (
-      <div className={gridClasses}>
-        {children}
-      </div>
-    );
+    return <div className={gridClasses}>{children}</div>;
   }
 
   // With staggered animation
@@ -153,7 +151,9 @@ export const FluidGrid: React.FC<FluidGridProps> = ({
 /**
  * Default implementation with recommended settings
  */
-export const DefaultFluidGrid: React.FC<Omit<FluidGridProps, 'columns'>> = (props) => {
+export const DefaultFluidGrid: React.FC<Omit<FluidGridProps, 'columns'>> = (
+  props
+) => {
   return (
     <FluidGrid
       {...props}
@@ -176,9 +176,7 @@ export const GridItem: React.FC<{
   className?: string;
 }> = ({ children, className }) => {
   return (
-    <div className={cn('h-full flex flex-col', className)}>
-      {children}
-    </div>
+    <div className={cn('flex h-full flex-col', className)}>{children}</div>
   );
 };
 

@@ -50,7 +50,8 @@ export function errorHandler(
       error: apiError,
       meta: {
         timestamp: new Date().toISOString(),
-        requestId: (req.headers['x-request-id'] as string) || generateRequestId(),
+        requestId:
+          (req.headers['x-request-id'] as string) || generateRequestId(),
       },
     });
     return;
@@ -70,7 +71,8 @@ export function errorHandler(
       error: apiError,
       meta: {
         timestamp: new Date().toISOString(),
-        requestId: (req.headers['x-request-id'] as string) || generateRequestId(),
+        requestId:
+          (req.headers['x-request-id'] as string) || generateRequestId(),
       },
     });
     return;
@@ -79,9 +81,10 @@ export function errorHandler(
   // Handle unknown errors
   const apiError: ApiError = {
     code: ApiErrorCode.INTERNAL_ERROR,
-    message: process.env.NODE_ENV === 'production'
-      ? 'An internal server error occurred'
-      : error.message,
+    message:
+      process.env.NODE_ENV === 'production'
+        ? 'An internal server error occurred'
+        : error.message,
     statusCode: HTTP_STATUS.INTERNAL_ERROR,
   };
 
@@ -111,7 +114,12 @@ function generateRequestId(): string {
 // Common error creators
 export const errors = {
   badRequest: (message = 'Bad request', details?: Record<string, unknown>) =>
-    createError(HTTP_STATUS.BAD_REQUEST, ApiErrorCode.BAD_REQUEST, message, details),
+    createError(
+      HTTP_STATUS.BAD_REQUEST,
+      ApiErrorCode.BAD_REQUEST,
+      message,
+      details
+    ),
 
   unauthorized: (message = 'Unauthorized') =>
     createError(HTTP_STATUS.UNAUTHORIZED, ApiErrorCode.UNAUTHORIZED, message),
@@ -130,7 +138,11 @@ export const errors = {
     ),
 
   internalError: (message = 'Internal server error') =>
-    createError(HTTP_STATUS.INTERNAL_ERROR, ApiErrorCode.INTERNAL_ERROR, message),
+    createError(
+      HTTP_STATUS.INTERNAL_ERROR,
+      ApiErrorCode.INTERNAL_ERROR,
+      message
+    ),
 
   serviceUnavailable: (message = 'Service temporarily unavailable') =>
     createError(

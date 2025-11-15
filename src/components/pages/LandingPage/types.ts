@@ -172,4 +172,3 @@ export interface WebVitalMetric {
 }
 
 export type VitalType = 'LCP' | 'FID' | 'CLS' | 'FCP' | 'TTFB' | 'INP';
-

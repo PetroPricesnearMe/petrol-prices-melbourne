@@ -1,11 +1,13 @@
 # Design System & Theme Configuration Complete 🎨
 
 ## Overview
+
 Comprehensive design system implemented with thematic color palette, consistent spacing, and full dark mode support.
 
 ---
 
 ## 📚 Table of Contents
+
 1. [Color Palette](#color-palette)
 2. [Spacing Scale](#spacing-scale)
 3. [Typography](#typography)
@@ -20,70 +22,77 @@ Comprehensive design system implemented with thematic color palette, consistent 
 ## 🎨 Color Palette
 
 ### Primary Colors (Blue)
+
 Main brand color for primary actions, links, and highlights.
 
 ```tsx
 // Tailwind classes
-bg-primary-500    // Main: #3b82f6
-bg-primary-600    // Hover: #2563eb
-text-primary-600  // Text
+bg - primary - 500; // Main: #3b82f6
+bg - primary - 600; // Hover: #2563eb
+text - primary - 600; // Text
 ```
 
 **Scale:** 50, 100, 200, 300, 400, 500 (main), 600, 700, 800, 900, 950
 
 **Usage:**
+
 - Primary buttons
 - Links and navigation
 - Progress indicators
 - Focus states
 
 ### Secondary Colors (Purple/Indigo)
+
 Complementary color for secondary actions and accents.
 
 ```tsx
 // Tailwind classes
-bg-secondary-500    // Main: #a855f7
-bg-secondary-600    // Hover: #9333ea
-text-secondary-600  // Text
+bg - secondary - 500; // Main: #a855f7
+bg - secondary - 600; // Hover: #9333ea
+text - secondary - 600; // Text
 ```
 
 **Usage:**
+
 - Secondary buttons
 - Badges and labels
 - Alternative CTAs
 - Visual variety
 
 ### Accent Colors (Cyan/Teal)
+
 Eye-catching accent for highlights and special features.
 
 ```tsx
 // Tailwind classes
-bg-accent-500    // Main: #06b6d4
-bg-accent-600    // Hover: #0891b2
-text-accent-600  // Text
+bg - accent - 500; // Main: #06b6d4
+bg - accent - 600; // Hover: #0891b2
+text - accent - 600; // Text
 ```
 
 **Usage:**
+
 - Call-to-action elements
 - Promotional content
 - Special offers
 - Highlights
 
 ### Neutral/Grays
+
 Base colors for backgrounds, borders, and text.
 
 ```tsx
 // Light Mode
-bg-white          // Backgrounds
-bg-gray-50        // Secondary backgrounds
-text-gray-900     // Body text
-text-gray-600     // Secondary text
+bg - white; // Backgrounds
+bg - gray - 50; // Secondary backgrounds
+text - gray - 900; // Body text
+text - gray - 600; // Secondary text
 
 // Dark Mode
-bg-neutral-950    // Backgrounds
-bg-neutral-900    // Secondary backgrounds
-text-neutral-50   // Body text
-text-neutral-400  // Secondary text
+bg - neutral - 950; // Backgrounds
+bg - neutral - 900; // Secondary backgrounds
+text - neutral - 50; // Body text
+text - neutral - 400; // Secondary text
 ```
 
 **Scale:** 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950
@@ -91,35 +100,43 @@ text-neutral-400  // Secondary text
 ### State Colors
 
 #### Success (Green)
+
 ```tsx
-bg-success-500    // #22c55e
-text-success-600  // Text
-border-success-500 // Borders
+bg - success - 500; // #22c55e
+text - success - 600; // Text
+border - success - 500; // Borders
 ```
+
 **Usage:** Success messages, confirmations, positive stats
 
 #### Warning (Amber)
+
 ```tsx
-bg-warning-500    // #f59e0b
-text-warning-600  // Text
-border-warning-500 // Borders
+bg - warning - 500; // #f59e0b
+text - warning - 600; // Text
+border - warning - 500; // Borders
 ```
+
 **Usage:** Warnings, cautions, pending states
 
 #### Error (Red)
+
 ```tsx
-bg-error-500      // #ef4444
-text-error-600    // Text
-border-error-500  // Borders
+bg - error - 500; // #ef4444
+text - error - 600; // Text
+border - error - 500; // Borders
 ```
+
 **Usage:** Errors, destructive actions, critical alerts
 
 #### Info (Blue)
+
 ```tsx
-bg-info-500       // #3b82f6
-text-info-600     // Text
-border-info-500   // Borders
+bg - info - 500; // #3b82f6
+text - info - 600; // Text
+border - info - 500; // Borders
 ```
+
 **Usage:** Information messages, tips, general notifications
 
 ---
@@ -129,6 +146,7 @@ border-info-500   // Borders
 Consistent spacing for margins, padding, and gaps.
 
 ### Base Scale
+
 ```css
 0.5  → 0.125rem  (2px)
 1    → 0.25rem   (4px)
@@ -148,6 +166,7 @@ Consistent spacing for margins, padding, and gaps.
 ```
 
 ### Extended Scale
+
 ```css
 30   → 7.5rem    (120px)
 40   → 10rem     (160px)
@@ -162,6 +181,7 @@ Consistent spacing for margins, padding, and gaps.
 ```
 
 ### Usage Examples
+
 ```tsx
 // Component spacing
 <div className="p-6">          {/* 24px padding */}
@@ -196,26 +216,29 @@ text-9xl     // 128px - Display
 ```
 
 ### Font Weights
+
 ```tsx
-font-thin        // 100
-font-extralight  // 200
-font-light       // 300
-font-normal      // 400 (default)
-font-medium      // 500
-font-semibold    // 600
-font-bold        // 700
-font-extrabold   // 800
-font-black       // 900
+font - thin; // 100
+font - extralight; // 200
+font - light; // 300
+font - normal; // 400 (default)
+font - medium; // 500
+font - semibold; // 600
+font - bold; // 700
+font - extrabold; // 800
+font - black; // 900
 ```
 
 ### Font Families
+
 ```tsx
-font-sans        // Inter (default)
-font-mono        // Monospace
-font-display     // Display font
+font - sans; // Inter (default)
+font - mono; // Monospace
+font - display; // Display font
 ```
 
 ### Typography Examples
+
 ```tsx
 // Headings
 <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
@@ -259,6 +282,7 @@ rounded-full   // 9999px - Pills, circles
 ```
 
 ### Usage Examples
+
 ```tsx
 // Buttons
 <button className="rounded-lg">  {/* 12px */}
@@ -278,6 +302,7 @@ rounded-full   // 9999px - Pills, circles
 ## 🌑 Shadows & Effects
 
 ### Box Shadows
+
 ```tsx
 shadow-xs       // Subtle
 shadow-sm       // Small
@@ -295,6 +320,7 @@ shadow-glow     // Glow effect (primary color)
 ```
 
 ### Usage Examples
+
 ```tsx
 // Cards
 <div className="shadow-md hover:shadow-lg">
@@ -310,6 +336,7 @@ shadow-glow     // Glow effect (primary color)
 ```
 
 ### Animations
+
 ```tsx
 // Fade
 animate-fade-in
@@ -402,13 +429,9 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 Use Tailwind's `dark:` prefix for dark mode styles:
 
 ```tsx
-<div className="bg-white dark:bg-neutral-950">
-  <h1 className="text-gray-900 dark:text-white">
-    Title
-  </h1>
-  <p className="text-gray-700 dark:text-gray-300">
-    Paragraph text
-  </p>
+<div className="dark:bg-neutral-950 bg-white">
+  <h1 className="text-gray-900 dark:text-white">Title</h1>
+  <p className="text-gray-700 dark:text-gray-300">Paragraph text</p>
 </div>
 ```
 
@@ -418,9 +441,7 @@ Use CSS variables for dynamic theming:
 
 ```tsx
 <div className="bg-themed text-themed">
-  <p className="text-secondary-themed">
-    Using CSS variables
-  </p>
+  <p className="text-secondary-themed">Using CSS variables</p>
 </div>
 ```
 
@@ -438,6 +459,7 @@ Use CSS variables for dynamic theming:
 ## 💡 Usage Examples
 
 ### Button Variants
+
 ```tsx
 // Primary
 <button className="btn bg-primary-600 hover:bg-primary-700 text-white">
@@ -461,6 +483,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### Card Variants
+
 ```tsx
 // Basic card
 <div className="card bg-white dark:bg-neutral-900 rounded-xl shadow-md p-6">
@@ -480,6 +503,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### Form Elements
+
 ```tsx
 // Input
 <input
@@ -504,6 +528,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### Badges
+
 ```tsx
 // Primary badge
 <span className="px-3 py-1 text-sm font-medium rounded-full
@@ -528,6 +553,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### Alerts
+
 ```tsx
 // Info alert
 <div className="p-4 rounded-lg bg-info-50 border border-info-200
@@ -551,6 +577,7 @@ Use CSS variables for dynamic theming:
 ## 🎯 Best Practices
 
 ### 1. Use Semantic Colors
+
 ```tsx
 // ✅ Good - Semantic
 <button className="bg-primary-600">Primary Action</button>
@@ -562,6 +589,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### 2. Consistent Spacing
+
 ```tsx
 // ✅ Good - Consistent scale
 <div className="p-4 space-y-4">  {/* 16px */}
@@ -572,6 +600,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### 3. Dark Mode Support
+
 ```tsx
 // ✅ Good - Dark mode classes
 <div className="bg-white dark:bg-neutral-950">
@@ -585,6 +614,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### 4. Typography Hierarchy
+
 ```tsx
 // ✅ Good - Clear hierarchy
 <h1 className="text-4xl font-bold">Main Title</h1>
@@ -597,6 +627,7 @@ Use CSS variables for dynamic theming:
 ```
 
 ### 5. Hover & Focus States
+
 ```tsx
 // ✅ Good - Interactive states
 <button className="btn bg-primary-600 hover:bg-primary-700
@@ -644,6 +675,7 @@ Follow these guidelines:
 ## 🔧 Configuration Files
 
 ### Main Config: `tailwind.config.ts`
+
 - Complete color palette
 - Spacing scale
 - Typography settings
@@ -652,16 +684,19 @@ Follow these guidelines:
 - Dark mode configuration
 
 ### CSS Variables: `src/styles/theme-vars.css`
+
 - Dynamic color tokens
 - Light/dark theme values
 - Utility classes
 
 ### Global Styles: `src/styles/globals.css`
+
 - Base styles
 - Component classes
 - Utility classes
 
 ### Theme Provider: `src/components/providers/ThemeProvider.tsx`
+
 - System detection
 - Manual toggle
 - Persistence
@@ -671,35 +706,38 @@ Follow these guidelines:
 ## 🚀 Quick Start
 
 ### 1. Using in Components
+
 ```tsx
 import { cn } from '@/styles/system/css-in-js';
 
 export function MyComponent() {
   return (
-    <div className={cn(
-      'bg-white dark:bg-neutral-950',
-      'rounded-xl shadow-md',
-      'p-6 space-y-4'
-    )}>
+    <div
+      className={cn(
+        'dark:bg-neutral-950 bg-white',
+        'rounded-xl shadow-md',
+        'space-y-4 p-6'
+      )}
+    >
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
         Title
       </h2>
-      <p className="text-gray-700 dark:text-gray-300">
-        Content
-      </p>
+      <p className="text-gray-700 dark:text-gray-300">Content</p>
     </div>
   );
 }
 ```
 
 ### 2. Adding Theme Toggle
+
 ```tsx
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
-<ThemeToggle variant="full" />
+<ThemeToggle variant="full" />;
 ```
 
 ### 3. Using Theme Hook
+
 ```tsx
 import { useTheme } from '@/components/providers/ThemeProvider';
 

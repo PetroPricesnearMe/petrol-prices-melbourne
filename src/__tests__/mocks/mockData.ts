@@ -4,7 +4,7 @@
  * Reusable mock data for tests
  */
 
-import type { PetrolStation, FuelPrice} from '@/types/index';
+import type { PetrolStation, FuelPrice } from '@/types/index';
 import { FuelType, PriceTrend } from '@/types/index';
 
 export const mockFuelPrices: FuelPrice[] = [
@@ -60,7 +60,7 @@ export const mockStations: PetrolStation[] = [
     postalCode: '3006',
     country: 'Australia',
     latitude: -37.8226,
-    longitude: 144.9670,
+    longitude: 144.967,
     brand: ['BP'],
     category: 'petrol-station',
     fuelPrices: [mockFuelPrices[0], mockFuelPrices[1]],
@@ -87,7 +87,7 @@ export const mockLargeStationList = Array.from({ length: 100 }, (_, i) => ({
   ...mockStations[0],
   id: i + 1,
   stationName: `Test Station ${i + 1}`,
-  distance: (i * 0.5) + 0.5,
+  distance: i * 0.5 + 0.5,
 }));
 
 export const mockApiResponse = {
@@ -114,8 +114,8 @@ export const mockCoordinates = {
 export const mockSearchFilters = {
   fuelType: FuelType.UNLEADED,
   maxDistance: 10,
-  minPrice: 1.50,
-  maxPrice: 2.50,
+  minPrice: 1.5,
+  maxPrice: 2.5,
   brands: ['Shell', 'BP'],
 };
 
@@ -139,12 +139,16 @@ export const mockError = {
 /**
  * Factory functions
  */
-export const createMockStation = (overrides: Partial<PetrolStation> = {}): PetrolStation => ({
+export const createMockStation = (
+  overrides: Partial<PetrolStation> = {}
+): PetrolStation => ({
   ...mockStations[0],
   ...overrides,
 });
 
-export const createMockFuelPrice = (overrides: Partial<FuelPrice> = {}): FuelPrice => ({
+export const createMockFuelPrice = (
+  overrides: Partial<FuelPrice> = {}
+): FuelPrice => ({
   ...mockFuelPrices[0],
   ...overrides,
 });

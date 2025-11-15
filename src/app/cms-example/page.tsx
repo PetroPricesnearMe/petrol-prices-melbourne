@@ -1,6 +1,6 @@
 /**
  * CMS Example Page - Server Component with ISR
- * 
+ *
  * Demonstrates:
  * - Server-side data fetching
  * - Incremental Static Regeneration (ISR)
@@ -85,12 +85,13 @@ export default async function CMSExamplePage() {
             Dynamic CMS Content
           </h1>
           <p className="mt-2 text-gray-600">
-            This page demonstrates server-side rendering with ISR (revalidates every hour)
+            This page demonstrates server-side rendering with ISR (revalidates
+            every hour)
           </p>
-          <div className="mt-4 rounded-lg bg-blue-50 p-4">
+          <div className="bg-blue-50 mt-4 rounded-lg p-4">
             <div className="flex items-start gap-3">
               <svg
-                className="h-5 w-5 flex-shrink-0 text-blue-600"
+                className="text-blue-600 h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -100,9 +101,10 @@ export default async function CMSExamplePage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <div className="text-sm text-blue-700">
-                <strong>ISR Enabled:</strong> This page is statically generated and 
-                revalidated every hour. Data is cached at the edge for optimal performance.
+              <div className="text-blue-700 text-sm">
+                <strong>ISR Enabled:</strong> This page is statically generated
+                and revalidated every hour. Data is cached at the edge for
+                optimal performance.
               </div>
             </div>
           </div>
@@ -140,10 +142,10 @@ function StationCard({ station }: { station: Station }) {
   return (
     <article className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
       <h2 className="text-lg font-semibold text-gray-900">{station.name}</h2>
-      
+
       {station.brand && (
         <div className="mt-2">
-          <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
+          <span className="bg-blue-100 text-blue-800 inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
             {station.brand}
           </span>
         </div>
@@ -154,7 +156,7 @@ function StationCard({ station }: { station: Station }) {
       {station.price && (
         <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
           <span className="text-sm text-gray-500">Current Price:</span>
-          <span className="text-xl font-bold text-green-600">
+          <span className="text-green-600 text-xl font-bold">
             ${station.price.toFixed(2)}/L
           </span>
         </div>
@@ -166,4 +168,3 @@ function StationCard({ station }: { station: Station }) {
     </article>
   );
 }
-

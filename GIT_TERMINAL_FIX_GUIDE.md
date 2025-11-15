@@ -32,11 +32,13 @@ git push origin main
 ```
 
 **Pros:**
+
 - Immediate solution
 - No configuration changes needed
 - Works 100% of the time
 
 **Cons:**
+
 - Skips lint checks
 - Skips commit message validation
 - Should only be used temporarily
@@ -113,6 +115,7 @@ npx husky install
 Alternative ways to commit:
 
 #### Using VS Code:
+
 1. Open Source Control panel (Ctrl+Shift+G)
 2. Stage files
 3. Write commit message
@@ -120,6 +123,7 @@ Alternative ways to commit:
 5. Click ... → Push
 
 #### Using GitKraken (Recommended):
+
 1. Stage files in the right panel
 2. Write commit message
 3. Click "Commit"
@@ -148,13 +152,8 @@ Add this to `package.json`:
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,md,css}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,css}": ["prettier --write"]
   }
 }
 ```
@@ -169,16 +168,16 @@ module.exports = {
       2,
       'always',
       [
-        'feat',     // New feature
-        'fix',      // Bug fix
-        'docs',     // Documentation
-        'style',    // Formatting
+        'feat', // New feature
+        'fix', // Bug fix
+        'docs', // Documentation
+        'style', // Formatting
         'refactor', // Code restructuring
-        'perf',     // Performance
-        'test',     // Tests
-        'chore',    // Maintenance
-        'ci',       // CI/CD
-        'build',    // Build system
+        'perf', // Performance
+        'test', // Tests
+        'chore', // Maintenance
+        'ci', // CI/CD
+        'build', // Build system
       ],
     ],
     'subject-case': [0], // Allow any case
@@ -241,6 +240,7 @@ git reset --soft HEAD~1
 Format: `type(scope): description`
 
 Examples:
+
 ```
 feat(auth): add login functionality
 fix(api): resolve station data bug
@@ -348,6 +348,7 @@ git push origin main
 **Cause**: NPX waiting for input + Windows terminal compatibility
 
 **Solutions**:
+
 1. Use `--no-verify` flag (quick fix)
 2. Update hooks with better error handling (permanent fix)
 3. Use Git GUI tools (alternative)

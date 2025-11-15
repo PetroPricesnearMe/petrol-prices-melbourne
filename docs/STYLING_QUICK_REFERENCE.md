@@ -5,9 +5,19 @@ Fast lookup guide for common styling patterns and utilities.
 ## Import Statements
 
 ```tsx
-import { cn, patterns, styleUtils, animations, a11y } from '@/styles/system/css-in-js';
+import {
+  cn,
+  patterns,
+  styleUtils,
+  animations,
+  a11y,
+} from '@/styles/system/css-in-js';
 import { useTheme } from '@/styles/system/theme';
-import { animationStyles, durations, easings } from '@/styles/system/animations';
+import {
+  animationStyles,
+  durations,
+  easings,
+} from '@/styles/system/animations';
 ```
 
 ## Common Patterns
@@ -195,12 +205,12 @@ bg-gray-100 bg-gray-900 text-gray-700
 ## Spacing Scale
 
 ```tsx
-p-4    // 16px
-p-6    // 24px
-p-8    // 32px
-m-4    // 16px
-gap-4  // 16px
-space-y-4  // 16px vertical
+p - 4; // 16px
+p - 6; // 24px
+p - 8; // 32px
+m - 4; // 16px
+gap - 4; // 16px
+space - y - 4; // 16px vertical
 ```
 
 ## Shadow Scale
@@ -233,65 +243,65 @@ rounded-full  // 9999px
 ## Z-Index
 
 ```tsx
-z-dropdown         // 1000
-z-sticky           // 1020
-z-fixed            // 1030
-z-modal-backdrop   // 1040
-z-modal            // 1050
-z-popover          // 1060
-z-tooltip          // 1070
-z-toast            // 1080
+z - dropdown; // 1000
+z - sticky; // 1020
+z - fixed; // 1030
+z - modal - backdrop; // 1040
+z - modal; // 1050
+z - popover; // 1060
+z - tooltip; // 1070
+z - toast; // 1080
 ```
 
 ## Pattern Utilities
 
 ```tsx
 // Button
-patterns.button('primary', 'lg')
+patterns.button('primary', 'lg');
 
 // Card
-patterns.card('hover')
+patterns.card('hover');
 
 // Input
-patterns.input(false, true) // error, success
+patterns.input(false, true); // error, success
 
 // Badge
-patterns.badge('success')
+patterns.badge('success');
 
 // Container
-patterns.container()
+patterns.container();
 
 // Grid
-patterns.grid(3, 'lg') // 3 cols, large gap
+patterns.grid(3, 'lg'); // 3 cols, large gap
 
 // Flex
-patterns.flex.center
-patterns.flex.between
-patterns.flex.col
+patterns.flex.center;
+patterns.flex.between;
+patterns.flex.col;
 
 // Text
-patterns.text.h1
-patterns.text.body
-patterns.text.small
+patterns.text.h1;
+patterns.text.body;
+patterns.text.small;
 ```
 
 ## Style Utils
 
 ```tsx
 // Responsive
-styleUtils.responsive('text-sm', 'text-base', 'text-lg')
+styleUtils.responsive('text-sm', 'text-base', 'text-lg');
 
 // Interactive
-styleUtils.interactive('bg-white', 'bg-gray-100', 'ring-2')
+styleUtils.interactive('bg-white', 'bg-gray-100', 'ring-2');
 
 // Dark Mode
-styleUtils.darkMode('bg-white', 'bg-gray-900')
+styleUtils.darkMode('bg-white', 'bg-gray-900');
 
 // Conditional
-styleUtils.conditional(isActive, 'bg-blue-500', 'bg-gray-500')
+styleUtils.conditional(isActive, 'bg-blue-500', 'bg-gray-500');
 
 // Animation
-styleUtils.animation('animate-fade-in')
+styleUtils.animation('animate-fade-in');
 ```
 
 ## Common Combinations

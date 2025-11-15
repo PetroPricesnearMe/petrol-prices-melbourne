@@ -166,15 +166,18 @@ PPNM/
 ## 🎯 Key Architectural Principles
 
 ### 1. **Separation of Concerns**
+
 - **Components**: Pure UI, minimal logic
 - **Hooks**: Reusable stateful logic
 - **Lib**: Business logic, API calls, utilities
 - **Types**: Centralized type definitions
 
 ### 2. **Atomic Design Pattern**
+
 ```
 Atoms → Molecules → Organisms → Templates → Pages
 ```
+
 - **Atoms**: Button, Input, Label
 - **Molecules**: SearchBar, Card
 - **Organisms**: Header, Footer, StationList
@@ -182,6 +185,7 @@ Atoms → Molecules → Organisms → Templates → Pages
 - **Pages**: In `src/app/`
 
 ### 3. **Import Organization**
+
 ```typescript
 // ✅ GOOD: Consistent import order
 // 1. External dependencies
@@ -203,6 +207,7 @@ import type { ComponentProps } from './types';
 ```
 
 ### 4. **File Naming Conventions**
+
 - **Components**: PascalCase → `StationCard.tsx`
 - **Utilities**: camelCase → `formatDistance.ts`
 - **Types**: PascalCase → `Station.ts`
@@ -210,10 +215,11 @@ import type { ComponentProps } from './types';
 - **Constants**: UPPER_SNAKE_CASE → `API_ENDPOINTS.ts`
 
 ### 5. **Component Structure Template**
-```typescript
+
+````typescript
 /**
  * ComponentName - Brief description
- * 
+ *
  * @example
  * ```tsx
  * <ComponentName prop="value" />
@@ -234,19 +240,19 @@ export interface ComponentNameProps {
 export function ComponentName({ prop }: ComponentNameProps) {
   // 3.1. Hooks
   const [state, setState] = React.useState();
-  
+
   // 3.2. Derived values
   const computed = React.useMemo(() => {}, []);
-  
+
   // 3.3. Event handlers
   const handleClick = () => {};
-  
+
   // 3.4. Effects
   React.useEffect(() => {}, []);
-  
+
   // 3.5. Early returns
   if (!prop) return null;
-  
+
   // 3.6. Render
   return (
     <div>
@@ -257,13 +263,14 @@ export function ComponentName({ prop }: ComponentNameProps) {
 
 // 4. Default export (if needed)
 export default ComponentName;
-```
+````
 
 ---
 
 ## 🎨 Design System Integration
 
 ### Color Tokens
+
 ```typescript
 // src/design-system/tokens/colors.ts
 export const colors = {
@@ -283,6 +290,7 @@ export const colors = {
 ```
 
 ### Typography Tokens
+
 ```typescript
 // src/design-system/tokens/typography.ts
 export const typography = {
@@ -304,6 +312,7 @@ export const typography = {
 ## 🔧 Configuration Best Practices
 
 ### Environment Variables
+
 ```typescript
 // src/config/environment.ts
 /**
@@ -312,10 +321,10 @@ export const typography = {
 export const env = {
   // API Configuration
   apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3000',
-  
+
   // Feature Flags
   enableAnalytics: process.env.NEXT_PUBLIC_ENABLE_ANALYTICS === 'true',
-  
+
   // Secrets (server-side only)
   databaseUrl: process.env.DATABASE_URL,
 } as const;
@@ -323,10 +332,12 @@ export const env = {
 // Validate required variables
 function validateEnv() {
   const required = ['NEXT_PUBLIC_API_BASE_URL'];
-  const missing = required.filter(key => !process.env[key]);
-  
+  const missing = required.filter((key) => !process.env[key]);
+
   if (missing.length > 0) {
-    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+    throw new Error(
+      `Missing required environment variables: ${missing.join(', ')}`
+    );
   }
 }
 
@@ -336,6 +347,7 @@ if (process.env.NODE_ENV !== 'test') {
 ```
 
 ### Route Configuration
+
 ```typescript
 // src/config/routes.ts
 /**
@@ -360,6 +372,7 @@ export const routes = {
 ## 🚀 Performance Optimizations
 
 ### 1. **Code Splitting**
+
 ```typescript
 // Dynamic imports for heavy components
 import dynamic from 'next/dynamic';
@@ -371,6 +384,7 @@ const MapView = dynamic(() => import('@/components/organisms/MapView'), {
 ```
 
 ### 2. **Image Optimization**
+
 ```typescript
 import Image from 'next/image';
 
@@ -385,6 +399,7 @@ import Image from 'next/image';
 ```
 
 ### 3. **Font Optimization**
+
 ```typescript
 // src/app/layout.tsx
 import { Inter } from 'next/font/google';
@@ -401,6 +416,7 @@ const inter = Inter({
 ## 📦 Barrel Exports Pattern
 
 ### Component Barrel
+
 ```typescript
 // src/components/atoms/index.ts
 export { Button } from './Button';
@@ -411,6 +427,7 @@ export type { InputProps } from './Input';
 ```
 
 ### Usage
+
 ```typescript
 // ✅ GOOD: Clean imports
 import { Button, Input, Label } from '@/components/atoms';
@@ -424,6 +441,7 @@ import { Button } from '@/components/atoms/Button/Button';
 ## 🧪 Testing Strategy
 
 ### Component Tests
+
 ```typescript
 // src/components/atoms/Button/Button.test.tsx
 import { render, screen } from '@testing-library/react';
@@ -442,10 +460,11 @@ describe('Button', () => {
 ## 📚 Documentation Standards
 
 ### Component Documentation
-```typescript
+
+````typescript
 /**
  * StationCard displays information about a petrol station
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -455,16 +474,17 @@ describe('Button', () => {
  * />
  * ```
  */
-```
+````
 
 ### Function Documentation
-```typescript
+
+````typescript
 /**
  * Formats distance in meters to human-readable string
- * 
+ *
  * @param meters - Distance in meters
  * @returns Formatted distance string (e.g., "1.2 km", "500 m")
- * 
+ *
  * @example
  * ```typescript
  * formatDistance(1234); // "1.2 km"
@@ -474,13 +494,14 @@ describe('Button', () => {
 export function formatDistance(meters: number): string {
   // Implementation
 }
-```
+````
 
 ---
 
 ## 🎭 Common Patterns
 
 ### Custom Hook Pattern
+
 ```typescript
 // src/hooks/useStations.ts
 import { useQuery } from '@tanstack/react-query';
@@ -503,6 +524,7 @@ export function useStations() {
 ```
 
 ### Context Provider Pattern
+
 ```typescript
 // src/context/ThemeContext.tsx
 import { createContext, useContext, useState } from 'react';
@@ -542,6 +564,7 @@ export function useTheme() {
 ## 🔒 Type Safety
 
 ### Strict TypeScript Configuration
+
 ```json
 {
   "compilerOptions": {
@@ -555,6 +578,7 @@ export function useTheme() {
 ```
 
 ### Type Guards
+
 ```typescript
 // src/lib/utils/typeGuards.ts
 export function isStation(value: unknown): value is Station {
@@ -594,4 +618,3 @@ export function isStation(value: unknown): value is Station {
 **Last Updated**: November 2025  
 **Architecture Version**: 2.0  
 **Maintainer**: Development Team
-

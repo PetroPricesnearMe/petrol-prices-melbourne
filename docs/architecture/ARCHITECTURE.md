@@ -7,6 +7,7 @@ Melbourne Petrol Stations is a full-stack web application that provides real-tim
 ## Technology Stack
 
 ### Frontend
+
 - **React 18** - Modern React with hooks and functional components
 - **React Router** - Client-side routing
 - **Leaflet** - Interactive maps
@@ -15,6 +16,7 @@ Melbourne Petrol Stations is a full-stack web application that provides real-tim
 - **Styled Components** - Component-based styling
 
 ### Backend
+
 - **Node.js + Express** - TypeScript-based API server
 - **Socket.io** - Real-time bidirectional communication
 - **Apollo Server** - GraphQL API (advanced features)
@@ -23,6 +25,7 @@ Melbourne Petrol Stations is a full-stack web application that provides real-tim
 - **Sentry** - Error monitoring (optional)
 
 ### Database
+
 - **Baserow** - No-code database platform
 - **REST API** - Database access via Baserow API
 
@@ -52,6 +55,7 @@ Melbourne Petrol Stations is a full-stack web application that provides real-tim
 ## Key Components
 
 ### Backend Services
+
 - **BaserowClient** - Handles all database operations
 - **Socket.io Server** - Real-time communication
 - **GraphQL Resolver** - Advanced query capabilities
@@ -59,6 +63,7 @@ Melbourne Petrol Stations is a full-stack web application that provides real-tim
 - **Caching Middleware** - Performance optimization
 
 ### Frontend Components
+
 - **MapPage** - Interactive map with station markers
 - **DirectoryPage** - Searchable station directory
 - **HomePage** - Landing page with features
@@ -67,12 +72,14 @@ Melbourne Petrol Stations is a full-stack web application that provides real-tim
 ## Database Schema (Baserow)
 
 ### Petrol Stations Table (ID: 623329)
+
 - Station Name, Address, City, Postal Code
 - Latitude, Longitude (for mapping)
 - Region, Country, Category
 - Linked to Fuel Prices
 
 ### Fuel Prices Table (ID: 623330)
+
 - Fuel Type (Unleaded, Premium, Diesel, LPG)
 - Price Per Liter, Last Updated
 - Price Trend (Increasing/Stable/Decreasing)

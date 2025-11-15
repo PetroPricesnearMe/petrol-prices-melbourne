@@ -15,6 +15,7 @@ This implementation provides a comprehensive suite of performance optimization t
 ## 📦 What's Included
 
 ### Performance Hooks
+
 - `useRenderTime` - Monitor component render performance
 - `useWhyDidYouUpdate` - Debug unnecessary re-renders
 - `useDebounce` - Debounce value changes
@@ -23,16 +24,19 @@ This implementation provides a comprehensive suite of performance optimization t
 - `useVirtualization` - Virtual scrolling for large lists
 
 ### Components
+
 - `ErrorBoundary` - Graceful error handling
 - `VirtualList` - Virtualized list rendering
 - `LazyLoad` - Component lazy loading
 - `LazyImage` - Image lazy loading
 
 ### Optimized Components
+
 - `StationCardOptimized` - Performance-optimized station card
 - `StationListVirtualized` - Virtualized station list
 
 ### Utilities
+
 - `measurePerformance` - Function performance measurement
 - `FPSMonitor` - Monitor frame rate
 - `reportWebVitals` - Track Core Web Vitals
@@ -40,6 +44,7 @@ This implementation provides a comprehensive suite of performance optimization t
 - `BatchUpdater` - Batch multiple updates
 
 ### Context Optimization
+
 - `createOptimizedContext` - Selector-based context
 - Prevents unnecessary re-renders
 - Fine-grained subscriptions
@@ -58,11 +63,7 @@ import { StationListVirtualized } from '@/components/organisms/StationList';
 
 function MyPage() {
   return (
-    <StationListVirtualized
-      stations={stations}
-      height={600}
-      itemHeight={200}
-    />
+    <StationListVirtualized stations={stations} height={600} itemHeight={200} />
   );
 }
 ```
@@ -74,7 +75,7 @@ import { ErrorBoundary } from '@/components/common';
 
 <ErrorBoundary>
   <YourApp />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ### 4. Monitor Performance
@@ -100,7 +101,7 @@ import { VirtualList } from '@/components/common';
   height={600}
   renderItem={(item) => <Card data={item} />}
   getItemKey={(item) => item.id}
-/>
+/>;
 ```
 
 ### Debounced Search
@@ -123,7 +124,7 @@ import { LazyLoad } from '@/components/common';
 
 <LazyLoad height={200} rootMargin="100px">
   <ExpensiveComponent />
-</LazyLoad>
+</LazyLoad>;
 ```
 
 ### Optimized Context
@@ -134,12 +135,13 @@ import { createOptimizedContext } from '@/context/PerformanceContext';
 const AppContext = createOptimizedContext<AppState>();
 
 // Only re-renders when user changes
-const user = AppContext.useSelector(state => state.user);
+const user = AppContext.useSelector((state) => state.user);
 ```
 
 ## 📊 Performance Improvements
 
 ### Before Optimization
+
 - 10,000 item list: 3+ seconds to render
 - Scrolling: 15-30 FPS (janky)
 - Re-renders: Entire app on any change
@@ -147,6 +149,7 @@ const user = AppContext.useSelector(state => state.user);
 - TTI: 5+ seconds
 
 ### After Optimization
+
 - 10,000 item list: <100ms to render ⚡
 - Scrolling: 60 FPS (smooth) 🎯
 - Re-renders: Only affected components ✅
@@ -299,10 +302,7 @@ reportWebVitals((vitals) => {
 ```tsx
 import { measurePerformance } from '@/utils/performance';
 
-const optimizedFn = measurePerformance(
-  myExpensiveFunction,
-  'MyFunction'
-);
+const optimizedFn = measurePerformance(myExpensiveFunction, 'MyFunction');
 ```
 
 ## 🔍 Debugging
@@ -365,7 +365,7 @@ const batcher = new BatchUpdater((batch) => {
   updateUI(batch);
 }, 10);
 
-items.forEach(item => batcher.add(item));
+items.forEach((item) => batcher.add(item));
 ```
 
 ## 📚 Learn More
@@ -414,4 +414,3 @@ A complete performance optimization system featuring:
 ---
 
 **Built with ⚡ for optimal React performance**
-

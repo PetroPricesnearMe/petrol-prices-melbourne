@@ -59,7 +59,10 @@ class PerformanceMonitor {
     try {
       const layoutShiftObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const layoutShift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean };
+          const layoutShift = entry as PerformanceEntry & {
+            value: number;
+            hadRecentInput: boolean;
+          };
           this.recordMetric({
             name: 'layout-shift',
             value: layoutShift.value,
@@ -95,7 +98,10 @@ class PerformanceMonitor {
 
     // Log in development
     if (process.env.NODE_ENV === 'development' && metric.value > 100) {
-      console.warn(`[Performance] ${metric.name}: ${metric.value}${metric.unit}`, metric.metadata);
+      console.warn(
+        `[Performance] ${metric.name}: ${metric.value}${metric.unit}`,
+        metric.metadata
+      );
     }
   }
 
@@ -135,7 +141,7 @@ class PerformanceMonitor {
    * Disconnect all observers
    */
   disconnect(): void {
-    this.observers.forEach(observer => observer.disconnect());
+    this.observers.forEach((observer) => observer.disconnect());
     this.observers = [];
   }
 }
@@ -147,10 +153,7 @@ class PerformanceMonitor {
 /**
  * Measure function execution time
  */
-export function measureExecutionTime<T>(
-  fn: () => T,
-  label: string
-): T {
+export function measureExecutionTime<T>(fn: () => T, label: string): T {
   const monitor = PerformanceMonitor.getInstance();
   const start = performance.now();
 
@@ -224,7 +227,11 @@ export function markPerformance(name: string): void {
 /**
  * Measure between two performance marks
  */
-export function measurePerformance(name: string, startMark: string, endMark: string): number {
+export function measurePerformance(
+  name: string,
+  startMark: string,
+  endMark: string
+): number {
   if (typeof performance !== 'undefined' && performance.measure) {
     performance.measure(name, startMark, endMark);
     const measure = performance.getEntriesByName(name)[0];
@@ -297,7 +304,7 @@ export function usePerformanceTracking(
   React.useEffect(() => {
     // Skip if not in browser
     if (typeof window === 'undefined') return;
-    
+
     const renderTime = performance.now() - renderStart.current;
     trackComponentRender(componentName, renderTime, props || {});
     renderStart.current = performance.now();
@@ -347,7 +354,9 @@ export function getResourceTimings(): PerformanceResourceTiming[] {
     return [];
   }
 
-  return performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+  return performance.getEntriesByType(
+    'resource'
+  ) as PerformanceResourceTiming[];
 }
 
 /**
@@ -361,8 +370,11 @@ export function analyzeResourcePerformance(): {
   const resources = getResourceTimings();
   const slowThreshold = 1000; // 1 second
 
-  const slowResources = resources.filter(r => r.duration > slowThreshold);
-  const totalSize = resources.reduce((sum, r) => sum + (r.transferSize || 0), 0);
+  const slowResources = resources.filter((r) => r.duration > slowThreshold);
+  const totalSize = resources.reduce(
+    (sum, r) => sum + (r.transferSize || 0),
+    0
+  );
   const totalDuration = resources.reduce((sum, r) => sum + r.duration, 0);
 
   return {
@@ -428,7 +440,10 @@ export function trackMemoryUsage(): void {
   });
 
   if (usagePercent > 90) {
-    console.warn('[Performance] High memory usage detected:', usagePercent.toFixed(2) + '%');
+    console.warn(
+      '[Performance] High memory usage detected:',
+      usagePercent.toFixed(2) + '%'
+    );
   }
 }
 
@@ -438,6 +453,4 @@ export function trackMemoryUsage(): void {
 
 export default PerformanceMonitor;
 
-export {
-  PerformanceMonitor,
-};
+export { PerformanceMonitor };

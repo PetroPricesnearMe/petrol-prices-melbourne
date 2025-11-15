@@ -16,18 +16,22 @@
 ## 🚀 Start the Site
 
 ### Option 1: Development Server (Recommended for testing)
+
 ```bash
 npm start
 ```
+
 - Opens at: http://localhost:3000
 - Hot reload enabled
 - Full debugging available
 
 ### Option 2: Production Build (Test final version)
+
 ```bash
 npm run build
 npx serve -s build
 ```
+
 - Opens at: http://localhost:3000
 - Exact production version
 - Performance testing
@@ -39,6 +43,7 @@ npx serve -s build
 ### 1. Check Console (F12 → Console Tab)
 
 **You should see:**
+
 ```
 🗺️ Loading stations from local GeoJSON...
 ✅ Loaded 700+ stations from GeoJSON
@@ -57,6 +62,7 @@ npx serve -s build
 ### 2. Homepage Test
 
 **Check for:**
+
 - ✅ Hero section displays
 - ✅ "700+ Petrol Stations" text visible
 - ✅ Regional breakdown cards showing real counts
@@ -64,6 +70,7 @@ npx serve -s build
 - ✅ Smooth animations
 
 **Expected Regions:**
+
 - Northern Suburbs (~140 stations)
 - Western Suburbs (~110 stations)
 - Eastern Suburbs (~160 stations)
@@ -77,6 +84,7 @@ npx serve -s build
 **Navigate to:** http://localhost:3000/directory
 
 **Verify:**
+
 - ✅ 700+ stations listed
 - ✅ Station cards show:
   - Station name
@@ -88,6 +96,7 @@ npx serve -s build
 - ✅ "Get Directions" buttons present
 
 **Try searching for:**
+
 - "BP" - Should find 50+ stations
 - "Shell" - Should find 100+ stations
 - "7-Eleven" - Should find 40+ stations
@@ -98,10 +107,12 @@ npx serve -s build
 ### 4. Map View Test
 
 **In Directory Page:**
+
 1. Click "Map" toggle button
 2. Wait for map to load
 
 **Verify:**
+
 - ✅ Map displays Melbourne area
 - ✅ 700+ markers visible
 - ✅ Markers are color-coded
@@ -120,16 +131,19 @@ npx serve -s build
 **Try these filters:**
 
 **By Brand:**
+
 - Select "BP" - Should show ~50 stations
 - Select "Shell" - Should show ~100 stations
 - Select "Caltex" - Should show ~80 stations
 
 **By Region:**
+
 - Select "North Melbourne" - Should show ~140 stations
 - Select "East Melbourne" - Should show ~160 stations
 - Select "Melbourne CBD" - Should show ~80 stations
 
 **Combined:**
+
 - Brand: "BP" + Region: "North Melbourne" - Should show specific subset
 
 ---
@@ -137,11 +151,13 @@ npx serve -s build
 ### 6. Responsive Design Test
 
 **Desktop (1920px):**
+
 - Open browser
 - Verify 3-column layout
 - All features visible
 
 **Tablet (768px):**
+
 - Open DevTools (F12)
 - Click device toolbar
 - Select iPad
@@ -149,6 +165,7 @@ npx serve -s build
 - Touch-friendly buttons
 
 **Mobile (375px):**
+
 - Select iPhone in DevTools
 - Verify 1-column layout
 - Hamburger menu works
@@ -161,11 +178,13 @@ npx serve -s build
 ### Issue: "No stations loading"
 
 **Check:**
+
 1. Open Console (F12)
 2. Look for errors
 3. Verify files at `/public/data/stations.geojson`
 
 **Fix:**
+
 ```bash
 # Ensure data files are present
 dir public\data
@@ -183,11 +202,13 @@ copy "database\Petrol_Stations.geojson" "public\data\stations.geojson"
 ### Issue: "Map not loading"
 
 **Check:**
+
 1. Mapbox token in `.env.local`
 2. Network tab for API calls
 3. Console for errors
 
 **Fix:**
+
 ```bash
 # Create .env.local if missing
 echo REACT_APP_MAPBOX_TOKEN=your_token_here > .env.local
@@ -201,11 +222,13 @@ npm start
 ### Issue: "Filters not working"
 
 **Check:**
+
 1. Console for errors
 2. Data loaded successfully
 3. Component rendering
 
 **Debug:**
+
 ```javascript
 // In browser console
 localStorage.clear();
@@ -217,6 +240,7 @@ location.reload();
 ## 📊 Expected Results
 
 ### Data Summary:
+
 - **Total Stations:** 700+
 - **With Coordinates:** 100%
 - **With Addresses:** 100%
@@ -229,6 +253,7 @@ location.reload();
   - Others: ~400
 
 ### Performance:
+
 - **Load Time:** < 2 seconds
 - **Bundle Size:** 107 KB (gzipped)
 - **LCP:** < 2.5s
@@ -337,6 +362,7 @@ dir build\data
 ## 🎉 You're All Set!
 
 **The site is ready with:**
+
 - ✅ 700+ real petrol stations
 - ✅ Complete geographic data
 - ✅ Search and filter functionality
@@ -349,6 +375,4 @@ dir build\data
 
 ---
 
-*Happy testing!*
-
-
+_Happy testing!_

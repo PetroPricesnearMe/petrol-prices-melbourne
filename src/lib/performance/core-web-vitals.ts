@@ -1,13 +1,13 @@
 /**
  * Core Web Vitals Tracking and Monitoring
- * 
+ *
  * Comprehensive tracking of Core Web Vitals metrics:
  * - LCP (Largest Contentful Paint)
  * - CLS (Cumulative Layout Shift)
  * - FID (First Input Delay) / INP (Interaction to Next Paint)
  * - TTFB (Time to First Byte)
  * - FCP (First Contentful Paint)
- * 
+ *
  * @module lib/performance/core-web-vitals
  */
 
@@ -60,8 +60,9 @@ export function getMetricRating(
   name: string,
   value: number
 ): 'good' | 'needs-improvement' | 'poor' {
-  const thresholds = WEB_VITALS_THRESHOLDS[name as keyof typeof WEB_VITALS_THRESHOLDS];
-  
+  const thresholds =
+    WEB_VITALS_THRESHOLDS[name as keyof typeof WEB_VITALS_THRESHOLDS];
+
   if (!thresholds) {
     return 'good';
   }
@@ -69,11 +70,11 @@ export function getMetricRating(
   if (value <= thresholds.good) {
     return 'good';
   }
-  
+
   if (value <= thresholds.needsImprovement) {
     return 'needs-improvement';
   }
-  
+
   return 'poor';
 }
 
@@ -90,7 +91,9 @@ export function trackWebVital(metric: WebVitalMetric): void {
   // Send to Google Analytics (if available)
   if (typeof (window as any).gtag !== 'undefined') {
     (window as any).gtag('event', metric.name, {
-      value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+      value: Math.round(
+        metric.name === 'CLS' ? metric.value * 1000 : metric.value
+      ),
       event_label: metric.id,
       event_category: 'Web Vitals',
       event_value: Math.round(metric.value),
@@ -106,9 +109,7 @@ export function trackWebVital(metric: WebVitalMetric): void {
   // Store in localStorage for debugging
   try {
     if (typeof localStorage !== 'undefined') {
-      const metrics = JSON.parse(
-        localStorage.getItem('web-vitals') || '{}'
-      );
+      const metrics = JSON.parse(localStorage.getItem('web-vitals') || '{}');
       metrics[metric.name] = {
         value: metric.value,
         id: metric.id,
@@ -127,13 +128,12 @@ export function trackWebVital(metric: WebVitalMetric): void {
 
   // Log in development
   if (process.env.NODE_ENV === 'development') {
-    const displayValue = metric.name === 'CLS' 
-      ? (metric.value * 1000).toFixed(2) + ' (scaled)'
-      : Math.round(metric.value) + 'ms';
-    
-    console.log(
-      `[Web Vitals] ${metric.name}: ${displayValue} (${rating})`
-    );
+    const displayValue =
+      metric.name === 'CLS'
+        ? (metric.value * 1000).toFixed(2) + ' (scaled)'
+        : Math.round(metric.value) + 'ms';
+
+    console.log(`[Web Vitals] ${metric.name}: ${displayValue} (${rating})`);
   }
 }
 
@@ -146,73 +146,75 @@ export function initWebVitalsTracking(): void {
   }
 
   // Dynamically import web-vitals to reduce initial bundle size
-  import('web-vitals').then(({ onCLS, onFID, onFCP, onLCP, onTTFB, onINP }) => {
-    // Track all Core Web Vitals
-    onCLS((metric) => {
-      trackWebVital({
-        name: 'CLS',
-        value: metric.value,
-        id: metric.id,
-        delta: metric.delta,
-        rating: metric.rating,
+  import('web-vitals')
+    .then(({ onCLS, onFID, onFCP, onLCP, onTTFB, onINP }) => {
+      // Track all Core Web Vitals
+      onCLS((metric) => {
+        trackWebVital({
+          name: 'CLS',
+          value: metric.value,
+          id: metric.id,
+          delta: metric.delta,
+          rating: metric.rating,
+        });
       });
-    });
 
-    onFID((metric) => {
-      trackWebVital({
-        name: 'FID',
-        value: metric.value,
-        id: metric.id,
-        delta: metric.delta,
-        rating: metric.rating,
+      onFID((metric) => {
+        trackWebVital({
+          name: 'FID',
+          value: metric.value,
+          id: metric.id,
+          delta: metric.delta,
+          rating: metric.rating,
+        });
       });
-    });
 
-    onFCP((metric) => {
-      trackWebVital({
-        name: 'FCP',
-        value: metric.value,
-        id: metric.id,
-        delta: metric.delta,
-        rating: metric.rating,
+      onFCP((metric) => {
+        trackWebVital({
+          name: 'FCP',
+          value: metric.value,
+          id: metric.id,
+          delta: metric.delta,
+          rating: metric.rating,
+        });
       });
-    });
 
-    onLCP((metric) => {
-      trackWebVital({
-        name: 'LCP',
-        value: metric.value,
-        id: metric.id,
-        delta: metric.delta,
-        rating: metric.rating,
+      onLCP((metric) => {
+        trackWebVital({
+          name: 'LCP',
+          value: metric.value,
+          id: metric.id,
+          delta: metric.delta,
+          rating: metric.rating,
+        });
       });
-    });
 
-    onTTFB((metric) => {
-      trackWebVital({
-        name: 'TTFB',
-        value: metric.value,
-        id: metric.id,
-        delta: metric.delta,
-        rating: metric.rating,
+      onTTFB((metric) => {
+        trackWebVital({
+          name: 'TTFB',
+          value: metric.value,
+          id: metric.id,
+          delta: metric.delta,
+          rating: metric.rating,
+        });
       });
-    });
 
-    onINP((metric) => {
-      trackWebVital({
-        name: 'INP',
-        value: metric.value,
-        id: metric.id,
-        delta: metric.delta,
-        rating: metric.rating,
+      onINP((metric) => {
+        trackWebVital({
+          name: 'INP',
+          value: metric.value,
+          id: metric.id,
+          delta: metric.delta,
+          rating: metric.rating,
+        });
       });
+    })
+    .catch((error) => {
+      // Web Vitals not available, fail silently
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Web Vitals tracking not available:', error);
+      }
     });
-  }).catch((error) => {
-    // Web Vitals not available, fail silently
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Web Vitals tracking not available:', error);
-    }
-  });
 }
 
 /**

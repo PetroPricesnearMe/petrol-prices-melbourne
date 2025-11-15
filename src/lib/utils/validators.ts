@@ -1,11 +1,11 @@
 /**
  * Validators - Utility Functions
- * 
+ *
  * Pure functions for validating data.
  * All functions return boolean values.
- * 
+ *
  * Consolidated from securityUtils.js and enhanced with TypeScript.
- * 
+ *
  * @module lib/utils/validators
  */
 
@@ -24,10 +24,10 @@ const PATTERNS = {
 
 /**
  * Validate email address
- * 
+ *
  * @param email - Email string to validate
  * @returns True if valid email
- * 
+ *
  * @example
  * ```typescript
  * isValidEmail('test@example.com'); // true
@@ -41,10 +41,10 @@ export function isValidEmail(email: string): boolean {
 
 /**
  * Validate phone number (Australian format)
- * 
+ *
  * @param phone - Phone number string
  * @returns True if valid phone number
- * 
+ *
  * @example
  * ```typescript
  * isValidPhone('0412345678'); // true
@@ -58,10 +58,10 @@ export function isValidPhone(phone: string): boolean {
 
 /**
  * Validate Australian phone number (strict)
- * 
+ *
  * @param phone - Phone number string
  * @returns True if valid Australian phone
- * 
+ *
  * @example
  * ```typescript
  * isValidAustralianPhone('0412345678'); // true
@@ -77,10 +77,10 @@ export function isValidAustralianPhone(phone: string): boolean {
 
 /**
  * Validate URL
- * 
+ *
  * @param url - URL string to validate
  * @returns True if valid URL
- * 
+ *
  * @example
  * ```typescript
  * isValidUrl('https://example.com'); // true
@@ -98,10 +98,10 @@ export function isValidUrl(url: string): boolean {
 
 /**
  * Validate postcode (Australian)
- * 
+ *
  * @param postcode - Postcode string
  * @returns True if valid Australian postcode
- * 
+ *
  * @example
  * ```typescript
  * isValidPostcode('3000'); // true
@@ -115,10 +115,10 @@ export function isValidPostcode(postcode: string): boolean {
 
 /**
  * Validate search query input
- * 
+ *
  * @param query - Search query string
  * @returns True if valid search query
- * 
+ *
  * @example
  * ```typescript
  * isValidSearchQuery('petrol station'); // true
@@ -134,21 +134,24 @@ export function isValidSearchQuery(query: string): boolean {
 
 /**
  * Validate coordinates (latitude/longitude)
- * 
+ *
  * @param lat - Latitude
  * @param lng - Longitude
  * @returns True if valid coordinates
- * 
+ *
  * @example
  * ```typescript
  * isValidCoordinates(-37.8136, 144.9631); // true
  * isValidCoordinates(91, 0);              // false
  * ```
  */
-export function isValidCoordinates(lat: number | string, lng: number | string): boolean {
+export function isValidCoordinates(
+  lat: number | string,
+  lng: number | string
+): boolean {
   const latNum = typeof lat === 'string' ? parseFloat(lat) : lat;
   const lngNum = typeof lng === 'string' ? parseFloat(lng) : lng;
-  
+
   return (
     !isNaN(latNum) &&
     !isNaN(lngNum) &&
@@ -161,10 +164,10 @@ export function isValidCoordinates(lat: number | string, lng: number | string): 
 
 /**
  * Check if string is empty or whitespace
- * 
+ *
  * @param value - String to check
  * @returns True if empty or whitespace
- * 
+ *
  * @example
  * ```typescript
  * isEmpty('');      // true
@@ -178,10 +181,10 @@ export function isEmpty(value: string): boolean {
 
 /**
  * Check if value is a number
- * 
+ *
  * @param value - Value to check
  * @returns True if valid number
- * 
+ *
  * @example
  * ```typescript
  * isNumber(123);    // true
@@ -195,12 +198,12 @@ export function isNumber(value: unknown): boolean {
 
 /**
  * Check if value is within range
- * 
+ *
  * @param value - Value to check
  * @param min - Minimum value
  * @param max - Maximum value
  * @returns True if in range
- * 
+ *
  * @example
  * ```typescript
  * isInRange(5, 1, 10);  // true
@@ -213,11 +216,11 @@ export function isInRange(value: number, min: number, max: number): boolean {
 
 /**
  * Check if string matches pattern
- * 
+ *
  * @param value - String to check
  * @param pattern - RegExp pattern
  * @returns True if matches pattern
- * 
+ *
  * @example
  * ```typescript
  * matchesPattern('abc123', /^[a-z]+\d+$/); // true
@@ -229,10 +232,10 @@ export function matchesPattern(value: string, pattern: RegExp): boolean {
 
 /**
  * Validate credit card number (Luhn algorithm)
- * 
+ *
  * @param cardNumber - Credit card number
  * @returns True if valid card number
- * 
+ *
  * @example
  * ```typescript
  * isValidCreditCard('4532015112830366'); // true
@@ -241,37 +244,37 @@ export function matchesPattern(value: string, pattern: RegExp): boolean {
  */
 export function isValidCreditCard(cardNumber: string): boolean {
   const cleaned = cardNumber.replace(/\D/g, '');
-  
+
   if (cleaned.length < 13 || cleaned.length > 19) {
     return false;
   }
-  
+
   let sum = 0;
   let isEven = false;
-  
+
   for (let i = cleaned.length - 1; i >= 0; i--) {
     let digit = parseInt(cleaned[i], 10);
-    
+
     if (isEven) {
       digit *= 2;
       if (digit > 9) {
         digit -= 9;
       }
     }
-    
+
     sum += digit;
     isEven = !isEven;
   }
-  
+
   return sum % 10 === 0;
 }
 
 /**
  * Check if date is in the past
- * 
+ *
  * @param date - Date to check
  * @returns True if date is in the past
- * 
+ *
  * @example
  * ```typescript
  * isPastDate(new Date('2020-01-01')); // true
@@ -284,10 +287,10 @@ export function isPastDate(date: Date): boolean {
 
 /**
  * Check if date is in the future
- * 
+ *
  * @param date - Date to check
  * @returns True if date is in the future
- * 
+ *
  * @example
  * ```typescript
  * isFutureDate(new Date('2030-01-01')); // true
@@ -300,17 +303,17 @@ export function isFutureDate(date: Date): boolean {
 
 /**
  * Check if password is strong
- * 
+ *
  * @param password - Password to check
  * @returns True if strong password
- * 
+ *
  * Criteria:
  * - At least 8 characters
  * - Contains uppercase letter
  * - Contains lowercase letter
  * - Contains number
  * - Contains special character
- * 
+ *
  * @example
  * ```typescript
  * isStrongPassword('Pass123!'); // true
@@ -323,7 +326,7 @@ export function isStrongPassword(password: string): boolean {
   const hasLowerCase = /[a-z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-  
+
   return (
     password.length >= minLength &&
     hasUpperCase &&
@@ -332,4 +335,3 @@ export function isStrongPassword(password: string): boolean {
     hasSpecialChar
   );
 }
-

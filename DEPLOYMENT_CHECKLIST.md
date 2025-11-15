@@ -10,18 +10,18 @@
 
 ### ✅ Configuration Files Updated:
 
-| File | Status | Details |
-|------|--------|---------|
-| `vercel.json` | ✅ Updated | Project ID and name configured |
-| `.vercelignore` | ✅ Created | Excludes test/docs from deployment |
-| Build Settings | ✅ Verified | Matches Vercel dashboard |
+| File            | Status      | Details                            |
+| --------------- | ----------- | ---------------------------------- |
+| `vercel.json`   | ✅ Updated  | Project ID and name configured     |
+| `.vercelignore` | ✅ Created  | Excludes test/docs from deployment |
+| Build Settings  | ✅ Verified | Matches Vercel dashboard           |
 
 ### ✅ Vercel Project Settings (Confirmed):
 
 ```
 Framework Preset: Next.js
 Build Command:    npm run build
-Install Command:  npm install  
+Install Command:  npm install
 Output Directory: .next
 Node Version:     22.x (from package.json)
 Region:           Sydney (syd1)
@@ -64,6 +64,7 @@ npm run type-check
 ### 🔨 Critical Manual Fixes (1-2 hours):
 
 #### Fix #1: Update Station Type Definition
+
 **File:** `src/types/station.ts`
 
 ```typescript
@@ -72,7 +73,7 @@ export interface Station {
   name: string;
   brand: string;
   address: string;
-  suburb: string;          // ← ADD THIS LINE
+  suburb: string; // ← ADD THIS LINE
   city: string;
   postcode: string;
   region: string;
@@ -89,15 +90,18 @@ export interface Station {
 **Impact:** Fixes 10+ TypeScript errors
 
 #### Fix #2: Remove Unused Imports
+
 **Files to edit:**
 
 `src/app/directory/StationDirectoryClient.tsx` (Line 10):
+
 ```typescript
 // DELETE THIS LINE:
 import Link from 'next/link';
 ```
 
 `src/app/directory/StationDirectoryWithMap.tsx` (Lines 15-16):
+
 ```typescript
 // DELETE THIS LINE:
 import Link from 'next/link';
@@ -109,6 +113,7 @@ import { useState } from 'react';
 ```
 
 `src/app/map/page.tsx` (Line 15):
+
 ```typescript
 // DELETE THIS LINE:
 import LoadingCard from '@/components/ui/LoadingCard';
@@ -117,6 +122,7 @@ import LoadingCard from '@/components/ui/LoadingCard';
 **Impact:** Fixes 9 unused variable errors
 
 #### Fix #3: Fix Unused Function Parameters
+
 **File:** `src/app/directory/StationDirectoryClient.tsx` (Lines 106-115)
 
 ```typescript
@@ -152,6 +158,7 @@ const SearchBar = ({
 **Impact:** Fixes 8 unused parameter errors
 
 #### Fix #4: Fix Mock Data Types
+
 **File:** `src/__tests__/mocks/mockData.ts`
 
 ```typescript
@@ -172,19 +179,21 @@ suburb: 'Melbourne',
 #### Fix #5: Replace `any` with Proper Types
 
 `components/seo/StructuredData.tsx` (Line 10):
+
 ```typescript
 // BEFORE:
 export function StructuredData({ data }: { data: any | any[] }) {
 
 // AFTER:
-export function StructuredData({ 
-  data 
-}: { 
-  data: Record<string, unknown> | Array<Record<string, unknown>> 
+export function StructuredData({
+  data
+}: {
+  data: Record<string, unknown> | Array<Record<string, unknown>>
 }) {
 ```
 
 `src/app/api/auth/[...nextauth]/route.ts` (Lines 55, 61-62):
+
 ```typescript
 // BEFORE (Line 55):
 token.role = (user as any).role;
@@ -240,6 +249,7 @@ NODE_ENV=production
 ### Generate NEXTAUTH_SECRET:
 
 **Option 1 - PowerShell:**
+
 ```powershell
 -join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | ForEach-Object {[char]$_})
 ```
@@ -252,6 +262,7 @@ Visit: https://generate-secret.vercel.app/32
 ## 📝 **Deployment Workflow**
 
 ### Step 1: Fix Code Issues ⚠️ REQUIRED
+
 ```bash
 # Run auto-fixes
 npm run lint:fix
@@ -268,12 +279,14 @@ npm run build  # Must succeed
 ```
 
 ### Step 2: Configure Environment Variables
+
 ```bash
 # Add all required variables in Vercel dashboard
 # Settings → Environment Variables → Add Variable
 ```
 
 ### Step 3: Deploy
+
 ```bash
 # Commit your fixes
 git add .
@@ -285,6 +298,7 @@ git push origin main
 ```
 
 ### Step 4: Verify Deployment
+
 ```bash
 # Check deployment succeeded
 vercel ls
@@ -300,15 +314,15 @@ vercel logs
 
 ## 🚦 **Deployment Status**
 
-| Requirement | Status | Action Needed |
-|-------------|--------|---------------|
-| Vercel Config | ✅ Ready | None |
-| Build Settings | ✅ Configured | None |
-| ESLint | ❌ 42 errors | **Fix before deploy** |
-| TypeScript | ❌ 78 errors | **Fix before deploy** |
-| Env Variables | ⚠️ Missing | **Add in dashboard** |
-| Local Build | ❌ Fails | **Fix code issues first** |
-| **Ready to Deploy** | ❌ **NO** | **Complete fixes above** |
+| Requirement         | Status        | Action Needed             |
+| ------------------- | ------------- | ------------------------- |
+| Vercel Config       | ✅ Ready      | None                      |
+| Build Settings      | ✅ Configured | None                      |
+| ESLint              | ❌ 42 errors  | **Fix before deploy**     |
+| TypeScript          | ❌ 78 errors  | **Fix before deploy**     |
+| Env Variables       | ⚠️ Missing    | **Add in dashboard**      |
+| Local Build         | ❌ Fails      | **Fix code issues first** |
+| **Ready to Deploy** | ❌ **NO**     | **Complete fixes above**  |
 
 ---
 
@@ -327,7 +341,9 @@ vercel logs
 ## 🎯 **Immediate Next Steps**
 
 ### Option A: Let AI Fix Issues (Fastest)
+
 I can automatically fix most of the 120 issues for you:
+
 - Import ordering
 - Unused imports
 - Type definitions
@@ -336,11 +352,13 @@ I can automatically fix most of the 120 issues for you:
 **Time:** 15-20 minutes with my help
 
 ### Option B: Manual Fix (Learn as you go)
+
 Follow the PRE_COMMIT_QA_REPORT.md step by step
 
 **Time:** 2-3 hours
 
 ### Option C: Deploy with Errors (NOT RECOMMENDED)
+
 Force deploy despite errors - **will likely fail or crash**
 
 **Time:** 5 minutes, then hours debugging in production 💥
@@ -350,12 +368,14 @@ Force deploy despite errors - **will likely fail or crash**
 ## 💡 **Recommendation**
 
 **Choose Option A** - Let me fix the issues automatically, then you can:
+
 1. Review the changes
 2. Test locally
 3. Deploy with confidence
 4. Have a working production app
 
 **Want me to start fixing the 120 issues now?** I can:
+
 - Fix all import orders
 - Remove unused variables
 - Update type definitions

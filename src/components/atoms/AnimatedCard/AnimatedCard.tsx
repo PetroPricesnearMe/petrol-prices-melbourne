@@ -18,41 +18,41 @@ export interface AnimatedCardProps {
    * Card content
    */
   children: ReactNode;
-  
+
   /**
    * Additional CSS classes
    */
   className?: string;
-  
+
   /**
    * Enable hover animation
    * @default true
    */
   enableHover?: boolean;
-  
+
   /**
    * Enable scroll animation
    * @default true
    */
   enableScrollAnimation?: boolean;
-  
+
   /**
    * Click handler
    */
   onClick?: () => void;
-  
+
   /**
    * Padding size
    * @default 'md'
    */
   padding?: 'sm' | 'md' | 'lg';
-  
+
   /**
    * Card variant
    * @default 'default'
    */
   variant?: 'default' | 'elevated' | 'bordered' | 'ghost';
-  
+
   /**
    * Stagger delay for list items
    */
@@ -61,7 +61,7 @@ export interface AnimatedCardProps {
 
 /**
  * Optimized animated card component
- * 
+ *
  * @example
  * <AnimatedCard padding="lg" variant="elevated">
  *   <h3>Card Title</h3>
@@ -92,7 +92,8 @@ export function AnimatedCard({
   const variantClasses = {
     default: 'bg-white dark:bg-gray-800 shadow-md',
     elevated: 'bg-white dark:bg-gray-800 shadow-lg',
-    bordered: 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700',
+    bordered:
+      'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700',
     ghost: 'bg-transparent',
   };
 
@@ -129,4 +130,3 @@ export function AnimatedCard({
     </motion.div>
   );
 }
-

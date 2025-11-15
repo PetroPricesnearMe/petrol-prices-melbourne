@@ -1,2 +1,1 @@
 export { SearchSection } from './SearchSection';
-

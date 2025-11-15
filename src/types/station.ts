@@ -265,7 +265,10 @@ export interface BaserowFuelPriceResponse {
 
 /** Check if value is a valid fuel type */
 export const isFuelType = (value: unknown): value is FuelTypeValue => {
-  return typeof value === 'string' && Object.values(FuelType).includes(value as FuelType);
+  return (
+    typeof value === 'string' &&
+    Object.values(FuelType).includes(value as FuelType)
+  );
 };
 
 /** Check if value is a station */
@@ -281,7 +284,9 @@ export const isStation = (value: unknown): value is Station => {
 };
 
 /** Check if station has prices */
-export const isStationWithPrices = (value: unknown): value is StationWithPrices => {
+export const isStationWithPrices = (
+  value: unknown
+): value is StationWithPrices => {
   return (
     isStation(value) &&
     'fuelPrices' in value &&
@@ -309,7 +314,10 @@ export const formatPrice = (price: number, currency = 'AUD'): string => {
 };
 
 /** Calculate distance between coordinates */
-export const calculateDistance = (from: Coordinates, to: Coordinates): number => {
+export const calculateDistance = (
+  from: Coordinates,
+  to: Coordinates
+): number => {
   const R = 6371; // Earth's radius in km
   const dLat = ((to.latitude - from.latitude) * Math.PI) / 180;
   const dLon = ((to.longitude - from.longitude) * Math.PI) / 180;

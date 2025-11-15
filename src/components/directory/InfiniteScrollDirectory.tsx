@@ -13,8 +13,16 @@ import { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { StationGrid } from '@/components/cards/StationCard';
 import { StationDetailsModal } from '@/components/modals/Modal';
-import { ViewToggle, DirectoryView, StationCardGrid, StationCardList } from '@/components/toggle/ViewToggle';
-import { LoadingSpinner, SkeletonGrid } from '@/components/transitions/SmoothTransitions';
+import {
+  ViewToggle,
+  DirectoryView,
+  StationCardGrid,
+  StationCardList,
+} from '@/components/toggle/ViewToggle';
+import {
+  LoadingSpinner,
+  SkeletonGrid,
+} from '@/components/transitions/SmoothTransitions';
 import { useAdvancedInfiniteStations } from '@/hooks/useInfiniteStations';
 import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
@@ -59,12 +67,22 @@ interface LoadingStatesProps {
 /**
  * Filter bar component for the directory
  */
-export function FilterBar({ filters, onFiltersChange, totalCount, currentView, onViewChange, className }: FilterBarProps) {
+export function FilterBar({
+  filters,
+  onFiltersChange,
+  totalCount,
+  currentView,
+  onViewChange,
+  className,
+}: FilterBarProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const handleFilterChange = useCallback((key: string, value: unknown) => {
-    onFiltersChange({ ...filters, [key]: value });
-  }, [filters, onFiltersChange]);
+  const handleFilterChange = useCallback(
+    (key: string, value: unknown) => {
+      onFiltersChange({ ...filters, [key]: value });
+    },
+    [filters, onFiltersChange]
+  );
 
   const clearFilters = useCallback(() => {
     onFiltersChange({
@@ -78,12 +96,23 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
   }, [onFiltersChange]);
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value && value !== 'all' && value !== 'unleaded' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
+    ([key, value]) =>
+      value &&
+      value !== 'all' &&
+      value !== 'unleaded' &&
+      value !== 'price-low' &&
+      key !== 'sortBy' &&
+      key !== 'fuelType'
   ).length;
 
   return (
-    <div className={cn('bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm', className)}>
-      <div className="container mx-auto px-4 py-6 space-y-4">
+    <div
+      className={cn(
+        'sticky top-0 z-10 border-b border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800',
+        className
+      )}
+    >
+      <div className="container mx-auto space-y-4 px-4 py-6">
         {/* Search Bar */}
         <div className="mb-4">
           <input
@@ -97,7 +126,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
         </div>
 
         {/* Filter Toggle */}
-        <div className="flex gap-4 flex-wrap items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="text-sm text-gray-600 dark:text-gray-400">
             {totalCount} station{totalCount !== 1 ? 's' : ''} found
             {filters.search && (
@@ -125,7 +154,9 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
             >
               ⚙️ Filters
               {activeFilterCount > 0 && (
-                <span className="badge badge-secondary ml-2">{activeFilterCount}</span>
+                <span className="badge badge-secondary ml-2">
+                  {activeFilterCount}
+                </span>
               )}
             </button>
           </div>
@@ -133,17 +164,22 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
 
         {/* Advanced Filters */}
         {showAdvanced && (
-          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 space-y-4 animate-fade-in">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="animate-fade-in space-y-4 rounded-xl bg-gray-50 p-6 dark:bg-gray-900">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
               {/* Fuel Type */}
               <div>
-                <label htmlFor="fuel-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="fuel-type"
+                  className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   ⛽ Fuel Type
                 </label>
                 <select
                   id="fuel-type"
                   value={filters.fuelType || 'unleaded'}
-                  onChange={(e) => handleFilterChange('fuelType', e.target.value)}
+                  onChange={(e) =>
+                    handleFilterChange('fuelType', e.target.value)
+                  }
                   className="input w-full"
                 >
                   <option value="unleaded">Unleaded 91</option>
@@ -156,7 +192,10 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
 
               {/* Brand */}
               <div>
-                <label htmlFor="brand" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="brand"
+                  className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   🏪 Brand
                 </label>
                 <select
@@ -179,7 +218,10 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
 
               {/* Suburb */}
               <div>
-                <label htmlFor="suburb" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="suburb"
+                  className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   📍 Suburb
                 </label>
                 <select
@@ -206,7 +248,10 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
 
               {/* Sort */}
               <div>
-                <label htmlFor="sort" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label
+                  htmlFor="sort"
+                  className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   🔄 Sort By
                 </label>
                 <select
@@ -225,7 +270,10 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
 
             {/* Price Range */}
             <div>
-              <label htmlFor="price-max" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                htmlFor="price-max"
+                className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 💰 Maximum Price (¢/L)
               </label>
               <input
@@ -234,17 +282,25 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
                 placeholder="e.g., 210"
                 step="0.1"
                 value={filters.priceMax || ''}
-                onChange={(e) => handleFilterChange('priceMax', e.target.value ? parseFloat(e.target.value) : undefined)}
+                onChange={(e) =>
+                  handleFilterChange(
+                    'priceMax',
+                    e.target.value ? parseFloat(e.target.value) : undefined
+                  )
+                }
                 className="input max-w-xs"
               />
             </div>
 
             {/* Filter Actions */}
-            <div className="flex gap-3 justify-end border-t border-gray-200 dark:border-gray-700 pt-4">
-              <button onClick={clearFilters} className="btn btn-ghost btn-sm">
+            <div className="flex justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
+              <button onClick={clearFilters} className="btn-ghost btn-sm btn">
                 Clear All
               </button>
-              <button onClick={() => setShowAdvanced(false)} className="btn btn-primary btn-sm">
+              <button
+                onClick={() => setShowAdvanced(false)}
+                className="btn-primary btn-sm btn"
+              >
                 Apply Filters
               </button>
             </div>
@@ -262,22 +318,31 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
 /**
  * Loading states component
  */
-export function LoadingStates({ isInitialLoading, isLoadingMore, loadingProgress, className }: LoadingStatesProps) {
+export function LoadingStates({
+  isInitialLoading,
+  isLoadingMore,
+  loadingProgress,
+  className,
+}: LoadingStatesProps) {
   if (!isInitialLoading && !isLoadingMore) return null;
 
   return (
     <div className={cn('space-y-4', className)}>
       {isInitialLoading && (
-        <div className="text-center py-8">
+        <div className="py-8 text-center">
           <LoadingSpinner size="lg" className="mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Loading stations...</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Loading stations...
+          </p>
         </div>
       )}
 
       {isLoadingMore && (
-        <div className="text-center py-4">
+        <div className="py-4 text-center">
           <LoadingSpinner size="md" className="mx-auto mb-2" />
-          <p className="text-sm text-gray-500 dark:text-gray-400">Loading more stations...</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Loading more stations...
+          </p>
         </div>
       )}
     </div>
@@ -331,18 +396,24 @@ export function InfiniteScrollDirectory({
     gcTime: 10 * 60 * 1000,
   });
 
-  const handleFiltersChange = useCallback((newFilters: Record<string, unknown>) => {
-    setFilters(newFilters);
-  }, []);
+  const handleFiltersChange = useCallback(
+    (newFilters: Record<string, unknown>) => {
+      setFilters(newFilters);
+    },
+    []
+  );
 
-  const handleStationClick = useCallback((station: Station) => {
-    setSelectedStation(station);
-    setIsModalOpen(true);
+  const handleStationClick = useCallback(
+    (station: Station) => {
+      setSelectedStation(station);
+      setIsModalOpen(true);
 
-    if (onStationClick) {
-      onStationClick(station);
-    }
-  }, [onStationClick]);
+      if (onStationClick) {
+        onStationClick(station);
+      }
+    },
+    [onStationClick]
+  );
 
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
@@ -352,15 +423,15 @@ export function InfiniteScrollDirectory({
   // Error state
   if (isError) {
     return (
-      <div className="text-center py-20">
-        <div className="text-6xl mb-4">⚠️</div>
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+      <div className="py-20 text-center">
+        <div className="mb-4 text-6xl">⚠️</div>
+        <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
           Something went wrong
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
+        <p className="mb-6 text-gray-600 dark:text-gray-400">
           {error?.message || 'Failed to load stations'}
         </p>
-        <button onClick={() => refetch()} className="btn btn-primary">
+        <button onClick={() => refetch()} className="btn-primary btn">
           Try Again
         </button>
       </div>
@@ -414,24 +485,26 @@ export function InfiniteScrollDirectory({
 
         {/* Empty State */}
         {!isLoading && stations.length === 0 && (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="py-20 text-center">
+            <div className="mb-4 text-6xl">🔍</div>
+            <h3 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
               No stations found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="mb-6 text-gray-600 dark:text-gray-400">
               Try adjusting your filters or search criteria
             </p>
             <button
-              onClick={() => setFilters({
-                search: '',
-                fuelType: 'unleaded',
-                brand: 'all',
-                suburb: 'all',
-                sortBy: 'price-low',
-                priceMax: undefined,
-              })}
-              className="btn btn-primary"
+              onClick={() =>
+                setFilters({
+                  search: '',
+                  fuelType: 'unleaded',
+                  brand: 'all',
+                  suburb: 'all',
+                  sortBy: 'price-low',
+                  priceMax: undefined,
+                })
+              }
+              className="btn-primary btn"
             >
               Clear Filters
             </button>
@@ -440,7 +513,10 @@ export function InfiniteScrollDirectory({
 
         {/* Infinite Scroll Trigger */}
         {hasNextPage && (
-          <div ref={triggerRef} className="h-20 flex items-center justify-center">
+          <div
+            ref={triggerRef}
+            className="flex h-20 items-center justify-center"
+          >
             {isFetchingNextPage && (
               <div className="text-center">
                 <LoadingSpinner size="md" className="mx-auto mb-2" />
@@ -454,11 +530,11 @@ export function InfiniteScrollDirectory({
 
         {/* End of Results */}
         {!hasNextPage && stations.length > 0 && (
-          <div className="text-center py-8">
+          <div className="py-8 text-center">
             <p className="text-gray-500 dark:text-gray-400">
               You&apos;ve reached the end of the results
             </p>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
+            <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
               {totalCount} stations loaded across {loadedPages} pages
             </p>
           </div>

@@ -3,10 +3,12 @@
 ## Issues Fixed
 
 ### ✅ 1. Region Links Not Clickable
+
 **Problem:** Framer Motion's `whileHover` on parent div was intercepting clicks  
 **Solution:** Moved hover effects to the Link component itself
 
 ### ✅ 2. Spinner Gets Stuck Forever
+
 **Problem:** No timeout or error handling when data fetch fails  
 **Solution:** Added 10-second timeout with user-friendly error UI
 
@@ -59,6 +61,7 @@ Watch for these console messages:
    - Baserow API calls (if geojson fails)
 
 **Red flags:**
+
 - ⚠️ Request pending for > 10 seconds
 - ⚠️ Request shows "(cancelled)"
 - ⚠️ CORS errors
@@ -89,31 +92,31 @@ Watch for these console messages:
 
 ### Navigation Logs
 
-| Log | Meaning | Status |
-|-----|---------|--------|
-| `🔗 Region link clicked` | User clicked a region | ✅ Good |
-| `📍 Navigation URL` | React Router is navigating | ✅ Good |
-| `🗺️ DirectoryPageNew mounted` | Component loaded | ✅ Good |
-| `📋 Region param from URL` | URL parsed successfully | ✅ Good |
+| Log                           | Meaning                    | Status  |
+| ----------------------------- | -------------------------- | ------- |
+| `🔗 Region link clicked`      | User clicked a region      | ✅ Good |
+| `📍 Navigation URL`           | React Router is navigating | ✅ Good |
+| `🗺️ DirectoryPageNew mounted` | Component loaded           | ✅ Good |
+| `📋 Region param from URL`    | URL parsed successfully    | ✅ Good |
 
 ### Data Loading Logs
 
-| Log | Meaning | Status |
-|-----|---------|--------|
-| `⏳ Starting to load stations` | Fetch initiated | ✅ Good |
-| `🗺️ Loading stations from local GeoJSON` | Trying local data | ✅ Good |
-| `✅ Loaded X stations from GeoJSON` | Success! | ✅ Good |
-| `⚠️ Local data failed, trying Baserow` | Fallback triggered | ⚠️ Warning |
-| `❌ Error loading stations` | Complete failure | ❌ Bad |
-| `⏰ LoadingSpinner TIMEOUT` | Taking too long | ❌ Bad |
+| Log                                      | Meaning            | Status     |
+| ---------------------------------------- | ------------------ | ---------- |
+| `⏳ Starting to load stations`           | Fetch initiated    | ✅ Good    |
+| `🗺️ Loading stations from local GeoJSON` | Trying local data  | ✅ Good    |
+| `✅ Loaded X stations from GeoJSON`      | Success!           | ✅ Good    |
+| `⚠️ Local data failed, trying Baserow`   | Fallback triggered | ⚠️ Warning |
+| `❌ Error loading stations`              | Complete failure   | ❌ Bad     |
+| `⏰ LoadingSpinner TIMEOUT`              | Taking too long    | ❌ Bad     |
 
 ### Spinner Logs
 
-| Log | Meaning | Status |
-|-----|---------|--------|
-| `⏱️ LoadingSpinner mounted` | Spinner started | ✅ Good |
+| Log                                     | Meaning             | Status  |
+| --------------------------------------- | ------------------- | ------- |
+| `⏱️ LoadingSpinner mounted`             | Spinner started     | ✅ Good |
 | `✅ LoadingSpinner unmounted after Xms` | Loaded successfully | ✅ Good |
-| `⏰ LoadingSpinner TIMEOUT reached` | 10s timeout hit | ❌ Bad |
+| `⏰ LoadingSpinner TIMEOUT reached`     | 10s timeout hit     | ❌ Bad  |
 
 ---
 
@@ -122,11 +125,13 @@ Watch for these console messages:
 ### Problem 1: Clicks Don't Navigate
 
 **Symptoms:**
+
 - No console logs when clicking
 - Link doesn't change browser URL
 - Nothing happens
 
 **Debug:**
+
 ```javascript
 // In browser console:
 document.querySelectorAll('a[href*="directory"]').forEach((link, i) => {
@@ -135,6 +140,7 @@ document.querySelectorAll('a[href*="directory"]').forEach((link, i) => {
 ```
 
 **Solution:**
+
 - Check for CSS `pointer-events: none`
 - Check for overlapping elements with higher z-index
 - Verify Link component renders actual `<a>` tag
@@ -142,26 +148,30 @@ document.querySelectorAll('a[href*="directory"]').forEach((link, i) => {
 ### Problem 2: Navigation Works But Spinner Never Stops
 
 **Symptoms:**
+
 - URL changes to `/directory?region=northern`
 - Console shows "Starting to load stations"
 - No further console logs
 - Spinner runs forever (or until 10s timeout)
 
 **Debug:**
+
 ```javascript
 // Check if data files exist
 fetch('/data/stations.geojson')
-  .then(r => console.log('GeoJSON status:', r.status))
-  .catch(e => console.error('GeoJSON error:', e));
+  .then((r) => console.log('GeoJSON status:', r.status))
+  .catch((e) => console.error('GeoJSON error:', e));
 ```
 
 **Possible Causes:**
+
 1. `/data/stations.geojson` file missing
 2. Network request blocked by CORS
 3. Promise never resolves/rejects
 4. React state not updating
 
 **Solution:**
+
 - Check `public/data/stations.geojson` exists
 - Verify file is valid JSON
 - Check browser's Network tab for failed requests
@@ -169,6 +179,7 @@ fetch('/data/stations.geojson')
 ### Problem 3: Spinner Shows Error After 10 Seconds
 
 **Symptoms:**
+
 - Spinner appears
 - After 10 seconds, shows error message
 - "Loading is taking longer than expected"
@@ -178,21 +189,26 @@ fetch('/data/stations.geojson')
 The timeout caught a hung request. Now debug why:
 
 **Debug:**
+
 ```javascript
 // In browser console, check what's failing:
 console.log('Checking data sources...');
 
 // Test local data
 fetch('/data/stations.geojson')
-  .then(r => r.json())
-  .then(d => console.log('✅ Local data works:', d.features?.length, 'stations'))
-  .catch(e => console.error('❌ Local data failed:', e));
+  .then((r) => r.json())
+  .then((d) =>
+    console.log('✅ Local data works:', d.features?.length, 'stations')
+  )
+  .catch((e) => console.error('❌ Local data failed:', e));
 
 // Test Baserow (if local fails)
-fetch('https://api.baserow.io/api/database/rows/table/623329/?user_field_names=true&size=10&public_token=YOUR_TOKEN')
-  .then(r => r.json())
-  .then(d => console.log('✅ Baserow works:', d.results?.length, 'stations'))
-  .catch(e => console.error('❌ Baserow failed:', e));
+fetch(
+  'https://api.baserow.io/api/database/rows/table/623329/?user_field_names=true&size=10&public_token=YOUR_TOKEN'
+)
+  .then((r) => r.json())
+  .then((d) => console.log('✅ Baserow works:', d.results?.length, 'stations'))
+  .catch((e) => console.error('❌ Baserow failed:', e));
 ```
 
 ---
@@ -218,7 +234,7 @@ useEffect(() => {
   console.log('🔍 DEBUG: stations state changed:', {
     count: stations.length,
     first: stations[0],
-    loading: loading
+    loading: loading,
   });
 }, [stations, loading]);
 ```
@@ -236,14 +252,15 @@ console.log('Event listeners:', getEventListeners(link));
 ```javascript
 // In browser console before clicking:
 const originalFetch = window.fetch;
-window.fetch = function(...args) {
+window.fetch = function (...args) {
   console.log('🌐 FETCH:', args[0]);
-  return originalFetch.apply(this, args)
-    .then(r => {
+  return originalFetch
+    .apply(this, args)
+    .then((r) => {
       console.log('✅ FETCH SUCCESS:', args[0], r.status);
       return r;
     })
-    .catch(e => {
+    .catch((e) => {
       console.error('❌ FETCH ERROR:', args[0], e);
       throw e;
     });
@@ -302,6 +319,7 @@ npm start
 ## Success Criteria
 
 ✅ **Working correctly when:**
+
 1. Click triggers navigation within 100ms
 2. Console shows all expected logs in order
 3. Data loads within 10 seconds
@@ -310,6 +328,7 @@ npm start
 6. No red errors in console
 
 ❌ **Still broken if:**
+
 1. Click does nothing
 2. Console silent after click
 3. Spinner never disappears
@@ -326,4 +345,3 @@ npm start
 4. **Report results:** Tell me which scenario matches your issue
 
 The enhanced logging will tell us exactly where the flow breaks! 🔍
-

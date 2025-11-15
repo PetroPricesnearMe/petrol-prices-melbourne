@@ -5,32 +5,39 @@ Your Claude AI chat is now fully integrated with your React app!
 ## 🎉 What's Been Set Up
 
 ### Backend Server (`server.js`)
+
 - Express server running on **port 3001**
 - Handles API requests to Claude AI (Anthropic)
 - CORS enabled for React frontend communication
 - Uses your API key from `.env.local`
 
 ### Frontend Chat Component (`src/components/AIChat.js`)
+
 - Beautiful, modern chat interface
 - Real-time messaging with Claude Sonnet 4
 - Typing indicators and smooth animations
 - Mobile-friendly responsive design
 
 ### Environment Configuration (`.env.local`)
+
 - Your Claude API key is stored securely
 - File is git-ignored for security
 
 ## 🚀 How to Run
 
 ### Option 1: Run Both Servers (Recommended)
+
 ```bash
 npm run dev
 ```
+
 This starts:
+
 - Backend server on `http://localhost:3001`
 - React app on `http://localhost:3000`
 
 ### Option 2: Run Separately
+
 ```bash
 # Terminal 1 - Backend
 npm run server
@@ -54,12 +61,14 @@ Your API key has been tested and is working! ✅
 ## 🔧 Files Modified/Created
 
 ### New Files:
+
 - `server.js` - Express backend server
 - `src/components/AIChat.js` - Chat component
 - `src/components/AIChat.css` - Chat styling
 - `.env.local` - Environment variables (git-ignored)
 
 ### Modified Files:
+
 - `src/App.js` - Added `/chat` route
 - `package.json` - Added dev scripts
 
@@ -89,11 +98,13 @@ Your API key has been tested and is working! ✅
 ## 🐛 Troubleshooting
 
 **Chat not responding?**
+
 - Make sure both servers are running
 - Check that backend is on port 3001
 - Verify `.env.local` has your API key
 
 **Connection errors?**
+
 - Ensure backend server started successfully
 - Check browser console for errors
 - Verify CORS is working
@@ -106,4 +117,3 @@ Your API key has been tested and is working! ✅
 - **Styling:** Custom CSS with animations
 
 Enjoy chatting with Claude! 🤖✨
-

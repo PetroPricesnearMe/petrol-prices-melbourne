@@ -83,7 +83,9 @@ class ThemeManager {
    */
   private getSystemTheme(): ResolvedTheme {
     if (typeof window === 'undefined') return 'light';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
   }
 
   /**
@@ -209,7 +211,10 @@ class ThemeManager {
    */
   destroy(): void {
     if (this.mediaQuery) {
-      this.mediaQuery.removeEventListener('change', this.handleSystemThemeChange);
+      this.mediaQuery.removeEventListener(
+        'change',
+        this.handleSystemThemeChange
+      );
     }
     this.listeners.clear();
   }

@@ -13,7 +13,10 @@
  * Generate canonical URL
  */
 export function getCanonicalUrl(path: string, baseUrl?: string): string {
-  const base = baseUrl || process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const base =
+    baseUrl ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    'https://petrolpricenearme.com.au';
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   return `${base}${cleanPath}`;
 }
@@ -21,7 +24,10 @@ export function getCanonicalUrl(path: string, baseUrl?: string): string {
 /**
  * Truncate text for meta description
  */
-export function truncateDescription(text: string, maxLength: number = 160): string {
+export function truncateDescription(
+  text: string,
+  maxLength: number = 160
+): string {
   if (text.length <= maxLength) return text;
 
   const truncated = text.substring(0, maxLength - 3);
@@ -50,23 +56,60 @@ export function generateSlug(text: string): string {
 export function extractKeywords(text: string, count: number = 10): string[] {
   // Remove common words
   const stopWords = new Set([
-    'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
-    'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'be',
-    'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will',
-    'would', 'should', 'could', 'may', 'might', 'can', 'this', 'that',
+    'the',
+    'a',
+    'an',
+    'and',
+    'or',
+    'but',
+    'in',
+    'on',
+    'at',
+    'to',
+    'for',
+    'of',
+    'with',
+    'by',
+    'from',
+    'as',
+    'is',
+    'was',
+    'are',
+    'were',
+    'be',
+    'been',
+    'being',
+    'have',
+    'has',
+    'had',
+    'do',
+    'does',
+    'did',
+    'will',
+    'would',
+    'should',
+    'could',
+    'may',
+    'might',
+    'can',
+    'this',
+    'that',
   ]);
 
   const words = text
     .toLowerCase()
     .replace(/[^\w\s]/g, ' ')
     .split(/\s+/)
-    .filter(word => word.length > 3 && !stopWords.has(word));
+    .filter((word) => word.length > 3 && !stopWords.has(word));
 
   // Count frequency
-  const frequency = words.reduce((acc, word) => {
-    acc[word] = (acc[word] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const frequency = words.reduce(
+    (acc, word) => {
+      acc[word] = (acc[word] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
 
   // Sort by frequency and return top N
   return Object.entries(frequency)
@@ -108,7 +151,8 @@ export function getOptimizedImageUrl(
   width: number = 1200,
   height: number = 630
 ): string {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
 
   // If it's already a full URL, return it
   if (imagePath.startsWith('http')) {
@@ -218,7 +262,7 @@ export function getHreflangLinks(
   currentPath: string,
   languages: Array<{ code: string; url: string }>
 ) {
-  return languages.map(lang => ({
+  return languages.map((lang) => ({
     hrefLang: lang.code,
     href: `${lang.url}${currentPath}`,
   }));
@@ -235,7 +279,14 @@ export function createSitemapEntry(
   url: string,
   options: {
     lastModified?: Date | string;
-    changeFrequency?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+    changeFrequency?:
+      | 'always'
+      | 'hourly'
+      | 'daily'
+      | 'weekly'
+      | 'monthly'
+      | 'yearly'
+      | 'never';
     priority?: number;
   } = {}
 ) {

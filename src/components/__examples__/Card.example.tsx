@@ -1,16 +1,16 @@
 /**
  * Card Component - Example Implementation
- * 
+ *
  * A flexible card component following atomic design principles.
  * This is a molecule component composed of multiple atoms.
- * 
+ *
  * Features:
  * - Flexible composition (header, body, footer)
  * - Multiple visual variants
  * - Hover and interactive states
  * - Proper semantic HTML
  * - Accessible
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -38,33 +38,19 @@ import type { ComponentBaseProps, ComponentWithChildren } from '@/types';
  * Card variants
  */
 const cardVariants = cva(
-  [
-    'rounded-xl',
-    'border',
-    'transition-all',
-    'duration-200',
-  ],
+  ['rounded-xl', 'border', 'transition-all', 'duration-200'],
   {
     variants: {
       variant: {
-        default: [
-          'bg-white',
-          'border-gray-200',
-        ],
+        default: ['bg-white', 'border-gray-200'],
         elevated: [
           'bg-white',
           'border-transparent',
           'shadow-md',
           'hover:shadow-lg',
         ],
-        outlined: [
-          'bg-transparent',
-          'border-gray-300',
-        ],
-        ghost: [
-          'bg-transparent',
-          'border-transparent',
-        ],
+        outlined: ['bg-transparent', 'border-gray-300'],
+        ghost: ['bg-transparent', 'border-transparent'],
       },
       padding: {
         none: '',
@@ -115,25 +101,17 @@ export interface CardProps
  */
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
-    {
-      className,
-      variant,
-      padding,
-      interactive,
-      onClick,
-      children,
-      ...props
-    },
+    { className, variant, padding, interactive, onClick, children, ...props },
     ref
   ) => {
     return (
       <div
         ref={ref}
         className={cn(
-          cardVariants({ 
-            variant, 
-            padding, 
-            interactive: interactive || !!onClick 
+          cardVariants({
+            variant,
+            padding,
+            interactive: interactive || !!onClick,
           }),
           className
         )}
@@ -209,10 +187,7 @@ export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
     return (
       <Component
         ref={ref}
-        className={cn(
-          'text-lg font-semibold text-gray-900',
-          className
-        )}
+        className={cn('text-lg font-semibold text-gray-900', className)}
         {...props}
       >
         {children}
@@ -226,41 +201,36 @@ CardTitle.displayName = 'CardTitle';
 /**
  * CardDescription component
  */
-export const CardDescription = React.forwardRef<HTMLParagraphElement, ComponentWithChildren>(
-  ({ className, children, ...props }, ref) => {
-    return (
-      <p
-        ref={ref}
-        className={cn(
-          'text-sm text-gray-600 mt-1',
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </p>
-    );
-  }
-);
+export const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  ComponentWithChildren
+>(({ className, children, ...props }, ref) => {
+  return (
+    <p
+      ref={ref}
+      className={cn('mt-1 text-sm text-gray-600', className)}
+      {...props}
+    >
+      {children}
+    </p>
+  );
+});
 
 CardDescription.displayName = 'CardDescription';
 
 /**
  * CardContent component
  */
-export const CardContent = React.forwardRef<HTMLDivElement, ComponentWithChildren>(
-  ({ className, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn('text-gray-700', className)}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+export const CardContent = React.forwardRef<
+  HTMLDivElement,
+  ComponentWithChildren
+>(({ className, children, ...props }, ref) => {
+  return (
+    <div ref={ref} className={cn('text-gray-700', className)} {...props}>
+      {children}
+    </div>
+  );
+});
 
 CardContent.displayName = 'CardContent';
 
@@ -290,7 +260,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
       <div
         ref={ref}
         className={cn(
-          'flex items-center gap-2 mt-4',
+          'mt-4 flex items-center gap-2',
           alignClasses[align],
           className
         )}
@@ -303,4 +273,3 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 );
 
 CardFooter.displayName = 'CardFooter';
-

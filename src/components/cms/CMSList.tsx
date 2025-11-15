@@ -1,6 +1,6 @@
 /**
  * CMS List Component
- * 
+ *
  * Reusable list component for CMS content with:
  * - Pagination
  * - Filtering
@@ -12,7 +12,10 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { CMSContent as CMSContentType, CMSPaginatedResponse } from '@/lib/cms/types';
+import {
+  CMSContent as CMSContentType,
+  CMSPaginatedResponse,
+} from '@/lib/cms/types';
 import { CMSContent, CMSLoadingSkeleton } from './CMSContent';
 
 interface CMSListProps<T extends CMSContentType> {
@@ -48,7 +51,10 @@ export function CMSList<T extends CMSContentType>({
       setError(null);
 
       try {
-        const newData = await fetchData(page, searchQuery ? { search: searchQuery } : undefined);
+        const newData = await fetchData(
+          page,
+          searchQuery ? { search: searchQuery } : undefined
+        );
         setData(newData);
         setCurrentPage(page);
       } catch (err) {
@@ -98,7 +104,7 @@ export function CMSList<T extends CMSContentType>({
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="focus:border-blue-500 focus:ring-blue-500 w-full rounded-lg border border-gray-300 px-4 py-2 pl-10 focus:outline-none focus:ring-2"
               aria-label="Search content"
             />
             <svg
@@ -121,7 +127,10 @@ export function CMSList<T extends CMSContentType>({
 
       {/* Content */}
       {isLoading ? (
-        <CMSLoadingSkeleton count={data.pageSize} className={`grid gap-6 ${gridCols[itemsPerRow]}`} />
+        <CMSLoadingSkeleton
+          count={data.pageSize}
+          className={`grid gap-6 ${gridCols[itemsPerRow]}`}
+        />
       ) : (
         <CMSContent
           data={data.data}
@@ -137,7 +146,11 @@ export function CMSList<T extends CMSContentType>({
       {showPagination && data.total > data.pageSize && (
         <div className="mt-8 flex items-center justify-between border-t border-gray-200 pt-6">
           <div className="text-sm text-gray-700">
-            Showing <span className="font-medium">{(currentPage - 1) * data.pageSize + 1}</span> to{' '}
+            Showing{' '}
+            <span className="font-medium">
+              {(currentPage - 1) * data.pageSize + 1}
+            </span>{' '}
+            to{' '}
             <span className="font-medium">
               {Math.min(currentPage * data.pageSize, data.total)}
             </span>{' '}
@@ -170,7 +183,9 @@ export function CMSList<T extends CMSContentType>({
                           : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
                       } disabled:cursor-not-allowed disabled:opacity-50`}
                       aria-label={`Page ${pageNum}`}
-                      aria-current={pageNum === currentPage ? 'page' : undefined}
+                      aria-current={
+                        pageNum === currentPage ? 'page' : undefined
+                      }
                     >
                       {pageNum}
                     </button>
@@ -192,4 +207,3 @@ export function CMSList<T extends CMSContentType>({
     </div>
   );
 }
-

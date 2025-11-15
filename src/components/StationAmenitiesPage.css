@@ -116,8 +116,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .stations-grid {
@@ -363,31 +367,31 @@
   .header-content h1 {
     font-size: 2rem;
   }
-  
+
   .amenity-buttons {
     grid-template-columns: 1fr;
   }
-  
+
   .stations-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .amenities-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .prices-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .guide-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .card-actions {
     flex-direction: column;
   }
-  
+
   .card-actions .btn {
     width: 100%;
   }
@@ -397,31 +401,31 @@
   .amenities-header {
     padding: 1.5rem 0;
   }
-  
+
   .header-content h1 {
     font-size: 1.75rem;
   }
-  
+
   .amenities-content {
     padding: 1rem 0;
   }
-  
+
   .amenity-btn {
     padding: 0.75rem 1rem;
   }
-  
+
   .station-card {
     border-radius: 0.75rem;
   }
-  
+
   .card-content {
     padding: 1rem;
   }
-  
+
   .amenity-guide {
     padding: 1.5rem;
   }
-  
+
   .guide-item {
     flex-direction: column;
     text-align: center;

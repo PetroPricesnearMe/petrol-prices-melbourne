@@ -38,7 +38,12 @@
     line-height: 1.6;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     page-break-after: avoid;
     page-break-inside: avoid;
     font-weight: bold;
@@ -62,7 +67,9 @@
     font-size: 14pt;
   }
 
-  h4, h5, h6 {
+  h4,
+  h5,
+  h6 {
     font-size: 12pt;
   }
 
@@ -81,15 +88,15 @@
     word-wrap: break-word;
   }
 
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
     font-size: 90%;
     font-style: italic;
   }
 
-  a[href^="#"]::after,
-  a[href^="javascript:"]::after {
-    content: "";
+  a[href^='#']::after,
+  a[href^='javascript:']::after {
+    content: '';
   }
 
   /* ========================================
@@ -101,7 +108,11 @@
     page-break-inside: avoid;
   }
 
-  video, audio, iframe, embed, object {
+  video,
+  audio,
+  iframe,
+  embed,
+  object {
     display: none !important;
   }
 
@@ -139,7 +150,8 @@
     page-break-inside: avoid;
   }
 
-  th, td {
+  th,
+  td {
     border: 1pt solid #000;
     padding: 0.5em;
     text-align: left;
@@ -154,7 +166,8 @@
    * LISTS
    * ======================================== */
 
-  ul, ol {
+  ul,
+  ol {
     margin: 0.5em 0;
     padding-left: 2em;
   }
@@ -167,7 +180,8 @@
    * CODE & PRE
    * ======================================== */
 
-  code, pre {
+  code,
+  pre {
     font-family: 'Courier New', monospace;
     font-size: 10pt;
     border: 1pt solid #000;
@@ -299,8 +313,8 @@
   /* Maps */
   .map,
   .map-container,
-  [class*="leaflet"],
-  [class*="mapbox"] {
+  [class*='leaflet'],
+  [class*='mapbox'] {
     display: none !important;
   }
 
@@ -417,12 +431,12 @@
 
   /* Ensure sufficient contrast */
   abbr[title]::after {
-    content: " (" attr(title) ")";
+    content: ' (' attr(title) ')';
   }
 
   /* Show hidden content for print */
   [aria-label]::after {
-    content: " (" attr(aria-label) ")";
+    content: ' (' attr(aria-label) ')';
     font-size: 90%;
     font-style: italic;
   }

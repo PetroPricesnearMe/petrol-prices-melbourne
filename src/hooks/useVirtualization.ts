@@ -47,7 +47,10 @@ export function useVirtualization({
   const [scrollTop, setScrollTop] = useState(0);
 
   // Calculate total height
-  const totalHeight = useMemo(() => itemCount * itemHeight, [itemCount, itemHeight]);
+  const totalHeight = useMemo(
+    () => itemCount * itemHeight,
+    [itemCount, itemHeight]
+  );
 
   // Calculate visible range
   const visibleRange = useMemo(() => {
@@ -167,7 +170,8 @@ export function useDynamicVirtualization({
 
     const endIndex = Math.min(
       itemCount - 1,
-      itemOffsets.findIndex((offset) => offset >= scrollTop + containerHeight) + overscan
+      itemOffsets.findIndex((offset) => offset >= scrollTop + containerHeight) +
+        overscan
     );
 
     return { start: startIndex, end: endIndex };

@@ -79,6 +79,7 @@ Comprehensive testing strategy achieving 80%+ code coverage with meaningful test
 ### What to Test
 
 ✅ **Do Test:**
+
 - Component rendering
 - User interactions
 - State changes
@@ -88,6 +89,7 @@ Comprehensive testing strategy achieving 80%+ code coverage with meaningful test
 - Accessibility
 
 ❌ **Don't Test:**
+
 - Implementation details
 - Third-party libraries
 - CSS styles (use visual regression instead)
@@ -157,9 +159,12 @@ describe('useDebounce', () => {
     rerender({ value: 'updated', delay: 300 });
     expect(result.current).toBe('initial'); // Still initial
 
-    await waitFor(() => {
-      expect(result.current).toBe('updated');
-    }, { timeout: 400 });
+    await waitFor(
+      () => {
+        expect(result.current).toBe('updated');
+      },
+      { timeout: 400 }
+    );
   });
 });
 ```
@@ -297,6 +302,7 @@ describe('Station Context Integration', () => {
 ### What to Test
 
 Critical user journeys:
+
 - User registration/login
 - Station search and filtering
 - Viewing station details
@@ -489,20 +495,20 @@ describe('Performance', () => {
 ```yaml
 # .lighthouserc.json
 {
-  "ci": {
-    "collect": {
-      "url": ["http://localhost:3000"],
-      "numberOfRuns": 3
+  'ci':
+    {
+      'collect': { 'url': ['http://localhost:3000'], 'numberOfRuns': 3 },
+      'assert':
+        {
+          'assertions':
+            {
+              'categories:performance': ['error', { 'minScore': 0.9 }],
+              'categories:accessibility': ['error', { 'minScore': 0.9 }],
+              'categories:best-practices': ['error', { 'minScore': 0.9 }],
+              'categories:seo': ['error', { 'minScore': 0.9 }],
+            },
+        },
     },
-    "assert": {
-      "assertions": {
-        "categories:performance": ["error", { "minScore": 0.9 }],
-        "categories:accessibility": ["error", { "minScore": 0.9 }],
-        "categories:best-practices": ["error", { "minScore": 0.9 }],
-        "categories:seo": ["error", { "minScore": 0.9 }]
-      }
-    }
-  }
 }
 ```
 
@@ -568,6 +574,7 @@ open coverage/lcov-report/index.html
 ### What to Prioritize
 
 **High Priority (100% coverage):**
+
 - Authentication logic
 - Payment processing
 - Data validation
@@ -575,12 +582,14 @@ open coverage/lcov-report/index.html
 - Critical user flows
 
 **Medium Priority (90% coverage):**
+
 - UI components
 - Forms
 - API clients
 - Utility functions
 
 **Lower Priority (70% coverage):**
+
 - Presentational components
 - Styling components
 - Config files

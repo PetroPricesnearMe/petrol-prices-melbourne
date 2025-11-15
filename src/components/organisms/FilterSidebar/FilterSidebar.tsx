@@ -92,7 +92,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     const handleClickOutside = (e: MouseEvent) => {
       if (window.innerWidth < 1024 && isMobileOpen) {
         const target = e.target as HTMLElement;
-        if (!target.closest('.filter-sidebar') && !target.closest('.filter-sidebar-toggle')) {
+        if (
+          !target.closest('.filter-sidebar') &&
+          !target.closest('.filter-sidebar-toggle')
+        ) {
           setIsMobileOpen(false);
           onClose?.();
         }
@@ -105,7 +108,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const toggleSection = (sectionId: string) => {
     setSections((prev) =>
-      prev.map((section) => (section.id === sectionId ? { ...section, isExpanded: !section.isExpanded } : section))
+      prev.map((section) =>
+        section.id === sectionId
+          ? { ...section, isExpanded: !section.isExpanded }
+          : section
+      )
     );
   };
 
@@ -123,18 +130,25 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const content = (
-    <div className={cn('h-full flex flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700', className)}>
+    <div
+      className={cn(
+        'flex h-full flex-col border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900',
+        className
+      )}
+    >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Filters</h2>
+      <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          Filters
+        </h2>
         {activeFilterCount > 0 && (
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 text-xs font-semibold bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full">
+            <span className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-700 dark:bg-primary-900 dark:text-primary-300">
               {activeFilterCount}
             </span>
             <button
               onClick={handleClearAll}
-              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors font-medium"
+              className="text-xs font-medium text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               aria-label="Clear all filters"
             >
               Clear
@@ -144,29 +158,44 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       {/* Filter Content - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+      <div className="flex-1 space-y-6 overflow-y-auto px-4 py-4">
         {/* Categories Section */}
         <div className="filter-section">
           <button
             onClick={() => toggleSection('categories')}
-            className="flex items-center justify-between w-full py-2 text-left focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg transition-colors"
-              aria-expanded={sections.find((s) => s.id === 'categories')?.isExpanded ? 'true' : 'false'}
+            className="flex w-full items-center justify-between rounded-lg py-2 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            aria-expanded={
+              sections.find((s) => s.id === 'categories')?.isExpanded
+                ? 'true'
+                : 'false'
+            }
           >
             <div className="flex items-center gap-2">
               <span className="text-xl" aria-hidden="true">
                 {sections.find((s) => s.id === 'categories')?.icon}
               </span>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Categories</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                Categories
+              </h3>
             </div>
             <motion.svg
-              animate={{ rotate: sections.find((s) => s.id === 'categories')?.isExpanded ? 180 : 0 }}
-              className="w-5 h-5 text-gray-500"
+              animate={{
+                rotate: sections.find((s) => s.id === 'categories')?.isExpanded
+                  ? 180
+                  : 0,
+              }}
+              className="h-5 w-5 text-gray-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               aria-hidden="true"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </motion.svg>
           </button>
           <AnimatePresence initial={false}>
@@ -176,7 +205,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden mt-2"
+                className="mt-2 overflow-hidden"
               >
                 <CategoryChips
                   categories={categories}
@@ -194,27 +223,45 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <div className="filter-section">
           <button
             onClick={() => toggleSection('price')}
-            className="flex items-center justify-between w-full py-2 text-left focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg transition-colors"
-              aria-expanded={sections.find((s) => s.id === 'price')?.isExpanded ? 'true' : 'false'}
+            className="flex w-full items-center justify-between rounded-lg py-2 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            aria-expanded={
+              sections.find((s) => s.id === 'price')?.isExpanded
+                ? 'true'
+                : 'false'
+            }
           >
             <div className="flex items-center gap-2">
               <span className="text-xl" aria-hidden="true">
                 {sections.find((s) => s.id === 'price')?.icon}
               </span>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Price Range</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                Price Range
+              </h3>
               {priceRange && priceRange.min > minPrice && (
-                <span className="w-2 h-2 bg-primary-500 rounded-full" aria-hidden="true" />
+                <span
+                  className="h-2 w-2 rounded-full bg-primary-500"
+                  aria-hidden="true"
+                />
               )}
             </div>
             <motion.svg
-              animate={{ rotate: sections.find((s) => s.id === 'price')?.isExpanded ? 180 : 0 }}
-              className="w-5 h-5 text-gray-500"
+              animate={{
+                rotate: sections.find((s) => s.id === 'price')?.isExpanded
+                  ? 180
+                  : 0,
+              }}
+              className="h-5 w-5 text-gray-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               aria-hidden="true"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </motion.svg>
           </button>
           <AnimatePresence initial={false}>
@@ -224,7 +271,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden mt-2"
+                className="mt-2 overflow-hidden"
               >
                 <PriceRangeSlider
                   absoluteMin={minPrice}
@@ -242,25 +289,45 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <div className="filter-section">
           <button
             onClick={() => toggleSection('rating')}
-            className="flex items-center justify-between w-full py-2 text-left focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg transition-colors"
-              aria-expanded={sections.find((s) => s.id === 'rating')?.isExpanded ? 'true' : 'false'}
+            className="flex w-full items-center justify-between rounded-lg py-2 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            aria-expanded={
+              sections.find((s) => s.id === 'rating')?.isExpanded
+                ? 'true'
+                : 'false'
+            }
           >
             <div className="flex items-center gap-2">
               <span className="text-xl" aria-hidden="true">
                 {sections.find((s) => s.id === 'rating')?.icon}
               </span>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Rating</h3>
-              {minRating > 0 && <span className="w-2 h-2 bg-primary-500 rounded-full" aria-hidden="true" />}
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                Rating
+              </h3>
+              {minRating > 0 && (
+                <span
+                  className="h-2 w-2 rounded-full bg-primary-500"
+                  aria-hidden="true"
+                />
+              )}
             </div>
             <motion.svg
-              animate={{ rotate: sections.find((s) => s.id === 'rating')?.isExpanded ? 180 : 0 }}
-              className="w-5 h-5 text-gray-500"
+              animate={{
+                rotate: sections.find((s) => s.id === 'rating')?.isExpanded
+                  ? 180
+                  : 0,
+              }}
+              className="h-5 w-5 text-gray-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
               aria-hidden="true"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </motion.svg>
           </button>
           <AnimatePresence initial={false}>
@@ -270,7 +337,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden mt-2"
+                className="mt-2 overflow-hidden"
               >
                 <RatingSlider minRating={minRating} onChange={onRatingChange} />
               </motion.div>
@@ -286,7 +353,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     return (
       <aside
         className={cn(
-          'hidden lg:flex flex-col',
+          'hidden flex-col lg:flex',
           sticky ? 'lg:sticky lg:top-16 lg:self-start' : '',
           widthClasses[width],
           'filter-sidebar'
@@ -313,7 +380,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 setIsMobileOpen(false);
                 onClose?.();
               }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
               aria-hidden="true"
             />
             {/* Sidebar */}
@@ -323,7 +390,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
               className={cn(
-                'fixed left-0 top-0 bottom-0 z-50',
+                'fixed bottom-0 left-0 top-0 z-50',
                 widthClasses[width],
                 'filter-sidebar'
               )}

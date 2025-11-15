@@ -24,14 +24,14 @@ graph TB
     B --> D[useSmoothTransitions]
     B --> E[useLoadingStates]
     B --> F[usePerformanceOptimization]
-    
+
     C --> G[React Query useInfiniteQuery]
     G --> H[getAllStations API]
-    
+
     D --> I[Framer Motion]
     E --> J[Loading Components]
     F --> K[Memory Management]
-    
+
     L[StationGrid] --> M[StationCard]
     M --> N[SmoothTransitions]
     M --> O[Brand Colors CSS]
@@ -55,6 +55,7 @@ graph TB
 **Purpose**: Main hook for infinite scrolling functionality with React Query.
 
 **Key Features**:
+
 - Pagination with configurable page size
 - Advanced filtering (search, brand, suburb, fuel type, price)
 - Sorting options (price, name, suburb)
@@ -62,6 +63,7 @@ graph TB
 - Performance optimizations
 
 **Usage**:
+
 ```typescript
 const {
   data: stations,
@@ -70,14 +72,17 @@ const {
   hasNextPage,
   fetchNextPage,
   totalCount,
-} = useInfiniteStations({
-  search: 'BP',
-  fuelType: 'unleaded',
-  sortBy: 'price-low',
-}, {
-  pageSize: 24,
-  enabled: true,
-});
+} = useInfiniteStations(
+  {
+    search: 'BP',
+    fuelType: 'unleaded',
+    sortBy: 'price-low',
+  },
+  {
+    pageSize: 24,
+    enabled: true,
+  }
+);
 ```
 
 ### 2. Advanced Infinite Scroll Hook (`useAdvancedInfiniteStations`)
@@ -87,6 +92,7 @@ const {
 **Purpose**: Combines all infinite scroll functionality with performance optimizations.
 
 **Features**:
+
 - Smooth transitions management
 - Loading states coordination
 - Performance monitoring
@@ -100,6 +106,7 @@ const {
 **Purpose**: Provides smooth animations and transitions for content blocks.
 
 **Components**:
+
 - `SmoothTransition`: Directional slide transitions
 - `StaggeredTransition`: Staggered animations for multiple items
 - `FadeInTransition`: Simple fade in effects
@@ -109,6 +116,7 @@ const {
 - `LoadingSpinner`: Animated loading indicators
 
 **Usage**:
+
 ```typescript
 <SmoothTransition direction="up" duration={0.3} delay={0.1}>
   <StationCard station={station} />
@@ -122,6 +130,7 @@ const {
 **Purpose**: Optimized station card with smooth transitions and brand styling.
 
 **Features**:
+
 - Brand-specific styling with CSS data attributes
 - Smooth scale transitions on load
 - Responsive design
@@ -135,6 +144,7 @@ const {
 **Purpose**: Main directory component with infinite scrolling and filtering.
 
 **Features**:
+
 - Advanced filtering interface
 - Real-time search
 - Smooth loading states
@@ -148,6 +158,7 @@ const {
 **Location**: `src/hooks/usePerformanceOptimization.ts`
 
 **Features**:
+
 - Automatic memory cleanup when threshold is reached
 - Performance metrics monitoring
 - Render optimization with requestAnimationFrame
@@ -157,6 +168,7 @@ const {
 ### 2. Intersection Observer Optimization
 
 **Features**:
+
 - Debounced scroll handling
 - RequestIdleCallback for better performance
 - Configurable thresholds and root margins
@@ -165,6 +177,7 @@ const {
 ### 3. React Query Configuration
 
 **Optimizations**:
+
 - Stale time: 5 minutes
 - Garbage collection time: 10 minutes
 - Refetch on window focus: disabled
@@ -174,6 +187,7 @@ const {
 ### 4. Component Optimizations
 
 **Features**:
+
 - React.memo for preventing unnecessary re-renders
 - useCallback for stable function references
 - useMemo for expensive calculations
@@ -353,7 +367,7 @@ import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 
 export function PerformanceMonitor() {
   const { metrics } = usePerformanceOptimization();
-  
+
   return (
     <div className="performance-monitor">
       <p>Memory Usage: {metrics.memoryUsage.toFixed(1)}%</p>

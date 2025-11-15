@@ -37,7 +37,7 @@ export function Badge({
   return (
     <motion.div
       className={cn(
-        'inline-flex items-center px-4 py-2 backdrop-blur-sm rounded-full text-sm font-medium',
+        'inline-flex items-center rounded-full px-4 py-2 text-sm font-medium backdrop-blur-sm',
         variantClasses[variant],
         className
       )}
@@ -46,9 +46,7 @@ export function Badge({
       transition={{ duration: 0.6, delay: 0.2 }}
     >
       {icon && (
-        <span className={cn('mr-2', pulse && 'animate-pulse')}>
-          {icon}
-        </span>
+        <span className={cn('mr-2', pulse && 'animate-pulse')}>{icon}</span>
       )}
       {text || children}
     </motion.div>
@@ -79,11 +77,13 @@ export function StatusBadge({
       text={text}
       icon={
         <span
-          className={cn('w-2 h-2 rounded-full animate-pulse', statusColors[status])}
+          className={cn(
+            'h-2 w-2 animate-pulse rounded-full',
+            statusColors[status]
+          )}
         />
       }
       className={className}
     />
   );
 }
-

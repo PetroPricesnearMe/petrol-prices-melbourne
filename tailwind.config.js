@@ -6,26 +6,26 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  
+
   // Dark mode configuration
   darkMode: ['class', '[data-theme="dark"]'],
-  
+
   // Optimize for production (remove unused styles)
   // This is handled automatically by Tailwind CSS v3+ with JIT mode
   // No need for PurgeCSS - Tailwind CSS handles this automatically
-  
+
   theme: {
     // ========================================
     // RESPONSIVE BREAKPOINTS
     // Mobile-first approach with strategic breakpoints
     // ========================================
     screens: {
-      'xs': '475px',    // Extra small devices
-      'sm': '640px',    // Small tablets
-      'md': '768px',    // Tablets
-      'lg': '1024px',   // Laptops
-      'xl': '1280px',   // Desktops
-      '2xl': '1536px',  // Large screens
+      xs: '475px', // Extra small devices
+      sm: '640px', // Small tablets
+      md: '768px', // Tablets
+      lg: '1024px', // Laptops
+      xl: '1280px', // Desktops
+      '2xl': '1536px', // Large screens
     },
 
     // ========================================
@@ -35,7 +35,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      
+
       // Primary Brand Colors - Trust & Energy
       primary: {
         50: '#EFF6FF',
@@ -44,13 +44,13 @@ module.exports = {
         300: '#93C5FD',
         400: '#60A5FA',
         500: '#3B82F6',
-        600: '#2563EB',   // Main primary color
-        700: '#1D4ED8',   // Primary hover/active
+        600: '#2563EB', // Main primary color
+        700: '#1D4ED8', // Primary hover/active
         800: '#1E40AF',
         900: '#1E3A8A',
         950: '#172554',
       },
-      
+
       // Secondary/Success Colors - Fresh, Eco-friendly
       secondary: {
         50: '#ECFDF5',
@@ -58,14 +58,14 @@ module.exports = {
         200: '#A7F3D0',
         300: '#6EE7B7',
         400: '#34D399',
-        500: '#10B981',   // Main secondary color
+        500: '#10B981', // Main secondary color
         600: '#059669',
         700: '#047857',
         800: '#065F46',
         900: '#064E3B',
         950: '#022C22',
       },
-      
+
       // Accent Colors - Warm, Call-to-action
       accent: {
         50: '#FFF7ED',
@@ -73,14 +73,14 @@ module.exports = {
         200: '#FED7AA',
         300: '#FDBA74',
         400: '#FB923C',
-        500: '#F97316',   // Main accent color
+        500: '#F97316', // Main accent color
         600: '#EA580C',
         700: '#C2410C',
         800: '#9A3412',
         900: '#7C2D12',
         950: '#431407',
       },
-      
+
       // Neutral Grays - Professional & Clean
       gray: {
         50: '#F9FAFB',
@@ -95,7 +95,7 @@ module.exports = {
         900: '#111827',
         950: '#030712',
       },
-      
+
       // Semantic Colors
       success: {
         50: '#ECFDF5',
@@ -125,7 +125,7 @@ module.exports = {
         600: '#2563EB',
         700: '#1D4ED8',
       },
-      
+
       // Fuel Brand Colors
       brand: {
         shell: '#E31E24',
@@ -145,7 +145,7 @@ module.exports = {
         metro: '#FF6B35',
         costco: '#0066B2',
       },
-      
+
       // Fuel Type Colors
       fuel: {
         unleaded: '#22C55E',
@@ -157,7 +157,7 @@ module.exports = {
         95: '#F59E0B',
         91: '#1D4ED8',
       },
-      
+
       // Essential Colors
       white: '#FFFFFF',
       black: '#000000',
@@ -170,39 +170,39 @@ module.exports = {
     spacing: {
       0: '0',
       px: '1px',
-      0.5: '0.125rem',   // 2px
-      1: '0.25rem',      // 4px
-      1.5: '0.375rem',   // 6px
-      2: '0.5rem',       // 8px (base unit)
-      2.5: '0.625rem',   // 10px
-      3: '0.75rem',      // 12px
-      3.5: '0.875rem',   // 14px
-      4: '1rem',         // 16px
-      5: '1.25rem',      // 20px
-      6: '1.5rem',       // 24px
-      7: '1.75rem',      // 28px
-      8: '2rem',         // 32px
-      9: '2.25rem',      // 36px
-      10: '2.5rem',      // 40px
-      11: '2.75rem',     // 44px
-      12: '3rem',        // 48px
-      14: '3.5rem',      // 56px
-      16: '4rem',        // 64px
-      20: '5rem',        // 80px
-      24: '6rem',        // 96px
-      28: '7rem',        // 112px
-      32: '8rem',        // 128px
-      36: '9rem',        // 144px
-      40: '10rem',       // 160px
-      44: '11rem',       // 176px
-      48: '12rem',       // 192px
-      52: '13rem',       // 208px
-      56: '14rem',       // 224px
-      60: '15rem',       // 240px
-      64: '16rem',       // 256px
-      72: '18rem',       // 288px
-      80: '20rem',       // 320px
-      96: '24rem',       // 384px
+      0.5: '0.125rem', // 2px
+      1: '0.25rem', // 4px
+      1.5: '0.375rem', // 6px
+      2: '0.5rem', // 8px (base unit)
+      2.5: '0.625rem', // 10px
+      3: '0.75rem', // 12px
+      3.5: '0.875rem', // 14px
+      4: '1rem', // 16px
+      5: '1.25rem', // 20px
+      6: '1.5rem', // 24px
+      7: '1.75rem', // 28px
+      8: '2rem', // 32px
+      9: '2.25rem', // 36px
+      10: '2.5rem', // 40px
+      11: '2.75rem', // 44px
+      12: '3rem', // 48px
+      14: '3.5rem', // 56px
+      16: '4rem', // 64px
+      20: '5rem', // 80px
+      24: '6rem', // 96px
+      28: '7rem', // 112px
+      32: '8rem', // 128px
+      36: '9rem', // 144px
+      40: '10rem', // 160px
+      44: '11rem', // 176px
+      48: '12rem', // 192px
+      52: '13rem', // 208px
+      56: '14rem', // 224px
+      60: '15rem', // 240px
+      64: '16rem', // 256px
+      72: '18rem', // 288px
+      80: '20rem', // 320px
+      96: '24rem', // 384px
     },
 
     // ========================================
@@ -210,19 +210,19 @@ module.exports = {
     // Responsive font sizes with proper line heights
     // ========================================
     fontSize: {
-      xs: ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.025em' }],          // 12px
-      sm: ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.016em' }],      // 14px
-      base: ['1rem', { lineHeight: '1.5rem', letterSpacing: '0' }],               // 16px
-      lg: ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '-0.011em' }],     // 18px
-      xl: ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.014em' }],      // 20px
-      '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.019em' }],       // 24px
-      '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '-0.021em' }],  // 30px
-      '4xl': ['2.25rem', { lineHeight: '2.5rem', letterSpacing: '-0.022em' }],    // 36px
-      '5xl': ['3rem', { lineHeight: '1', letterSpacing: '-0.024em' }],            // 48px
-      '6xl': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.025em' }],         // 60px
-      '7xl': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.026em' }],          // 72px
-      '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.027em' }],            // 96px
-      '9xl': ['8rem', { lineHeight: '1', letterSpacing: '-0.028em' }],            // 128px
+      xs: ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.025em' }], // 12px
+      sm: ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.016em' }], // 14px
+      base: ['1rem', { lineHeight: '1.5rem', letterSpacing: '0' }], // 16px
+      lg: ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '-0.011em' }], // 18px
+      xl: ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.014em' }], // 20px
+      '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.019em' }], // 24px
+      '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '-0.021em' }], // 30px
+      '4xl': ['2.25rem', { lineHeight: '2.5rem', letterSpacing: '-0.022em' }], // 36px
+      '5xl': ['3rem', { lineHeight: '1', letterSpacing: '-0.024em' }], // 48px
+      '6xl': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.025em' }], // 60px
+      '7xl': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.026em' }], // 72px
+      '8xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.027em' }], // 96px
+      '9xl': ['8rem', { lineHeight: '1', letterSpacing: '-0.028em' }], // 128px
     },
 
     fontFamily: {
@@ -237,13 +237,7 @@ module.exports = {
         'Arial',
         'sans-serif',
       ],
-      mono: [
-        'Fira Code',
-        'Consolas',
-        'Monaco',
-        'Courier New',
-        'monospace',
-      ],
+      mono: ['Fira Code', 'Consolas', 'Monaco', 'Courier New', 'monospace'],
     },
 
     fontWeight: {
@@ -264,13 +258,13 @@ module.exports = {
     // ========================================
     borderRadius: {
       none: '0',
-      sm: '0.25rem',     // 4px
+      sm: '0.25rem', // 4px
       DEFAULT: '0.375rem', // 6px
-      md: '0.375rem',    // 6px
-      lg: '0.5rem',      // 8px
-      xl: '0.75rem',     // 12px
-      '2xl': '1rem',     // 16px
-      '3xl': '1.5rem',   // 24px
+      md: '0.375rem', // 6px
+      lg: '0.5rem', // 8px
+      xl: '0.75rem', // 12px
+      '2xl': '1rem', // 16px
+      '3xl': '1.5rem', // 24px
       full: '9999px',
     },
 
@@ -310,7 +304,7 @@ module.exports = {
       'ease-in': 'cubic-bezier(0.4, 0, 1, 1)',
       'ease-out': 'cubic-bezier(0, 0, 0.2, 1)',
       'ease-in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
-      'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+      bounce: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
     },
 
     // ========================================
@@ -364,11 +358,14 @@ module.exports = {
       // Background images and gradients
       backgroundImage: {
         'gradient-primary': 'linear-gradient(135deg, #3B82F6 0%, #10B981 100%)',
-        'gradient-secondary': 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
+        'gradient-secondary':
+          'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
         'gradient-accent': 'linear-gradient(135deg, #F97316 0%, #FB923C 100%)',
         'gradient-dark': 'linear-gradient(135deg, #1F2937 0%, #374151 100%)',
-        'gradient-overlay': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)',
-        'gradient-shine': 'linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%)',
+        'gradient-overlay':
+          'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)',
+        'gradient-shine':
+          'linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%)',
       },
 
       // Custom animations
@@ -380,20 +377,20 @@ module.exports = {
         'scale-in': 'scaleIn 0.2s ease-out',
         'scale-out': 'scaleOut 0.2s ease-out',
         'bounce-in': 'bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-        'shimmer': 'shimmer 2s infinite',
+        shimmer: 'shimmer 2s infinite',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
 
       // Animation delays
       animationDelay: {
-        '0': '0ms',
-        '100': '100ms',
-        '200': '200ms',
-        '300': '300ms',
-        '500': '500ms',
-        '700': '700ms',
-        '1000': '1000ms',
-        '2000': '2000ms',
+        0: '0ms',
+        100: '100ms',
+        200: '200ms',
+        300: '300ms',
+        500: '500ms',
+        700: '700ms',
+        1000: '1000ms',
+        2000: '2000ms',
       },
 
       keyframes: {
@@ -436,21 +433,21 @@ module.exports = {
       // Line height
       lineHeight: {
         'extra-tight': '1.1',
-        'tighter': '1.25',
-        'tight': '1.375',
-        'normal': '1.5',
-        'relaxed': '1.625',
-        'loose': '2',
+        tighter: '1.25',
+        tight: '1.375',
+        normal: '1.5',
+        relaxed: '1.625',
+        loose: '2',
       },
 
       // Letter spacing
       letterSpacing: {
-        'tighter': '-0.05em',
-        'tight': '-0.025em',
-        'normal': '0',
-        'wide': '0.025em',
-        'wider': '0.05em',
-        'widest': '0.1em',
+        tighter: '-0.05em',
+        tight: '-0.025em',
+        normal: '0',
+        wide: '0.025em',
+        wider: '0.05em',
+        widest: '0.1em',
       },
 
       // Aspect ratio
@@ -470,10 +467,10 @@ module.exports = {
 
       // Custom utilities for accessibility
       minHeight: {
-        'touch': '44px',
+        touch: '44px',
       },
       minWidth: {
-        'touch': '44px',
+        touch: '44px',
       },
     },
   },
@@ -483,7 +480,7 @@ module.exports = {
   // ========================================
   plugins: [
     // Custom plugin for component variants
-    function({ addComponents, addUtilities, theme }) {
+    function ({ addComponents, addUtilities, theme }) {
       // Add custom button variants
       addComponents({
         '.btn': {

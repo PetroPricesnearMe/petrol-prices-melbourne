@@ -1,4 +1,5 @@
 # Performance Optimization Implementation Guide
+
 **Step-by-step guide to apply all optimizations**
 
 ---
@@ -17,7 +18,7 @@ cp next.config.optimized.js next.config.js
 cp tailwind.config.optimized.js tailwind.config.js
 ```
 
-### 2. Update _app.js
+### 2. Update \_app.js
 
 ```bash
 # Backup and replace
@@ -45,38 +46,44 @@ npm install -g lighthouse
 ## 📋 Implementation Checklist
 
 ### Phase 1: Configuration (15 minutes)
+
 - [ ] Replace `next.config.js` with optimized version
 - [ ] Replace `tailwind.config.js` with optimized version
 - [ ] Update package.json scripts (already done)
 - [ ] Test build: `npm run build`
 
 ### Phase 2: Dynamic Imports (30 minutes)
+
 - [ ] Identify heavy components (>100KB)
 - [ ] Convert to dynamic imports using `lib/utils/dynamicImports.ts`
 - [ ] Add loading states for better UX
 - [ ] Test lazy loading behavior
 
 ### Phase 3: Image Optimization (20 minutes)
+
 - [ ] Replace `<img>` tags with `next/image`
 - [ ] Add width and height props
 - [ ] Implement lazy loading
 - [ ] Test image optimization
 
 ### Phase 4: API Optimization (20 minutes)
+
 - [ ] Update API routes with caching headers
 - [ ] Implement in-memory caching
 - [ ] Add compression hints
 - [ ] Test API performance
 
 ### Phase 5: Monitoring Setup (15 minutes)
+
 - [ ] Integrate Web Vitals tracking
 - [ ] Set up analytics endpoint
 - [ ] Test performance monitoring
 - [ ] Review initial metrics
 
 ### Phase 6: Service Worker (15 minutes) - Optional
+
 - [ ] Deploy `public/sw.js`
-- [ ] Register service worker in _app
+- [ ] Register service worker in \_app
 - [ ] Test offline functionality
 - [ ] Verify caching behavior
 
@@ -96,9 +103,12 @@ module.exports = withBundleAnalyzer({
   // Your config from next.config.optimized.js
   swcMinify: true,
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn'],
-    } : false,
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? {
+            exclude: ['error', 'warn'],
+          }
+        : false,
   },
   // ... rest of config
 });
@@ -107,11 +117,13 @@ module.exports = withBundleAnalyzer({
 ### Step 2: Convert Heavy Components to Dynamic Imports
 
 **Before:**
+
 ```javascript
 import StationMap from '../src/components/StationMap';
 ```
 
 **After:**
+
 ```javascript
 import dynamic from 'next/dynamic';
 
@@ -122,6 +134,7 @@ const StationMap = dynamic(() => import('../src/components/StationMap'), {
 ```
 
 **Use the helper:**
+
 ```typescript
 import { DynamicMap } from '@/lib/utils/dynamicImports';
 
@@ -133,14 +146,13 @@ function Page() {
 ### Step 3: Optimize Images
 
 **Before:**
+
 ```jsx
-<img 
-  src="/images/station.jpg" 
-  alt="Station" 
-/>
+<img src="/images/station.jpg" alt="Station" />
 ```
 
 **After:**
+
 ```jsx
 import Image from 'next/image';
 
@@ -152,7 +164,7 @@ import Image from 'next/image';
   quality={75}
   loading="lazy"
   placeholder="blur"
-/>
+/>;
 ```
 
 ### Step 4: Add Web Vitals Tracking
@@ -165,7 +177,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     initWebVitals();
   }, []);
-  
+
   return <Component {...pageProps} />;
 }
 ```
@@ -173,6 +185,7 @@ function MyApp({ Component, pageProps }) {
 ### Step 5: Implement Caching
 
 **ISR (Incremental Static Regeneration):**
+
 ```javascript
 // pages/index.js
 export async function getStaticProps() {
@@ -185,6 +198,7 @@ export async function getStaticProps() {
 ```
 
 **API Caching:**
+
 ```typescript
 // pages/api/data.ts
 export default async function handler(req, res) {
@@ -201,6 +215,7 @@ export default async function handler(req, res) {
 ## 🧪 Testing & Validation
 
 ### 1. Bundle Analysis
+
 ```bash
 # Visual bundle analyzer
 npm run analyze
@@ -211,6 +226,7 @@ npm run analyze:bundle
 ```
 
 ### 2. Performance Audit
+
 ```bash
 # Comprehensive audit
 npm run performance:audit
@@ -221,6 +237,7 @@ npm run lighthouse  # In another terminal
 ```
 
 ### 3. Web Vitals Check
+
 ```bash
 # Build and start production server
 npm run build
@@ -231,6 +248,7 @@ npm start
 ```
 
 ### 4. Load Testing
+
 ```bash
 # Install k6 (load testing tool)
 brew install k6  # macOS
@@ -247,6 +265,7 @@ k6 run scripts/load-test.js
 After implementing all optimizations, you should see:
 
 ### Bundle Size
+
 ```
 Before: 1.65 MB initial load
 After:  780 KB initial load
@@ -254,6 +273,7 @@ Reduction: 53% ✅
 ```
 
 ### Core Web Vitals
+
 ```
 FCP: 2.8s → 1.7s (-39%) ✅
 LCP: 4.2s → 2.1s (-50%) ✅
@@ -262,6 +282,7 @@ CLS: 0.18 → 0.05 (-72%) ✅
 ```
 
 ### Lighthouse Scores
+
 ```
 Performance: 68 → 94 (+26) ✅
 Accessibility: 87 → 96 (+9) ✅
@@ -274,7 +295,9 @@ SEO: 82 → 100 (+18) ✅
 ## 🐛 Troubleshooting
 
 ### Issue: Build fails after config changes
+
 **Solution:**
+
 ```bash
 # Clear cache and rebuild
 npm run clean
@@ -283,16 +306,20 @@ npm run build
 ```
 
 ### Issue: Dynamic imports not working
+
 **Solution:**
+
 ```javascript
 // Ensure you're using the correct syntax
 const Component = dynamic(() => import('./Component'), {
-  ssr: false,  // Disable SSR if component uses browser APIs
+  ssr: false, // Disable SSR if component uses browser APIs
 });
 ```
 
 ### Issue: Images not optimizing
+
 **Solution:**
+
 ```javascript
 // Check next.config.js has images config
 images: {
@@ -302,12 +329,16 @@ images: {
 ```
 
 ### Issue: Service Worker not registering
+
 **Solution:**
+
 ```javascript
 // Ensure HTTPS or localhost
-if ('serviceWorker' in navigator && 
-    (window.location.protocol === 'https:' || 
-     window.location.hostname === 'localhost')) {
+if (
+  'serviceWorker' in navigator &&
+  (window.location.protocol === 'https:' ||
+    window.location.hostname === 'localhost')
+) {
   navigator.serviceWorker.register('/sw.js');
 }
 ```
@@ -317,12 +348,14 @@ if ('serviceWorker' in navigator &&
 ## 📈 Monitoring After Deployment
 
 ### 1. Set up monitoring dashboard
+
 ```typescript
 // Create analytics dashboard
 // Visit /api/analytics/web-vitals for data
 ```
 
 ### 2. Regular audits
+
 ```bash
 # Weekly: Check bundle size
 npm run analyze:bundle
@@ -334,6 +367,7 @@ npm run performance:audit
 ```
 
 ### 3. User feedback
+
 - Monitor bounce rates
 - Track page load complaints
 - Review conversion rates
@@ -344,17 +378,20 @@ npm run performance:audit
 ## 🎯 Optimization Priorities
 
 ### High Priority (Implement First)
+
 1. ✅ Dynamic imports for heavy components
 2. ✅ Image optimization with next/image
 3. ✅ Bundle splitting and tree shaking
 4. ✅ Caching strategies (ISR + API)
 
 ### Medium Priority (Implement Next)
+
 5. ✅ CSS optimization with Tailwind JIT
 6. ✅ Web Vitals monitoring
 7. ✅ Compression (Gzip/Brotli)
 
 ### Low Priority (Nice to Have)
+
 8. ⏳ Service Worker for offline support
 9. ⏳ Edge functions for API routes
 10. ⏳ Advanced caching strategies
@@ -364,16 +401,19 @@ npm run performance:audit
 ## 📚 Additional Resources
 
 ### Documentation
+
 - [Next.js Performance](https://nextjs.org/docs/advanced-features/measuring-performance)
 - [Web Vitals](https://web.dev/vitals/)
 - [Bundle Analysis](https://nextjs.org/docs/advanced-features/bundle-analyzer)
 
 ### Tools
+
 - [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci)
 - [WebPageTest](https://www.webpagetest.org/)
 - [Webpack Bundle Analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer)
 
 ### Files Reference
+
 ```
 Optimization Files Created:
 ├── next.config.optimized.js          # Optimized Next.js config
@@ -427,7 +467,7 @@ You've successfully optimized when:
 ✅ CLS < 0.1  
 ✅ All Core Web Vitals "Good"  
 ✅ Page load < 3s on 4G  
-✅ Mobile performance optimized  
+✅ Mobile performance optimized
 
 ---
 
@@ -435,4 +475,3 @@ You've successfully optimized when:
 Refer to `PERFORMANCE_OPTIMIZATION_REPORT.md` for detailed metrics and analysis.
 
 **Last Updated:** ${new Date().toISOString()}
-

@@ -11,7 +11,10 @@ interface LocalBusinessSchemaProps {
   fuelPrices?: Record<string, unknown>;
 }
 
-export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchemaProps) {
+export function LocalBusinessSchema({
+  station,
+  fuelPrices,
+}: LocalBusinessSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'GasStation',
@@ -39,13 +42,14 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
     },
 
     // Geo coordinates
-    ...(station.latitude && station.longitude && {
-      geo: {
-        '@type': 'GeoCoordinates',
-        latitude: station.latitude,
-        longitude: station.longitude,
-      },
-    }),
+    ...(station.latitude &&
+      station.longitude && {
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: station.latitude,
+          longitude: station.longitude,
+        },
+      }),
 
     // Contact info
     ...(station.phoneNumber && {
@@ -59,26 +63,42 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
 
     // Amenities
     amenityFeature: [
-      ...(station.amenities?.carWash ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'Car Wash',
-        value: true,
-      }] : []),
-      ...(station.amenities?.cafe ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'Cafe',
-        value: true,
-      }] : []),
-      ...(station.amenities?.toilets ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'Restrooms',
-        value: true,
-      }] : []),
-      ...(station.amenities?.atm ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'ATM',
-        value: true,
-      }] : []),
+      ...(station.amenities?.carWash
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'Car Wash',
+              value: true,
+            },
+          ]
+        : []),
+      ...(station.amenities?.cafe
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'Cafe',
+              value: true,
+            },
+          ]
+        : []),
+      ...(station.amenities?.toilets
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'Restrooms',
+              value: true,
+            },
+          ]
+        : []),
+      ...(station.amenities?.atm
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'ATM',
+              value: true,
+            },
+          ]
+        : []),
     ].filter(Boolean),
 
     // Price range (if available)
@@ -124,7 +144,11 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
 /**
  * Breadcrumb List Schema
  */
-export function BreadcrumbSchema({ items }: { items: Array<{ name: string; url: string }> }) {
+export function BreadcrumbSchema({
+  items,
+}: {
+  items: Array<{ name: string; url: string }>;
+}) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -147,7 +171,10 @@ export function BreadcrumbSchema({ items }: { items: Array<{ name: string; url: 
 /**
  * Offer Schema for Fuel Prices
  */
-export function FuelPriceSchema({ station, fuelPrices }: LocalBusinessSchemaProps) {
+export function FuelPriceSchema({
+  station,
+  fuelPrices,
+}: LocalBusinessSchemaProps) {
   if (!fuelPrices || Object.keys(fuelPrices).length === 0) return null;
 
   const offers = Object.entries(fuelPrices)

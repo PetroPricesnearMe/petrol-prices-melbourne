@@ -8,11 +8,11 @@ import type { ReactNode, HTMLAttributes } from 'react';
 /**
  * Card variant types
  */
-export type CardVariant = 
-  | 'default' 
-  | 'elevated' 
-  | 'outlined' 
-  | 'filled' 
+export type CardVariant =
+  | 'default'
+  | 'elevated'
+  | 'outlined'
+  | 'filled'
   | 'interactive'
   | 'featured';
 
@@ -87,7 +87,8 @@ export interface CardMediaProps extends HTMLAttributes<HTMLDivElement> {
 /**
  * Main card component props
  */
-export interface NorthernTradieCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface NorthernTradieCardProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Card variant */
   variant?: CardVariant;
   /** Card size */
@@ -148,4 +149,3 @@ export interface CardStyleConfig {
   focus: string;
   disabled: string;
 }
-

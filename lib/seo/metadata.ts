@@ -162,7 +162,10 @@ export function generateMetadata(options: PageMetadataOptions): Metadata {
 /**
  * Generate metadata for region pages
  */
-export function generateRegionMetadata(region: string, stationCount: number): Metadata {
+export function generateRegionMetadata(
+  region: string,
+  stationCount: number
+): Metadata {
   const title = `${region} Petrol Prices - ${stationCount} Stations`;
   const description = `Find the cheapest petrol prices in ${region}, Melbourne. Compare fuel prices from ${stationCount} petrol stations and save money on every fill-up.`;
 
@@ -206,7 +209,9 @@ export function generateBlogMetadata(post: {
 /**
  * Generate breadcrumb structured data
  */
-export function generateBreadcrumbSchema(items: { name: string; url: string }[]) {
+export function generateBreadcrumbSchema(
+  items: { name: string; url: string }[]
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -356,7 +361,9 @@ export function generateArticleSchema(article: {
 /**
  * Generate FAQ structured data
  */
-export function generateFAQSchema(faqs: { question: string; answer: string }[]) {
+export function generateFAQSchema(
+  faqs: { question: string; answer: string }[]
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

@@ -1,4 +1,4 @@
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import { stationsRepository } from '@/lib/repositories/stations.repository';
@@ -58,4 +58,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-

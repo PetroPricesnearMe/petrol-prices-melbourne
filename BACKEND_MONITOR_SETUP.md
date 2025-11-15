@@ -25,6 +25,7 @@ npm run monitor
 ```
 
 This will:
+
 - Scan all backend components
 - Display issues in the terminal
 - Save a report to `logs/backend-reports/`
@@ -123,6 +124,7 @@ const SCAN_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
 ```
 
 Common intervals:
+
 - 15 minutes: `15 * 60 * 1000`
 - 1 hour: `60 * 60 * 1000`
 - 5 minutes: `5 * 60 * 1000`
@@ -149,6 +151,7 @@ docs/
 ### Issue: "node_modules directory not found"
 
 **Fix:**
+
 ```bash
 npm install
 ```
@@ -156,6 +159,7 @@ npm install
 ### Issue: "Required data file not found"
 
 **Fix:**
+
 ```bash
 # Ensure data files exist
 ls -la public/data/stations.geojson
@@ -164,6 +168,7 @@ ls -la public/data/stations.geojson
 ### Issue: "Missing environment variables"
 
 **Fix:**
+
 ```bash
 # Create .env.local with required variables
 cp .env.example .env.local
@@ -173,6 +178,7 @@ cp .env.example .env.local
 ### Issue: "API endpoint file not found"
 
 **Fix:**
+
 ```bash
 # Verify API routes exist
 ls -la pages/api/
@@ -189,7 +195,7 @@ name: Backend Health Check
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Every 30 minutes
+    - cron: '*/30 * * * *' # Every 30 minutes
 
 jobs:
   monitor:
@@ -233,9 +239,9 @@ For detailed documentation, see: `docs/BACKEND_MONITORING.md`
 The backend monitoring agent is now ready to scan your project every 30 minutes and report any issues to the master agent.
 
 **Next Steps:**
+
 1. Run a test scan: `npm run monitor`
 2. Start continuous monitoring: `npm run monitor:watch`
 3. Or run as background service: `pm2 start scripts/backend-monitor-scheduler.js --name backend-monitor`
 
 Happy monitoring! 🚀
-

@@ -1,14 +1,15 @@
 /**
  * MCP (Model Context Protocol) Service
  * Real-time updates from Baserow via Server-Sent Events (SSE)
- * 
+ *
  * MCP Server: https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse
  */
 
 class MCPService {
   constructor() {
-    this.sseUrl = process.env.REACT_APP_BASEROW_SSE_URL || 
-                  'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse';
+    this.sseUrl =
+      process.env.REACT_APP_BASEROW_SSE_URL ||
+      'https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse';
     this.eventSource = null;
     this.listeners = new Map();
     this.reconnectAttempts = 0;
@@ -58,7 +59,7 @@ class MCPService {
         console.error('❌ [MCP] Connection error:', error);
         this.isConnected = false;
         this.emit('disconnected');
-        
+
         // Close and attempt reconnect
         this.eventSource.close();
         this.eventSource = null;
@@ -67,7 +68,6 @@ class MCPService {
 
       // Listen for specific Baserow events
       this.setupBaserowEventListeners();
-
     } catch (error) {
       console.error('❌ [MCP] Failed to connect:', error);
       this.attemptReconnect();
@@ -114,15 +114,19 @@ class MCPService {
    */
   attemptReconnect() {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.error(`❌ [MCP] Max reconnection attempts (${this.maxReconnectAttempts}) reached`);
+      console.error(
+        `❌ [MCP] Max reconnection attempts (${this.maxReconnectAttempts}) reached`
+      );
       this.emit('max-reconnect-attempts');
       return;
     }
 
     this.reconnectAttempts++;
     const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
-    
-    console.log(`🔄 [MCP] Reconnecting in ${delay / 1000}s (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+
+    console.log(
+      `🔄 [MCP] Reconnecting in ${delay / 1000}s (attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts})`
+    );
 
     this.reconnectTimeout = setTimeout(() => {
       this.connect();
@@ -134,7 +138,7 @@ class MCPService {
    */
   disconnect() {
     console.log('🔌 [MCP] Disconnecting...');
-    
+
     if (this.reconnectTimeout) {
       clearTimeout(this.reconnectTimeout);
       this.reconnectTimeout = null;
@@ -148,7 +152,7 @@ class MCPService {
     this.isConnected = false;
     this.reconnectAttempts = 0;
     this.emit('disconnected');
-    
+
     console.log('✅ [MCP] Disconnected');
   }
 
@@ -159,9 +163,11 @@ class MCPService {
     const { type, table_id, row_id, payload } = data;
 
     // Emit specific events based on table
-    if (table_id === 623329) { // Petrol Stations
+    if (table_id === 623329) {
+      // Petrol Stations
       this.emit('station.updated', { rowId: row_id, data: payload });
-    } else if (table_id === 623330) { // Fuel Prices
+    } else if (table_id === 623330) {
+      // Fuel Prices
       this.emit('price.updated', { rowId: row_id, data: payload });
     }
 
@@ -179,9 +185,9 @@ class MCPService {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set());
     }
-    
+
     this.listeners.get(event).add(callback);
-    
+
     // Return unsubscribe function
     return () => this.off(event, callback);
   }
@@ -200,11 +206,14 @@ class MCPService {
    */
   emit(event, data) {
     if (this.listeners.has(event)) {
-      this.listeners.get(event).forEach(callback => {
+      this.listeners.get(event).forEach((callback) => {
         try {
           callback(data);
         } catch (error) {
-          console.error(`❌ [MCP] Error in event listener for '${event}':`, error);
+          console.error(
+            `❌ [MCP] Error in event listener for '${event}':`,
+            error
+          );
         }
       });
     }
@@ -218,7 +227,7 @@ class MCPService {
       connected: this.isConnected,
       reconnectAttempts: this.reconnectAttempts,
       maxReconnectAttempts: this.maxReconnectAttempts,
-      url: this.sseUrl
+      url: this.sseUrl,
     };
   }
 
@@ -249,4 +258,3 @@ if (typeof window !== 'undefined') {
 }
 
 export default mcpService;
-

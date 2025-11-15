@@ -7,17 +7,20 @@ This application uses **Google Analytics 4 (GA4)** with proper environment varia
 ## ✅ What's Been Updated
 
 ### 1. **Environment Variable Integration**
+
 - ✅ Removed hardcoded GA measurement IDs
 - ✅ Uses `REACT_APP_GA_MEASUREMENT_ID` environment variable
 - ✅ Gracefully handles missing configuration (won't break if not set)
 
 ### 2. **New Google Analytics Module** (`src/utils/googleAnalytics.js`)
+
 - ✅ Centralized GA4 initialization
 - ✅ Custom tracking functions for fuel price app
 - ✅ Enhanced measurement configuration
 - ✅ Proper session tracking
 
 ### 3. **Enhanced Event Tracking**
+
 - ✅ Fuel price searches
 - ✅ Station interactions (views, directions, calls)
 - ✅ Price comparisons
@@ -26,6 +29,7 @@ This application uses **Google Analytics 4 (GA4)** with proper environment varia
 - ✅ Page views with proper routing
 
 ### 4. **Updated Files**
+
 - ✅ `public/index.html` - Removed hardcoded GA script
 - ✅ `src/index.js` - Added GA initialization on app load
 - ✅ `src/utils/analytics.js` - Enhanced with GA4 integration
@@ -54,12 +58,15 @@ This application uses **Google Analytics 4 (GA4)** with proper environment varia
 ### Step 2: Configure Environment Variable
 
 #### For Local Development:
+
 Create a `.env.local` file in your project root:
+
 ```bash
 REACT_APP_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 #### For Production (Vercel):
+
 1. Go to your Vercel project dashboard
 2. Navigate to **Settings** → **Environment Variables**
 3. Add new variable:
@@ -70,6 +77,7 @@ REACT_APP_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 5. Redeploy your application
 
 #### For Production (Netlify):
+
 1. Go to **Site Settings** → **Environment Variables**
 2. Click **Add a variable**
 3. Set:
@@ -81,11 +89,13 @@ REACT_APP_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ### Step 3: Verify Installation
 
 1. **Restart your development server** if running locally:
+
    ```bash
    npm start
    ```
 
 2. **Open your browser console** (F12) and look for:
+
    ```
    📊 Initializing Google Analytics 4: G-XXXXXXXXXX
    ✅ Google Analytics 4 initialized successfully
@@ -101,6 +111,7 @@ REACT_APP_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ## 📊 Custom Events Tracked
 
 ### Automatic Events
+
 - `page_view` - Every page navigation
 - `session_start` - When user starts session
 - `session_end` - When user leaves/closes tab
@@ -110,15 +121,17 @@ REACT_APP_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 - `file_downloads` - Downloaded files
 
 ### Custom Events
-| Event Name | Description | Parameters |
-|------------|-------------|------------|
-| `fuel_search` | User searches for fuel prices | `fuel_type`, `search_location` |
-| `station_interaction` | User interacts with station | `station_name`, `interaction_type` |
-| `price_comparison` | User compares prices | `fuel_type`, `station_count` |
-| `filter_applied` | User applies filters | `filter_type`, `filter_value` |
-| `conversion` | User takes action (directions, call) | `conversion_type`, `station_name` |
+
+| Event Name            | Description                          | Parameters                         |
+| --------------------- | ------------------------------------ | ---------------------------------- |
+| `fuel_search`         | User searches for fuel prices        | `fuel_type`, `search_location`     |
+| `station_interaction` | User interacts with station          | `station_name`, `interaction_type` |
+| `price_comparison`    | User compares prices                 | `fuel_type`, `station_count`       |
+| `filter_applied`      | User applies filters                 | `filter_type`, `filter_value`      |
+| `conversion`          | User takes action (directions, call) | `conversion_type`, `station_name`  |
 
 ### Custom Dimensions
+
 - **Dimension 1**: `fuel_type` - Type of fuel searched
 - **Dimension 2**: `station_brand` - Brand of petrol station
 - **Dimension 3**: `region` - Melbourne region
@@ -129,17 +142,19 @@ REACT_APP_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ## 🔧 Usage in Components
 
 ### Track Custom Event
+
 ```javascript
 import { trackGAEvent } from '../utils/googleAnalytics';
 
 // Track a custom event
 trackGAEvent('custom_event_name', {
   parameter1: 'value1',
-  parameter2: 'value2'
+  parameter2: 'value2',
 });
 ```
 
 ### Track Fuel Search
+
 ```javascript
 import { trackFuelSearch } from '../utils/googleAnalytics';
 
@@ -147,6 +162,7 @@ trackFuelSearch('Unleaded', 'Melbourne CBD');
 ```
 
 ### Track Station Interaction
+
 ```javascript
 import { trackStationInteraction } from '../utils/googleAnalytics';
 
@@ -154,6 +170,7 @@ trackStationInteraction('Shell Melbourne', 'directions');
 ```
 
 ### Track Price Comparison
+
 ```javascript
 import { trackPriceComparison } from '../utils/googleAnalytics';
 
@@ -161,6 +178,7 @@ trackPriceComparison('Diesel', 15); // compared 15 stations
 ```
 
 ### Track Conversion
+
 ```javascript
 import { trackConversion } from '../utils/googleAnalytics';
 
@@ -172,6 +190,7 @@ trackConversion('directions', 'BP South Yarra');
 ## 🎯 Enhanced Measurement Features
 
 GA4 Enhanced Measurement is automatically enabled for:
+
 - ✅ **Scrolls** - Tracks 90% scroll depth
 - ✅ **Outbound clicks** - External link tracking
 - ✅ **Site search** - Query parameter tracking
@@ -183,25 +202,31 @@ GA4 Enhanced Measurement is automatically enabled for:
 ## 📈 Recommended GA4 Setup
 
 ### 1. Create Custom Reports
+
 - **Fuel Type Performance**: Which fuel types are most searched
 - **Regional Analysis**: Most active Melbourne regions
 - **Station Popularity**: Top viewed/clicked stations
 - **Conversion Funnel**: Search → View → Directions/Call
 
 ### 2. Set Up Conversions
+
 Mark these events as conversions in GA4:
+
 1. `conversion` - Primary conversion event
 2. `station_interaction` (type: directions)
 3. `station_interaction` (type: phone)
 
 ### 3. Configure Audiences
+
 Create audiences for:
+
 - **Active Price Shoppers**: Users who search frequently
 - **Regional Users**: Users from specific Melbourne areas
 - **Mobile Users**: Mobile device users
 - **Returning Users**: Users with 2+ sessions
 
 ### 4. Link Google Ads (Optional)
+
 - Connect GA4 to Google Ads for remarketing
 - Target users who searched but didn't convert
 - Show ads for stations in their region
@@ -211,18 +236,22 @@ Create audiences for:
 ## 🐛 Troubleshooting
 
 ### GA Not Initializing
+
 **Symptom**: Console shows "Measurement ID not configured"
 
 **Solution**:
+
 1. Check `.env.local` file exists with correct variable
 2. Restart development server (`npm start`)
 3. Verify environment variable in Vercel/Netlify dashboard
 4. Ensure variable starts with `REACT_APP_`
 
 ### Events Not Showing in GA4
+
 **Symptom**: Events tracked but not appearing in GA4
 
 **Solution**:
+
 1. Check **Realtime** report (not standard reports)
 2. Wait 24-48 hours for historical reports to populate
 3. Verify Measurement ID is correct
@@ -230,9 +259,11 @@ Create audiences for:
 5. Disable ad blockers (they block GA)
 
 ### Build Errors
+
 **Symptom**: Build fails with GA-related errors
 
 **Solution**:
+
 1. Ensure all imports are correct
 2. Check `src/utils/googleAnalytics.js` exists
 3. Run `npm install` to ensure dependencies are installed
@@ -243,15 +274,18 @@ Create audiences for:
 ## 🔐 Privacy & Compliance
 
 ### GDPR Compliance
+
 - ✅ GA loads with user consent (1-second delay)
 - ✅ No personally identifiable information (PII) tracked
 - ✅ IP anonymization enabled by default in GA4
 - ✅ User can opt-out via browser settings
 
 ### Recommended Privacy Policy Updates
+
 Add to your privacy policy:
+
 ```
-We use Google Analytics to understand how visitors use our site. 
+We use Google Analytics to understand how visitors use our site.
 Google Analytics collects information such as:
 - Pages you visit
 - Time spent on pages
@@ -277,6 +311,7 @@ You can opt-out using browser plugins or privacy settings.
 ## ✅ Verification Checklist
 
 After setup, verify:
+
 - [ ] Environment variable is set correctly
 - [ ] GA initializes successfully (check console)
 - [ ] Realtime reports show your visits
@@ -293,6 +328,7 @@ After setup, verify:
 ## 🎉 Success!
 
 Your Google Analytics 4 is now properly configured with:
+
 - ✅ Environment variable support
 - ✅ Enhanced event tracking
 - ✅ Custom dimensions for fuel data
@@ -300,7 +336,7 @@ Your Google Analytics 4 is now properly configured with:
 - ✅ Privacy-focused implementation
 
 **Need help?** Check the troubleshooting section or review the code in:
+
 - `src/utils/googleAnalytics.js`
 - `src/utils/analytics.js`
 - `src/index.js`
-

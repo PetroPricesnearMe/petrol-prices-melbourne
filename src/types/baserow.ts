@@ -96,4 +96,3 @@ export function isBaserowFuelPrice(obj: unknown): obj is BaserowFuelPrice {
     'Price Per Liter' in obj
   );
 }
-

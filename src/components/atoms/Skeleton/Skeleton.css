@@ -3,7 +3,7 @@
  */
 
 .skeleton {
-  background-color: #E5E7EB;
+  background-color: #e5e7eb;
   position: relative;
   overflow: hidden;
 }
@@ -37,7 +37,8 @@
 }
 
 @keyframes skeleton-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

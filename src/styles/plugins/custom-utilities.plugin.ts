@@ -141,7 +141,8 @@ export const customUtilitiesPlugin = plugin(function ({ addUtilities, theme }) {
 
     // Shimmer effect
     '.shimmer': {
-      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+      background:
+        'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
       backgroundSize: '200% 100%',
       animation: 'shimmer 2s infinite',
     },

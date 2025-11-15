@@ -120,14 +120,14 @@ export function StationCard({ station }) {
 
 ### Step 2: Plan Replacement Strategy
 
-| Old CSS Property | New Utility/Pattern |
-|-----------------|---------------------|
-| `background: white` | `bg-white dark:bg-gray-800` |
-| `border-radius: 12px` | `rounded-xl` |
-| `padding: 20px` | `p-6` |
-| `box-shadow` | `shadow-sm hover:shadow-xl` |
-| `display: flex; justify-content: space-between` | `flex-between` |
-| Custom badge | `badge badge-primary` |
+| Old CSS Property                                | New Utility/Pattern         |
+| ----------------------------------------------- | --------------------------- |
+| `background: white`                             | `bg-white dark:bg-gray-800` |
+| `border-radius: 12px`                           | `rounded-xl`                |
+| `padding: 20px`                                 | `p-6`                       |
+| `box-shadow`                                    | `shadow-sm hover:shadow-xl` |
+| `display: flex; justify-content: space-between` | `flex-between`              |
+| Custom badge                                    | `badge badge-primary`       |
 
 ### Step 3: Implement Refactored Component
 
@@ -145,28 +145,28 @@ interface StationCardProps {
 
 export function StationCard({ station }: StationCardProps) {
   return (
-    <div className={cn(
-      'card-hover',  // Includes all base card styles + hover effect
-      'print-avoid-break'  // Bonus: print optimization
-    )}>
+    <div
+      className={cn(
+        'card-hover', // Includes all base card styles + hover effect
+        'print-avoid-break' // Bonus: print optimization
+      )}
+    >
       {/* Header */}
-      <div className={cn(
-        patterns.flex.between,
-        'p-6 border-b border-gray-200 dark:border-gray-700'
-      )}>
+      <div
+        className={cn(
+          patterns.flex.between,
+          'border-b border-gray-200 p-6 dark:border-gray-700'
+        )}
+      >
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
           {station.name}
         </h3>
-        <span className="badge badge-primary">
-          {station.distance} km
-        </span>
+        <span className="badge badge-primary">{station.distance} km</span>
       </div>
 
       {/* Body */}
       <div className="p-6">
-        <p className="text-gray-600 dark:text-gray-400">
-          {station.address}
-        </p>
+        <p className="text-gray-600 dark:text-gray-400">{station.address}</p>
       </div>
     </div>
   );
@@ -177,17 +177,22 @@ export function StationCard({ station }: StationCardProps) {
 
 ```tsx
 // Enhanced version with animations, loading states, etc.
-export function StationCard({ station, isLoading }: StationCardProps & { isLoading?: boolean }) {
+export function StationCard({
+  station,
+  isLoading,
+}: StationCardProps & { isLoading?: boolean }) {
   if (isLoading) {
     return <LoadingCard />;
   }
 
   return (
-    <div className={cn(
-      'card-hover',
-      animations.safe('animate-fade-in'),
-      'print-avoid-break'
-    )}>
+    <div
+      className={cn(
+        'card-hover',
+        animations.safe('animate-fade-in'),
+        'print-avoid-break'
+      )}
+    >
       {/* ... rest of component */}
     </div>
   );
@@ -295,7 +300,9 @@ export function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        <a href="/" className="logo">Logo</a>
+        <a href="/" className="logo">
+          Logo
+        </a>
         <div className="nav-links">
           <a href="/about">About</a>
           <a href="/contact">Contact</a>
@@ -310,7 +317,7 @@ export function Navbar() {
 /* Navbar.css */
 .navbar {
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -352,25 +359,25 @@ import { patterns } from '@/styles/system/css-in-js';
 
 export function Navbar() {
   return (
-    <nav className="sticky top-0 z-sticky bg-white dark:bg-gray-900 shadow-sm print-hidden">
+    <nav className="print-hidden sticky top-0 z-sticky bg-white shadow-sm dark:bg-gray-900">
       <div className={patterns.container()}>
         <div className={patterns.flex.between + ' py-4'}>
           <a
             href="/"
-            className="text-2xl font-bold text-primary-600 dark:text-primary-400 focus-primary"
+            className="focus-primary text-2xl font-bold text-primary-600 dark:text-primary-400"
           >
             Logo
           </a>
           <div className="flex gap-8">
             <a
               href="/about"
-              className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors focus-primary"
+              className="focus-primary text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
             >
               About
             </a>
             <a
               href="/contact"
-              className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors focus-primary"
+              className="focus-primary text-gray-600 transition-colors hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
             >
               Contact
             </a>
@@ -381,6 +388,7 @@ export function Navbar() {
   );
 }
 ```
+
 </details>
 
 ### Example 2: Hero Section
@@ -444,31 +452,42 @@ import { patterns, animations } from '@/styles/system/css-in-js';
 
 export function Hero() {
   return (
-    <div className={patterns.flex.colCenter + ' min-h-screen px-4 py-20 bg-gradient-primary'}>
-      <h1 className={cn(
-        patterns.text.h1,
-        'text-white text-center text-balance mb-4',
-        animations.safe('animate-fade-in')
-      )}>
+    <div
+      className={
+        patterns.flex.colCenter + ' min-h-screen bg-gradient-primary px-4 py-20'
+      }
+    >
+      <h1
+        className={cn(
+          patterns.text.h1,
+          'mb-4 text-balance text-center text-white',
+          animations.safe('animate-fade-in')
+        )}
+      >
         Welcome
       </h1>
-      <p className={cn(
-        patterns.text.body,
-        'text-white/90 text-center mb-8',
-        animations.safe('animate-fade-in [animation-delay:200ms]')
-      )}>
+      <p
+        className={cn(
+          patterns.text.body,
+          'mb-8 text-center text-white/90',
+          animations.safe('animate-fade-in [animation-delay:200ms]')
+        )}
+      >
         Find the best prices
       </p>
-      <button className={cn(
-        'btn bg-white text-primary-600 hover:bg-gray-50 btn-lg',
-        animations.safe('animate-scale-in [animation-delay:400ms]')
-      )}>
+      <button
+        className={cn(
+          'btn-lg btn bg-white text-primary-600 hover:bg-gray-50',
+          animations.safe('animate-scale-in [animation-delay:400ms]')
+        )}
+      >
         Get Started
       </button>
     </div>
   );
 }
 ```
+
 </details>
 
 ### Example 3: Form Input
@@ -552,11 +571,7 @@ export function Input({ label, error, className, ...props }: InputProps) {
         </label>
       )}
       <input
-        className={cn(
-          'input',
-          error && 'input-error',
-          className
-        )}
+        className={cn('input', error && 'input-error', className)}
         aria-invalid={!!error}
         aria-describedby={error ? `${props.id}-error` : undefined}
         {...props}
@@ -564,7 +579,7 @@ export function Input({ label, error, className, ...props }: InputProps) {
       {error && (
         <p
           id={`${props.id}-error`}
-          className="text-sm text-error-600 dark:text-error-400"
+          className="dark:text-error-400 text-sm text-error-600"
         >
           {error}
         </p>
@@ -573,6 +588,7 @@ export function Input({ label, error, className, ...props }: InputProps) {
   );
 }
 ```
+
 </details>
 
 ## Testing Refactored Components
@@ -650,20 +666,24 @@ echo "Backup created at ${COMPONENT_PATH}.js.backup"
 ## Migration Timeline
 
 ### Phase 1: New Components (Week 1)
+
 - All new components use new styling system
 - Update component templates
 
 ### Phase 2: High-Priority Components (Week 2-3)
+
 - Refactor main navigation
 - Refactor station cards
 - Refactor search components
 
 ### Phase 3: Remaining Components (Week 4-6)
+
 - Batch refactor similar components
 - Update documentation
 - Remove old CSS files
 
 ### Phase 4: Cleanup (Week 7)
+
 - Remove unused CSS
 - Optimize bundle
 - Performance audit

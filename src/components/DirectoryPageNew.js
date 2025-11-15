@@ -3,7 +3,12 @@ import { useSearchParams, Link } from 'react-router-dom';
 
 import { MELBOURNE_REGIONS, getStationRegion } from '../config/regions';
 import dataSourceManager from '../services/DataSourceManager';
-import { trackPageView, trackSearch, trackFilter, trackStationInteraction } from '../utils/analytics';
+import {
+  trackPageView,
+  trackSearch,
+  trackFilter,
+  trackStationInteraction,
+} from '../utils/analytics';
 
 import AdvancedFilters from './AdvancedFilters';
 import Breadcrumbs from './Breadcrumbs';
@@ -26,12 +31,12 @@ const ITEMS_PER_PAGE = 12;
 
 // Brand image mapping
 const BRAND_IMAGES = {
-  'shell': '/images/fuel-nozzles.svg', // Using default image (shell-station.jpg not available)
-  'bp': '/images/fuel-nozzles.svg', // Using default image (bp-station.jpg not available)
+  shell: '/images/fuel-nozzles.svg', // Using default image (shell-station.jpg not available)
+  bp: '/images/fuel-nozzles.svg', // Using default image (bp-station.jpg not available)
   '7-eleven': '/images/stations/seven-eleven.jpg',
   'seven eleven': '/images/stations/seven-eleven.jpg',
-  'mobil': '/images/stations/seven-eleven.jpg',
-  'default': '/images/fuel-nozzles.svg'
+  mobil: '/images/stations/seven-eleven.jpg',
+  default: '/images/fuel-nozzles.svg',
 };
 
 // Get brand-specific CSS class
@@ -40,8 +45,10 @@ const getBrandClass = (brand) => {
   const brandLower = (typeof brand === 'string' ? brand : '').toLowerCase();
   if (brandLower.includes('shell')) return 'brand-shell';
   if (brandLower.includes('bp')) return 'brand-bp';
-  if (brandLower.includes('caltex') || brandLower.includes('ampol')) return 'brand-caltex';
-  if (brandLower.includes('7') || brandLower.includes('seven')) return 'brand-seven-eleven';
+  if (brandLower.includes('caltex') || brandLower.includes('ampol'))
+    return 'brand-caltex';
+  if (brandLower.includes('7') || brandLower.includes('seven'))
+    return 'brand-seven-eleven';
   if (brandLower.includes('mobil')) return 'brand-mobil';
   if (brandLower.includes('united')) return 'brand-united';
   return '';
@@ -58,13 +65,15 @@ const getBrandImage = (brand) => {
   // Check for partial matches
   if (brandLower.includes('shell')) return BRAND_IMAGES.shell;
   if (brandLower.includes('bp')) return BRAND_IMAGES.bp;
-  if (brandLower.includes('7') || brandLower.includes('seven')) return BRAND_IMAGES['7-eleven'];
+  if (brandLower.includes('7') || brandLower.includes('seven'))
+    return BRAND_IMAGES['7-eleven'];
   if (brandLower.includes('mobil')) return BRAND_IMAGES.mobil;
   if (brandLower.includes('coles')) return BRAND_IMAGES['coles express'];
   if (brandLower.includes('united')) return BRAND_IMAGES.united;
   if (brandLower.includes('liberty')) return BRAND_IMAGES.liberty;
   if (brandLower.includes('apco')) return BRAND_IMAGES.apco;
-  if (brandLower.includes('caltex') || brandLower.includes('ampol')) return BRAND_IMAGES.caltex;
+  if (brandLower.includes('caltex') || brandLower.includes('ampol'))
+    return BRAND_IMAGES.caltex;
 
   return BRAND_IMAGES.default;
 };
@@ -81,7 +90,9 @@ const DirectoryPageNew = () => {
   const [isMapFullScreen, setIsMapFullScreen] = useState(false);
 
   const regionParam = searchParams.get('region');
-  const selectedRegion = regionParam ? MELBOURNE_REGIONS[regionParam.toUpperCase()] : null;
+  const selectedRegion = regionParam
+    ? MELBOURNE_REGIONS[regionParam.toUpperCase()]
+    : null;
 
   // Debug logging
   useEffect(() => {
@@ -92,7 +103,11 @@ const DirectoryPageNew = () => {
 
   // Track page view on mount
   useEffect(() => {
-    trackPageView(selectedRegion ? `Directory - ${selectedRegion.name}` : 'Directory - All Stations');
+    trackPageView(
+      selectedRegion
+        ? `Directory - ${selectedRegion.name}`
+        : 'Directory - All Stations'
+    );
   }, [selectedRegion]);
 
   // Load all stations
@@ -114,9 +129,10 @@ const DirectoryPageNew = () => {
         console.log('✅ Data loaded successfully:', data.length, 'stations');
 
         // Normalize station data
-        const normalizedData = data.map(station => ({
+        const normalizedData = data.map((station) => ({
           ...station,
-          id: station.id || `station-${Math.random().toString(36).substr(2, 9)}`,
+          id:
+            station.id || `station-${Math.random().toString(36).substr(2, 9)}`,
           name: station.name || station['Station Name'] || 'Unknown Station',
           address: station.address || station.Address || '',
           city: station.city || station.City || '',
@@ -124,10 +140,12 @@ const DirectoryPageNew = () => {
           latitude: parseFloat(station.lat || station.Latitude || 0),
           longitude: parseFloat(station.lng || station.Longitude || 0),
           brand: station.brand || station.Brand || '',
-          fuelPrices: station.prices ? Object.entries(station.prices).map(([fuelType, price]) => ({
-            fuelType,
-            price: parseFloat(price || 0)
-          })) : []
+          fuelPrices: station.prices
+            ? Object.entries(station.prices).map(([fuelType, price]) => ({
+                fuelType,
+                price: parseFloat(price || 0),
+              }))
+            : [],
         }));
 
         setStations(normalizedData);
@@ -147,104 +165,127 @@ const DirectoryPageNew = () => {
   }, []);
 
   // Apply filters - Optimized with correct dependencies
-  const applyFilters = useCallback((filters) => {
-    let filtered = [...stations];
+  const applyFilters = useCallback(
+    (filters) => {
+      let filtered = [...stations];
 
-    // Filter by region
-    if (selectedRegion) {
-      filtered = filtered.filter(station => {
-        const stationRegion = getStationRegion(
-          station.latitude,
-          station.longitude,
-          station.city
+      // Filter by region
+      if (selectedRegion) {
+        filtered = filtered.filter((station) => {
+          const stationRegion = getStationRegion(
+            station.latitude,
+            station.longitude,
+            station.city
+          );
+          return stationRegion.id === selectedRegion.id;
+        });
+      }
+
+      // Search filter
+      if (filters.search) {
+        const search = filters.search.toLowerCase();
+        filtered = filtered.filter(
+          (station) =>
+            station.name.toLowerCase().includes(search) ||
+            station.city.toLowerCase().includes(search) ||
+            station.address.toLowerCase().includes(search)
         );
-        return stationRegion.id === selectedRegion.id;
-      });
-    }
+        trackSearch(filters.search, filtered.length);
+      }
 
-    // Search filter
-    if (filters.search) {
-      const search = filters.search.toLowerCase();
-      filtered = filtered.filter(station =>
-        station.name.toLowerCase().includes(search) ||
-        station.city.toLowerCase().includes(search) ||
-        station.address.toLowerCase().includes(search)
-      );
-      trackSearch(filters.search, filtered.length);
-    }
-
-    // Fuel type filter
-    if (filters.fuelType && filters.fuelType !== 'all') {
-      filtered = filtered.filter(station =>
-        station.fuelPrices?.some(fp => fp.fuelType.toLowerCase() === filters.fuelType.toLowerCase())
-      );
-      trackFilter('fuel_type', filters.fuelType);
-    }
-
-    // Brand filter
-    if (filters.brand && filters.brand !== 'all') {
-      filtered = filtered.filter(station =>
-        station.brand.toLowerCase().includes(filters.brand.toLowerCase())
-      );
-      trackFilter('brand', filters.brand);
-    }
-
-    // Region filter (additional to URL param)
-    if (filters.region && filters.region !== 'all') {
-      filtered = filtered.filter(station => {
-        const stationRegion = getStationRegion(
-          station.latitude,
-          station.longitude,
-          station.city
+      // Fuel type filter
+      if (filters.fuelType && filters.fuelType !== 'all') {
+        filtered = filtered.filter((station) =>
+          station.fuelPrices?.some(
+            (fp) => fp.fuelType.toLowerCase() === filters.fuelType.toLowerCase()
+          )
         );
-        return stationRegion.name === filters.region;
-      });
-      trackFilter('region', filters.region);
-    }
+        trackFilter('fuel_type', filters.fuelType);
+      }
 
-    // Price range filter
-    if (filters.priceRange?.min || filters.priceRange?.max) {
-      filtered = filtered.filter(station => {
-        if (!station.fuelPrices || station.fuelPrices.length === 0) return false;
+      // Brand filter
+      if (filters.brand && filters.brand !== 'all') {
+        filtered = filtered.filter((station) =>
+          station.brand.toLowerCase().includes(filters.brand.toLowerCase())
+        );
+        trackFilter('brand', filters.brand);
+      }
 
-        const avgPrice = station.fuelPrices.reduce((sum, fp) => sum + fp.price, 0) / station.fuelPrices.length;
-        const min = parseFloat(filters.priceRange.min) || 0;
-        const max = parseFloat(filters.priceRange.max) || Infinity;
+      // Region filter (additional to URL param)
+      if (filters.region && filters.region !== 'all') {
+        filtered = filtered.filter((station) => {
+          const stationRegion = getStationRegion(
+            station.latitude,
+            station.longitude,
+            station.city
+          );
+          return stationRegion.name === filters.region;
+        });
+        trackFilter('region', filters.region);
+      }
 
-        return avgPrice >= min && avgPrice <= max;
-      });
-      trackFilter('price_range', `${filters.priceRange.min}-${filters.priceRange.max}`);
-    }
+      // Price range filter
+      if (filters.priceRange?.min || filters.priceRange?.max) {
+        filtered = filtered.filter((station) => {
+          if (!station.fuelPrices || station.fuelPrices.length === 0)
+            return false;
 
-    // Sort stations
-    if (filters.sortBy) {
-      filtered.sort((a, b) => {
-        switch (filters.sortBy) {
-          case 'name':
-            return a.name.localeCompare(b.name);
-          case 'price-low':
-            const avgPriceA = a.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (a.fuelPrices?.length || 1) || Infinity;
-            const avgPriceB = b.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (b.fuelPrices?.length || 1) || Infinity;
-            return avgPriceA - avgPriceB;
-          case 'price-high':
-            const avgPriceA2 = a.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (a.fuelPrices?.length || 1) || 0;
-            const avgPriceB2 = b.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (b.fuelPrices?.length || 1) || 0;
-            return avgPriceB2 - avgPriceA2;
-          default:
-            return 0;
-        }
-      });
-    }
+          const avgPrice =
+            station.fuelPrices.reduce((sum, fp) => sum + fp.price, 0) /
+            station.fuelPrices.length;
+          const min = parseFloat(filters.priceRange.min) || 0;
+          const max = parseFloat(filters.priceRange.max) || Infinity;
 
-    setFilteredStations(filtered);
-    setCurrentPage(1);
-  }, [stations, selectedRegion]);
+          return avgPrice >= min && avgPrice <= max;
+        });
+        trackFilter(
+          'price_range',
+          `${filters.priceRange.min}-${filters.priceRange.max}`
+        );
+      }
+
+      // Sort stations
+      if (filters.sortBy) {
+        filtered.sort((a, b) => {
+          switch (filters.sortBy) {
+            case 'name':
+              return a.name.localeCompare(b.name);
+            case 'price-low':
+              const avgPriceA =
+                a.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) /
+                  (a.fuelPrices?.length || 1) || Infinity;
+              const avgPriceB =
+                b.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) /
+                  (b.fuelPrices?.length || 1) || Infinity;
+              return avgPriceA - avgPriceB;
+            case 'price-high':
+              const avgPriceA2 =
+                a.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) /
+                  (a.fuelPrices?.length || 1) || 0;
+              const avgPriceB2 =
+                b.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) /
+                  (b.fuelPrices?.length || 1) || 0;
+              return avgPriceB2 - avgPriceA2;
+            default:
+              return 0;
+          }
+        });
+      }
+
+      setFilteredStations(filtered);
+      setCurrentPage(1);
+    },
+    [stations, selectedRegion]
+  );
 
   // Handle filter changes
-  const handleFilterChange = useCallback((filters) => {
-    setActiveFilters(filters);
-    applyFilters(filters);
-  }, [applyFilters]);
+  const handleFilterChange = useCallback(
+    (filters) => {
+      setActiveFilters(filters);
+      applyFilters(filters);
+    },
+    [applyFilters]
+  );
 
   // Initial filter application
   useEffect(() => {
@@ -292,7 +333,9 @@ const DirectoryPageNew = () => {
           </div>
           <div className="loading-message">
             <h3>Loading Station Directory...</h3>
-            <p className="loading-tip">Finding the best fuel prices for you...</p>
+            <p className="loading-tip">
+              Finding the best fuel prices for you...
+            </p>
           </div>
         </div>
       </div>
@@ -306,15 +349,27 @@ const DirectoryPageNew = () => {
         description={pageDescription}
         keywords={`petrol prices ${selectedRegion?.name || 'melbourne'}, fuel prices ${selectedRegion?.name || 'melbourne'}, cheapest petrol, station directory`}
         canonical={`/directory${regionParam ? `?region=${regionParam}` : ''}`}
-        structuredData={generateFuelPriceListingData(filteredStations.slice(0, 10))}
+        structuredData={generateFuelPriceListingData(
+          filteredStations.slice(0, 10)
+        )}
       />
 
       <div className="directory-page">
-        <Breadcrumbs customCrumbs={selectedRegion ? [
-          { label: 'Home', path: '/', icon: '🏠' },
-          { label: 'Station Directory', path: '/directory' },
-          { label: selectedRegion.name, path: `/directory?region=${regionParam}`, isActive: true }
-        ] : undefined} />
+        <Breadcrumbs
+          customCrumbs={
+            selectedRegion
+              ? [
+                  { label: 'Home', path: '/', icon: '🏠' },
+                  { label: 'Station Directory', path: '/directory' },
+                  {
+                    label: selectedRegion.name,
+                    path: `/directory?region=${regionParam}`,
+                    isActive: true,
+                  },
+                ]
+              : undefined
+          }
+        />
 
         {/* Header */}
         <div className="directory-header">
@@ -328,7 +383,9 @@ const DirectoryPageNew = () => {
                   ← Back to Regions
                 </Link>
                 <h1>
-                  {selectedRegion ? selectedRegion.name : 'All Melbourne Petrol Stations'}
+                  {selectedRegion
+                    ? selectedRegion.name
+                    : 'All Melbourne Petrol Stations'}
                 </h1>
                 {selectedRegion && (
                   <p className="region-description">
@@ -340,7 +397,10 @@ const DirectoryPageNew = () => {
                     <strong>{filteredStations.length}</strong> stations found
                   </span>
                   {selectedRegion && (
-                    <span className="region-badge" style={{ backgroundColor: selectedRegion.color }}>
+                    <span
+                      className="region-badge"
+                      style={{ backgroundColor: selectedRegion.color }}
+                    >
                       {selectedRegion.name}
                     </span>
                   )}
@@ -363,7 +423,7 @@ const DirectoryPageNew = () => {
 
         {/* View Toggle */}
         <div className="container">
-          <div className="flex justify-between items-center mb-6">
+          <div className="mb-6 flex items-center justify-between">
             <ViewToggle
               currentView={viewMode}
               onViewChange={setViewMode}
@@ -374,8 +434,10 @@ const DirectoryPageNew = () => {
             {viewMode === 'map' && (
               <button
                 onClick={() => setIsMapFullScreen(!isMapFullScreen)}
-                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium"
-                aria-label={isMapFullScreen ? 'Exit fullscreen' : 'Fullscreen map'}
+                className="rounded-lg bg-primary-600 px-4 py-2 font-medium text-white transition-colors hover:bg-primary-700"
+                aria-label={
+                  isMapFullScreen ? 'Exit fullscreen' : 'Fullscreen map'
+                }
               >
                 {isMapFullScreen ? '⊗ Exit Fullscreen' : '⛶ Fullscreen'}
               </button>
@@ -394,18 +456,18 @@ const DirectoryPageNew = () => {
                 return (
                   <MotionDiv
                     key={station.id}
-                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                    className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg dark:bg-gray-800"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: Math.min(index * 0.05, 0.3) }}
                   >
                     <div className="flex flex-col sm:flex-row">
                       {/* Station Image */}
-                      <div className="sm:w-48 h-32 sm:h-auto">
+                      <div className="h-32 sm:h-auto sm:w-48">
                         <img
                           src={brandImage}
                           alt={`${station.brand || 'Petrol'} station`}
-                          className="w-full h-full object-cover"
+                          className="h-full w-full object-cover"
                           loading="lazy"
                           onError={(e) => {
                             e.target.src = '/images/fuel-nozzles.svg';
@@ -415,46 +477,58 @@ const DirectoryPageNew = () => {
 
                       {/* Station Content */}
                       <div className="flex-1 p-4">
-                        <div className="flex justify-between items-start mb-2">
+                        <div className="mb-2 flex items-start justify-between">
                           <div>
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                               {station.name}
                             </h3>
                             {station.brand && (
-                              <span className={`inline-block px-2 py-1 text-xs font-semibold rounded mt-1 ${brandClass}`}>
+                              <span
+                                className={`mt-1 inline-block rounded px-2 py-1 text-xs font-semibold ${brandClass}`}
+                              >
                                 {station.brand}
                               </span>
                             )}
                           </div>
                         </div>
 
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                        <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">
                           📍 {station.address}
-                          {station.city && <>, {station.city} {station.postalCode}</>}
+                          {station.city && (
+                            <>
+                              , {station.city} {station.postalCode}
+                            </>
+                          )}
                         </p>
 
-                        {station.fuelPrices && station.fuelPrices.length > 0 && (
-                          <div className="flex flex-wrap gap-3 mb-3">
-                            {station.fuelPrices
-                              .filter(fp => fp.price > 0)
-                              .slice(0, 4)
-                              .map((fp, i) => (
-                                <div key={i} className="flex items-center gap-2">
-                                  <span className="text-xs text-gray-600 dark:text-gray-400">{fp.fuelType}:</span>
-                                  <span className="text-sm font-bold text-green-600 dark:text-green-400">
-                                    ${fp.price.toFixed(2)}
-                                  </span>
-                                </div>
-                              ))}
-                          </div>
-                        )}
+                        {station.fuelPrices &&
+                          station.fuelPrices.length > 0 && (
+                            <div className="mb-3 flex flex-wrap gap-3">
+                              {station.fuelPrices
+                                .filter((fp) => fp.price > 0)
+                                .slice(0, 4)
+                                .map((fp, i) => (
+                                  <div
+                                    key={i}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <span className="text-xs text-gray-600 dark:text-gray-400">
+                                      {fp.fuelType}:
+                                    </span>
+                                    <span className="text-green-600 dark:text-green-400 text-sm font-bold">
+                                      ${fp.price.toFixed(2)}
+                                    </span>
+                                  </div>
+                                ))}
+                            </div>
+                          )}
 
                         {station.latitude && station.longitude && (
                           <a
                             href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                            className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
                             onClick={() => handleDirectionsClick(station)}
                             aria-label={`Get directions to ${station.name}`}
                           >
@@ -512,14 +586,14 @@ const DirectoryPageNew = () => {
                   <div className="no-results-icon">🔍</div>
                   <h3>No stations found</h3>
                   <p>Try adjusting your filters or search criteria</p>
-                  <Link to="/" className="btn btn-primary">
+                  <Link to="/" className="btn-primary btn">
                     ← Explore All Regions
                   </Link>
                 </div>
               ) : (
                 <>
                   {/* Responsive Grid with Fluid Columns */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
+                  <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {currentStations.map((station, index) => {
                       const brandClass = getBrandClass(station.brand);
                       const brandImage = getBrandImage(station.brand);
@@ -527,7 +601,7 @@ const DirectoryPageNew = () => {
                       return (
                         <MotionDiv
                           key={station.id}
-                          className="station-card h-full flex flex-col"
+                          className="station-card flex h-full flex-col"
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: Math.min(index * 0.05, 0.3) }}
@@ -554,15 +628,20 @@ const DirectoryPageNew = () => {
                           </div>
 
                           {/* Station Content */}
-                          <div className="station-content flex-1 flex flex-col">
+                          <div className="station-content flex flex-1 flex-col">
                             <div className="station-header">
                               <h3 className="station-name">{station.name}</h3>
                             </div>
 
-                            <div className="station-details flex-1 flex flex-col justify-between">
+                            <div className="station-details flex flex-1 flex-col justify-between">
                               <div>
                                 <div className="detail-item">
-                                  <span className="detail-icon" aria-hidden="true">📍</span>
+                                  <span
+                                    className="detail-icon"
+                                    aria-hidden="true"
+                                  >
+                                    📍
+                                  </span>
                                   <span className="detail-text">
                                     {station.address}
                                     {station.city && (
@@ -574,22 +653,27 @@ const DirectoryPageNew = () => {
                                   </span>
                                 </div>
 
-                                {station.fuelPrices && station.fuelPrices.length > 0 && (
-                                  <div className="station-prices mt-4">
-                                    <strong>💰 Current Prices</strong>
-                                    <div className="prices-list">
-                                      {station.fuelPrices
-                                        .filter(fp => fp.price > 0)
-                                        .slice(0, 3)
-                                        .map((fp, i) => (
-                                          <div key={i} className="price-item">
-                                            <span className="fuel-type">{fp.fuelType}</span>
-                                            <span className="fuel-price">${fp.price.toFixed(2)}</span>
-                                          </div>
-                                        ))}
+                                {station.fuelPrices &&
+                                  station.fuelPrices.length > 0 && (
+                                    <div className="station-prices mt-4">
+                                      <strong>💰 Current Prices</strong>
+                                      <div className="prices-list">
+                                        {station.fuelPrices
+                                          .filter((fp) => fp.price > 0)
+                                          .slice(0, 3)
+                                          .map((fp, i) => (
+                                            <div key={i} className="price-item">
+                                              <span className="fuel-type">
+                                                {fp.fuelType}
+                                              </span>
+                                              <span className="fuel-price">
+                                                ${fp.price.toFixed(2)}
+                                              </span>
+                                            </div>
+                                          ))}
+                                      </div>
                                     </div>
-                                  </div>
-                                )}
+                                  )}
                               </div>
 
                               {station.latitude && station.longitude && (
@@ -597,7 +681,7 @@ const DirectoryPageNew = () => {
                                   href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="btn btn-primary btn-sm directions-btn mt-4"
+                                  className="btn-primary btn-sm directions-btn btn mt-4"
                                   onClick={() => handleDirectionsClick(station)}
                                   aria-label={`Get directions to ${station.name}`}
                                 >

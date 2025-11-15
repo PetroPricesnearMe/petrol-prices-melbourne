@@ -5,6 +5,7 @@
 ## ✅ Issues Fixed
 
 ### 1. **node_modules in Repository**
+
 - **Problem**: `node_modules` directory was committed to git, causing conflicts
 - **Fix**: Updated `.gitignore` to exclude `node_modules`
 - **Action Required**: Run the following commands:
@@ -23,21 +24,25 @@ git commit -m "chore: remove node_modules and build artifacts from repo"
 ```
 
 ### 2. **Duplicate Next.js Config Files**
+
 - **Problem**: Multiple config files (`next.config.js`, `next.config.ts`, `next.config.optimized.js`)
 - **Fix**: Removed duplicates, keeping only `next.config.ts`
 - **Status**: ✅ Completed
 
 ### 3. **Duplicate App Directories**
+
 - **Problem**: Both `app/` and `src/app/` directories existed
 - **Fix**: Moved `robots.ts` and `sitemap.ts` to `src/app/`, removed empty `app/` directory
 - **Status**: ✅ Completed
 
 ### 4. **TypeScript Import Issues**
+
 - **Problem**: Missing React imports in TypeScript files
 - **Fix**: Added proper React imports to all type files
 - **Status**: ✅ Completed
 
 ### 5. **Updated .gitignore**
+
 - Added missing entries:
   - `/package-lock.json` (optional, but prevents lock file conflicts)
   - `/.jest-cache/`
@@ -48,6 +53,7 @@ git commit -m "chore: remove node_modules and build artifacts from repo"
 ## 📋 Pre-Deployment Checklist
 
 ### Build Configuration
+
 - [x] `package.json` has `"build": "next build"` script
 - [x] Next.js 15 installed in dependencies
 - [x] TypeScript 5.3+ configured
@@ -55,6 +61,7 @@ git commit -m "chore: remove node_modules and build artifacts from repo"
 - [x] `src/app/` directory structure (App Router)
 
 ### Environment Variables
+
 - [ ] Create `.env.production` with required variables:
   ```env
   NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
@@ -66,6 +73,7 @@ git commit -m "chore: remove node_modules and build artifacts from repo"
   ```
 
 ### Vercel Configuration
+
 - [x] `vercel.json` exists with proper settings
 - [x] Framework detected as Next.js
 - [x] Build command: `next build`
@@ -119,10 +127,12 @@ git push origin main
 ### Step 4: Deploy to Vercel
 
 #### Option A: Automatic Deployment
+
 - Vercel will automatically deploy when you push to `main` branch
 - Monitor deployment at https://vercel.com/dashboard
 
 #### Option B: Manual Deployment via CLI
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -142,15 +152,15 @@ vercel --prod
 
 Add these in Vercel Dashboard → Your Project → Settings → Environment Variables:
 
-| Variable | Value | Environment |
-|----------|-------|-------------|
-| `NEXT_PUBLIC_APP_URL` | `https://your-domain.vercel.app` | Production, Preview |
-| `BASEROW_API_TOKEN` | Your Baserow API token | Production, Preview |
-| `BASEROW_PETROL_STATIONS_TABLE_ID` | `623329` | Production, Preview |
-| `BASEROW_FUEL_PRICES_TABLE_ID` | `623330` | Production, Preview |
-| `NEXTAUTH_SECRET` | Generate with `openssl rand -base64 32` | Production |
-| `NEXTAUTH_URL` | `https://your-domain.vercel.app` | Production |
-| `NODE_ENV` | `production` | Production |
+| Variable                           | Value                                   | Environment         |
+| ---------------------------------- | --------------------------------------- | ------------------- |
+| `NEXT_PUBLIC_APP_URL`              | `https://your-domain.vercel.app`        | Production, Preview |
+| `BASEROW_API_TOKEN`                | Your Baserow API token                  | Production, Preview |
+| `BASEROW_PETROL_STATIONS_TABLE_ID` | `623329`                                | Production, Preview |
+| `BASEROW_FUEL_PRICES_TABLE_ID`     | `623330`                                | Production, Preview |
+| `NEXTAUTH_SECRET`                  | Generate with `openssl rand -base64 32` | Production          |
+| `NEXTAUTH_URL`                     | `https://your-domain.vercel.app`        | Production          |
+| `NODE_ENV`                         | `production`                            | Production          |
 
 ### Build & Development Settings
 
@@ -164,6 +174,7 @@ Add these in Vercel Dashboard → Your Project → Settings → Environment Vari
 ```
 
 ### Node.js Version
+
 - Set to: `20.x` (matches your `package.json` engines)
 
 ---
@@ -194,6 +205,7 @@ git push
 ### Build Succeeds but Runtime Errors
 
 Check Vercel logs:
+
 1. Go to Vercel Dashboard
 2. Select your project
 3. Click on the deployment
@@ -224,6 +236,7 @@ npm run build
 ## 📊 Performance Optimization
 
 ### Enable Analytics
+
 ```bash
 npm install @vercel/analytics @vercel/speed-insights
 ```
@@ -231,11 +244,13 @@ npm install @vercel/analytics @vercel/speed-insights
 Already installed ✅
 
 ### Image Optimization
+
 - Uses Next.js Image component
 - AVIF and WebP formats enabled
 - Configured in `next.config.ts`
 
 ### Bundle Analysis
+
 ```bash
 # Analyze bundle size
 npm run analyze
@@ -257,6 +272,7 @@ npm run analyze
 ## 📈 Post-Deployment Verification
 
 ### 1. Functionality Check
+
 - [ ] Homepage loads
 - [ ] Navigation works
 - [ ] Search functionality operational
@@ -264,12 +280,14 @@ npm run analyze
 - [ ] API routes responding
 
 ### 2. Performance Check
+
 - [ ] Lighthouse score > 90
 - [ ] Core Web Vitals passing
 - [ ] Images loading optimized
 - [ ] No console errors
 
 ### 3. SEO Check
+
 - [ ] Meta tags present
 - [ ] Sitemap accessible at `/sitemap.xml`
 - [ ] Robots.txt accessible at `/robots.txt`
@@ -277,6 +295,7 @@ npm run analyze
 - [ ] Structured data present
 
 ### 4. Accessibility Check
+
 - [ ] WCAG 2.1 AA compliant
 - [ ] Keyboard navigation working
 - [ ] Screen reader accessible

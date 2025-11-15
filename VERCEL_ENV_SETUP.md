@@ -37,6 +37,7 @@ NEXTAUTH_SECRET=<GENERATE_SECURE_SECRET>
 ```
 
 **Generate secret:**
+
 ```bash
 # PowerShell:
 -join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | ForEach-Object {[char]$_})
@@ -60,6 +61,7 @@ NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_key_here
 **Get keys from:** https://console.cloud.google.com/apis/credentials
 
 **Enable these APIs:**
+
 - Maps JavaScript API
 - Places API
 - Geocoding API
@@ -110,12 +112,14 @@ After adding all variables:
 ## 🔒 Security Best Practices
 
 ### ✅ DO:
+
 - Use strong, unique secrets for each environment
 - Rotate API tokens regularly
 - Use different tokens for production vs preview
 - Keep tokens in Vercel dashboard only (never commit to git)
 
 ### ❌ DON'T:
+
 - Commit `.env.local` to git (already in .gitignore ✅)
 - Share API tokens publicly
 - Use development tokens in production
@@ -154,6 +158,7 @@ vercel logs --follow
 ### Issue: "Baserow authentication failed"
 
 **Solution:**
+
 1. Verify token is exactly: `uUqdwRkL9KJXdnM3KoVz8hZR`
 2. No extra spaces or quotes
 3. Check it's set for Production environment
@@ -162,6 +167,7 @@ vercel logs --follow
 ### Issue: "Environment variable not found"
 
 **Solution:**
+
 1. Ensure variable name matches exactly (case-sensitive)
 2. Check it's assigned to correct environment
 3. Redeploy to apply changes
@@ -169,6 +175,7 @@ vercel logs --follow
 ### Issue: "Map not loading"
 
 **Solution:**
+
 1. Add Google API keys
 2. Enable required APIs in Google Cloud Console
 3. Check browser console for specific errors
@@ -177,12 +184,12 @@ vercel logs --follow
 
 ## 📊 Current Configuration Status
 
-| Variable | Local (.env.local) | Vercel Dashboard | Status |
-|----------|-------------------|------------------|--------|
-| `BASEROW_API_TOKEN` | ✅ Updated | ⚠️ Need to add | **Action Required** |
-| `NEXTAUTH_SECRET` | ⚠️ Dev value | ⚠️ Need to add | **Action Required** |
-| `NEXTAUTH_URL` | ✅ Set | ⚠️ Need to add | **Action Required** |
-| `NEXT_PUBLIC_GOOGLE_*` | ❌ Missing | ❌ Missing | **Optional (for maps)** |
+| Variable               | Local (.env.local) | Vercel Dashboard | Status                  |
+| ---------------------- | ------------------ | ---------------- | ----------------------- |
+| `BASEROW_API_TOKEN`    | ✅ Updated         | ⚠️ Need to add   | **Action Required**     |
+| `NEXTAUTH_SECRET`      | ⚠️ Dev value       | ⚠️ Need to add   | **Action Required**     |
+| `NEXTAUTH_URL`         | ✅ Set             | ⚠️ Need to add   | **Action Required**     |
+| `NEXT_PUBLIC_GOOGLE_*` | ❌ Missing         | ❌ Missing       | **Optional (for maps)** |
 
 ---
 
@@ -236,10 +243,12 @@ vercel logs --follow
 ## 💡 Summary
 
 **Token Updated:**
+
 - ✅ Added to `.env.local`: `uUqdwRkL9KJXdnM3KoVz8hZR`
 - ⚠️ **Action needed:** Add to Vercel dashboard manually
 
 **Next Steps:**
+
 1. Go to Vercel environment variables page
 2. Add `BASEROW_API_TOKEN` = `uUqdwRkL9KJXdnM3KoVz8hZR`
 3. Add other required variables
@@ -250,4 +259,3 @@ vercel logs --follow
 ---
 
 **Created:** `VERCEL_ENV_SETUP.md` - Complete setup guide
-

@@ -30,8 +30,9 @@ console.log('2. Call mcp_Baserow_MCP_create_row_table_623329 for each record');
 console.log('3. Or use the Baserow UI to bulk import the JSON file');
 
 // Create a CSV format for Baserow UI import
-const csvHeader = 'Station Name,Address,City,Postal Code,Region,Country,Latitude,Longitude,Location Details,Category';
-const csvRows = allData.map(row => {
+const csvHeader =
+  'Station Name,Address,City,Postal Code,Region,Country,Latitude,Longitude,Location Details,Category';
+const csvRows = allData.map((row) => {
   // Round coordinates to 4 decimal places
   const lat = row.Latitude ? parseFloat(row.Latitude.toFixed(4)) : '';
   const lng = row.Longitude ? parseFloat(row.Longitude.toFixed(4)) : '';
@@ -46,7 +47,7 @@ const csvRows = allData.map(row => {
     lat,
     lng,
     `"${row['Location Details']}"`,
-    row.Category
+    row.Category,
   ].join(',');
 });
 
@@ -62,4 +63,3 @@ console.log('2. Click the table dropdown menu');
 console.log('3. Select "Import from file"');
 console.log('4. Upload the baserow-import.csv file');
 console.log('5. Map the columns to match your table fields');
-

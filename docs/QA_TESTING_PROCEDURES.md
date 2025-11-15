@@ -32,15 +32,15 @@
 
 ### Test Types
 
-| Type | Purpose | Tools | Frequency |
-|------|---------|-------|-----------|
-| **Unit** | Test individual functions/components | Jest, RTL | Every commit |
-| **Integration** | Test component interactions | Jest, RTL | Every PR |
-| **E2E** | Test user flows | Playwright | Before release |
-| **Visual** | Test UI appearance | Storybook, Chromatic | Weekly |
-| **Performance** | Test speed and efficiency | Lighthouse, Web Vitals | Every release |
-| **Accessibility** | Test WCAG compliance | jest-axe, Pa11y | Every PR |
-| **Security** | Test vulnerabilities | npm audit, Snyk | Daily (automated) |
+| Type              | Purpose                              | Tools                  | Frequency         |
+| ----------------- | ------------------------------------ | ---------------------- | ----------------- |
+| **Unit**          | Test individual functions/components | Jest, RTL              | Every commit      |
+| **Integration**   | Test component interactions          | Jest, RTL              | Every PR          |
+| **E2E**           | Test user flows                      | Playwright             | Before release    |
+| **Visual**        | Test UI appearance                   | Storybook, Chromatic   | Weekly            |
+| **Performance**   | Test speed and efficiency            | Lighthouse, Web Vitals | Every release     |
+| **Accessibility** | Test WCAG compliance                 | jest-axe, Pa11y        | Every PR          |
+| **Security**      | Test vulnerabilities                 | npm audit, Snyk        | Daily (automated) |
 
 ---
 
@@ -48,20 +48,21 @@
 
 ### Supported Browsers
 
-| Browser | Minimum Version | Testing Priority |
-|---------|----------------|------------------|
-| Chrome | Latest - 2 | High |
-| Firefox | Latest - 2 | High |
-| Safari | Latest - 2 | High |
-| Edge | Latest - 2 | High |
-| Chrome Mobile | Latest - 1 | High |
-| Safari iOS | Latest - 2 | High |
-| Samsung Internet | Latest | Medium |
-| Opera | Latest | Low |
+| Browser          | Minimum Version | Testing Priority |
+| ---------------- | --------------- | ---------------- |
+| Chrome           | Latest - 2      | High             |
+| Firefox          | Latest - 2      | High             |
+| Safari           | Latest - 2      | High             |
+| Edge             | Latest - 2      | High             |
+| Chrome Mobile    | Latest - 1      | High             |
+| Safari iOS       | Latest - 2      | High             |
+| Samsung Internet | Latest          | Medium           |
+| Opera            | Latest          | Low              |
 
 ### Browser Testing Checklist
 
 #### Desktop Browsers
+
 - [ ] **Chrome (Latest)**
   - [ ] All pages load correctly
   - [ ] JavaScript functionality works
@@ -88,6 +89,7 @@
   - [ ] Performance acceptable
 
 #### Mobile Browsers
+
 - [ ] **Chrome Mobile**
   - [ ] Touch interactions responsive
   - [ ] Viewport sized correctly
@@ -115,6 +117,7 @@ npm run test:e2e -- --project=webkit
 ### Manual Testing Workflow
 
 1. **Local Testing**
+
    ```bash
    npm run dev
    # Test at http://localhost:3000
@@ -151,19 +154,20 @@ xl: 1280px  /* Desktop */
 
 ### Device Testing Matrix
 
-| Device | Screen Size | Browser | Priority |
-|--------|-------------|---------|----------|
-| iPhone 14 Pro | 393×852 | Safari | High |
-| iPhone SE | 375×667 | Safari | High |
-| iPad Pro | 1024×1366 | Safari | High |
-| Samsung Galaxy S23 | 360×800 | Chrome | High |
-| Pixel 7 | 412×915 | Chrome | High |
-| iPad Air | 820×1180 | Safari | Medium |
-| Surface Pro | 912×1368 | Edge | Medium |
+| Device             | Screen Size | Browser | Priority |
+| ------------------ | ----------- | ------- | -------- |
+| iPhone 14 Pro      | 393×852     | Safari  | High     |
+| iPhone SE          | 375×667     | Safari  | High     |
+| iPad Pro           | 1024×1366   | Safari  | High     |
+| Samsung Galaxy S23 | 360×800     | Chrome  | High     |
+| Pixel 7            | 412×915     | Chrome  | High     |
+| iPad Air           | 820×1180    | Safari  | Medium   |
+| Surface Pro        | 912×1368    | Edge    | Medium   |
 
 ### Responsive Testing Checklist
 
 #### Layout
+
 - [ ] **Mobile (320px - 640px)**
   - [ ] Single column layout
   - [ ] Navigation collapses to hamburger
@@ -188,6 +192,7 @@ xl: 1280px  /* Desktop */
   - [ ] Optimal reading line length
 
 #### Touch Interactions
+
 - [ ] Tap targets are 44×44px minimum
 - [ ] Gestures work (swipe, pinch, etc.)
 - [ ] No hover-dependent functionality
@@ -195,6 +200,7 @@ xl: 1280px  /* Desktop */
 - [ ] Buttons easy to press
 
 #### Orientation
+
 - [ ] Portrait mode works
 - [ ] Landscape mode works
 - [ ] Orientation change handled smoothly
@@ -218,19 +224,20 @@ npm run test:responsive
 
 ### Performance Budget
 
-| Metric | Target | Maximum |
-|--------|--------|---------|
-| First Contentful Paint (FCP) | < 1.8s | < 2.5s |
-| Largest Contentful Paint (LCP) | < 2.5s | < 4.0s |
-| First Input Delay (FID) | < 100ms | < 300ms |
-| Cumulative Layout Shift (CLS) | < 0.1 | < 0.25 |
-| Time to Interactive (TTI) | < 3.8s | < 7.3s |
-| Total Blocking Time (TBT) | < 200ms | < 600ms |
-| Speed Index | < 3.4s | < 5.8s |
+| Metric                         | Target  | Maximum |
+| ------------------------------ | ------- | ------- |
+| First Contentful Paint (FCP)   | < 1.8s  | < 2.5s  |
+| Largest Contentful Paint (LCP) | < 2.5s  | < 4.0s  |
+| First Input Delay (FID)        | < 100ms | < 300ms |
+| Cumulative Layout Shift (CLS)  | < 0.1   | < 0.25  |
+| Time to Interactive (TTI)      | < 3.8s  | < 7.3s  |
+| Total Blocking Time (TBT)      | < 200ms | < 600ms |
+| Speed Index                    | < 3.4s  | < 5.8s  |
 
 ### Performance Testing Checklist
 
 #### Core Web Vitals
+
 - [ ] **LCP (Largest Contentful Paint)**
   - [ ] Hero images optimized
   - [ ] Critical CSS inlined
@@ -250,6 +257,7 @@ npm run test:responsive
   - [ ] Target: < 0.1
 
 #### Network Performance
+
 - [ ] Bundle size < 200KB (gzipped)
 - [ ] Images lazy loaded
 - [ ] Code split by route
@@ -260,6 +268,7 @@ npm run test:responsive
 - [ ] HTTP/2 enabled
 
 #### Rendering Performance
+
 - [ ] No unnecessary re-renders
 - [ ] Virtual scrolling for long lists
 - [ ] Debounced scroll/resize handlers
@@ -307,6 +316,7 @@ npm run analyze:bundle
 ### SEO Checklist
 
 #### Technical SEO
+
 - [ ] **Meta Tags**
   - [ ] Title tags (50-60 chars)
   - [ ] Meta descriptions (150-160 chars)
@@ -326,6 +336,7 @@ npm run analyze:bundle
   - [ ] Submitted to search consoles
 
 #### Content SEO
+
 - [ ] Heading hierarchy (H1 → H6)
 - [ ] Keyword optimization
 - [ ] Internal linking
@@ -334,6 +345,7 @@ npm run analyze:bundle
 - [ ] Mobile-friendly content
 
 #### Performance SEO
+
 - [ ] Page speed optimized
 - [ ] Mobile-friendly (Google test)
 - [ ] Core Web Vitals passing
@@ -379,6 +391,7 @@ curl -s https://your-site.com | grep -i "<meta"
 ### WCAG 2.1 AA Compliance
 
 #### Perceivable
+
 - [ ] **Text Alternatives**
   - [ ] Alt text for images
   - [ ] ARIA labels for icons
@@ -398,6 +411,7 @@ curl -s https://your-site.com | grep -i "<meta"
   - [ ] No loss of content when zoomed
 
 #### Operable
+
 - [ ] **Keyboard Accessible**
   - [ ] All functionality via keyboard
   - [ ] Tab order logical
@@ -422,6 +436,7 @@ curl -s https://your-site.com | grep -i "<meta"
   - [ ] Multiple navigation methods
 
 #### Understandable
+
 - [ ] **Readable**
   - [ ] Language specified
   - [ ] Unusual words defined
@@ -441,6 +456,7 @@ curl -s https://your-site.com | grep -i "<meta"
   - [ ] Instructions provided
 
 #### Robust
+
 - [ ] Valid HTML
 - [ ] ARIA used correctly
 - [ ] Name, role, value for UI components
@@ -459,6 +475,7 @@ npm test -- --testPathPattern=a11y
 ### Manual Testing Process
 
 1. **Keyboard Navigation**
+
    ```
    Tab       - Next focusable element
    Shift+Tab - Previous focusable element
@@ -499,6 +516,7 @@ npm test -- --testPathPattern=a11y
 ### Security Checklist
 
 #### Input Validation
+
 - [ ] All user input sanitized
 - [ ] SQL injection prevented
 - [ ] XSS attacks prevented
@@ -507,6 +525,7 @@ npm test -- --testPathPattern=a11y
 - [ ] Input length limits
 
 #### Authentication & Authorization
+
 - [ ] Strong password requirements
 - [ ] Secure session management
 - [ ] Rate limiting implemented
@@ -515,6 +534,7 @@ npm test -- --testPathPattern=a11y
 - [ ] Authorization checks on all routes
 
 #### Data Protection
+
 - [ ] HTTPS enforced
 - [ ] Sensitive data encrypted
 - [ ] No secrets in client code
@@ -523,6 +543,7 @@ npm test -- --testPathPattern=a11y
 - [ ] API keys rotated regularly
 
 #### Headers & Policies
+
 - [ ] Security headers configured
   - [ ] Content-Security-Policy
   - [ ] X-Frame-Options
@@ -531,6 +552,7 @@ npm test -- --testPathPattern=a11y
   - [ ] Permissions-Policy
 
 #### Dependencies
+
 - [ ] No known vulnerabilities
 - [ ] Dependencies up to date
 - [ ] npm audit clean
@@ -568,6 +590,7 @@ npm update
 ### UX Testing Checklist
 
 #### First Impressions
+
 - [ ] Value proposition clear
 - [ ] Call-to-action obvious
 - [ ] Visual hierarchy effective
@@ -575,6 +598,7 @@ npm update
 - [ ] Brand consistent
 
 #### Navigation
+
 - [ ] Menu items clearly labeled
 - [ ] Search easily accessible
 - [ ] Breadcrumbs provided
@@ -582,6 +606,7 @@ npm update
 - [ ] 404 page helpful
 
 #### Forms
+
 - [ ] Labels clear and visible
 - [ ] Error messages helpful
 - [ ] Success feedback provided
@@ -589,6 +614,7 @@ npm update
 - [ ] Tab order logical
 
 #### Content
+
 - [ ] Text readable (font size, contrast)
 - [ ] Headings descriptive
 - [ ] Content scannable
@@ -596,6 +622,7 @@ npm update
 - [ ] No broken links
 
 #### Performance
+
 - [ ] Feels fast and responsive
 - [ ] Loading indicators shown
 - [ ] No janky animations
@@ -605,6 +632,7 @@ npm update
 ### User Testing Protocol
 
 1. **Task-Based Testing**
+
    ```
    Task: Find the cheapest petrol station nearby
    - Start on homepage
@@ -642,24 +670,30 @@ npm update
 
 ```markdown
 ## Bug Description
+
 Brief description of the issue
 
 ## Steps to Reproduce
+
 1. Go to '...'
 2. Click on '...'
 3. Scroll down to '...'
 4. See error
 
 ## Expected Behavior
+
 What should happen
 
 ## Actual Behavior
+
 What actually happens
 
 ## Screenshots/Video
+
 [Attach if applicable]
 
 ## Environment
+
 - **Browser**: Chrome 120
 - **OS**: Windows 11
 - **Device**: Desktop
@@ -667,22 +701,24 @@ What actually happens
 - **URL**: https://example.com/page
 
 ## Severity
+
 - [ ] Critical (blocks functionality)
 - [ ] High (major feature broken)
 - [ ] Medium (minor feature broken)
 - [ ] Low (cosmetic issue)
 
 ## Additional Context
+
 Any other relevant information
 ```
 
 ### Bug Priority Matrix
 
-| Impact/Likelihood | High | Medium | Low |
-|-------------------|------|--------|-----|
-| **High** | P1 Critical | P2 High | P3 Medium |
-| **Medium** | P2 High | P3 Medium | P4 Low |
-| **Low** | P3 Medium | P4 Low | P5 Trivial |
+| Impact/Likelihood | High        | Medium    | Low        |
+| ----------------- | ----------- | --------- | ---------- |
+| **High**          | P1 Critical | P2 High   | P3 Medium  |
+| **Medium**        | P2 High     | P3 Medium | P4 Low     |
+| **Low**           | P3 Medium   | P4 Low    | P5 Trivial |
 
 ### Bug Tracking Workflow
 
@@ -708,11 +744,13 @@ Any other relevant information
 ## Testing Schedule
 
 ### Daily
+
 - Automated unit tests (CI/CD)
 - Automated linting/type-checking
 - npm audit security scan
 
 ### Per Pull Request
+
 - Unit tests
 - Integration tests
 - Code review
@@ -720,12 +758,14 @@ Any other relevant information
 - Performance check
 
 ### Weekly
+
 - E2E test suite
 - Visual regression tests
 - Security scan
 - Dependency updates
 
 ### Per Release
+
 - Full regression testing
 - Cross-browser testing
 - Mobile device testing
@@ -739,24 +779,28 @@ Any other relevant information
 ## Quality Metrics
 
 ### Code Quality
+
 - Test coverage > 80%
 - Zero linting errors
 - Zero TypeScript errors
 - Code review approval
 
 ### Performance
+
 - Lighthouse score > 90
 - Core Web Vitals passing
 - Bundle size < budget
 - Load time < 3s
 
 ### Accessibility
+
 - WCAG 2.1 AA compliant
 - jest-axe tests passing
 - Keyboard navigation working
 - Screen reader compatible
 
 ### User Experience
+
 - Task success rate > 95%
 - User satisfaction > 4/5
 - Error rate < 5%

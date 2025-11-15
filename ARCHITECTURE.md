@@ -84,6 +84,7 @@ Request → API Route → Service → Repository → External API
 ```
 
 **Benefits:**
+
 - Separation of concerns
 - Easy to test
 - Swappable data sources
@@ -102,6 +103,7 @@ Component → Hook → Service → Repository
 ```
 
 **Benefits:**
+
 - Reusable business logic
 - Single source of truth
 - Easy to maintain
@@ -235,6 +237,7 @@ Parent Component
 ```
 
 For global state:
+
 ```
 Component A → React Query Cache → Component B
 ```
@@ -504,30 +507,35 @@ Production (Global)
 ## 🎯 Design Decisions
 
 ### Why Next.js 15?
+
 - App Router for better performance
 - Server Components for reduced JS
 - Built-in optimization
 - Excellent DX
 
 ### Why TypeScript?
+
 - Type safety
 - Better IDE support
 - Fewer runtime errors
 - Self-documenting code
 
 ### Why React Query?
+
 - Excellent caching
 - Automatic refetching
 - Optimistic updates
 - Reduced boilerplate
 
 ### Why Atomic Design?
+
 - Reusable components
 - Consistent UI
 - Easy to scale
 - Clear hierarchy
 
 ### Why Tailwind CSS?
+
 - Utility-first approach
 - Consistent design system
 - Small bundle size
@@ -536,17 +544,20 @@ Production (Global)
 ## 📈 Scalability Considerations
 
 ### Horizontal Scaling
+
 - Serverless functions auto-scale
 - CDN for static assets
 - Database read replicas (future)
 
 ### Vertical Scaling
+
 - Code splitting
 - Lazy loading
 - Image optimization
 - Bundle size monitoring
 
 ### Code Scalability
+
 - Modular architecture
 - Clear separation of concerns
 - Reusable utilities
@@ -555,6 +566,7 @@ Production (Global)
 ## 🔮 Future Enhancements
 
 ### Planned Features
+
 1. **Caching Layer** - Redis for server-side caching
 2. **Real-time Updates** - WebSockets for live prices
 3. **PWA** - Progressive Web App capabilities
@@ -567,11 +579,10 @@ Production (Global)
 ---
 
 This architecture is designed to be:
+
 - **Maintainable** - Clear structure and patterns
 - **Scalable** - Can handle growth
 - **Testable** - Easy to test at all levels
 - **Performant** - Optimized for speed
 - **Secure** - Multiple security layers
 - **Developer-Friendly** - Great DX
-
-

@@ -4,13 +4,13 @@
 
 ### Performance Targets
 
-| Metric | Target | Optimized Score |
-|--------|--------|----------------|
-| LCP (Largest Contentful Paint) | < 2.5s | 1.2s |
-| FID (First Input Delay) | < 100ms | 45ms |
-| CLS (Cumulative Layout Shift) | < 0.1 | 0.02 |
-| FCP (First Contentful Paint) | < 1.8s | 0.9s |
-| TTFB (Time to First Byte) | < 600ms | 350ms |
+| Metric                         | Target  | Optimized Score |
+| ------------------------------ | ------- | --------------- |
+| LCP (Largest Contentful Paint) | < 2.5s  | 1.2s            |
+| FID (First Input Delay)        | < 100ms | 45ms            |
+| CLS (Cumulative Layout Shift)  | < 0.1   | 0.02            |
+| FCP (First Contentful Paint)   | < 1.8s  | 0.9s            |
+| TTFB (Time to First Byte)      | < 600ms | 350ms           |
 
 ---
 
@@ -71,9 +71,9 @@ const Chart = dynamic(
 module.exports = {
   experimental: {
     optimizePackageImports: [
-      'lucide-react',      // Tree-shake icons
-      'framer-motion',     // Tree-shake animations
-      'date-fns',          // Tree-shake date utils
+      'lucide-react', // Tree-shake icons
+      'framer-motion', // Tree-shake animations
+      'date-fns', // Tree-shake date utils
     ],
   },
 };
@@ -81,11 +81,11 @@ module.exports = {
 
 **Library Optimizations:**
 
-| Library | Before | After | Savings |
-|---------|--------|-------|---------|
-| lodash | 71 KB | 2 KB | -69 KB (-97%) |
-| framer-motion | 178 KB | 33 KB | -145 KB (-81%) |
-| moment.js → date-fns | 68 KB | 5 KB | -63 KB (-93%) |
+| Library              | Before | After | Savings        |
+| -------------------- | ------ | ----- | -------------- |
+| lodash               | 71 KB  | 2 KB  | -69 KB (-97%)  |
+| framer-motion        | 178 KB | 33 KB | -145 KB (-81%) |
+| moment.js → date-fns | 68 KB  | 5 KB  | -63 KB (-93%)  |
 
 ---
 
@@ -165,6 +165,7 @@ export const OptimizedImage = ({
 ```
 
 **Results:**
+
 - Images automatically converted to WebP/AVIF
 - Responsive image sizing based on viewport
 - Reduced image payload by 65%
@@ -334,10 +335,7 @@ export async function getStaticPaths() {
 ```javascript
 // tailwind.config.js
 module.exports = {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-    './public/**/*.html',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', './public/**/*.html'],
   purge: {
     enabled: process.env.NODE_ENV === 'production',
     content: ['./src/**/*.{js,ts,jsx,tsx}'],
@@ -353,6 +351,7 @@ module.exports = {
 ```
 
 **Results:**
+
 - Production CSS: 145 KB → 35 KB (76% reduction)
 - Only used classes included
 
@@ -440,18 +439,21 @@ onTTFB(sendToAnalytics);
 ## ✅ Checklist Summary
 
 ### Initial Bundle Size
+
 - [x] Reduced from 1,795 KB to 780 KB (-57%)
 - [x] Implemented code splitting for routes
 - [x] Lazy loaded heavy components
 - [x] Optimized third-party libraries
 
 ### Core Web Vitals
+
 - [x] LCP < 2.5s: **1.2s** ✅
 - [x] FID < 100ms: **45ms** ✅
 - [x] CLS < 0.1: **0.02** ✅
 - [x] FCP < 1.8s: **0.9s** ✅
 
 ### Image Optimization
+
 - [x] Implemented next/image
 - [x] WebP/AVIF conversion
 - [x] Responsive image sizing
@@ -459,16 +461,19 @@ onTTFB(sendToAnalytics);
 - [x] Priority loading for LCP images
 
 ### Caching
+
 - [x] Static assets: 1 year
 - [x] API responses: 1 hour
 - [x] ISR for dynamic pages
 
 ### Lazy Loading
+
 - [x] Dynamic imports for heavy components
 - [x] Intersection Observer
 - [x] Route-based code splitting
 
 ### CSS Optimization
+
 - [x] PurgeCSS enabled
 - [x] Reduced CSS from 145 KB to 35 KB
 - [x] Safelist configured
@@ -478,12 +483,14 @@ onTTFB(sendToAnalytics);
 ## 🎯 Lighthouse Scores
 
 ### Before Optimization
+
 - Performance: 45
 - Accessibility: 92
 - Best Practices: 87
 - SEO: 95
 
 ### After Optimization
+
 - **Performance: 98** ⬆️ +53
 - **Accessibility: 100** ⬆️ +8
 - **Best Practices: 100** ⬆️ +13

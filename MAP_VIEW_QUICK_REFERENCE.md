@@ -7,10 +7,7 @@
 ```tsx
 import InteractiveStationMap from '@/components/InteractiveStationMap';
 
-<InteractiveStationMap
-  stations={stations}
-  onStationClick={handleClick}
-/>
+<InteractiveStationMap stations={stations} onStationClick={handleClick} />;
 ```
 
 ### With View Toggle
@@ -20,33 +17,35 @@ import ViewToggle from '@/components/ViewToggle';
 
 const [view, setView] = useState('grid');
 
-<ViewToggle currentView={view} onViewChange={setView} />
-{view === 'map' && <InteractiveStationMap stations={stations} />}
+<ViewToggle currentView={view} onViewChange={setView} />;
+{
+  view === 'map' && <InteractiveStationMap stations={stations} />;
+}
 ```
 
 ## 📋 Props Reference
 
 ### InteractiveStationMap
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `stations` | Array | required | Station data with lat/lng |
-| `onStationClick` | Function | - | Marker click handler |
-| `selectedStation` | Object | null | Current selection |
-| `height` | Number/String | 600 | Map height |
-| `center` | [lat, lng] | auto | Initial center |
-| `zoom` | Number | 11 | Initial zoom |
-| `fullScreen` | Boolean | false | Full-screen mode |
-| `showUserLocation` | Boolean | true | Show user marker |
+| Prop               | Type          | Default  | Description               |
+| ------------------ | ------------- | -------- | ------------------------- |
+| `stations`         | Array         | required | Station data with lat/lng |
+| `onStationClick`   | Function      | -        | Marker click handler      |
+| `selectedStation`  | Object        | null     | Current selection         |
+| `height`           | Number/String | 600      | Map height                |
+| `center`           | [lat, lng]    | auto     | Initial center            |
+| `zoom`             | Number        | 11       | Initial zoom              |
+| `fullScreen`       | Boolean       | false    | Full-screen mode          |
+| `showUserLocation` | Boolean       | true     | Show user marker          |
 
 ### ViewToggle
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `currentView` | String | required | 'list', 'grid', 'map' |
-| `onViewChange` | Function | required | View change handler |
-| `showGrid` | Boolean | true | Show grid option |
-| `size` | String | 'md' | 'sm', 'md', 'lg' |
+| Prop           | Type     | Default  | Description           |
+| -------------- | -------- | -------- | --------------------- |
+| `currentView`  | String   | required | 'list', 'grid', 'map' |
+| `onViewChange` | Function | required | View change handler   |
+| `showGrid`     | Boolean  | true     | Show grid option      |
+| `size`         | String   | 'md'     | 'sm', 'md', 'lg'      |
 
 ## 🎨 Color Coding
 
@@ -59,12 +58,12 @@ No data  → ⚫ Gray (#6B7280)
 
 ## ⌨️ Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
+| Key     | Action       |
+| ------- | ------------ |
 | `←` `→` | Switch views |
-| `Enter` | Select view |
-| `Esc` | Close popup |
-| `+` `-` | Zoom map |
+| `Enter` | Select view  |
+| `Esc`   | Close popup  |
+| `+` `-` | Zoom map     |
 
 ## 📱 Responsive Features
 
@@ -99,14 +98,14 @@ const [selected, setSelected] = useState(null);
   stations={stations}
   selectedStation={selected}
   onStationClick={setSelected}
-/>
+/>;
 ```
 
 ### Custom Map Center
 
 ```tsx
 <InteractiveStationMap
-  center={[-37.8136, 144.9631]}  // Melbourne
+  center={[-37.8136, 144.9631]} // Melbourne
   zoom={12}
 />
 ```
@@ -132,12 +131,14 @@ const [selected, setSelected] = useState(null);
 ## 🐛 Troubleshooting
 
 ### Markers not showing?
+
 ```tsx
 // Fix Leaflet icons
 import 'leaflet/dist/leaflet.css';
 ```
 
 ### Map not sizing?
+
 ```css
 .map-container {
   height: 600px !important;
@@ -145,6 +146,7 @@ import 'leaflet/dist/leaflet.css';
 ```
 
 ### Clustering not working?
+
 ```bash
 npm install react-leaflet-cluster
 ```

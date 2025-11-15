@@ -70,7 +70,9 @@ class LocalDataService {
         throw new Error('Invalid GeoJSON format');
       }
 
-      return data.features.map((feature, index) => this.parseGeoJSONFeature(feature, index));
+      return data.features.map((feature, index) =>
+        this.parseGeoJSONFeature(feature, index)
+      );
     } catch (error) {
       console.warn('Could not load GeoJSON:', error.message);
       return null;
@@ -122,9 +124,9 @@ class LocalDataService {
       brand: brand,
       category: props.feature_type || 'PETROL STATION',
       // Use capitalized field names to match validation.js expectations
-      Latitude: coords[1],  // GeoJSON is [lng, lat]
+      Latitude: coords[1], // GeoJSON is [lng, lat]
       Longitude: coords[0],
-      lat: coords[1],  // Also provide lowercase for compatibility
+      lat: coords[1], // Also provide lowercase for compatibility
       lng: coords[0],
       operationalStatus: props.operational_status || 'OPERATIONAL',
       description: props.station_description || '',
@@ -132,7 +134,7 @@ class LocalDataService {
       spatialConfidence: props.spatial_confidence,
       industryId: props.industry_id,
       // Add mock fuel prices for display
-      fuelPrices: this.generateMockPrices(brand)
+      fuelPrices: this.generateMockPrices(brand),
     };
   }
 
@@ -144,25 +146,26 @@ class LocalDataService {
   generateMockPrices(brand) {
     // Base prices with slight variation by brand
     const brandPricing = {
-      'BP': { base: 1.95, variance: 0.05 },
-      'Shell': { base: 1.93, variance: 0.05 },
-      'Caltex': { base: 1.94, variance: 0.05 },
-      'Ampol': { base: 1.92, variance: 0.05 },
+      BP: { base: 1.95, variance: 0.05 },
+      Shell: { base: 1.93, variance: 0.05 },
+      Caltex: { base: 1.94, variance: 0.05 },
+      Ampol: { base: 1.92, variance: 0.05 },
       '7-Eleven': { base: 1.89, variance: 0.05 },
-      'Mobil': { base: 1.96, variance: 0.05 },
-      'United': { base: 1.88, variance: 0.05 },
-      'default': { base: 1.94, variance: 0.08 }
+      Mobil: { base: 1.96, variance: 0.05 },
+      United: { base: 1.88, variance: 0.05 },
+      default: { base: 1.94, variance: 0.08 },
     };
 
     const pricing = brandPricing[brand] || brandPricing.default;
-    const basePrice = pricing.base + (Math.random() - 0.5) * pricing.variance * 2;
+    const basePrice =
+      pricing.base + (Math.random() - 0.5) * pricing.variance * 2;
 
     return {
-      unleaded: (basePrice).toFixed(2),
+      unleaded: basePrice.toFixed(2),
       premium: (basePrice + 0.15).toFixed(2),
       diesel: (basePrice - 0.03).toFixed(2),
       e10: (basePrice - 0.05).toFixed(2),
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     };
   }
 
@@ -177,29 +180,83 @@ class LocalDataService {
     const suburbUpper = suburb.toUpperCase();
 
     // Northern suburbs
-    const north = ['PRESTON', 'COBURG', 'ESSENDON', 'TULLAMARINE', 'EPPING', 'THOMASTOWN',
-      'WOLLERT', 'CRAIGIEBURN', 'BROADMEADOWS', 'GREENSBOROUGH', 'ELTHAM'];
-    if (north.some(s => suburbUpper.includes(s))) return 'Northern Suburbs';
+    const north = [
+      'PRESTON',
+      'COBURG',
+      'ESSENDON',
+      'TULLAMARINE',
+      'EPPING',
+      'THOMASTOWN',
+      'WOLLERT',
+      'CRAIGIEBURN',
+      'BROADMEADOWS',
+      'GREENSBOROUGH',
+      'ELTHAM',
+    ];
+    if (north.some((s) => suburbUpper.includes(s))) return 'Northern Suburbs';
 
     // Western suburbs
-    const west = ['FOOTSCRAY', 'SUNSHINE', 'WERRIBEE', 'POINT COOK', 'BROOKLYN', 'DEER PARK',
-      'HOPPERS CROSSING', 'ALTONA', 'WILLIAMSTOWN', 'MARIBYRNONG'];
-    if (west.some(s => suburbUpper.includes(s))) return 'Western Suburbs';
+    const west = [
+      'FOOTSCRAY',
+      'SUNSHINE',
+      'WERRIBEE',
+      'POINT COOK',
+      'BROOKLYN',
+      'DEER PARK',
+      'HOPPERS CROSSING',
+      'ALTONA',
+      'WILLIAMSTOWN',
+      'MARIBYRNONG',
+    ];
+    if (west.some((s) => suburbUpper.includes(s))) return 'Western Suburbs';
 
     // Eastern suburbs
-    const east = ['DONCASTER', 'BOX HILL', 'RINGWOOD', 'GLEN WAVERLEY', 'BURWOOD', 'MITCHAM',
-      'BLACKBURN', 'NUNAWADING', 'CROYDON', 'BAYSWATER'];
-    if (east.some(s => suburbUpper.includes(s))) return 'Inner East Melbourne';
+    const east = [
+      'DONCASTER',
+      'BOX HILL',
+      'RINGWOOD',
+      'GLEN WAVERLEY',
+      'BURWOOD',
+      'MITCHAM',
+      'BLACKBURN',
+      'NUNAWADING',
+      'CROYDON',
+      'BAYSWATER',
+    ];
+    if (east.some((s) => suburbUpper.includes(s)))
+      return 'Inner East Melbourne';
 
     // Inner CBD
-    const cbd = ['MELBOURNE', 'CARLTON', 'FITZROY', 'SOUTH YARRA', 'RICHMOND', 'COLLINGWOOD',
-      'NORTHCOTE', 'BRUNSWICK', 'PARKVILLE', 'KENSINGTON', 'ABBOTSFORD'];
-    if (cbd.some(s => suburbUpper.includes(s))) return 'Melbourne CBD';
+    const cbd = [
+      'MELBOURNE',
+      'CARLTON',
+      'FITZROY',
+      'SOUTH YARRA',
+      'RICHMOND',
+      'COLLINGWOOD',
+      'NORTHCOTE',
+      'BRUNSWICK',
+      'PARKVILLE',
+      'KENSINGTON',
+      'ABBOTSFORD',
+    ];
+    if (cbd.some((s) => suburbUpper.includes(s))) return 'Melbourne CBD';
 
     // South Eastern suburbs
-    const southeast = ['FRANKSTON', 'DANDENONG', 'CRANBOURNE', 'CLAYTON', 'SPRINGVALE',
-      'NOBLE PARK', 'CHELTENHAM', 'MOORABBIN', 'MORDIALLOC', 'BENTLEIGH'];
-    if (southeast.some(s => suburbUpper.includes(s))) return 'South Eastern Suburbs';
+    const southeast = [
+      'FRANKSTON',
+      'DANDENONG',
+      'CRANBOURNE',
+      'CLAYTON',
+      'SPRINGVALE',
+      'NOBLE PARK',
+      'CHELTENHAM',
+      'MOORABBIN',
+      'MORDIALLOC',
+      'BENTLEIGH',
+    ];
+    if (southeast.some((s) => suburbUpper.includes(s)))
+      return 'South Eastern Suburbs';
 
     // Default to VIC (regional)
     return 'VIC';
@@ -233,10 +290,11 @@ class LocalDataService {
     const lines = text.split('\n');
     if (lines.length < 2) return [];
 
-    const headers = lines[0].split('|').map(h => h.trim());
+    const headers = lines[0].split('|').map((h) => h.trim());
 
-    return lines.slice(1)
-      .filter(line => line.trim())
+    return lines
+      .slice(1)
+      .filter((line) => line.trim())
       .map((line, index) => {
         const values = line.split('|');
         const station = {};
@@ -255,14 +313,16 @@ class LocalDataService {
           category: station['Category'] || 'PETROL STATION',
           brand: this.extractBrandFromCSV(station.brand),
           // Use capitalized field names to match validation.js expectations
-          Latitude: 0,  // CSV doesn't have coordinates
+          Latitude: 0, // CSV doesn't have coordinates
           Longitude: 0,
-          lat: 0,  // Also provide lowercase for compatibility
+          lat: 0, // Also provide lowercase for compatibility
           lng: 0,
           operationalStatus: 'OPERATIONAL',
           locationDetails: station['Location Details'] || '',
           lastUpdated: new Date().toISOString(),
-          fuelPrices: this.generateMockPrices(this.extractBrandFromCSV(station.brand))
+          fuelPrices: this.generateMockPrices(
+            this.extractBrandFromCSV(station.brand)
+          ),
         };
       });
   }

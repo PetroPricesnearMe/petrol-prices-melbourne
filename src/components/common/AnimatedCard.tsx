@@ -62,7 +62,7 @@ export function AnimatedCard({
   const shouldReduceMotion = useReducedMotion();
 
   // Calculate stagger delay based on index
-  const delay = baseDelay + (index * staggerDelay);
+  const delay = baseDelay + index * staggerDelay;
 
   // Use fade and slide up animation
   let variants = { ...fadeSlideUp };
@@ -74,7 +74,9 @@ export function AnimatedCard({
       visible: {
         ...variants.visible,
         transition: {
-          ...(typeof variants.visible.transition === 'object' ? variants.visible.transition : {}),
+          ...(typeof variants.visible.transition === 'object'
+            ? variants.visible.transition
+            : {}),
           delay,
         },
       },
@@ -82,7 +84,9 @@ export function AnimatedCard({
   }
 
   // Use reduced motion variants if needed
-  const finalVariants = shouldReduceMotion ? getReducedMotionVariants(variants) : variants;
+  const finalVariants = shouldReduceMotion
+    ? getReducedMotionVariants(variants)
+    : variants;
 
   return (
     <motion.div

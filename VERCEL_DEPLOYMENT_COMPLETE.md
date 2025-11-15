@@ -142,6 +142,7 @@ Incremental Static Regeneration (ISR) allows pages to be regenerated on-demand w
 ### Current ISR Setup
 
 #### Directory Page (`/directory`)
+
 - **Revalidation**: 24 hours (86400 seconds)
 - **Location**: `src/app/directory/page.tsx`
 - **Strategy**: Static generation with periodic updates
@@ -151,6 +152,7 @@ export const revalidate = 86400; // 24 hours
 ```
 
 #### Region Pages (`/regions/[region]`)
+
 - **Revalidation**: 24 hours (86400 seconds)
 - **Location**: `src/app/regions/[region]/page.tsx`
 - **Strategy**: Static paths with ISR
@@ -219,14 +221,14 @@ The `vercel.json` file configures aggressive caching for static assets:
 
 ### Cache Strategy
 
-| Resource Type | Cache Duration | Strategy |
-|--------------|----------------|----------|
-| Static assets (`/static/*`) | 1 year | Immutable |
-| Next.js build files | 1 year | Immutable |
-| Images | 1 year | Immutable |
-| Fonts | 1 year | Immutable |
-| HTML pages (ISR) | 24 hours | Stale-while-revalidate |
-| API routes | No cache | Dynamic |
+| Resource Type               | Cache Duration | Strategy               |
+| --------------------------- | -------------- | ---------------------- |
+| Static assets (`/static/*`) | 1 year         | Immutable              |
+| Next.js build files         | 1 year         | Immutable              |
+| Images                      | 1 year         | Immutable              |
+| Fonts                       | 1 year         | Immutable              |
+| HTML pages (ISR)            | 24 hours       | Stale-while-revalidate |
+| API routes                  | No cache       | Dynamic                |
 
 ### Edge Runtime
 
@@ -357,6 +359,7 @@ curl -I https://your-domain.com/directory
 ```
 
 Look for:
+
 ```
 x-vercel-cache: HIT  # Served from cache
 # or
@@ -374,6 +377,7 @@ lighthouse https://your-domain.com --view
 ```
 
 Target scores:
+
 - **Performance**: > 90
 - **Accessibility**: > 95
 - **Best Practices**: > 95
@@ -382,6 +386,7 @@ Target scores:
 ### 3. Verify Zero Blocking Scripts
 
 Open Chrome DevTools:
+
 1. Go to **Performance** tab
 2. Record page load
 3. Look for "Blocking Time"
@@ -390,12 +395,14 @@ Open Chrome DevTools:
 ### 4. Check Analytics
 
 #### Google Analytics:
+
 1. Open GA4 Real-Time view
 2. Visit your site
 3. Confirm events appear
 4. Check bot exclusion working
 
 #### Vercel Analytics:
+
 1. Go to Vercel Dashboard
 2. Navigate to **Analytics** tab
 3. Review Web Vitals
@@ -416,6 +423,7 @@ npm run analyze
 ```
 
 **Targets:**
+
 - First Load JS: < 200KB
 - Total page weight: < 1MB
 

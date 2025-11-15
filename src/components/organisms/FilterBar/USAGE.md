@@ -3,6 +3,7 @@
 ## Overview
 
 The Filter Bar components provide a comprehensive filtering system with:
+
 - Dynamic category chips with multi-select
 - Dual-handle price range slider
 - Rating filter with star display
@@ -31,10 +32,11 @@ const categories = [
   multiSelect={true}
   showCounts={true}
   size="md"
-/>
+/>;
 ```
 
 **Props:**
+
 - `categories: Category[]` - Available categories
 - `selectedCategories?: string[]` - Selected category IDs
 - `onSelectionChange?: (selectedIds: string[]) => void` - Selection change callback
@@ -59,10 +61,11 @@ import { PriceRangeSlider } from '@/components/organisms';
   currency="$"
   step={1}
   showLabels={true}
-/>
+/>;
 ```
 
 **Props:**
+
 - `absoluteMin?: number` - Minimum possible value
 - `absoluteMax?: number` - Maximum possible value
 - `minValue?: number` - Initial/current min value
@@ -85,10 +88,11 @@ import { RatingSlider } from '@/components/organisms';
   maxRating={5}
   size="md"
   allowHalf={false}
-/>
+/>;
 ```
 
 **Props:**
+
 - `minRating?: number` - Current selected rating (0 = all, 1-5 = specific)
 - `onChange?: (rating: number) => void` - Rating change callback
 - `maxRating?: number` - Maximum rating (default: 5)
@@ -116,10 +120,11 @@ import { FilterBar } from '@/components/organisms';
   onClearAll={handleClearAll}
   showRating={true}
   showPrice={true}
-/>
+/>;
 ```
 
 **Props:**
+
 - `categories: Category[]` - Available categories
 - `selectedCategories?: string[]` - Selected category IDs
 - `priceRange?: PriceRange` - Current price range
@@ -155,10 +160,11 @@ import { FilterSidebar } from '@/components/organisms';
   onClose={() => setIsOpen(false)}
   width="md"
   sticky={true}
-/>
+/>;
 ```
 
 **Props:**
+
 - `categories: Category[]` - Available categories
 - `selectedCategories?: string[]` - Selected category IDs
 - `priceRange?: PriceRange` - Current price range
@@ -180,12 +186,20 @@ import { FilterSidebar } from '@/components/organisms';
 'use client';
 
 import { useState } from 'react';
-import { FilterBar, FilterSidebar, Category, PriceRange } from '@/components/organisms';
+import {
+  FilterBar,
+  FilterSidebar,
+  Category,
+  PriceRange,
+} from '@/components/organisms';
 
 export default function FilterExample() {
   // State
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<PriceRange>({ min: 0, max: 300 });
+  const [priceRange, setPriceRange] = useState<PriceRange>({
+    min: 0,
+    max: 300,
+  });
   const [minRating, setMinRating] = useState(0);
 
   // Sample data
@@ -253,9 +267,7 @@ export default function FilterExample() {
         />
 
         {/* Results */}
-        <div className="p-6">
-          {/* Your content here */}
-        </div>
+        <div className="p-6">{/* Your content here */}</div>
       </div>
     </div>
   );
@@ -265,23 +277,27 @@ export default function FilterExample() {
 ## Features
 
 ### Accessibility
+
 - Full keyboard navigation
 - ARIA labels and roles
 - Screen reader support
 - Focus management
 
 ### Responsive Design
+
 - Mobile-friendly layout
 - Touch-optimized controls
 - Adaptive sidebar behavior
 - Flexible grid layouts
 
 ### Dark Mode Support
+
 - Automatic theme adaptation
 - Consistent color schemes
 - High contrast ratios
 
 ### Animations
+
 - Smooth transitions
 - Gesture support
 - Reduced motion support
@@ -299,6 +315,7 @@ export default function FilterExample() {
 ## Styling
 
 All components use Tailwind CSS and support:
+
 - Custom color schemes
 - Dark mode
 - Responsive breakpoints

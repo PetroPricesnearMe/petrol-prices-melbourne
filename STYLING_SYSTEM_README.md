@@ -47,11 +47,13 @@ import { cn, patterns, animations } from '@/styles';
 
 export function MyComponent() {
   return (
-    <div className={cn(
-      'card-hover',
-      animations.safe('animate-fade-in'),
-      'print-avoid-break'
-    )}>
+    <div
+      className={cn(
+        'card-hover',
+        animations.safe('animate-fade-in'),
+        'print-avoid-break'
+      )}
+    >
       <div className={patterns.flex.between}>
         <h2 className={patterns.text.h2}>Hello World</h2>
         <span className="badge badge-primary">New</span>
@@ -70,7 +72,7 @@ export function ThemeToggle() {
   const { resolvedTheme, toggleTheme } = useTheme();
 
   return (
-    <button onClick={toggleTheme} className="btn btn-ghost">
+    <button onClick={toggleTheme} className="btn-ghost btn">
       {resolvedTheme === 'dark' ? '☀️' : '🌙'}
     </button>
   );
@@ -213,19 +215,21 @@ items.map((item, i) => (
 
 ```tsx
 // Automatic dark mode support
-<div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+<div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
   Theme-aware content
-</div>
+</div>;
 
 // Using utility
 import { styleUtils } from '@/styles';
 
-<div className={styleUtils.darkMode(
-  'bg-white text-gray-900',
-  'bg-gray-900 text-white'
-)}>
+<div
+  className={styleUtils.darkMode(
+    'bg-white text-gray-900',
+    'bg-gray-900 text-white'
+  )}
+>
   Dynamic theme
-</div>
+</div>;
 ```
 
 ### Print Styles
@@ -306,20 +310,24 @@ export default function RootLayout({ children }) {
 ## 📦 What's Included
 
 ### Plugins
+
 - **custom-utilities.plugin.ts** - 300+ utility classes
 - **component-variants.plugin.ts** - 50+ component variants
 - **responsive-variants.plugin.ts** - Advanced responsive utilities
 
 ### Systems
+
 - **css-in-js.ts** - Type-safe styling utilities
 - **theme.ts** - Theme management with SSR support
 - **animations.ts** - Performance-optimized animations
 
 ### Styles
+
 - **print.css** - Professional print optimization
 - **media-queries.css** - Advanced media queries
 
 ### Components
+
 - **ThemeToggle** - Full-featured theme switcher
 - **LoadingSpinner** - Accessible loading states
 - **LoadingSkeleton** - Shimmer effect placeholders
@@ -327,16 +335,19 @@ export default function RootLayout({ children }) {
 ## 🎓 Learning Resources
 
 ### For Beginners
+
 1. Start with [Quick Reference](./docs/STYLING_QUICK_REFERENCE.md)
 2. Copy examples from [Component Examples](./docs/STYLING_EXAMPLES.md)
 3. Review [Styling Architecture Guide](./docs/STYLING_ARCHITECTURE_GUIDE.md)
 
 ### For Advanced Users
+
 1. Read [Implementation Summary](./docs/IMPLEMENTATION_SUMMARY.md)
 2. Study plugin source code
 3. Create custom variants
 
 ### For Refactoring
+
 1. Follow [Refactoring Guide](./docs/REFACTORING_GUIDE.md)
 2. Use provided checklists
 3. Test thoroughly
@@ -348,21 +359,22 @@ export default function RootLayout({ children }) {
 ```tsx
 export function Hero() {
   return (
-    <section className={patterns.flex.colCenter + ' min-h-screen bg-gradient-primary'}>
-      <h1 className={cn(
-        patterns.text.h1,
-        'text-white text-center mb-4',
-        animations.safe('animate-fade-in')
-      )}>
+    <section
+      className={patterns.flex.colCenter + ' min-h-screen bg-gradient-primary'}
+    >
+      <h1
+        className={cn(
+          patterns.text.h1,
+          'mb-4 text-center text-white',
+          animations.safe('animate-fade-in')
+        )}
+      >
         Find the Best Fuel Prices
       </h1>
-      <p className={cn(
-        patterns.text.body,
-        'text-white/90 mb-8'
-      )}>
+      <p className={cn(patterns.text.body, 'mb-8 text-white/90')}>
         Compare prices from thousands of stations
       </p>
-      <button className="btn bg-white text-primary-600 hover:bg-gray-50 btn-lg">
+      <button className="btn-lg btn bg-white text-primary-600 hover:bg-gray-50">
         Get Started
       </button>
     </section>
@@ -375,20 +387,25 @@ export function Hero() {
 ```tsx
 export function StationCard({ station }) {
   return (
-    <div className={cn(
-      'card-hover',
-      animations.safe('animate-fade-in'),
-      'print-avoid-break'
-    )}>
-      <div className={patterns.flex.between + ' p-6 border-b border-gray-200 dark:border-gray-700'}>
+    <div
+      className={cn(
+        'card-hover',
+        animations.safe('animate-fade-in'),
+        'print-avoid-break'
+      )}
+    >
+      <div
+        className={
+          patterns.flex.between +
+          ' border-b border-gray-200 p-6 dark:border-gray-700'
+        }
+      >
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
           {station.name}
         </h3>
-        <span className="badge badge-primary">
-          {station.distance} km
-        </span>
+        <span className="badge badge-primary">{station.distance} km</span>
       </div>
-      <div className="p-6 space-y-3">
+      <div className="space-y-3 p-6">
         {station.prices.map((price) => (
           <div key={price.type} className={patterns.flex.between}>
             <span className="text-gray-700 dark:text-gray-300">
@@ -414,18 +431,16 @@ export function SearchForm() {
   return (
     <form className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
           Location
         </label>
         <input
           className={cn('input', error && 'input-error')}
           placeholder="Enter your location"
         />
-        {error && (
-          <p className="mt-2 text-sm text-error-600">{error}</p>
-        )}
+        {error && <p className="mt-2 text-sm text-error-600">{error}</p>}
       </div>
-      <button type="submit" className="btn btn-primary w-full">
+      <button type="submit" className="btn-primary btn w-full">
         Search
       </button>
     </form>
@@ -443,7 +458,7 @@ import plugin from 'tailwindcss/plugin';
 
 export default {
   plugins: [
-    plugin(function({ addUtilities }) {
+    plugin(function ({ addUtilities }) {
       addUtilities({
         '.my-custom-utility': {
           // Your styles
@@ -515,6 +530,7 @@ Part of the Petrol Price Near Me project.
 ---
 
 **Need Help?**
+
 - Check [Documentation](./docs/)
 - Review [Examples](./docs/STYLING_EXAMPLES.md)
 - Use [Quick Reference](./docs/STYLING_QUICK_REFERENCE.md)

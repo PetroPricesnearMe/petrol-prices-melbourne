@@ -387,7 +387,9 @@ export function isAPIError(response: unknown): response is APIError {
 }
 
 /** Check if error is a validation error */
-export function isValidationAPIError(error: unknown): error is ValidationAPIError {
+export function isValidationAPIError(
+  error: unknown
+): error is ValidationAPIError {
   return (
     isAPIError(error) &&
     'validationErrors' in error &&

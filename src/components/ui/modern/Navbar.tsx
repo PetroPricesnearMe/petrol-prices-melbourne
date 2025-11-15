@@ -1,6 +1,6 @@
 /**
  * Modern Navbar Component
- * 
+ *
  * Features:
  * - Smooth scroll animations
  * - Glass morphism effect
@@ -44,16 +44,16 @@ interface NavbarProps {
 // MOBILE MENU COMPONENT
 // ============================================================================
 
-function MobileMenu({ 
-  isOpen, 
-  onClose, 
-  items, 
-  cta 
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
-  items: NavItem[]; 
-  cta?: { label: string; href: string } 
+function MobileMenu({
+  isOpen,
+  onClose,
+  items,
+  cta,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  items: NavItem[];
+  cta?: { label: string; href: string };
 }) {
   return (
     <>
@@ -63,7 +63,7 @@ function MobileMenu({
         animate={{ opacity: isOpen ? 1 : 0 }}
         transition={{ duration: 0.2 }}
         className={cn(
-          'fixed inset-0 bg-black/60 backdrop-blur-sm z-40',
+          'fixed inset-0 z-40 bg-black/60 backdrop-blur-sm',
           isOpen ? 'pointer-events-auto' : 'pointer-events-none'
         )}
         onClick={onClose}
@@ -74,18 +74,28 @@ function MobileMenu({
         initial={{ x: '100%' }}
         animate={{ x: isOpen ? 0 : '100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className="fixed top-0 right-0 bottom-0 w-full max-w-sm bg-white dark:bg-gray-900 shadow-2xl z-50 overflow-y-auto"
+        className="fixed bottom-0 right-0 top-0 z-50 w-full max-w-sm overflow-y-auto bg-white shadow-2xl dark:bg-gray-900"
       >
-        <div className="p-6 space-y-8">
+        <div className="space-y-8 p-6">
           {/* Close Button */}
           <div className="flex justify-end">
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
               aria-label="Close menu"
             >
-              <svg className="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="h-6 w-6 text-gray-600 dark:text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -102,21 +112,26 @@ function MobileMenu({
                 <Link
                   href={item.href}
                   onClick={onClose}
-                  className="flex items-center justify-between px-4 py-3 rounded-xl text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group"
+                  className="group flex items-center justify-between rounded-xl px-4 py-3 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800"
                 >
                   <span className="text-lg font-medium">{item.label}</span>
                   {item.badge && (
-                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400">
+                    <span className="rounded-full bg-primary-100 px-2 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">
                       {item.badge}
                     </span>
                   )}
-                  <svg 
-                    className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
+                  <svg
+                    className="h-5 w-5 text-gray-400 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </Link>
               </motion.div>
@@ -133,7 +148,7 @@ function MobileMenu({
               <Link
                 href={cta.href}
                 onClick={onClose}
-                className="block w-full px-6 py-4 text-center font-semibold text-white bg-gradient-to-r from-primary-600 to-primary-700 rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg hover:shadow-xl"
+                className="block w-full rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-4 text-center font-semibold text-white shadow-lg transition-all hover:from-primary-700 hover:to-primary-800 hover:shadow-xl"
               >
                 {cta.label}
               </Link>
@@ -194,9 +209,9 @@ export function Navbar({ brand, items, cta, className }: NavbarProps) {
       {/* Main Navbar */}
       <motion.nav
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          isScrolled 
-            ? 'py-3 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-700/50' 
+          'fixed left-0 right-0 top-0 z-50 transition-all duration-300',
+          isScrolled
+            ? 'border-b border-gray-200/50 py-3 shadow-lg backdrop-blur-xl dark:border-gray-700/50'
             : 'py-5',
           className
         )}
@@ -207,32 +222,34 @@ export function Navbar({ brand, items, cta, className }: NavbarProps) {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             {/* Brand Logo */}
-            <Link href="/" className="flex items-center space-x-3 group">
+            <Link href="/" className="group flex items-center space-x-3">
               {brand.logo ? (
-                <div className="relative w-10 h-10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl group-hover:scale-110 transition-transform" />
+                <div className="relative h-10 w-10">
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary-600 to-primary-700 transition-transform group-hover:scale-110" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">{brand.logo}</span>
+                    <span className="text-xl font-bold text-white">
+                      {brand.logo}
+                    </span>
                   </div>
                 </div>
               ) : null}
-              <span className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+              <span className="text-xl font-bold text-gray-900 transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
                 {brand.name}
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
+            <div className="hidden items-center space-x-1 md:flex">
               {items.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="relative px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all group"
+                  className="group relative rounded-lg px-4 py-2 font-medium text-gray-700 transition-all hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                 >
                   <span className="relative z-10 flex items-center space-x-2">
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400">
+                      <span className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">
                         {item.badge}
                       </span>
                     )}
@@ -254,11 +271,21 @@ export function Navbar({ brand, items, cta, className }: NavbarProps) {
               {cta && (
                 <Link
                   href={cta.href}
-                  className="hidden md:inline-flex items-center px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-primary-700 rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                  className="hidden items-center rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all hover:scale-105 hover:from-primary-700 hover:to-primary-800 hover:shadow-xl md:inline-flex"
                 >
                   {cta.label}
-                  <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  <svg
+                    className="ml-2 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
                   </svg>
                 </Link>
               )}
@@ -266,11 +293,21 @@ export function Navbar({ brand, items, cta, className }: NavbarProps) {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="rounded-xl p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden"
                 aria-label="Open menu"
               >
-                <svg className="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="h-6 w-6 text-gray-700 dark:text-gray-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               </button>
             </div>
@@ -295,7 +332,7 @@ export function Navbar({ brand, items, cta, className }: NavbarProps) {
 
 /**
  * Usage:
- * 
+ *
  * <Navbar
  *   brand={{ name: 'Petrol Price Near Me', logo: 'P' }}
  *   items={[
@@ -307,4 +344,3 @@ export function Navbar({ brand, items, cta, className }: NavbarProps) {
  *   cta={{ label: 'Find Stations', href: '/directory' }}
  * />
  */
-

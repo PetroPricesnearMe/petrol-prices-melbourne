@@ -7,6 +7,7 @@ A comprehensive, accessible pagination system with responsive grid layouts for t
 ## ✨ Key Features
 
 ### ✅ Pagination Component
+
 - Full ARIA accessibility (WCAG 2.1 AA compliant)
 - Complete keyboard navigation (Arrow keys, Home, End)
 - Smooth fade and slide animations
@@ -18,6 +19,7 @@ A comprehensive, accessible pagination system with responsive grid layouts for t
 - Customizable sizing and styling
 
 ### ✅ Responsive Grid System
+
 - Fluid responsive columns: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`
 - Consistent gap spacing using Tailwind's gap utilities
 - Uniform card heights with `auto-rows-fr` and `h-full`
@@ -26,6 +28,7 @@ A comprehensive, accessible pagination system with responsive grid layouts for t
 - Staggered child animations
 
 ### ✅ PaginatedGrid Component (All-in-One)
+
 - Built-in pagination
 - Flexible rendering
 - Loading states
@@ -55,8 +58,8 @@ function MyPage() {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-        {currentItems.map(item => (
+      <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {currentItems.map((item) => (
           <div key={item.id} className="h-full">
             <Card {...item} />
           </div>
@@ -110,9 +113,15 @@ gap-6                /* 1.5rem (24px) - Recommended */
 ### Uniform Heights
 
 ```tsx
-<div className="grid ... auto-rows-fr">      {/* Equal row heights */}
-  <div className="h-full flex flex-col">     {/* Fill cell height */}
-    <div className="flex-1">                 {/* Flexible content */}
+<div className="... grid auto-rows-fr">
+  {' '}
+  {/* Equal row heights */}
+  <div className="flex h-full flex-col">
+    {' '}
+    {/* Fill cell height */}
+    <div className="flex-1">
+      {' '}
+      {/* Flexible content */}
       {/* Card content */}
     </div>
   </div>
@@ -121,14 +130,14 @@ gap-6                /* 1.5rem (24px) - Recommended */
 
 ## ⌨️ Keyboard Navigation
 
-| Key | Action |
-|-----|--------|
-| `←` | Previous page |
-| `→` | Next page |
-| `Home` | First page |
-| `End` | Last page |
-| `Tab` | Navigate buttons |
-| `Enter` or `Space` | Activate button |
+| Key                | Action           |
+| ------------------ | ---------------- |
+| `←`                | Previous page    |
+| `→`                | Next page        |
+| `Home`             | First page       |
+| `End`              | Last page        |
+| `Tab`              | Navigate buttons |
+| `Enter` or `Space` | Activate button  |
 
 ## ♿ Accessibility
 
@@ -176,7 +185,7 @@ gap-6                /* 1.5rem (24px) - Recommended */
     sm: 2,
     md: 3,
     lg: 4,
-    xl: 5
+    xl: 5,
   }}
 />
 ```
@@ -207,38 +216,44 @@ For detailed documentation, see:
 The pagination system has been integrated into `DirectoryPageNew.js`:
 
 ```tsx
-{/* Responsive Grid with Fluid Columns */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
+{
+  /* Responsive Grid with Fluid Columns */
+}
+<div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
   {currentStations.map((station, index) => (
     <MotionDiv
       key={station.id}
-      className="station-card h-full flex flex-col"
+      className="station-card flex h-full flex-col"
       // ... animations and content
     >
       {/* Station card content */}
     </MotionDiv>
   ))}
-</div>
+</div>;
 
-{/* Modern Pagination with Accessibility */}
-{totalPages > 1 && (
-  <div className="mt-8">
-    <Pagination
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={goToPage}
-      totalItems={filteredStations.length}
-      itemsPerPage={ITEMS_PER_PAGE}
-      showItemsInfo={true}
-      scrollToTop={true}
-      size="md"
-      animationType="fade"
-      siblingCount={1}
-      showFirstLast={true}
-      showPrevNext={true}
-    />
-  </div>
-)}
+{
+  /* Modern Pagination with Accessibility */
+}
+{
+  totalPages > 1 && (
+    <div className="mt-8">
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={goToPage}
+        totalItems={filteredStations.length}
+        itemsPerPage={ITEMS_PER_PAGE}
+        showItemsInfo={true}
+        scrollToTop={true}
+        size="md"
+        animationType="fade"
+        siblingCount={1}
+        showFirstLast={true}
+        showPrevNext={true}
+      />
+    </div>
+  );
+}
 ```
 
 ## ✅ Implementation Checklist
@@ -283,6 +298,7 @@ The pagination system is ready to use! You can:
 ## 📞 Support
 
 For questions or issues:
+
 - Review the implementation guide
 - Check the quick reference
 - Examine the component source code

@@ -23,6 +23,7 @@ This document provides a comprehensive guide to the modal popup implementation u
 **Purpose**: Reusable modal component using Headless UI with Tailwind transitions.
 
 **Key Features**:
+
 - Headless UI Dialog integration
 - Smooth backdrop blur and fade transitions
 - Configurable sizes (sm, md, lg, xl, full)
@@ -31,6 +32,7 @@ This document provides a comprehensive guide to the modal popup implementation u
 - Dark mode support
 
 **Usage**:
+
 ```typescript
 import { Modal } from '@/components/modals/Modal';
 
@@ -45,6 +47,7 @@ import { Modal } from '@/components/modals/Modal';
 ```
 
 **Props**:
+
 ```typescript
 interface ModalProps {
   isOpen: boolean;
@@ -64,6 +67,7 @@ interface ModalProps {
 **Purpose**: Specialized modal for displaying comprehensive station information.
 
 **Features**:
+
 - Complete station information display
 - Fuel prices with color coding
 - Amenities listing
@@ -73,6 +77,7 @@ interface ModalProps {
 - Action buttons (directions, full page)
 
 **Usage**:
+
 ```typescript
 import { StationDetailsModal } from '@/components/modals/Modal';
 
@@ -92,6 +97,7 @@ import { StationDetailsModal } from '@/components/modals/Modal';
 **Purpose**: Toggle component for switching between grid and list views.
 
 **Key Features**:
+
 - Smooth animated toggle switch
 - Configurable sizes (sm, md, lg)
 - Optional labels
@@ -99,6 +105,7 @@ import { StationDetailsModal } from '@/components/modals/Modal';
 - Accessibility support
 
 **Usage**:
+
 ```typescript
 import { ViewToggle } from '@/components/toggle/ViewToggle';
 
@@ -115,12 +122,14 @@ import { ViewToggle } from '@/components/toggle/ViewToggle';
 **Purpose**: Container component that renders items in either grid or list layout.
 
 **Features**:
+
 - Seamless layout transitions
 - Staggered item animations
 - Layout animations with Framer Motion
 - Responsive design
 
 **Usage**:
+
 ```typescript
 import { DirectoryView } from '@/components/toggle/ViewToggle';
 
@@ -140,12 +149,14 @@ import { DirectoryView } from '@/components/toggle/ViewToggle';
 ### 3. Station Card Variants
 
 #### Grid Card (`StationCardGrid`)
+
 - Vertical card layout
 - Compact information display
 - Hover animations
 - Full-width action button
 
 #### List Card (`StationCardList`)
+
 - Horizontal card layout
 - Side-by-side information
 - Inline fuel prices
@@ -210,30 +221,33 @@ const [currentView, setCurrentView] = useState<'grid' | 'list'>('grid');
 ### Modal Animations
 
 #### Backdrop Animation
+
 ```typescript
 // Fade in/out with backdrop blur
-enter="ease-out duration-300"
-enterFrom="opacity-0"
-enterTo="opacity-100"
-leave="ease-in duration-200"
-leaveFrom="opacity-100"
-leaveTo="opacity-0"
+enter = 'ease-out duration-300';
+enterFrom = 'opacity-0';
+enterTo = 'opacity-100';
+leave = 'ease-in duration-200';
+leaveFrom = 'opacity-100';
+leaveTo = 'opacity-0';
 ```
 
 #### Modal Panel Animation
+
 ```typescript
 // Scale and fade animation
-enter="ease-out duration-300"
-enterFrom="opacity-0 scale-95"
-enterTo="opacity-100 scale-100"
-leave="ease-in duration-200"
-leaveFrom="opacity-100 scale-100"
-leaveTo="opacity-0 scale-95"
+enter = 'ease-out duration-300';
+enterFrom = 'opacity-0 scale-95';
+enterTo = 'opacity-100 scale-100';
+leave = 'ease-in duration-200';
+leaveFrom = 'opacity-100 scale-100';
+leaveTo = 'opacity-0 scale-95';
 ```
 
 ### View Toggle Animations
 
 #### Toggle Switch Animation
+
 ```typescript
 // Spring animation for smooth movement
 animate={{
@@ -247,6 +261,7 @@ transition={{
 ```
 
 #### Layout Transitions
+
 ```typescript
 // Layout animation for smooth grid/list transitions
 layout
@@ -257,6 +272,7 @@ transition={{
 ```
 
 #### Item Animations
+
 ```typescript
 // Staggered item animations
 initial={{ opacity: 0, scale: 0.9 }}

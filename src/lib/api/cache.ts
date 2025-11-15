@@ -24,7 +24,7 @@ class MemoryCache {
    */
   get<T>(key: string): T | null {
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
       return null;
     }
@@ -74,7 +74,7 @@ class MemoryCache {
    */
   invalidatePattern(pattern: string | RegExp): void {
     const regex = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
-    
+
     for (const key of this.cache.keys()) {
       if (regex.test(key)) {
         this.cache.delete(key);
@@ -127,12 +127,15 @@ export const searchCache = new MemoryCache(200);
 /**
  * Generate cache key from parameters
  */
-export function generateCacheKey(prefix: string, params: Record<string, any>): string {
+export function generateCacheKey(
+  prefix: string,
+  params: Record<string, any>
+): string {
   const sortedParams = Object.keys(params)
     .sort()
-    .map(key => `${key}:${params[key]}`)
+    .map((key) => `${key}:${params[key]}`)
     .join('|');
-  
+
   return `${prefix}:${sortedParams}`;
 }
 
@@ -151,7 +154,7 @@ export function withCache<T extends (...args: any[]) => Promise<any>>(
 
   return (async (...args: Parameters<T>) => {
     const cacheKey = generateCacheKey(keyPrefix, { args });
-    
+
     // Try cache first
     const cached = cache.get<Awaited<ReturnType<T>>>(cacheKey);
     if (cached !== null) {
@@ -160,10 +163,10 @@ export function withCache<T extends (...args: any[]) => Promise<any>>(
 
     // Execute function
     const result = await fn(...args);
-    
+
     // Store in cache
     cache.set(cacheKey, result, ttl);
-    
+
     return result;
   }) as T;
 }
@@ -171,7 +174,9 @@ export function withCache<T extends (...args: any[]) => Promise<any>>(
 /**
  * Clear cache for specific resource
  */
-export function clearCache(resource: 'stations' | 'prices' | 'search' | 'all'): void {
+export function clearCache(
+  resource: 'stations' | 'prices' | 'search' | 'all'
+): void {
   switch (resource) {
     case 'stations':
       stationsCache.clear();
@@ -200,4 +205,3 @@ export function getAllCacheStats() {
     search: searchCache.getStats(),
   };
 }
-

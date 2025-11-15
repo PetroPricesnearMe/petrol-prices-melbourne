@@ -48,7 +48,12 @@ export function Icon({ name, path, className = '', size = 24 }: IconProps) {
  * Filled Icon Component
  * For icons that should be filled instead of stroked
  */
-export function IconFilled({ name, path, className = '', size = 24 }: IconProps) {
+export function IconFilled({
+  name,
+  path,
+  className = '',
+  size = 24,
+}: IconProps) {
   const iconPath = name ? ICON_PATHS[name] : path;
 
   if (!iconPath) {
@@ -73,7 +78,11 @@ export function IconFilled({ name, path, className = '', size = 24 }: IconProps)
  * Social Icon Component
  * Specifically for social media icons (no stroke)
  */
-export function SocialIcon({ name, className = '', size = 24 }: Omit<IconProps, 'path'>) {
+export function SocialIcon({
+  name,
+  className = '',
+  size = 24,
+}: Omit<IconProps, 'path'>) {
   const iconPath = name ? ICON_PATHS[name] : '';
 
   if (!iconPath) {
@@ -93,4 +102,3 @@ export function SocialIcon({ name, className = '', size = 24 }: Omit<IconProps, 
     </svg>
   );
 }
-

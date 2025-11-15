@@ -1,6 +1,6 @@
 /**
  * Footer Component (Organism)
- * 
+ *
  * Application footer with links and information
  */
 
@@ -126,7 +126,11 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom section */}
         <div className="footer__bottom">
           {copyright && (
-            <Text variant="bodySmall" color="secondary" className="footer__copyright">
+            <Text
+              variant="bodySmall"
+              color="secondary"
+              className="footer__copyright"
+            >
               {copyright.replace('{year}', currentYear.toString())}
             </Text>
           )}
@@ -138,4 +142,3 @@ export const Footer: React.FC<FooterProps> = ({
     </footer>
   );
 };
-

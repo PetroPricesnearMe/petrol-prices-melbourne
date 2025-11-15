@@ -67,12 +67,12 @@ A versatile wrapper component for animating any content on scroll.
 
 ```tsx
 <AnimatedSection
-  animation="fadeInUp"        // Animation preset
-  viewport="default"          // Trigger point: 'default' | 'immediate' | 'half' | 'full'
-  delay={0.2}                // Delay in seconds
-  duration={0.5}             // Duration override
-  className="my-section"     // Custom classes
-  as="section"               // HTML element type
+  animation="fadeInUp" // Animation preset
+  viewport="default" // Trigger point: 'default' | 'immediate' | 'half' | 'full'
+  delay={0.2} // Delay in seconds
+  duration={0.5} // Duration override
+  className="my-section" // Custom classes
+  as="section" // HTML element type
 >
   <YourContent />
 </AnimatedSection>
@@ -80,14 +80,14 @@ A versatile wrapper component for animating any content on scroll.
 
 **Props:**
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `animation` | `AnimationPreset` | `'fadeInUp'` | Animation style to use |
-| `viewport` | `'default' \| 'immediate' \| 'half' \| 'full'` | `'default'` | When to trigger animation |
-| `delay` | `number` | `0` | Delay before animation starts (seconds) |
-| `duration` | `number` | - | Override preset duration |
-| `className` | `string` | `''` | CSS classes |
-| `as` | HTML element | `'div'` | Element type to render |
+| Prop        | Type                                           | Default      | Description                             |
+| ----------- | ---------------------------------------------- | ------------ | --------------------------------------- |
+| `animation` | `AnimationPreset`                              | `'fadeInUp'` | Animation style to use                  |
+| `viewport`  | `'default' \| 'immediate' \| 'half' \| 'full'` | `'default'`  | When to trigger animation               |
+| `delay`     | `number`                                       | `0`          | Delay before animation starts (seconds) |
+| `duration`  | `number`                                       | -            | Override preset duration                |
+| `className` | `string`                                       | `''`         | CSS classes                             |
+| `as`        | HTML element                                   | `'div'`      | Element type to render                  |
 
 ### AnimatedCard
 
@@ -95,9 +95,9 @@ Specialized component for cards in grids with automatic stagger delays.
 
 ```tsx
 <AnimatedCard
-  index={0}                  // Position in list (for stagger)
-  baseDelay={0}              // Base delay before stagger
-  staggerDelay={0.05}        // Delay per index
+  index={0} // Position in list (for stagger)
+  baseDelay={0} // Base delay before stagger
+  staggerDelay={0.05} // Delay per index
   className="card"
   onClick={handleClick}
 >
@@ -107,13 +107,13 @@ Specialized component for cards in grids with automatic stagger delays.
 
 **Props:**
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `index` | `number` | `0` | Item position for stagger calculation |
-| `baseDelay` | `number` | `0` | Base delay before animation |
-| `staggerDelay` | `number` | `0.05` | Additional delay per index |
-| `className` | `string` | `''` | CSS classes |
-| `onClick` | `function` | - | Click handler |
+| Prop           | Type       | Default | Description                           |
+| -------------- | ---------- | ------- | ------------------------------------- |
+| `index`        | `number`   | `0`     | Item position for stagger calculation |
+| `baseDelay`    | `number`   | `0`     | Base delay before animation           |
+| `staggerDelay` | `number`   | `0.05`  | Additional delay per index            |
+| `className`    | `string`   | `''`    | CSS classes                           |
+| `onClick`      | `function` | -       | Click handler                         |
 
 ### AnimatedGrid
 
@@ -121,12 +121,12 @@ Container component that animates children with stagger effect.
 
 ```tsx
 <AnimatedGrid
-  stagger="normal"           // 'fast' | 'normal' | 'slow'
-  staggerDelay={0.1}         // Custom stagger delay
-  initialDelay={0.2}         // Delay before first item
+  stagger="normal" // 'fast' | 'normal' | 'slow'
+  staggerDelay={0.1} // Custom stagger delay
+  initialDelay={0.2} // Delay before first item
   className="grid"
 >
-  {items.map(item => (
+  {items.map((item) => (
     <AnimatedGridItem key={item.id}>
       <Card {...item} />
     </AnimatedGridItem>
@@ -136,12 +136,12 @@ Container component that animates children with stagger effect.
 
 **Props:**
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `stagger` | `'fast' \| 'normal' \| 'slow'` | `'normal'` | Stagger speed preset |
-| `staggerDelay` | `number` | - | Custom stagger delay (overrides preset) |
-| `initialDelay` | `number` | - | Delay before first animation |
-| `className` | `string` | `''` | CSS classes |
+| Prop           | Type                           | Default    | Description                             |
+| -------------- | ------------------------------ | ---------- | --------------------------------------- |
+| `stagger`      | `'fast' \| 'normal' \| 'slow'` | `'normal'` | Stagger speed preset                    |
+| `staggerDelay` | `number`                       | -          | Custom stagger delay (overrides preset) |
+| `initialDelay` | `number`                       | -          | Delay before first animation            |
+| `className`    | `string`                       | `''`       | CSS classes                             |
 
 ## Animation Presets
 
@@ -176,6 +176,7 @@ Container component that animates children with stagger effect.
 ### GPU Acceleration
 
 All animations use GPU-accelerated properties:
+
 - `transform` (translate, scale, rotate)
 - `opacity`
 - `filter`
@@ -225,6 +226,7 @@ All animated elements remain fully keyboard accessible:
 ### Screen Readers
 
 Animations don't interfere with screen reader functionality:
+
 - Content is accessible during and after animation
 - Focus management is preserved
 - ARIA attributes work normally
@@ -235,9 +237,7 @@ Animations don't interfere with screen reader functionality:
 
 ```tsx
 <AnimatedSection animation="fadeInUp" viewport="immediate">
-  <h1 className="text-6xl font-bold">
-    Find Cheap Petrol Near You
-  </h1>
+  <h1 className="text-6xl font-bold">Find Cheap Petrol Near You</h1>
 </AnimatedSection>
 ```
 
@@ -256,13 +256,9 @@ Animations don't interfere with screen reader functionality:
 ### Station Cards
 
 ```tsx
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
   {stations.map((station, index) => (
-    <AnimatedCard
-      key={station.id}
-      index={index}
-      staggerDelay={0.08}
-    >
+    <AnimatedCard key={station.id} index={index} staggerDelay={0.08}>
       <StationCard {...station} />
     </AnimatedCard>
   ))}
@@ -272,11 +268,7 @@ Animations don't interfere with screen reader functionality:
 ### Section with Delay
 
 ```tsx
-<AnimatedSection
-  animation="fadeInLeft"
-  delay={0.3}
-  duration={0.8}
->
+<AnimatedSection animation="fadeInLeft" delay={0.3} duration={0.8}>
   <AboutSection />
 </AnimatedSection>
 ```
@@ -286,7 +278,7 @@ Animations don't interfere with screen reader functionality:
 ```tsx
 <AnimatedSection
   animation="scaleIn"
-  viewport="half"  // Triggers when 50% visible
+  viewport="half" // Triggers when 50% visible
 >
   <PricingTable />
 </AnimatedSection>
@@ -315,23 +307,23 @@ Animations don't interfere with screen reader functionality:
 
 ### Recommended Animations by Use Case
 
-| Use Case | Animation | Duration |
-|----------|-----------|----------|
-| Hero sections | `fadeInUp` | 0.6s |
-| Cards in grids | `fadeSlideUp` | 0.5s |
-| Feature sections | `fadeInLeft`/`Right` | 0.5s |
-| Images | `blurFadeIn` | 0.8s |
-| Small elements | `fadeIn` | 0.3s |
-| Call-to-action | `scaleIn` | 0.4s |
+| Use Case         | Animation            | Duration |
+| ---------------- | -------------------- | -------- |
+| Hero sections    | `fadeInUp`           | 0.6s     |
+| Cards in grids   | `fadeSlideUp`        | 0.5s     |
+| Feature sections | `fadeInLeft`/`Right` | 0.5s     |
+| Images           | `blurFadeIn`         | 0.8s     |
+| Small elements   | `fadeIn`             | 0.3s     |
+| Call-to-action   | `scaleIn`            | 0.4s     |
 
 ## Viewport Trigger Options
 
-| Option | Visibility | Use Case |
-|--------|-----------|----------|
-| `immediate` | 0% | Above-fold content |
-| `default` | 20% | General content (recommended) |
-| `half` | 50% | Important content |
-| `full` | 90% | Content that should fully reveal |
+| Option      | Visibility | Use Case                         |
+| ----------- | ---------- | -------------------------------- |
+| `immediate` | 0%         | Above-fold content               |
+| `default`   | 20%        | General content (recommended)    |
+| `half`      | 50%        | Important content                |
+| `full`      | 90%        | Content that should fully reveal |
 
 ## Advanced Usage
 
@@ -346,8 +338,8 @@ const customVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.6, ease: 'easeOut' }
-  }
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
 };
 
 <motion.div
@@ -357,7 +349,7 @@ const customVariants = {
   variants={customVariants}
 >
   <Content />
-</motion.div>
+</motion.div>;
 ```
 
 ### Stagger with Different Animations
@@ -372,7 +364,7 @@ import { staggerContainer, fadeInLeft } from '@/utils/animations';
       <Card {...item} />
     </motion.div>
   ))}
-</motion.div>
+</motion.div>;
 ```
 
 ## Troubleshooting

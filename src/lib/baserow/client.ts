@@ -84,7 +84,9 @@ class BaserowClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Baserow API error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Baserow API error: ${response.status} ${response.statusText}`
+        );
       }
 
       const data: BaserowResponse<T> = await response.json();
@@ -234,7 +236,7 @@ class BaserowClient {
    * Set cache with expiry
    */
   private setCache<T>(key: string, data: T): void {
-    const expiry = Date.now() + (this.config.cacheTime! * 1000);
+    const expiry = Date.now() + this.config.cacheTime! * 1000;
     this.cache.set(key, { data, expiry });
   }
 
@@ -258,7 +260,11 @@ class BaserowClient {
   /**
    * Build cache key
    */
-  private buildCacheKey(databaseId: string, tableId: string, options: Record<string, unknown>): string {
+  private buildCacheKey(
+    databaseId: string,
+    tableId: string,
+    options: Record<string, unknown>
+  ): string {
     return `table_${databaseId}_${tableId}_${JSON.stringify(options)}`;
   }
 

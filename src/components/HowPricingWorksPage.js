@@ -1,6 +1,6 @@
 /**
  * HowPricingWorksPage - Legacy component
- * 
+ *
  * NOTE: This component uses framer-motion and requires 'use client' directive
  * for Next.js 15+ App Router compatibility.
  */
@@ -30,21 +30,23 @@ const HowPricingWorksPage = () => {
     { key: 'factors', label: 'Price Factors', icon: '⚖️' },
     { key: 'cycle', label: 'Price Cycle', icon: '🔄' },
     { key: 'regulations', label: 'Regulations', icon: '📋' },
-    { key: 'tips', label: 'Saving Tips', icon: '💡' }
+    { key: 'tips', label: 'Saving Tips', icon: '💡' },
   ];
 
   const content = {
     overview: {
       title: 'How Fuel Pricing Works in Australia',
-      description: 'Understanding the complex factors that influence petrol prices across Australia',
+      description:
+        'Understanding the complex factors that influence petrol prices across Australia',
       content: (
         <div className="content-section">
           <div className="intro-card">
             <h3>Fuel Pricing in Australia</h3>
             <p>
-              Australia's fuel pricing system is influenced by a complex interplay of global oil markets,
-              local competition, government policies, and regional factors. Understanding these dynamics
-              can help you make informed decisions about when and where to fill up.
+              Australia's fuel pricing system is influenced by a complex
+              interplay of global oil markets, local competition, government
+              policies, and regional factors. Understanding these dynamics can
+              help you make informed decisions about when and where to fill up.
             </p>
           </div>
 
@@ -52,12 +54,17 @@ const HowPricingWorksPage = () => {
             <div className="stat-card">
               <div className="stat-icon">🌍</div>
               <h4>Global Oil Prices</h4>
-              <p>60-70% of fuel cost comes from international crude oil prices</p>
+              <p>
+                60-70% of fuel cost comes from international crude oil prices
+              </p>
             </div>
             <div className="stat-card">
               <div className="stat-icon">🏪</div>
               <h4>Local Competition</h4>
-              <p>Station density and competition significantly affect local pricing</p>
+              <p>
+                Station density and competition significantly affect local
+                pricing
+              </p>
             </div>
             <div className="stat-card">
               <div className="stat-icon">📈</div>
@@ -71,7 +78,7 @@ const HowPricingWorksPage = () => {
             </div>
           </div>
         </div>
-      )
+      ),
     },
     factors: {
       title: 'Key Price Factors',
@@ -86,9 +93,10 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact high">High Impact</span>
               </div>
               <p>
-                The largest component of fuel pricing. Global oil prices fluctuate based on supply,
-                demand, geopolitical events, and economic conditions. Changes in international
-                prices typically take 1-2 weeks to affect Australian pump prices.
+                The largest component of fuel pricing. Global oil prices
+                fluctuate based on supply, demand, geopolitical events, and
+                economic conditions. Changes in international prices typically
+                take 1-2 weeks to affect Australian pump prices.
               </p>
             </div>
 
@@ -99,9 +107,9 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact high">High Impact</span>
               </div>
               <p>
-                Federal excise duty (currently ~42¢ per liter) plus GST (10%) and state levies.
-                These are fixed costs that don't change with oil prices, making up approximately
-                40% of the total fuel cost.
+                Federal excise duty (currently ~42¢ per liter) plus GST (10%)
+                and state levies. These are fixed costs that don't change with
+                oil prices, making up approximately 40% of the total fuel cost.
               </p>
             </div>
 
@@ -112,9 +120,10 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact medium">Medium Impact</span>
               </div>
               <p>
-                Costs for refining crude oil into petrol, transportation from refineries to
-                terminals, and distribution to service stations. These costs are relatively
-                stable but can vary with distance and infrastructure.
+                Costs for refining crude oil into petrol, transportation from
+                refineries to terminals, and distribution to service stations.
+                These costs are relatively stable but can vary with distance and
+                infrastructure.
               </p>
             </div>
 
@@ -125,9 +134,10 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact medium">Medium Impact</span>
               </div>
               <p>
-                Station density, local competition, and location significantly affect pricing.
-                Stations near highways or in high-rent areas often charge more due to
-                convenience premiums and higher operating costs.
+                Station density, local competition, and location significantly
+                affect pricing. Stations near highways or in high-rent areas
+                often charge more due to convenience premiums and higher
+                operating costs.
               </p>
             </div>
 
@@ -138,9 +148,9 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact medium">Medium Impact</span>
               </div>
               <p>
-                Since oil is traded in US dollars, the AUD/USD exchange rate affects the
-                cost of imported crude oil. A weaker Australian dollar increases fuel costs
-                for consumers.
+                Since oil is traded in US dollars, the AUD/USD exchange rate
+                affects the cost of imported crude oil. A weaker Australian
+                dollar increases fuel costs for consumers.
               </p>
             </div>
 
@@ -151,26 +161,26 @@ const HowPricingWorksPage = () => {
                 <span className="factor-impact low">Low Impact</span>
               </div>
               <p>
-                Higher demand during holiday periods, school holidays, and summer driving
-                seasons can lead to temporary price increases, though the effect is usually
-                modest compared to other factors.
+                Higher demand during holiday periods, school holidays, and
+                summer driving seasons can lead to temporary price increases,
+                though the effect is usually modest compared to other factors.
               </p>
             </div>
           </div>
         </div>
-      )
+      ),
     },
     cycle: {
       title: 'The Price Cycle',
-      description: 'Understanding Australia\'s unique weekly fuel price cycle',
+      description: "Understanding Australia's unique weekly fuel price cycle",
       content: (
         <div className="content-section">
           <div className="cycle-explanation">
             <h3>Australia's Weekly Price Cycle</h3>
             <p>
-              Unlike many countries, Australia has a predictable weekly price cycle where
-              prices rise and fall in a regular pattern. This cycle varies by city and
-              can be used to your advantage.
+              Unlike many countries, Australia has a predictable weekly price
+              cycle where prices rise and fall in a regular pattern. This cycle
+              varies by city and can be used to your advantage.
             </p>
           </div>
 
@@ -252,19 +262,20 @@ const HowPricingWorksPage = () => {
             </div>
           </div>
         </div>
-      )
+      ),
     },
     regulations: {
       title: 'Government Regulations',
-      description: 'How government policies and regulations affect fuel pricing',
+      description:
+        'How government policies and regulations affect fuel pricing',
       content: (
         <div className="content-section">
           <div className="regulations-overview">
             <h3>Government Role in Fuel Pricing</h3>
             <p>
-              The Australian government plays a significant role in fuel pricing through
-              taxation, regulation, and monitoring. Understanding these policies helps
-              explain why fuel costs what it does.
+              The Australian government plays a significant role in fuel pricing
+              through taxation, regulation, and monitoring. Understanding these
+              policies helps explain why fuel costs what it does.
             </p>
           </div>
 
@@ -275,12 +286,20 @@ const HowPricingWorksPage = () => {
                 <h4>Federal Excise Duty</h4>
               </div>
               <div className="regulation-details">
-                <p><strong>Current Rate:</strong> ~42.3¢ per liter</p>
-                <p><strong>Purpose:</strong> Infrastructure funding and general revenue</p>
-                <p><strong>Indexation:</strong> Adjusted twice yearly with CPI</p>
                 <p>
-                  This is the largest single component of fuel pricing, making up approximately
-                  25-30% of the total cost. It's a fixed cost that doesn't change with oil prices.
+                  <strong>Current Rate:</strong> ~42.3¢ per liter
+                </p>
+                <p>
+                  <strong>Purpose:</strong> Infrastructure funding and general
+                  revenue
+                </p>
+                <p>
+                  <strong>Indexation:</strong> Adjusted twice yearly with CPI
+                </p>
+                <p>
+                  This is the largest single component of fuel pricing, making
+                  up approximately 25-30% of the total cost. It's a fixed cost
+                  that doesn't change with oil prices.
                 </p>
               </div>
             </div>
@@ -291,12 +310,20 @@ const HowPricingWorksPage = () => {
                 <h4>Goods and Services Tax (GST)</h4>
               </div>
               <div className="regulation-details">
-                <p><strong>Rate:</strong> 10% on the final price</p>
-                <p><strong>Scope:</strong> Applied to the total price including excise</p>
-                <p><strong>Purpose:</strong> General government revenue</p>
                 <p>
-                  GST is applied to the final retail price, including the excise duty,
-                  effectively creating a tax on a tax. This adds approximately 10-15¢ per liter.
+                  <strong>Rate:</strong> 10% on the final price
+                </p>
+                <p>
+                  <strong>Scope:</strong> Applied to the total price including
+                  excise
+                </p>
+                <p>
+                  <strong>Purpose:</strong> General government revenue
+                </p>
+                <p>
+                  GST is applied to the final retail price, including the excise
+                  duty, effectively creating a tax on a tax. This adds
+                  approximately 10-15¢ per liter.
                 </p>
               </div>
             </div>
@@ -307,12 +334,21 @@ const HowPricingWorksPage = () => {
                 <h4>State Levies and Taxes</h4>
               </div>
               <div className="regulation-details">
-                <p><strong>Varies by State:</strong> Additional levies in some states</p>
-                <p><strong>Examples:</strong> NSW fuel levy, WA fuel levy</p>
-                <p><strong>Purpose:</strong> State infrastructure and transport funding</p>
                 <p>
-                  Some states impose additional levies on fuel, typically 1-3¢ per liter.
-                  These vary significantly between states and can affect regional pricing.
+                  <strong>Varies by State:</strong> Additional levies in some
+                  states
+                </p>
+                <p>
+                  <strong>Examples:</strong> NSW fuel levy, WA fuel levy
+                </p>
+                <p>
+                  <strong>Purpose:</strong> State infrastructure and transport
+                  funding
+                </p>
+                <p>
+                  Some states impose additional levies on fuel, typically 1-3¢
+                  per liter. These vary significantly between states and can
+                  affect regional pricing.
                 </p>
               </div>
             </div>
@@ -323,12 +359,21 @@ const HowPricingWorksPage = () => {
                 <h4>Price Monitoring and Transparency</h4>
               </div>
               <div className="regulation-details">
-                <p><strong>ACCC Monitoring:</strong> Regular price surveillance</p>
-                <p><strong>Price Reporting:</strong> Mandatory price reporting in some states</p>
-                <p><strong>Consumer Protection:</strong> Anti-competitive behavior prevention</p>
                 <p>
-                  The Australian Competition and Consumer Commission (ACCC) monitors fuel
-                  pricing to ensure competitive markets and prevent anti-competitive behavior.
+                  <strong>ACCC Monitoring:</strong> Regular price surveillance
+                </p>
+                <p>
+                  <strong>Price Reporting:</strong> Mandatory price reporting in
+                  some states
+                </p>
+                <p>
+                  <strong>Consumer Protection:</strong> Anti-competitive
+                  behavior prevention
+                </p>
+                <p>
+                  The Australian Competition and Consumer Commission (ACCC)
+                  monitors fuel pricing to ensure competitive markets and
+                  prevent anti-competitive behavior.
                 </p>
               </div>
             </div>
@@ -343,7 +388,10 @@ const HowPricingWorksPage = () => {
               </div>
               <div className="impact-card">
                 <h4>Price Stability</h4>
-                <p>Fixed taxes provide some price stability during oil price volatility</p>
+                <p>
+                  Fixed taxes provide some price stability during oil price
+                  volatility
+                </p>
               </div>
               <div className="impact-card">
                 <h4>Regional Variation</h4>
@@ -356,7 +404,7 @@ const HowPricingWorksPage = () => {
             </div>
           </div>
         </div>
-      )
+      ),
     },
     tips: {
       title: 'Fuel Saving Tips',
@@ -366,9 +414,9 @@ const HowPricingWorksPage = () => {
           <div className="tips-intro">
             <h3>Maximize Your Fuel Savings</h3>
             <p>
-              Beyond finding the cheapest prices, there are many ways to reduce your
-              overall fuel costs through better driving habits, vehicle maintenance,
-              and smart planning.
+              Beyond finding the cheapest prices, there are many ways to reduce
+              your overall fuel costs through better driving habits, vehicle
+              maintenance, and smart planning.
             </p>
           </div>
 
@@ -380,21 +428,28 @@ const HowPricingWorksPage = () => {
                   <span className="tip-icon">🐌</span>
                   <div>
                     <h5>Smooth Acceleration</h5>
-                    <p>Gradual acceleration can improve fuel efficiency by 10-15%</p>
+                    <p>
+                      Gradual acceleration can improve fuel efficiency by 10-15%
+                    </p>
                   </div>
                 </div>
                 <div className="tip-item">
                   <span className="tip-icon">🛑</span>
                   <div>
                     <h5>Anticipate Stops</h5>
-                    <p>Coast to stops instead of braking hard at the last moment</p>
+                    <p>
+                      Coast to stops instead of braking hard at the last moment
+                    </p>
                   </div>
                 </div>
                 <div className="tip-item">
                   <span className="tip-icon">⚡</span>
                   <div>
                     <h5>Maintain Speed</h5>
-                    <p>Use cruise control on highways to maintain consistent speed</p>
+                    <p>
+                      Use cruise control on highways to maintain consistent
+                      speed
+                    </p>
                   </div>
                 </div>
                 <div className="tip-item">
@@ -481,15 +536,23 @@ const HowPricingWorksPage = () => {
             <div className="calculator-grid">
               <div className="calculator-item">
                 <h4>Weekly Fuel Cost</h4>
-                <p>Track your current weekly fuel spending to identify savings opportunities</p>
+                <p>
+                  Track your current weekly fuel spending to identify savings
+                  opportunities
+                </p>
               </div>
               <div className="calculator-item">
                 <h4>Price Difference Impact</h4>
-                <p>Filling up at 5¢ cheaper per liter saves $2.50 on a 50L tank</p>
+                <p>
+                  Filling up at 5¢ cheaper per liter saves $2.50 on a 50L tank
+                </p>
               </div>
               <div className="calculator-item">
                 <h4>Efficiency Improvements</h4>
-                <p>10% better fuel efficiency saves $10-20 per week for average drivers</p>
+                <p>
+                  10% better fuel efficiency saves $10-20 per week for average
+                  drivers
+                </p>
               </div>
               <div className="calculator-item">
                 <h4>Annual Savings</h4>
@@ -498,8 +561,8 @@ const HowPricingWorksPage = () => {
             </div>
           </div>
         </div>
-      )
-    }
+      ),
+    },
   };
 
   return (
@@ -516,10 +579,16 @@ const HowPricingWorksPage = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Breadcrumbs customCrumbs={[
-          { label: 'Home', path: '/', icon: '🏠' },
-          { label: 'How Pricing Works', path: '/how-pricing-works', isActive: true }
-        ]} />
+        <Breadcrumbs
+          customCrumbs={[
+            { label: 'Home', path: '/', icon: '🏠' },
+            {
+              label: 'How Pricing Works',
+              path: '/how-pricing-works',
+              isActive: true,
+            },
+          ]}
+        />
         <div className="pricing-header">
           <div className="container">
             <motion.div
@@ -529,7 +598,10 @@ const HowPricingWorksPage = () => {
               transition={{ duration: 0.6 }}
             >
               <h1>How Fuel Pricing Works in Australia</h1>
-              <p>Understanding the factors that influence petrol prices to help you save money</p>
+              <p>
+                Understanding the factors that influence petrol prices to help
+                you save money
+              </p>
             </motion.div>
           </div>
         </div>
@@ -544,7 +616,7 @@ const HowPricingWorksPage = () => {
                 transition={{ delay: 0.3 }}
               >
                 <nav className="section-nav">
-                  {sections.map(section => (
+                  {sections.map((section) => (
                     <button
                       key={section.key}
                       className={`nav-item ${activeSection === section.key ? 'active' : ''}`}
@@ -582,17 +654,19 @@ const HowPricingWorksPage = () => {
               transition={{ delay: 0.6 }}
             >
               <h3>Ready to Find the Best Fuel Prices?</h3>
-              <p>Put your knowledge to use with our live price comparison tools</p>
+              <p>
+                Put your knowledge to use with our live price comparison tools
+              </p>
               <div className="cta-buttons">
-                <Link to="/map" className="btn btn-primary">
+                <Link to="/map" className="btn-primary btn">
                   <span className="btn-text">View Live Map</span>
                   <span className="btn-icon">🗺️</span>
                 </Link>
-                <Link to="/directory" className="btn btn-secondary">
+                <Link to="/directory" className="btn-secondary btn">
                   <span className="btn-text">Browse Directory</span>
                   <span className="btn-icon">📋</span>
                 </Link>
-                <Link to="/fuel-price-trends" className="btn btn-outline">
+                <Link to="/fuel-price-trends" className="btn-outline btn">
                   <span className="btn-text">View Trends</span>
                   <span className="btn-icon">📈</span>
                 </Link>

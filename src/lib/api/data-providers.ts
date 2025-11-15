@@ -1,12 +1,12 @@
 /**
  * Multi-Provider Data Fetching
- * 
+ *
  * Supports multiple data sources:
  * - Baserow (default)
  * - Airtable
  * - Supabase
  * - REST API
- * 
+ *
  * Features:
  * - Automatic fallback between providers
  * - ISR support with Next.js cache
@@ -57,7 +57,7 @@ class BaserowProvider implements DataProvider {
   async fetchStations(): Promise<Station[]> {
     const client = getBaserowClient();
     const tableId = process.env.BASEROW_STATIONS_TABLE_ID;
-    
+
     if (!tableId) {
       throw new Error('BASEROW_STATIONS_TABLE_ID not configured');
     }
@@ -73,7 +73,7 @@ class BaserowProvider implements DataProvider {
   async fetchStationById(id: string | number): Promise<Station | null> {
     const client = getBaserowClient();
     const tableId = process.env.BASEROW_STATIONS_TABLE_ID;
-    
+
     if (!tableId) {
       return null;
     }
@@ -82,10 +82,12 @@ class BaserowProvider implements DataProvider {
     return row ? this.transformRow(row) : null;
   }
 
-  async fetchStationsByFilter(filters: Record<string, unknown>): Promise<Station[]> {
+  async fetchStationsByFilter(
+    filters: Record<string, unknown>
+  ): Promise<Station[]> {
     const client = getBaserowClient();
     const tableId = process.env.BASEROW_STATIONS_TABLE_ID;
-    
+
     if (!tableId) {
       return [];
     }
@@ -110,12 +112,17 @@ class BaserowProvider implements DataProvider {
     const transformed: Station = {
       ...row,
       id: row.id,
-      name: (row as Record<string, unknown>).name as string ||
-            (row as Record<string, unknown>).station_name as string ||
-            'Unknown Station',
-      brand: (row as Record<string, unknown>).brand as string | undefined || undefined,
-      address: (row as Record<string, unknown>).address as string || '',
-      suburb: (row as Record<string, unknown>).suburb as string | undefined || undefined,
+      name:
+        ((row as Record<string, unknown>).name as string) ||
+        ((row as Record<string, unknown>).station_name as string) ||
+        'Unknown Station',
+      brand:
+        ((row as Record<string, unknown>).brand as string | undefined) ||
+        undefined,
+      address: ((row as Record<string, unknown>).address as string) || '',
+      suburb:
+        ((row as Record<string, unknown>).suburb as string | undefined) ||
+        undefined,
       latitude: (row as Record<string, unknown>).latitude
         ? Number((row as Record<string, unknown>).latitude)
         : undefined,
@@ -144,7 +151,7 @@ class AirtableProvider implements DataProvider {
     }
 
     const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
-    
+
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -159,13 +166,13 @@ class AirtableProvider implements DataProvider {
       throw new Error(`Airtable API error: ${response.statusText}`);
     }
 
-    const data = await response.json() as {
+    const data = (await response.json()) as {
       records: Array<{
         id: string;
         fields: Record<string, unknown>;
       }>;
     };
-    
+
     return data.records.map((record) => {
       const fields = record.fields;
       return {
@@ -191,7 +198,7 @@ class AirtableProvider implements DataProvider {
     }
 
     const url = `https://api.airtable.com/v0/${baseId}/${tableName}/${id}`;
-    
+
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -209,11 +216,11 @@ class AirtableProvider implements DataProvider {
       throw new Error(`Airtable API error: ${response.statusText}`);
     }
 
-    const record = await response.json() as {
+    const record = (await response.json()) as {
       id: string;
       fields: Record<string, unknown>;
     };
-    
+
     const fields = record.fields;
     return {
       id: record.id,
@@ -273,16 +280,19 @@ class SupabaseProvider implements DataProvider {
       return null;
     }
 
-    const response = await fetch(`${supabaseUrl}/rest/v1/${tableName}?id=eq.${id}`, {
-      headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
-        'Content-Type': 'application/json',
-      },
-      next: {
-        revalidate: 1800,
-      },
-    });
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/${tableName}?id=eq.${id}`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+        next: {
+          revalidate: 1800,
+        },
+      }
+    );
 
     if (!response.ok) {
       return null;
@@ -302,13 +312,13 @@ class RestApiProvider implements DataProvider {
 
   async fetchStations(): Promise<Station[]> {
     const apiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
-    
+
     if (!apiUrl) {
       throw new Error('API_URL not configured');
     }
 
     const endpoint = `${apiUrl}/stations`;
-    
+
     const response = await fetch(endpoint, {
       headers: {
         'Content-Type': 'application/json',
@@ -328,13 +338,13 @@ class RestApiProvider implements DataProvider {
 
   async fetchStationById(id: string | number): Promise<Station | null> {
     const apiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
-    
+
     if (!apiUrl) {
       return null;
     }
 
     const endpoint = `${apiUrl}/stations/${id}`;
-    
+
     const response = await fetch(endpoint, {
       headers: {
         'Content-Type': 'application/json',
@@ -382,15 +392,17 @@ class ProviderManager {
 
     // Set active provider based on env or default to first available
     const preferredProvider = process.env.DATA_PROVIDER?.toLowerCase();
-    this.activeProvider = 
-      this.providers.find(p => p.name === preferredProvider) || 
+    this.activeProvider =
+      this.providers.find((p) => p.name === preferredProvider) ||
       this.providers[0] ||
       null;
   }
 
   getActiveProvider(): DataProvider {
     if (!this.activeProvider) {
-      throw new Error('No data provider configured. Please set up at least one provider.');
+      throw new Error(
+        'No data provider configured. Please set up at least one provider.'
+      );
     }
     return this.activeProvider;
   }
@@ -400,14 +412,14 @@ class ProviderManager {
     options: FetchOptions = {}
   ): Promise<T> {
     const { fallback = true } = options;
-    
+
     if (!fallback) {
       return fetchFn(this.getActiveProvider());
     }
 
     // Try each provider until one succeeds
     const errors: Error[] = [];
-    
+
     for (const provider of this.providers) {
       try {
         return await fetchFn(provider);
@@ -421,7 +433,7 @@ class ProviderManager {
 
     // All providers failed
     throw new Error(
-      `All data providers failed. Errors: ${errors.map(e => e.message).join('; ')}`
+      `All data providers failed. Errors: ${errors.map((e) => e.message).join('; ')}`
     );
   }
 }
@@ -436,18 +448,23 @@ const providerManager = new ProviderManager();
 /**
  * Get all stations with ISR support and automatic fallback
  */
-export const getStations = cache(async (options: FetchOptions = {}): Promise<Station[]> => {
-  return providerManager.fetchWithFallback(
-    (provider) => provider.fetchStations(),
-    options
-  );
-});
+export const getStations = cache(
+  async (options: FetchOptions = {}): Promise<Station[]> => {
+    return providerManager.fetchWithFallback(
+      (provider) => provider.fetchStations(),
+      options
+    );
+  }
+);
 
 /**
  * Get single station by ID with ISR support
  */
 export const getStationById = cache(
-  async (id: string | number, options: FetchOptions = {}): Promise<Station | null> => {
+  async (
+    id: string | number,
+    options: FetchOptions = {}
+  ): Promise<Station | null> => {
     return providerManager.fetchWithFallback(
       (provider) => provider.fetchStationById(id),
       options
@@ -463,24 +480,25 @@ export const getStationsByFilter = cache(
     filters: Record<string, unknown>,
     options: FetchOptions = {}
   ): Promise<Station[]> => {
-    return providerManager.fetchWithFallback(
-      (provider) => {
-        if (provider.fetchStationsByFilter) {
-          return provider.fetchStationsByFilter(filters);
-        }
-        // Fallback: fetch all and filter client-side
-        return provider.fetchStations().then(stations =>
-          stations.filter(station => {
-            return Object.entries(filters).every(([key, value]) => {
-              const stationValue = (station as Record<string, unknown>)[key];
-              return stationValue === value || 
-                     String(stationValue).toLowerCase().includes(String(value).toLowerCase());
-            });
-          })
-        );
-      },
-      options
-    );
+    return providerManager.fetchWithFallback((provider) => {
+      if (provider.fetchStationsByFilter) {
+        return provider.fetchStationsByFilter(filters);
+      }
+      // Fallback: fetch all and filter client-side
+      return provider.fetchStations().then((stations) =>
+        stations.filter((station) => {
+          return Object.entries(filters).every(([key, value]) => {
+            const stationValue = (station as Record<string, unknown>)[key];
+            return (
+              stationValue === value ||
+              String(stationValue)
+                .toLowerCase()
+                .includes(String(value).toLowerCase())
+            );
+          });
+        })
+      );
+    }, options);
   }
 );
 
@@ -496,4 +514,3 @@ export function getActiveProviderName(): string {
 }
 
 export default providerManager;
-

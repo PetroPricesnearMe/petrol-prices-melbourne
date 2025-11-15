@@ -1,10 +1,11 @@
 /**
  * Card Component (Molecule)
  * Flexible card container with composable parts
- * 
+ * Enhanced with Framer Motion animations, skeleton loading, and hover effects
+ *
  * @example
  * ```tsx
- * <Card>
+ * <Card hoverable>
  *   <CardHeader>
  *     <CardTitle>Title</CardTitle>
  *     <CardDescription>Description</CardDescription>
@@ -19,6 +20,9 @@
  * ```
  */
 
+'use client';
+
+import { motion } from 'framer-motion';
 import type { HTMLAttributes } from 'react';
 import React from 'react';
 
@@ -28,7 +32,18 @@ import { cn } from '@/lib/utils';
 // TYPES
 // ============================================================================
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+// Exclude animation and drag-related props from HTMLAttributes to avoid conflicts with Framer Motion
+type CardHTMLAttributes = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  | 'onAnimationStart'
+  | 'onAnimationEnd'
+  | 'onAnimationIteration'
+  | 'onDrag'
+  | 'onDragEnd'
+  | 'onDragStart'
+>;
+
+export interface CardProps extends CardHTMLAttributes {
   /** Visual variant */
   variant?: 'default' | 'bordered' | 'elevated' | 'outlined' | 'ghost';
   /** Hover effect */
@@ -43,11 +58,12 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 // STYLES
 // ============================================================================
 
-const baseStyles = 'rounded-xl transition-all duration-200';
+const baseStyles = 'rounded-2xl transition-all duration-300';
 
 const variants = {
   default: 'bg-white dark:bg-gray-800 shadow-sm',
-  bordered: 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700',
+  bordered:
+    'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700',
   elevated: 'bg-white dark:bg-gray-800 shadow-lg',
   outlined: 'bg-transparent border border-gray-300 dark:border-gray-600',
   ghost: 'bg-gray-50 dark:bg-gray-800/50',
@@ -71,13 +87,15 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
+    const MotionCard = motion.div;
+
     return (
-      <div
+      <MotionCard
         ref={ref}
         className={cn(
           baseStyles,
           variants[variant],
-          hoverable && 'hover:shadow-xl hover:-translate-y-1',
+          hoverable && 'hover:shadow-xl',
           clickable && [
             'cursor-pointer',
             'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-300',
@@ -91,13 +109,24 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         onKeyDown={(e) => {
           if (clickable && onClick && (e.key === 'Enter' || e.key === ' ')) {
             e.preventDefault();
-            onClick(e as any);
+            // Create a synthetic mouse event for onClick handler
+            const syntheticEvent = {
+              ...e,
+              currentTarget: e.currentTarget,
+              target: e.target,
+            } as unknown as React.MouseEvent<HTMLDivElement>;
+            onClick(syntheticEvent);
           }
         }}
+        whileHover={hoverable ? { y: -4, scale: 1.02 } : undefined}
+        whileTap={clickable ? { scale: 0.98 } : undefined}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         {...props}
       >
         {children}
-      </div>
+      </MotionCard>
     );
   }
 );
@@ -127,7 +156,10 @@ export const CardTitle = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn('text-2xl font-semibold leading-none tracking-tight', className)}
+    className={cn(
+      'text-2xl font-semibold leading-none tracking-tight',
+      className
+    )}
     {...props}
   >
     {children}
@@ -172,4 +204,3 @@ export const CardFooter = React.forwardRef<
 CardFooter.displayName = 'CardFooter';
 
 export default Card;
-

@@ -105,18 +105,24 @@ export function useMobileMenu(options: UseMobileMenuOptions = {}) {
   }, [closeOnRouteChange, isOpen, closeMenu]);
 
   // Handle click outside
-  const handleClickOutside = useCallback((event: MouseEvent, menuRef: React.RefObject<HTMLElement>) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      closeMenu();
-    }
-  }, [closeMenu]);
+  const handleClickOutside = useCallback(
+    (event: MouseEvent, menuRef: React.RefObject<HTMLElement>) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        closeMenu();
+      }
+    },
+    [closeMenu]
+  );
 
   // Handle swipe gestures (for mobile)
-  const handleSwipe = useCallback((direction: 'left' | 'right', threshold = 100) => {
-    if (direction === 'left' && isOpen) {
-      closeMenu();
-    }
-  }, [isOpen, closeMenu]);
+  const handleSwipe = useCallback(
+    (direction: 'left' | 'right', threshold = 100) => {
+      if (direction === 'left' && isOpen) {
+        closeMenu();
+      }
+    },
+    [isOpen, closeMenu]
+  );
 
   return {
     isOpen,

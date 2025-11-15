@@ -158,12 +158,7 @@ export async function getNearbyStations(
       .filter((s) => s.latitude && s.longitude)
       .map((s) => ({
         ...s,
-        distance: calculateDistance(
-          lat,
-          lng,
-          s.latitude!,
-          s.longitude!
-        ),
+        distance: calculateDistance(lat, lng, s.latitude!, s.longitude!),
       }))
       .filter((s) => s.distance <= radiusKm)
       .sort((a, b) => a.distance - b.distance);

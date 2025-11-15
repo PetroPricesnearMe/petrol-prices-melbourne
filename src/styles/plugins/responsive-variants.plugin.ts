@@ -5,7 +5,11 @@
 
 import plugin from 'tailwindcss/plugin';
 
-export const responsiveVariantsPlugin = plugin(function ({ addVariant, addUtilities, theme }) {
+export const responsiveVariantsPlugin = plugin(function ({
+  addVariant,
+  addUtilities,
+  theme,
+}) {
   // ========================================
   // CUSTOM RESPONSIVE VARIANTS
   // ========================================
@@ -29,7 +33,10 @@ export const responsiveVariantsPlugin = plugin(function ({ addVariant, addUtilit
   addVariant('no-touch', '@media (pointer: fine)');
 
   // High resolution displays
-  addVariant('retina', '@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)');
+  addVariant(
+    'retina',
+    '@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)'
+  );
 
   // Reduced motion
   addVariant('motion-safe', '@media (prefers-reduced-motion: no-preference)');

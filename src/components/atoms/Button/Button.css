@@ -83,23 +83,23 @@
 
 /* Solid */
 .button--solid.button--primary {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
 }
 
 .button--solid.button--primary:hover:not(:disabled) {
-  background-color: #1976D2;
+  background-color: #1976d2;
 }
 
 .button--solid.button--primary:active:not(:disabled) {
-  background-color: #1565C0;
+  background-color: #1565c0;
 }
 
 /* Outlined */
 .button--outlined.button--primary {
   background-color: transparent;
-  color: #2196F3;
-  border: 2px solid #2196F3;
+  color: #2196f3;
+  border: 2px solid #2196f3;
 }
 
 .button--outlined.button--primary:hover:not(:disabled) {
@@ -113,7 +113,7 @@
 /* Ghost */
 .button--ghost.button--primary {
   background-color: transparent;
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .button--ghost.button--primary:hover:not(:disabled) {
@@ -127,13 +127,13 @@
 /* Link */
 .button--link.button--primary {
   background-color: transparent;
-  color: #2196F3;
+  color: #2196f3;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .button--link.button--primary:hover:not(:disabled) {
-  text-decoration-color: #1976D2;
+  text-decoration-color: #1976d2;
 }
 
 /* ============================================================================
@@ -141,18 +141,18 @@
  * ============================================================================ */
 
 .button--solid.button--secondary {
-  background-color: #9C27B0;
+  background-color: #9c27b0;
   color: white;
 }
 
 .button--solid.button--secondary:hover:not(:disabled) {
-  background-color: #7B1FA2;
+  background-color: #7b1fa2;
 }
 
 .button--outlined.button--secondary {
   background-color: transparent;
-  color: #9C27B0;
-  border: 2px solid #9C27B0;
+  color: #9c27b0;
+  border: 2px solid #9c27b0;
 }
 
 .button--outlined.button--secondary:hover:not(:disabled) {
@@ -161,7 +161,7 @@
 
 .button--ghost.button--secondary {
   background-color: transparent;
-  color: #9C27B0;
+  color: #9c27b0;
 }
 
 .button--ghost.button--secondary:hover:not(:disabled) {
@@ -173,39 +173,39 @@
  * ============================================================================ */
 
 .button--solid.button--success {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
 .button--solid.button--success:hover:not(:disabled) {
-  background-color: #388E3C;
+  background-color: #388e3c;
 }
 
 .button--solid.button--warning {
-  background-color: #FF9800;
+  background-color: #ff9800;
   color: white;
 }
 
 .button--solid.button--warning:hover:not(:disabled) {
-  background-color: #F57C00;
+  background-color: #f57c00;
 }
 
 .button--solid.button--error {
-  background-color: #F44336;
+  background-color: #f44336;
   color: white;
 }
 
 .button--solid.button--error:hover:not(:disabled) {
-  background-color: #D32F2F;
+  background-color: #d32f2f;
 }
 
 .button--solid.button--info {
-  background-color: #03A9F4;
+  background-color: #03a9f4;
   color: white;
 }
 
 .button--solid.button--info:hover:not(:disabled) {
-  background-color: #0288D1;
+  background-color: #0288d1;
 }
 
 /* ============================================================================

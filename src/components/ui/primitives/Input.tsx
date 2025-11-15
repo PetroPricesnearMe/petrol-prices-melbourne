@@ -1,10 +1,10 @@
 /**
  * Input Component (Atom)
  * Accessible form input with variants
- * 
+ *
  * @example
  * ```tsx
- * <Input 
+ * <Input
  *   label="Email"
  *   type="email"
  *   required
@@ -129,10 +129,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             aria-invalid={hasError}
             aria-describedby={
-              cn(
-                helperText && helperId,
-                error && errorId
-              ).trim() || undefined
+              cn(helperText && helperId, error && errorId).trim() || undefined
             }
             aria-required={required}
             className={cn(
@@ -140,8 +137,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               hasError
                 ? stateStyles.error
                 : hasSuccess
-                ? stateStyles.success
-                : stateStyles.default,
+                  ? stateStyles.success
+                  : stateStyles.default,
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className
@@ -159,10 +156,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         {/* Helper Text */}
         {helperText && !error && (
-          <p
-            id={helperId}
-            className="text-xs text-gray-500 dark:text-gray-400"
-          >
+          <p id={helperId} className="text-xs text-gray-500 dark:text-gray-400">
             {helperText}
           </p>
         )}
@@ -171,7 +165,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {error && (
           <p
             id={errorId}
-            className="text-xs text-red-600 dark:text-red-400"
+            className="text-red-600 dark:text-red-400 text-xs"
             role="alert"
           >
             {error}
@@ -180,9 +174,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         {/* Success Message */}
         {success && !error && (
-          <p className="text-xs text-green-600 dark:text-green-400">
-            ✓ Valid
-          </p>
+          <p className="text-green-600 dark:text-green-400 text-xs">✓ Valid</p>
         )}
       </div>
     );
@@ -192,4 +184,3 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = 'Input';
 
 export default Input;
-

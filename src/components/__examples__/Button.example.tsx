@@ -1,6 +1,6 @@
 /**
  * Button Component - Example Implementation
- * 
+ *
  * This is a production-ready Button component following best practices:
  * - TypeScript with proper typing
  * - Accessible (ARIA attributes, keyboard navigation)
@@ -9,7 +9,7 @@
  * - Loading and disabled states
  * - Icon support
  * - Proper event handling
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -155,7 +155,7 @@ export interface ButtonProps
 
 /**
  * Button Component
- * 
+ *
  * A versatile button component with multiple variants and states.
  * Follows accessibility best practices and provides excellent UX.
  */
@@ -184,20 +184,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         disabled={isDisabled}
-        className={cn(
-          buttonVariants({ variant, size, fullWidth }),
-          className
-        )}
+        className={cn(buttonVariants({ variant, size, fullWidth }), className)}
         aria-busy={isLoading}
         aria-disabled={isDisabled}
         {...props}
       >
         {/* Loading spinner */}
         {isLoading && (
-          <Loader2 
-            className="h-4 w-4 animate-spin" 
-            aria-hidden="true"
-          />
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
         )}
 
         {/* Left icon */}
@@ -227,4 +221,3 @@ Button.displayName = 'Button';
  * Export button variants for external use
  */
 export { buttonVariants };
-

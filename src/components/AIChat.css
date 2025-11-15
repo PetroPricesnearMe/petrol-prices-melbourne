@@ -124,7 +124,9 @@
 }
 
 @keyframes bounce {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
   }
   40% {
@@ -169,7 +171,9 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .ai-chat-submit:hover:not(:disabled) {
@@ -199,4 +203,3 @@
 .ai-chat-messages::-webkit-scrollbar-thumb:hover {
   background: #5568d3;
 }
-

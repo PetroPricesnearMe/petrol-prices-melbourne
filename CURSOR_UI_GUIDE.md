@@ -19,9 +19,11 @@ Your project now has optimized tab bar and UI settings in [.vscode/settings.json
 ## 🎯 Accessing Key UI Elements
 
 ### Tab Bar
+
 The tab bar shows open files at the top of the editor.
 
 **Keyboard Shortcuts:**
+
 - `Ctrl+Tab` - Switch between open tabs
 - `Ctrl+W` - Close current tab
 - `Ctrl+K Ctrl+W` - Close all tabs
@@ -29,6 +31,7 @@ The tab bar shows open files at the top of the editor.
 - `Alt+1` through `Alt+9` - Switch to tab 1-9
 
 **Right-Click Tab for:**
+
 - Close Tab
 - Close Other Tabs
 - Close Tabs to the Right
@@ -59,6 +62,7 @@ The tab bar shows open files at the top of the editor.
 **Toggle UI Elements:**
 
 Press `Alt` to show menu bar, then click `View`:
+
 - **Command Palette** - `Ctrl+Shift+P`
 - **Open View** - `Ctrl+Q`
 - **Appearance** submenu:
@@ -69,6 +73,7 @@ Press `Alt` to show menu bar, then click `View`:
   - Show Menu Bar - `Alt`
 
 Or use **Command Palette** (`Ctrl+Shift+P`) and type:
+
 - `View: Toggle Activity Bar Visibility`
 - `View: Toggle Side Bar Visibility`
 - `View: Toggle Status Bar Visibility`
@@ -80,17 +85,21 @@ Or use **Command Palette** (`Ctrl+Shift+P`) and type:
 ## 🗂️ File Navigation
 
 ### Quick Open
+
 - `Ctrl+P` - Quick open file by name
 - `Ctrl+Shift+P` - Command Palette
 - `Ctrl+Shift+O` - Go to Symbol in File
 - `Ctrl+T` - Go to Symbol in Workspace
 
 ### Explorer Sidebar
+
 - `Ctrl+Shift+E` - Focus on Explorer
 - `Ctrl+B` - Toggle sidebar visibility
 
 ### Breadcrumbs
+
 Now enabled! Shows file path at top of editor:
+
 - Click segments to navigate
 - `Ctrl+Shift+.` - Focus breadcrumbs
 
@@ -99,11 +108,13 @@ Now enabled! Shows file path at top of editor:
 ## 📋 Editor Layout
 
 ### Split Editor
+
 - `Ctrl+\` - Split editor vertically
 - `Ctrl+K Ctrl+\` - Split editor horizontally
 - `Ctrl+1/2/3` - Focus on editor group 1, 2, or 3
 
 ### Tab Management
+
 - **Pin Tab** - Right-click tab → Pin Tab
 - **Unpin Tab** - Right-click pinned tab → Unpin Tab
 - Pinned tabs stay at the left and won't close with "Close All"
@@ -117,6 +128,7 @@ Now enabled! Shows file path at top of editor:
 Located in [.vscode/settings.json](.vscode/settings.json):
 
 **Tab Bar Configuration:**
+
 ```json
 "workbench.editor.showTabs": "multiple",    // Show multiple tabs
 "workbench.editor.tabSizing": "fit",        // Tabs fit to content
@@ -124,6 +136,7 @@ Located in [.vscode/settings.json](.vscode/settings.json):
 ```
 
 **UI Visibility:**
+
 ```json
 "workbench.activityBar.visible": true,      // Show activity bar
 "workbench.statusBar.visible": true,        // Show status bar
@@ -148,13 +161,16 @@ Located in [.vscode/settings.json](.vscode/settings.json):
 ## 🎨 Appearance Customization
 
 ### Color Theme
+
 - `Ctrl+K Ctrl+T` - Select Color Theme
 - Or: `File` → `Preferences` → `Color Theme`
 
 ### File Icons
+
 - `File` → `Preferences` → `File Icon Theme`
 
 ### Zoom Level
+
 - `Ctrl++` - Zoom in
 - `Ctrl+-` - Zoom out
 - `Ctrl+0` - Reset zoom
@@ -202,6 +218,7 @@ Add these to [.vscode/settings.json](.vscode/settings.json) if desired:
 ### Settings Categories
 
 **Commonly Used Settings:**
+
 - User Settings - Apply globally
 - Workspace Settings - Apply to this project only
 - Folder Settings - Apply to specific folder
@@ -215,12 +232,14 @@ Add these to [.vscode/settings.json](.vscode/settings.json) if desired:
 **Toggle Panel:** `Ctrl+J`
 
 **Panel Views:**
+
 - **Terminal** - `Ctrl+` ` (backtick)
 - **Problems** - `Ctrl+Shift+M`
 - **Output** - `Ctrl+Shift+U`
 - **Debug Console** - `Ctrl+Shift+Y`
 
 **Move Panel:**
+
 - Right-click panel → Move Panel
 - Or drag panel to different edge
 
@@ -248,6 +267,7 @@ Add these to [.vscode/settings.json](.vscode/settings.json) if desired:
 ### UI Elements Missing
 
 Run these commands from Command Palette (`Ctrl+Shift+P`):
+
 - `View: Toggle Activity Bar Visibility`
 - `View: Toggle Side Bar Visibility`
 - `View: Toggle Status Bar Visibility`
@@ -257,18 +277,22 @@ Run these commands from Command Palette (`Ctrl+Shift+P`):
 ## 🎓 Pro Tips
 
 ### Multi-Select Tabs
+
 - `Ctrl+Click` - Select multiple tabs
 - Right-click → Close Selected Tabs
 
 ### Tab Groups
+
 - Drag tabs between split editors
 - `Ctrl+K ←/→/↑/↓` - Move editor to different group
 
 ### Quick Tab Navigation
+
 - `Ctrl+Tab` - Switch tabs (hold Ctrl, tap Tab)
 - `Ctrl+PageUp/PageDown` - Previous/Next tab
 
 ### Zen Mode (Distraction-Free)
+
 - `Ctrl+K Z` - Enter Zen Mode
 - Press `Esc Esc` to exit
 
@@ -278,39 +302,41 @@ Run these commands from Command Palette (`Ctrl+Shift+P`):
 
 ### Essential Shortcuts
 
-| Action | Shortcut |
-|--------|----------|
-| Open Settings | `Ctrl+,` |
+| Action          | Shortcut       |
+| --------------- | -------------- |
+| Open Settings   | `Ctrl+,`       |
 | Command Palette | `Ctrl+Shift+P` |
-| Quick Open File | `Ctrl+P` |
-| Toggle Sidebar | `Ctrl+B` |
-| Toggle Panel | `Ctrl+J` |
-| New File | `Ctrl+N` |
-| Close Tab | `Ctrl+W` |
-| Switch Tabs | `Ctrl+Tab` |
-| Split Editor | `Ctrl+\` |
-| Toggle Menu Bar | `Alt` |
+| Quick Open File | `Ctrl+P`       |
+| Toggle Sidebar  | `Ctrl+B`       |
+| Toggle Panel    | `Ctrl+J`       |
+| New File        | `Ctrl+N`       |
+| Close Tab       | `Ctrl+W`       |
+| Switch Tabs     | `Ctrl+Tab`     |
+| Split Editor    | `Ctrl+\`       |
+| Toggle Menu Bar | `Alt`          |
 
 ### View Shortcuts
 
-| Action | Shortcut |
-|--------|----------|
-| Explorer | `Ctrl+Shift+E` |
-| Search | `Ctrl+Shift+F` |
+| Action         | Shortcut       |
+| -------------- | -------------- |
+| Explorer       | `Ctrl+Shift+E` |
+| Search         | `Ctrl+Shift+F` |
 | Source Control | `Ctrl+Shift+G` |
-| Debug | `Ctrl+Shift+D` |
-| Extensions | `Ctrl+Shift+X` |
-| Terminal | `Ctrl+` ` |
+| Debug          | `Ctrl+Shift+D` |
+| Extensions     | `Ctrl+Shift+X` |
+| Terminal       | `Ctrl+` `      |
 
 ---
 
 ## 📚 Additional Resources
 
 ### Official Documentation
+
 - VSCode Keyboard Shortcuts: [code.visualstudio.com/shortcuts](https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf)
 - Cursor Documentation: [cursor.com/docs](https://cursor.com/docs)
 
 ### Your Project Documentation
+
 - [SETUP.md](SETUP.md) - Complete setup guide
 - [QUICK_START.md](QUICK_START.md) - Quick start guide
 - [PROJECT_HEALTH_REPORT.md](PROJECT_HEALTH_REPORT.md) - Project status

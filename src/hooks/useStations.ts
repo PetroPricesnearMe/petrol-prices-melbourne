@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import { stationsService } from '@/services/stations.service';
 import type { SearchFilters } from '@/types/index';
 
-
 /**
  * Custom hook to fetch stations with filters
  * @param filters - Search filters
@@ -39,15 +38,10 @@ export function useStation(id: number) {
  * @param radius - Search radius in kilometers
  * @returns Query result with nearby stations
  */
-export function useNearbyStations(
-  lat?: number,
-  lng?: number,
-  radius?: number
-) {
+export function useNearbyStations(lat?: number, lng?: number, radius?: number) {
   return useQuery({
     queryKey: ['stations', 'nearby', lat, lng, radius],
     queryFn: () => stationsService.getStationsNearby(lat!, lng!, radius),
     enabled: !!lat && !!lng,
   });
 }
-

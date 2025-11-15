@@ -1,24 +1,24 @@
 /**
  * ClassName Utility (cn)
- * 
+ *
  * Merges Tailwind CSS classes intelligently, handling conflicts.
  * Uses tailwind-merge for proper class precedence and clsx for conditional classes.
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * cn('bg-red-500', 'text-white') // 'bg-red-500 text-white'
- * 
+ *
  * // Conflicting classes (last one wins)
  * cn('bg-red-500', 'bg-blue-500') // 'bg-blue-500'
- * 
+ *
  * // Conditional classes
  * cn('btn', isActive && 'btn-active') // 'btn btn-active' or 'btn'
- * 
+ *
  * // Array and object syntax
  * cn(['btn', 'btn-primary'], { 'btn-disabled': isDisabled })
  * ```
- * 
+ *
  * @module design-system/utils/cn
  */
 
@@ -27,7 +27,7 @@ import { twMerge } from 'tailwind-merge';
 
 /**
  * Combines class names intelligently
- * 
+ *
  * @param inputs - Class names to merge (strings, arrays, objects, or falsy values)
  * @returns Merged class string with conflicts resolved
  */
@@ -37,7 +37,7 @@ export function cn(...inputs: ClassValue[]): string {
 
 /**
  * Type-safe variant creator for component variants
- * 
+ *
  * @example
  * ```tsx
  * const buttonVariants = cva('btn', {
@@ -66,7 +66,9 @@ export function cva<T extends Record<string, Record<string, string>>>(
     defaultVariants?: Partial<{ [K in keyof T]: keyof T[K] }>;
   }
 ) {
-  return (props?: Partial<{ [K in keyof T]: keyof T[K] }> & { className?: string }) => {
+  return (
+    props?: Partial<{ [K in keyof T]: keyof T[K] }> & { className?: string }
+  ) => {
     const { className, ...variantProps } = props ?? {};
     const classes = [base];
 
@@ -75,7 +77,7 @@ export function cva<T extends Record<string, Record<string, string>>>(
         const variantValue =
           (variantProps as any)[variantKey] ??
           (config.defaultVariants as any)?.[variantKey];
-        
+
         if (variantValue) {
           classes.push((config.variants as any)[variantKey][variantValue]);
         }
@@ -90,4 +92,3 @@ export function cva<T extends Record<string, Record<string, string>>>(
  * Export default
  */
 export default cn;
-

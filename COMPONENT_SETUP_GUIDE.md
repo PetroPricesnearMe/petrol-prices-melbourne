@@ -22,6 +22,7 @@ npm install --save-dev typescript @types/react @types/react-dom @types/node
 ### 2. Configure TypeScript
 
 The `tsconfig.json` file is already set up in the root directory with:
+
 - Strict type checking
 - Path aliases for clean imports
 - JSX support
@@ -93,9 +94,7 @@ function MyComponent() {
   return (
     <div>
       <Text variant="h1">Hello World</Text>
-      <Button onClick={() => console.log('Clicked!')}>
-        Click Me
-      </Button>
+      <Button onClick={() => console.log('Clicked!')}>Click Me</Button>
     </div>
   );
 }
@@ -108,11 +107,13 @@ import { colors, spacing } from '@/design-system/tokens';
 
 function MyStyledComponent() {
   return (
-    <div style={{
-      backgroundColor: colors.primary[500],
-      padding: spacing[4],
-      borderRadius: '0.5rem'
-    }}>
+    <div
+      style={{
+        backgroundColor: colors.primary[500],
+        padding: spacing[4],
+        borderRadius: '0.5rem',
+      }}
+    >
       Styled content
     </div>
   );
@@ -133,8 +134,8 @@ export default function HomePage() {
         logoText: 'My App',
         navItems: [
           { label: 'Home', href: '/', active: true },
-          { label: 'About', href: '/about' }
-        ]
+          { label: 'About', href: '/about' },
+        ],
       }}
     >
       <Heading1>Welcome</Heading1>
@@ -151,6 +152,7 @@ If you have existing components, here's how to migrate:
 ### Step 1: Identify Component Level
 
 Determine where your component fits:
+
 - **Atom**: Single-purpose, no dependencies (e.g., Button, Input)
 - **Molecule**: Combines atoms (e.g., SearchBar, Card)
 - **Organism**: Complex, domain-specific (e.g., Navigation, ProductCard)
@@ -172,15 +174,15 @@ export interface MyComponentProps extends BaseProps {
   onClick: () => void;
 }
 
-export const MyComponent: React.FC<MyComponentProps> = ({ 
-  title, 
+export const MyComponent: React.FC<MyComponentProps> = ({
+  title,
   onClick,
   className,
-  ...props 
+  ...props
 }) => {
   return (
-    <button 
-      onClick={onClick} 
+    <button
+      onClick={onClick}
       className={cn('my-component', className)}
       {...props}
     >
@@ -223,6 +225,7 @@ Ensure your components are accessible:
 ### Creating a New Atom
 
 1. Create a new directory in `src/components/atoms/`:
+
    ```
    src/components/atoms/NewAtom/
    ├── NewAtom.tsx
@@ -231,6 +234,7 @@ Ensure your components are accessible:
    ```
 
 2. Implement the component:
+
    ```tsx
    // NewAtom.tsx
    import React from 'react';
@@ -242,10 +246,7 @@ Ensure your components are accessible:
      // Your props
    }
 
-   export const NewAtom: React.FC<NewAtomProps> = ({
-     className,
-     ...props
-   }) => {
+   export const NewAtom: React.FC<NewAtomProps> = ({ className, ...props }) => {
      return (
        <div className={cn('new-atom', className)} {...props}>
          {/* Implementation */}
@@ -255,6 +256,7 @@ Ensure your components are accessible:
    ```
 
 3. Export from index:
+
    ```tsx
    // index.ts
    export { NewAtom } from './NewAtom';
@@ -325,7 +327,7 @@ describe('Button', () => {
   it('handles click events', async () => {
     const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Click Me</Button>);
-    
+
     await userEvent.click(screen.getByText('Click Me'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -343,7 +345,8 @@ describe('Button', () => {
 
 **Problem:** Import errors like `Cannot find module '@/components'`
 
-**Solution:** 
+**Solution:**
+
 1. Check `tsconfig.json` has correct paths
 2. Restart your IDE/dev server
 3. Clear build cache: `rm -rf .next` or `rm -rf dist`
@@ -353,6 +356,7 @@ describe('Button', () => {
 **Problem:** Type errors in components
 
 **Solution:**
+
 1. Ensure all dependencies have type definitions
 2. Check import paths are correct
 3. Run `npm install` to ensure all packages are installed
@@ -363,6 +367,7 @@ describe('Button', () => {
 **Problem:** CSS classes not working
 
 **Solution:**
+
 1. Verify CSS files are imported in component files
 2. Check class names match between CSS and TypeScript
 3. Ensure build tool processes CSS files
@@ -373,6 +378,7 @@ describe('Button', () => {
 **Problem:** Import errors for design tokens
 
 **Solution:**
+
 1. Verify path aliases in tsconfig.json
 2. Check token files exist in `src/design-system/tokens/`
 3. Ensure tokens are exported from `index.ts`
@@ -380,29 +386,34 @@ describe('Button', () => {
 ## Best Practices
 
 ### 1. Component Organization
+
 - Keep components focused and single-purpose
 - Use composition over complex props
 - Extract reusable logic into hooks
 
 ### 2. TypeScript Usage
+
 - Always define prop types
 - Use strict mode
 - Avoid `any` type
 - Leverage type inference
 
 ### 3. Styling
+
 - Use design tokens consistently
 - Keep CSS files small and focused
 - Follow BEM-like naming for CSS classes
 - Use semantic class names
 
 ### 4. Accessibility
+
 - Use semantic HTML
 - Add ARIA labels where needed
 - Ensure keyboard navigation works
 - Test with screen readers
 
 ### 5. Performance
+
 - Use React.memo for expensive components
 - Lazy load heavy components
 - Optimize images and assets
@@ -440,6 +451,7 @@ describe('Button', () => {
 ## Support
 
 If you encounter issues or have questions:
+
 1. Check the documentation files
 2. Review example code
 3. Inspect component source code
@@ -448,4 +460,3 @@ If you encounter issues or have questions:
 ---
 
 **Happy coding!** 🚀
-

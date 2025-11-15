@@ -68,15 +68,26 @@ html {
 
 body {
   /* Cross-browser font stack */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    Arial, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
 
   /* Font smoothing for better text rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "kern" 1;
+  font-feature-settings: 'kern' 1;
   font-kerning: normal;
 
   /* Colors with fallbacks for older browsers */
@@ -165,7 +176,10 @@ body {
 .btn-primary {
   /* Gradient background with fallback */
   background-color: var(--primary-color, #2563eb);
-  background-image: var(--gradient, linear-gradient(135deg, #2563eb 0%, #10b981 100%));
+  background-image: var(
+    --gradient,
+    linear-gradient(135deg, #2563eb 0%, #10b981 100%)
+  );
   color: white;
 
   /* Shadow with fallbacks */

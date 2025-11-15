@@ -26,15 +26,12 @@ export function ThemeToggle({
   if (!mounted) {
     return (
       <button
-        className={cn(
-          'btn btn-sm btn-outline opacity-50',
-          className
-        )}
+        className={cn('btn-sm btn-outline btn opacity-50', className)}
         disabled
         aria-label="Loading theme..."
       >
         <svg
-          className="w-5 h-5"
+          className="h-5 w-5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -56,7 +53,7 @@ export function ThemeToggle({
         <select
           value={theme}
           onChange={(e) => setTheme(e.target.value as any)}
-          className="btn btn-sm btn-outline cursor-pointer"
+          className="btn-sm btn-outline btn cursor-pointer"
           aria-label="Select theme"
         >
           <option value="light">Light</option>
@@ -69,18 +66,28 @@ export function ThemeToggle({
 
   if (variant === 'full') {
     return (
-      <div className={cn('inline-flex items-center gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg', className)}>
+      <div
+        className={cn(
+          'inline-flex items-center gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-800',
+          className
+        )}
+      >
         <button
           onClick={() => setTheme('light')}
           className={cn(
-            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+            'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
             theme === 'light'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
+              : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
           )}
           aria-label="Light theme"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -92,14 +99,19 @@ export function ThemeToggle({
         <button
           onClick={() => setTheme('dark')}
           className={cn(
-            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+            'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
             theme === 'dark'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
+              : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
           )}
           aria-label="Dark theme"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -111,14 +123,19 @@ export function ThemeToggle({
         <button
           onClick={() => setTheme('system')}
           className={cn(
-            'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+            'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
             theme === 'system'
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white'
+              : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
           )}
           aria-label="System theme"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -136,7 +153,7 @@ export function ThemeToggle({
     <button
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       className={cn(
-        'btn btn-sm btn-outline',
+        'btn-sm btn-outline btn',
         'transition-all duration-300',
         className
       )}
@@ -144,7 +161,7 @@ export function ThemeToggle({
     >
       {resolvedTheme === 'dark' ? (
         <svg
-          className="w-5 h-5"
+          className="h-5 w-5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -158,7 +175,7 @@ export function ThemeToggle({
         </svg>
       ) : (
         <svg
-          className="w-5 h-5"
+          className="h-5 w-5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

@@ -28,22 +28,30 @@ interface SkipToContentProps {
   className?: string;
 }
 
-export function SkipToContent({ links = defaultSkipLinks, className = '' }: SkipToContentProps) {
+export function SkipToContent({
+  links = defaultSkipLinks,
+  className = '',
+}: SkipToContentProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     // Check if target elements exist
-    const validLinks = links.filter(link => {
+    const validLinks = links.filter((link) => {
       const target = document.querySelector(link.href);
       return target !== null;
     });
 
     if (validLinks.length === 0) {
-      console.warn('⚠️ SkipToContent: No valid target elements found. Make sure to add id attributes to your landmark elements.');
+      console.warn(
+        '⚠️ SkipToContent: No valid target elements found. Make sure to add id attributes to your landmark elements.'
+      );
     }
   }, [links]);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
     e.preventDefault();
 
     const target = document.querySelector(href);

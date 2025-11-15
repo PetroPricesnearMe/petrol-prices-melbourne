@@ -9,23 +9,36 @@ import { Suspense } from 'react';
 import { Search, Filter, MapPin, Star } from 'lucide-react';
 
 import { Button } from '@/components/ui/primitives/Button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/primitives/Card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/primitives/Card';
 import { Input } from '@/components/ui/primitives/Input';
-import { Container, Section, ResponsiveGrid, GridItem, Flex } from '@/components/layout/ResponsiveGrid';
+import {
+  Container,
+  Section,
+  ResponsiveGrid,
+  GridItem,
+  Flex,
+} from '@/components/layout/ResponsiveGrid';
 import { StructuredData } from '@/components/StructuredData';
 import metadataJson from '@/data/stations-metadata.json';
 import { generateWebSiteSchema } from '@/lib/schema';
 
 export const metadata: Metadata = {
   title: `Melbourne Petrol Stations Directory - ${metadataJson.totalStations}+ Stations | Find Cheapest Fuel`,
-  description:
-    `Browse our complete directory of ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ Melbourne suburbs. Compare live fuel prices from BP, Shell, Caltex, 7-Eleven, and more.`,
+  description: `Browse our complete directory of ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ Melbourne suburbs. Compare live fuel prices from BP, Shell, Caltex, 7-Eleven, and more.`,
 };
 
 export const revalidate = 86400;
 
 export default function DirectoryPageStandardized() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const structuredDataSchemas = generateWebSiteSchema(baseUrl);
 
   return (
@@ -36,21 +49,22 @@ export default function DirectoryPageStandardized() {
         {/* Hero Section */}
         <Section spacing="lg" background="white">
           <Container size="xl">
-            <div className="text-center max-w-4xl mx-auto">
+            <div className="mx-auto max-w-4xl text-center">
               {/* Title */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+              <h1 className="mb-6 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
                 Melbourne Petrol Stations
               </h1>
-              
+
               {/* Description */}
-              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8">
-                Browse {metadataJson.totalStations}+ stations across {metadataJson.suburbs.length}+ suburbs with live fuel prices
+              <p className="mb-8 text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
+                Browse {metadataJson.totalStations}+ stations across{' '}
+                {metadataJson.suburbs.length}+ suburbs with live fuel prices
               </p>
 
               {/* Search Bar */}
-              <div className="max-w-2xl mx-auto mb-8">
+              <div className="mx-auto mb-8 max-w-2xl">
                 <Input
-                  leftIcon={<Search className="w-5 h-5" />}
+                  leftIcon={<Search className="h-5 w-5" />}
                   placeholder="Search by suburb, postcode, or station name..."
                   aria-label="Search stations"
                   fullWidth
@@ -59,50 +73,48 @@ export default function DirectoryPageStandardized() {
 
               {/* Stats Bar */}
               <Flex justify="center" gap="md" wrap className="mb-8">
-                <Card variant="ghost" className="px-6 py-4 min-w-[140px]">
+                <Card variant="ghost" className="min-w-[140px] px-6 py-4">
                   <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">
                     {metadataJson.totalStations}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Stations</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Stations
+                  </div>
                 </Card>
-                
-                <Card variant="ghost" className="px-6 py-4 min-w-[140px]">
-                  <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+
+                <Card variant="ghost" className="min-w-[140px] px-6 py-4">
+                  <div className="text-green-600 dark:text-green-400 text-3xl font-bold">
                     {metadataJson.suburbs.length}+
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Suburbs</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Suburbs
+                  </div>
                 </Card>
-                
-                <Card variant="ghost" className="px-6 py-4 min-w-[140px]">
-                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+
+                <Card variant="ghost" className="min-w-[140px] px-6 py-4">
+                  <div className="text-blue-600 dark:text-blue-400 text-3xl font-bold">
                     {metadataJson.priceRange.unleaded.average}¢
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Avg Price</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Avg Price
+                  </div>
                 </Card>
               </Flex>
 
               {/* Action Buttons */}
               <Flex justify="center" gap="md" wrap>
-                <Button 
-                  variant="primary" 
+                <Button
+                  variant="primary"
                   size="lg"
                   leftIcon={<MapPin />}
                   aria-label="Find stations near your location"
                 >
                   Near Me
                 </Button>
-                <Button 
-                  variant="outlined" 
-                  size="lg"
-                  leftIcon={<Star />}
-                >
+                <Button variant="outlined" size="lg" leftIcon={<Star />}>
                   Favorites
                 </Button>
-                <Button 
-                  variant="outlined" 
-                  size="lg"
-                  leftIcon={<Filter />}
-                >
+                <Button variant="outlined" size="lg" leftIcon={<Filter />}>
                   Filters
                 </Button>
               </Flex>
@@ -122,7 +134,7 @@ export default function DirectoryPageStandardized() {
             >
               {/* Filters Sidebar */}
               <GridItem colSpan={{ default: 1, lg: 3 }}>
-                <div className="lg:sticky lg:top-4 space-y-6">
+                <div className="space-y-6 lg:sticky lg:top-4">
                   {/* Filters Card */}
                   <Card>
                     <CardHeader>
@@ -132,18 +144,29 @@ export default function DirectoryPageStandardized() {
                     <CardContent className="space-y-6">
                       {/* Fuel Type */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        <label className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
                           Fuel Type
                         </label>
                         <div className="space-y-2">
-                          {['Unleaded (ULP)', 'Premium 95', 'Premium 98', 'Diesel', 'E10'].map((fuel) => (
-                            <label key={fuel} className="flex items-center gap-2 cursor-pointer">
+                          {[
+                            'Unleaded (ULP)',
+                            'Premium 95',
+                            'Premium 98',
+                            'Diesel',
+                            'E10',
+                          ].map((fuel) => (
+                            <label
+                              key={fuel}
+                              className="flex cursor-pointer items-center gap-2"
+                            >
                               <input
                                 type="checkbox"
-                                className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                                 aria-label={`Filter by ${fuel}`}
                               />
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{fuel}</span>
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                                {fuel}
+                              </span>
                             </label>
                           ))}
                         </div>
@@ -151,18 +174,30 @@ export default function DirectoryPageStandardized() {
 
                       {/* Brand */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        <label className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
                           Brand
                         </label>
                         <div className="space-y-2">
-                          {['Shell', 'BP', 'Caltex', '7-Eleven', 'United', 'Ampol'].map((brand) => (
-                            <label key={brand} className="flex items-center gap-2 cursor-pointer">
+                          {[
+                            'Shell',
+                            'BP',
+                            'Caltex',
+                            '7-Eleven',
+                            'United',
+                            'Ampol',
+                          ].map((brand) => (
+                            <label
+                              key={brand}
+                              className="flex cursor-pointer items-center gap-2"
+                            >
                               <input
                                 type="checkbox"
-                                className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                                 aria-label={`Filter by ${brand}`}
                               />
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{brand}</span>
+                              <span className="text-sm text-gray-700 dark:text-gray-300">
+                                {brand}
+                              </span>
                             </label>
                           ))}
                         </div>
@@ -170,9 +205,9 @@ export default function DirectoryPageStandardized() {
 
                       {/* Distance */}
                       <div>
-                        <label 
+                        <label
                           htmlFor="distance"
-                          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3"
+                          className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300"
                         >
                           Max Distance
                         </label>
@@ -205,16 +240,32 @@ export default function DirectoryPageStandardized() {
                       <CardTitle className="text-lg">Quick Links</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-2">
-                      <Button variant="ghost" fullWidth className="justify-start">
+                      <Button
+                        variant="ghost"
+                        fullWidth
+                        className="justify-start"
+                      >
                         🔥 Cheapest Today
                       </Button>
-                      <Button variant="ghost" fullWidth className="justify-start">
+                      <Button
+                        variant="ghost"
+                        fullWidth
+                        className="justify-start"
+                      >
                         📍 Near Me
                       </Button>
-                      <Button variant="ghost" fullWidth className="justify-start">
+                      <Button
+                        variant="ghost"
+                        fullWidth
+                        className="justify-start"
+                      >
                         ⭐ My Favorites
                       </Button>
-                      <Button variant="ghost" fullWidth className="justify-start">
+                      <Button
+                        variant="ghost"
+                        fullWidth
+                        className="justify-start"
+                      >
                         📊 Price Trends
                       </Button>
                     </CardContent>
@@ -235,7 +286,7 @@ export default function DirectoryPageStandardized() {
                         Showing 250+ results
                       </p>
                     </div>
-                    <select 
+                    <select
                       className="input w-auto min-w-[150px]"
                       aria-label="Sort stations"
                     >
@@ -295,7 +346,7 @@ function StationCard({ id }: { id: number }) {
             </CardDescription>
           </div>
           <Button variant="ghost" size="icon" aria-label="Add to favorites">
-            <Star className="w-5 h-5" />
+            <Star className="h-5 w-5" />
           </Button>
         </div>
       </CardHeader>
@@ -314,23 +365,21 @@ function StationCard({ id }: { id: number }) {
         {/* Distance & Time */}
         <Flex justify="between" gap="sm" className="text-sm">
           <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-            <MapPin className="w-4 h-4" />
+            <MapPin className="h-4 w-4" />
             <span>2.3 km</span>
           </div>
-          <div className="text-gray-500 dark:text-gray-500">
-            Updated 5m ago
-          </div>
+          <div className="text-gray-500 dark:text-gray-500">Updated 5m ago</div>
         </Flex>
 
         {/* Amenities */}
         <Flex gap="xs" wrap>
-          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs">
+          <span className="rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800">
             24/7
           </span>
-          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs">
+          <span className="rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800">
             Car Wash
           </span>
-          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-xs">
+          <span className="rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800">
             ATM
           </span>
         </Flex>
@@ -344,4 +393,3 @@ function StationCard({ id }: { id: number }) {
     </Card>
   );
 }
-

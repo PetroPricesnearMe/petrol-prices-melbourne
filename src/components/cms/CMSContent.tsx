@@ -1,6 +1,6 @@
 /**
  * CMS Content Component
- * 
+ *
  * Reusable component for rendering dynamic CMS content
  * with loading states, error handling, and empty states
  */
@@ -40,9 +40,13 @@ export function CMSContent<T extends CMSContentType>({
     }
 
     return (
-      <div className="flex items-center justify-center py-12" role="status" aria-live="polite">
+      <div
+        className="flex items-center justify-center py-12"
+        role="status"
+        aria-live="polite"
+      >
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
+          <div className="border-t-blue-600 mx-auto h-12 w-12 animate-spin rounded-full border-4 border-gray-300" />
           <p className="mt-4 text-sm text-gray-600">Loading content...</p>
           <span className="sr-only">Loading</span>
         </div>
@@ -59,10 +63,13 @@ export function CMSContent<T extends CMSContentType>({
     const errorMessage = typeof error === 'string' ? error : error.message;
 
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-6" role="alert">
+      <div
+        className="border-red-200 bg-red-50 rounded-lg border p-6"
+        role="alert"
+      >
         <div className="flex items-start gap-3">
           <svg
-            className="h-6 w-6 flex-shrink-0 text-red-600"
+            className="text-red-600 h-6 w-6 flex-shrink-0"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -76,8 +83,10 @@ export function CMSContent<T extends CMSContentType>({
             />
           </svg>
           <div>
-            <h3 className="font-semibold text-red-800">Error Loading Content</h3>
-            <p className="mt-1 text-sm text-red-700">{errorMessage}</p>
+            <h3 className="text-red-800 font-semibold">
+              Error Loading Content
+            </h3>
+            <p className="text-red-700 mt-1 text-sm">{errorMessage}</p>
           </div>
         </div>
       </div>
@@ -110,7 +119,12 @@ export function CMSContent<T extends CMSContentType>({
   // Render content
   return (
     <div className={className} aria-label={ariaLabel}>
-      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+      <div
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         Showing {data.length} item{data.length !== 1 ? 's' : ''}
       </div>
       {data.map((item, index) => (
@@ -123,11 +137,20 @@ export function CMSContent<T extends CMSContentType>({
 /**
  * Loading Skeleton Component
  */
-export function CMSLoadingSkeleton({ count = 3, className = '' }: { count?: number; className?: string }) {
+export function CMSLoadingSkeleton({
+  count = 3,
+  className = '',
+}: {
+  count?: number;
+  className?: string;
+}) {
   return (
     <div className={className} role="status" aria-label="Loading content">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="animate-pulse rounded-lg border border-gray-200 bg-white p-6">
+        <div
+          key={i}
+          className="animate-pulse rounded-lg border border-gray-200 bg-white p-6"
+        >
           <div className="space-y-3">
             <div className="h-4 w-3/4 rounded bg-gray-200" />
             <div className="h-4 w-full rounded bg-gray-200" />
@@ -139,4 +162,3 @@ export function CMSLoadingSkeleton({ count = 3, className = '' }: { count?: numb
     </div>
   );
 }
-

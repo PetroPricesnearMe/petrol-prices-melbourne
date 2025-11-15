@@ -1,6 +1,6 @@
 /**
  * CMS Error Handler
- * 
+ *
  * Centralized error handling for CMS operations with:
  * - Error classification
  * - Retry logic
@@ -49,7 +49,10 @@ export function parseCMSError(error: any, provider: CMSProvider): CMSError {
 
   if (error instanceof Error) {
     // Network errors
-    if (error.message.includes('fetch failed') || error.message.includes('ECONNREFUSED')) {
+    if (
+      error.message.includes('fetch failed') ||
+      error.message.includes('ECONNREFUSED')
+    ) {
       return createCMSError(
         provider,
         'Network connection failed',
@@ -60,12 +63,7 @@ export function parseCMSError(error: any, provider: CMSProvider): CMSError {
 
     // Timeout errors
     if (error.message.includes('timeout')) {
-      return createCMSError(
-        provider,
-        'Request timeout',
-        408,
-        'TIMEOUT_ERROR'
-      );
+      return createCMSError(provider, 'Request timeout', 408, 'TIMEOUT_ERROR');
     }
 
     return createCMSError(provider, error.message);
@@ -259,4 +257,3 @@ export class CircuitBreaker {
     this.state = 'closed';
   }
 }
-

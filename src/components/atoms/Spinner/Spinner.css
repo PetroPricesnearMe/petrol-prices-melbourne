@@ -61,27 +61,27 @@
  * ============================================================================ */
 
 .spinner--primary {
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .spinner--secondary {
-  color: #9C27B0;
+  color: #9c27b0;
 }
 
 .spinner--success {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .spinner--warning {
-  color: #FF9800;
+  color: #ff9800;
 }
 
 .spinner--error {
-  color: #F44336;
+  color: #f44336;
 }
 
 .spinner--info {
-  color: #03A9F4;
+  color: #03a9f4;
 }
 
 .spinner--neutral {
@@ -137,10 +137,9 @@
   .spinner__svg {
     animation-duration: 3s;
   }
-  
+
   .spinner__circle {
     animation: none;
     stroke-dasharray: 80, 150;
   }
 }
-

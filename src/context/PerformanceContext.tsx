@@ -4,7 +4,13 @@
  * Optimized context with selector pattern to prevent unnecessary re-renders
  */
 
-import React, { createContext, useContext, useRef, useCallback, useMemo } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 
 type Listener<T> = (state: T) => void;
 type Selector<T, R> = (state: T) => R;
@@ -35,9 +41,10 @@ export function createOptimizedContext<T>() {
     const getState = useCallback(() => stateRef.current, []);
 
     const setState = useCallback((newState: T | ((prev: T) => T)) => {
-      const nextState = typeof newState === 'function'
-        ? (newState as (prev: T) => T)(stateRef.current)
-        : newState;
+      const nextState =
+        typeof newState === 'function'
+          ? (newState as (prev: T) => T)(stateRef.current)
+          : newState;
 
       if (nextState !== stateRef.current) {
         stateRef.current = nextState;
@@ -167,10 +174,18 @@ export const useSetStationState = StationContext.useSetState;
 /**
  * Shallow equality comparison for objects
  */
-export function shallowEqual<T extends Record<string, any>>(a: T, b: T): boolean {
+export function shallowEqual<T extends Record<string, any>>(
+  a: T,
+  b: T
+): boolean {
   if (Object.is(a, b)) return true;
 
-  if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {
+  if (
+    typeof a !== 'object' ||
+    a === null ||
+    typeof b !== 'object' ||
+    b === null
+  ) {
     return false;
   }
 
@@ -180,7 +195,10 @@ export function shallowEqual<T extends Record<string, any>>(a: T, b: T): boolean
   if (keysA.length !== keysB.length) return false;
 
   for (let i = 0; i < keysA.length; i++) {
-    if (!Object.prototype.hasOwnProperty.call(b, keysA[i]) || !Object.is(a[keysA[i]], b[keysA[i]])) {
+    if (
+      !Object.prototype.hasOwnProperty.call(b, keysA[i]) ||
+      !Object.is(a[keysA[i]], b[keysA[i]])
+    ) {
       return false;
     }
   }

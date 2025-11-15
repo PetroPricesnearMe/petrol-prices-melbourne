@@ -62,7 +62,9 @@ export function ThemeProvider({
     // Determine resolved theme
     let resolved: 'light' | 'dark';
     if (theme === 'system') {
-      resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      resolved = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
     } else {
       resolved = theme;
     }
@@ -92,7 +94,7 @@ export function ThemeProvider({
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => {
+    setTheme((prev) => {
       if (prev === 'light') return 'dark';
       if (prev === 'dark') return 'system';
       return 'light';
@@ -107,8 +109,6 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }

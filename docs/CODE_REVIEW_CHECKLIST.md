@@ -109,14 +109,11 @@ interface ButtonProps {
   children: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = React.memo(({
-  variant = 'primary',
-  disabled = false,
-  onClick,
-  children,
-}) => {
-  // Implementation
-});
+export const Button: React.FC<ButtonProps> = React.memo(
+  ({ variant = 'primary', disabled = false, onClick, children }) => {
+    // Implementation
+  }
+);
 
 Button.displayName = 'Button';
 ```
@@ -140,7 +137,7 @@ Button.displayName = 'Button';
 - [ ] **Dynamic imports** for code splitting
 - [ ] **Loading/Error** boundaries defined
 - [ ] **Route handlers** properly typed
-- [ ] **Environment variables** prefixed correctly (NEXT_PUBLIC_ for client)
+- [ ] **Environment variables** prefixed correctly (NEXT*PUBLIC* for client)
 
 ---
 

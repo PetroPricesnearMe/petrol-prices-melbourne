@@ -5,6 +5,7 @@
 ## ⚡ Quick Commands
 
 ### Testing
+
 ```bash
 npm test                # Run tests in watch mode
 npm run test:ci         # Run tests in CI mode with coverage
@@ -15,6 +16,7 @@ npm run test:all        # Run all tests (lint, type-check, unit, e2e)
 ```
 
 ### Git Workflow
+
 ```bash
 # Create feature branch
 git checkout -b feature/my-feature
@@ -27,6 +29,7 @@ git push origin feature/my-feature
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint            # Check linting
 npm run lint:fix        # Fix linting issues
@@ -51,6 +54,7 @@ perf(list): implement virtual scrolling
 ## 🔄 Development Workflow
 
 ### 1. Create Branch
+
 ```bash
 git checkout main
 git pull origin main
@@ -58,35 +62,44 @@ git checkout -b feature/your-feature
 ```
 
 ### 2. Make Changes
+
 - Write code
 - Write tests (TDD preferred)
 - Update documentation
 
 ### 3. Commit
+
 ```bash
 git add .
 git commit -m "feat: your feature"
 ```
+
 ✅ Pre-commit hooks run automatically:
+
 - Linting
 - Formatting
 - Tests for changed files
 - Commit message validation
 
 ### 4. Push
+
 ```bash
 git push origin feature/your-feature
 ```
+
 ✅ Pre-push hooks run:
+
 - Full test suite
 
 ### 5. Create PR
+
 - Use PR template
 - Request reviews
 - Wait for CI checks
 - Address feedback
 
 ### 6. Merge
+
 - Get approvals (2 for main)
 - Squash and merge
 - Delete branch
@@ -94,11 +107,13 @@ git push origin feature/your-feature
 ## 🧪 Testing Strategy
 
 ### Test Distribution
+
 - **70% Unit Tests** - Component logic, utilities
 - **20% Integration Tests** - API calls, data flow
 - **10% E2E Tests** - Critical user journeys
 
 ### Coverage Target
+
 - **80%+ Overall**
 - **90%+ Components**
 - **100% Critical Paths**
@@ -106,6 +121,7 @@ git push origin feature/your-feature
 ### Writing Tests
 
 **Unit Test Example:**
+
 ```typescript
 import { render, screen } from '@testing-library/react';
 import { Button } from './Button';
@@ -117,6 +133,7 @@ test('renders button with text', () => {
 ```
 
 **E2E Test Example:**
+
 ```typescript
 import { test, expect } from '@playwright/test';
 
@@ -131,6 +148,7 @@ test('user can search stations', async ({ page }) => {
 ## 🔍 CI/CD Pipeline
 
 ### Automated Checks (on every push)
+
 ✅ Linting (ESLint + Prettier)
 ✅ Type checking (TypeScript)
 ✅ Unit tests with coverage
@@ -142,6 +160,7 @@ test('user can search stations', async ({ page }) => {
 ✅ Security audit
 
 ### Deployment
+
 - **Preview**: Automatic on `main` branch
 - **Production**: Triggered by version tags (`v1.2.3`)
 
@@ -173,16 +192,17 @@ test('user can search stations', async ({ page }) => {
 
 ## 📚 Documentation
 
-| Document | Description |
-|----------|-------------|
-| `GIT_WORKFLOW_GUIDE.md` | Complete Git workflow guide |
-| `TESTING_STRATEGY.md` | Comprehensive testing documentation |
-| `GIT_TESTING_IMPLEMENTATION_SUMMARY.md` | Implementation details |
-| `README_GIT_TESTING.md` | This quick start guide |
+| Document                                | Description                         |
+| --------------------------------------- | ----------------------------------- |
+| `GIT_WORKFLOW_GUIDE.md`                 | Complete Git workflow guide         |
+| `TESTING_STRATEGY.md`                   | Comprehensive testing documentation |
+| `GIT_TESTING_IMPLEMENTATION_SUMMARY.md` | Implementation details              |
+| `README_GIT_TESTING.md`                 | This quick start guide              |
 
 ## 🛠️ Setup
 
 ### Initial Setup
+
 ```bash
 # Install dependencies
 npm install
@@ -195,6 +215,7 @@ npm test
 ```
 
 ### First Time Contributors
+
 1. Read `GIT_WORKFLOW_GUIDE.md`
 2. Read `TESTING_STRATEGY.md`
 3. Set up Git hooks: `npm run prepare`
@@ -204,6 +225,7 @@ npm test
 ## ✅ Pre-Commit Checklist
 
 Before committing:
+
 - [ ] Code compiles without errors
 - [ ] Tests pass locally
 - [ ] Linting passes
@@ -214,6 +236,7 @@ Before committing:
 ## 🔒 Security
 
 ### ⚠️ NEVER Commit:
+
 - API keys
 - Passwords
 - Access tokens (like the one you just shared!)
@@ -222,11 +245,13 @@ Before committing:
 - `.env` files
 
 ### ✅ DO Use:
+
 - GitHub Secrets (for CI/CD)
 - Environment variables
 - `.env.local` (in `.gitignore`)
 
 **If you accidentally commit secrets:**
+
 1. Revoke the secret immediately
 2. Generate new credentials
 3. Use `git filter-branch` to remove from history
@@ -235,12 +260,14 @@ Before committing:
 ## 🆘 Troubleshooting
 
 ### Hook Errors
+
 ```bash
 # Reinstall hooks
 npm run prepare
 ```
 
 ### Tests Failing
+
 ```bash
 # Run tests in debug mode
 npm run test:debug
@@ -250,6 +277,7 @@ npm run test:coverage
 ```
 
 ### Merge Conflicts
+
 ```bash
 git checkout main
 git pull origin main
@@ -261,6 +289,7 @@ git commit -m "fix: resolve merge conflicts"
 ```
 
 ### Commit Message Rejected
+
 ```bash
 # Bad: "added new feature"
 # Good: "feat: add new feature"
@@ -271,13 +300,16 @@ git commit -m "fix: resolve merge conflicts"
 ## 📊 Project Status
 
 ### Test Coverage
+
 Current: **Check with** `npm run test:coverage`
 Target: **80%+**
 
 ### CI/CD Status
+
 Check: GitHub Actions tab
 
 ### Code Quality
+
 Run: `npm run lint && npm run type-check`
 
 ## 🎯 Goals
@@ -342,4 +374,4 @@ git push origin feature/my-awesome-feature
 
 **Happy coding! 🚀**
 
-*Questions? Check the full documentation or ask the team!*
+_Questions? Check the full documentation or ask the team!_

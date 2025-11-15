@@ -15,12 +15,15 @@ Your Next.js 15 application has been configured with:
 ## 🚀 Quick Start Testing (Choose One)
 
 ### **Option 1: Automated Check** (Fastest - 2 minutes)
+
 ```bash
 npm run verify:performance
 ```
+
 This will automatically check all your configurations and show a report.
 
 ### **Option 2: Full Verification** (Recommended - 5 minutes)
+
 ```bash
 # 1. Build and verify
 npm run verify:build
@@ -31,9 +34,11 @@ npm run verify:build
 ```
 
 ### **Option 3: Complete Test Suite** (Most thorough - 10 minutes)
+
 ```bash
 npm run test:preload
 ```
+
 This runs build, starts server, runs Lighthouse, and verifies everything.
 
 ---
@@ -43,6 +48,7 @@ This runs build, starts server, runs Lighthouse, and verifies everything.
 ### **1. Verify Local Development (No Warnings)**
 
 #### Commands:
+
 ```bash
 # Clear cache
 rm -rf .next
@@ -52,18 +58,21 @@ npm run dev
 ```
 
 #### Check Browser:
+
 1. Open http://localhost:3000
 2. Open DevTools (F12)
 3. Go to **Console** tab
 4. **Expected Result**: ✅ No font preload warnings
 
 **What you should NOT see:**
+
 ```diff
 - ⚠️ A preload for 'font-url' is found but is not used
 - ⚠️ The resource was preloaded using link preload but not used
 ```
 
 **What you SHOULD see:**
+
 ```
 ✅ Clean console (no warnings)
 ```
@@ -73,6 +82,7 @@ npm run dev
 ### **2. Verify Production Build (Clean Build)**
 
 #### Commands:
+
 ```bash
 # Build for production
 npm run build
@@ -82,6 +92,7 @@ npm start
 ```
 
 #### Check Output:
+
 ```bash
 Expected build output:
 ✓ Compiled successfully
@@ -92,6 +103,7 @@ Expected build output:
 ```
 
 #### Check Browser:
+
 1. Open http://localhost:3000
 2. **Console should be completely clean** ✅
 3. No warnings, no errors
@@ -110,6 +122,7 @@ Expected build output:
 #### Expected Results:
 
 **Font Loading:**
+
 ```
 Name: inter-...woff2
 Status: 200 ✅
@@ -124,6 +137,7 @@ Time: < 200ms
 6. Find `hero-petrol-station.jpg`
 
 **Hero Image Loading:**
+
 ```
 Name: hero-petrol-station.jpg
 Status: 200 ✅
@@ -154,6 +168,7 @@ npm run build && npm start
 #### Expected Scores:
 
 **Mobile:**
+
 ```
 Performance:        90-100  ✅
 Accessibility:      95-100  ✅
@@ -162,6 +177,7 @@ SEO:                95-100  ✅
 ```
 
 **Desktop:**
+
 ```
 Performance:        95-100  ✅
 Accessibility:      95-100  ✅
@@ -186,6 +202,7 @@ lighthouse http://localhost:3000 --view
 #### In Lighthouse Report, Check:
 
 **Metrics Section:**
+
 ```
 ✅ Largest Contentful Paint (LCP)    < 2.5s   [Target: 1.2s]
 ✅ First Contentful Paint (FCP)      < 1.8s   [Target: 0.9s]
@@ -197,6 +214,7 @@ lighthouse http://localhost:3000 --view
 #### In "Opportunities" Section:
 
 **Should NOT see (these warnings should be GONE):**
+
 ```diff
 - ❌ Preload key requests
 - ❌ Eliminate render-blocking resources
@@ -204,6 +222,7 @@ lighthouse http://localhost:3000 --view
 ```
 
 **May still see (optional improvements):**
+
 ```
 ⚠️ Properly size images (if any oversized images exist)
 ⚠️ Reduce unused JavaScript (normal for complex apps)
@@ -223,15 +242,18 @@ lighthouse http://localhost:3000 --view
 #### Check Timeline:
 
 **LCP (Largest Contentful Paint):**
+
 - Look for blue flag marker 🚩
 - Click to see which element (should be hero image)
 - **Target**: < 2.5s (ideally < 1.5s)
 
 **Layout Shifts:**
+
 - Look for red markers
 - **Target**: Minimal or none (< 0.1)
 
 **Font Loading:**
+
 - Should appear **early** in timeline
 - Should show "Preload" in initiator
 
@@ -254,6 +276,7 @@ lighthouse http://localhost:3000 --view
 #### Expected Results:
 
 **Summary:**
+
 ```
 First Byte Time:        < 600ms   ✅
 Start Render:           < 1.5s    ✅
@@ -264,6 +287,7 @@ Total Blocking Time:    < 200ms   ✅
 ```
 
 **Waterfall View:**
+
 - Fonts should load early (within first 10 requests)
 - Hero image should load with high priority
 - DNS lookup time: 0ms (preconnect working)
@@ -275,6 +299,7 @@ Total Blocking Time:    < 200ms   ✅
 ### **Console Warnings**
 
 **Before:**
+
 ```
 ⚠️ A preload for 'https://fonts.gstatic.com/...' is found but is not used
 ⚠️ Font display issue
@@ -282,6 +307,7 @@ Total Blocking Time:    < 200ms   ✅
 ```
 
 **After:**
+
 ```
 ✅ No warnings
 ✅ Clean console
@@ -293,6 +319,7 @@ Total Blocking Time:    < 200ms   ✅
 ### **Network Tab - Font Loading**
 
 **Before:**
+
 ```
 Priority: Low ❌
 Loaded at: 2.5s ❌
@@ -300,6 +327,7 @@ Initiator: CSS ❌
 ```
 
 **After:**
+
 ```
 Priority: High ✅
 Loaded at: 0.3s ✅
@@ -311,6 +339,7 @@ Initiator: Preload ✅
 ### **Lighthouse Scores**
 
 **Before:**
+
 ```
 Performance:      45  ❌
 LCP:             3.8s ❌
@@ -319,6 +348,7 @@ CLS:             0.15 ❌
 ```
 
 **After:**
+
 ```
 Performance:      95+ ✅
 LCP:             1.2s ✅
@@ -333,6 +363,7 @@ CLS:             0.02 ✅
 Use this to verify everything is working:
 
 ### **Development**
+
 - [ ] `npm run dev` starts without errors
 - [ ] Browser console shows no warnings
 - [ ] Fonts load smoothly
@@ -340,12 +371,14 @@ Use this to verify everything is working:
 - [ ] No layout shifts during load
 
 ### **Production Build**
+
 - [ ] `npm run build` completes successfully
 - [ ] No TypeScript errors
 - [ ] No ESLint errors
 - [ ] Build output shows optimized bundle sizes
 
 ### **Browser Testing**
+
 - [ ] Console is clean (no warnings)
 - [ ] Network tab shows fonts with "High" priority
 - [ ] Hero image loads with "High" priority
@@ -353,6 +386,7 @@ Use this to verify everything is working:
 - [ ] Proper caching headers present
 
 ### **Lighthouse**
+
 - [ ] Performance score ≥ 90 (mobile)
 - [ ] Performance score ≥ 95 (desktop)
 - [ ] LCP < 2.5s
@@ -362,6 +396,7 @@ Use this to verify everything is working:
 - [ ] No render-blocking resources warning
 
 ### **Web Vitals**
+
 - [ ] LCP (Largest Contentful Paint): < 2.5s
 - [ ] FID (First Input Delay): < 100ms
 - [ ] CLS (Cumulative Layout Shift): < 0.1
@@ -403,14 +438,16 @@ npm run test:preload
 ### **Issue 1: Font warning still appears**
 
 **Check:**
+
 ```typescript
 // src/app/layout.tsx
 const inter = Inter({
-  preload: true,  // ← Must be present
+  preload: true, // ← Must be present
 });
 ```
 
 **Solution:**
+
 ```bash
 rm -rf .next
 npm run dev
@@ -421,10 +458,11 @@ npm run dev
 ### **Issue 2: Hero image loads slowly**
 
 **Check component has priority:**
+
 ```tsx
 <Image
   src="/images/hero-petrol-station.jpg"
-  priority={true}  // ← Must be true
+  priority={true} // ← Must be true
   width={1920}
   height={1080}
 />
@@ -435,6 +473,7 @@ npm run dev
 ### **Issue 3: Poor Lighthouse score**
 
 **Clear cache and retest:**
+
 ```bash
 rm -rf .next
 npm run build
@@ -447,13 +486,14 @@ npm start
 ### **Issue 4: Layout shifts (high CLS)**
 
 **Ensure all images have dimensions:**
+
 ```tsx
 // Bad ❌
 <Image src="/image.jpg" alt="..." />
 
 // Good ✅
-<Image 
-  src="/image.jpg" 
+<Image
+  src="/image.jpg"
   alt="..."
   width={800}
   height={600}
@@ -476,18 +516,21 @@ Your testing documentation:
 ## 🎯 Next Steps
 
 ### **Immediate Actions:**
+
 1. Run `npm run verify:performance` to check configuration
 2. Test in browser console for warnings
 3. Run Lighthouse audit
 4. Fix any issues found
 
 ### **Before Deployment:**
+
 1. Run full test suite: `npm run test:preload`
 2. Verify all checks pass
 3. Test on real mobile device
 4. Deploy to staging first
 
 ### **After Deployment:**
+
 1. Run WebPageTest on production URL
 2. Monitor Web Vitals in production
 3. Check analytics for real user metrics
@@ -549,4 +592,3 @@ Checking Next.js 15 performance optimizations...
 ---
 
 **Ready to test?** Start with `npm run verify:performance` and follow the checklist above! 🚀
-

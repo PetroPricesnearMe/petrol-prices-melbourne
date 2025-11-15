@@ -97,21 +97,29 @@ export function FAQClient() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-12">
+      <header className="border-b border-gray-200 bg-white py-12 dark:border-gray-700 dark:bg-gray-800">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter + ' mb-8'}>
-            <h1 className={cn(patterns.text.h1, 'text-gradient-primary text-center mb-4')}>
+            <h1
+              className={cn(
+                patterns.text.h1,
+                'text-gradient-primary mb-4 text-center'
+              )}
+            >
               Frequently Asked Questions
             </h1>
-            <p className={cn(patterns.text.body, 'text-center max-w-2xl')}>
-              Find answers to common questions about fuel prices, our service, and how to save money
+            <p className={cn(patterns.text.body, 'max-w-2xl text-center')}>
+              Find answers to common questions about fuel prices, our service,
+              and how to save money
             </p>
           </div>
 
           {/* Search and Filter */}
-          <div className="max-w-3xl mx-auto space-y-4">
+          <div className="mx-auto max-w-3xl space-y-4">
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                🔍
+              </span>
               <input
                 type="search"
                 placeholder="Search FAQs..."
@@ -121,13 +129,13 @@ export function FAQClient() {
               />
             </div>
 
-            <div className={patterns.flex.center + ' gap-2 flex-wrap'}>
+            <div className={patterns.flex.center + ' flex-wrap gap-2'}>
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   className={cn(
-                    'btn btn-sm',
+                    'btn-sm btn',
                     selectedCategory === category ? 'btn-primary' : 'btn-ghost'
                   )}
                 >
@@ -143,29 +151,28 @@ export function FAQClient() {
       <section className="py-12">
         <div className={patterns.container()}>
           {filteredFaqs.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="text-6xl mb-4">🔍</div>
+            <div className="py-20 text-center">
+              <div className="mb-4 text-6xl">🔍</div>
               <h3 className={patterns.text.h3}>No FAQs found</h3>
               <p className={patterns.text.body + ' mt-2'}>
                 Try adjusting your search or category filter
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-2">
               {filteredFaqs.map((faq, index) => (
                 <div
                   key={index}
-                  className={cn(
-                    'card p-6',
-                    animations.safe('animate-fade-in')
-                  )}
+                  className={cn('card p-6', animations.safe('animate-fade-in'))}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <span className="badge badge-primary mb-3">{faq.category}</span>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                  <span className="badge badge-primary mb-3">
+                    {faq.category}
+                  </span>
+                  <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">
                     {faq.question}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  <p className="leading-relaxed text-gray-600 dark:text-gray-400">
                     {faq.answer}
                   </p>
                 </div>
@@ -174,40 +181,40 @@ export function FAQClient() {
           )}
 
           {/* Contact Section */}
-          <section className="mt-16 max-w-4xl mx-auto">
+          <section className="mx-auto mt-16 max-w-4xl">
             <div className="card p-8 text-center">
               <h2 className={patterns.text.h2 + ' mb-6'}>Still need help?</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <div className="text-4xl mb-3">📧</div>
-                  <h3 className="font-semibold mb-2">Email Support</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div className="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+                  <div className="mb-3 text-4xl">📧</div>
+                  <h3 className="mb-2 font-semibold">Email Support</h3>
+                  <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                     Get personalized help
                   </p>
                   <a
                     href="mailto:support@petrolpricenearme.com.au"
-                    className="text-primary-600 dark:text-primary-400 hover:underline text-sm"
+                    className="text-sm text-primary-600 hover:underline dark:text-primary-400"
                   >
                     support@petrolpricenearme.com.au
                   </a>
                 </div>
 
-                <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <div className="text-4xl mb-3">💬</div>
-                  <h3 className="font-semibold mb-2">Live Chat</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <div className="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+                  <div className="mb-3 text-4xl">💬</div>
+                  <h3 className="mb-2 font-semibold">Live Chat</h3>
+                  <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                     Real-time assistance
                   </p>
-                  <button className="btn btn-primary btn-sm">Start Chat</button>
+                  <button className="btn-primary btn-sm btn">Start Chat</button>
                 </div>
 
-                <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <div className="text-4xl mb-3">📚</div>
-                  <h3 className="font-semibold mb-2">Learn More</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                <div className="rounded-lg bg-gray-50 p-6 dark:bg-gray-800">
+                  <div className="mb-3 text-4xl">📚</div>
+                  <h3 className="mb-2 font-semibold">Learn More</h3>
+                  <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                     Comprehensive guides
                   </p>
-                  <Link href="/blog" className="btn btn-outline btn-sm">
+                  <Link href="/blog" className="btn-outline btn-sm btn">
                     View Guides
                   </Link>
                 </div>

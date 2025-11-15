@@ -48,7 +48,7 @@
 }
 
 .search-bar__clear:focus-visible {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
   outline-offset: 2px;
 }
 
@@ -66,4 +66,3 @@
     flex-direction: column;
   }
 }
-

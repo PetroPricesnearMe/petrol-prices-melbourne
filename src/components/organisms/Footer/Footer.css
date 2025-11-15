@@ -3,8 +3,8 @@
  */
 
 .footer {
-  background-color: #FAFAFA;
-  border-top: 1px solid #E0E0E0;
+  background-color: #fafafa;
+  border-top: 1px solid #e0e0e0;
   margin-top: auto;
 }
 
@@ -63,11 +63,11 @@
 }
 
 .footer__link:hover {
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .footer__link:focus-visible {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
   outline-offset: 2px;
   border-radius: 0.25rem;
 }
@@ -114,12 +114,12 @@
 }
 
 .footer__social-link:hover {
-  color: #2196F3;
+  color: #2196f3;
   background-color: rgba(33, 150, 243, 0.08);
 }
 
 .footer__social-link:focus-visible {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
   outline-offset: 2px;
 }
 
@@ -139,7 +139,7 @@
   align-items: center;
   gap: 1rem;
   padding-top: 2rem;
-  border-top: 1px solid #E0E0E0;
+  border-top: 1px solid #e0e0e0;
 }
 
 .footer__copyright {
@@ -183,4 +183,3 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-

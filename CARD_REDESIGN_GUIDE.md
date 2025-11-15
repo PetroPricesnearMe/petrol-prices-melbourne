@@ -9,6 +9,7 @@ I've completely redesigned the station cards with a **clean, modern layout** and
 ## 📋 Card Design Features
 
 ### **Simplified Layout**
+
 The new cards focus on essential information:
 
 1. **Brand Logo** (top center)
@@ -50,11 +51,13 @@ The new cards focus on essential information:
 ## 🎯 Brand Logo Manager (Admin Widget)
 
 ### How to Access:
+
 Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 
 ### Features:
 
 #### 1. **Upload Brand Logos**
+
 - Select a brand from dropdown (or add new one)
 - Choose image file (PNG, SVG, JPG)
 - Max 2MB file size
@@ -62,21 +65,25 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 - Instant upload to browser storage
 
 #### 2. **Manage Brands**
+
 - **Pre-loaded brands:** Shell, BP, 7-Eleven, Mobil, Coles Express, Caltex, Ampol, United, Liberty, Metro, Puma, Vibe, Independent
 - **Add custom brands:** Click the "+" button
 - **Delete logos:** Click 🗑️ on any uploaded logo
 
 #### 3. **View Uploaded Logos**
+
 - Grid display of all uploaded logos
 - Shows brand name and logo preview
 - Quick delete option
 
 #### 4. **Export/Backup**
+
 - Click "💾 Export Backup" to download JSON file
 - Backs up all your uploaded logos
 - Can be imported later (future feature)
 
 ### Storage:
+
 - Logos stored in browser's localStorage
 - Persists across sessions
 - No server required
@@ -87,18 +94,21 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 🎨 Visual Design Updates
 
 ### Color Scheme:
+
 - **Primary:** Purple gradient (#667eea → #764ba2)
 - **Unleaded:** Green gradient (#10b981)
 - **Diesel:** Blue gradient (#3b82f6)
 - **Background:** White with subtle gray borders
 
 ### Hover Effects:
+
 - Cards lift up on hover
 - Border changes to purple
 - Smooth animations (0.3s)
 - Logo scales slightly
 
 ### Card Layout:
+
 - Clean white background
 - Rounded corners (16px)
 - Subtle shadows
@@ -110,17 +120,21 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 📱 Mobile Responsive
 
 ### Desktop (1280px+):
+
 - 4 cards per row
 - Admin button in top-right corner
 
 ### Tablet (1024px):
+
 - 3 cards per row
 
 ### Mobile (640px):
+
 - 2 cards per row
 - Admin button full width below header
 
 ### Small Mobile (<640px):
+
 - 1 card per row
 - Stacked layout
 
@@ -129,12 +143,14 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 🚀 How to Use
 
 ### For Regular Users:
+
 1. Browse station cards
 2. Compare Unleaded & Diesel prices
 3. Click "Directions" to navigate
 4. Click "More Info" for details
 
 ### For Admins:
+
 1. Click "🎨 Manage Logos"
 2. Select or add a brand
 3. Upload logo image
@@ -146,6 +162,7 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 💡 Tips & Best Practices
 
 ### Logo Upload Guidelines:
+
 - **Format:** PNG or SVG preferred (transparent background)
 - **Size:** Under 2MB
 - **Dimensions:** 400x200px recommended
@@ -153,11 +170,13 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 - **Colors:** Original brand colors (no longer inverted)
 
 ### Brand Names:
+
 - Use exact brand names from your data
 - Case-sensitive matching
 - Add variations if needed (e.g., "7-Eleven" and "Seven Eleven")
 
 ### Backup:
+
 - Export logos monthly
 - Keep backup file safe
 - Share with team members
@@ -167,6 +186,7 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 🔧 Technical Details
 
 ### Files Modified:
+
 1. **src/components/StationCards.js**
    - Added logo manager integration
    - Simplified to show only Unleaded/Diesel
@@ -179,6 +199,7 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
    - Hover effects
 
 ### Files Created:
+
 3. **src/components/BrandLogoManager.js**
    - Full admin widget component
    - Upload/manage/delete logos
@@ -194,6 +215,7 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 📊 Comparison: Before vs After
 
 ### Before:
+
 - ❌ All fuel types shown (cluttered)
 - ❌ Brand-colored headers (too busy)
 - ❌ White-inverted logos (hard to see)
@@ -202,6 +224,7 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 - ❌ "Last Updated" taking space
 
 ### After:
+
 - ✅ Only Unleaded & Diesel (focused)
 - ✅ Clean white header
 - ✅ Original brand colors on logos
@@ -238,22 +261,26 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 🐛 Troubleshooting
 
 ### Logo Not Showing?
+
 - Check if logo was uploaded successfully
 - Verify brand name matches exactly
 - Try re-uploading the logo
 - Check browser console for errors
 
 ### Logo Too Big/Small?
+
 - Resize image before uploading
 - Recommended: 400x200px
 - Max display: 120x60px
 
 ### Lost Logos?
+
 - Check if localStorage was cleared
 - Import from backup JSON file
 - Re-upload logos
 
 ### Can't Upload Logo?
+
 - Check file size (max 2MB)
 - Verify file is an image (PNG/SVG/JPG)
 - Try a different browser
@@ -264,6 +291,7 @@ Click the **"🎨 Manage Logos"** button at the top of the station cards page.
 ## 🔮 Future Enhancements
 
 Possible future additions:
+
 - Import backup JSON
 - Bulk upload multiple logos
 - Logo preview on hover
@@ -278,6 +306,7 @@ Possible future additions:
 ## 📞 Summary
 
 You now have:
+
 - ✅ **Simplified cards** showing only Unleaded & Diesel
 - ✅ **Customizable brand logos** via admin widget
 - ✅ **Modern, clean design** with purple gradients
@@ -293,4 +322,3 @@ The admin widget allows you to upload brand logos without touching any code. Log
 **Last Updated:** October 15, 2025  
 **Version:** 2.0  
 **Status:** Production Ready
-

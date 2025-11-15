@@ -12,7 +12,14 @@
 
 import L from 'leaflet';
 import React, { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Circle,
+  useMap,
+} from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 import 'leaflet/dist/leaflet.css';
@@ -89,17 +96,22 @@ const getMarkerColor = (station: Station): string => {
     return '#6B7280'; // Gray - no price data
   }
 
-  const avgPrice = station.fuelPrices.reduce((sum, fp) => sum + (fp.price || 0), 0) / station.fuelPrices.length;
+  const avgPrice =
+    station.fuelPrices.reduce((sum, fp) => sum + (fp.price || 0), 0) /
+    station.fuelPrices.length;
 
-  if (avgPrice < 1.80) return '#10B981'; // Green - cheap
-  if (avgPrice < 2.00) return '#F59E0B'; // Orange - moderate
+  if (avgPrice < 1.8) return '#10B981'; // Green - cheap
+  if (avgPrice < 2.0) return '#F59E0B'; // Orange - moderate
   return '#EF4444'; // Red - expensive
 };
 
 /**
  * Create custom marker icon based on price
  */
-const createCustomIcon = (station: Station, isSelected: boolean = false): L.DivIcon => {
+const createCustomIcon = (
+  station: Station,
+  isSelected: boolean = false
+): L.DivIcon => {
   const color = getMarkerColor(station);
   const size = isSelected ? 40 : 32;
   const zIndex = isSelected ? 1000 : 'auto';
@@ -149,8 +161,12 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
   showUserLocation = true,
   className = '',
 }) => {
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
-  const [mapCenter, setMapCenter] = useState<[number, number]>(initialCenter || [-37.8136, 144.9631]);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(
+    null
+  );
+  const [mapCenter, setMapCenter] = useState<[number, number]>(
+    initialCenter || [-37.8136, 144.9631]
+  );
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
   const mapRef = useRef<L.Map | null>(null);
 
@@ -178,10 +194,14 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
   // Calculate map center from stations
   useEffect(() => {
     if (!initialCenter && stations.length > 0) {
-      const validStations = stations.filter(s => s.latitude && s.longitude);
+      const validStations = stations.filter((s) => s.latitude && s.longitude);
       if (validStations.length > 0) {
-        const avgLat = validStations.reduce((sum, s) => sum + s.latitude, 0) / validStations.length;
-        const avgLng = validStations.reduce((sum, s) => sum + s.longitude, 0) / validStations.length;
+        const avgLat =
+          validStations.reduce((sum, s) => sum + s.latitude, 0) /
+          validStations.length;
+        const avgLng =
+          validStations.reduce((sum, s) => sum + s.longitude, 0) /
+          validStations.length;
         setMapCenter([avgLat, avgLng]);
       }
     }
@@ -201,7 +221,7 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
     }
   };
 
-  const validStations = stations.filter(s => s.latitude && s.longitude);
+  const validStations = stations.filter((s) => s.latitude && s.longitude);
 
   const mapContainerClass = `
     interactive-station-map
@@ -234,16 +254,24 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
         />
 
         {/* Map Controller */}
-        <MapController center={mapCenter} zoom={currentZoom} selectedStation={selectedStation} />
+        <MapController
+          center={mapCenter}
+          zoom={currentZoom}
+          selectedStation={selectedStation}
+        />
 
         {/* User Location */}
         {userLocation && (
           <>
-            <Marker position={userLocation} icon={L.icon({
-              iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjM0I4MkY2Ij48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI4IiBmaWxsPSIjM0I4MkY2IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz48L3N2Zz4=',
-              iconSize: [24, 24],
-              iconAnchor: [12, 12],
-            })}>
+            <Marker
+              position={userLocation}
+              icon={L.icon({
+                iconUrl:
+                  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjM0I4MkY2Ij48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI4IiBmaWxsPSIjM0I4MkY2IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz48L3N2Zz4=',
+                iconSize: [24, 24],
+                iconAnchor: [12, 12],
+              })}
+            >
               <Popup>
                 <div className="user-location-popup">
                   <strong>📍 Your Location</strong>
@@ -287,7 +315,10 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
             <Marker
               key={station.id}
               position={[station.latitude, station.longitude]}
-              icon={createCustomIcon(station, selectedStation?.id === station.id)}
+              icon={createCustomIcon(
+                station,
+                selectedStation?.id === station.id
+              )}
               eventHandlers={{
                 click: () => handleMarkerClick(station),
               }}
@@ -310,7 +341,9 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
                         {station.fuelPrices.slice(0, 3).map((fp, idx) => (
                           <li key={idx}>
                             <span>{fp.fuelType}</span>
-                            <span className="price">${fp.price.toFixed(2)}</span>
+                            <span className="price">
+                              ${fp.price.toFixed(2)}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -367,15 +400,24 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
         <div className="legend-title">Fuel Prices</div>
         <div className="legend-items">
           <div className="legend-item">
-            <span className="legend-dot" style={{ background: '#10B981' }}></span>
+            <span
+              className="legend-dot"
+              style={{ background: '#10B981' }}
+            ></span>
             <span>Low (&lt; $1.80)</span>
           </div>
           <div className="legend-item">
-            <span className="legend-dot" style={{ background: '#F59E0B' }}></span>
+            <span
+              className="legend-dot"
+              style={{ background: '#F59E0B' }}
+            ></span>
             <span>Medium ($1.80-$2.00)</span>
           </div>
           <div className="legend-item">
-            <span className="legend-dot" style={{ background: '#EF4444' }}></span>
+            <span
+              className="legend-dot"
+              style={{ background: '#EF4444' }}
+            ></span>
             <span>High (&gt; $2.00)</span>
           </div>
         </div>

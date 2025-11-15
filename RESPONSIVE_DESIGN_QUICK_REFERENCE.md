@@ -14,12 +14,14 @@ xl              ≥ 1280px  Desktop
 ## 📏 Common Patterns
 
 ### Responsive Grid
+
 ```jsx
 // Mobile: 1 col, Tablet: 2 cols, Desktop: 3 cols
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 ```
 
 ### Responsive Text
+
 ```jsx
 // Small to large
 <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl">
@@ -29,6 +31,7 @@ xl              ≥ 1280px  Desktop
 ```
 
 ### Responsive Spacing
+
 ```jsx
 // Padding
 <div className="p-4 sm:p-6 lg:p-8">
@@ -41,6 +44,7 @@ xl              ≥ 1280px  Desktop
 ```
 
 ### Hide/Show Elements
+
 ```jsx
 // Hide on mobile, show on desktop
 <div className="hidden lg:block">
@@ -53,6 +57,7 @@ xl              ≥ 1280px  Desktop
 ```
 
 ### Responsive Flexbox
+
 ```jsx
 // Stack on mobile, row on desktop
 <div className="flex flex-col lg:flex-row">
@@ -81,8 +86,8 @@ xl              ≥ 1280px  Desktop
 
 ```jsx
 // Basic responsive image
-<img 
-  src="/image.jpg" 
+<img
+  src="/image.jpg"
   alt="Description"
   className="w-full h-auto"
   loading="lazy"
@@ -112,6 +117,7 @@ xl              ≥ 1280px  Desktop
 ## 📱 Common Layouts
 
 ### Mobile Menu
+
 ```jsx
 // Desktop navigation
 <nav className="hidden lg:flex space-x-6">
@@ -125,15 +131,19 @@ xl              ≥ 1280px  Desktop
 ```
 
 ### Card Grid
+
 ```jsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-  {items.map(item => <Card key={item.id} {...item} />)}
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+  {items.map((item) => (
+    <Card key={item.id} {...item} />
+  ))}
 </div>
 ```
 
 ### Hero Section
+
 ```jsx
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+<div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2">
   <div className="order-2 lg:order-1">{/* Content */}</div>
   <div className="order-1 lg:order-2">{/* Image */}</div>
 </div>
@@ -146,7 +156,7 @@ import { useResponsive } from '@/hooks/useResponsive';
 
 function Component() {
   const { isMobile, isTablet, isDesktop, breakpoint } = useResponsive();
-  
+
   return (
     <div>
       {isMobile && <MobileView />}
@@ -161,13 +171,13 @@ function Component() {
 
 ```jsx
 // Lazy load images
-<img loading="lazy" decoding="async" />
+<img loading="lazy" decoding="async" />;
 
 // Lazy load components
 const Component = lazy(() => import('./Component'));
 
 // Preload critical resources
-<link rel="preload" as="image" href="/hero.jpg" />
+<link rel="preload" as="image" href="/hero.jpg" />;
 ```
 
 ## ♿ Accessibility
@@ -242,16 +252,20 @@ space-12 3rem     48px
 
 ```jsx
 // Card
-className="bg-white rounded-2xl shadow-soft p-6 hover:shadow-strong transition-shadow"
+className =
+  'bg-white rounded-2xl shadow-soft p-6 hover:shadow-strong transition-shadow';
 
 // Button
-className="px-6 py-3 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition-colors min-h-[44px]"
+className =
+  'px-6 py-3 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition-colors min-h-[44px]';
 
 // Input
-className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 min-h-[44px]"
+className =
+  'w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-primary-100 focus:border-primary-500 min-h-[44px]';
 
 // Badge
-className="inline-flex items-center px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium"
+className =
+  'inline-flex items-center px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium';
 ```
 
 ## 🧪 Testing Commands
@@ -300,4 +314,3 @@ Desktop        1920 x 1080
 - [Full Responsive Guide](./RESPONSIVE_DESIGN_GUIDE.md)
 - [Component Examples](./src/components/)
 - [Responsive Hooks](./src/hooks/useResponsive.js)
-

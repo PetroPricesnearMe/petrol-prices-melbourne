@@ -74,7 +74,8 @@ export function withLazyLoad<P extends object>(
 /**
  * Image lazy loading component
  */
-export interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface LazyImageProps
+  extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
   placeholderSrc?: string;

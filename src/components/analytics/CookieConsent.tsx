@@ -46,11 +46,11 @@ export function CookieConsent() {
   return (
     <div
       className={`
-        fixed bottom-0 left-0 right-0 z-[1000]
-        bg-white dark:bg-gray-900
-        border-t border-gray-200 dark:border-gray-800
-        shadow-2xl
-        transition-transform duration-300 ease-out
+        ease-out fixed bottom-0 left-0 right-0
+        z-[1000] border-t
+        border-gray-200 bg-white shadow-2xl
+        transition-transform
+        duration-300 dark:border-gray-800 dark:bg-gray-900
         ${isVisible ? 'translate-y-0' : 'translate-y-full'}
       `}
       role="dialog"
@@ -58,18 +58,19 @@ export function CookieConsent() {
       aria-describedby="cookie-consent-description"
     >
       <div className="container mx-auto px-4 py-6 sm:py-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
               🍪 We value your privacy
             </h3>
             <p
               id="cookie-consent-description"
-              className="text-sm text-gray-600 dark:text-gray-400 max-w-2xl"
+              className="max-w-2xl text-sm text-gray-600 dark:text-gray-400"
             >
-              We use analytics cookies to improve your experience and understand how you use our site.
-              We respect your privacy - no personal data is collected, and your IP is anonymized.
-              Bots are automatically excluded.
+              We use analytics cookies to improve your experience and understand
+              how you use our site. We respect your privacy - no personal data
+              is collected, and your IP is anonymized. Bots are automatically
+              excluded.
             </p>
           </div>
 
@@ -77,13 +78,13 @@ export function CookieConsent() {
             <button
               onClick={handleDecline}
               className="
-                px-4 py-2 rounded-lg
-                text-gray-700 dark:text-gray-300
-                border border-gray-300 dark:border-gray-700
-                hover:bg-gray-50 dark:hover:bg-gray-800
-                transition-colors duration-200
-                font-medium text-sm
-                whitespace-nowrap
+                whitespace-nowrap rounded-lg border
+                border-gray-300 px-4
+                py-2 text-sm font-medium
+                text-gray-700 transition-colors
+                duration-200 hover:bg-gray-50
+                dark:border-gray-700 dark:text-gray-300
+                dark:hover:bg-gray-800
               "
               aria-label="Decline analytics cookies"
             >
@@ -92,12 +93,12 @@ export function CookieConsent() {
             <button
               onClick={handleAccept}
               className="
-                px-4 py-2 rounded-lg
-                bg-primary-500 hover:bg-primary-600
-                text-white
+                whitespace-nowrap rounded-lg bg-primary-500
+                px-4 py-2
+                text-sm
+                font-medium text-white
                 transition-colors duration-200
-                font-medium text-sm
-                whitespace-nowrap
+                hover:bg-primary-600
               "
               aria-label="Accept analytics cookies"
             >

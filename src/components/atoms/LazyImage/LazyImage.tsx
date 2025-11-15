@@ -172,7 +172,11 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 
       {/* Error state */}
       {hasError && (
-        <div className="lazy-image-error" role="img" aria-label="Image failed to load">
+        <div
+          className="lazy-image-error"
+          role="img"
+          aria-label="Image failed to load"
+        >
           <svg
             width="48"
             height="48"

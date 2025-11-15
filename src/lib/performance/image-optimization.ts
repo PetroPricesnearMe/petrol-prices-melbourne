@@ -1,13 +1,13 @@
 /**
  * Image Optimization Utilities
- * 
+ *
  * Utilities for optimizing images for Core Web Vitals:
  * - LCP optimization (priority loading, preload)
  * - CLS prevention (aspect ratio, dimensions)
  * - Image format optimization (AVIF, WebP)
  * - Responsive image sizing
  * - Lazy loading strategies
- * 
+ *
  * @module lib/performance/image-optimization
  */
 
@@ -36,13 +36,13 @@ export function generateOptimizedImageSrc(
 
   // For Next.js Image Optimization API
   const params = new URLSearchParams();
-  
+
   if (width) {
     params.set('w', width.toString());
   }
-  
+
   params.set('q', quality.toString());
-  
+
   if (format) {
     params.set('f', format);
   }
@@ -110,7 +110,9 @@ export function getOptimalQuality(
 /**
  * Get optimal image sizes based on usage
  */
-export function getOptimalSizes(usage: 'hero' | 'thumbnail' | 'card' | 'icon' = 'card'): string {
+export function getOptimalSizes(
+  usage: 'hero' | 'thumbnail' | 'card' | 'icon' = 'card'
+): string {
   const sizesMap: Record<string, string> = {
     hero: '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px',
     card: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
@@ -145,7 +147,9 @@ export function preloadImage(href: string, as: 'image' = 'image'): void {
   }
 
   // Check if link already exists
-  const existingLink = document.querySelector(`link[rel="preload"][href="${href}"]`);
+  const existingLink = document.querySelector(
+    `link[rel="preload"][href="${href}"]`
+  );
   if (existingLink) {
     return;
   }
@@ -155,7 +159,7 @@ export function preloadImage(href: string, as: 'image' = 'image'): void {
   link.as = as;
   link.href = href;
   link.crossOrigin = 'anonymous';
-  
+
   // Add fetchpriority for LCP images
   if (as === 'image') {
     link.setAttribute('fetchpriority', 'high');
@@ -180,7 +184,8 @@ export function isLikelyLCPElement(element: HTMLImageElement): boolean {
   // - Large (at least 25% of viewport)
   // - Visible in the viewport
   // - Above the fold
-  const isLarge = rect.width * rect.height > viewportWidth * viewportHeight * 0.25;
+  const isLarge =
+    rect.width * rect.height > viewportWidth * viewportHeight * 0.25;
   const isVisible = rect.top >= 0 && rect.top < viewportHeight;
   const isAboveFold = rect.top < viewportHeight * 0.5;
 
@@ -224,4 +229,3 @@ export function getImageLoadingStrategy(
     fetchPriority: 'auto',
   };
 }
-

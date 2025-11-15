@@ -16,26 +16,26 @@
 
 .alert--success {
   background-color: rgba(76, 175, 80, 0.1);
-  color: #2E7D32;
-  border-color: #4CAF50;
+  color: #2e7d32;
+  border-color: #4caf50;
 }
 
 .alert--warning {
   background-color: rgba(255, 152, 0, 0.1);
-  color: #EF6C00;
-  border-color: #FF9800;
+  color: #ef6c00;
+  border-color: #ff9800;
 }
 
 .alert--error {
   background-color: rgba(244, 67, 54, 0.1);
-  color: #C62828;
-  border-color: #F44336;
+  color: #c62828;
+  border-color: #f44336;
 }
 
 .alert--info {
   background-color: rgba(3, 169, 244, 0.1);
-  color: #0277BD;
-  border-color: #03A9F4;
+  color: #0277bd;
+  border-color: #03a9f4;
 }
 
 /* ============================================================================
@@ -122,4 +122,3 @@
     flex-direction: column;
   }
 }
-

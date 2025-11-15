@@ -1,14 +1,17 @@
 # Accessible Components Guide
 
 ## Overview
+
 This guide documents the fully accessible, WCAG 2.1 AA compliant components created for the application.
 
 ## Components
 
 ### 1. AccessibleForm
+
 **Location**: `src/components/dynamic/AccessibleForm.tsx`
 
 A fully accessible form component with:
+
 - ✅ WCAG 2.1 AA compliance
 - ✅ Keyboard navigation
 - ✅ Screen reader support
@@ -18,6 +21,7 @@ A fully accessible form component with:
 - ✅ Touch-friendly targets (minimum 48x48px)
 
 **Features**:
+
 - Field validation with inline error messages
 - Real-time error clearing
 - Automatic focus management on errors
@@ -27,6 +31,7 @@ A fully accessible form component with:
 - Dark mode support
 
 **Usage**:
+
 ```tsx
 import { AccessibleForm, FormField } from '@/components/dynamic/AccessibleForm';
 
@@ -67,9 +72,11 @@ function MyForm() {
 ```
 
 ### 2. SearchableDropdown
+
 **Location**: `src/components/dynamic/SearchableDropdown.tsx`
 
 A fully accessible searchable dropdown with:
+
 - ✅ WCAG 2.1 AA compliance
 - ✅ Keyboard navigation (Arrow keys, Enter, Escape)
 - ✅ Screen reader support
@@ -78,6 +85,7 @@ A fully accessible searchable dropdown with:
 - ✅ Dark mode support
 
 **Features**:
+
 - Search/filter options
 - Keyboard navigation
 - Click outside to close
@@ -86,8 +94,12 @@ A fully accessible searchable dropdown with:
 - Empty state handling
 
 **Usage**:
+
 ```tsx
-import { SearchableDropdown, DropdownOption } from '@/components/dynamic/SearchableDropdown';
+import {
+  SearchableDropdown,
+  DropdownOption,
+} from '@/components/dynamic/SearchableDropdown';
 
 const options: DropdownOption[] = [
   { value: '1', label: 'Option 1', description: 'First option' },
@@ -111,9 +123,11 @@ function MyDropdown() {
 ```
 
 ### 3. StationListCMS
+
 **Location**: `src/components/dynamic/StationListCMS.tsx`
 
 A dynamic, accessible station list component with:
+
 - ✅ CMS integration
 - ✅ Keyboard navigation
 - ✅ Screen reader support
@@ -122,6 +136,7 @@ A dynamic, accessible station list component with:
 - ✅ Dark mode support
 
 **Usage**:
+
 ```tsx
 import StationListCMS from '@/components/dynamic/StationListCMS';
 
@@ -138,13 +153,16 @@ function StationsPage() {
 ## Accessibility Features
 
 ### Keyboard Navigation
+
 All components support full keyboard navigation:
+
 - **Tab**: Navigate between interactive elements
 - **Enter/Space**: Activate buttons and select options
 - **Arrow Keys**: Navigate dropdown options
 - **Escape**: Close modals and dropdowns
 
 ### Screen Reader Support
+
 - Semantic HTML elements (`<nav>`, `<button>`, `<form>`, etc.)
 - Proper ARIA attributes:
   - `aria-label` for descriptive labels
@@ -156,12 +174,14 @@ All components support full keyboard navigation:
 - Focus management for better navigation flow
 
 ### Visual Accessibility
+
 - **Color Contrast**: All text meets WCAG 2.1 AA standards (4.5:1 for normal text, 3:1 for large text)
 - **Focus Indicators**: Clear, high-contrast focus rings on all interactive elements
 - **Touch Targets**: Minimum 48x48px for all clickable elements
 - **Visual Feedback**: Hover, active, and disabled states for all interactive elements
 
 ### Responsive Design
+
 - Mobile-first approach
 - Fluid typography and spacing
 - Touch-friendly interface on mobile devices
@@ -170,6 +190,7 @@ All components support full keyboard navigation:
 ## Best Practices
 
 ### Form Validation
+
 ```tsx
 // Always provide clear, specific error messages
 {
@@ -188,6 +209,7 @@ All components support full keyboard navigation:
 ```
 
 ### Error Handling
+
 ```tsx
 // Always handle errors gracefully
 const handleSubmit = async (data) => {
@@ -201,6 +223,7 @@ const handleSubmit = async (data) => {
 ```
 
 ### Loading States
+
 ```tsx
 // Provide feedback during async operations
 const [isSubmitting, setIsSubmitting] = useState(false);
@@ -218,6 +241,7 @@ const handleSubmit = async (data) => {
 ## Performance Optimization
 
 All components are optimized for performance:
+
 - ✅ Memoization for expensive computations
 - ✅ Efficient re-render patterns
 - ✅ Lazy loading for large lists
@@ -227,6 +251,7 @@ All components are optimized for performance:
 ## Testing
 
 ### Manual Testing Checklist
+
 - [ ] Navigate using only keyboard
 - [ ] Test with screen reader (NVDA, JAWS, VoiceOver)
 - [ ] Verify color contrast with tools (WebAIM, Lighthouse)
@@ -235,6 +260,7 @@ All components are optimized for performance:
 - [ ] Test with browser zoom at 200%
 
 ### Automated Testing
+
 ```bash
 # Run accessibility tests
 npm run test:a11y
@@ -256,6 +282,7 @@ npm run test:coverage
 ## Support
 
 For accessibility issues or questions:
+
 1. Check this guide first
 2. Review WCAG 2.1 guidelines
 3. Test with actual assistive technologies

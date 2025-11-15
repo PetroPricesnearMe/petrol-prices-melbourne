@@ -11,16 +11,21 @@ import { Suspense } from 'react';
 
 // Lazy load the map component with no SSR
 const DynamicMap = dynamic(
-  () => import('./Map').then(mod => mod.Map).catch(() => {
-    console.warn('Map component failed to load');
-    return { default: () => <div>Map unavailable</div> };
-  }),
+  () =>
+    import('./Map')
+      .then((mod) => mod.Map)
+      .catch(() => {
+        console.warn('Map component failed to load');
+        return { default: () => <div>Map unavailable</div> };
+      }),
   {
     loading: () => (
-      <div className="w-full h-96 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center animate-pulse">
+      <div className="flex h-96 w-full animate-pulse items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700">
         <div className="text-center">
-          <div className="text-4xl mb-2">🗺️</div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">Loading map...</div>
+          <div className="mb-2 text-4xl">🗺️</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Loading map...
+          </div>
         </div>
       </div>
     ),
@@ -45,18 +50,21 @@ interface LazyMapProps {
  */
 export function LazyMap(props: LazyMapProps) {
   return (
-    <Suspense fallback={
-      <div className="w-full h-96 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-4xl mb-2">🗺️</div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">Initializing map...</div>
+    <Suspense
+      fallback={
+        <div className="flex h-96 w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700">
+          <div className="text-center">
+            <div className="mb-2 text-4xl">🗺️</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Initializing map...
+            </div>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <DynamicMap {...props} />
     </Suspense>
   );
 }
 
 export default LazyMap;
-

@@ -121,19 +121,19 @@ The design system uses a comprehensive color palette with semantic naming:
 import { colors } from '@/design-system/tokens';
 
 // Primary colors (50-900 scale)
-colors.primary[500]  // Main brand color
-colors.secondary[500]
+colors.primary[500]; // Main brand color
+colors.secondary[500];
 
 // Semantic colors
-colors.success[500]
-colors.warning[500]
-colors.error[500]
-colors.info[500]
+colors.success[500];
+colors.warning[500];
+colors.error[500];
+colors.info[500];
 
 // Functional colors
-colors.text.primary
-colors.background.default
-colors.border.main
+colors.text.primary;
+colors.background.default;
+colors.border.main;
 ```
 
 ### Typography Scale
@@ -160,10 +160,10 @@ Based on a 4px base unit (0.25rem):
 ```typescript
 import { spacing } from '@/design-system/tokens';
 
-spacing[1]  // 0.25rem (4px)
-spacing[2]  // 0.5rem (8px)
-spacing[4]  // 1rem (16px)
-spacing[8]  // 2rem (32px)
+spacing[1]; // 0.25rem (4px)
+spacing[2]; // 0.5rem (8px)
+spacing[4]; // 1rem (16px)
+spacing[8]; // 2rem (32px)
 ```
 
 ### Shadow System
@@ -173,14 +173,14 @@ Elevation-based shadow system:
 ```typescript
 import { shadows, semanticShadows } from '@/design-system/tokens';
 
-shadows.sm   // Subtle elevation
-shadows.md   // Medium elevation
-shadows.lg   // High elevation
+shadows.sm; // Subtle elevation
+shadows.md; // Medium elevation
+shadows.lg; // High elevation
 
 // Semantic shadows
-semanticShadows.card
-semanticShadows.modal
-semanticShadows.dropdown
+semanticShadows.card;
+semanticShadows.modal;
+semanticShadows.dropdown;
 ```
 
 ---
@@ -192,13 +192,14 @@ semanticShadows.dropdown
 Basic, reusable UI elements that cannot be broken down further.
 
 **Button Component:**
+
 ```tsx
 import { Button } from '@/components/atoms';
 
-<Button 
-  variant="solid"      // solid | outlined | ghost | link
-  color="primary"      // primary | secondary | success | warning | error | info
-  size="md"           // xs | sm | md | lg | xl
+<Button
+  variant="solid" // solid | outlined | ghost | link
+  color="primary" // primary | secondary | success | warning | error | info
+  size="md" // xs | sm | md | lg | xl
   startIcon={<Icon />}
   endIcon={<Icon />}
   loading={false}
@@ -206,10 +207,11 @@ import { Button } from '@/components/atoms';
   onClick={handleClick}
 >
   Click Me
-</Button>
+</Button>;
 ```
 
 **Input Component:**
+
 ```tsx
 import { Input } from '@/components/atoms';
 
@@ -224,18 +226,19 @@ import { Input } from '@/components/atoms';
   required
   startIcon={<MailIcon />}
   fullWidth
-/>
+/>;
 ```
 
 **Text Component:**
+
 ```tsx
 import { Text, Heading1, BodyText } from '@/components/atoms';
 
 <Heading1>Main Title</Heading1>
 
-<Text 
-  variant="body" 
-  color="secondary" 
+<Text
+  variant="body"
+  color="secondary"
   align="center"
   weight="medium"
   truncate
@@ -245,29 +248,27 @@ import { Text, Heading1, BodyText } from '@/components/atoms';
 ```
 
 **Badge Component:**
+
 ```tsx
 import { Badge } from '@/components/atoms';
 
-<Badge 
-  variant="success" 
-  size="sm" 
+<Badge
+  variant="success"
+  size="sm"
   appearance="soft"
   dot
   onRemove={handleRemove}
 >
   New
-</Badge>
+</Badge>;
 ```
 
 **Spinner Component:**
+
 ```tsx
 import { Spinner } from '@/components/atoms';
 
-<Spinner 
-  size="md" 
-  color="primary" 
-  label="Loading content..."
-/>
+<Spinner size="md" color="primary" label="Loading content..." />;
 ```
 
 ### Molecules
@@ -275,8 +276,15 @@ import { Spinner } from '@/components/atoms';
 Combinations of atoms that form functional UI components.
 
 **Card Component:**
+
 ```tsx
-import { Card, CardHeader, CardBody, CardFooter, CardMedia } from '@/components/molecules';
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  CardMedia,
+} from '@/components/molecules';
 
 <Card elevation="md" hoverable>
   <CardMedia src="/image.jpg" alt="Description" aspectRatio="16/9" />
@@ -289,10 +297,11 @@ import { Card, CardHeader, CardBody, CardFooter, CardMedia } from '@/components/
   <CardFooter>
     <Button>Action</Button>
   </CardFooter>
-</Card>
+</Card>;
 ```
 
 **SearchBar Component:**
+
 ```tsx
 import { SearchBar } from '@/components/molecules';
 
@@ -304,10 +313,11 @@ import { SearchBar } from '@/components/molecules';
   loading={isSearching}
   size="md"
   showButton
-/>
+/>;
 ```
 
 **Alert Component:**
+
 ```tsx
 import { Alert } from '@/components/molecules';
 
@@ -317,12 +327,12 @@ import { Alert } from '@/components/molecules';
   showIcon
   onClose={handleClose}
   action={{
-    label: "View Details",
-    onClick: handleAction
+    label: 'View Details',
+    onClick: handleAction,
   }}
 >
   Your action was completed successfully.
-</Alert>
+</Alert>;
 ```
 
 ### Organisms
@@ -330,6 +340,7 @@ import { Alert } from '@/components/molecules';
 Complex components combining multiple molecules and atoms.
 
 **Header Component:**
+
 ```tsx
 import { Header } from '@/components/organisms';
 import { Button } from '@/components/atoms';
@@ -340,7 +351,7 @@ import { Button } from '@/components/atoms';
   navItems={[
     { label: 'Home', href: '/', active: true },
     { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' }
+    { label: 'Contact', href: '/contact' },
   ]}
   actions={
     <>
@@ -350,10 +361,11 @@ import { Button } from '@/components/atoms';
   }
   sticky
   elevated
-/>
+/>;
 ```
 
 **Footer Component:**
+
 ```tsx
 import { Footer } from '@/components/organisms';
 
@@ -363,26 +375,27 @@ import { Footer } from '@/components/organisms';
       title: 'Product',
       links: [
         { label: 'Features', href: '/features' },
-        { label: 'Pricing', href: '/pricing' }
-      ]
+        { label: 'Pricing', href: '/pricing' },
+      ],
     },
     {
       title: 'Company',
       links: [
         { label: 'About', href: '/about' },
-        { label: 'Blog', href: '/blog' }
-      ]
-    }
+        { label: 'Blog', href: '/blog' },
+      ],
+    },
   ]}
   socialLinks={[
     { label: 'Twitter', href: 'https://twitter.com', icon: <TwitterIcon /> },
-    { label: 'GitHub', href: 'https://github.com', icon: <GitHubIcon /> }
+    { label: 'GitHub', href: 'https://github.com', icon: <GitHubIcon /> },
   ]}
   copyright="© {year} MyApp. All rights reserved."
-/>
+/>;
 ```
 
 **StationCard Component:**
+
 ```tsx
 import { StationCard } from '@/components/organisms';
 
@@ -392,7 +405,7 @@ import { StationCard } from '@/components/organisms';
   onViewDetails={handleViewDetails}
   onGetDirections={handleDirections}
   compact={false}
-/>
+/>;
 ```
 
 ### Templates
@@ -400,6 +413,7 @@ import { StationCard } from '@/components/organisms';
 Page-level layouts that combine organisms.
 
 **MainLayout Template:**
+
 ```tsx
 import { MainLayout } from '@/components/templates';
 
@@ -454,7 +468,14 @@ Components that can render as different HTML elements:
 type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 // Color variant
-type ColorVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'neutral';
+type ColorVariant =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'info'
+  | 'neutral';
 
 // Component variant
 type Variant = 'solid' | 'outlined' | 'ghost' | 'link';
@@ -499,7 +520,7 @@ export const SearchPage = () => {
       footer={{ sections: [...] }}
     >
       <Heading1>Find Petrol Stations</Heading1>
-      
+
       <SearchBar
         value={query}
         onChange={setQuery}
@@ -532,14 +553,9 @@ export const ContactForm = () => {
     <Card elevation="md">
       <CardBody>
         <Heading3>Contact Us</Heading3>
-        
-        <Input
-          label="Name"
-          placeholder="Your name"
-          required
-          fullWidth
-        />
-        
+
+        <Input label="Name" placeholder="Your name" required fullWidth />
+
         <Input
           label="Email"
           type="email"
@@ -547,14 +563,12 @@ export const ContactForm = () => {
           required
           fullWidth
         />
-        
+
         <Button type="submit" fullWidth>
           Submit
         </Button>
-        
-        <Alert variant="info">
-          We'll respond within 24 hours
-        </Alert>
+
+        <Alert variant="info">We'll respond within 24 hours</Alert>
       </CardBody>
     </Card>
   );
@@ -568,6 +582,7 @@ export const ContactForm = () => {
 ### 1. Component Composition
 
 ✅ **Good:**
+
 ```tsx
 <Card>
   <CardHeader>
@@ -580,6 +595,7 @@ export const ContactForm = () => {
 ```
 
 ❌ **Avoid:**
+
 ```tsx
 <Card title="Title" content="Content" />
 ```
@@ -596,11 +612,11 @@ export const ContactForm = () => {
 Always provide sensible defaults:
 
 ```tsx
-const Button = ({ 
+const Button = ({
   variant = 'solid',
   size = 'md',
   color = 'primary',
-  ...props 
+  ...props
 }) => { ... }
 ```
 
@@ -634,6 +650,7 @@ import type { ButtonProps } from '@/components/atoms';
 ### Keyboard Navigation
 
 All interactive components support:
+
 - Tab navigation
 - Enter/Space activation
 - Escape to close
@@ -658,6 +675,7 @@ All interactive components support:
 ### Color Contrast
 
 All colors meet WCAG 2.1 AA standards:
+
 - Normal text: 4.5:1 minimum
 - Large text: 3:1 minimum
 - UI components: 3:1 minimum
@@ -732,19 +750,19 @@ const StationMap = React.lazy(() => import('./StationMap'));
 ### Example Migration
 
 **Before:**
+
 ```jsx
-<button className="custom-button primary large">
-  Click Me
-</button>
+<button className="custom-button primary large">Click Me</button>
 ```
 
 **After:**
+
 ```tsx
 import { Button } from '@/components/atoms';
 
 <Button variant="solid" color="primary" size="lg">
   Click Me
-</Button>
+</Button>;
 ```
 
 ---
@@ -776,8 +794,8 @@ When adding new components:
 ## Support
 
 For questions or issues:
+
 - Check the component source code
 - Review usage examples
 - Consult this documentation
 - Create an issue in the repository
-

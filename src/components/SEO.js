@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 /**
  * SEO Component
  * Manages meta tags, structured data, and SEO optimization
- * 
+ *
  * @component
  * @param {Object} props - Component props
  * @param {string} props.title - Page title
@@ -27,66 +27,71 @@ const SEO = ({
   noindex = false,
 }) => {
   const siteUrl = 'https://www.petrolpricesnearme.com.au';
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
-  const fullCanonical = canonical ? `${siteUrl}${canonical}` : `${siteUrl}${currentPath}`;
-  const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+  const currentPath =
+    typeof window !== 'undefined' ? window.location.pathname : '/';
+  const fullCanonical = canonical
+    ? `${siteUrl}${canonical}`
+    : `${siteUrl}${currentPath}`;
+  const fullOgImage = ogImage.startsWith('http')
+    ? ogImage
+    : `${siteUrl}${ogImage}`;
 
   // Default structured data for the organization
   const defaultStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Petrol Prices Near Me",
-    "url": siteUrl,
-    "description": description,
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": `${siteUrl}/directory?search={search_term_string}`
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Petrol Prices Near Me',
+    url: siteUrl,
+    description: description,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}/directory?search={search_term_string}`,
       },
-      "query-input": "required name=search_term_string"
-    }
+      'query-input': 'required name=search_term_string',
+    },
   };
 
   // Organization structured data
   const organizationData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Petrol Prices Near Me",
-    "url": siteUrl,
-    "logo": `${siteUrl}/images/fuel-icon-192.svg`,
-    "description": "Melbourne's leading fuel price comparison platform",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Melbourne",
-      "addressRegion": "VIC",
-      "addressCountry": "AU"
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Petrol Prices Near Me',
+    url: siteUrl,
+    logo: `${siteUrl}/images/fuel-icon-192.svg`,
+    description: "Melbourne's leading fuel price comparison platform",
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Melbourne',
+      addressRegion: 'VIC',
+      addressCountry: 'AU',
     },
-    "areaServed": {
-      "@type": "City",
-      "name": "Melbourne"
-    }
+    areaServed: {
+      '@type': 'City',
+      name: 'Melbourne',
+    },
   };
 
   // Breadcrumb structured data
   const breadcrumbData = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": siteUrl
-      }
-    ]
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: siteUrl,
+      },
+    ],
   };
 
   // Combine structured data
   const combinedStructuredData = structuredData || [
     defaultStructuredData,
     organizationData,
-    breadcrumbData
+    breadcrumbData,
   ];
 
   return (
@@ -123,7 +128,10 @@ const SEO = ({
       <meta name="ICBM" content="-37.8136, 144.9631" />
 
       {/* Mobile */}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+      />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -136,7 +144,11 @@ const SEO = ({
 
       {/* Preconnect to external domains for performance */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
       <link rel="preconnect" href="https://www.google-analytics.com" />
 
       {/* DNS Prefetch */}
@@ -151,38 +163,42 @@ const SEO = ({
  */
 export const generateStationStructuredData = (station) => {
   return {
-    "@context": "https://schema.org",
-    "@type": "GasStation",
-    "name": station.name,
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": station.address,
-      "addressLocality": station.city,
-      "addressRegion": "VIC",
-      "postalCode": station.postalCode,
-      "addressCountry": "AU"
+    '@context': 'https://schema.org',
+    '@type': 'GasStation',
+    name: station.name,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: station.address,
+      addressLocality: station.city,
+      addressRegion: 'VIC',
+      postalCode: station.postalCode,
+      addressCountry: 'AU',
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": station.latitude,
-      "longitude": station.longitude
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: station.latitude,
+      longitude: station.longitude,
     },
-    "telephone": station.phone,
-    "openingHoursSpecification": station.hours ? {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ],
-      "opens": "00:00",
-      "closes": "23:59"
-    } : undefined,
-    "priceRange": station.fuelPrices ? `$${Math.min(...station.fuelPrices.map(fp => parseFloat(fp.price || 0)))} - $${Math.max(...station.fuelPrices.map(fp => parseFloat(fp.price || 0)))}` : undefined,
+    telephone: station.phone,
+    openingHoursSpecification: station.hours
+      ? {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday',
+          ],
+          opens: '00:00',
+          closes: '23:59',
+        }
+      : undefined,
+    priceRange: station.fuelPrices
+      ? `$${Math.min(...station.fuelPrices.map((fp) => parseFloat(fp.price || 0)))} - $${Math.max(...station.fuelPrices.map((fp) => parseFloat(fp.price || 0)))}`
+      : undefined,
   };
 };
 
@@ -191,18 +207,17 @@ export const generateStationStructuredData = (station) => {
  */
 export const generateFuelPriceListingData = (stations) => {
   return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Melbourne Petrol Station Prices",
-    "description": "Real-time fuel prices from petrol stations across Melbourne",
-    "numberOfItems": stations.length,
-    "itemListElement": stations.slice(0, 10).map((station, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": generateStationStructuredData(station)
-    }))
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Melbourne Petrol Station Prices',
+    description: 'Real-time fuel prices from petrol stations across Melbourne',
+    numberOfItems: stations.length,
+    itemListElement: stations.slice(0, 10).map((station, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: generateStationStructuredData(station),
+    })),
   };
 };
 
 export default SEO;
-

@@ -77,11 +77,11 @@ text-display-xl  // 96px → 144px
 ### Body Text (Fixed)
 
 ```tsx
-text-xs    // 12px (fixed)
-text-sm    // 14px (fixed)
-text-base  // 16px (fixed)
-text-lg    // 18px (fixed)
-text-xl    // 20px (fixed)
+text - xs; // 12px (fixed)
+text - sm; // 14px (fixed)
+text - base; // 16px (fixed)
+text - lg; // 18px (fixed)
+text - xl; // 20px (fixed)
 ```
 
 ### Fluid Body Text (Optional)
@@ -110,9 +110,9 @@ text-xl    // 20px (fixed)
 ### Fixed Spacing (4px increments)
 
 ```tsx
-p-4   // 16px
-p-8   // 32px
-p-12  // 48px
+p - 4; // 16px
+p - 8; // 32px
+p - 12; // 48px
 // Standard Tailwind scale
 ```
 
@@ -172,19 +172,19 @@ p-fluid-3xl  // 128px → 192px
 ### Fixed Gaps
 
 ```tsx
-gap-4  // 16px
-gap-6  // 24px
-gap-8  // 32px
+gap - 4; // 16px
+gap - 6; // 24px
+gap - 8; // 32px
 ```
 
 ### Fluid Gaps
 
 ```tsx
-gap-fluid-xs  // 8px → 12px
-gap-fluid-sm  // 12px → 16px
-gap-fluid-md  // 16px → 24px
-gap-fluid-lg  // 24px → 32px
-gap-fluid-xl  // 32px → 48px
+gap - fluid - xs; // 8px → 12px
+gap - fluid - sm; // 12px → 16px
+gap - fluid - md; // 16px → 24px
+gap - fluid - lg; // 24px → 32px
+gap - fluid - xl; // 32px → 48px
 ```
 
 ---
@@ -197,12 +197,8 @@ gap-fluid-xl  // 32px → 48px
 <section className="section-spacing-lg bg-gradient-to-br from-primary-600 to-secondary-600">
   <div className="container">
     <div className="stack-xl text-center text-white">
-      <h1 className="text-display-lg text-balance">
-        Hero Title
-      </h1>
-      <p className="text-fluid-xl text-measure mx-auto">
-        Subtitle text
-      </p>
+      <h1 className="text-display-lg text-balance">Hero Title</h1>
+      <p className="text-fluid-xl text-measure mx-auto">Subtitle text</p>
       <div className="flex-responsive-center">
         <button>CTA</button>
       </div>
@@ -217,9 +213,9 @@ gap-fluid-xl  // 32px → 48px
 <section className="section-spacing">
   <div className="container">
     <div className="stack-xl">
-      <h2 className="text-6xl text-center text-balance">Features</h2>
+      <h2 className="text-balance text-center text-6xl">Features</h2>
       <div className="grid-auto-fit-md">
-        {features.map(f => (
+        {features.map((f) => (
           <div className="card p-fluid-md stack">
             <h3 className="text-2xl">{f.title}</h3>
             <p>{f.description}</p>
@@ -237,13 +233,13 @@ gap-fluid-xl  // 32px → 48px
 <article className="section-spacing">
   <div className="content-container">
     <header className="stack-lg">
-      <h1 className="text-6xl text-balance">Article Title</h1>
+      <h1 className="text-balance text-6xl">Article Title</h1>
       <div className="flex-responsive-between">
         <span>Author</span>
         <time>Date</time>
       </div>
     </header>
-    <div className="content-spacing text-lg text-measure">
+    <div className="content-spacing text-measure text-lg">
       <p>Content...</p>
     </div>
   </div>

@@ -9,13 +9,17 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary-600 text-white shadow hover:bg-primary-700 active:scale-[0.98]',
-        destructive: 'bg-red-600 text-white shadow-sm hover:bg-red-700 active:scale-[0.98]',
-        outline: 'border-2 border-gray-300 bg-transparent hover:bg-gray-50 hover:border-gray-400',
+        default:
+          'bg-primary-600 text-white shadow hover:bg-primary-700 active:scale-[0.98]',
+        destructive:
+          'bg-red-600 text-white shadow-sm hover:bg-red-700 active:scale-[0.98]',
+        outline:
+          'border-2 border-gray-300 bg-transparent hover:bg-gray-50 hover:border-gray-400',
         secondary: 'bg-gray-200 text-gray-900 shadow-sm hover:bg-gray-300',
         ghost: 'hover:bg-gray-100 hover:text-gray-900',
         link: 'text-primary-600 underline-offset-4 hover:underline',
-        gradient: 'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow hover:shadow-lg active:scale-[0.98]',
+        gradient:
+          'bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow hover:shadow-lg active:scale-[0.98]',
       },
       size: {
         default: 'h-11 px-6',
@@ -42,7 +46,20 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      loading,
+      leftIcon,
+      rightIcon,
+      children,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }))}
@@ -51,9 +68,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-        {!loading && leftIcon && <span className="flex-shrink-0">{leftIcon}</span>}
+        {!loading && leftIcon && (
+          <span className="flex-shrink-0">{leftIcon}</span>
+        )}
         {children}
-        {!loading && rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
+        {!loading && rightIcon && (
+          <span className="flex-shrink-0">{rightIcon}</span>
+        )}
       </button>
     );
   }

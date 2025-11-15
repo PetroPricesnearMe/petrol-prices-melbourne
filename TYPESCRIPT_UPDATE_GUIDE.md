@@ -7,22 +7,22 @@
 ```json
 {
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.21.0",  // Updated from ^6.19.0
-    "@typescript-eslint/parser": "^6.21.0",          // Updated from ^6.19.0
-    "typescript": "5.3.3"                            // Locked to exact version (no ^)
+    "@typescript-eslint/eslint-plugin": "^6.21.0", // Updated from ^6.19.0
+    "@typescript-eslint/parser": "^6.21.0", // Updated from ^6.19.0
+    "typescript": "5.3.3" // Locked to exact version (no ^)
   }
 }
 ```
 
 ### 2. Version Compatibility Matrix
 
-| Package | Version | TypeScript Support |
-|---------|---------|-------------------|
-| TypeScript | 5.3.3 | ✅ Locked (no caret) |
+| Package                          | Version | TypeScript Support           |
+| -------------------------------- | ------- | ---------------------------- |
+| TypeScript                       | 5.3.3   | ✅ Locked (no caret)         |
 | @typescript-eslint/eslint-plugin | ^6.21.0 | ✅ Supports TS 4.3.5 - 5.3.x |
-| @typescript-eslint/parser | ^6.21.0 | ✅ Supports TS 4.3.5 - 5.3.x |
-| Next.js | ^15.0.0 | ✅ Compatible |
-| React | ^19.0.0 | ✅ Compatible |
+| @typescript-eslint/parser        | ^6.21.0 | ✅ Supports TS 4.3.5 - 5.3.x |
+| Next.js                          | ^15.0.0 | ✅ Compatible                |
+| React                            | ^19.0.0 | ✅ Compatible                |
 
 ---
 
@@ -64,6 +64,7 @@ npm run build
 ### Issue 1: Still seeing "unsupported TypeScript version" warning
 
 **Solution:**
+
 ```bash
 # Clear all caches
 npm cache clean --force
@@ -78,6 +79,7 @@ npm install
 ### Issue 2: ESLint errors after update
 
 **Solution:**
+
 ```bash
 # Fix auto-fixable issues
 npm run lint:fix
@@ -89,10 +91,12 @@ npm run lint
 ### Issue 3: Type-check fails
 
 **Possible causes:**
+
 - Using TypeScript 5.4+ features (like `NoInfer<T>`)
 - Incompatible @types packages
 
 **Solution:**
+
 ```bash
 # Check for type errors
 npm run type-check
@@ -106,6 +110,7 @@ npm update @types/node @types/react @types/react-dom
 ## 📋 Features Available in TypeScript 5.3.3
 
 ✅ **Safe to use:**
+
 - `satisfies` operator
 - `Awaited<T>` type
 - Type-only imports (`import type`)
@@ -115,6 +120,7 @@ npm update @types/node @types/react @types/react-dom
 - `using` declarations (experimental)
 
 ❌ **NOT available (5.4+):**
+
 - `NoInfer<T>` utility type
 - `Object.groupBy()`
 - Trailing comma after rest element in object destructuring
@@ -138,18 +144,21 @@ Run through this checklist after updating:
 ## 🎯 Why These Versions?
 
 ### TypeScript 5.3.3 (Exact)
+
 - ✅ Latest stable 5.3.x release
 - ✅ Fully supported by @typescript-eslint v6.x
 - ✅ Avoids breaking changes in 5.4.x
 - ✅ Locked to prevent accidental upgrades
 
 ### @typescript-eslint v6.21.0 (Latest v6)
+
 - ✅ Final stable release of v6 series
 - ✅ Best compatibility with TS 5.3.3
 - ✅ No experimental features
 - ✅ All bug fixes included
 
 ### Why Not v7?
+
 - @typescript-eslint v7 requires TypeScript 4.7.4 - 5.4.x
 - We're on 5.3.3, so v6 is the perfect match
 - v7 may show warnings about TypeScript version
@@ -159,6 +168,7 @@ Run through this checklist after updating:
 ## 📊 Before & After Comparison
 
 ### Before
+
 ```json
 "@typescript-eslint/eslint-plugin": "^6.19.0"  // Older patch version
 "@typescript-eslint/parser": "^6.19.0"        // Older patch version
@@ -168,6 +178,7 @@ Run through this checklist after updating:
 **Problem:** Could auto-update to TypeScript 5.4.x, breaking compatibility
 
 ### After
+
 ```json
 "@typescript-eslint/eslint-plugin": "^6.21.0"  // Latest v6
 "@typescript-eslint/parser": "^6.21.0"        // Latest v6
@@ -228,9 +239,9 @@ You'll know the update is successful when:
 ---
 
 **Last Updated:** 2025-11-11
-**Tested With:** 
+**Tested With:**
+
 - TypeScript: 5.3.3
 - @typescript-eslint: 6.21.0
 - Node: 22.x
 - Next.js: 15.0.0
-

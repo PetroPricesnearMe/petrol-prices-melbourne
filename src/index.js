@@ -22,4 +22,4 @@ root.render(
     <App />
     <Analytics />
   </React.StrictMode>
-); 
+);

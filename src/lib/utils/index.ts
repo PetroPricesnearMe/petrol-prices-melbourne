@@ -1,14 +1,14 @@
 /**
  * Utility Functions - Central Export
- * 
+ *
  * All utility functions in one place for easy importing.
  * Consolidated from multiple files to eliminate duplication.
- * 
+ *
  * @example
  * ```typescript
  * import { formatPrice, debounce, isValidEmail, sanitizeString } from '@/lib/utils';
  * ```
- * 
+ *
  * @module lib/utils
  */
 
@@ -32,12 +32,7 @@ export {
   formatDate,
 } from './formatters';
 
-export {
-  isValidEmail,
-  isValidPhone,
-  isValidUrl,
-  isEmpty,
-} from './validators';
+export { isValidEmail, isValidPhone, isValidUrl, isEmpty } from './validators';
 
 export {
   debounce,
@@ -47,4 +42,3 @@ export {
   sleep,
   groupBy,
 } from './helpers';
-

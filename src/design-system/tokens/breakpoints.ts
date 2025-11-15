@@ -1,9 +1,9 @@
 /**
  * Breakpoint Tokens - Design System
- * 
+ *
  * Responsive breakpoints for mobile-first design.
  * Use these for consistent responsive behavior across the app.
- * 
+ *
  * @module design-system/tokens/breakpoints
  */
 
@@ -11,11 +11,11 @@
  * Breakpoint values (mobile-first)
  */
 export const breakpoints = {
-  xs: '475px',    // Extra small devices
-  sm: '640px',    // Small tablets
-  md: '768px',    // Tablets
-  lg: '1024px',   // Laptops
-  xl: '1280px',   // Desktops
+  xs: '475px', // Extra small devices
+  sm: '640px', // Small tablets
+  md: '768px', // Tablets
+  lg: '1024px', // Laptops
+  xl: '1280px', // Desktops
   '2xl': '1536px', // Large screens
 } as const;
 
@@ -33,7 +33,7 @@ export const breakpointValues = {
 
 /**
  * Media query helpers
- * 
+ *
  * @example
  * ```tsx
  * const isMobile = window.matchMedia(mediaQueries.sm).matches;
@@ -76,4 +76,3 @@ export const containerMaxWidth = {
  */
 export type Breakpoint = keyof typeof breakpoints;
 export type MediaQuery = keyof typeof mediaQueries;
-

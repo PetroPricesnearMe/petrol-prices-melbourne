@@ -21,8 +21,9 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ## Common Components Cheat Sheet
 
 ### Button
+
 ```tsx
-<Button 
+<Button
   variant="solid|outlined|ghost|link"
   color="primary|secondary|success|warning|error|info"
   size="xs|sm|md|lg|xl"
@@ -37,6 +38,7 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Input
+
 ```tsx
 <Input
   label="Label"
@@ -55,8 +57,9 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Text
+
 ```tsx
-<Text 
+<Text
   variant="h1|h2|h3|h4|h5|h6|body|bodySmall|label|caption"
   color="primary|secondary|disabled|inverse|success|warning|error"
   align="left|center|right|justify"
@@ -75,8 +78,9 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Badge
+
 ```tsx
-<Badge 
+<Badge
   variant="primary|secondary|success|warning|error|info|neutral"
   size="xs|sm|md|lg"
   appearance="solid|outlined|soft"
@@ -89,8 +93,9 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Spinner
+
 ```tsx
-<Spinner 
+<Spinner
   size="xs|sm|md|lg|xl"
   color="primary|secondary|success|warning|error|info|neutral"
   label="Loading..."
@@ -98,8 +103,9 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Card
+
 ```tsx
-<Card 
+<Card
   elevation="none|sm|md|lg"
   padding="none|sm|md|lg"
   bordered
@@ -114,6 +120,7 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### SearchBar
+
 ```tsx
 <SearchBar
   value={query}
@@ -128,6 +135,7 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Alert
+
 ```tsx
 <Alert
   variant="success|warning|error|info"
@@ -135,8 +143,8 @@ import type { PetrolStation, FuelPrice } from '@/types';
   showIcon
   onClose={handler}
   action={{
-    label: "Action",
-    onClick: handler
+    label: 'Action',
+    onClick: handler,
   }}
 >
   Alert message content
@@ -144,13 +152,14 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Header
+
 ```tsx
 <Header
   logo={<Logo />}
   logoText="Brand"
   navItems={[
     { label: 'Home', href: '/', active: true },
-    { label: 'About', href: '/about' }
+    { label: 'About', href: '/about' },
   ]}
   actions={<Button>Sign Up</Button>}
   sticky
@@ -159,24 +168,24 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Footer
+
 ```tsx
 <Footer
   sections={[
     {
       title: 'Section',
-      links: [
-        { label: 'Link', href: '/link', external: false }
-      ]
-    }
+      links: [{ label: 'Link', href: '/link', external: false }],
+    },
   ]}
   socialLinks={[
-    { label: 'Twitter', href: 'https://twitter.com', icon: <Icon /> }
+    { label: 'Twitter', href: 'https://twitter.com', icon: <Icon /> },
   ]}
   copyright="© {year} Company"
 />
 ```
 
 ### StationCard
+
 ```tsx
 <StationCard
   station={stationData}
@@ -188,6 +197,7 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### MainLayout
+
 ```tsx
 <MainLayout
   header={{ logoText: 'App', navItems: [...] }}
@@ -202,77 +212,83 @@ import type { PetrolStation, FuelPrice } from '@/types';
 ## Design Tokens
 
 ### Colors
-```tsx
-colors.primary[500]
-colors.secondary[500]
-colors.success[500]
-colors.warning[500]
-colors.error[500]
-colors.info[500]
-colors.neutral[500]
 
-colors.text.primary
-colors.text.secondary
-colors.background.default
-colors.border.main
+```tsx
+colors.primary[500];
+colors.secondary[500];
+colors.success[500];
+colors.warning[500];
+colors.error[500];
+colors.info[500];
+colors.neutral[500];
+
+colors.text.primary;
+colors.text.secondary;
+colors.background.default;
+colors.border.main;
 ```
 
 ### Spacing
+
 ```tsx
-spacing[0]   // 0
-spacing[1]   // 0.25rem (4px)
-spacing[2]   // 0.5rem (8px)
-spacing[3]   // 0.75rem (12px)
-spacing[4]   // 1rem (16px)
-spacing[6]   // 1.5rem (24px)
-spacing[8]   // 2rem (32px)
-spacing[12]  // 3rem (48px)
-spacing[16]  // 4rem (64px)
+spacing[0]; // 0
+spacing[1]; // 0.25rem (4px)
+spacing[2]; // 0.5rem (8px)
+spacing[3]; // 0.75rem (12px)
+spacing[4]; // 1rem (16px)
+spacing[6]; // 1.5rem (24px)
+spacing[8]; // 2rem (32px)
+spacing[12]; // 3rem (48px)
+spacing[16]; // 4rem (64px)
 ```
 
 ### Typography
-```tsx
-fontSize.xs   // 0.75rem
-fontSize.sm   // 0.875rem
-fontSize.base // 1rem
-fontSize.lg   // 1.125rem
-fontSize.xl   // 1.25rem
 
-fontWeight.light     // 300
-fontWeight.regular   // 400
-fontWeight.medium    // 500
-fontWeight.semibold  // 600
-fontWeight.bold      // 700
+```tsx
+fontSize.xs; // 0.75rem
+fontSize.sm; // 0.875rem
+fontSize.base; // 1rem
+fontSize.lg; // 1.125rem
+fontSize.xl; // 1.25rem
+
+fontWeight.light; // 300
+fontWeight.regular; // 400
+fontWeight.medium; // 500
+fontWeight.semibold; // 600
+fontWeight.bold; // 700
 ```
 
 ### Shadows
-```tsx
-shadows.xs   // Subtle
-shadows.sm   // Small
-shadows.base // Base
-shadows.md   // Medium
-shadows.lg   // Large
-shadows.xl   // Extra large
 
-semanticShadows.card
-semanticShadows.modal
-semanticShadows.dropdown
+```tsx
+shadows.xs; // Subtle
+shadows.sm; // Small
+shadows.base; // Base
+shadows.md; // Medium
+shadows.lg; // Large
+shadows.xl; // Extra large
+
+semanticShadows.card;
+semanticShadows.modal;
+semanticShadows.dropdown;
 ```
 
 ### Border Radius
+
 ```tsx
-borderRadius.none  // 0
-borderRadius.sm    // 0.125rem
-borderRadius.base  // 0.25rem
-borderRadius.md    // 0.375rem
-borderRadius.lg    // 0.5rem
-borderRadius.xl    // 0.75rem
-borderRadius.full  // 9999px
+borderRadius.none; // 0
+borderRadius.sm; // 0.125rem
+borderRadius.base; // 0.25rem
+borderRadius.md; // 0.375rem
+borderRadius.lg; // 0.5rem
+borderRadius.xl; // 0.75rem
+borderRadius.full; // 9999px
 ```
 
 ## Utility Functions
 
 ### Class Name Utility
+
 ```tsx
 import { cn } from '@/design-system/utils/styled';
 
@@ -285,6 +301,7 @@ const className = cn(
 ```
 
 ### Color Utilities
+
 ```tsx
 import { getVariantColor } from '@/design-system/utils/styled';
 
@@ -292,6 +309,7 @@ const color = getVariantColor('primary', 500);
 ```
 
 ### Style Utilities
+
 ```tsx
 import { focusRing, disabledStyles, truncate, visuallyHidden } from '@/design-system/utils/styled';
 
@@ -303,17 +321,18 @@ import { focusRing, disabledStyles, truncate, visuallyHidden } from '@/design-sy
 ## Responsive Breakpoints
 
 ```tsx
-breakpoints.xs   // 0px
-breakpoints.sm   // 640px
-breakpoints.md   // 768px
-breakpoints.lg   // 1024px
-breakpoints.xl   // 1280px
-breakpoints['2xl'] // 1536px
+breakpoints.xs; // 0px
+breakpoints.sm; // 640px
+breakpoints.md; // 768px
+breakpoints.lg; // 1024px
+breakpoints.xl; // 1280px
+breakpoints['2xl']; // 1536px
 ```
 
 ## Accessibility Props
 
 All components support:
+
 ```tsx
 <Component
   ariaLabel="Descriptive label"
@@ -325,6 +344,7 @@ All components support:
 ## Common Patterns
 
 ### Form with Validation
+
 ```tsx
 <form onSubmit={handleSubmit}>
   <Input
@@ -343,39 +363,40 @@ All components support:
 ```
 
 ### Loading States
+
 ```tsx
-{isLoading ? (
-  <Spinner size="lg" />
-) : (
-  <Content />
-)}
+{
+  isLoading ? <Spinner size="lg" /> : <Content />;
+}
 
 // Or
-<Button loading={isLoading}>
-  Save Changes
-</Button>
+<Button loading={isLoading}>Save Changes</Button>;
 ```
 
 ### Conditional Rendering
+
 ```tsx
-{showAlert && (
-  <Alert variant="success" onClose={() => setShowAlert(false)}>
-    Success message
-  </Alert>
-)}
+{
+  showAlert && (
+    <Alert variant="success" onClose={() => setShowAlert(false)}>
+      Success message
+    </Alert>
+  );
+}
 ```
 
 ### Grid Layout
+
 ```tsx
-<div style={{ 
-  display: 'grid', 
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: spacing[4]
-}}>
-  {items.map(item => (
-    <Card key={item.id}>
-      {/* Card content */}
-    </Card>
+<div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: spacing[4],
+  }}
+>
+  {items.map((item) => (
+    <Card key={item.id}>{/* Card content */}</Card>
   ))}
 </div>
 ```
@@ -383,12 +404,14 @@ All components support:
 ## TypeScript Tips
 
 ### Type Imports
+
 ```tsx
 import type { ButtonProps } from '@/components/atoms';
 import type { PetrolStation, FuelPrice } from '@/types';
 ```
 
 ### Component with Generic Types
+
 ```tsx
 interface ListProps<T> {
   items: T[];
@@ -401,12 +424,16 @@ function List<T>({ items, renderItem }: ListProps<T>) {
 ```
 
 ### Extending Component Props
+
 ```tsx
 interface CustomButtonProps extends ButtonProps {
   customProp: string;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ customProp, ...buttonProps }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({
+  customProp,
+  ...buttonProps
+}) => {
   return <Button {...buttonProps}>{customProp}</Button>;
 };
 ```
@@ -414,6 +441,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ customProp, ...buttonProps 
 ## Performance Tips
 
 1. **Use React.memo for expensive components:**
+
 ```tsx
 export const ExpensiveComponent = React.memo(({ data }) => {
   // Component logic
@@ -421,11 +449,13 @@ export const ExpensiveComponent = React.memo(({ data }) => {
 ```
 
 2. **Lazy load heavy components:**
+
 ```tsx
 const HeavyComponent = React.lazy(() => import('./HeavyComponent'));
 ```
 
 3. **Use useCallback for handlers:**
+
 ```tsx
 const handleClick = useCallback(() => {
   // Handler logic
@@ -433,6 +463,7 @@ const handleClick = useCallback(() => {
 ```
 
 4. **Optimize re-renders:**
+
 ```tsx
 const MemoizedChild = React.memo(Child);
 ```
@@ -440,19 +471,25 @@ const MemoizedChild = React.memo(Child);
 ## Common Issues & Solutions
 
 ### Issue: TypeScript errors with component props
+
 **Solution:** Ensure you're importing types correctly:
+
 ```tsx
 import type { ButtonProps } from '@/components/atoms';
 ```
 
 ### Issue: Styles not applying
+
 **Solution:** Check CSS import order and specificity:
+
 ```tsx
 import './Component.css';
 ```
 
 ### Issue: Design tokens not found
+
 **Solution:** Verify tsconfig.json path aliases:
+
 ```json
 {
   "paths": {
@@ -462,7 +499,9 @@ import './Component.css';
 ```
 
 ### Issue: Components not rendering
+
 **Solution:** Check default exports vs named exports:
+
 ```tsx
 // Named export
 export { Button } from './Button';
@@ -479,4 +518,3 @@ import Button from './Button';
 - Component Source: `src/components/`
 - Design Tokens: `src/design-system/tokens/`
 - TypeScript Types: `src/types/index.ts`
-

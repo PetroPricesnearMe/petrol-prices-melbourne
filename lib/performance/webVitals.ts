@@ -54,7 +54,10 @@ function sendToAnalytics(metric: Metric | CustomMetric) {
 /**
  * Get rating for a metric
  */
-function getRating(name: string, value: number): 'good' | 'needs-improvement' | 'poor' {
+function getRating(
+  name: string,
+  value: number
+): 'good' | 'needs-improvement' | 'poor' {
   const thresholds: Record<string, [number, number]> = {
     CLS: [0.1, 0.25],
     FCP: [1800, 3000],
@@ -115,7 +118,9 @@ function trackCustomMetrics() {
   // Page Load Time
   window.addEventListener('load', () => {
     setTimeout(() => {
-      const navTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navTiming = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
       if (navTiming) {
         const pageLoadTime = navTiming.loadEventEnd - navTiming.fetchStart;
         sendToAnalytics({
@@ -183,7 +188,11 @@ export function reportMetric(name: string, value: number) {
 /**
  * Track API call performance
  */
-export function trackAPICall(endpoint: string, duration: number, _success: boolean) {
+export function trackAPICall(
+  endpoint: string,
+  duration: number,
+  _success: boolean
+) {
   sendToAnalytics({
     name: 'API_Call',
     value: duration,

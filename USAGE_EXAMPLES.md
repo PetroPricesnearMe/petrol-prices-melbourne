@@ -61,7 +61,7 @@ interface Post {
 export async function generateStaticParams() {
   const cms = getCMS();
   const posts = await cms.fetchAll<Post>('posts');
-  
+
   return posts.data.map(post => ({
     slug: post.slug,
   }));
@@ -71,9 +71,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const cms = getCMS();
   const post = await cms.fetchBySlug<Post>('posts', params.slug);
-  
+
   if (!post) return { title: 'Post Not Found' };
-  
+
   return {
     title: post.title,
     description: post.excerpt,
@@ -83,9 +83,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const cms = getCMS();
   const post = await cms.fetchBySlug<Post>('posts', params.slug);
-  
+
   if (!post) notFound();
-  
+
   return (
     <article>
       <h1>{post.title}</h1>
@@ -103,7 +103,7 @@ import { withFallback } from '@/lib/cms/error-handler';
 
 export default async function PostsPage() {
   const cms = getCMS();
-  
+
   const posts = await withFallback(
     () => cms.fetchAll('posts', { pageSize: 20 }),
     {
@@ -149,7 +149,7 @@ export default function PostsClient() {
       try {
         const response = await fetch('/api/cms/posts?pageSize=20');
         if (!response.ok) throw new Error('Failed to fetch');
-        
+
         const data = await response.json();
         setPosts(data.data);
       } catch (err) {
@@ -231,7 +231,7 @@ export default function SearchablePosts() {
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search posts..."
       />
-      
+
       <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="">All Categories</option>
         <option value="tech">Technology</option>
@@ -378,7 +378,7 @@ CMS_STALE_WHILE_REVALIDATE=3600  # Serve stale for 1 hour while revalidating
 await fetch('/api/revalidate', {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${process.env.REVALIDATION_SECRET}`,
+    Authorization: `Bearer ${process.env.REVALIDATION_SECRET}`,
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
@@ -397,7 +397,7 @@ import { getCMS } from '@/lib/cms';
 
 export async function POST(request: Request) {
   const body = await request.json();
-  
+
   // Verify webhook signature
   const signature = request.headers.get('x-webhook-signature');
   if (signature !== process.env.WEBHOOK_SECRET) {
@@ -406,9 +406,9 @@ export async function POST(request: Request) {
 
   // Revalidate based on webhook data
   const { collection, action } = body;
-  
+
   revalidateTag(collection);
-  
+
   // Also invalidate CMS cache
   const cms = getCMS();
   await cms.revalidate(undefined, [collection]);
@@ -441,7 +441,7 @@ export default function InfinitePostsList() {
       {data?.map(post => (
         <div key={post.id}>{post.title}</div>
       ))}
-      
+
       {hasMore && (
         <button onClick={loadMore} disabled={isLoading}>
           {isLoading ? 'Loading...' : 'Load More'}
@@ -465,19 +465,19 @@ export default function CreatePost() {
   async function handleCreate(newPost) {
     // Optimistically add post
     setPosts([newPost, ...posts]);
-    
+
     try {
       const response = await fetch('/api/cms/posts', {
         method: 'POST',
         body: JSON.stringify(newPost),
       });
-      
+
       if (!response.ok) throw new Error('Failed');
-      
+
       const created = await response.json();
-      
+
       // Replace temp post with real one
-      setPosts(posts => 
+      setPosts(posts =>
         posts.map(p => p.id === newPost.id ? created : p)
       );
     } catch (error) {
@@ -559,10 +559,10 @@ export default function PostsList() {
 
 ```typescript
 // Check cache is enabled
-CMS_CACHE_ENABLED=true
+CMS_CACHE_ENABLED = true;
 
 // Verify cache time
-CMS_CACHE_TIME=3600
+CMS_CACHE_TIME = 3600;
 
 // Check cache stats
 import { getCMSCache } from '@/lib/cms';
@@ -575,7 +575,7 @@ console.log(getCMSCache().getStats());
 // Force revalidation
 await fetch('/api/revalidate', {
   method: 'POST',
-  headers: { 'Authorization': `Bearer ${secret}` },
+  headers: { Authorization: `Bearer ${secret}` },
   body: JSON.stringify({ tags: ['posts'] }),
 });
 ```
@@ -597,4 +597,3 @@ const posts = await cms.fetchAll<Post>('posts');
 ---
 
 For more examples, check the `/cms-example` pages in the app directory.
-

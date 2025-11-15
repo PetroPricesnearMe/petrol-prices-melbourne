@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
@@ -222,7 +222,7 @@
   gap: 0.75rem;
   margin-bottom: 1rem;
   font-size: 0.875rem;
-  color: #6B7280;
+  color: #6b7280;
 }
 
 .address-icon {
@@ -265,7 +265,7 @@
 .fuel-type {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #6B7280;
+  color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -278,7 +278,7 @@
 /* Footer */
 .card-footer {
   font-size: 0.75rem;
-  color: #9CA3AF;
+  color: #9ca3af;
   padding-top: 0.75rem;
   border-top: 1px solid rgba(229, 231, 235, 0.5);
 }
@@ -302,7 +302,7 @@
   gap: 0.5rem;
   width: 100%;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   text-decoration: none;
   border-radius: 10px;
@@ -315,7 +315,7 @@
 .directions-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(59, 130, 246, 0.4);
-  background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
 }
 
 .directions-button:active {
@@ -323,7 +323,7 @@
 }
 
 .directions-button:focus-visible {
-  outline: 3px solid #FCD34D;
+  outline: 3px solid #fcd34d;
   outline-offset: 2px;
 }
 
@@ -343,16 +343,16 @@
   }
 
   .card-image-header {
-    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
     border-bottom-color: rgba(75, 85, 99, 0.5);
   }
 
   .station-name {
-    color: #F9FAFB;
+    color: #f9fafb;
   }
 
   .station-address {
-    color: #9CA3AF;
+    color: #9ca3af;
   }
 
   .fuel-price-item {
@@ -364,7 +364,7 @@
   }
 
   .fuel-type {
-    color: #9CA3AF;
+    color: #9ca3af;
   }
 
   .card-footer {

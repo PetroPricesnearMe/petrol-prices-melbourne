@@ -2,7 +2,13 @@
  * Type definitions for SortDropdown component
  */
 
-export type SortOption = 'nearest' | 'price-low' | 'price-high' | 'top-rated' | 'name' | 'suburb';
+export type SortOption =
+  | 'nearest'
+  | 'price-low'
+  | 'price-high'
+  | 'top-rated'
+  | 'name'
+  | 'suburb';
 
 export interface SortItem {
   value: SortOption;

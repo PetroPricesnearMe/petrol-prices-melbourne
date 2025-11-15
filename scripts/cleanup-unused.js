@@ -29,7 +29,8 @@ const log = {
   success: (msg) => console.log(`${colors.green}✓${colors.reset} ${msg}`),
   warning: (msg) => console.log(`${colors.yellow}⚠${colors.reset} ${msg}`),
   error: (msg) => console.log(`${colors.red}✗${colors.reset} ${msg}`),
-  title: (msg) => console.log(`\n${colors.bright}${colors.cyan}${msg}${colors.reset}\n`),
+  title: (msg) =>
+    console.log(`\n${colors.bright}${colors.cyan}${msg}${colors.reset}\n`),
 };
 
 // Configuration
@@ -172,7 +173,9 @@ function findAllUnusedImports() {
   if (totalUnused === 0) {
     log.success('No unused imports found!');
   } else {
-    log.warning(`Found ${totalUnused} unused imports in ${Object.keys(results).length} files:`);
+    log.warning(
+      `Found ${totalUnused} unused imports in ${Object.keys(results).length} files:`
+    );
     Object.entries(results).forEach(([file, imports]) => {
       console.log(`\n  ${path.relative(process.cwd(), file)}:`);
       imports.forEach((imp) => {
@@ -225,7 +228,9 @@ function findUnusedCSS() {
   if (unusedClasses.length === 0) {
     log.success('No unused CSS classes found!');
   } else {
-    log.warning(`Found ${unusedClasses.length} potentially unused CSS classes:`);
+    log.warning(
+      `Found ${unusedClasses.length} potentially unused CSS classes:`
+    );
     unusedClasses.slice(0, 20).forEach((className) => {
       console.log(`  .${className}`);
     });
@@ -244,10 +249,13 @@ function findDuplicates() {
   log.title('🔄 Finding Duplicate Code...');
 
   try {
-    const result = execSync('npx jscpd src --min-lines 10 --min-tokens 50 --format "json"', {
-      encoding: 'utf8',
-      stdio: 'pipe',
-    });
+    const result = execSync(
+      'npx jscpd src --min-lines 10 --min-tokens 50 --format "json"',
+      {
+        encoding: 'utf8',
+        stdio: 'pipe',
+      }
+    );
 
     const data = JSON.parse(result);
     const duplicates = data.duplicates || [];
@@ -258,8 +266,12 @@ function findDuplicates() {
       log.warning(`Found ${duplicates.length} duplicate code blocks`);
       duplicates.slice(0, 5).forEach((dup, i) => {
         console.log(`\n  Duplicate ${i + 1}:`);
-        console.log(`    ${dup.firstFile?.name} (lines ${dup.firstFile?.start}-${dup.firstFile?.end})`);
-        console.log(`    ${dup.secondFile?.name} (lines ${dup.secondFile?.start}-${dup.secondFile?.end})`);
+        console.log(
+          `    ${dup.firstFile?.name} (lines ${dup.firstFile?.start}-${dup.firstFile?.end})`
+        );
+        console.log(
+          `    ${dup.secondFile?.name} (lines ${dup.secondFile?.start}-${dup.secondFile?.end})`
+        );
       });
     }
 

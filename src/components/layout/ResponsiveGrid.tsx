@@ -111,10 +111,10 @@ const justifyItemsClasses = {
 
 /**
  * Responsive Grid Container
- * 
+ *
  * @example
  * ```tsx
- * <ResponsiveGrid 
+ * <ResponsiveGrid
  *   cols={{ default: 1, sm: 2, lg: 3, xl: 4 }}
  *   gap="lg"
  * >
@@ -157,7 +157,7 @@ export function ResponsiveGrid({
   );
 
   const style = autoFit
-    ? { '--grid-min': autoFit.min } as React.CSSProperties
+    ? ({ '--grid-min': autoFit.min } as React.CSSProperties)
     : undefined;
 
   return (
@@ -173,7 +173,7 @@ export function ResponsiveGrid({
 
 /**
  * Grid Item with responsive column spans
- * 
+ *
  * @example
  * ```tsx
  * <GridItem colSpan={{ default: 1, lg: 2 }}>
@@ -214,16 +214,16 @@ export function GridItem({
 // ============================================================================
 
 const containerSizes = {
-  sm: 'max-w-2xl',   // 672px
-  md: 'max-w-4xl',   // 896px
-  lg: 'max-w-6xl',   // 1152px
-  xl: 'max-w-7xl',   // 1280px
+  sm: 'max-w-2xl', // 672px
+  md: 'max-w-4xl', // 896px
+  lg: 'max-w-6xl', // 1152px
+  xl: 'max-w-7xl', // 1280px
   full: 'max-w-full',
 };
 
 /**
  * Responsive Container with max-width
- * 
+ *
  * @example
  * ```tsx
  * <Container size="lg" padding center>
@@ -290,10 +290,10 @@ const flexJustifyClasses = {
 
 /**
  * Responsive Flex Container
- * 
+ *
  * @example
  * ```tsx
- * <Flex 
+ * <Flex
  *   responsive={{ direction: { default: 'col', lg: 'row' } }}
  *   justify="between"
  *   align="center"
@@ -373,7 +373,7 @@ const sectionBackgrounds = {
 
 /**
  * Section wrapper with consistent spacing
- * 
+ *
  * @example
  * ```tsx
  * <Section spacing="lg" background="gray">
@@ -408,4 +408,3 @@ export function Section({
 // ============================================================================
 
 export default ResponsiveGrid;
-

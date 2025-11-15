@@ -3,7 +3,13 @@
  * Centralized content management
  */
 
-import type { Feature, Stat, FooterLinks, SocialLink, TrustIndicator } from './types';
+import type {
+  Feature,
+  Stat,
+  FooterLinks,
+  SocialLink,
+  TrustIndicator,
+} from './types';
 
 // ============================================================================
 // Features Data
@@ -267,4 +273,3 @@ export const MELBOURNE_REGIONS: RegionData[] = [
     description: 'Dandenong, Clayton, Oakleigh, and south-east regions',
   },
 ];
-

@@ -68,7 +68,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
 }) => {
   const options = showGrid
     ? viewOptions
-    : viewOptions.filter(opt => opt.value !== 'grid');
+    : viewOptions.filter((opt) => opt.value !== 'grid');
 
   const handleKeyDown = (e: React.KeyboardEvent, view: ViewMode) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -77,19 +77,31 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
     }
 
     // Arrow key navigation
-    if (orientation === 'horizontal' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+    if (
+      orientation === 'horizontal' &&
+      (e.key === 'ArrowLeft' || e.key === 'ArrowRight')
+    ) {
       e.preventDefault();
-      const currentIndex = options.findIndex(opt => opt.value === currentView);
+      const currentIndex = options.findIndex(
+        (opt) => opt.value === currentView
+      );
       const direction = e.key === 'ArrowLeft' ? -1 : 1;
-      const newIndex = (currentIndex + direction + options.length) % options.length;
+      const newIndex =
+        (currentIndex + direction + options.length) % options.length;
       onViewChange(options[newIndex].value);
     }
 
-    if (orientation === 'vertical' && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+    if (
+      orientation === 'vertical' &&
+      (e.key === 'ArrowUp' || e.key === 'ArrowDown')
+    ) {
       e.preventDefault();
-      const currentIndex = options.findIndex(opt => opt.value === currentView);
+      const currentIndex = options.findIndex(
+        (opt) => opt.value === currentView
+      );
       const direction = e.key === 'ArrowUp' ? -1 : 1;
-      const newIndex = (currentIndex + direction + options.length) % options.length;
+      const newIndex =
+        (currentIndex + direction + options.length) % options.length;
       onViewChange(options[newIndex].value);
     }
   };
@@ -153,11 +165,13 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
 /**
  * Compact View Toggle (Icon only)
  */
-export const ViewToggleCompact: React.FC<Omit<ViewToggleProps, 'showLabels'>> = (props) => {
+export const ViewToggleCompact: React.FC<
+  Omit<ViewToggleProps, 'showLabels'>
+> = (props) => {
   return (
     <div className="view-toggle-compact">
       {viewOptions
-        .filter(opt => props.showGrid !== false || opt.value !== 'grid')
+        .filter((opt) => props.showGrid !== false || opt.value !== 'grid')
         .map((option) => {
           const isActive = props.currentView === option.value;
 

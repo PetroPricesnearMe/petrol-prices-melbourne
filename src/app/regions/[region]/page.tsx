@@ -11,12 +11,14 @@ import { RegionStationsClient } from './RegionStationsClient';
 const regions = {
   'north-melbourne': {
     name: 'Northern Suburbs',
-    description: 'Find the cheapest petrol stations in Northern Suburbs and surrounding areas.',
+    description:
+      'Find the cheapest petrol stations in Northern Suburbs and surrounding areas.',
     color: '#3B82F6',
   },
   'south-melbourne': {
     name: 'South Eastern Suburbs',
-    description: 'Compare fuel prices across South Eastern Suburbs petrol stations.',
+    description:
+      'Compare fuel prices across South Eastern Suburbs petrol stations.',
     color: '#10B981',
   },
   'east-melbourne': {
@@ -26,12 +28,14 @@ const regions = {
   },
   'west-melbourne': {
     name: 'Western Suburbs',
-    description: 'Browse petrol stations in Western Suburbs for the best prices.',
+    description:
+      'Browse petrol stations in Western Suburbs for the best prices.',
     color: '#EF4444',
   },
-  'cbd': {
+  cbd: {
     name: 'Melbourne CBD',
-    description: 'Find petrol stations in Melbourne CBD with competitive prices.',
+    description:
+      'Find petrol stations in Melbourne CBD with competitive prices.',
     color: '#8B5CF6',
   },
 };
@@ -75,11 +79,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function RegionPage({
-  params,
-}: {
-  params: { region: string };
-}) {
+export default function RegionPage({ params }: { params: { region: string } }) {
   const region = regions[params.region as keyof typeof regions];
 
   if (!region) {

@@ -55,9 +55,10 @@ export function SearchableDropdown({
   const listRef = useRef<HTMLUListElement>(null);
 
   // Filter options based on search
-  const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    option.description?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredOptions = options.filter(
+    (option) =>
+      option.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      option.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Get selected label
@@ -66,7 +67,10 @@ export function SearchableDropdown({
   // Close on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
         setSearchQuery('');
         setFocusedIndex(-1);
@@ -75,7 +79,8 @@ export function SearchableDropdown({
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      return () =>
+        document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isOpen]);
 
@@ -146,7 +151,7 @@ export function SearchableDropdown({
       {label && (
         <label
           htmlFor={dropdownId}
-          className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+          className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300"
         >
           {label}
         </label>
@@ -163,25 +168,27 @@ export function SearchableDropdown({
           aria-expanded={isOpen ? 'true' : 'false'}
           aria-controls={`${dropdownId}-listbox`}
           className="
-            w-full px-4 py-3
-            bg-white dark:bg-gray-800
-            border-2 border-gray-300 dark:border-gray-600
+            hover:border-blue-500 dark:hover:border-blue-400 focus-visible:ring-blue-500
+            flex min-h-[48px]
+            w-full items-center justify-between
             rounded-xl
-            text-left
-            text-gray-900 dark:text-white
-            hover:border-blue-500 dark:hover:border-blue-400
-            focus-visible:outline-none focus-visible:ring-4
-            focus-visible:ring-blue-500 focus-visible:ring-offset-2
+            border-2
+            border-gray-300 bg-white
+            px-4 py-3
+            text-left text-gray-900
             transition-all duration-200
-            min-h-[48px]
-            flex items-center justify-between
+            focus-visible:outline-none focus-visible:ring-4
+            focus-visible:ring-offset-2
+            dark:border-gray-600 dark:bg-gray-800 dark:text-white
           "
         >
-          <span className={selectedOption ? '' : 'text-gray-400 dark:text-gray-500'}>
+          <span
+            className={selectedOption ? '' : 'text-gray-400 dark:text-gray-500'}
+          >
             {selectedOption ? selectedOption.label : placeholder}
           </span>
           <ChevronDown
-            className={`w-5 h-5 transition-transform duration-200 ${
+            className={`h-5 w-5 transition-transform duration-200 ${
               isOpen ? 'rotate-180' : ''
             }`}
             aria-hidden="true"
@@ -196,14 +203,17 @@ export function SearchableDropdown({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-300 dark:border-gray-600 shadow-xl"
+              className="absolute z-50 mt-2 w-full rounded-xl border-2 border-gray-300 bg-white shadow-xl dark:border-gray-600 dark:bg-gray-800"
               role="listbox"
               id={`${dropdownId}-listbox`}
             >
               {/* Search Input */}
-              <div className="p-2 border-b border-gray-200 dark:border-gray-700">
+              <div className="border-b border-gray-200 p-2 dark:border-gray-700">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+                  <Search
+                    className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400"
+                    aria-hidden="true"
+                  />
                   <input
                     ref={searchInputRef}
                     type="text"
@@ -211,7 +221,7 @@ export function SearchableDropdown({
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder={searchPlaceholder}
-                    className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    className="focus-visible:ring-blue-500 w-full rounded-lg border border-gray-300 bg-gray-50 py-2 pl-10 pr-4 text-gray-900 placeholder-gray-400 focus-visible:outline-none focus-visible:ring-2 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                     aria-label="Search options"
                     role="combobox"
                     aria-autocomplete="list"
@@ -228,7 +238,7 @@ export function SearchableDropdown({
                 aria-label="Options"
               >
                 {filteredOptions.length === 0 ? (
-                  <li className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+                  <li className="px-4 py-3 text-center text-sm text-gray-500 dark:text-gray-400">
                     {emptyMessage}
                   </li>
                 ) : (
@@ -238,9 +248,9 @@ export function SearchableDropdown({
                       role="option"
                       aria-selected={value === option.value ? 'true' : 'false'}
                       className={`
-                        px-4 py-3 cursor-pointer
-                        transition-colors duration-150
-                        min-h-[48px] flex items-center gap-3
+                        flex min-h-[48px] cursor-pointer
+                        items-center gap-3
+                        px-4 py-3 transition-colors duration-150
                         ${
                           focusedIndex === index
                             ? 'bg-blue-50 dark:bg-blue-900/30'
@@ -253,16 +263,19 @@ export function SearchableDropdown({
                     >
                       {/* Checkmark for selected */}
                       {value === option.value && (
-                        <Check className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" aria-hidden="true" />
+                        <Check
+                          className="text-blue-600 dark:text-blue-400 h-5 w-5 flex-shrink-0"
+                          aria-hidden="true"
+                        />
                       )}
 
                       {/* Option Content */}
-                      <div className="flex-1 min-w-0">
+                      <div className="min-w-0 flex-1">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
                           {option.label}
                         </div>
                         {option.description && (
-                          <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          <div className="truncate text-xs text-gray-500 dark:text-gray-400">
                             {option.description}
                           </div>
                         )}

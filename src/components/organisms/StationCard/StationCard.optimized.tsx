@@ -34,10 +34,13 @@ export interface StationCardOptimizedProps {
 }
 
 // Memoized price display component
-const PriceDisplay = memo<{ prices: Array<Record<string, unknown>>; compact: boolean }>(({ prices, compact }) => {
+const PriceDisplay = memo<{
+  prices: Array<Record<string, unknown>>;
+  compact: boolean;
+}>(({ prices, compact }) => {
   const cheapestPrice = useMemo(() => {
     if (prices.length === 0) return null;
-    return Math.min(...prices.map(fp => fp.pricePerLiter));
+    return Math.min(...prices.map((fp) => fp.pricePerLiter));
   }, [prices]);
 
   if (compact && cheapestPrice !== null) {
@@ -97,7 +100,11 @@ const StationHeader = memo<{
         {stationName}
       </Text>
       {brand && brand.length > 0 && (
-        <Text variant="bodySmall" color="secondary" className="station-card__brand">
+        <Text
+          variant="bodySmall"
+          color="secondary"
+          className="station-card__brand"
+        >
           {brand.join(', ')}
         </Text>
       )}
@@ -178,10 +185,18 @@ const StationCardOptimizedComponent: React.FC<StationCardOptimizedProps> = ({
       padding="none"
     >
       <CardBody className="station-card__body">
-        <StationHeader stationName={stationName} brand={brand} distance={distance} />
+        <StationHeader
+          stationName={stationName}
+          brand={brand}
+          distance={distance}
+        />
 
         {/* Address */}
-        <Text variant="bodySmall" color="secondary" className="station-card__address">
+        <Text
+          variant="bodySmall"
+          color="secondary"
+          className="station-card__address"
+        >
           {formattedAddress}
         </Text>
 
@@ -199,7 +214,11 @@ const StationCardOptimizedComponent: React.FC<StationCardOptimizedProps> = ({
               </Button>
             )}
             {onGetDirections && (
-              <Button variant="outlined" size="sm" onClick={handleGetDirections}>
+              <Button
+                variant="outlined"
+                size="sm"
+                onClick={handleGetDirections}
+              >
                 Directions
               </Button>
             )}
@@ -239,4 +258,7 @@ const areEqual = (
   );
 };
 
-export const StationCardOptimized = memo(StationCardOptimizedComponent, areEqual);
+export const StationCardOptimized = memo(
+  StationCardOptimizedComponent,
+  areEqual
+);

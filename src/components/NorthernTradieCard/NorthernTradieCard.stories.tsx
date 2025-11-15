@@ -15,7 +15,14 @@ const meta: Meta<typeof NorthernTradieCard> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'elevated', 'outlined', 'filled', 'interactive', 'featured'],
+      options: [
+        'default',
+        'elevated',
+        'outlined',
+        'filled',
+        'interactive',
+        'featured',
+      ],
       description: 'Visual variant of the card',
       table: {
         type: { summary: 'string' },
@@ -100,13 +107,18 @@ export const Default: Story = {
     size: 'md',
     children: (
       <>
-        <NorthernTradieCard.Header title="Default Card" subtitle="This is a subtitle" />
+        <NorthernTradieCard.Header
+          title="Default Card"
+          subtitle="This is a subtitle"
+        />
         <NorthernTradieCard.Content>
           This is the default card variant with standard styling.
         </NorthernTradieCard.Content>
         <NorthernTradieCard.Footer align="between">
-          <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">Cancel</button>
-          <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
+          <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
+            Cancel
+          </button>
+          <button className="bg-blue-600 hover:bg-blue-700 rounded px-4 py-2 text-sm text-white">
             Action
           </button>
         </NorthernTradieCard.Footer>
@@ -120,17 +132,24 @@ export const Default: Story = {
  */
 export const Variants: Story = {
   render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {(['default', 'elevated', 'outlined', 'filled', 'interactive', 'featured'] as const).map(
-        (variant) => (
-          <NorthernTradieCard key={variant} variant={variant}>
-            <NorthernTradieCard.Header title={`${variant} variant`} />
-            <NorthernTradieCard.Content>
-              This card uses the {variant} variant.
-            </NorthernTradieCard.Content>
-          </NorthernTradieCard>
-        )
-      )}
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {(
+        [
+          'default',
+          'elevated',
+          'outlined',
+          'filled',
+          'interactive',
+          'featured',
+        ] as const
+      ).map((variant) => (
+        <NorthernTradieCard key={variant} variant={variant}>
+          <NorthernTradieCard.Header title={`${variant} variant`} />
+          <NorthernTradieCard.Content>
+            This card uses the {variant} variant.
+          </NorthernTradieCard.Content>
+        </NorthernTradieCard>
+      ))}
     </div>
   ),
   parameters: {
@@ -180,8 +199,8 @@ export const WithMedia: Story = {
           alt="Sample image"
           aspectRatio="16/9"
         />
-        <NorthernTradieCard.Header 
-          title="Card with Media" 
+        <NorthernTradieCard.Header
+          title="Card with Media"
           subtitle="Beautiful imagery"
         />
         <NorthernTradieCard.Content>
@@ -254,13 +273,21 @@ export const Interactive: Story = {
     onClick: () => alert('Card clicked!'),
     children: (
       <>
-        <NorthernTradieCard.Header 
-          title="Interactive Card" 
+        <NorthernTradieCard.Header
+          title="Interactive Card"
           subtitle="Click me!"
           icon={
-            <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+            <svg
+              className="text-blue-600 h-5 w-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
               <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-              <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                clipRule="evenodd"
+              />
             </svg>
           }
         />
@@ -273,7 +300,8 @@ export const Interactive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Interactive card with hover effects and click handler. Fully keyboard accessible (Tab + Enter/Space).',
+        story:
+          'Interactive card with hover effects and click handler. Fully keyboard accessible (Tab + Enter/Space).',
       },
     },
   },
@@ -311,20 +339,19 @@ export const Featured: Story = {
         <NorthernTradieCard.Header
           title="Featured Card"
           subtitle="Premium content"
-          icon={
-            <span className="text-2xl">⭐</span>
-          }
+          icon={<span className="text-2xl">⭐</span>}
           action={
-            <span className="px-2 py-1 text-xs font-semibold text-blue-800 bg-blue-100 rounded-full">
+            <span className="text-blue-800 bg-blue-100 rounded-full px-2 py-1 text-xs font-semibold">
               New
             </span>
           }
         />
         <NorthernTradieCard.Content>
-          Featured cards stand out with special styling to highlight important content.
+          Featured cards stand out with special styling to highlight important
+          content.
         </NorthernTradieCard.Content>
         <NorthernTradieCard.Footer align="right">
-          <button className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors">
+          <button className="from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg bg-gradient-to-r px-6 py-2 text-white transition-colors">
             Learn More
           </button>
         </NorthernTradieCard.Footer>
@@ -338,7 +365,7 @@ export const Featured: Story = {
  */
 export const ComplexLayout: Story = {
   render: () => (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl">
       <NorthernTradieCard variant="elevated" size="lg">
         <NorthernTradieCard.Media
           src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba"
@@ -349,18 +376,36 @@ export const ComplexLayout: Story = {
           title="Complex Card Layout"
           subtitle="Demonstrating full capabilities"
           icon={
-            <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            <svg
+              className="text-green-600 h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
             </svg>
           }
           action={
             <div className="flex gap-2">
-              <button 
+              <button
                 className="p-2 text-gray-500 hover:text-gray-700"
                 aria-label="More options"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                  />
                 </svg>
               </button>
             </div>
@@ -369,20 +414,21 @@ export const ComplexLayout: Story = {
         <NorthernTradieCard.Content>
           <div className="space-y-4">
             <p className="text-gray-700">
-              This card demonstrates the full capabilities of the NorthernTradieCard component,
-              including media, complex header with actions, structured content, and a feature-rich footer.
+              This card demonstrates the full capabilities of the
+              NorthernTradieCard component, including media, complex header with
+              actions, structured content, and a feature-rich footer.
             </p>
             <div className="grid grid-cols-3 gap-4 py-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">1.2k</div>
+                <div className="text-blue-600 text-2xl font-bold">1.2k</div>
                 <div className="text-sm text-gray-500">Views</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">98%</div>
+                <div className="text-green-600 text-2xl font-bold">98%</div>
                 <div className="text-sm text-gray-500">Uptime</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">4.8</div>
+                <div className="text-purple-600 text-2xl font-bold">4.8</div>
                 <div className="text-sm text-gray-500">Rating</div>
               </div>
             </div>
@@ -390,18 +436,18 @@ export const ComplexLayout: Story = {
         </NorthernTradieCard.Content>
         <NorthernTradieCard.Footer align="between">
           <div className="flex gap-2">
-            <span className="px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full">
+            <span className="text-blue-800 bg-blue-100 rounded-full px-3 py-1 text-xs font-medium">
               Technology
             </span>
-            <span className="px-3 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+            <span className="text-green-800 bg-green-100 rounded-full px-3 py-1 text-xs font-medium">
               Featured
             </span>
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <button className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
               Share
             </button>
-            <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <button className="bg-blue-600 hover:bg-blue-700 rounded-lg px-4 py-2 text-sm text-white">
               View Details
             </button>
           </div>
@@ -412,7 +458,8 @@ export const ComplexLayout: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Complex card layout demonstrating all component capabilities combined.',
+        story:
+          'Complex card layout demonstrating all component capabilities combined.',
       },
     },
   },
@@ -423,7 +470,7 @@ export const ComplexLayout: Story = {
  */
 export const GridLayout: Story = {
   render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {[1, 2, 3, 4, 5, 6].map((item, index) => (
         <NorthernTradieCard
           key={item}
@@ -437,10 +484,14 @@ export const GridLayout: Story = {
             alt={`Card ${item}`}
             aspectRatio="4/3"
           />
-          <NorthernTradieCard.Header title={`Card ${item}`} subtitle={`Item #${item}`} />
+          <NorthernTradieCard.Header
+            title={`Card ${item}`}
+            subtitle={`Item #${item}`}
+          />
           <NorthernTradieCard.Content>
             <p className="text-gray-600">
-              Content for card {item}. Each card animates in with a staggered delay.
+              Content for card {item}. Each card animates in with a staggered
+              delay.
             </p>
           </NorthernTradieCard.Content>
         </NorthernTradieCard>
@@ -455,4 +506,3 @@ export const GridLayout: Story = {
     },
   },
 };
-

@@ -17,11 +17,11 @@ export default function AIChat() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!input.trim() || isLoading) return;
 
     const userMessage = { role: 'user', content: input.trim() };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
@@ -33,8 +33,8 @@ export default function AIChat() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [...messages, userMessage]
-        })
+          messages: [...messages, userMessage],
+        }),
       });
 
       if (!response.ok) {
@@ -42,17 +42,24 @@ export default function AIChat() {
       }
 
       const data = await response.json();
-      
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: data.content
-      }]);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: data.content,
+        },
+      ]);
     } catch (error) {
       console.error('Error:', error);
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: '❌ Sorry, I encountered an error. Please make sure the backend server is running on port 3001.'
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content:
+            '❌ Sorry, I encountered an error. Please make sure the backend server is running on port 3001.',
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -72,21 +79,16 @@ export default function AIChat() {
             <p>Start a conversation with Claude AI. Ask me anything!</p>
           </div>
         )}
-        
+
         {messages.map((message, index) => (
-          <div 
-            key={index} 
-            className={`message ${message.role}`}
-          >
+          <div key={index} className={`message ${message.role}`}>
             <div className="message-label">
               {message.role === 'user' ? '👤 You' : '🤖 Claude'}
             </div>
-            <div className="message-content">
-              {message.content}
-            </div>
+            <div className="message-content">{message.content}</div>
           </div>
         ))}
-        
+
         {isLoading && (
           <div className="message assistant loading">
             <div className="message-label">🤖 Claude</div>
@@ -99,7 +101,7 @@ export default function AIChat() {
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -112,8 +114,8 @@ export default function AIChat() {
           disabled={isLoading}
           className="ai-chat-input"
         />
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={isLoading || !input.trim()}
           className="ai-chat-submit"
         >
@@ -123,4 +125,3 @@ export default function AIChat() {
     </div>
   );
 }
-

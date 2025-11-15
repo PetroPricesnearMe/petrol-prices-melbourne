@@ -5,6 +5,7 @@ This guide helps you migrate from the old Pages Router structure to the new Next
 ## 🔄 Overview
 
 ### What's Changing?
+
 - **Pages Router** → **App Router**
 - **JavaScript** → **TypeScript**
 - **Mixed styling** → **Tailwind CSS**
@@ -39,11 +40,13 @@ npm install
 ### Step 2: Environment Variables
 
 **Old (.env)**
+
 ```env
 REACT_APP_API_URL=...
 ```
 
 **New (.env)**
+
 ```env
 NEXT_PUBLIC_API_URL=...
 ```
@@ -53,6 +56,7 @@ Action: Update all `REACT_APP_*` to `NEXT_PUBLIC_*`
 ### Step 3: Pages Migration
 
 #### Old Structure (pages/)
+
 ```
 pages/
 ├── index.js
@@ -63,6 +67,7 @@ pages/
 ```
 
 #### New Structure (src/app/)
+
 ```
 src/app/
 ├── page.tsx          # index.js → page.tsx
@@ -78,6 +83,7 @@ src/app/
 #### Migration Example
 
 **Old (pages/index.js)**
+
 ```javascript
 import React from 'react';
 
@@ -87,6 +93,7 @@ export default function Home() {
 ```
 
 **New (src/app/page.tsx)**
+
 ```typescript
 import { Metadata } from 'next';
 
@@ -102,6 +109,7 @@ export default function HomePage() {
 ### Step 4: Component Migration
 
 #### Old Component (src/components/StationCard.js)
+
 ```javascript
 import React from 'react';
 import './StationCard.css';
@@ -117,6 +125,7 @@ export default function StationCard({ station }) {
 ```
 
 #### New Component (src/components/molecules/StationCard/StationCard.tsx)
+
 ```typescript
 'use client';
 
@@ -145,6 +154,7 @@ export function StationCard({ station, onClick }: StationCardProps) {
 ### Step 5: API Route Migration
 
 #### Old (pages/api/stations.js)
+
 ```javascript
 export default function handler(req, res) {
   if (req.method === 'GET') {
@@ -154,6 +164,7 @@ export default function handler(req, res) {
 ```
 
 #### New (src/app/api/stations/route.ts)
+
 ```typescript
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -165,6 +176,7 @@ export async function GET(request: NextRequest) {
 ### Step 6: Data Fetching Migration
 
 #### Old (Client-side with useEffect)
+
 ```javascript
 import { useState, useEffect } from 'react';
 
@@ -173,8 +185,8 @@ function Stations() {
 
   useEffect(() => {
     fetch('/api/stations')
-      .then(res => res.json())
-      .then(data => setStations(data));
+      .then((res) => res.json())
+      .then((data) => setStations(data));
   }, []);
 
   return <div>{/* render stations */}</div>;
@@ -182,6 +194,7 @@ function Stations() {
 ```
 
 #### New (React Query)
+
 ```typescript
 'use client';
 
@@ -200,6 +213,7 @@ function Stations() {
 ### Step 7: Styling Migration
 
 #### Old (CSS Modules)
+
 ```css
 /* StationCard.module.css */
 .card {
@@ -215,6 +229,7 @@ import styles from './StationCard.module.css';
 ```
 
 #### New (Tailwind CSS)
+
 ```typescript
 <div className="rounded-lg border border-gray-300 p-4">
 ```
@@ -248,6 +263,7 @@ export interface FuelPrice {
 #### Update next.config.js → next.config.ts
 
 **Old**
+
 ```javascript
 module.exports = {
   reactStrictMode: true,
@@ -255,6 +271,7 @@ module.exports = {
 ```
 
 **New**
+
 ```typescript
 import type { NextConfig } from 'next';
 
@@ -269,37 +286,42 @@ export default nextConfig;
 ## 🔑 Key Changes
 
 ### 1. File Naming
-| Old | New |
-|-----|-----|
-| `index.js` | `page.tsx` |
-| `_app.js` | `layout.tsx` |
-| `_document.js` | `layout.tsx` |
+
+| Old               | New                     |
+| ----------------- | ----------------------- |
+| `index.js`        | `page.tsx`              |
+| `_app.js`         | `layout.tsx`            |
+| `_document.js`    | `layout.tsx`            |
 | `api/endpoint.js` | `api/endpoint/route.ts` |
 
 ### 2. Imports
-| Old | New |
-|-----|-----|
+
+| Old                    | New                         |
+| ---------------------- | --------------------------- |
 | `../components/Button` | `@/components/atoms/Button` |
-| `../../utils/format` | `@/utils/formatters` |
-| Relative paths | Absolute with @ alias |
+| `../../utils/format`   | `@/utils/formatters`        |
+| Relative paths         | Absolute with @ alias       |
 
 ### 3. Data Fetching
-| Old | New |
-|-----|-----|
-| `useEffect + fetch` | React Query hooks |
-| `getServerSideProps` | Server Components |
-| `getStaticProps` | `generateStaticParams` |
+
+| Old                  | New                    |
+| -------------------- | ---------------------- |
+| `useEffect + fetch`  | React Query hooks      |
+| `getServerSideProps` | Server Components      |
+| `getStaticProps`     | `generateStaticParams` |
 
 ### 4. Styling
-| Old | New |
-|-----|-----|
-| CSS Modules | Tailwind CSS |
+
+| Old                    | New               |
+| ---------------------- | ----------------- |
+| CSS Modules            | Tailwind CSS      |
 | `className={styles.x}` | `className="..."` |
-| Inline styles | Utility classes |
+| Inline styles          | Utility classes   |
 
 ## 🚨 Breaking Changes
 
 ### 1. 'use client' Directive
+
 Components using hooks must have `'use client'` at the top:
 
 ```typescript
@@ -314,6 +336,7 @@ export function MyComponent() {
 ```
 
 ### 2. Image Component
+
 ```typescript
 // Old
 import Image from 'next/image';
@@ -325,6 +348,7 @@ import Image from 'next/image';
 ```
 
 ### 3. Metadata
+
 ```typescript
 // Old (pages/_app.js)
 <Head>
@@ -338,6 +362,7 @@ export const metadata: Metadata = {
 ```
 
 ### 4. Error Handling
+
 ```typescript
 // Old
 // Custom _error.js page
@@ -357,6 +382,7 @@ export default function Error({ error, reset }: {
 ## 🧪 Testing After Migration
 
 ### Checklist
+
 - [ ] All pages load correctly
 - [ ] Navigation works
 - [ ] API routes respond
@@ -369,6 +395,7 @@ export default function Error({ error, reset }: {
 - [ ] No console errors
 
 ### Testing Commands
+
 ```bash
 # Type checking
 npm run type-check
@@ -386,18 +413,23 @@ npm run test
 ## 🔧 Troubleshooting
 
 ### Issue: "Module not found"
+
 **Solution**: Check import paths. Use `@/` prefix for absolute imports.
 
 ### Issue: "Component must be marked with 'use client'"
+
 **Solution**: Add `'use client'` at the top of files using hooks.
 
 ### Issue: "Type error in component"
+
 **Solution**: Add proper TypeScript types to props.
 
 ### Issue: "Hydration mismatch"
+
 **Solution**: Ensure server and client render the same content initially.
 
 ### Issue: "Environment variable undefined"
+
 **Solution**: Use `NEXT_PUBLIC_` prefix for client-side variables.
 
 ## 📚 Resources
@@ -419,6 +451,7 @@ npm run test
 ## 🎯 Next Steps
 
 After migration:
+
 1. Set up CI/CD pipeline
 2. Configure monitoring and analytics
 3. Optimize performance

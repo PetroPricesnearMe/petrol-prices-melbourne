@@ -16,7 +16,8 @@ import { MapDemoClient } from './MapDemoClient';
 
 export const metadata: Metadata = {
   title: 'Interactive Map Demo | Petrol Price Near Me',
-  description: 'Explore our interactive map with clustering, real-time location tracking, and color-coded fuel price markers.',
+  description:
+    'Explore our interactive map with clustering, real-time location tracking, and color-coded fuel price markers.',
   robots: 'noindex, nofollow', // Demo page shouldn't be indexed
 };
 

@@ -19,17 +19,19 @@ interface MapProps {
 
 export function Map({ center, zoom, markers, className }: MapProps) {
   return (
-    <div className={`w-full h-96 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center ${className || ''}`}>
+    <div
+      className={`flex h-96 w-full items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 ${className || ''}`}
+    >
       <div className="text-center">
-        <div className="text-4xl mb-2">🗺️</div>
+        <div className="mb-2 text-4xl">🗺️</div>
         <div className="text-sm text-gray-600 dark:text-gray-400">
           Map implementation coming soon
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-          Center: {center?.[0]}, {center?.[1]} | Zoom: {zoom} | Markers: {markers?.length || 0}
+        <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+          Center: {center?.[0]}, {center?.[1]} | Zoom: {zoom} | Markers:{' '}
+          {markers?.length || 0}
         </div>
       </div>
     </div>
   );
 }
-

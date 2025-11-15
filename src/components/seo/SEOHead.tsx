@@ -160,9 +160,12 @@ export function SEOHead({
   const allKeywords = [...new Set([...SITE_CONFIG.keywords, ...keywords])];
 
   // Generate robots content
-  const robotsContent = noIndex || noFollow
-    ? [noIndex && 'noindex', noFollow && 'nofollow'].filter(Boolean).join(', ')
-    : 'index, follow';
+  const robotsContent =
+    noIndex || noFollow
+      ? [noIndex && 'noindex', noFollow && 'nofollow']
+          .filter(Boolean)
+          .join(', ')
+      : 'index, follow';
 
   return (
     <Head>
@@ -195,10 +198,16 @@ export function SEOHead({
       {article && ogType === 'article' && (
         <>
           {article.publishedTime && (
-            <meta property="article:published_time" content={article.publishedTime} />
+            <meta
+              property="article:published_time"
+              content={article.publishedTime}
+            />
           )}
           {article.modifiedTime && (
-            <meta property="article:modified_time" content={article.modifiedTime} />
+            <meta
+              property="article:modified_time"
+              content={article.modifiedTime}
+            />
           )}
           {article.author && (
             <meta property="article:author" content={article.author} />
@@ -206,9 +215,10 @@ export function SEOHead({
           {article.section && (
             <meta property="article:section" content={article.section} />
           )}
-          {article.tags && article.tags.map(tag => (
-            <meta key={tag} property="article:tag" content={tag} />
-          ))}
+          {article.tags &&
+            article.tags.map((tag) => (
+              <meta key={tag} property="article:tag" content={tag} />
+            ))}
         </>
       )}
 
@@ -222,11 +232,17 @@ export function SEOHead({
       <meta name="twitter:image:alt" content={title || SITE_CONFIG.name} />
 
       {/* Mobile Meta */}
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=5"
+      />
       <meta name="theme-color" content={SITE_CONFIG.themeColor} />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+      />
       <meta name="apple-mobile-web-app-title" content={SITE_CONFIG.shortName} />
 
       {/* Additional Meta Tags */}
@@ -322,21 +338,16 @@ export function ProductSEOHead({
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    'name': productName,
-    'offers': {
+    name: productName,
+    offers: {
       '@type': 'Offer',
-      'price': price,
-      'priceCurrency': currency,
-      'availability': `https://schema.org/${availability}`,
+      price: price,
+      priceCurrency: currency,
+      availability: `https://schema.org/${availability}`,
     },
   };
 
-  return (
-    <SEOHead
-      {...props}
-      structuredData={productSchema}
-    />
-  );
+  return <SEOHead {...props} structuredData={productSchema} />;
 }
 
 /**
@@ -361,22 +372,17 @@ export function LocalBusinessSEOHead({
   const businessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    'name': businessName,
-    'address': {
+    name: businessName,
+    address: {
       '@type': 'PostalAddress',
-      'streetAddress': address.street,
-      'addressLocality': address.city,
-      'addressRegion': address.state,
-      'postalCode': address.postalCode,
-      'addressCountry': address.country,
+      streetAddress: address.street,
+      addressLocality: address.city,
+      addressRegion: address.state,
+      postalCode: address.postalCode,
+      addressCountry: address.country,
     },
-    'telephone': phone,
+    telephone: phone,
   };
 
-  return (
-    <SEOHead
-      {...props}
-      structuredData={businessSchema}
-    />
-  );
+  return <SEOHead {...props} structuredData={businessSchema} />;
 }

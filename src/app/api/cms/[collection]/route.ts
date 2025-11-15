@@ -1,8 +1,8 @@
 /**
  * Dynamic CMS API Routes
- * 
+ *
  * GET /api/cms/[collection] - Fetch all items from a collection
- * 
+ *
  * Features:
  * - Automatic caching with ISR
  * - Error handling with fallbacks
@@ -22,7 +22,7 @@ interface RouteContext {
 
 /**
  * GET /api/cms/[collection]
- * 
+ *
  * Query parameters:
  * - page: Page number (default: 1)
  * - pageSize: Items per page (default: 100)
@@ -31,10 +31,7 @@ interface RouteContext {
  * - search: Search query
  * - filters: JSON string of filters
  */
-export async function GET(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function GET(request: NextRequest, context: RouteContext) {
   try {
     const { collection } = await context.params;
     const searchParams = request.nextUrl.searchParams;
@@ -76,21 +73,18 @@ export async function GET(
 
     // Fetch from CMS with fallback
     const cms = getCMS();
-    const result = await withFallback(
-      () => cms.fetchAll(collection, options),
-      {
-        getFallback: () => ({
-          data: [],
-          total: 0,
-          page: options.page || 1,
-          pageSize: options.pageSize || 100,
-          hasMore: false,
-        }),
-        onError: (error) => {
-          console.error('CMS fetch error:', error);
-        },
-      }
-    );
+    const result = await withFallback(() => cms.fetchAll(collection, options), {
+      getFallback: () => ({
+        data: [],
+        total: 0,
+        page: options.page || 1,
+        pageSize: options.pageSize || 100,
+        hasMore: false,
+      }),
+      onError: (error) => {
+        console.error('CMS fetch error:', error);
+      },
+    });
 
     // Return with caching headers
     return NextResponse.json(result, {
@@ -99,7 +93,8 @@ export async function GET(
         'Content-Type': 'application/json',
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
         'CDN-Cache-Control': 'public, s-maxage=3600',
-        'Vercel-CDN-Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'Vercel-CDN-Cache-Control':
+          'public, s-maxage=3600, stale-while-revalidate=86400',
       },
     });
   } catch (error) {
@@ -132,4 +127,3 @@ export async function OPTIONS() {
 // Configure route segment
 export const runtime = 'edge'; // Use edge runtime for faster responses
 export const revalidate = 3600; // Revalidate every hour
-

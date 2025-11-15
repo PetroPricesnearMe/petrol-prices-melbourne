@@ -43,12 +43,13 @@ These grids automatically adjust the number of columns based on available space:
 
 ```tsx
 // Direct Tailwind utilities
-<div className="grid grid-cols-auto-fit-md gap-6">
+<div className="grid-cols-auto-fit-md grid gap-6">
   {/* Cards will automatically flow into columns */}
 </div>
 ```
 
 Available sizes:
+
 - `grid-cols-auto-fit-xs` - 8rem (128px) minimum
 - `grid-cols-auto-fit-sm` - 12rem (192px) minimum
 - `grid-cols-auto-fit-md` - 16rem (256px) minimum
@@ -70,6 +71,7 @@ Pre-configured grid layouts with responsive gaps:
 ```
 
 Available classes:
+
 - `.grid-auto-fit-xs` - Smallest cards with 4-6px gaps
 - `.grid-auto-fit-sm` - Small cards with 4-6px gaps
 - `.grid-auto-fit-md` - Medium cards with 4-8px gaps
@@ -79,15 +81,17 @@ Available classes:
 ### Auto-Fill vs Auto-Fit
 
 **Auto-Fit**: Expands columns to fill available space
+
 ```tsx
-<div className="grid grid-cols-auto-fit-md">
+<div className="grid-cols-auto-fit-md grid">
   {/* Columns stretch to fill container */}
 </div>
 ```
 
 **Auto-Fill**: Creates as many columns as possible, even empty ones
+
 ```tsx
-<div className="grid grid-cols-auto-fill-md">
+<div className="grid-cols-auto-fill-md grid">
   {/* Maintains column width, may leave gaps */}
 </div>
 ```
@@ -98,12 +102,11 @@ Gaps that scale smoothly with viewport:
 
 ```tsx
 // Tailwind utilities with clamp()
-<div className="grid grid-cols-3 gap-fluid-md">
-  {/* Gap: 16px → 24px */}
-</div>
+<div className="gap-fluid-md grid grid-cols-3">{/* Gap: 16px → 24px */}</div>
 ```
 
 Available gaps:
+
 - `gap-fluid-xs` - 8px → 12px
 - `gap-fluid-sm` - 12px → 16px
 - `gap-fluid-md` - 16px → 24px
@@ -215,6 +218,7 @@ All heading sizes scale smoothly from mobile to desktop:
 ```
 
 **Scaling Ranges:**
+
 - `text-2xl` - 20px → 24px
 - `text-3xl` - 24px → 30px
 - `text-4xl` - 30px → 36px
@@ -229,12 +233,11 @@ All heading sizes scale smoothly from mobile to desktop:
 Extra large, highly fluid sizes for hero sections:
 
 ```tsx
-<h1 className="text-display-lg">
-  Huge Hero Title
-</h1>
+<h1 className="text-display-lg">Huge Hero Title</h1>
 ```
 
 **Display Scales:**
+
 - `text-display-sm` - 40px → 56px
 - `text-display-md` - 56px → 80px
 - `text-display-lg` - 72px → 104px
@@ -251,6 +254,7 @@ Fixed sizes for consistent body text:
 ```
 
 **Fixed Sizes:**
+
 - `text-xs` - 12px (fixed)
 - `text-sm` - 14px (fixed)
 - `text-base` - 16px (fixed)
@@ -262,12 +266,11 @@ Fixed sizes for consistent body text:
 For body text that needs to scale:
 
 ```tsx
-<p className="text-fluid-base">
-  This paragraph scales smoothly: 16px → 18px
-</p>
+<p className="text-fluid-base">This paragraph scales smoothly: 16px → 18px</p>
 ```
 
 **Fluid Body Scales:**
+
 - `.text-fluid-xs` - 12px → 14px
 - `.text-fluid-sm` - 14px → 16px
 - `.text-fluid-base` - 16px → 18px
@@ -300,9 +303,7 @@ Maintain readability with optimal character count per line:
 Prevent orphaned words in headings:
 
 ```tsx
-<h1 className="text-6xl text-balance">
-  Beautiful Heading That Wraps Nicely
-</h1>
+<h1 className="text-balance text-6xl">Beautiful Heading That Wraps Nicely</h1>
 ```
 
 ---
@@ -350,6 +351,7 @@ Use in Tailwind classes:
 ```
 
 **Available Scales:**
+
 - `fluid-xs` - 16px → 24px
 - `fluid-sm` - 24px → 32px
 - `fluid-md` - 32px → 48px
@@ -380,6 +382,7 @@ Pre-configured spacing for page sections:
 ```
 
 **Spacing Scales:**
+
 - `.section-spacing-sm` - 32px → 48px (top/bottom)
 - `.section-spacing` - 48px → 96px (top/bottom)
 - `.section-spacing-lg` - 64px → 128px (top/bottom)
@@ -523,12 +526,10 @@ function ProductGrid({ products }) {
   return (
     <section className="section-spacing">
       <div className="container">
-        <h2 className="text-5xl text-balance mb-8">
-          Featured Products
-        </h2>
+        <h2 className="mb-8 text-balance text-5xl">Featured Products</h2>
 
         <div className="grid-auto-fit-lg">
-          {products.map(product => (
+          {products.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
@@ -539,6 +540,7 @@ function ProductGrid({ products }) {
 ```
 
 **Features:**
+
 - Fluid section spacing
 - Balanced heading
 - Auto-fit grid with 320px minimum cards
@@ -562,7 +564,9 @@ function Hero() {
 
           <div className="flex-responsive-center">
             <Button size="lg">Get Started</Button>
-            <Button size="lg" variant="outline">Learn More</Button>
+            <Button size="lg" variant="outline">
+              Learn More
+            </Button>
           </div>
         </div>
       </div>
@@ -572,6 +576,7 @@ function Hero() {
 ```
 
 **Features:**
+
 - Extra large display text (96px → 144px)
 - Fluid paragraph that scales
 - Optimal line length
@@ -585,9 +590,7 @@ function BlogPost({ post }) {
     <article className="section-spacing">
       <div className="content-container">
         <header className="stack-lg mb-fluid-lg">
-          <h1 className="text-6xl text-balance">
-            {post.title}
-          </h1>
+          <h1 className="text-balance text-6xl">{post.title}</h1>
 
           <div className="flex-responsive-between text-gray-600">
             <span>{post.author}</span>
@@ -595,7 +598,7 @@ function BlogPost({ post }) {
           </div>
         </header>
 
-        <div className="content-spacing text-lg leading-relaxed text-measure">
+        <div className="content-spacing text-measure text-lg leading-relaxed">
           <p>{post.excerpt}</p>
           {/* More content */}
         </div>
@@ -606,6 +609,7 @@ function BlogPost({ post }) {
 ```
 
 **Features:**
+
 - Content container (1040px max)
 - Optimal line length (65ch)
 - Balanced heading
@@ -620,17 +624,15 @@ function Features() {
     <section className="section-spacing bg-gray-50 dark:bg-gray-900">
       <div className="container">
         <div className="stack-xl">
-          <header className="text-center stack">
-            <h2 className="text-6xl text-balance">
-              Why Choose Us
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 text-measure mx-auto">
+          <header className="stack text-center">
+            <h2 className="text-balance text-6xl">Why Choose Us</h2>
+            <p className="text-measure mx-auto text-xl text-gray-600 dark:text-gray-400">
               Everything you need to succeed
             </p>
           </header>
 
           <div className="grid-auto-fit-md">
-            {features.map(feature => (
+            {features.map((feature) => (
               <div key={feature.id} className="card p-fluid-md stack">
                 <div className="text-5xl">{feature.icon}</div>
                 <h3 className="text-2xl">{feature.title}</h3>
@@ -648,6 +650,7 @@ function Features() {
 ```
 
 **Features:**
+
 - Fluid section spacing
 - Auto-fit grid (256px minimum)
 - Fluid card padding
@@ -678,6 +681,7 @@ function Navigation() {
 ```
 
 **Features:**
+
 - Fluid vertical padding
 - Responsive flex layout
 - Consistent gaps that wrap gracefully
@@ -688,52 +692,53 @@ function Navigation() {
 
 ### Grid Classes
 
-| Class | Description | Min Width | Gaps |
-|-------|-------------|-----------|------|
-| `grid-auto-fit-xs` | Extra small cards | 8rem | 4-6px |
-| `grid-auto-fit-sm` | Small cards | 12rem | 4-6px |
-| `grid-auto-fit-md` | Medium cards | 16rem | 4-8px |
-| `grid-auto-fit-lg` | Large cards | 20rem | 4-8px |
-| `grid-auto-fit-xl` | Extra large cards | 24rem | 6-8px |
-| `card-grid` | Optimized cards | 18rem | 4-8px |
+| Class              | Description       | Min Width | Gaps  |
+| ------------------ | ----------------- | --------- | ----- |
+| `grid-auto-fit-xs` | Extra small cards | 8rem      | 4-6px |
+| `grid-auto-fit-sm` | Small cards       | 12rem     | 4-6px |
+| `grid-auto-fit-md` | Medium cards      | 16rem     | 4-8px |
+| `grid-auto-fit-lg` | Large cards       | 20rem     | 4-8px |
+| `grid-auto-fit-xl` | Extra large cards | 24rem     | 6-8px |
+| `card-grid`        | Optimized cards   | 18rem     | 4-8px |
 
 ### Typography Classes
 
-| Class | Size Range | Use Case |
-|-------|------------|----------|
-| `text-2xl` | 20px → 24px | Small headings |
-| `text-4xl` | 30px → 36px | Section titles |
-| `text-6xl` | 40px → 60px | Page titles |
-| `text-display-lg` | 72px → 104px | Hero headings |
-| `text-measure` | 65ch | Body text |
-| `text-balance` | — | Headings |
+| Class             | Size Range   | Use Case       |
+| ----------------- | ------------ | -------------- |
+| `text-2xl`        | 20px → 24px  | Small headings |
+| `text-4xl`        | 30px → 36px  | Section titles |
+| `text-6xl`        | 40px → 60px  | Page titles    |
+| `text-display-lg` | 72px → 104px | Hero headings  |
+| `text-measure`    | 65ch         | Body text      |
+| `text-balance`    | —            | Headings       |
 
 ### Spacing Classes
 
-| Class | Size Range | Use Case |
-|-------|------------|----------|
-| `fluid-xs` | 16px → 24px | Compact spacing |
-| `fluid-md` | 32px → 48px | Standard spacing |
-| `fluid-xl` | 64px → 96px | Large spacing |
-| `section-spacing` | 48px → 96px | Page sections |
-| `p-fluid` | 16px → 24px | Card padding |
+| Class             | Size Range  | Use Case         |
+| ----------------- | ----------- | ---------------- |
+| `fluid-xs`        | 16px → 24px | Compact spacing  |
+| `fluid-md`        | 32px → 48px | Standard spacing |
+| `fluid-xl`        | 64px → 96px | Large spacing    |
+| `section-spacing` | 48px → 96px | Page sections    |
+| `p-fluid`         | 16px → 24px | Card padding     |
 
 ### Layout Classes
 
-| Class | Description |
-|-------|-------------|
-| `container` | Max 1280px with padding |
-| `container-fluid` | Max 1440px with padding |
+| Class               | Description                 |
+| ------------------- | --------------------------- |
+| `container`         | Max 1280px with padding     |
+| `container-fluid`   | Max 1440px with padding     |
 | `content-container` | Max 1040px, optimal reading |
-| `stack` | Vertical spacing (1rem) |
-| `stack-lg` | Large vertical spacing |
-| `flex-responsive` | Wrapping flex with gaps |
+| `stack`             | Vertical spacing (1rem)     |
+| `stack-lg`          | Large vertical spacing      |
+| `flex-responsive`   | Wrapping flex with gaps     |
 
 ---
 
 ## Browser Support
 
 All features are supported in modern browsers:
+
 - Chrome/Edge 79+
 - Firefox 75+
 - Safari 13.1+

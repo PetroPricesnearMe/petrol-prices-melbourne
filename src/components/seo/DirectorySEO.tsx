@@ -77,12 +77,15 @@ export const DirectorySEO: React.FC<DirectorySEOProps> = ({
   ],
   additionalStructuredData = [],
 }) => {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.petrolpricenearme.com.au';
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.petrolpricenearme.com.au';
   const fullCanonical = canonical || '/directory';
   const fullOgImage = ogImage || `${siteUrl}/images/og-directory.png`;
 
   // Generate page title
-  const pageTitle = title.includes('Petrol') ? title : `${title} | Petrol Prices Near Me`;
+  const pageTitle = title.includes('Petrol')
+    ? title
+    : `${title} | Petrol Prices Near Me`;
 
   // Generate keywords array
   const keywordsString = keywords.join(', ');
@@ -99,7 +102,7 @@ export const DirectorySEO: React.FC<DirectorySEOProps> = ({
         '@type': 'ImageObject',
         url: `${siteUrl}/images/fuel-icon-192.svg`,
       },
-      description: 'Melbourne\'s leading fuel price comparison platform',
+      description: "Melbourne's leading fuel price comparison platform",
       areaServed: {
         '@type': 'City',
         name: 'Melbourne',
@@ -137,13 +140,14 @@ export const DirectorySEO: React.FC<DirectorySEOProps> = ({
         addressRegion: 'VIC',
         addressCountry: 'AU',
       },
-      ...(station.latitude && station.longitude && {
-        geo: {
-          '@type': 'GeoCoordinates',
-          latitude: station.latitude,
-          longitude: station.longitude,
-        },
-      }),
+      ...(station.latitude &&
+        station.longitude && {
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: station.latitude,
+            longitude: station.longitude,
+          },
+        }),
       ...(station.phoneNumber && {
         telephone: station.phoneNumber,
       }),
@@ -253,7 +257,8 @@ export const DirectorySEO: React.FC<DirectorySEOProps> = ({
  * Use this in _app.tsx for site-wide default SEO
  */
 export const DefaultDirectorySEO: React.FC = () => {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.petrolpricenearme.com.au';
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.petrolpricenearme.com.au';
 
   return (
     <DefaultSeo

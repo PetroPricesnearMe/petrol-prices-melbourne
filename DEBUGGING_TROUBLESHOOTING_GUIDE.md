@@ -1,6 +1,7 @@
 # 🔧 Debugging & Troubleshooting Guide - Next.js 15
 
 ## Table of Contents
+
 1. [Hydration Mismatch Fixes](#hydration-mismatch-fixes)
 2. [Image Optimization & Core Web Vitals](#image-optimization--core-web-vitals)
 3. [Preload Link Optimization](#preload-link-optimization)
@@ -16,6 +17,7 @@
 **Cause:** Server renders one date/time, client renders another (timing difference).
 
 **Locations Found:**
+
 - `src/components/organisms/Footer/ResponsiveFooter.tsx` (line 104)
 - `src/components/organisms/Footer/ModernFooter.tsx` (line 86)
 - `src/components/organisms/Footer/Footer.tsx` (line 51)
@@ -74,7 +76,7 @@ import { useMounted } from '@/hooks/useMounted';
 
 export function StationCard({ station }) {
   const mounted = useMounted();
-  
+
   const formattedDate = mounted && station.lastUpdated
     ? new Date(station.lastUpdated).toLocaleDateString()
     : 'Recently';
@@ -95,6 +97,7 @@ export function StationCard({ station }) {
 **Cause:** `Math.random()` generates different IDs on server vs client.
 
 **Locations Found:**
+
 - `src/components/ui/input.tsx` (line 31)
 - `src/components/atoms/Input/Input.tsx` (line 61)
 - `src/components/accessibility/Modal.tsx` (line 50)
@@ -156,7 +159,8 @@ if (!mounted) {
 
 **Error:** `/images/hero-petrol-station.jpg` not found in `public/images/`
 
-**Impact:** 
+**Impact:**
+
 - 404 error on page load
 - Poor LCP (Largest Contentful Paint)
 - Failed Core Web Vitals
@@ -196,13 +200,13 @@ function OptimizedHeroSection() {
     <div className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
       {/* Gradient background as placeholder */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-500" />
-      
+
       {/* Optional: Decorative elements */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-10 left-10 w-32 h-32 bg-white/30 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/20 rounded-full blur-3xl" />
       </div>
-      
+
       {/* Content overlay */}
       <div className="relative z-10 h-full flex items-center justify-center">
         <div className="text-center text-white">
@@ -260,16 +264,16 @@ import Image from 'next/image';
 // Format: "media-query viewport-width, fallback"
 
 // Full-width hero
-sizes="100vw"
+sizes = '100vw';
 
 // Half-width on desktop, full on mobile
-sizes="(max-width: 768px) 100vw, 50vw"
+sizes = '(max-width: 768px) 100vw, 50vw';
 
 // Fixed width above breakpoint
-sizes="(max-width: 768px) 100vw, 400px"
+sizes = '(max-width: 768px) 100vw, 400px';
 
 // Grid layout (3 columns on desktop)
-sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw';
 ```
 
 ---
@@ -285,7 +289,7 @@ sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
   {/* Preconnect to external domains */}
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-  
+
   {/* DNS Prefetch for performance */}
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 </head>
@@ -317,7 +321,7 @@ export default function RootLayout({ children }) {
       <head>
         {/* ✅ REMOVE: Google Fonts preconnect (handled by next/font) */}
         {/* ❌ <link rel="preconnect" href="https://fonts.googleapis.com" /> */}
-        
+
         {/* ✅ KEEP: Favicon and manifest */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
@@ -353,6 +357,7 @@ export default function RootLayout({ children }) {
 ### Current Status: ✅ Configuration is Good!
 
 Your `tailwind.config.js` is well-configured with:
+
 - ✅ Mobile-first responsive design
 - ✅ Proper content paths
 - ✅ Dark mode support
@@ -369,7 +374,7 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/lib/**/*.{js,ts,jsx,tsx,mdx}',
-    
+
     // ⚠️ REVIEW: Only include if you have pages/ directory
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -434,6 +439,7 @@ className={cn(
 ### Error 1: Missing Image File
 
 **Console Error:**
+
 ```
 GET /images/hero-petrol-station.jpg 404 (Not Found)
 ```
@@ -443,6 +449,7 @@ GET /images/hero-petrol-station.jpg 404 (Not Found)
 ### Error 2: Hydration Mismatch Warning
 
 **Console Warning:**
+
 ```
 Warning: Text content did not match. Server: "2024" Client: "2025"
 Warning: An error occurred during hydration...
@@ -453,6 +460,7 @@ Warning: An error occurred during hydration...
 ### Error 3: Invalid Hook Call
 
 **Console Error:**
+
 ```
 Error: Invalid hook call. Hooks can only be called inside of the body of a function component.
 ```
@@ -460,6 +468,7 @@ Error: Invalid hook call. Hooks can only be called inside of the body of a funct
 **Cause:** Using hooks in non-client component or outside React component.
 
 **Fix:**
+
 ```typescript
 // ❌ WRONG: Using hook at module level
 const mounted = useMounted(); // Error!
@@ -494,6 +503,7 @@ export default function ClientComponent() {
 **Problem:** Custom Tailwind classes disappear in production.
 
 **Fix:**
+
 ```javascript
 // tailwind.config.js
 module.exports = {
@@ -560,14 +570,14 @@ npm run build && npm run start
 
 ### Core Web Vitals Targets (2025)
 
-| Metric | Good | Needs Improvement | Poor |
-|--------|------|-------------------|------|
-| **LCP** (Largest Contentful Paint) | ≤ 2.5s | 2.5s - 4s | > 4s |
-| **FID** (First Input Delay) | ≤ 100ms | 100ms - 300ms | > 300ms |
-| **INP** (Interaction to Next Paint) | ≤ 200ms | 200ms - 500ms | > 500ms |
-| **CLS** (Cumulative Layout Shift) | ≤ 0.1 | 0.1 - 0.25 | > 0.25 |
-| **FCP** (First Contentful Paint) | ≤ 1.8s | 1.8s - 3s | > 3s |
-| **TTFB** (Time to First Byte) | ≤ 800ms | 800ms - 1800ms | > 1800ms |
+| Metric                              | Good    | Needs Improvement | Poor     |
+| ----------------------------------- | ------- | ----------------- | -------- |
+| **LCP** (Largest Contentful Paint)  | ≤ 2.5s  | 2.5s - 4s         | > 4s     |
+| **FID** (First Input Delay)         | ≤ 100ms | 100ms - 300ms     | > 300ms  |
+| **INP** (Interaction to Next Paint) | ≤ 200ms | 200ms - 500ms     | > 500ms  |
+| **CLS** (Cumulative Layout Shift)   | ≤ 0.1   | 0.1 - 0.25        | > 0.25   |
+| **FCP** (First Contentful Paint)    | ≤ 1.8s  | 1.8s - 3s         | > 3s     |
+| **TTFB** (Time to First Byte)       | ≤ 800ms | 800ms - 1800ms    | > 1800ms |
 
 ---
 
@@ -665,4 +675,3 @@ npx playwright test --project=mobile-chrome
 **Last Updated:** November 2025
 **Next.js Version:** 15.x
 **React Version:** 19.x
-

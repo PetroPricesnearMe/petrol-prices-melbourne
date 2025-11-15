@@ -17,6 +17,7 @@ export type {
   NonNullable as NonNullableType,
   AsyncFunction,
   BaseProps,
+  ComponentBaseProps,
   WithLoadingState,
   WithErrorState,
   WithDisabledState,
@@ -56,11 +57,7 @@ export {
 } from './common';
 
 // Station types
-export {
-  FuelType,
-  StationCategory,
-  PriceTrend,
-} from './station';
+export { FuelType, StationCategory, PriceTrend } from './station';
 
 export type {
   FuelTypeKey,

@@ -12,25 +12,25 @@ export interface BrandInfo {
 }
 
 export const BRAND_LOGOS: Record<string, BrandInfo> = {
-  'shell': {
+  shell: {
     name: 'Shell',
     logo: '/images/brands/shell.svg',
     color: '#FBCE07',
     fallback: '#DD1D21',
   },
-  'bp': {
+  bp: {
     name: 'BP',
     logo: '/images/brands/bp.svg',
     color: '#00A850',
     fallback: '#00A850',
   },
-  'caltex': {
+  caltex: {
     name: 'Caltex',
     logo: '/images/brands/caltex.svg',
     color: '#ED1C24',
     fallback: '#ED1C24',
   },
-  'ampol': {
+  ampol: {
     name: 'Ampol',
     logo: '/images/brands/ampol.svg',
     color: '#003DA5',
@@ -48,13 +48,13 @@ export const BRAND_LOGOS: Record<string, BrandInfo> = {
     color: '#FF6201',
     fallback: '#008848',
   },
-  'mobil': {
+  mobil: {
     name: 'Mobil',
     logo: '/images/brands/mobil.svg',
     color: '#EE3124',
     fallback: '#EE3124',
   },
-  'coles': {
+  coles: {
     name: 'Coles Express',
     logo: '/images/brands/coles.svg',
     color: '#E31E26',
@@ -66,19 +66,19 @@ export const BRAND_LOGOS: Record<string, BrandInfo> = {
     color: '#E31E26',
     fallback: '#E31E26',
   },
-  'united': {
+  united: {
     name: 'United Petroleum',
     logo: '/images/brands/united.svg',
     color: '#0066B3',
     fallback: '#0066B3',
   },
-  'liberty': {
+  liberty: {
     name: 'Liberty',
     logo: '/images/brands/liberty.svg',
     color: '#003087',
     fallback: '#003087',
   },
-  'apco': {
+  apco: {
     name: 'APCO',
     logo: '/images/brands/apco.svg',
     color: '#E31E26',
@@ -146,8 +146,10 @@ export function getBrandClass(brandName: string | null | undefined): string {
 
   if (normalizedBrand.includes('shell')) return 'brand-shell';
   if (normalizedBrand.includes('bp')) return 'brand-bp';
-  if (normalizedBrand.includes('caltex') || normalizedBrand.includes('ampol')) return 'brand-caltex';
-  if (normalizedBrand.includes('7') || normalizedBrand.includes('seven')) return 'brand-seven-eleven';
+  if (normalizedBrand.includes('caltex') || normalizedBrand.includes('ampol'))
+    return 'brand-caltex';
+  if (normalizedBrand.includes('7') || normalizedBrand.includes('seven'))
+    return 'brand-seven-eleven';
   if (normalizedBrand.includes('mobil')) return 'brand-mobil';
   if (normalizedBrand.includes('coles')) return 'brand-coles';
   if (normalizedBrand.includes('united')) return 'brand-united';

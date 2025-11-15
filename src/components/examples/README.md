@@ -30,7 +30,10 @@ export default function DemoPage() {
 ### Individual Components
 
 ```tsx
-import { ProductGrid, FluidHeroSection } from '@/components/examples/FluidLayoutExamples';
+import {
+  ProductGrid,
+  FluidHeroSection,
+} from '@/components/examples/FluidLayoutExamples';
 
 export default function MyPage() {
   return (

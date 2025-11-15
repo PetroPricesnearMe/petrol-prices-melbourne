@@ -1,6 +1,6 @@
 /**
  * Advanced Caching System for CMS
- * 
+ *
  * Provides multi-layer caching with:
  * - In-memory cache for fastest access
  * - Stale-while-revalidate support
@@ -206,7 +206,9 @@ export class CMSCache {
     if (!entry) return false;
 
     const now = Date.now();
-    return now > entry.expiry && (!entry.staleExpiry || now <= entry.staleExpiry);
+    return (
+      now > entry.expiry && (!entry.staleExpiry || now <= entry.staleExpiry)
+    );
   }
 
   /**
@@ -281,4 +283,3 @@ export function generateCacheKey(
   const paramsStr = params ? JSON.stringify(params) : '';
   return `cms:${provider}:${collection}:${paramsStr}`;
 }
-

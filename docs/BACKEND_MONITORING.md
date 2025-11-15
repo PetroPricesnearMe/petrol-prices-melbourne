@@ -147,6 +147,7 @@ const SCAN_INTERVAL_MS = 30 * 60 * 1000; // Change this value
 ```
 
 Examples:
+
 - 5 minutes: `5 * 60 * 1000`
 - 1 hour: `60 * 60 * 1000`
 - 15 minutes: `15 * 60 * 1000`
@@ -207,26 +208,28 @@ logs/backend-reports/
 
 ## Issue Categories
 
-| Category | Description |
-|----------|-------------|
-| `API` | API endpoint issues |
-| `DATA` | Data file integrity problems |
-| `ENV` | Environment variable configuration |
-| `SERVER` | Server file issues |
-| `DATABASE` | Database connectivity |
-| `ASSETS` | Public asset problems |
-| `DEPENDENCIES` | npm package issues |
+| Category       | Description                        |
+| -------------- | ---------------------------------- |
+| `API`          | API endpoint issues                |
+| `DATA`         | Data file integrity problems       |
+| `ENV`          | Environment variable configuration |
+| `SERVER`       | Server file issues                 |
+| `DATABASE`     | Database connectivity              |
+| `ASSETS`       | Public asset problems              |
+| `DEPENDENCIES` | npm package issues                 |
 
 ## Common Issues & Solutions
 
 ### Critical Issues
 
 #### node_modules not found
+
 ```bash
 npm install
 ```
 
 #### Required data file missing
+
 ```bash
 # Ensure public/data/stations.geojson exists
 # Check database import was successful
@@ -235,6 +238,7 @@ npm install
 ### High Issues
 
 #### API endpoint missing export
+
 ```javascript
 // Add default export
 export default function handler(req, res) {
@@ -243,6 +247,7 @@ export default function handler(req, res) {
 ```
 
 #### Invalid GeoJSON structure
+
 ```javascript
 // Ensure proper structure:
 {
@@ -254,6 +259,7 @@ export default function handler(req, res) {
 ### Medium Warnings
 
 #### Missing environment variables
+
 ```bash
 # Copy example and configure
 cp .env.example .env.local
@@ -269,7 +275,7 @@ name: Backend Health Check
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # Every 30 minutes
+    - cron: '*/30 * * * *' # Every 30 minutes
   workflow_dispatch:
 
 jobs:
@@ -294,11 +300,13 @@ jobs:
 ### Monitor won't start
 
 1. Check Node.js version (requires Node 14+):
+
    ```bash
    node --version
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -308,6 +316,7 @@ jobs:
 ### Reports not being saved
 
 1. Check write permissions:
+
    ```bash
    ls -la logs/
    ```
@@ -320,11 +329,13 @@ jobs:
 ### Master Agent not receiving reports
 
 1. Verify endpoint URL:
+
    ```bash
    echo $MASTER_AGENT_URL
    ```
 
 2. Check network connectivity:
+
    ```bash
    curl -X POST $MASTER_AGENT_URL -H "Content-Type: application/json" -d '{"test": true}'
    ```
@@ -356,6 +367,7 @@ Planned features:
 ## Support
 
 For issues or questions:
+
 - Check the troubleshooting section
 - Review report logs in `logs/backend-reports/`
 - Contact the development team
@@ -363,4 +375,3 @@ For issues or questions:
 ## License
 
 Same as main project.
-

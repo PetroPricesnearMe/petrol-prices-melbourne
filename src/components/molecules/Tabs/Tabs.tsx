@@ -39,7 +39,7 @@ export const Tabs: React.FC<TabsProps> = ({
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
-    if (defaultActiveTab && tabs.some(tab => tab.id === defaultActiveTab)) {
+    if (defaultActiveTab && tabs.some((tab) => tab.id === defaultActiveTab)) {
       setActiveTab(defaultActiveTab);
     }
   }, [defaultActiveTab, tabs]);
@@ -49,7 +49,11 @@ export const Tabs: React.FC<TabsProps> = ({
     onTabChange?.(tabId);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent, tabId: string, index: number) => {
+  const handleKeyDown = (
+    event: React.KeyboardEvent,
+    tabId: string,
+    index: number
+  ) => {
     switch (event.key) {
       case 'ArrowLeft':
         event.preventDefault();
@@ -88,7 +92,7 @@ export const Tabs: React.FC<TabsProps> = ({
     }
   };
 
-  const activeTabContent = tabs.find(tab => tab.id === activeTab)?.content;
+  const activeTabContent = tabs.find((tab) => tab.id === activeTab)?.content;
 
   return (
     <div className={cn('w-full', className)}>
@@ -97,7 +101,7 @@ export const Tabs: React.FC<TabsProps> = ({
         role="tablist"
         className={cn(
           'flex border-b border-gray-200 dark:border-gray-700',
-          'overflow-x-auto scrollbar-hide',
+          'scrollbar-hide overflow-x-auto',
           tabClassName
         )}
         aria-label="Station information tabs"
@@ -105,23 +109,23 @@ export const Tabs: React.FC<TabsProps> = ({
         {tabs.map((tab, index) => (
           <button
             key={tab.id}
-            ref={el => (tabRefs.current[index] = el)}
+            ref={(el) => (tabRefs.current[index] = el)}
             role="tab"
             aria-selected={activeTab === tab.id}
             aria-controls={`tabpanel-${tab.id}`}
             id={`tab-${tab.id}`}
             disabled={tab.disabled}
             onClick={() => !tab.disabled && handleTabClick(tab.id)}
-            onKeyDown={e => handleKeyDown(e, tab.id, index)}
+            onKeyDown={(e) => handleKeyDown(e, tab.id, index)}
             className={cn(
               'flex items-center gap-2 px-4 py-3 text-sm font-medium',
               'border-b-2 border-transparent transition-all duration-200',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              'whitespace-nowrap min-w-0',
+              'disabled:cursor-not-allowed disabled:opacity-50',
+              'min-w-0 whitespace-nowrap',
               activeTab === tab.id
-                ? 'border-primary-500 text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+                ? 'border-primary-500 bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
+                : 'text-gray-600 hover:border-gray-300 hover:text-gray-900 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:text-gray-200'
             )}
           >
             {tab.icon && <span className="flex-shrink-0">{tab.icon}</span>}
@@ -136,7 +140,7 @@ export const Tabs: React.FC<TabsProps> = ({
         id={`tabpanel-${activeTab}`}
         aria-labelledby={`tab-${activeTab}`}
         className={cn(
-          'mt-6 animate-in fade-in-50 duration-200',
+          'animate-in fade-in-50 mt-6 duration-200',
           contentClassName
         )}
       >

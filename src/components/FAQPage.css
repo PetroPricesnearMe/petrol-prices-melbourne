@@ -265,26 +265,26 @@
   .faq-header h1 {
     font-size: 2rem;
   }
-  
+
   .faq-controls {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .search-box {
     min-width: auto;
     width: 100%;
   }
-  
+
   .category-filter {
     width: 100%;
     justify-content: center;
   }
-  
+
   .faq-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .help-options {
     grid-template-columns: 1fr;
   }
@@ -294,19 +294,19 @@
   .faq-header {
     padding: 1.5rem 0;
   }
-  
+
   .faq-header h1 {
     font-size: 1.75rem;
   }
-  
+
   .faq-content {
     padding: 1rem 0;
   }
-  
+
   .faq-item {
     padding: 1rem;
   }
-  
+
   .help-section {
     padding: 1.5rem;
   }

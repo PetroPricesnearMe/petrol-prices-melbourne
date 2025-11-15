@@ -1,4 +1,5 @@
 # Performance Optimization Report
+
 **Next.js Application Bundle Size & Performance Optimization**
 
 ---
@@ -8,6 +9,7 @@
 This document outlines comprehensive performance optimizations implemented for the Petrol Prices Near Me application, including bundle size reduction, caching strategies, code splitting, and Core Web Vitals improvements.
 
 ### Key Achievements
+
 - ✅ **Bundle Size Reduced by 45-60%**
 - ✅ **First Contentful Paint (FCP) improved by 40%**
 - ✅ **Largest Contentful Paint (LCP) improved by 50%**
@@ -21,6 +23,7 @@ This document outlines comprehensive performance optimizations implemented for t
 ### Bundle Size Analysis
 
 #### BEFORE Optimization
+
 ```
 Initial Bundle Size:
 ├── Main Bundle (pages/*.js)        ~850 KB
@@ -37,6 +40,7 @@ TOTAL WITH IMAGES:                  ~4.0 MB
 ```
 
 #### AFTER Optimization
+
 ```
 Optimized Bundle Size:
 ├── Main Bundle (pages/*.js)        ~320 KB (-62%)
@@ -56,24 +60,24 @@ TOTAL WITH IMAGES:                  ~1.2 MB (-70%)
 
 ### Core Web Vitals
 
-| Metric | Before | After | Improvement | Target |
-|--------|--------|-------|-------------|---------|
-| **FCP** (First Contentful Paint) | 2.8s | 1.7s | **-39%** ⭐ | < 1.8s |
-| **LCP** (Largest Contentful Paint) | 4.2s | 2.1s | **-50%** ⭐ | < 2.5s |
-| **TTI** (Time to Interactive) | 5.8s | 3.8s | **-34%** ⭐ | < 3.8s |
-| **CLS** (Cumulative Layout Shift) | 0.18 | 0.05 | **-72%** ⭐ | < 0.1 |
-| **FID** (First Input Delay) | 145ms | 65ms | **-55%** ⭐ | < 100ms |
-| **TTFB** (Time to First Byte) | 580ms | 280ms | **-52%** ⭐ | < 600ms |
+| Metric                             | Before | After | Improvement | Target  |
+| ---------------------------------- | ------ | ----- | ----------- | ------- |
+| **FCP** (First Contentful Paint)   | 2.8s   | 1.7s  | **-39%** ⭐ | < 1.8s  |
+| **LCP** (Largest Contentful Paint) | 4.2s   | 2.1s  | **-50%** ⭐ | < 2.5s  |
+| **TTI** (Time to Interactive)      | 5.8s   | 3.8s  | **-34%** ⭐ | < 3.8s  |
+| **CLS** (Cumulative Layout Shift)  | 0.18   | 0.05  | **-72%** ⭐ | < 0.1   |
+| **FID** (First Input Delay)        | 145ms  | 65ms  | **-55%** ⭐ | < 100ms |
+| **TTFB** (Time to First Byte)      | 580ms  | 280ms | **-52%** ⭐ | < 600ms |
 
 ### Lighthouse Scores
 
-| Category | Before | After | Change |
-|----------|--------|-------|---------|
-| Performance | 68 | **94** | +26 ⭐ |
-| Accessibility | 87 | **96** | +9 |
-| Best Practices | 79 | **100** | +21 ⭐ |
-| SEO | 82 | **100** | +18 ⭐ |
-| PWA | N/A | **85** | New |
+| Category       | Before | After   | Change |
+| -------------- | ------ | ------- | ------ |
+| Performance    | 68     | **94**  | +26 ⭐ |
+| Accessibility  | 87     | **96**  | +9     |
+| Best Practices | 79     | **100** | +21 ⭐ |
+| SEO            | 82     | **100** | +18 ⭐ |
+| PWA            | N/A    | **85**  | New    |
 
 ---
 
@@ -82,6 +86,7 @@ TOTAL WITH IMAGES:                  ~1.2 MB (-70%)
 ### 1. Code Splitting & Dynamic Imports ✅
 
 #### Implementation
+
 ```typescript
 // Before: All components loaded upfront
 import StationCards from '../src/components/StationCards';
@@ -101,11 +106,13 @@ const StationMap = dynamic(() => import('@/components/StationMap'), {
 ```
 
 **Impact:**
+
 - Main bundle reduced by 520 KB
 - Initial load time improved by 1.8 seconds
 - Only loads components when needed
 
 #### Route-Based Code Splitting
+
 ```javascript
 // Automatic route splitting with Next.js
 pages/
@@ -122,20 +129,23 @@ pages/
 ### 2. Tree Shaking & Dead Code Elimination ✅
 
 #### Before
+
 ```javascript
-import * as _ from 'lodash';           // 71 KB
-import moment from 'moment';           // 68 KB
-import * as framerMotion from 'framer-motion';  // 180 KB
+import * as _ from 'lodash'; // 71 KB
+import moment from 'moment'; // 68 KB
+import * as framerMotion from 'framer-motion'; // 180 KB
 ```
 
 #### After
+
 ```javascript
-import debounce from 'lodash-es/debounce';  // 2 KB
-import { format } from 'date-fns';          // 5 KB
-import { motion } from 'framer-motion';  // Optimized in Framer Motion 11+
+import debounce from 'lodash-es/debounce'; // 2 KB
+import { format } from 'date-fns'; // 5 KB
+import { motion } from 'framer-motion'; // Optimized in Framer Motion 11+
 ```
 
 **Configuration:**
+
 ```javascript
 // next.config.optimized.js
 webpack: (config, { dev, isServer }) => {
@@ -144,10 +154,11 @@ webpack: (config, { dev, isServer }) => {
     // No custom alias needed - Next.js handles ESM/CJS automatically
   }
   return config;
-}
+};
 ```
 
 **Savings:**
+
 - Lodash: 69 KB (-97%)
 - Date library: 63 KB (-93%)
 - Framer Motion: 145 KB (-81%)
@@ -158,6 +169,7 @@ webpack: (config, { dev, isServer }) => {
 ### 3. Image Optimization ✅
 
 #### Strategy
+
 ```javascript
 // Next.js Image component with optimization
 import Image from 'next/image';
@@ -171,20 +183,22 @@ import Image from 'next/image';
   formats={['image/avif', 'image/webp']}
   loading="lazy"
   placeholder="blur"
-/>
+/>;
 ```
 
 #### Results
-| Image Type | Before | After | Format | Savings |
-|------------|--------|-------|--------|---------|
-| Hero Images | 450 KB | 65 KB | WebP | -86% |
-| Station Logos | 280 KB | 45 KB | SVG | -84% |
-| Map Tiles | 850 KB | 180 KB | WebP | -79% |
-| Thumbnails | 180 KB | 25 KB | AVIF | -86% |
+
+| Image Type    | Before | After  | Format | Savings |
+| ------------- | ------ | ------ | ------ | ------- |
+| Hero Images   | 450 KB | 65 KB  | WebP   | -86%    |
+| Station Logos | 280 KB | 45 KB  | SVG    | -84%    |
+| Map Tiles     | 850 KB | 180 KB | WebP   | -79%    |
+| Thumbnails    | 180 KB | 25 KB  | AVIF   | -86%    |
 
 **Total Image Savings: 1.85 MB (-80%)**
 
 #### Techniques Used
+
 - ✅ Next.js automatic image optimization
 - ✅ Modern formats (AVIF, WebP)
 - ✅ Responsive images with srcset
@@ -197,25 +211,28 @@ import Image from 'next/image';
 ### 4. CSS Optimization ✅
 
 #### PurgeCSS with Tailwind JIT
+
 ```javascript
 // tailwind.config.optimized.js
 module.exports = {
-  mode: 'jit',  // Just-In-Time compilation
+  mode: 'jit', // Just-In-Time compilation
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './src/**/*.{js,ts,jsx,tsx}',
   ],
   // Only generates CSS for classes actually used
-}
+};
 ```
 
 **Results:**
+
 - Before: 145 KB (uncompressed)
 - After: 35 KB (uncompressed)
 - **Reduction: 76%**
 
 #### CSS-in-JS Optimization
+
 ```javascript
 // Removed runtime CSS-in-JS overhead
 // Migrated to Tailwind CSS static generation
@@ -226,6 +243,7 @@ module.exports = {
 ### 5. Caching Strategies ✅
 
 #### Static Site Generation (SSG)
+
 ```javascript
 // pages/index.js
 export async function getStaticProps() {
@@ -238,6 +256,7 @@ export async function getStaticProps() {
 ```
 
 #### API Route Caching
+
 ```typescript
 // pages/api/stations.optimized.ts
 res.setHeader(
@@ -247,6 +266,7 @@ res.setHeader(
 ```
 
 #### Browser Caching Headers
+
 ```javascript
 // next.config.optimized.js
 async headers() {
@@ -265,6 +285,7 @@ async headers() {
 ```
 
 **Impact:**
+
 - First visit: 2.1s load time
 - Cached visit: 0.4s load time
 - **87% faster for returning users**
@@ -274,6 +295,7 @@ async headers() {
 ### 6. Compression ✅
 
 #### Implemented Strategies
+
 ```javascript
 // Automatic Gzip/Brotli compression
 compress: true,  // In next.config.js
@@ -296,6 +318,7 @@ compress: true,  // In next.config.js
 ### 7. Bundle Analysis Tools ✅
 
 #### Webpack Bundle Analyzer
+
 ```bash
 # Generate visual bundle analysis
 npm run analyze
@@ -304,17 +327,20 @@ npm run analyze
 ```
 
 **Findings:**
+
 - Identified duplicate dependencies
 - Found large unused exports
 - Discovered tree-shaking opportunities
 
 #### Custom Bundle Analyzer Script
+
 ```bash
 # Run custom analysis
 node scripts/analyze-bundle.js
 ```
 
 **Output:**
+
 ```
 📊 Largest Chunks:
   1. framework-[hash].js: 180 KB
@@ -329,14 +355,16 @@ node scripts/analyze-bundle.js
 ### 8. Third-Party Library Optimization ✅
 
 #### Replacements Made
-| Original | Replacement | Size Savings |
-|----------|-------------|--------------|
-| axios | native fetch | **14 KB** |
-| moment | date-fns | **63 KB** |
-| lodash | lodash-es (tree-shakeable) | **69 KB** |
-| Full Leaflet | Lazy-loaded | **175 KB** (off main bundle) |
+
+| Original     | Replacement                | Size Savings                 |
+| ------------ | -------------------------- | ---------------------------- |
+| axios        | native fetch               | **14 KB**                    |
+| moment       | date-fns                   | **63 KB**                    |
+| lodash       | lodash-es (tree-shakeable) | **69 KB**                    |
+| Full Leaflet | Lazy-loaded                | **175 KB** (off main bundle) |
 
 #### Lazy Loading Pattern
+
 ```typescript
 // lib/optimization/bundleOptimizer.ts
 export const lazyImports = {
@@ -353,6 +381,7 @@ export const lazyImports = {
 ### 9. Service Worker & PWA ✅
 
 #### Implementation
+
 ```javascript
 // public/sw.js
 const CACHE_NAME = 'ppnm-cache-v1';
@@ -360,8 +389,7 @@ const CACHE_NAME = 'ppnm-cache-v1';
 // Cache static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(PRECACHE_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_ASSETS))
   );
 });
 
@@ -372,6 +400,7 @@ self.addEventListener('fetch', (event) => {
 ```
 
 **Results:**
+
 - Offline functionality enabled
 - 95% cache hit rate for static assets
 - Instant page loads for returning users
@@ -381,6 +410,7 @@ self.addEventListener('fetch', (event) => {
 ### 10. Performance Monitoring ✅
 
 #### Web Vitals Tracking
+
 ```typescript
 // lib/performance/webVitals.ts
 import { getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
@@ -395,6 +425,7 @@ export function initWebVitals() {
 ```
 
 **Tracked Metrics:**
+
 - ✅ Core Web Vitals (CLS, FCP, FID, LCP, TTFB)
 - ✅ Custom metrics (component mount times)
 - ✅ API response times
@@ -405,6 +436,7 @@ export function initWebVitals() {
 ## Implementation Checklist
 
 ### Completed ✅
+
 - [x] Bundle analysis and baseline metrics
 - [x] Dynamic imports for heavy components
 - [x] Tree shaking configuration
@@ -417,6 +449,7 @@ export function initWebVitals() {
 - [x] Third-party library optimization
 
 ### Next Steps (Optional Enhancements)
+
 - [ ] Implement Edge Functions for API routes
 - [ ] Add WebAssembly for heavy computations
 - [ ] Implement HTTP/3 support
@@ -428,6 +461,7 @@ export function initWebVitals() {
 ## Performance Testing Results
 
 ### Load Testing
+
 ```
 Test Configuration:
 - Tool: Lighthouse CI
@@ -449,6 +483,7 @@ Results (Average):
 ```
 
 ### Real User Monitoring (RUM)
+
 ```
 Sample Size: 1,000 users over 7 days
 Location: Melbourne, Australia
@@ -465,6 +500,7 @@ Percentile Load Times:
 ## Cost Savings
 
 ### Bandwidth Reduction
+
 ```
 Average page weight: 4.0 MB → 1.2 MB
 Monthly users: 50,000
@@ -478,6 +514,7 @@ Estimated cost savings: $70-140/month
 ```
 
 ### CDN Edge Caching
+
 ```
 Cache hit rate: 85%
 Reduced origin requests by: 85%
@@ -489,6 +526,7 @@ CDN cost reduction: ~60%
 ## Recommendations for Maintenance
 
 ### 1. Regular Monitoring
+
 ```bash
 # Weekly bundle analysis
 npm run analyze
@@ -501,6 +539,7 @@ Check /api/analytics/web-vitals
 ```
 
 ### 2. Performance Budget
+
 ```javascript
 // Set in next.config.js
 experimental: {
@@ -512,6 +551,7 @@ experimental: {
 ```
 
 ### 3. Automated Testing
+
 ```yaml
 # .github/workflows/performance.yml
 - name: Lighthouse CI
@@ -526,6 +566,7 @@ experimental: {
 ## Tools & Scripts Reference
 
 ### Analysis Tools
+
 ```bash
 # Bundle analysis
 npm run analyze
@@ -541,6 +582,7 @@ npm run vitals:report
 ```
 
 ### Configuration Files
+
 - `next.config.optimized.js` - Optimized Next.js config
 - `tailwind.config.optimized.js` - Purged Tailwind config
 - `public/sw.js` - Service Worker with caching
@@ -552,6 +594,7 @@ npm run vitals:report
 ## Conclusion
 
 ### Summary of Achievements
+
 ✅ **53% reduction in initial bundle size**  
 ✅ **70% reduction in total page weight**  
 ✅ **39-50% improvement in Core Web Vitals**  
@@ -560,6 +603,7 @@ npm run vitals:report
 ✅ **Real-time performance monitoring**
 
 ### Business Impact
+
 - **Faster page loads** = Lower bounce rates
 - **Better SEO** = Higher search rankings
 - **Lower bandwidth costs** = $70-140/month savings
@@ -567,6 +611,7 @@ npm run vitals:report
 - **Mobile-optimized** = Better mobile engagement
 
 ### Technical Excellence
+
 - Modern best practices implemented
 - Production-ready optimizations
 - Scalable architecture
@@ -578,4 +623,3 @@ npm run vitals:report
 **Generated:** ${new Date().toISOString()}  
 **Version:** 1.0  
 **Next Review:** 30 days
-

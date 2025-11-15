@@ -19,13 +19,16 @@ interface ApiErrorFallbackProps {
   onRetry?: () => void;
 }
 
-const ApiErrorFallback: React.FC<ApiErrorFallbackProps> = ({ error, onRetry }) => (
+const ApiErrorFallback: React.FC<ApiErrorFallbackProps> = ({
+  error,
+  onRetry,
+}) => (
   <div className="api-error-boundary" role="alert" aria-live="assertive">
-    <div className="max-w-md mx-auto p-6 bg-red-50 border border-red-200 rounded-lg">
+    <div className="bg-red-50 border-red-200 mx-auto max-w-md rounded-lg border p-6">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0">
           <svg
-            className="w-6 h-6 text-red-600"
+            className="text-red-600 h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -40,19 +43,20 @@ const ApiErrorFallback: React.FC<ApiErrorFallbackProps> = ({ error, onRetry }) =
           </svg>
         </div>
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-red-800 mb-2">
+          <h3 className="text-red-800 mb-2 text-lg font-semibold">
             Unable to Load Data
           </h3>
-          <p className="text-sm text-red-700 mb-4">
-            We&apos;re having trouble connecting to our servers. This might be a temporary issue.
+          <p className="text-red-700 mb-4 text-sm">
+            We&apos;re having trouble connecting to our servers. This might be a
+            temporary issue.
           </p>
-          <p className="text-xs text-red-600 mb-4 font-mono bg-red-100 p-2 rounded">
+          <p className="text-red-600 bg-red-100 mb-4 rounded p-2 font-mono text-xs">
             {error.message}
           </p>
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-500 rounded-md px-4 py-2 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               aria-label="Retry loading data"
             >
               Try Again
@@ -64,10 +68,10 @@ const ApiErrorFallback: React.FC<ApiErrorFallbackProps> = ({ error, onRetry }) =
   </div>
 );
 
-export const ApiErrorBoundary: React.FC<{ children: ReactNode; onRetry?: () => void }> = ({
-  children,
-  onRetry,
-}) => (
+export const ApiErrorBoundary: React.FC<{
+  children: ReactNode;
+  onRetry?: () => void;
+}> = ({ children, onRetry }) => (
   <ErrorBoundary
     fallback={(error) => <ApiErrorFallback error={error} onRetry={onRetry} />}
   >
@@ -85,11 +89,11 @@ interface MapErrorFallbackProps {
 
 const MapErrorFallback: React.FC<MapErrorFallbackProps> = ({ error }) => (
   <div className="map-error-boundary" role="alert">
-    <div className="flex items-center justify-center h-96 bg-gray-50 border border-gray-200 rounded-lg">
-      <div className="text-center p-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
+    <div className="flex h-96 items-center justify-center rounded-lg border border-gray-200 bg-gray-50">
+      <div className="p-6 text-center">
+        <div className="bg-yellow-100 mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full">
           <svg
-            className="w-8 h-8 text-yellow-600"
+            className="text-yellow-600 h-8 w-8"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -103,21 +107,26 @@ const MapErrorFallback: React.FC<MapErrorFallbackProps> = ({ error }) => (
             />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <h3 className="mb-2 text-lg font-semibold text-gray-900">
           Map Unavailable
         </h3>
-        <p className="text-sm text-gray-600 max-w-sm">
-          We couldn&apos;t load the map at this time. You can still view station listings below.
+        <p className="max-w-sm text-sm text-gray-600">
+          We couldn&apos;t load the map at this time. You can still view station
+          listings below.
         </p>
         {process.env.NODE_ENV === 'development' && (
-          <p className="text-xs text-gray-500 mt-4 font-mono">{error.message}</p>
+          <p className="mt-4 font-mono text-xs text-gray-500">
+            {error.message}
+          </p>
         )}
       </div>
     </div>
   </div>
 );
 
-export const MapErrorBoundary: React.FC<{ children: ReactNode }> = ({ children }) => (
+export const MapErrorBoundary: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => (
   <ErrorBoundary fallback={(error) => <MapErrorFallback error={error} />}>
     {children}
   </ErrorBoundary>
@@ -133,11 +142,11 @@ interface ChartErrorFallbackProps {
 
 const ChartErrorFallback: React.FC<ChartErrorFallbackProps> = ({ error }) => (
   <div className="chart-error-boundary" role="alert">
-    <div className="flex items-center justify-center h-64 bg-blue-50 border border-blue-200 rounded-lg">
-      <div className="text-center p-6">
-        <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-3">
+    <div className="bg-blue-50 border-blue-200 flex h-64 items-center justify-center rounded-lg border">
+      <div className="p-6 text-center">
+        <div className="bg-blue-100 mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full">
           <svg
-            className="w-6 h-6 text-blue-600"
+            className="text-blue-600 h-6 w-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -151,7 +160,7 @@ const ChartErrorFallback: React.FC<ChartErrorFallbackProps> = ({ error }) => (
             />
           </svg>
         </div>
-        <h3 className="text-base font-semibold text-gray-900 mb-1">
+        <h3 className="mb-1 text-base font-semibold text-gray-900">
           Chart Data Unavailable
         </h3>
         <p className="text-sm text-gray-600">
@@ -162,7 +171,9 @@ const ChartErrorFallback: React.FC<ChartErrorFallbackProps> = ({ error }) => (
   </div>
 );
 
-export const ChartErrorBoundary: React.FC<{ children: ReactNode }> = ({ children }) => (
+export const ChartErrorBoundary: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => (
   <ErrorBoundary fallback={(error) => <ChartErrorFallback error={error} />}>
     {children}
   </ErrorBoundary>
@@ -177,13 +188,16 @@ interface FormErrorFallbackProps {
   onReset?: () => void;
 }
 
-const FormErrorFallback: React.FC<FormErrorFallbackProps> = ({ error, onReset }) => (
+const FormErrorFallback: React.FC<FormErrorFallbackProps> = ({
+  error,
+  onReset,
+}) => (
   <div className="form-error-boundary" role="alert">
-    <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+    <div className="bg-orange-50 border-orange-200 rounded-lg border p-4">
       <div className="flex gap-3">
         <div className="flex-shrink-0">
           <svg
-            className="w-5 h-5 text-orange-600"
+            className="text-orange-600 h-5 w-5"
             fill="currentColor"
             viewBox="0 0 20 20"
             aria-hidden="true"
@@ -196,16 +210,16 @@ const FormErrorFallback: React.FC<FormErrorFallbackProps> = ({ error, onReset })
           </svg>
         </div>
         <div className="flex-1">
-          <h3 className="text-sm font-semibold text-orange-800 mb-1">
+          <h3 className="text-orange-800 mb-1 text-sm font-semibold">
             Form Submission Error
           </h3>
-          <p className="text-sm text-orange-700">
+          <p className="text-orange-700 text-sm">
             An error occurred while processing your request. Please try again.
           </p>
           {onReset && (
             <button
               onClick={onReset}
-              className="mt-3 text-sm font-medium text-orange-800 hover:text-orange-900 underline focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+              className="text-orange-800 hover:text-orange-900 focus:ring-orange-500 mt-3 text-sm font-medium underline focus:outline-none focus:ring-2 focus:ring-offset-2"
             >
               Reset Form
             </button>
@@ -216,10 +230,10 @@ const FormErrorFallback: React.FC<FormErrorFallbackProps> = ({ error, onReset })
   </div>
 );
 
-export const FormErrorBoundary: React.FC<{ children: ReactNode; onReset?: () => void }> = ({
-  children,
-  onReset,
-}) => (
+export const FormErrorBoundary: React.FC<{
+  children: ReactNode;
+  onReset?: () => void;
+}> = ({ children, onReset }) => (
   <ErrorBoundary
     fallback={(error) => <FormErrorFallback error={error} onReset={onReset} />}
     onReset={onReset}
@@ -237,11 +251,14 @@ interface PageErrorFallbackProps {
 }
 
 const PageErrorFallback: React.FC<PageErrorFallbackProps> = ({ error }) => (
-  <div className="page-error-boundary min-h-screen flex items-center justify-center bg-gray-50" role="alert">
-    <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-      <div className="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-6">
+  <div
+    className="page-error-boundary flex min-h-screen items-center justify-center bg-gray-50"
+    role="alert"
+  >
+    <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+      <div className="bg-red-100 mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full">
         <svg
-          className="w-10 h-10 text-red-600"
+          className="text-red-600 h-10 w-10"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -255,22 +272,22 @@ const PageErrorFallback: React.FC<PageErrorFallbackProps> = ({ error }) => (
           />
         </svg>
       </div>
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <h1 className="mb-4 text-4xl font-bold text-gray-900">
         Oops! Something Went Wrong
       </h1>
-      <p className="text-lg text-gray-600 mb-8">
+      <p className="mb-8 text-lg text-gray-600">
         We encountered an unexpected error while loading this page.
       </p>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
         <button
           onClick={() => window.location.reload()}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 rounded-md px-6 py-3 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
         >
           Reload Page
         </button>
         <a
           href="/"
-          className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          className="rounded-md bg-gray-200 px-6 py-3 text-gray-800 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
         >
           Go to Homepage
         </a>
@@ -280,7 +297,7 @@ const PageErrorFallback: React.FC<PageErrorFallbackProps> = ({ error }) => (
           <summary className="cursor-pointer font-semibold text-gray-700 hover:text-gray-900">
             Error Details (Development Only)
           </summary>
-          <pre className="mt-4 p-4 bg-gray-100 border border-gray-300 rounded-lg overflow-auto text-sm text-left">
+          <pre className="mt-4 overflow-auto rounded-lg border border-gray-300 bg-gray-100 p-4 text-left text-sm">
             {error.message}
             {'\n\n'}
             {error.stack}
@@ -291,7 +308,9 @@ const PageErrorFallback: React.FC<PageErrorFallbackProps> = ({ error }) => (
   </div>
 );
 
-export const PageErrorBoundary: React.FC<{ children: ReactNode }> = ({ children }) => (
+export const PageErrorBoundary: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => (
   <ErrorBoundary fallback={(error) => <PageErrorFallback error={error} />}>
     {children}
   </ErrorBoundary>
@@ -304,29 +323,33 @@ export const PageErrorBoundary: React.FC<{ children: ReactNode }> = ({ children 
 /** Add API error boundary to component */
 export const withApiErrorBoundary = <P extends object>(
   Component: React.ComponentType<P>
-) => withErrorBoundary(Component, {
-  fallback: (error) => <ApiErrorFallback error={error} />,
-});
+) =>
+  withErrorBoundary(Component, {
+    fallback: (error) => <ApiErrorFallback error={error} />,
+  });
 
 /** Add map error boundary to component */
 export const withMapErrorBoundary = <P extends object>(
   Component: React.ComponentType<P>
-) => withErrorBoundary(Component, {
-  fallback: (error) => <MapErrorFallback error={error} />,
-});
+) =>
+  withErrorBoundary(Component, {
+    fallback: (error) => <MapErrorFallback error={error} />,
+  });
 
 /** Add chart error boundary to component */
 export const withChartErrorBoundary = <P extends object>(
   Component: React.ComponentType<P>
-) => withErrorBoundary(Component, {
-  fallback: (error) => <ChartErrorFallback error={error} />,
-});
+) =>
+  withErrorBoundary(Component, {
+    fallback: (error) => <ChartErrorFallback error={error} />,
+  });
 
 /** Add form error boundary to component */
 export const withFormErrorBoundary = <P extends object>(
   Component: React.ComponentType<P>,
   onReset?: () => void
-) => withErrorBoundary(Component, {
-  fallback: (error) => <FormErrorFallback error={error} onReset={onReset} />,
-  onReset,
-});
+) =>
+  withErrorBoundary(Component, {
+    fallback: (error) => <FormErrorFallback error={error} onReset={onReset} />,
+    onReset,
+  });

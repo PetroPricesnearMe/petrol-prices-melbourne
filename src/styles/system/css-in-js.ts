@@ -111,7 +111,11 @@ export const styleUtils = {
   /**
    * Conditional styles
    */
-  conditional: (condition: boolean, trueClass: string, falseClass?: string): string => {
+  conditional: (
+    condition: boolean,
+    trueClass: string,
+    falseClass?: string
+  ): string => {
     return condition ? trueClass : falseClass || '';
   },
 
@@ -152,8 +156,11 @@ export const patterns = {
   /**
    * Card pattern
    */
-  card: (variant: 'default' | 'hover' | 'elevated' | 'bordered' = 'default') => {
-    const base = 'bg-white rounded-2xl overflow-hidden transition-all duration-300';
+  card: (
+    variant: 'default' | 'hover' | 'elevated' | 'bordered' = 'default'
+  ) => {
+    const base =
+      'bg-white rounded-2xl overflow-hidden transition-all duration-300';
     const variants = {
       default: 'shadow-sm',
       hover: 'shadow-sm hover:shadow-xl hover:-translate-y-1 cursor-pointer',
@@ -223,7 +230,14 @@ export const patterns = {
   /**
    * Badge pattern
    */
-  badge: (variant: 'primary' | 'secondary' | 'success' | 'warning' | 'error' = 'primary') => {
+  badge: (
+    variant:
+      | 'primary'
+      | 'secondary'
+      | 'success'
+      | 'warning'
+      | 'error' = 'primary'
+  ) => {
     const base =
       'inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full';
 
@@ -309,7 +323,10 @@ export const a11y = {
       primary: 'focus-visible:outline-primary-500',
       secondary: 'focus-visible:outline-secondary-500',
     };
-    return cn('focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2', colors[color]);
+    return cn(
+      'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+      colors[color]
+    );
   },
 
   /**
@@ -341,10 +358,8 @@ export const animations = {
   /**
    * Safe animation with reduced motion support
    */
-  safe: (animation: string) => cn(
-    animation,
-    'motion-reduce:animate-none motion-reduce:transition-none'
-  ),
+  safe: (animation: string) =>
+    cn(animation, 'motion-reduce:animate-none motion-reduce:transition-none'),
 };
 
 const stylingSystem = {

@@ -1,6 +1,6 @@
 /**
  * CMS Components - Public API
- * 
+ *
  * Export all reusable CMS components
  */
 
@@ -10,4 +10,3 @@ export { CMSList } from './CMSList';
 
 // Re-export types for convenience
 export type { CMSContent as CMSContentType } from '@/lib/cms/types';
-

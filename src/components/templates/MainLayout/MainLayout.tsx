@@ -1,6 +1,6 @@
 /**
  * MainLayout Template
- * 
+ *
  * Standard page layout with header, content, and footer
  */
 
@@ -45,13 +45,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <div className={classNames} style={style} data-testid={testId}>
       {header && <Header {...header} />}
-      
+
       <main className={contentClassNames} id="main-content">
         {children}
       </main>
-      
+
       {footer && <Footer {...footer} />}
     </div>
   );
 };
-

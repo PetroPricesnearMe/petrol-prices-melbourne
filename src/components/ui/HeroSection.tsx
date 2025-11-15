@@ -1,6 +1,6 @@
 /**
  * Modern HeroSection Component
- * 
+ *
  * A world-class hero section with:
  * - Fluid animations using Framer Motion
  * - Responsive mobile-first design
@@ -8,7 +8,7 @@
  * - Dark mode support with Tailwind's dark: variants
  * - Optimized for Core Web Vitals
  * - Semantic HTML structure
- * 
+ *
  * @component
  * @example
  * <HeroSection
@@ -100,30 +100,35 @@ export function HeroSection({
 
   // Background styles based on variant
   const backgroundStyles = {
-    gradient: 'bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 dark:from-blue-800 dark:via-indigo-900 dark:to-purple-950',
+    gradient:
+      'bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 dark:from-blue-800 dark:via-indigo-900 dark:to-purple-950',
     solid: 'bg-gray-900 dark:bg-black',
     image: 'bg-gray-900',
   };
 
   return (
     <section
-      className={`relative min-h-[90vh] flex items-center justify-center overflow-hidden ${backgroundStyles[variant]} ${className}`}
+      className={`relative flex min-h-[90vh] items-center justify-center overflow-hidden ${backgroundStyles[variant]} ${className}`}
       aria-labelledby="hero-title"
     >
       {/* Background Effects */}
       {variant === 'gradient' && (
         <>
           {/* Animated gradient orbs */}
-          <div 
+          <div
             className="absolute inset-0 opacity-30 dark:opacity-20"
             aria-hidden="true"
           >
             <motion.div
-              className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-yellow-400/30 to-orange-500/30 rounded-full blur-3xl"
-              animate={shouldReduceMotion ? {} : {
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.5, 0.3],
-              }}
+              className="from-yellow-400/30 to-orange-500/30 absolute left-20 top-20 h-96 w-96 rounded-full bg-gradient-to-r blur-3xl"
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      scale: [1, 1.2, 1],
+                      opacity: [0.3, 0.5, 0.3],
+                    }
+              }
               transition={{
                 duration: 8,
                 repeat: Infinity,
@@ -131,11 +136,15 @@ export function HeroSection({
               }}
             />
             <motion.div
-              className="absolute bottom-20 right-20 w-[30rem] h-[30rem] bg-gradient-to-r from-pink-400/20 to-purple-500/30 rounded-full blur-3xl"
-              animate={shouldReduceMotion ? {} : {
-                scale: [1, 1.1, 1],
-                opacity: [0.2, 0.4, 0.2],
-              }}
+              className="from-pink-400/20 to-purple-500/30 absolute bottom-20 right-20 h-[30rem] w-[30rem] rounded-full bg-gradient-to-r blur-3xl"
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      scale: [1, 1.1, 1],
+                      opacity: [0.2, 0.4, 0.2],
+                    }
+              }
               transition={{
                 duration: 10,
                 repeat: Infinity,
@@ -146,7 +155,10 @@ export function HeroSection({
           </div>
 
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent dark:from-black/50" aria-hidden="true" />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent dark:from-black/50"
+            aria-hidden="true"
+          />
         </>
       )}
 
@@ -158,14 +170,17 @@ export function HeroSection({
             style={{ backgroundImage: `url(${backgroundImage})` }}
             aria-hidden="true"
           />
-          <div className="absolute inset-0 bg-black/50 dark:bg-black/70" aria-hidden="true" />
+          <div
+            className="absolute inset-0 bg-black/50 dark:bg-black/70"
+            aria-hidden="true"
+          />
         </>
       )}
 
       {/* Content Container */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <motion.div
-          className="max-w-4xl mx-auto text-center"
+          className="mx-auto max-w-4xl text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -173,12 +188,15 @@ export function HeroSection({
           {/* Badge */}
           {showBadge && (
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-full text-sm font-medium text-white border border-white/20 dark:border-white/10"
+              className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm dark:border-white/10 dark:bg-white/5"
               variants={itemVariants}
               role="status"
               aria-live="polite"
             >
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" aria-hidden="true" />
+              <span
+                className="bg-green-400 h-2 w-2 animate-pulse rounded-full"
+                aria-hidden="true"
+              />
               {badgeText}
             </motion.div>
           )}
@@ -186,7 +204,7 @@ export function HeroSection({
           {/* Title */}
           <motion.h1
             id="hero-title"
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight"
+            className="mb-6 text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
             variants={itemVariants}
           >
             {title}
@@ -195,7 +213,7 @@ export function HeroSection({
           {/* Subtitle */}
           {subtitle && (
             <motion.p
-              className="text-lg sm:text-xl md:text-2xl text-white/90 dark:text-white/80 mb-10 leading-relaxed max-w-3xl mx-auto"
+              className="mx-auto mb-10 max-w-3xl text-lg leading-relaxed text-white/90 dark:text-white/80 sm:text-xl md:text-2xl"
               variants={itemVariants}
             >
               {subtitle}
@@ -204,24 +222,29 @@ export function HeroSection({
 
           {/* CTA Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+            className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
             variants={itemVariants}
           >
             {/* Primary CTA */}
             <Link
               href={ctaHref}
-              className="group inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-gray-900 bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30 hover:bg-gray-50 min-w-[200px]"
+              className="group inline-flex min-w-[200px] transform items-center justify-center rounded-2xl bg-white px-8 py-4 text-base font-semibold text-gray-900 shadow-xl transition-all duration-300 hover:scale-105 hover:bg-gray-50 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/30"
               aria-label={`${ctaText} - Main call to action`}
             >
               {ctaText}
               <svg
-                className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300"
+                className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
               </svg>
             </Link>
 
@@ -229,7 +252,7 @@ export function HeroSection({
             {secondaryCtaText && (
               <Link
                 href={secondaryCtaHref}
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-2xl border-2 border-white/30 dark:border-white/20 hover:bg-white/20 dark:hover:bg-white/10 hover:border-white/50 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30 min-w-[200px]"
+                className="inline-flex min-w-[200px] transform items-center justify-center rounded-2xl border-2 border-white/30 bg-white/10 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-white/50 hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-white/30 dark:border-white/20 dark:bg-white/5 dark:hover:bg-white/10"
                 aria-label={`${secondaryCtaText} - Secondary action`}
               >
                 {secondaryCtaText}
@@ -240,7 +263,7 @@ export function HeroSection({
           {/* Trust Indicators */}
           {trustIndicators.length > 0 && (
             <motion.div
-              className="flex flex-wrap justify-center items-center gap-6 text-white/80 dark:text-white/70"
+              className="flex flex-wrap items-center justify-center gap-6 text-white/80 dark:text-white/70"
               variants={itemVariants}
             >
               {trustIndicators.map((indicator, index) => (
@@ -256,19 +279,21 @@ export function HeroSection({
 
           {/* Custom Children */}
           {children && (
-            <motion.div variants={itemVariants}>
-              {children}
-            </motion.div>
+            <motion.div variants={itemVariants}>{children}</motion.div>
           )}
         </motion.div>
       </div>
 
       {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 dark:text-white/40"
-        animate={shouldReduceMotion ? {} : {
-          y: [0, 10, 0],
-        }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 transform text-white/60 dark:text-white/40"
+        animate={
+          shouldReduceMotion
+            ? {}
+            : {
+                y: [0, 10, 0],
+              }
+        }
         transition={{
           duration: 2,
           repeat: Infinity,
@@ -278,8 +303,19 @@ export function HeroSection({
         role="button"
         tabIndex={0}
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          />
         </svg>
       </motion.div>
     </section>
@@ -287,4 +323,3 @@ export function HeroSection({
 }
 
 export default HeroSection;
-

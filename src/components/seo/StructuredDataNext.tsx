@@ -38,7 +38,9 @@ export const StructuredData: React.FC<StructuredDataProps> = ({ data }) => {
  *
  * Renders multiple JSON-LD schemas efficiently
  */
-export const MultipleStructuredData: React.FC<{ schemas: object[] }> = ({ schemas }) => {
+export const MultipleStructuredData: React.FC<{ schemas: object[] }> = ({
+  schemas,
+}) => {
   return (
     <>
       {schemas.map((schema, index) => (

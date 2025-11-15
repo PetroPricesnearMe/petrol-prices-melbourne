@@ -23,8 +23,10 @@ import type { Station } from '@/types/station';
 export const SITE_CONFIG = {
   name: 'Petrol Price Near Me',
   shortName: 'PPNM',
-  title: 'Find Cheapest Petrol Prices Near Me | Real-Time Fuel Prices Australia',
-  description: 'Compare live petrol prices from 250+ stations across Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
+  title:
+    'Find Cheapest Petrol Prices Near Me | Real-Time Fuel Prices Australia',
+  description:
+    'Compare live petrol prices from 250+ stations across Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://petrolpricenearme.com.au',
   domain: 'petrolpricenearme.com.au',
   locale: 'en_AU',
@@ -141,9 +143,7 @@ export const baseMetadata: Metadata = {
   keywords: SITE_CONFIG.keywords,
 
   // Author Information
-  authors: [
-    { name: SITE_CONFIG.appInfo.author, url: SITE_CONFIG.url },
-  ],
+  authors: [{ name: SITE_CONFIG.appInfo.author, url: SITE_CONFIG.url }],
   creator: SITE_CONFIG.appInfo.author,
   publisher: SITE_CONFIG.name,
 
@@ -172,7 +172,11 @@ export const baseMetadata: Metadata = {
     ],
     shortcut: SITE_CONFIG.images.favicon,
     apple: [
-      { url: SITE_CONFIG.images.appleTouchIcon, sizes: '180x180', type: 'image/png' },
+      {
+        url: SITE_CONFIG.images.appleTouchIcon,
+        sizes: '180x180',
+        type: 'image/png',
+      },
     ],
     other: [
       {
@@ -310,7 +314,9 @@ export function generatePageMetadata(options: PageMetadataOptions): Metadata {
     locale = SITE_CONFIG.locale,
   } = options;
 
-  const fullTitle = title.includes(SITE_CONFIG.name) ? title : `${title} | ${SITE_CONFIG.name}`;
+  const fullTitle = title.includes(SITE_CONFIG.name)
+    ? title
+    : `${title} | ${SITE_CONFIG.name}`;
   const allKeywords = [...new Set([...SITE_CONFIG.keywords, ...keywords])];
   const canonicalUrl = canonical ? `${SITE_CONFIG.url}${canonical}` : undefined;
 
@@ -327,19 +333,22 @@ export function generatePageMetadata(options: PageMetadataOptions): Metadata {
       },
     },
 
-    robots: noIndex || noFollow ? {
-      index: !noIndex,
-      follow: !noFollow,
-      nocache: noIndex,
-      googleBot: {
-        index: !noIndex,
-        follow: !noFollow,
-        noimageindex: noIndex,
-        'max-video-preview': -1,
-        'max-image-preview': noIndex ? 'none' : 'large',
-        'max-snippet': -1,
-      },
-    } : undefined,
+    robots:
+      noIndex || noFollow
+        ? {
+            index: !noIndex,
+            follow: !noFollow,
+            nocache: noIndex,
+            googleBot: {
+              index: !noIndex,
+              follow: !noFollow,
+              noimageindex: noIndex,
+              'max-video-preview': -1,
+              'max-image-preview': noIndex ? 'none' : 'large',
+              'max-snippet': -1,
+            },
+          }
+        : undefined,
 
     openGraph: {
       type,
@@ -409,7 +418,10 @@ export function generateStationMetadata(station: Station): Metadata {
 /**
  * Generate metadata for directory/listing pages
  */
-export function generateDirectoryMetadata(suburb: string, stationCount: number): Metadata {
+export function generateDirectoryMetadata(
+  suburb: string,
+  stationCount: number
+): Metadata {
   const title = `${stationCount} Petrol Stations in ${suburb} - Compare Fuel Prices`;
   const description = `Find and compare fuel prices from ${stationCount} petrol stations in ${suburb}, Melbourne. Real-time prices for unleaded, diesel, premium, and LPG. Save up to 20c/L on your next fill-up!`;
 
@@ -434,7 +446,10 @@ export function generateDirectoryMetadata(suburb: string, stationCount: number):
 /**
  * Generate metadata for region pages
  */
-export function generateRegionMetadata(region: string, stationCount: number): Metadata {
+export function generateRegionMetadata(
+  region: string,
+  stationCount: number
+): Metadata {
   const title = `Petrol Stations in ${region} - Real-Time Fuel Prices`;
   const description = `Discover ${stationCount} petrol stations across ${region}. Compare real-time fuel prices, find the cheapest unleaded, diesel, and premium fuel near you. Updated every 5 minutes.`;
 
@@ -489,12 +504,19 @@ export function generateArticleMetadata(article: {
  */
 export function generateFAQMetadata(): Metadata {
   const title = 'Frequently Asked Questions - Fuel Prices & Petrol Stations';
-  const description = 'Find answers to common questions about fuel prices, petrol stations, price updates, and how to save money on fuel. Learn about our real-time price comparison service.';
+  const description =
+    'Find answers to common questions about fuel prices, petrol stations, price updates, and how to save money on fuel. Learn about our real-time price comparison service.';
 
   return generatePageMetadata({
     title,
     description,
-    keywords: ['faq', 'frequently asked questions', 'help', 'support', 'fuel prices help'],
+    keywords: [
+      'faq',
+      'frequently asked questions',
+      'help',
+      'support',
+      'fuel prices help',
+    ],
     canonical: '/faq',
     type: 'website',
   });
@@ -505,12 +527,18 @@ export function generateFAQMetadata(): Metadata {
  */
 export function generateMapMetadata(): Metadata {
   const title = 'Petrol Station Map - Find Cheapest Fuel Prices Near You';
-  const description = 'Interactive map showing 250+ petrol stations with real-time fuel prices. Search by location, compare prices, and find the cheapest fuel near you. Updated every 5 minutes.';
+  const description =
+    'Interactive map showing 250+ petrol stations with real-time fuel prices. Search by location, compare prices, and find the cheapest fuel near you. Updated every 5 minutes.';
 
   return generatePageMetadata({
     title,
     description,
-    keywords: ['petrol station map', 'fuel price map', 'station locator', 'find petrol near me'],
+    keywords: [
+      'petrol station map',
+      'fuel price map',
+      'station locator',
+      'find petrol near me',
+    ],
     canonical: '/map',
     type: 'website',
   });
@@ -523,15 +551,17 @@ export function generateMapMetadata(): Metadata {
 /**
  * Generate JSON-LD breadcrumb list
  */
-export function generateBreadcrumbJsonLd(breadcrumbs: Array<{ label: string; href: string }>) {
+export function generateBreadcrumbJsonLd(
+  breadcrumbs: Array<{ label: string; href: string }>
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    'itemListElement': breadcrumbs.map((crumb, index) => ({
+    itemListElement: breadcrumbs.map((crumb, index) => ({
       '@type': 'ListItem',
-      'position': index + 1,
-      'name': crumb.label,
-      'item': `${SITE_CONFIG.url}${crumb.href}`,
+      position: index + 1,
+      name: crumb.label,
+      item: `${SITE_CONFIG.url}${crumb.href}`,
     })),
   };
 }
@@ -547,9 +577,15 @@ export function generateCanonicalUrl(path: string): string {
 /**
  * Generate alternate links for different locales
  */
-export function generateAlternateLinks(path: string, locales: string[] = ['en-AU']) {
-  return locales.reduce((acc, locale) => {
-    acc[locale] = `${SITE_CONFIG.url}${path}`;
-    return acc;
-  }, {} as Record<string, string>);
+export function generateAlternateLinks(
+  path: string,
+  locales: string[] = ['en-AU']
+) {
+  return locales.reduce(
+    (acc, locale) => {
+      acc[locale] = `${SITE_CONFIG.url}${path}`;
+      return acc;
+    },
+    {} as Record<string, string>
+  );
 }

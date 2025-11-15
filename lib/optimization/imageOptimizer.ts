@@ -54,20 +54,23 @@ export class LazyImageLoader {
       return;
     }
 
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const img = entry.target as HTMLImageElement;
-          this.loadImage(img);
-          this.observer?.unobserve(img);
-          this.images.delete(img);
-        }
-      });
-    }, {
-      rootMargin: '50px 0px', // Start loading 50px before entering viewport
-      threshold: 0.01,
-      ...options,
-    });
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            this.loadImage(img);
+            this.observer?.unobserve(img);
+            this.images.delete(img);
+          }
+        });
+      },
+      {
+        rootMargin: '50px 0px', // Start loading 50px before entering viewport
+        threshold: 0.01,
+        ...options,
+      }
+    );
   }
 
   observe(img: HTMLImageElement) {
@@ -280,4 +283,3 @@ export default {
   calculateDimensions,
   lazyImageLoader,
 };
-

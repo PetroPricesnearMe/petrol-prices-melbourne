@@ -123,4 +123,3 @@ CMS_PROJECT_ID=your_base_id
 ## Deployment
 
 For production deployment (e.g., Vercel), set these variables in your hosting platform's environment variable settings.
-

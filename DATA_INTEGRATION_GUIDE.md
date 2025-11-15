@@ -1,6 +1,7 @@
 # Station Data Integration Guide
 
 ## Overview
+
 Successfully integrated 660+ petrol stations from CSV data into the directory with optimal SEO and performance.
 
 ## Architecture Decision: Next.js SSG + ISR
@@ -37,12 +38,14 @@ stations.csv → convert-stations.js → stations.json → Next.js Build → Sta
 ### Files Created/Modified
 
 #### 1. Data Conversion
+
 - **`scripts/convert-stations.js`** - Converts CSV to optimized JSON
 - **`src/data/stations.json`** - 660 station records (469KB)
 - **`src/data/stations-metadata.json`** - Aggregated stats and metadata
 - **`npm run update:data`** - Command to regenerate JSON from CSV
 
 #### 2. Directory Pages
+
 - **`src/app/directory/page.tsx`** - Main directory with 660+ stations
   - ISR revalidation: 1 hour
   - Dynamic metadata based on real station count
@@ -55,6 +58,7 @@ stations.csv → convert-stations.js → stations.json → Next.js Build → Sta
   - Sorted by price (cheapest first)
 
 #### 3. Client Components
+
 - **`src/app/directory/StationDirectoryClient.tsx`** - Interactive filtering
   - Real-time search across 660+ stations
   - Multi-criteria filtering (brand, suburb, fuel type, price)
@@ -62,11 +66,13 @@ stations.csv → convert-stations.js → stations.json → Next.js Build → Sta
   - Price color coding (green < 200, orange 200-210, red > 210)
 
 #### 4. Type Definitions
+
 - **`src/types/station.d.ts`** - TypeScript interfaces for Station data
 
 ### Features Implemented
 
 #### Filtering & Search
+
 - ✅ Full-text search (name, address, suburb, brand)
 - ✅ Filter by fuel type (Unleaded, Diesel, Premium 95/98, LPG)
 - ✅ Filter by brand (BP, Shell, Caltex, 7-Eleven, Independent)
@@ -75,12 +81,14 @@ stations.csv → convert-stations.js → stations.json → Next.js Build → Sta
 - ✅ Active filter count indicator
 
 #### Sorting
+
 - ✅ Price (Low to High) - Default
 - ✅ Price (High to Low)
 - ✅ Suburb (A-Z)
 - ✅ Name (A-Z)
 
 #### User Experience
+
 - ✅ Responsive grid layout (1-4 columns)
 - ✅ Pagination (24 stations per page)
 - ✅ Price color coding for quick visual scanning
@@ -90,6 +98,7 @@ stations.csv → convert-stations.js → stations.json → Next.js Build → Sta
 - ✅ Last updated timestamps
 
 #### SEO Optimization
+
 - ✅ Semantic HTML with `<article>`, `<section>`, `<h1>`-`<h3>`
 - ✅ Schema.org microdata (itemScope, itemType)
 - ✅ Dynamic metadata generation
@@ -99,6 +108,7 @@ stations.csv → convert-stations.js → stations.json → Next.js Build → Sta
 - ✅ SEO-friendly URLs (`/directory/brunswick`, not `/directory?suburb=brunswick`)
 
 #### Performance
+
 - ✅ Static generation eliminates API calls
 - ✅ Efficient client-side filtering (useMemo)
 - ✅ Smart pagination reduces DOM size
@@ -121,17 +131,20 @@ Top Brands:
 ## SEO Strategy
 
 ### 1. Main Directory Page
+
 - `/directory` - All 660 stations with filtering
 - Target: "Melbourne petrol stations", "fuel price directory"
 - Updated metadata with real station counts
 
 ### 2. Suburb Pages (100+ generated)
+
 - `/directory/[suburb]` - Suburb-specific listings
 - Examples: `/directory/brunswick`, `/directory/preston`, `/directory/frankston`
 - Target: "petrol stations in [suburb]", "[suburb] fuel prices"
 - Local SEO optimization
 
 ### 3. Homepage Internal Links
+
 - Added "Popular Suburbs" section with 18 quick links
 - Creates strong internal linking structure
 - Helps search engines discover suburb pages
@@ -139,11 +152,13 @@ Top Brands:
 ## Performance Metrics
 
 ### Build Performance
+
 - **Build time:** ~13 seconds
 - **Pages generated:** 118 static pages
 - **Data size:** 469KB JSON (compressed to ~60KB in production)
 
 ### Runtime Performance (Expected)
+
 - **Lighthouse Score:** 90+ in all categories
 - **First Contentful Paint:** < 1s
 - **Time to Interactive:** < 2s
@@ -161,6 +176,7 @@ Top Brands:
 ### Adding New Features
 
 The architecture supports easy extension:
+
 - Add new filter criteria in `StationDirectoryClient.tsx`
 - Add new metadata fields in `convert-stations.js`
 - Create brand-specific pages similar to suburb pages
@@ -190,18 +206,21 @@ The architecture supports easy extension:
 ## Technical Notes
 
 ### Why Not Leaflet?
+
 - Adds 150KB+ to bundle size
 - Not essential for directory view
 - Google Maps links provide better UX
 - Can be added later as optional feature
 
 ### Why ISR over Pure Static?
+
 - Data can update without full rebuild
 - Hourly revalidation keeps prices fresh
 - Better than CSR for SEO
 - Lower infrastructure costs than SSR
 
 ### Pagination Strategy
+
 - 24 items per page balances performance and UX
 - Smart page number display (max 7 visible)
 - Maintains filter state across pages
@@ -210,6 +229,7 @@ The architecture supports easy extension:
 ## Support
 
 For questions or issues:
+
 - Check build logs: `npm run build`
 - Test locally: `npm run dev`
 - Verify data: `cat src/data/stations-metadata.json`

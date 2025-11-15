@@ -22,7 +22,8 @@ const log = {
   info: (msg) => console.log(`${colors.blue}ℹ${colors.reset} ${msg}`),
   success: (msg) => console.log(`${colors.green}✓${colors.reset} ${msg}`),
   warning: (msg) => console.log(`${colors.yellow}⚠${colors.reset} ${msg}`),
-  title: (msg) => console.log(`\n${colors.bright}${colors.cyan}${msg}${colors.reset}\n`),
+  title: (msg) =>
+    console.log(`\n${colors.bright}${colors.cyan}${msg}${colors.reset}\n`),
 };
 
 function getAllComponents(dir, componentList = []) {
@@ -178,7 +179,10 @@ function main() {
     duplicateLogic: duplicateLogic.slice(0, 20), // Top 20
   };
 
-  const reportPath = path.join(process.cwd(), 'duplicate-components-report.json');
+  const reportPath = path.join(
+    process.cwd(),
+    'duplicate-components-report.json'
+  );
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
   log.success(`\nReport saved to: duplicate-components-report.json`);
@@ -188,7 +192,9 @@ function main() {
     log.success('🎉 No duplicate components found!');
   } else {
     log.warning(`\n⚠️  Found ${totalIssues} potential duplication issues.`);
-    console.log('\nConsider consolidating duplicate components into reusable ones.');
+    console.log(
+      '\nConsider consolidating duplicate components into reusable ones.'
+    );
   }
 }
 

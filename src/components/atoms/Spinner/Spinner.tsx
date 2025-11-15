@@ -1,6 +1,6 @@
 /**
  * Spinner Component (Atom)
- * 
+ *
  * Loading spinner with various sizes and colors
  */
 
@@ -57,4 +57,3 @@ export const Spinner: React.FC<SpinnerProps> = ({
     </div>
   );
 };
-

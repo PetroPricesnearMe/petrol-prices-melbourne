@@ -14,7 +14,8 @@ import type { Metadata } from 'next';
 export const SITE_CONFIG = {
   name: 'Petrol Price Near Me',
   title: 'Find Cheapest Fuel Prices in Australia',
-  description: 'Compare real-time petrol prices from 250+ stations across Australia. Find the cheapest unleaded, diesel, premium, and LPG prices near you. Save money on fuel today!',
+  description:
+    'Compare real-time petrol prices from 250+ stations across Australia. Find the cheapest unleaded, diesel, premium, and LPG prices near you. Save money on fuel today!',
   url: process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au',
   ogImage: '/images/og-image.jpg',
   twitterImage: '/images/twitter-image.jpg',
@@ -239,7 +240,7 @@ export function generatePageMetadata(options: PageMetadataOptions): Metadata {
     title,
     description,
     keywords: allKeywords,
-    authors: authors?.map(name => ({ name })),
+    authors: authors?.map((name) => ({ name })),
 
     robots: noIndex
       ? {
@@ -274,10 +275,13 @@ export function generatePageMetadata(options: PageMetadataOptions): Metadata {
 
     alternates: {
       canonical: canonical || undefined,
-      languages: alternateLocales?.reduce((acc, alt) => {
-        acc[alt.locale as any] = alt.url;
-        return acc;
-      }, {} as Record<string, string>),
+      languages: alternateLocales?.reduce(
+        (acc, alt) => {
+          acc[alt.locale as any] = alt.url;
+          return acc;
+        },
+        {} as Record<string, string>
+      ),
     },
 
     openGraph: {
@@ -298,14 +302,14 @@ export function generatePageMetadata(options: PageMetadataOptions): Metadata {
       ],
       publishedTime,
       modifiedTime,
-      authors: authors?.map(name => ({
+      authors: authors?.map((name) => ({
         url: `${SITE_CONFIG.url}/authors/${name.toLowerCase().replace(/\s+/g, '-')}`,
         name,
       })),
       section,
       tags: tags || [],
       ...(alternateLocales && {
-        alternateLocale: alternateLocales.map(alt => alt.locale),
+        alternateLocale: alternateLocales.map((alt) => alt.locale),
       }),
     },
 
@@ -413,7 +417,8 @@ export function generateDirectoryMetadata(directory: {
   description?: string;
 }): Metadata {
   const title = `Petrol Stations in ${directory.location} - Compare Fuel Prices`;
-  const description = directory.description ||
+  const description =
+    directory.description ||
     `Find ${directory.stationCount} petrol stations in ${directory.location}. Compare real-time fuel prices for unleaded, diesel, premium, and LPG. Save money on your next fill-up!`;
 
   return generatePageMetadata({

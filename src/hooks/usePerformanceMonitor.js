@@ -18,7 +18,7 @@ export const usePerformanceMonitor = (componentName) => {
       console.log(`📊 Performance [${componentName}]:`, {
         mountTime: `${mountDuration}ms`,
         renderCount: renderCount.current,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
 
@@ -66,14 +66,18 @@ export const usePerformanceMonitor = (componentName) => {
 
   return {
     renderCount: renderCount.current,
-    mountDuration: Date.now() - mountTime.current
+    mountDuration: Date.now() - mountTime.current,
   };
 };
 
 /**
  * Hook for monitoring and optimizing expensive operations
  */
-export const useExpensiveOperation = (operation, dependencies = [], componentName = 'Unknown') => {
+export const useExpensiveOperation = (
+  operation,
+  dependencies = [],
+  componentName = 'Unknown'
+) => {
   const lastExecution = useRef(0);
   const executionCount = useRef(0);
 
@@ -93,7 +97,8 @@ export const useExpensiveOperation = (operation, dependencies = [], componentNam
         duration: `${duration.toFixed(2)}ms`,
         executionCount: executionCount.current,
         threshold: '16ms (60fps)',
-        suggestion: 'Consider memoization, debouncing, or moving to a web worker'
+        suggestion:
+          'Consider memoization, debouncing, or moving to a web worker',
       });
     }
 
@@ -103,7 +108,7 @@ export const useExpensiveOperation = (operation, dependencies = [], componentNam
 
   return {
     lastExecutionTime: lastExecution.current,
-    executionCount: executionCount.current
+    executionCount: executionCount.current,
   };
 };
 
@@ -124,12 +129,14 @@ export const useMemoryMonitor = (componentName, interval = 10000) => {
         used: `${used}MB`,
         total: `${total}MB`,
         limit: `${limit}MB`,
-        percentage: `${Math.round((used / limit) * 100)}%`
+        percentage: `${Math.round((used / limit) * 100)}%`,
       });
 
       // Warn if memory usage is high
       if (used / limit > 0.8) {
-        console.warn(`⚠️ High memory usage in ${componentName}: ${Math.round((used / limit) * 100)}%`);
+        console.warn(
+          `⚠️ High memory usage in ${componentName}: ${Math.round((used / limit) * 100)}%`
+        );
       }
     };
 

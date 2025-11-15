@@ -1,6 +1,6 @@
 /**
  * useCMS Hook
- * 
+ *
  * Client-side hook for fetching CMS content
  */
 
@@ -80,7 +80,9 @@ export function useCMS<T>(
           params.append('filters', JSON.stringify(queryOptions.filters));
         }
 
-        const response = await fetch(`/api/cms/${collection}?${params.toString()}`);
+        const response = await fetch(
+          `/api/cms/${collection}?${params.toString()}`
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -98,7 +100,8 @@ export function useCMS<T>(
           onSuccess(result);
         }
       } catch (err) {
-        const errorObj = err instanceof Error ? err : new Error('Unknown error');
+        const errorObj =
+          err instanceof Error ? err : new Error('Unknown error');
         setIsError(true);
         setError(errorObj);
 
@@ -295,4 +298,3 @@ export function useCMSItemBySlug<T>(
     refetch,
   };
 }
-

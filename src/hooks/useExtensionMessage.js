@@ -19,7 +19,7 @@ export const useExtensionMessage = (options = {}) => {
   const {
     autoConnect = true,
     reconnectDelay = 1000,
-    maxReconnectAttempts = 5
+    maxReconnectAttempts = 5,
   } = options;
 
   const [isConnected, setIsConnected] = useState(false);
@@ -108,15 +108,27 @@ export const useExtensionMessage = (options = {}) => {
 
     // Add listeners
     extensionMessageHandler.addEventListener('message', handleMessage);
-    extensionMessageHandler.addEventListener('disconnected', handleDisconnection);
+    extensionMessageHandler.addEventListener(
+      'disconnected',
+      handleDisconnection
+    );
     extensionMessageHandler.addEventListener('error', handleError);
-    extensionMessageHandler.addEventListener('maxReconnectAttemptsReached', handleMaxReconnectAttempts);
+    extensionMessageHandler.addEventListener(
+      'maxReconnectAttemptsReached',
+      handleMaxReconnectAttempts
+    );
 
     // Store references for cleanup
     listenersRef.current.add({ event: 'message', callback: handleMessage });
-    listenersRef.current.add({ event: 'disconnected', callback: handleDisconnection });
+    listenersRef.current.add({
+      event: 'disconnected',
+      callback: handleDisconnection,
+    });
     listenersRef.current.add({ event: 'error', callback: handleError });
-    listenersRef.current.add({ event: 'maxReconnectAttemptsReached', callback: handleMaxReconnectAttempts });
+    listenersRef.current.add({
+      event: 'maxReconnectAttemptsReached',
+      callback: handleMaxReconnectAttempts,
+    });
 
     // Initial connection status
     updateConnectionStatus();
@@ -127,14 +139,27 @@ export const useExtensionMessage = (options = {}) => {
     return () => {
       // Remove listeners
       extensionMessageHandler.removeEventListener('message', handleMessage);
-      extensionMessageHandler.removeEventListener('disconnected', handleDisconnection);
+      extensionMessageHandler.removeEventListener(
+        'disconnected',
+        handleDisconnection
+      );
       extensionMessageHandler.removeEventListener('error', handleError);
-      extensionMessageHandler.removeEventListener('maxReconnectAttemptsReached', handleMaxReconnectAttempts);
+      extensionMessageHandler.removeEventListener(
+        'maxReconnectAttemptsReached',
+        handleMaxReconnectAttempts
+      );
 
       // Clear interval
       clearInterval(statusInterval);
     };
-  }, [autoConnect, handleMessage, handleDisconnection, handleError, handleMaxReconnectAttempts, updateConnectionStatus]);
+  }, [
+    autoConnect,
+    handleMessage,
+    handleDisconnection,
+    handleError,
+    handleMaxReconnectAttempts,
+    updateConnectionStatus,
+  ]);
 
   return {
     // State
@@ -149,7 +174,7 @@ export const useExtensionMessage = (options = {}) => {
     reconnect,
     addListener,
     removeListener,
-    updateConnectionStatus
+    updateConnectionStatus,
   };
 };
 
@@ -160,18 +185,25 @@ export const useExtensionMessage = (options = {}) => {
  * @param {Object} options - Additional options
  * @returns {Object} Hook state and methods
  */
-export const useExtensionMessageType = (messageType, onMessage, options = {}) => {
+export const useExtensionMessageType = (
+  messageType,
+  onMessage,
+  options = {}
+) => {
   const { autoConnect = true } = options;
 
   const extensionHook = useExtensionMessage({ autoConnect });
   const { addListener, removeListener } = extensionHook;
 
   // Handle specific message type
-  const handleTypedMessage = useCallback((message) => {
-    if (message.type === messageType) {
-      onMessage(message);
-    }
-  }, [messageType, onMessage]);
+  const handleTypedMessage = useCallback(
+    (message) => {
+      if (message.type === messageType) {
+        onMessage(message);
+      }
+    },
+    [messageType, onMessage]
+  );
 
   // Setup listener for specific message type
   useEffect(() => {
@@ -199,32 +231,38 @@ export const useBfcacheHandler = (options = {}) => {
   const [bfcacheEvents, setBfcacheEvents] = useState([]);
 
   // Handle page hide (bfcache entry)
-  const handlePageHide = useCallback((event) => {
-    if (event.persisted) {
-      setIsInBfcache(true);
-      const eventData = {
-        type: 'bfcache_entry',
-        timestamp: Date.now(),
-        persisted: event.persisted
-      };
-      setBfcacheEvents(prev => [...prev, eventData]);
-      onBfcacheEntry?.(eventData);
-    }
-  }, [onBfcacheEntry]);
+  const handlePageHide = useCallback(
+    (event) => {
+      if (event.persisted) {
+        setIsInBfcache(true);
+        const eventData = {
+          type: 'bfcache_entry',
+          timestamp: Date.now(),
+          persisted: event.persisted,
+        };
+        setBfcacheEvents((prev) => [...prev, eventData]);
+        onBfcacheEntry?.(eventData);
+      }
+    },
+    [onBfcacheEntry]
+  );
 
   // Handle page show (bfcache restore)
-  const handlePageShow = useCallback((event) => {
-    if (event.persisted) {
-      setIsInBfcache(false);
-      const eventData = {
-        type: 'bfcache_restore',
-        timestamp: Date.now(),
-        persisted: event.persisted
-      };
-      setBfcacheEvents(prev => [...prev, eventData]);
-      onBfcacheRestore?.(eventData);
-    }
-  }, [onBfcacheRestore]);
+  const handlePageShow = useCallback(
+    (event) => {
+      if (event.persisted) {
+        setIsInBfcache(false);
+        const eventData = {
+          type: 'bfcache_restore',
+          timestamp: Date.now(),
+          persisted: event.persisted,
+        };
+        setBfcacheEvents((prev) => [...prev, eventData]);
+        onBfcacheRestore?.(eventData);
+      }
+    },
+    [onBfcacheRestore]
+  );
 
   // Setup event listeners
   useEffect(() => {
@@ -240,7 +278,7 @@ export const useBfcacheHandler = (options = {}) => {
   return {
     isInBfcache,
     bfcacheEvents,
-    clearEvents: () => setBfcacheEvents([])
+    clearEvents: () => setBfcacheEvents([]),
   };
 };
 

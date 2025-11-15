@@ -1,6 +1,6 @@
 /**
  * useCancelOnUnmount Hook
- * 
+ *
  * Custom React hook to automatically cancel fetch requests when component unmounts
  * or when navigating away from a page. Prevents memory leaks and unnecessary API calls.
  */
@@ -20,14 +20,16 @@ export function useCancelOnUnmount() {
   useEffect(() => {
     // Create new controller on mount or route change
     if (previousLocation.current !== location.pathname) {
-      console.log(`🔄 Route changed from ${previousLocation.current} to ${location.pathname}`);
-      
+      console.log(
+        `🔄 Route changed from ${previousLocation.current} to ${location.pathname}`
+      );
+
       // Abort previous controller
       if (controllerRef.current) {
         controllerRef.current.abort();
-        console.log('❌ Aborted previous route\'s requests');
+        console.log("❌ Aborted previous route's requests");
       }
-      
+
       // Create new controller
       controllerRef.current = new AbortController();
       previousLocation.current = location.pathname;
@@ -56,7 +58,7 @@ export function useFetchWithCancel() {
     try {
       const response = await fetch(url, {
         ...options,
-        signal: controllerRef.current.signal
+        signal: controllerRef.current.signal,
       });
       return response;
     } catch (error) {
@@ -82,7 +84,10 @@ export function useMultipleAbortControllers(count = 1) {
 
   useEffect(() => {
     // Initialize controllers
-    controllersRef.current = Array.from({ length: count }, () => new AbortController());
+    controllersRef.current = Array.from(
+      { length: count },
+      () => new AbortController()
+    );
 
     // Cleanup on route change or unmount
     return () => {
@@ -115,7 +120,9 @@ export function useRequestTracker() {
   useEffect(() => {
     // Abort all requests on route change
     return () => {
-      console.log(`🧹 Route changing, aborting ${requestsRef.current.size} pending requests...`);
+      console.log(
+        `🧹 Route changing, aborting ${requestsRef.current.size} pending requests...`
+      );
       requestsRef.current.forEach((controller, name) => {
         console.log(`  - Aborting: ${name}`);
         controller.abort();
@@ -149,4 +156,3 @@ export function useRequestTracker() {
 }
 
 export default useCancelOnUnmount;
-

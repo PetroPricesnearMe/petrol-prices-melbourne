@@ -48,11 +48,11 @@ export function HamburgerIcon({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'relative flex flex-col justify-center items-center',
+        'relative flex flex-col items-center justify-center',
         'transition-all duration-200',
-        'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+        'focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2',
         'rounded-lg p-1',
-        disabled && 'opacity-50 cursor-not-allowed',
+        disabled && 'cursor-not-allowed opacity-50',
         className
       )}
       aria-label={isOpen ? 'Close menu' : 'Open menu'}
@@ -61,7 +61,7 @@ export function HamburgerIcon({
       {/* Top line */}
       <motion.span
         className={cn(
-          'block h-0.5 bg-current transition-all duration-300 ease-in-out',
+          'ease-in-out block h-0.5 bg-current transition-all duration-300',
           sizeVariants[size],
           colorVariants[color]
         )}
@@ -75,7 +75,7 @@ export function HamburgerIcon({
       {/* Middle line */}
       <motion.span
         className={cn(
-          'block h-0.5 bg-current transition-all duration-300 ease-in-out',
+          'ease-in-out block h-0.5 bg-current transition-all duration-300',
           sizeVariants[size],
           colorVariants[color]
         )}
@@ -89,7 +89,7 @@ export function HamburgerIcon({
       {/* Bottom line */}
       <motion.span
         className={cn(
-          'block h-0.5 bg-current transition-all duration-300 ease-in-out',
+          'ease-in-out block h-0.5 bg-current transition-all duration-300',
           sizeVariants[size],
           colorVariants[color]
         )}

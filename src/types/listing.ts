@@ -257,7 +257,9 @@ export function hasValidCoordinates(listing: Listing): boolean {
 
 /** Check if listing has any fuel prices */
 export function hasFuelPrices(listing: Listing): boolean {
-  return Object.values(listing.fuelPrices).some(price => price !== null && price > 0);
+  return Object.values(listing.fuelPrices).some(
+    (price) => price !== null && price > 0
+  );
 }
 
 /** Get available fuel types for a listing */
@@ -304,23 +306,20 @@ export function formatDistance(distance: number | undefined): string {
 /** Get brand color/theme */
 export function getBrandColor(brand: string): string {
   const brandColors: Record<string, string> = {
-    'BP': '#00A651',
-    'Shell': '#FBCE07',
-    'Caltex': '#E30613',
+    BP: '#00A651',
+    Shell: '#FBCE07',
+    Caltex: '#E30613',
     '7-Eleven': '#007B33',
     'Coles Express': '#E2001A',
-    'United': '#0066CC',
-    'Ampol': '#005BBB',
-    'Metro': '#FF6600',
+    United: '#0066CC',
+    Ampol: '#005BBB',
+    Metro: '#FF6600',
   };
   return brandColors[brand] || '#6B7280';
 }
 
 /** Sort listings by criteria */
-export function sortListings(
-  listings: Listing[],
-  sortBy: string
-): Listing[] {
+export function sortListings(listings: Listing[], sortBy: string): Listing[] {
   const sorted = [...listings];
 
   switch (sortBy) {

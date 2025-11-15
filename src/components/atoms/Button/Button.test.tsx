@@ -4,7 +4,13 @@
  * Comprehensive unit tests for Button component
  */
 
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import React from 'react';
@@ -91,7 +97,9 @@ describe('Button Component', () => {
 
     it('shows spinner when loading', () => {
       render(<Button loading>Loading</Button>);
-      expect(screen.getByRole('button').querySelector('.button__spinner')).toBeInTheDocument();
+      expect(
+        screen.getByRole('button').querySelector('.button__spinner')
+      ).toBeInTheDocument();
     });
   });
 
@@ -133,7 +141,11 @@ describe('Button Component', () => {
 
     it('does not call onClick when disabled', async () => {
       const handleClick = jest.fn();
-      render(<Button onClick={handleClick} disabled>Disabled</Button>);
+      render(
+        <Button onClick={handleClick} disabled>
+          Disabled
+        </Button>
+      );
 
       // ACT REQUIRED: even though disabled, userEvent processes the interaction through React's event system
       await act(async () => {
@@ -144,7 +156,11 @@ describe('Button Component', () => {
 
     it('does not call onClick when loading', async () => {
       const handleClick = jest.fn();
-      render(<Button onClick={handleClick} loading>Loading</Button>);
+      render(
+        <Button onClick={handleClick} loading>
+          Loading
+        </Button>
+      );
 
       // ACT REQUIRED: click interaction may trigger internal state checks (loading state validation)
       await act(async () => {
@@ -191,7 +207,10 @@ describe('Button Component', () => {
           <Button ariaDescribedBy="description">Button</Button>
         </>
       );
-      expect(screen.getByRole('button')).toHaveAttribute('aria-describedby', 'description');
+      expect(screen.getByRole('button')).toHaveAttribute(
+        'aria-describedby',
+        'description'
+      );
     });
 
     it('has correct button type', () => {
@@ -202,14 +221,22 @@ describe('Button Component', () => {
 
   describe('Link Mode', () => {
     it('opens external links in new tab with proper rel', () => {
-      render(<Button href="https://example.com" target="_blank">External Link</Button>);
+      render(
+        <Button href="https://example.com" target="_blank">
+          External Link
+        </Button>
+      );
       const link = screen.getByRole('link');
       expect(link).toHaveAttribute('target', '_blank');
       expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     });
 
     it('does not navigate when disabled', () => {
-      render(<Button href="/test" disabled>Disabled Link</Button>);
+      render(
+        <Button href="/test" disabled>
+          Disabled Link
+        </Button>
+      );
       // When disabled, Button renders as button, not link (correct behavior)
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();
@@ -229,7 +256,9 @@ describe('Button Component', () => {
 
     it('applies custom styles', () => {
       render(<Button style={{ backgroundColor: 'red' }}>Styled Button</Button>);
-      expect(screen.getByRole('button')).toHaveStyle({ backgroundColor: 'red' });
+      expect(screen.getByRole('button')).toHaveStyle({
+        backgroundColor: 'red',
+      });
     });
 
     it('supports fullWidth prop', () => {
@@ -270,7 +299,8 @@ describe('Button Component', () => {
     });
 
     it('handles long text content', () => {
-      const longText = 'This is a very long button text that might cause layout issues';
+      const longText =
+        'This is a very long button text that might cause layout issues';
       render(<Button>{longText}</Button>);
       expect(screen.getByText(longText)).toBeInTheDocument();
     });

@@ -25,7 +25,8 @@ export const stationsRepository = {
 
       if (filters?.minPrice || filters?.maxPrice) {
         filtered = filtered.filter((station) => {
-          const prices = station.fuelPrices?.map((fp) => fp.pricePerLiter) || [];
+          const prices =
+            station.fuelPrices?.map((fp) => fp.pricePerLiter) || [];
           const minStationPrice = Math.min(...prices);
 
           if (filters.minPrice && minStationPrice < filters.minPrice)
@@ -108,9 +109,7 @@ export const stationsRepository = {
   /**
    * Create a new station
    */
-  create: async (
-    station: Partial<PetrolStation>
-  ): Promise<PetrolStation> => {
+  create: async (station: Partial<PetrolStation>): Promise<PetrolStation> => {
     try {
       const newStation = await baserowService.createStation(station);
       return newStation;
@@ -148,4 +147,3 @@ export const stationsRepository = {
     }
   },
 };
-

@@ -31,16 +31,16 @@ export default function DirectoryPage() {
 
 ```typescript
 const {
-  data: stations,           // Array of stations
-  isLoading,               // Initial loading state
-  isError,                 // Error state
-  error,                   // Error object
-  hasNextPage,             // More pages available
-  isFetchingNextPage,      // Loading more pages
-  fetchNextPage,           // Function to load next page
-  refetch,                 // Function to refetch data
-  totalCount,              // Total number of stations
-  loadedPages,             // Number of loaded pages
+  data: stations, // Array of stations
+  isLoading, // Initial loading state
+  isError, // Error state
+  error, // Error object
+  hasNextPage, // More pages available
+  isFetchingNextPage, // Loading more pages
+  fetchNextPage, // Function to load next page
+  refetch, // Function to refetch data
+  totalCount, // Total number of stations
+  loadedPages, // Number of loaded pages
 } = useInfiniteStations(filters, options);
 ```
 
@@ -50,11 +50,11 @@ const {
 const {
   // All useInfiniteStations properties
   ...infiniteQuery,
-  
+
   // Additional features
-  isTransitioning,         // Transition state
-  transitionDirection,     // 'up' | 'down'
-  triggerRef,              // Intersection observer ref
+  isTransitioning, // Transition state
+  transitionDirection, // 'up' | 'down'
+  triggerRef, // Intersection observer ref
 } = useAdvancedInfiniteStations(filters, options);
 ```
 
@@ -100,12 +100,12 @@ const {
 
 ```typescript
 interface InfiniteStationsFilters {
-  search?: string;                    // Search query
+  search?: string; // Search query
   fuelType?: 'unleaded' | 'diesel' | 'premium95' | 'premium98' | 'lpg';
-  brand?: string;                     // Brand filter
-  suburb?: string;                    // Suburb filter
+  brand?: string; // Brand filter
+  suburb?: string; // Suburb filter
   sortBy?: 'price-low' | 'price-high' | 'name' | 'suburb';
-  priceMax?: number;                  // Maximum price filter
+  priceMax?: number; // Maximum price filter
 }
 ```
 
@@ -113,10 +113,10 @@ interface InfiniteStationsFilters {
 
 ```typescript
 interface InfiniteStationsOptions {
-  pageSize?: number;                  // Items per page (default: 24)
-  enabled?: boolean;                 // Enable/disable query
-  staleTime?: number;                // Stale time in ms (default: 5min)
-  gcTime?: number;                   // Garbage collection time (default: 10min)
+  pageSize?: number; // Items per page (default: 24)
+  enabled?: boolean; // Enable/disable query
+  staleTime?: number; // Stale time in ms (default: 5min)
+  gcTime?: number; // Garbage collection time (default: 10min)
 }
 ```
 
@@ -162,6 +162,7 @@ const filters = {
 ### Issue: Memory Leaks
 
 **Solution**: Enable memory management
+
 ```typescript
 const { cleanupMemory } = usePerformanceOptimization({
   enableMemoryManagement: true,
@@ -171,6 +172,7 @@ const { cleanupMemory } = usePerformanceOptimization({
 ### Issue: Slow Rendering
 
 **Solution**: Reduce page size
+
 ```typescript
 const options = { pageSize: 12 };
 ```
@@ -178,6 +180,7 @@ const options = { pageSize: 12 };
 ### Issue: Infinite Loading
 
 **Solution**: Check error handling
+
 ```typescript
 if (isError) {
   return <ErrorComponent onRetry={refetch} />;
@@ -187,6 +190,7 @@ if (isError) {
 ### Issue: Animation Issues
 
 **Solution**: Check CSS imports
+
 ```typescript
 import '../styles/brand-colors.css';
 ```
@@ -220,8 +224,12 @@ console.log({
 Brand colors are automatically applied via CSS data attributes:
 
 ```css
-[data-brand-color="#00A651"] {
-  background: linear-gradient(135deg, rgba(0, 166, 81, 0.08) 0%, rgba(0, 166, 81, 0.03) 100%);
+[data-brand-color='#00A651'] {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 166, 81, 0.08) 0%,
+    rgba(0, 166, 81, 0.03) 100%
+  );
 }
 ```
 
@@ -265,7 +273,7 @@ import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 
 export function DevTools() {
   const { metrics } = usePerformanceOptimization();
-  
+
   if (process.env.NODE_ENV === 'development') {
     return (
       <div className="fixed bottom-4 right-4 bg-black text-white p-2 text-xs">
@@ -275,7 +283,7 @@ export function DevTools() {
       </div>
     );
   }
-  
+
   return null;
 }
 ```

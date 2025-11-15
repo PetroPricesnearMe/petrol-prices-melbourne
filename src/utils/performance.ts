@@ -17,7 +17,11 @@ import type { Metric } from 'web-vitals';
 
 declare global {
   interface Window {
-    gtag?: (command: string, eventName: string, params: Record<string, unknown>) => void;
+    gtag?: (
+      command: string,
+      eventName: string,
+      params: Record<string, unknown>
+    ) => void;
   }
 }
 
@@ -105,14 +109,20 @@ export function analyzeResourceTiming(): ResourceTiming[] {
     return [];
   }
 
-  const resources = window.performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+  const resources = window.performance.getEntriesByType(
+    'resource'
+  ) as PerformanceResourceTiming[];
 
   return resources
     .map((resource) => ({
       name: resource.name,
       duration: resource.duration,
-      size: (resource as PerformanceResourceTiming & { transferSize?: number }).transferSize || 0,
-      type: (resource as PerformanceResourceTiming & { initiatorType?: string }).initiatorType || 'unknown',
+      size:
+        (resource as PerformanceResourceTiming & { transferSize?: number })
+          .transferSize || 0,
+      type:
+        (resource as PerformanceResourceTiming & { initiatorType?: string })
+          .initiatorType || 'unknown',
     }))
     .sort((a, b) => b.duration - a.duration)
     .slice(0, 10); // Top 10 slowest resources
@@ -123,9 +133,7 @@ export function analyzeResourceTiming(): ResourceTiming[] {
  */
 export function getLargestResources(count: number = 5): ResourceTiming[] {
   const resources = analyzeResourceTiming();
-  return resources
-    .sort((a, b) => b.size - a.size)
-    .slice(0, count);
+  return resources.sort((a, b) => b.size - a.size).slice(0, count);
 }
 
 // ============================================================================
@@ -152,13 +160,20 @@ export function generateImageSrc(
 /**
  * Get responsive image sizes for different viewports
  */
-export function getResponsiveSizes(breakpoints: {
-  mobile?: number;
-  tablet?: number;
-  desktop?: number;
-  large?: number;
-} = {}): string {
-  const { mobile = 640, tablet = 768, desktop = 1024, large = 1280 } = breakpoints;
+export function getResponsiveSizes(
+  breakpoints: {
+    mobile?: number;
+    tablet?: number;
+    desktop?: number;
+    large?: number;
+  } = {}
+): string {
+  const {
+    mobile = 640,
+    tablet = 768,
+    desktop = 1024,
+    large = 1280,
+  } = breakpoints;
 
   return `(max-width: ${mobile}px) ${mobile}px, (max-width: ${tablet}px) ${tablet}px, (max-width: ${desktop}px) ${desktop}px, ${large}px`;
 }
@@ -219,10 +234,13 @@ export function shouldPreload(preloadProbability: number = 0.5): boolean {
   // Preload based on connection speed
   if (typeof navigator !== 'undefined') {
     const connection = (navigator as NavigatorWithConnection).connection;
-    
+
     if (connection) {
       // Don't preload on slow connections
-      if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+      if (
+        connection.effectiveType === 'slow-2g' ||
+        connection.effectiveType === '2g'
+      ) {
         return false;
       }
 
@@ -267,10 +285,7 @@ export function warnLargeImport(packageName: string, size: number) {
 /**
  * Measure function execution time
  */
-export function measurePerformance<T>(
-  fn: () => T,
-  label: string
-): T {
+export function measurePerformance<T>(fn: () => T, label: string): T {
   if (typeof window !== 'undefined' && window.performance) {
     const start = performance.now();
     const result = fn();
@@ -279,7 +294,9 @@ export function measurePerformance<T>(
     const duration = end - start;
 
     if (duration > 100) {
-      console.warn(`[Performance] Slow operation "${label}": ${duration.toFixed(2)}ms`);
+      console.warn(
+        `[Performance] Slow operation "${label}": ${duration.toFixed(2)}ms`
+      );
     }
 
     return result;
@@ -303,7 +320,9 @@ export async function measureAsyncPerformance<T>(
     const duration = end - start;
 
     if (duration > 1000) {
-      console.warn(`[Performance] Slow async operation "${label}": ${duration.toFixed(2)}ms`);
+      console.warn(
+        `[Performance] Slow async operation "${label}": ${duration.toFixed(2)}ms`
+      );
     }
 
     return result;
@@ -362,7 +381,10 @@ export function idleCallback(
   options?: IdleRequestOptions
 ): number {
   // Properly detect browser support for requestIdleCallback
-  if (typeof window !== 'undefined' && typeof window.requestIdleCallback !== 'undefined') {
+  if (
+    typeof window !== 'undefined' &&
+    typeof window.requestIdleCallback !== 'undefined'
+  ) {
     return window.requestIdleCallback(callback, options);
   }
 
@@ -376,7 +398,10 @@ export function idleCallback(
  */
 export function cancelIdleCallback(id: number): void {
   // Properly detect browser support for cancelIdleCallback
-  if (typeof window !== 'undefined' && typeof window.cancelIdleCallback !== 'undefined') {
+  if (
+    typeof window !== 'undefined' &&
+    typeof window.cancelIdleCallback !== 'undefined'
+  ) {
     window.cancelIdleCallback(id);
   } else {
     // Fallback to clearTimeout
@@ -465,19 +490,25 @@ export function generatePerformanceReport(): PerformanceReport {
   // Check LCP (target: < 2.5s)
   if (metrics.LCP && metrics.LCP > 2500) {
     score -= 20;
-    recommendations.push('LCP is slow. Optimize images and reduce render-blocking resources.');
+    recommendations.push(
+      'LCP is slow. Optimize images and reduce render-blocking resources.'
+    );
   }
 
   // Check FID (target: < 100ms)
   if (metrics.FID && metrics.FID > 100) {
     score -= 15;
-    recommendations.push('FID is high. Reduce JavaScript execution time and code splitting.');
+    recommendations.push(
+      'FID is high. Reduce JavaScript execution time and code splitting.'
+    );
   }
 
   // Check CLS (target: < 0.1)
   if (metrics.CLS && metrics.CLS > 0.1) {
     score -= 15;
-    recommendations.push('CLS is high. Reserve space for images and avoid shifting content.');
+    recommendations.push(
+      'CLS is high. Reserve space for images and avoid shifting content.'
+    );
   }
 
   // Check TTFB (target: < 800ms)
@@ -487,17 +518,21 @@ export function generatePerformanceReport(): PerformanceReport {
   }
 
   // Check for large resources
-  const largeResources = resources.filter(r => r.size > 500 * 1024); // > 500KB
+  const largeResources = resources.filter((r) => r.size > 500 * 1024); // > 500KB
   if (largeResources.length > 0) {
     score -= 5 * largeResources.length;
-    recommendations.push(`Found ${largeResources.length} large resources (>500KB). Optimize images and enable compression.`);
+    recommendations.push(
+      `Found ${largeResources.length} large resources (>500KB). Optimize images and enable compression.`
+    );
   }
 
   // Check for slow resources
-  const slowResources = resources.filter(r => r.duration > 1000); // > 1s
+  const slowResources = resources.filter((r) => r.duration > 1000); // > 1s
   if (slowResources.length > 0) {
     score -= 5 * slowResources.length;
-    recommendations.push(`Found ${slowResources.length} slow-loading resources (>1s). Use CDN and optimize.`);
+    recommendations.push(
+      `Found ${slowResources.length} slow-loading resources (>1s). Use CDN and optimize.`
+    );
   }
 
   return {

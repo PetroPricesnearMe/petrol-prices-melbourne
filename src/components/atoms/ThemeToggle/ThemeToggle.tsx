@@ -1,13 +1,13 @@
 /**
  * ThemeToggle - Accessible Theme Switcher
- * 
+ *
  * A fully accessible theme toggle component supporting:
  * - Light, dark, and system themes
  * - Button and dropdown variants
  * - Smooth animations
  * - Keyboard navigation
  * - Screen reader support
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -18,10 +18,10 @@
 
 'use client';
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Sun, Moon, Monitor, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, Moon, Sun } from 'lucide-react';
+import React from 'react';
 
 import { cn } from '@/design-system/utils';
 import type { ComponentBaseProps } from '@/types';
@@ -57,6 +57,11 @@ export interface ThemeToggleProps
    * @default 'button'
    */
   variant?: 'button' | 'dropdown';
+
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
 }
 
 /**
@@ -72,10 +77,10 @@ function getStoredTheme(): Theme {
  */
 function getActiveTheme(): 'light' | 'dark' {
   if (typeof window === 'undefined') return 'light';
-  
+
   const stored = getStoredTheme();
   if (stored !== 'system') return stored;
-  
+
   return window.matchMedia('(prefers-color-scheme: dark)').matches
     ? 'dark'
     : 'light';
@@ -86,12 +91,12 @@ function getActiveTheme(): 'light' | 'dark' {
  */
 function setStoredTheme(theme: Theme): void {
   if (typeof window === 'undefined') return;
-  
+
   localStorage.setItem('theme', theme);
-  
+
   const active = theme === 'system' ? getActiveTheme() : theme;
   document.documentElement.classList.toggle('dark', active === 'dark');
-  
+
   // Dispatch custom event for other components
   window.dispatchEvent(
     new CustomEvent('themechange', {
@@ -107,7 +112,9 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
   ({ variant = 'button', className, ...props }) => {
     const [mounted, setMounted] = React.useState(false);
     const [currentTheme, setCurrentTheme] = React.useState<Theme>('system');
-    const [activeTheme, setActiveTheme] = React.useState<'light' | 'dark'>('light');
+    const [activeTheme, setActiveTheme] = React.useState<'light' | 'dark'>(
+      'light'
+    );
 
     // Initialize theme on mount
     React.useEffect(() => {
@@ -159,11 +166,11 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
     if (!mounted) {
       return (
         <div
-          className={cn('w-11 h-11', className)}
+          className={cn('h-11 w-11', className)}
           aria-hidden="true"
           {...props}
         >
-          <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
+          <div className="h-full w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
         </div>
       );
     }
@@ -184,7 +191,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
             onChange={handleSelectChange}
             className={cn(
               'appearance-none',
-              'pl-10 pr-10 py-2',
+              'py-2 pl-10 pr-10',
               'bg-white dark:bg-gray-800',
               'border border-gray-300 dark:border-gray-700',
               'rounded-lg',
@@ -192,7 +199,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
               'text-gray-700 dark:text-gray-300',
               'hover:bg-gray-50 dark:hover:bg-gray-700',
               'focus:outline-none',
-              'focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+              'focus:border-primary-500 focus:ring-2 focus:ring-primary-500',
               'transition-colors',
               'cursor-pointer'
             )}
@@ -204,7 +211,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
           </select>
 
           {/* Icon */}
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
             <AnimatePresence mode="wait" initial={false}>
               {activeTheme === 'dark' ? (
                 <motion.div
@@ -214,7 +221,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
                   exit={{ opacity: 0, rotate: 90 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Moon className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  <Moon className="h-4 w-4 text-gray-700 dark:text-gray-300" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -224,15 +231,15 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
                   exit={{ opacity: 0, rotate: -90 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Sun className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                  <Sun className="h-4 w-4 text-gray-700 dark:text-gray-300" />
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
           {/* Dropdown arrow */}
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-            <ChevronDown className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+          <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+            <ChevronDown className="h-4 w-4 text-gray-700 dark:text-gray-300" />
           </div>
         </div>
       );
@@ -246,7 +253,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
         className={cn(
           'relative',
           'inline-flex items-center justify-center',
-          'w-11 h-11 p-2.5',
+          'h-11 w-11 p-2.5',
           'rounded-lg',
           'bg-gray-100 dark:bg-gray-800',
           'hover:bg-gray-200 dark:hover:bg-gray-700',
@@ -258,7 +265,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
           className
         )}
         aria-label={`Switch to ${activeTheme === 'dark' ? 'light' : 'dark'} mode`}
-        aria-pressed={activeTheme === 'dark'}
+        aria-pressed={activeTheme === 'dark' ? 'true' : 'false'}
         {...props}
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -270,7 +277,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
               exit={{ opacity: 0, rotate: 90, scale: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Moon className="w-6 h-6 text-blue-400" />
+              <Moon className="text-blue-400 h-6 w-6" />
             </motion.div>
           ) : (
             <motion.div
@@ -280,7 +287,7 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
               exit={{ opacity: 0, rotate: -90, scale: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Sun className="w-6 h-6 text-amber-500" />
+              <Sun className="text-amber-500 h-6 w-6" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -290,4 +297,3 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
 );
 
 ThemeToggle.displayName = 'ThemeToggle';
-

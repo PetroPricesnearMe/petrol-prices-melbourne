@@ -9,7 +9,9 @@ import type { CardVariant, CardSize, CardState } from './types';
 /**
  * Combines class names, filtering out falsy values
  */
-export const cn = (...classes: (string | boolean | undefined | null)[]): string => {
+export const cn = (
+  ...classes: (string | boolean | undefined | null)[]
+): string => {
   return classes.filter(Boolean).join(' ');
 };
 
@@ -46,7 +48,10 @@ export const getCardClasses = ({
     clickable && !disabled && 'cursor-pointer',
     disabled && cardStyles.disabled,
     !bordered && 'border-0',
-    shadow !== undefined && shadowClasses[shadow === true ? 'true' : shadow === false ? 'false' : shadow],
+    shadow !== undefined &&
+      shadowClasses[
+        shadow === true ? 'true' : shadow === false ? 'false' : shadow
+      ],
     className
   );
 };
@@ -148,7 +153,17 @@ export const generateId = (prefix: string = 'card'): string => {
 export const validateProps = (props: Record<string, unknown>): string[] => {
   const errors: string[] = [];
 
-  if (props.variant && !['default', 'elevated', 'outlined', 'filled', 'interactive', 'featured'].includes(props.variant)) {
+  if (
+    props.variant &&
+    ![
+      'default',
+      'elevated',
+      'outlined',
+      'filled',
+      'interactive',
+      'featured',
+    ].includes(props.variant)
+  ) {
     errors.push(`Invalid variant: ${props.variant}`);
   }
 
@@ -156,14 +171,19 @@ export const validateProps = (props: Record<string, unknown>): string[] => {
     errors.push(`Invalid size: ${props.size}`);
   }
 
-  if (props.state && !['idle', 'loading', 'error', 'success'].includes(props.state)) {
+  if (
+    props.state &&
+    !['idle', 'loading', 'error', 'success'].includes(props.state)
+  ) {
     errors.push(`Invalid state: ${props.state}`);
   }
 
-  if (props.animationDelay && (typeof props.animationDelay !== 'number' || props.animationDelay < 0)) {
+  if (
+    props.animationDelay &&
+    (typeof props.animationDelay !== 'number' || props.animationDelay < 0)
+  ) {
     errors.push('animationDelay must be a positive number');
   }
 
   return errors;
 };
-

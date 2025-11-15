@@ -1,36 +1,43 @@
 # Project Structure Documentation
 
 ## Overview
+
 This is an enterprise-level Next.js 15 application built with React 19, TypeScript, and Tailwind CSS following modern best practices and atomic design principles.
 
 ## Technology Stack
 
 ### Core
+
 - **Next.js 15**: React framework with App Router
 - **React 19**: UI library with latest features
 - **TypeScript 5.3**: Type-safe development
 - **Tailwind CSS 3.4**: Utility-first CSS framework
 
 ### State Management & Data Fetching
+
 - **TanStack Query (React Query)**: Server state management
 - **Axios**: HTTP client
 
 ### UI & Components
+
 - **Atomic Design Pattern**: Scalable component architecture
 - **Framer Motion**: Animation library
 - **React Leaflet**: Map integration
 
 ### Code Quality
+
 - **ESLint**: Code linting
 - **Prettier**: Code formatting
 - **Husky**: Git hooks
 - **Lint-staged**: Pre-commit linting
 
 ### Testing
+
 - **Jest**: Testing framework
 - **React Testing Library**: Component testing
 
 ### Authentication
+
 - **NextAuth.js**: Authentication solution
 
 ## Folder Structure
@@ -124,18 +131,23 @@ This is an enterprise-level Next.js 15 application built with React 19, TypeScri
 ## Architecture Patterns
 
 ### 1. Atomic Design
+
 Components are organized in three levels:
+
 - **Atoms**: Basic UI elements (Button, Input, Card, Badge)
 - **Molecules**: Simple combinations (SearchBar, StationCard)
 - **Organisms**: Complex components (Hero, SearchSection)
 
 ### 2. Repository Pattern
+
 Data access is separated into repositories:
+
 ```typescript
 API → Service → Repository → Component
 ```
 
 ### 3. Separation of Concerns
+
 - **Components**: UI rendering only
 - **Hooks**: State and side effects
 - **Services**: Business logic
@@ -143,6 +155,7 @@ API → Service → Repository → Component
 - **Utils**: Pure functions
 
 ### 4. Type Safety
+
 - Strict TypeScript configuration
 - Comprehensive type definitions
 - Type guards for runtime safety
@@ -150,6 +163,7 @@ API → Service → Repository → Component
 ## Key Features
 
 ### Performance Optimizations
+
 - ✅ Image optimization with Next.js Image
 - ✅ Code splitting and lazy loading
 - ✅ Server and client component separation
@@ -158,6 +172,7 @@ API → Service → Repository → Component
 - ✅ SWC minification
 
 ### Security
+
 - ✅ Security headers in middleware
 - ✅ CORS configuration
 - ✅ Input validation and sanitization
@@ -165,6 +180,7 @@ API → Service → Repository → Component
 - ✅ CSRF protection (NextAuth)
 
 ### Accessibility
+
 - ✅ Semantic HTML
 - ✅ ARIA labels
 - ✅ Keyboard navigation
@@ -172,6 +188,7 @@ API → Service → Repository → Component
 - ✅ Focus management
 
 ### SEO
+
 - ✅ Meta tags configuration
 - ✅ OpenGraph tags
 - ✅ Twitter cards
@@ -232,17 +249,20 @@ npm run analyze         # Bundle analysis
 ## Getting Started
 
 1. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    # Edit .env with your values
    ```
 
 3. **Run development server**
+
    ```bash
    npm run dev
    ```
@@ -255,15 +275,17 @@ npm run analyze         # Bundle analysis
 ## Component Usage Examples
 
 ### Button Component
+
 ```tsx
 import { Button } from '@/components/atoms/Button';
 
 <Button variant="primary" size="md">
   Click me
-</Button>
+</Button>;
 ```
 
 ### Using Hooks
+
 ```tsx
 import { useStations } from '@/hooks';
 
@@ -274,6 +296,7 @@ const MyComponent = () => {
 ```
 
 ### API Service
+
 ```tsx
 import { stationsService } from '@/services/stations.service';
 
@@ -299,17 +322,20 @@ const stations = await stationsService.getStations({
 ## Deployment
 
 ### Vercel (Recommended)
+
 ```bash
 vercel deploy
 ```
 
 ### Docker
+
 ```bash
 docker build -t petrol-price-app .
 docker run -p 3000:3000 petrol-price-app
 ```
 
 ### Manual
+
 ```bash
 npm run build
 npm run start
@@ -330,4 +356,3 @@ For issues and questions, please create a GitHub issue or contact the developmen
 ---
 
 **Built with ❤️ using Next.js 15, React 19, and TypeScript**
-

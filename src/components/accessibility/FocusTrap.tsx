@@ -55,11 +55,13 @@ export function FocusTrap({
 
       return Array.from(
         trapElement.querySelectorAll<HTMLElement>(focusableSelectors)
-      ).filter(el => {
+      ).filter((el) => {
         // Filter out hidden elements
-        return el.offsetParent !== null &&
-               !el.hasAttribute('aria-hidden') &&
-               el.getAttribute('aria-disabled') !== 'true';
+        return (
+          el.offsetParent !== null &&
+          !el.hasAttribute('aria-hidden') &&
+          el.getAttribute('aria-disabled') !== 'true'
+        );
       });
     };
 
@@ -134,12 +136,7 @@ export function FocusTrap({
   }
 
   return (
-    <div
-      ref={trapRef}
-      className={className}
-      role="dialog"
-      aria-modal="true"
-    >
+    <div ref={trapRef} className={className} role="dialog" aria-modal="true">
       {children}
     </div>
   );

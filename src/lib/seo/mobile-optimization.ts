@@ -122,7 +122,9 @@ export function isMobileDevice(): boolean {
 export function isIOSDevice(): boolean {
   if (typeof window === 'undefined') return false;
 
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
+  );
 }
 
 /**
@@ -169,7 +171,9 @@ export function meetsTouchTargetSize(
   height: number,
   strict = false
 ): boolean {
-  const minSize = strict ? RECOMMENDED_TOUCH_TARGET_SIZE : MIN_TOUCH_TARGET_SIZE;
+  const minSize = strict
+    ? RECOMMENDED_TOUCH_TARGET_SIZE
+    : MIN_TOUCH_TARGET_SIZE;
   return width >= minSize && height >= minSize;
 }
 
@@ -186,7 +190,7 @@ export function preventIOSZoomOnFocus() {
     // Add maximum-scale=1 on input focus
     const inputs = document.querySelectorAll('input, select, textarea');
 
-    inputs.forEach(input => {
+    inputs.forEach((input) => {
       input.addEventListener('focus', () => {
         if (!content.includes('maximum-scale')) {
           viewport.setAttribute('content', `${content}, maximum-scale=1`);
@@ -242,16 +246,18 @@ export function hasLowMemory(): boolean {
 export function hasSlowConnection(): boolean {
   if (typeof navigator === 'undefined') return false;
 
-  const connection = (navigator as any).connection ||
-                     (navigator as any).mozConnection ||
-                     (navigator as any).webkitConnection;
+  const connection =
+    (navigator as any).connection ||
+    (navigator as any).mozConnection ||
+    (navigator as any).webkitConnection;
 
   if (!connection) return false;
 
   // Check for slow connection types
   const slowTypes = ['slow-2g', '2g'];
-  return slowTypes.includes(connection.effectiveType) ||
-         connection.downlink < 1; // Less than 1 Mbps
+  return (
+    slowTypes.includes(connection.effectiveType) || connection.downlink < 1
+  ); // Less than 1 Mbps
 }
 
 /**
@@ -260,9 +266,10 @@ export function hasSlowConnection(): boolean {
 export function shouldUseReducedData(): boolean {
   if (typeof navigator === 'undefined') return false;
 
-  const connection = (navigator as any).connection ||
-                     (navigator as any).mozConnection ||
-                     (navigator as any).webkitConnection;
+  const connection =
+    (navigator as any).connection ||
+    (navigator as any).mozConnection ||
+    (navigator as any).webkitConnection;
 
   return connection?.saveData === true || hasSlowConnection();
 }
@@ -291,10 +298,16 @@ export function getMobileImageQuality(): number {
  */
 export function getMobileMeta() {
   return [
-    { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=5' },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1, maximum-scale=5',
+    },
     { name: 'mobile-web-app-capable', content: 'yes' },
     { name: 'apple-mobile-web-app-capable', content: 'yes' },
-    { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+    {
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: 'black-translucent',
+    },
     { name: 'format-detection', content: 'telephone=no' },
     { name: 'format-detection', content: 'date=no' },
     { name: 'format-detection', content: 'address=no' },
@@ -318,7 +331,7 @@ export function shouldHaveAMP(pathname: string): boolean {
   // - Article pages
   // - News pages
   const ampPatterns = ['/blog/', '/articles/', '/news/'];
-  return ampPatterns.some(pattern => pathname.includes(pattern));
+  return ampPatterns.some((pattern) => pathname.includes(pattern));
 }
 
 // ============================================================================
@@ -365,7 +378,9 @@ export const MOBILE_FONT_SIZES = {
 /**
  * Get accessible font size for mobile
  */
-export function getAccessibleFontSize(size: keyof typeof MOBILE_FONT_SIZES): number {
+export function getAccessibleFontSize(
+  size: keyof typeof MOBILE_FONT_SIZES
+): number {
   return MOBILE_FONT_SIZES[size];
 }
 
@@ -404,7 +419,9 @@ export function getOrientation(): Orientation {
 /**
  * Listen for orientation changes
  */
-export function onOrientationChange(callback: (orientation: Orientation) => void) {
+export function onOrientationChange(
+  callback: (orientation: Orientation) => void
+) {
   if (typeof window === 'undefined') return () => {};
 
   const mediaQuery = window.matchMedia('(orientation: portrait)');

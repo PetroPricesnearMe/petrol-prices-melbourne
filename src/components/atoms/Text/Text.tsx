@@ -1,6 +1,6 @@
 /**
  * Text Component (Atom)
- * 
+ *
  * Typography component with semantic HTML elements and consistent styling
  */
 
@@ -11,13 +11,30 @@ import { cn } from '@/design-system/utils/styled';
 import type { BaseProps, PolymorphicProps } from '@/types/index';
 import './Text.css';
 
-type TextElement = 'p' | 'span' | 'div' | 'label' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+type TextElement =
+  | 'p'
+  | 'span'
+  | 'div'
+  | 'label'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6';
 
 export interface TextBaseProps extends BaseProps {
   /** Typography variant */
   variant?: TextStyle;
   /** Text color */
-  color?: 'primary' | 'secondary' | 'disabled' | 'inverse' | 'success' | 'warning' | 'error';
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'disabled'
+    | 'inverse'
+    | 'success'
+    | 'warning'
+    | 'error';
   /** Text alignment */
   align?: 'left' | 'center' | 'right' | 'justify';
   /** Font weight */
@@ -34,7 +51,10 @@ export interface TextBaseProps extends BaseProps {
   children: React.ReactNode;
 }
 
-export type TextProps<E extends TextElement = 'p'> = PolymorphicProps<E, TextBaseProps>;
+export type TextProps<E extends TextElement = 'p'> = PolymorphicProps<
+  E,
+  TextBaseProps
+>;
 
 export function Text<E extends TextElement = 'p'>({
   variant = 'body',
@@ -67,12 +87,14 @@ export function Text<E extends TextElement = 'p'>({
     className
   );
 
-  const lineClampStyle = lineClamp ? {
-    display: '-webkit-box',
-    WebkitLineClamp: lineClamp,
-    WebkitBoxOrient: 'vertical' as const,
-    overflow: 'hidden',
-  } : {};
+  const lineClampStyle = lineClamp
+    ? {
+        display: '-webkit-box',
+        WebkitLineClamp: lineClamp,
+        WebkitBoxOrient: 'vertical' as const,
+        overflow: 'hidden',
+      }
+    : {};
 
   return (
     <Component
@@ -124,4 +146,3 @@ export const Label = (props: Omit<TextProps<'label'>, 'as' | 'variant'>) => (
 export const Caption = (props: Omit<TextProps, 'variant'>) => (
   <Text variant="caption" {...props} />
 );
-

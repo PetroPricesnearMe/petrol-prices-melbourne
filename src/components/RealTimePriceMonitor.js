@@ -15,17 +15,17 @@ export default function RealTimePriceMonitor({ showUpdates = true }) {
   // Subscribe to real-time price updates
   const { connected, latestUpdate, error } = useFuelPriceUpdates((update) => {
     console.log('💰 [Price Monitor] New price update:', update);
-    
+
     // Add to recent updates
-    setRecentUpdates(prev => {
+    setRecentUpdates((prev) => {
       const newUpdates = [
         {
           ...update,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         },
-        ...prev
+        ...prev,
       ].slice(0, maxUpdates);
-      
+
       return newUpdates;
     });
   });
@@ -34,8 +34,10 @@ export default function RealTimePriceMonitor({ showUpdates = true }) {
   useEffect(() => {
     const interval = setInterval(() => {
       const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
-      setRecentUpdates(prev => 
-        prev.filter(update => new Date(update.timestamp).getTime() > fiveMinutesAgo)
+      setRecentUpdates((prev) =>
+        prev.filter(
+          (update) => new Date(update.timestamp).getTime() > fiveMinutesAgo
+        )
       );
     }, 60000); // Check every minute
 
@@ -51,12 +53,14 @@ export default function RealTimePriceMonitor({ showUpdates = true }) {
     <div className="real-time-monitor">
       <div className="monitor-header">
         <div className="monitor-status">
-          <span className={`status-indicator ${connected ? 'connected' : 'disconnected'}`}></span>
+          <span
+            className={`status-indicator ${connected ? 'connected' : 'disconnected'}`}
+          ></span>
           <span className="status-text">
             {connected ? 'Live Updates' : 'Connecting...'}
           </span>
         </div>
-        
+
         {error && (
           <div className="monitor-error">
             <span className="error-icon">⚠️</span>
@@ -70,7 +74,10 @@ export default function RealTimePriceMonitor({ showUpdates = true }) {
           <h4>Recent Price Updates</h4>
           <ul className="updates-list">
             {recentUpdates.map((update, index) => (
-              <li key={`${update.rowId}-${update.timestamp}`} className="update-item">
+              <li
+                key={`${update.rowId}-${update.timestamp}`}
+                className="update-item"
+              >
                 <span className="update-badge">NEW</span>
                 <span className="update-time">
                   {new Date(update.timestamp).toLocaleTimeString()}
@@ -86,4 +93,3 @@ export default function RealTimePriceMonitor({ showUpdates = true }) {
     </div>
   );
 }
-

@@ -241,4 +241,3 @@ export const errorStyles = {
     text-red-800
   `,
 };
-

@@ -167,7 +167,7 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
       {/* Brand Section */}
       <div className="flex flex-col space-y-4">
         {logo && (
-          <div className="text-2xl mb-4" aria-hidden="true">
+          <div className="mb-4 text-2xl" aria-hidden="true">
             {logo}
           </div>
         )}
@@ -179,7 +179,7 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
         {/* Social Links */}
         {socialLinks.length > 0 && (
           <div className="mt-6">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
               Follow Us
             </h3>
             <div className="flex space-x-4">
@@ -190,7 +190,7 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
                   aria-label={social.ariaLabel || `Follow us on ${social.name}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:border-primary-300 dark:hover:border-primary-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-all duration-200 hover:border-primary-300 hover:text-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-primary-700 dark:hover:text-primary-400"
                 >
                   {social.icon}
                 </a>
@@ -203,7 +203,7 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
       {/* Navigation Sections */}
       {navigationSections.map((section, index) => (
         <div key={index} className="flex flex-col space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-white">
             {section.title}
           </h3>
           <ul className="space-y-2">
@@ -211,14 +211,14 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
               <li key={linkIndex}>
                 <a
                   href={link.href}
-                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200 inline-flex items-center gap-1 group"
+                  className="group inline-flex items-center gap-1 text-sm text-gray-600 transition-colors duration-200 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
                   target={link.external ? '_blank' : undefined}
                   rel={link.external ? 'noopener noreferrer' : undefined}
                 >
                   {link.label}
                   {link.external && (
                     <svg
-                      className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity"
+                      className="h-3 w-3 opacity-60 transition-opacity group-hover:opacity-100"
                       fill="none"
                       viewBox="0 0 12 12"
                       aria-hidden="true"
@@ -234,7 +234,7 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
                   )}
                 </a>
                 {link.description && (
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
+                  <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-500">
                     {link.description}
                   </p>
                 )}
@@ -247,17 +247,17 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
       {/* Contact Information */}
       {(contactInfo.email || contactInfo.phone || contactInfo.address) && (
         <div className="flex flex-col space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-white">
             Contact Us
           </h3>
           <div className="space-y-3">
             {contactInfo.email && (
               <a
                 href={`mailto:${contactInfo.email}`}
-                className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                className="flex items-start space-x-3 text-sm text-gray-600 transition-colors duration-200 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
               >
                 <svg
-                  className="w-5 h-5 flex-shrink-0 mt-0.5"
+                  className="mt-0.5 h-5 w-5 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 16 16"
                   aria-hidden="true"
@@ -286,10 +286,10 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
             {contactInfo.phone && (
               <a
                 href={`tel:${contactInfo.phone}`}
-                className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                className="flex items-start space-x-3 text-sm text-gray-600 transition-colors duration-200 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
               >
                 <svg
-                  className="w-5 h-5 flex-shrink-0 mt-0.5"
+                  className="mt-0.5 h-5 w-5 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 16 16"
                   aria-hidden="true"
@@ -312,7 +312,7 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
             {contactInfo.address && (
               <div className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400">
                 <svg
-                  className="w-5 h-5 flex-shrink-0 mt-0.5"
+                  className="mt-0.5 h-5 w-5 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 16 16"
                   aria-hidden="true"
@@ -333,13 +333,24 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
             {contactInfo.businessHours && (
               <div className="flex items-start space-x-3 text-sm text-gray-600 dark:text-gray-400">
                 <svg
-                  className="w-5 h-5 flex-shrink-0 mt-0.5"
+                  className="mt-0.5 h-5 w-5 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 16 16"
                   aria-hidden="true"
                 >
-                  <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" />
-                  <path d="M8 4v4l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle
+                    cx="8"
+                    cy="8"
+                    r="6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M8 4v4l3 2"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
                 </svg>
                 <span>{contactInfo.businessHours}</span>
               </div>
@@ -351,20 +362,20 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
       {/* Newsletter Subscription */}
       {newsletter && (
         <div className="flex flex-col space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-white">
             {newsletter.title}
           </h3>
           <p className="text-sm leading-relaxed">{newsletter.description}</p>
 
           {!subscribed ? (
             <form onSubmit={handleNewsletterSubmit} className="space-y-3">
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={newsletter.placeholder}
-                  className="flex-1 px-4 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50"
+                  className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800"
                   required
                   disabled={isSubmitting}
                   aria-label="Newsletter email"
@@ -372,15 +383,20 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
                 <button
                   type="submit"
                   disabled={isSubmitting || !email.trim()}
-                  className="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 min-h-[44px]"
+                  className="min-h-[44px] rounded-lg bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmitting ? '...' : newsletter.buttonText}
                 </button>
               </div>
             </form>
           ) : (
-            <div className="flex items-center space-x-2 text-sm text-success-600 dark:text-success-400">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 20 20" aria-hidden="true">
+            <div className="dark:text-success-400 flex items-center space-x-2 text-sm text-success-600">
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
                 <path
                   d="M16.667 5L7.5 14.167 3.333 10"
                   stroke="currentColor"
@@ -414,20 +430,20 @@ export const ResponsiveFooter: React.FC<ResponsiveFooterProps> = ({
 
         {/* Footer Bottom */}
         <motion.div
-          className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200 dark:border-gray-800"
+          className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-800 sm:mt-12 sm:pt-8"
           variants={animate ? itemVariants : undefined}
         >
-          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <p className="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
+          <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
+            <p className="text-center text-sm text-gray-600 dark:text-gray-400 sm:text-left">
               {copyright.replace('{year}', currentYear.toString())}
             </p>
             {bottomLinks.length > 0 && (
-              <div className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6">
+              <div className="flex flex-wrap justify-center gap-4 sm:justify-end sm:gap-6">
                 {bottomLinks.map((link, index) => (
                   <a
                     key={index}
                     href={link.href}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                    className="text-sm text-gray-600 transition-colors duration-200 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
                   >
                     {link.label}
                   </a>

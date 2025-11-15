@@ -3,6 +3,7 @@
 ## 🚀 How to Access Test Page
 
 1. **Start Dev Server** (if not running):
+
    ```bash
    npm run dev
    ```
@@ -142,12 +143,14 @@
 ### Issue: Suggestions not appearing
 
 **Check:**
+
 - Dev server is running (`npm run dev`)
 - No console errors (F12 > Console)
 - Station data is loaded
 - Search keys are configured correctly
 
 **Fix:**
+
 ```typescript
 // Check searchKeys prop
 searchKeys={['name', 'brand', 'suburb', 'address']}
@@ -156,6 +159,7 @@ searchKeys={['name', 'brand', 'suburb', 'address']}
 ### Issue: Fuzzy search too strict
 
 **Adjust threshold in AdvancedSearchBar.tsx:**
+
 ```typescript
 threshold: 0.5, // Higher = more fuzzy (0.0 = exact, 1.0 = match anything)
 ```
@@ -163,6 +167,7 @@ threshold: 0.5, // Higher = more fuzzy (0.0 = exact, 1.0 = match anything)
 ### Issue: Keyboard navigation not working
 
 **Check:**
+
 - Event handlers in place
 - No other components capturing keydown
 - Suggestions have proper data-index
@@ -170,6 +175,7 @@ threshold: 0.5, // Higher = more fuzzy (0.0 = exact, 1.0 = match anything)
 ### Issue: Recent searches not saving
 
 **Check:**
+
 - localStorage is available
 - No browser privacy mode
 - enableRecentSearches={true}
@@ -180,28 +186,29 @@ threshold: 0.5, // Higher = more fuzzy (0.0 = exact, 1.0 = match anything)
 
 ### Good Search Examples
 
-| Query | Expected Results |
-|-------|------------------|
-| "Shell" | All Shell stations |
-| "Carlton" | All Carlton area stations |
-| "BP Richmond" | BP stations in Richmond |
-| "Mobil" | All Mobil stations |
-| "3000" | Stations in postcode 3000 |
+| Query         | Expected Results          |
+| ------------- | ------------------------- |
+| "Shell"       | All Shell stations        |
+| "Carlton"     | All Carlton area stations |
+| "BP Richmond" | BP stations in Richmond   |
+| "Mobil"       | All Mobil stations        |
+| "3000"        | Stations in postcode 3000 |
 
 ### Fuzzy Search Examples
 
-| Typo | Should Find |
-|------|-------------|
-| "Shel" | Shell |
-| "sevn eleven" | 7-Eleven |
-| "Carton" | Carlton |
-| "Collingood" | Collingwood |
+| Typo          | Should Find |
+| ------------- | ----------- |
+| "Shel"        | Shell       |
+| "sevn eleven" | 7-Eleven    |
+| "Carton"      | Carlton     |
+| "Collingood"  | Collingwood |
 
 ---
 
 ## ✅ Success Criteria
 
 **All tests pass if:**
+
 - ✅ Autocomplete shows relevant results
 - ✅ Fuzzy search handles typos
 - ✅ Category filters work correctly

@@ -18,8 +18,16 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useMemo, type ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
-import { staggerContainer, staggerItem, type Variants } from '@/utils/animations';
-import { buildGridClasses, type GapSize, type ResponsiveColumns } from '@/utils/responsive-grid';
+import {
+  staggerContainer,
+  staggerItem,
+  type Variants,
+} from '@/utils/animations';
+import {
+  buildGridClasses,
+  type GapSize,
+  type ResponsiveColumns,
+} from '@/utils/responsive-grid';
 
 export interface EnhancedCardGridProps {
   /** Grid items to render */
@@ -124,23 +132,26 @@ export function GridItem({
 }: GridItemProps) {
   const shouldReduceMotion = useReducedMotion();
 
-  const itemVariants = useMemo<Variants>(() => ({
-    hidden: {
-      opacity: 0,
-      y: 20,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: shouldReduceMotion ? 0 : 0.4,
-        delay: shouldReduceMotion ? 0 : index * 0.05,
-        ease: 'easeOut',
+  const itemVariants = useMemo<Variants>(
+    () => ({
+      hidden: {
+        opacity: 0,
+        y: 20,
+        scale: 0.95,
       },
-    },
-  }), [shouldReduceMotion, index]);
+      visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+          duration: shouldReduceMotion ? 0 : 0.4,
+          delay: shouldReduceMotion ? 0 : index * 0.05,
+          ease: 'easeOut',
+        },
+      },
+    }),
+    [shouldReduceMotion, index]
+  );
 
   const hoverProps = useMemo(() => {
     if (!enableHover || shouldReduceMotion) return undefined;
@@ -152,7 +163,7 @@ export function GridItem({
 
   return (
     <motion.div
-      className={cn('h-full flex flex-col', className)}
+      className={cn('flex h-full flex-col', className)}
       variants={itemVariants}
       initial="hidden"
       animate="visible"

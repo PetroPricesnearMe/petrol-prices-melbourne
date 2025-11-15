@@ -3,21 +3,21 @@
  *
  * This is the root layout component that wraps all pages in the application.
  * It handles global configuration including:
- * 
+ *
  * - Font optimization with next/font
  * - Global metadata and SEO
  * - Theme configuration
  * - Analytics and performance monitoring (Vercel Analytics + GA4)
  * - Global providers (theme, query client, etc.)
  * - Resource hints for optimal loading
- * 
+ *
  * Performance Optimizations:
  * - Vercel Analytics for Core Web Vitals tracking
  * - Vercel Speed Insights for performance monitoring
  * - Optimized font loading with next/font
  * - Resource hints for critical resources
  * - Web Vitals tracking with analytics integration
- * 
+ *
  * @see {@link https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts}
  */
 
@@ -33,14 +33,14 @@ import '@/styles/globals.css';
 
 /**
  * Font Configuration - Optimized for Performance
- * 
+ *
  * Inter is loaded with optimal settings:
  * - Subset: Latin characters only (reduces font size)
  * - Display: swap (prevents invisible text during load)
  * - Variable: CSS variable for easy access
  * - Preload: Load font ASAP for faster rendering
  * - Fallback: System fonts for instant text rendering
- * 
+ *
  * Performance Impact:
  * - Prevents FOIT (Flash of Invisible Text)
  * - Reduces CLS (Cumulative Layout Shift)
@@ -51,13 +51,20 @@ const inter = Inter({
   display: 'swap',
   variable: '--font-inter',
   preload: true,
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Arial', 'sans-serif'],
+  fallback: [
+    'system-ui',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Arial',
+    'sans-serif',
+  ],
   adjustFontFallback: true,
 });
 
 /**
  * Viewport Configuration
- * 
+ *
  * Defines how the page should be rendered on mobile devices.
  * Includes responsive theme colors for light/dark mode.
  */
@@ -74,7 +81,7 @@ export const viewport: Viewport = {
 
 /**
  * Metadata Configuration
- * 
+ *
  * Comprehensive SEO and social media metadata.
  * Centralized in @/config/metadata for easy maintenance.
  */
@@ -89,10 +96,10 @@ interface RootLayoutProps {
 
 /**
  * Root Layout Component
- * 
+ *
  * The main layout wrapper for the entire application.
  * Provides global context, styles, and scripts.
- * 
+ *
  * Performance Features:
  * - Vercel Analytics for real-time Core Web Vitals
  * - Vercel Speed Insights for performance monitoring
@@ -104,55 +111,51 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   return (
-    <html 
-      lang="en" 
-      className={inter.variable} 
-      suppressHydrationWarning
-    >
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         {/* 
           Resource Hints for Performance Optimization
           These hints help browsers prioritize and prefetch critical resources
         */}
-        
+
         {/* DNS Prefetch for external services */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        
+
         {/* Preconnect for critical third-party origins */}
         {gaMeasurementId && (
           <>
-            <link 
-              rel="preconnect" 
-              href="https://www.google-analytics.com" 
-              crossOrigin="anonymous" 
+            <link
+              rel="preconnect"
+              href="https://www.google-analytics.com"
+              crossOrigin="anonymous"
             />
-            <link 
-              rel="preconnect" 
-              href="https://www.googletagmanager.com" 
-              crossOrigin="anonymous" 
+            <link
+              rel="preconnect"
+              href="https://www.googletagmanager.com"
+              crossOrigin="anonymous"
             />
           </>
         )}
 
         {/* Preload critical resources */}
-        <link 
-          rel="preload" 
-          href="/fonts/inter-var.woff2" 
-          as="font" 
-          type="font/woff2" 
-          crossOrigin="anonymous" 
+        <link
+          rel="preload"
+          href="/fonts/inter-var.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
         />
       </head>
-      
-      <body 
-        className={`antialiased ${inter.className}`} 
+
+      <body
+        className={`antialiased ${inter.className}`}
         suppressHydrationWarning
       >
         {/* Skip to main content link for accessibility */}
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-primary-600 focus:px-4 focus:py-2 focus:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
           aria-label="Skip to main content"
         >
           Skip to main content
@@ -180,10 +183,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
               strategy="afterInteractive"
             />
-            <Script
-              id="google-analytics"
-              strategy="afterInteractive"
-            >
+            <Script id="google-analytics" strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
@@ -201,10 +201,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
         {/* Web Vitals Tracking - Enhanced Performance Monitoring */}
         {process.env.NODE_ENV === 'production' && (
-          <Script
-            id="web-vitals"
-            strategy="afterInteractive"
-          >
+          <Script id="web-vitals" strategy="afterInteractive">
             {`
               (function() {
                 if (typeof window === 'undefined') return;

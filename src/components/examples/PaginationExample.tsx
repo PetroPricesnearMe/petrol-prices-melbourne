@@ -11,14 +11,14 @@ import Pagination from '../common/Pagination';
 
 // Example card component
 const ExampleCard: React.FC<{ item: Record<string, unknown> }> = ({ item }) => (
-  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 h-full flex flex-col">
-    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+  <div className="flex h-full flex-col rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+    <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
       {item.title}
     </h3>
-    <p className="text-gray-600 dark:text-gray-400 flex-1">
+    <p className="flex-1 text-gray-600 dark:text-gray-400">
       {item.description}
     </p>
-    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+    <div className="mt-4 border-t border-gray-200 pt-4 dark:border-gray-700">
       <span className="text-sm text-gray-500">ID: {item.id}</span>
     </div>
   </div>
@@ -47,13 +47,13 @@ export const BasicPaginationExample: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Example 1: Basic Pagination</h2>
-        <p className="text-gray-600 mb-6">
+        <h2 className="mb-4 text-2xl font-bold">Example 1: Basic Pagination</h2>
+        <p className="mb-6 text-gray-600">
           Simple pagination with manual grid layout
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
+      <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {currentItems.map((item) => (
           <div key={item.id} className="h-full">
             <ExampleCard item={item} />
@@ -81,8 +81,8 @@ export const PaginatedGridExample: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Example 2: PaginatedGrid</h2>
-        <p className="text-gray-600 mb-6">
+        <h2 className="mb-4 text-2xl font-bold">Example 2: PaginatedGrid</h2>
+        <p className="mb-6 text-gray-600">
           Everything built-in: grid, pagination, and animations
         </p>
       </div>
@@ -112,13 +112,11 @@ export const CustomStyledExample: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Example 3: Custom Styling</h2>
-        <p className="text-gray-600 mb-6">
-          Large size with slide animation
-        </p>
+        <h2 className="mb-4 text-2xl font-bold">Example 3: Custom Styling</h2>
+        <p className="mb-6 text-gray-600">Large size with slide animation</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-rows-fr">
+      <div className="grid auto-rows-fr grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {currentItems.map((item) => (
           <div key={item.id} className="h-full">
             <ExampleCard item={item} />
@@ -147,8 +145,8 @@ export const CustomColumnsExample: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Example 4: Custom Columns</h2>
-        <p className="text-gray-600 mb-6">
+        <h2 className="mb-4 text-2xl font-bold">Example 4: Custom Columns</h2>
+        <p className="mb-6 text-gray-600">
           1 column on mobile, 2 on tablet, 4 on desktop, 5 on large screens
         </p>
       </div>
@@ -182,7 +180,7 @@ export const StatesExample: React.FC = () => {
   const customLoadingState = (
     <div className="flex items-center justify-center py-20">
       <div className="text-center">
-        <div className="inline-block h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent mb-4"></div>
+        <div className="mb-4 inline-block h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent"></div>
         <p className="text-lg font-semibold text-gray-900 dark:text-white">
           Loading awesome content...
         </p>
@@ -193,16 +191,16 @@ export const StatesExample: React.FC = () => {
   const customEmptyState = (
     <div className="flex items-center justify-center py-20">
       <div className="text-center">
-        <div className="text-8xl mb-4">📭</div>
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="mb-4 text-8xl">📭</div>
+        <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
           No items found
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
+        <p className="mb-6 text-gray-600 dark:text-gray-400">
           Try adding some items or adjusting your filters
         </p>
         <button
           onClick={() => setShowEmpty(false)}
-          className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          className="rounded-lg bg-primary-600 px-6 py-3 text-white transition-colors hover:bg-primary-700"
         >
           Show Items
         </button>
@@ -213,20 +211,22 @@ export const StatesExample: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Example 5: Loading & Empty States</h2>
-        <div className="flex gap-4 mb-6">
+        <h2 className="mb-4 text-2xl font-bold">
+          Example 5: Loading & Empty States
+        </h2>
+        <div className="mb-6 flex gap-4">
           <button
             onClick={() => {
               setIsLoading(true);
               setTimeout(() => setIsLoading(false), 2000);
             }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="bg-blue-600 hover:bg-blue-700 rounded-lg px-4 py-2 text-white"
           >
             Simulate Loading
           </button>
           <button
             onClick={() => setShowEmpty(!showEmpty)}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+            className="rounded-lg bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
           >
             Toggle Empty State
           </button>
@@ -260,13 +260,11 @@ export const MinimalExample: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Example 6: Minimal Setup</h2>
-        <p className="text-gray-600 mb-6">
-          Pagination without extra features
-        </p>
+        <h2 className="mb-4 text-2xl font-bold">Example 6: Minimal Setup</h2>
+        <p className="mb-6 text-gray-600">Pagination without extra features</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
+      <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {currentItems.map((item) => (
           <div key={item.id} className="h-full">
             <ExampleCard item={item} />
@@ -295,8 +293,10 @@ export const DoublePaginationExample: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Example 7: Top & Bottom Pagination</h2>
-        <p className="text-gray-600 mb-6">
+        <h2 className="mb-4 text-2xl font-bold">
+          Example 7: Top & Bottom Pagination
+        </h2>
+        <p className="mb-6 text-gray-600">
           Pagination controls at both ends for convenience
         </p>
       </div>
@@ -331,10 +331,10 @@ export const PaginationDemo: React.FC = () => {
   const ActiveComponent = examples[activeExample].component;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50 p-8 dark:bg-gray-900">
+      <div className="mx-auto max-w-7xl">
         <header className="mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white">
             Pagination System Examples
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -348,10 +348,10 @@ export const PaginationDemo: React.FC = () => {
             <button
               key={index}
               onClick={() => setActiveExample(index)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`rounded-lg px-4 py-2 font-medium transition-colors ${
                 activeExample === index
                   ? 'bg-primary-600 text-white'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
               }`}
             >
               {example.name}
@@ -360,17 +360,18 @@ export const PaginationDemo: React.FC = () => {
         </nav>
 
         {/* Active example */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <div className="rounded-xl bg-white p-8 shadow-lg dark:bg-gray-800">
           <ActiveComponent />
         </div>
 
         {/* Code snippet hint */}
-        <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+        <div className="bg-blue-50 dark:bg-blue-900/20 mt-8 rounded-lg p-6">
+          <h3 className="text-blue-900 dark:text-blue-100 mb-2 text-lg font-semibold">
             💡 Keyboard Navigation
           </h3>
           <p className="text-blue-700 dark:text-blue-300">
-            Try using arrow keys (← →), Home, and End to navigate pages when pagination is focused!
+            Try using arrow keys (← →), Home, and End to navigate pages when
+            pagination is focused!
           </p>
         </div>
       </div>

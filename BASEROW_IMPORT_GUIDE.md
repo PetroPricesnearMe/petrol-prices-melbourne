@@ -12,18 +12,18 @@ This guide explains how to import the petrol station data from CSV into Baserow.
 
 ### CSV Fields → Baserow Fields
 
-| CSV Column | Baserow Field | Type | Notes |
-|------------|---------------|------|-------|
-| X | Longitude | Decimal | Max 4 decimal places |
-| Y | Latitude | Decimal | Max 4 decimal places |
-| station_name | Station Name | Text | Required |
-| station_address | Address | Text | |
-| station_suburb | City | Text | |
-| station_postcode | Postal Code | Text | |
-| station_state | Region | Text | VIC, NSW, etc. |
-| station_owner | brand | Multiple Select | |
-| station_description | Location Details | Long Text | |
-| feature_type | Category | Single Select | Option ID: 3812407 |
+| CSV Column          | Baserow Field    | Type            | Notes                |
+| ------------------- | ---------------- | --------------- | -------------------- |
+| X                   | Longitude        | Decimal         | Max 4 decimal places |
+| Y                   | Latitude         | Decimal         | Max 4 decimal places |
+| station_name        | Station Name     | Text            | Required             |
+| station_address     | Address          | Text            |                      |
+| station_suburb      | City             | Text            |                      |
+| station_postcode    | Postal Code      | Text            |                      |
+| station_state       | Region           | Text            | VIC, NSW, etc.       |
+| station_owner       | brand            | Multiple Select |                      |
+| station_description | Location Details | Long Text       |                      |
+| feature_type        | Category         | Single Select   | Option ID: 3812407   |
 
 ### Baserow Field Validation Rules
 
@@ -80,6 +80,7 @@ This is the fastest method for importing all 1,141 records.
 Use this method for testing or importing individual records.
 
 1. **Read Test Data**
+
    ```bash
    node scripts/single-row-import-test.js
    ```
@@ -89,6 +90,7 @@ Use this method for testing or importing individual records.
    - Call the function with properly formatted data
 
 Example record format:
+
 ```json
 {
   "Station Name": "INDEPENDENT KALKALLO",
@@ -113,11 +115,13 @@ For automated imports or integrations, use the Baserow API directly.
    - Token: `G2bhijqxqtg0O05dc176fwDpaUPDSIgj`
 
 2. **API Endpoint**
+
    ```
    POST https://api.baserow.io/api/database/rows/table/623329/
    ```
 
 3. **Headers**
+
    ```
    Authorization: Token G2bhijqxqtg0O05dc176fwDpaUPDSIgj
    Content-Type: application/json
@@ -157,30 +161,37 @@ The import scripts generate the following files:
 ### Common Issues
 
 #### 1. Coordinate Validation Error
+
 **Error**: "Ensure that there are no more than 4 decimal places"
 
 **Solution**: The import scripts now automatically round coordinates to 4 decimal places. If you're manually importing, use:
+
 ```javascript
 const lat = parseFloat(latitude.toFixed(4));
 const lng = parseFloat(longitude.toFixed(4));
 ```
 
 #### 2. Missing Required Fields
+
 **Error**: "Field is required"
 
 **Solution**: Ensure these fields are always provided:
+
 - Station Name (required)
 - Latitude (required)
 - Longitude (required)
 
 #### 3. Invalid Category ID
+
 **Error**: "Invalid option selected"
 
 **Solution**: Use one of the valid category option IDs:
+
 - `3812407` for "PETROL STATION"
 - `3812405` for "petrol-stations"
 
 #### 4. Brand Field Format
+
 **Error**: "Invalid format for brand field"
 
 **Solution**: The brand field is a multiple select, not text. In the CSV, it should be a simple text value that Baserow will map to the correct option.
@@ -221,7 +232,7 @@ After importing the data:
 ## Support
 
 For issues or questions:
+
 - Check the DataSourceManager logs in browser console
 - Review validation errors in the import results
 - Verify field mappings in Baserow table settings
-

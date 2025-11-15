@@ -1,6 +1,6 @@
 /**
  * Baserow CMS Provider
- * 
+ *
  * Implementation of the CMS provider interface for Baserow
  */
 
@@ -228,7 +228,8 @@ export class BaserowProvider implements ICMSProvider {
     const params = new URLSearchParams();
 
     if (options.page) params.append('page', String(options.page));
-    if (options.pageSize) params.append('size', String(options.pageSize || 100));
+    if (options.pageSize)
+      params.append('size', String(options.pageSize || 100));
     if (options.search) params.append('search', options.search);
 
     // Handle sorting
@@ -291,4 +292,3 @@ export class BaserowProvider implements ICMSProvider {
     };
   }
 }
-

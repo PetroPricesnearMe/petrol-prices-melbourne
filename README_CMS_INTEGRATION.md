@@ -238,6 +238,7 @@ REVALIDATION_SECRET=secret    # For revalidation API
 ### Provider-Specific
 
 **Baserow:**
+
 ```bash
 CMS_PROVIDER=baserow
 CMS_API_URL=https://api.baserow.io
@@ -245,6 +246,7 @@ CMS_API_TOKEN=your_token
 ```
 
 **Sanity:**
+
 ```bash
 CMS_PROVIDER=sanity
 CMS_API_URL=https://project.api.sanity.io
@@ -253,6 +255,7 @@ CMS_DATASET=production
 ```
 
 **Airtable:**
+
 ```bash
 CMS_PROVIDER=airtable
 CMS_API_URL=https://api.airtable.com/v0
@@ -276,7 +279,7 @@ export const revalidate = 3600;
 export default async function Page() {
   const cms = getCMS();
   const data = await cms.fetchAll('stations');
-  
+
   return <div>{/* render */}</div>;
 }
 ```
@@ -298,13 +301,10 @@ const data = await cms.fetchAll('stations', {
 ```typescript
 import { withFallback } from '@/lib/cms/error-handler';
 
-const data = await withFallback(
-  () => cms.fetchAll('stations'),
-  {
-    getFallback: () => ({ data: [], total: 0 }),
-    onError: (err) => console.error(err),
-  }
-);
+const data = await withFallback(() => cms.fetchAll('stations'), {
+  getFallback: () => ({ data: [], total: 0 }),
+  onError: (err) => console.error(err),
+});
 ```
 
 ### Client Components
@@ -379,13 +379,20 @@ import { CMSList } from '@/components/cms';
 
 ```typescript
 interface ICMSProvider {
-  fetchAll<T>(collection: string, options?: CMSQueryOptions): Promise<CMSPaginatedResponse<T>>;
+  fetchAll<T>(
+    collection: string,
+    options?: CMSQueryOptions
+  ): Promise<CMSPaginatedResponse<T>>;
   fetchById<T>(collection: string, id: string): Promise<T | null>;
   fetchBySlug<T>(collection: string, slug: string): Promise<T | null>;
   create<T>(collection: string, data: Partial<T>): Promise<T>;
   update<T>(collection: string, id: string, data: Partial<T>): Promise<T>;
   delete(collection: string, id: string): Promise<void>;
-  search<T>(collection: string, query: string, options?: CMSQueryOptions): Promise<CMSPaginatedResponse<T>>;
+  search<T>(
+    collection: string,
+    query: string,
+    options?: CMSQueryOptions
+  ): Promise<CMSPaginatedResponse<T>>;
   revalidate(paths?: string[], tags?: string[]): Promise<void>;
 }
 ```
@@ -394,16 +401,16 @@ interface ICMSProvider {
 
 ```typescript
 interface CMSQueryOptions {
-  page?: number;              // Page number (default: 1)
-  pageSize?: number;          // Items per page (default: 100)
-  filters?: Record<string, unknown>;  // Key-value filters
+  page?: number; // Page number (default: 1)
+  pageSize?: number; // Items per page (default: 100)
+  filters?: Record<string, unknown>; // Key-value filters
   sort?: {
-    field: string;            // Field to sort by
-    order: 'asc' | 'desc';    // Sort direction
+    field: string; // Field to sort by
+    order: 'asc' | 'desc'; // Sort direction
   };
-  search?: string;            // Search query
-  fields?: string[];          // Fields to return
-  tags?: string[];            // Cache tags
+  search?: string; // Search query
+  fields?: string[]; // Fields to return
+  tags?: string[]; // Cache tags
 }
 ```
 
@@ -424,7 +431,7 @@ function useCMS<T>(
   error: Error | null;
   refetch: () => Promise<void>;
   loadMore: () => Promise<void>;
-}
+};
 ```
 
 ---
@@ -491,7 +498,7 @@ export const revalidate = 3600;
 await fetch('/api/revalidate', {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${secret}`,
+    Authorization: `Bearer ${secret}`,
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({ tags: ['stations'] }),
@@ -597,4 +604,3 @@ MIT
 **Version**: 1.0.0  
 **Last Updated**: 2025-11-11  
 **Status**: ✅ Production Ready
-

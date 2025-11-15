@@ -1,12 +1,12 @@
 /**
  * API Integration Example Page
- * 
+ *
  * Demonstrates:
  * - Server Components with ISR
  * - Dynamic data fetching from multiple providers
  * - Loading, error, and empty states
  * - Client-side interactivity
- * 
+ *
  * @page
  */
 
@@ -23,7 +23,8 @@ import { getStations, getActiveProviderName } from '@/lib/api/data-providers';
 
 export const metadata: Metadata = {
   title: 'API Integration Example | Dynamic Stations',
-  description: 'Example page demonstrating API integration with ISR, multiple data providers, and dynamic React components',
+  description:
+    'Example page demonstrating API integration with ISR, multiple data providers, and dynamic React components',
   robots: {
     index: false, // Don't index example pages
     follow: false,
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
 
 /**
  * Incremental Static Regeneration (ISR)
- * 
+ *
  * - Revalidates every hour (3600 seconds)
  * - Pages are statically generated at build time
  * - After revalidation period, next request triggers regeneration in background
@@ -50,7 +51,7 @@ export const revalidate = 3600; // 1 hour
 
 /**
  * API Example Page
- * 
+ *
  * This is a Server Component that:
  * - Fetches data at request time (with ISR caching)
  * - Supports multiple data providers (Baserow, Airtable, Supabase, REST)
@@ -79,19 +80,19 @@ export default async function APIExamplePage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <header className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white">
               API Integration Example
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-              This page demonstrates dynamic data fetching with ISR, multiple data providers,
-              and comprehensive error handling.
+            <p className="mb-4 text-lg text-gray-600 dark:text-gray-300">
+              This page demonstrates dynamic data fetching with ISR, multiple
+              data providers, and comprehensive error handling.
             </p>
 
             {/* Provider info */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 dark:bg-primary-900/30 rounded-lg">
+            <div className="inline-flex items-center gap-2 rounded-lg bg-primary-50 px-4 py-2 dark:bg-primary-900/30">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Active Provider:
               </span>
@@ -106,14 +107,14 @@ export default async function APIExamplePage() {
       {/* Main content */}
       <main className="container mx-auto px-4 py-8">
         {/* Features list */}
-        <section className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <section className="mb-8 rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+          <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
             Features Demonstrated
           </h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-300">
+          <ul className="grid grid-cols-1 gap-3 text-sm text-gray-600 dark:text-gray-300 md:grid-cols-2">
             <li className="flex items-start gap-2">
               <svg
-                className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                className="text-green-500 mt-0.5 h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -128,7 +129,7 @@ export default async function APIExamplePage() {
             </li>
             <li className="flex items-start gap-2">
               <svg
-                className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                className="text-green-500 mt-0.5 h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -139,11 +140,13 @@ export default async function APIExamplePage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>Multiple data providers (Baserow, Airtable, Supabase, REST)</span>
+              <span>
+                Multiple data providers (Baserow, Airtable, Supabase, REST)
+              </span>
             </li>
             <li className="flex items-start gap-2">
               <svg
-                className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                className="text-green-500 mt-0.5 h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -158,7 +161,7 @@ export default async function APIExamplePage() {
             </li>
             <li className="flex items-start gap-2">
               <svg
-                className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                className="text-green-500 mt-0.5 h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -173,7 +176,7 @@ export default async function APIExamplePage() {
             </li>
             <li className="flex items-start gap-2">
               <svg
-                className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                className="text-green-500 mt-0.5 h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -188,7 +191,7 @@ export default async function APIExamplePage() {
             </li>
             <li className="flex items-start gap-2">
               <svg
-                className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                className="text-green-500 mt-0.5 h-5 w-5 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -207,7 +210,7 @@ export default async function APIExamplePage() {
         {/* Station list with Suspense boundary */}
         <Suspense fallback={<StationListLoading count={6} />}>
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+            <h2 className="mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
               Stations ({stations.length})
             </h2>
             <StationList
@@ -229,4 +232,3 @@ export default async function APIExamplePage() {
     </div>
   );
 }
-

@@ -15,7 +15,10 @@ interface SchemaMarkupProps {
  * Renders JSON-LD structured data in script tag
  * Google-recommended implementation
  */
-export function RichSchemaMarkup({ schema, id = 'schema-markup' }: SchemaMarkupProps) {
+export function RichSchemaMarkup({
+  schema,
+  id = 'schema-markup',
+}: SchemaMarkupProps) {
   const schemaJson = JSON.stringify(schema, null, 0); // Minified for production
 
   return (
@@ -35,11 +38,7 @@ export function MultipleSchemas({ schemas }: { schemas: object[] }) {
   return (
     <>
       {schemas.map((schema, index) => (
-        <RichSchemaMarkup
-          key={index}
-          schema={schema}
-          id={`schema-${index}`}
-        />
+        <RichSchemaMarkup key={index} schema={schema} id={`schema-${index}`} />
       ))}
     </>
   );
@@ -67,4 +66,3 @@ function validateSchema(schema: object): boolean {
 
   return true;
 }
-

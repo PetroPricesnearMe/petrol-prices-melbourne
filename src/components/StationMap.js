@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
  * Station Map Component
  * Interactive map for visualizing petrol stations with geolocation
  * Simplified version compatible with react-map-gl
- * 
+ *
  * @component
  * @param {Object} props - Component props
  * @param {Array} props.stations - Array of station objects with lat/lng
@@ -17,7 +17,7 @@ const StationMap = ({
   stations = [],
   onStationClick,
   selectedStation,
-  height = 500
+  height = 500,
 }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -32,7 +32,7 @@ const StationMap = ({
         (position) => {
           const location = {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
           };
           setUserLocation(location);
         },
@@ -45,14 +45,17 @@ const StationMap = ({
 
   // Get marker color based on fuel price
   const getMarkerColor = (station) => {
-    if (!station.fuelPrices || station.fuelPrices.length === 0) return '#6B7280';
+    if (!station.fuelPrices || station.fuelPrices.length === 0)
+      return '#6B7280';
 
-    const avgPrice = station.fuelPrices.reduce((sum, fp) =>
-      sum + parseFloat(fp.price || 0), 0
-    ) / station.fuelPrices.length;
+    const avgPrice =
+      station.fuelPrices.reduce(
+        (sum, fp) => sum + parseFloat(fp.price || 0),
+        0
+      ) / station.fuelPrices.length;
 
-    if (avgPrice < 1.80) return '#10B981'; // Green - cheap
-    if (avgPrice < 2.00) return '#F59E0B'; // Orange - moderate
+    if (avgPrice < 1.8) return '#10B981'; // Green - cheap
+    if (avgPrice < 2.0) return '#F59E0B'; // Orange - moderate
     return '#EF4444'; // Red - expensive
   };
 
@@ -63,25 +66,34 @@ const StationMap = ({
   };
 
   // Filter valid stations with coordinates
-  const validStations = stations.filter(s => s.latitude && s.longitude);
+  const validStations = stations.filter((s) => s.latitude && s.longitude);
 
   // Calculate map center
-  const mapCenter = validStations.length > 0
-    ? {
-      lat: validStations.reduce((sum, s) => sum + s.latitude, 0) / validStations.length,
-      lng: validStations.reduce((sum, s) => sum + s.longitude, 0) / validStations.length
-    }
-    : { lat: -37.8136, lng: 144.9631 }; // Default to Melbourne
+  const mapCenter =
+    validStations.length > 0
+      ? {
+          lat:
+            validStations.reduce((sum, s) => sum + s.latitude, 0) /
+            validStations.length,
+          lng:
+            validStations.reduce((sum, s) => sum + s.longitude, 0) /
+            validStations.length,
+        }
+      : { lat: -37.8136, lng: 144.9631 }; // Default to Melbourne
 
   // Build map URL with markers
   const buildMapUrl = () => {
-    const baseUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static';
+    const baseUrl =
+      'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static';
 
     // Add markers for stations (limit to first 50 for performance)
-    const markers = validStations.slice(0, 50).map(station => {
-      const color = getMarkerColor(station).replace('#', '');
-      return `pin-s+${color}(${station.longitude},${station.latitude})`;
-    }).join(',');
+    const markers = validStations
+      .slice(0, 50)
+      .map((station) => {
+        const color = getMarkerColor(station).replace('#', '');
+        return `pin-s+${color}(${station.longitude},${station.latitude})`;
+      })
+      .join(',');
 
     // If user location is available, add it
     const userMarker = userLocation
@@ -148,15 +160,24 @@ const StationMap = ({
       {/* Map Legend */}
       <div className="map-legend">
         <div className="legend-item">
-          <span className="legend-color" style={{ background: '#10B981' }}></span>
+          <span
+            className="legend-color"
+            style={{ background: '#10B981' }}
+          ></span>
           Low Price
         </div>
         <div className="legend-item">
-          <span className="legend-color" style={{ background: '#F59E0B' }}></span>
+          <span
+            className="legend-color"
+            style={{ background: '#F59E0B' }}
+          ></span>
           Medium Price
         </div>
         <div className="legend-item">
-          <span className="legend-color" style={{ background: '#EF4444' }}></span>
+          <span
+            className="legend-color"
+            style={{ background: '#EF4444' }}
+          ></span>
           High Price
         </div>
       </div>

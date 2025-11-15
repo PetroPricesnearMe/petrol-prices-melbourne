@@ -27,7 +27,8 @@ export function generateOrganizationSchema(baseUrl: string) {
       width: 512,
       height: 512,
     },
-    description: 'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations.',
+    description:
+      'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations.',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'AU',
@@ -58,7 +59,8 @@ export function generateWebsiteSchema(baseUrl: string) {
     '@id': `${baseUrl}/#website`,
     url: baseUrl,
     name: 'Petrol Price Near Me',
-    description: 'Compare live petrol prices from 250+ stations across Melbourne',
+    description:
+      'Compare live petrol prices from 250+ stations across Melbourne',
     publisher: {
       '@id': `${baseUrl}/#organization`,
     },
@@ -100,9 +102,12 @@ export function generateBreadcrumbSchema(
 /**
  * GasStation schema - Individual station page
  */
-export function generateStationSchema(baseUrl: string, station: Station): object {
+export function generateStationSchema(
+  baseUrl: string,
+  station: Station
+): object {
   const lowestPrice = getLowestFuelPrice(station.fuelPrices || []);
-  
+
   return {
     '@context': 'https://schema.org',
     '@type': 'GasStation',
@@ -119,28 +124,37 @@ export function generateStationSchema(baseUrl: string, station: Station): object
       postalCode: station.postcode,
       addressCountry: 'AU',
     },
-    geo: station.latitude && station.longitude ? {
-      '@type': 'GeoCoordinates',
-      latitude: station.latitude,
-      longitude: station.longitude,
-    } : undefined,
+    geo:
+      station.latitude && station.longitude
+        ? {
+            '@type': 'GeoCoordinates',
+            latitude: station.latitude,
+            longitude: station.longitude,
+          }
+        : undefined,
     image: station.image || `${baseUrl}/images/default-station.jpg`,
     priceRange: lowestPrice ? `$${lowestPrice.toFixed(2)}` : undefined,
-    openingHours: station.operatingHours ? formatOpeningHours(station.operatingHours) : undefined,
-    amenityFeature: station.amenities ? Object.keys(station.amenities)
-      .filter(key => station.amenities[key])
-      .map(amenity => ({
-        '@type': 'LocationFeatureSpecification',
-        name: amenity,
-        value: true,
-      })) : undefined,
-    aggregateRating: station.rating ? {
-      '@type': 'AggregateRating',
-      ratingValue: station.rating,
-      reviewCount: station.reviewCount || 0,
-      bestRating: 5,
-      worstRating: 1,
-    } : undefined,
+    openingHours: station.operatingHours
+      ? formatOpeningHours(station.operatingHours)
+      : undefined,
+    amenityFeature: station.amenities
+      ? Object.keys(station.amenities)
+          .filter((key) => station.amenities[key])
+          .map((amenity) => ({
+            '@type': 'LocationFeatureSpecification',
+            name: amenity,
+            value: true,
+          }))
+      : undefined,
+    aggregateRating: station.rating
+      ? {
+          '@type': 'AggregateRating',
+          ratingValue: station.rating,
+          reviewCount: station.reviewCount || 0,
+          bestRating: 5,
+          worstRating: 1,
+        }
+      : undefined,
     hasMap: `https://www.google.com/maps/search/?api=1&query=${station.latitude},${station.longitude}`,
   };
 }
@@ -148,7 +162,10 @@ export function generateStationSchema(baseUrl: string, station: Station): object
 /**
  * LocalBusiness schema - Alternative for better local SEO
  */
-export function generateLocalBusinessSchema(baseUrl: string, station: Station): object {
+export function generateLocalBusinessSchema(
+  baseUrl: string,
+  station: Station
+): object {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -157,7 +174,9 @@ export function generateLocalBusinessSchema(baseUrl: string, station: Station): 
     description: `${station.brand} petrol station in ${station.suburb || station.city}. Find the latest fuel prices and station information.`,
     url: `${baseUrl}/stations/${station.id}`,
     telephone: station.phone,
-    image: station.image || `${baseUrl}/images/stations/${station.brand?.toLowerCase()}.jpg`,
+    image:
+      station.image ||
+      `${baseUrl}/images/stations/${station.brand?.toLowerCase()}.jpg`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: station.address,
@@ -171,7 +190,9 @@ export function generateLocalBusinessSchema(baseUrl: string, station: Station): 
       latitude: station.latitude,
       longitude: station.longitude,
     },
-    openingHoursSpecification: station.operatingHours ? generateOpeningHoursSpec(station.operatingHours) : undefined,
+    openingHoursSpecification: station.operatingHours
+      ? generateOpeningHoursSpec(station.operatingHours)
+      : undefined,
     paymentAccepted: ['Cash', 'Credit Card', 'Debit Card'],
     currenciesAccepted: 'AUD',
   };
@@ -180,7 +201,11 @@ export function generateLocalBusinessSchema(baseUrl: string, station: Station): 
 /**
  * Offer schema - For fuel prices
  */
-export function generateFuelPriceSchema(baseUrl: string, station: Station, fuelPrice: FuelPrice): object {
+export function generateFuelPriceSchema(
+  baseUrl: string,
+  station: Station,
+  fuelPrice: FuelPrice
+): object {
   return {
     '@context': 'https://schema.org',
     '@type': 'Offer',
@@ -238,11 +263,13 @@ export function generateDirectoryListSchema(
 /**
  * FAQPage schema - For FAQ page
  */
-export function generateFAQSchema(faqs: Array<{ question: string; answer: string }>): object {
+export function generateFAQSchema(
+  faqs: Array<{ question: string; answer: string }>
+): object {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
+    mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: {
@@ -297,14 +324,22 @@ export function generateArticleSchema(
 
 function getLowestFuelPrice(prices: FuelPrice[]): number | null {
   if (!prices || prices.length === 0) return null;
-  return Math.min(...prices.map(p => p.price));
+  return Math.min(...prices.map((p) => p.price));
 }
 
 function formatOpeningHours(hours: any): string[] | undefined {
   if (!hours) return undefined;
-  
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  return days.map(day => {
+
+  const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  return days.map((day) => {
     const dayHours = hours[day.toLowerCase()];
     if (!dayHours || dayHours.closed) return `${day} Closed`;
     return `${day} ${dayHours.open}-${dayHours.close}`;
@@ -312,19 +347,29 @@ function formatOpeningHours(hours: any): string[] | undefined {
 }
 
 function generateOpeningHoursSpec(hours: any) {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  
-  return days.map(day => {
-    const dayHours = hours[day.toLowerCase()];
-    if (!dayHours || dayHours.closed) return null;
-    
-    return {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: day,
-      opens: dayHours.open,
-      closes: dayHours.close,
-    };
-  }).filter(Boolean);
+  const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+
+  return days
+    .map((day) => {
+      const dayHours = hours[day.toLowerCase()];
+      if (!dayHours || dayHours.closed) return null;
+
+      return {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: day,
+        opens: dayHours.open,
+        closes: dayHours.close,
+      };
+    })
+    .filter(Boolean);
 }
 
 /**
@@ -360,4 +405,3 @@ export function generatePageSchema(
 
   return combineSchemas(...schemas);
 }
-

@@ -1,8 +1,8 @@
 /**
  * Sample Detailed Listing Page
- * 
+ *
  * Example implementation of the detailed listing page component
- * 
+ *
  * @module app/listings/[id]/page
  */
 
@@ -13,7 +13,8 @@ const sampleListing = {
   id: '1',
   title: 'Modern Family Home in Melbourne',
   subtitle: 'Spacious 4-bedroom house with stunning city views',
-  description: 'This beautifully designed family home offers the perfect blend of modern luxury and comfortable living. Located in one of Melbourne\'s most sought-after neighborhoods, this property features an open-plan living area, gourmet kitchen, and private outdoor space. The home has been recently renovated with high-quality finishes throughout, including hardwood floors, stone benchtops, and premium appliances. With four generous bedrooms, three bathrooms, and multiple living areas, this home provides ample space for families of all sizes. The master suite includes a walk-in wardrobe and ensuite bathroom, while the remaining bedrooms share a family bathroom. The property also features a double garage, landscaped gardens, and a covered outdoor entertaining area perfect for year-round use.',
+  description:
+    "This beautifully designed family home offers the perfect blend of modern luxury and comfortable living. Located in one of Melbourne's most sought-after neighborhoods, this property features an open-plan living area, gourmet kitchen, and private outdoor space. The home has been recently renovated with high-quality finishes throughout, including hardwood floors, stone benchtops, and premium appliances. With four generous bedrooms, three bathrooms, and multiple living areas, this home provides ample space for families of all sizes. The master suite includes a walk-in wardrobe and ensuite bathroom, while the remaining bedrooms share a family bathroom. The property also features a double garage, landscaped gardens, and a covered outdoor entertaining area perfect for year-round use.",
   heroImage: '/images/listings/hero-house.jpg',
   images: [
     '/images/listings/house-1.jpg',
@@ -52,17 +53,17 @@ const sampleListing = {
   ],
   amenities: {
     'Air Conditioning': true,
-    'Heating': true,
-    'Dishwasher': true,
+    Heating: true,
+    Dishwasher: true,
     'Washing Machine': true,
-    'Dryer': true,
-    'Pool': false,
-    'Gym': false,
-    'Balcony': true,
-    'Garden': true,
-    'Parking': true,
-    'Security': true,
-    'Elevator': false,
+    Dryer: true,
+    Pool: false,
+    Gym: false,
+    Balcony: true,
+    Garden: true,
+    Parking: true,
+    Security: true,
+    Elevator: false,
   },
   contact: {
     phone: '+61 3 1234 5678',
@@ -76,7 +77,8 @@ const sampleListing = {
       id: '1',
       author: 'Sarah Johnson',
       rating: 5,
-      comment: 'Absolutely stunning property! The views from the living room are breathtaking, and the kitchen is a chef\'s dream. The location is perfect with easy access to the city and great schools nearby.',
+      comment:
+        "Absolutely stunning property! The views from the living room are breathtaking, and the kitchen is a chef's dream. The location is perfect with easy access to the city and great schools nearby.",
       date: '2024-01-15',
       avatar: '/images/avatars/sarah.jpg',
     },
@@ -84,7 +86,8 @@ const sampleListing = {
       id: '2',
       author: 'Michael Chen',
       rating: 5,
-      comment: 'We fell in love with this house the moment we walked in. The open-plan design is perfect for our family, and the outdoor space is ideal for entertaining. Highly recommended!',
+      comment:
+        'We fell in love with this house the moment we walked in. The open-plan design is perfect for our family, and the outdoor space is ideal for entertaining. Highly recommended!',
       date: '2024-01-10',
       avatar: '/images/avatars/michael.jpg',
     },
@@ -92,7 +95,8 @@ const sampleListing = {
       id: '3',
       author: 'Emma Williams',
       rating: 4,
-      comment: 'Beautiful home with great potential. The renovation work is top quality, and the location is excellent. The only minor issue is the street noise, but it\'s manageable.',
+      comment:
+        "Beautiful home with great potential. The renovation work is top quality, and the location is excellent. The only minor issue is the street noise, but it's manageable.",
       date: '2024-01-05',
       avatar: '/images/avatars/emma.jpg',
     },
@@ -100,7 +104,8 @@ const sampleListing = {
       id: '4',
       author: 'David Brown',
       rating: 5,
-      comment: 'Exceptional property in a prime location. The attention to detail in the renovation is impressive, and the garden is beautifully maintained. Perfect for families.',
+      comment:
+        'Exceptional property in a prime location. The attention to detail in the renovation is impressive, and the garden is beautifully maintained. Perfect for families.',
       date: '2023-12-28',
       avatar: '/images/avatars/david.jpg',
     },
@@ -108,7 +113,8 @@ const sampleListing = {
       id: '5',
       author: 'Lisa Anderson',
       rating: 4,
-      comment: 'Great family home with plenty of space. The kitchen is fantastic for cooking, and the bedrooms are all well-sized. The location is convenient for work and school.',
+      comment:
+        'Great family home with plenty of space. The kitchen is fantastic for cooking, and the bedrooms are all well-sized. The location is convenient for work and school.',
       date: '2023-12-20',
       avatar: '/images/avatars/lisa.jpg',
     },
@@ -119,8 +125,8 @@ const sampleListing = {
   },
   specifications: {
     'Property Type': 'House',
-    'Bedrooms': '4',
-    'Bathrooms': '3',
+    Bedrooms: '4',
+    Bathrooms: '3',
     'Car Spaces': '2',
     'Land Size': '600 sqm',
     'Building Size': '280 sqm',
@@ -130,7 +136,14 @@ const sampleListing = {
     'Water Rates': '$1,200/year',
   },
   category: 'Residential',
-  tags: ['Family Home', 'Modern', 'Renovated', 'City Views', 'Garden', 'Garage'],
+  tags: [
+    'Family Home',
+    'Modern',
+    'Renovated',
+    'City Views',
+    'Garden',
+    'Garage',
+  ],
 };
 
 export default function ListingDetailPage() {

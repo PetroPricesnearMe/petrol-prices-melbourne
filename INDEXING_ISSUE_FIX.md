@@ -1,6 +1,7 @@
 # Search Engine Indexing Issue - RESOLVED
 
 ## Status: ✅ Fixed and Deployed
+
 **Date**: October 16, 2025  
 **Commit**: 29657d1  
 **Action Required**: Monitor Vercel deployment, then request re-indexing in Google Search Console
@@ -10,26 +11,33 @@
 ## Problem Identified
 
 ### Primary Issue: Search Engine Rejection
+
 Your domain was being rejected for indexing with the error:
+
 > "We do not index this domain because it provides misleading technology profiles."
 
 ### Secondary Issue: Vercel Deployment Failure
+
 Deployment was failing with:
+
 > "Header at index 8 has invalid `source` pattern `/(.*).(?:jpg|jpeg|png|gif|svg|webp)$`"
 
 ## Root Causes Found
 
 ### 1. **Fake Aggregate Rating** ❌
+
 - **Issue**: WebApplication schema showed 4.8 stars with 1,250 reviews
 - **Problem**: No actual review system exists on the site
 - **Violation**: Google's structured data policies - fake reviews are strictly prohibited
 
 ### 2. **Fake Contact Information** ❌
+
 - **Issue**: Organization schema had phone number "+61-3-0000-0000"
 - **Problem**: Obviously fake placeholder phone number
 - **Violation**: Schema.org guidelines require real, verifiable contact information
 
 ### 3. **Misleading WebApplication Claims** ⚠️
+
 - **Issue**: Excessive claims in structured data without verification
 - **Problem**: Search engines detected mismatch between claimed features and reality
 
@@ -38,17 +46,20 @@ Deployment was failing with:
 ### Changes Made to `vercel.json`:
 
 **Deployment Error Fixed:**
+
 - **Issue**: Invalid regex patterns in header source configurations
 - **Error**: `Header at index 8 has invalid 'source' pattern`
 - **Root Cause**: Unescaped dots and unsupported `$` anchors in patterns
 
 **Patterns Fixed:**
+
 1. `"/(.*).(?:jpg|jpeg|png|gif|svg|webp)$"` → `"/(.*\\.(jpg|jpeg|png|gif|svg|webp))"`
 2. `"/static/js/(.*).js$"` → `"/static/js/(.*\\.js)"`
 3. `"/static/css/(.*).css$"` → `"/static/css/(.*\\.css)"`
 4. `"/(.*).(?:js|css)$"` → `"/(.*\\.(js|css))"`
 
 **Changes:**
+
 - Properly escaped dots with `\\.` for literal dot matching
 - Removed `$` end-of-line anchors (not supported by Vercel)
 - Changed from `(?:...)` to `(...)` for proper Vercel syntax
@@ -70,6 +81,7 @@ Deployment was failing with:
    - ✅ FAQPage schema (legitimate Q&A)
 
 ### Files Updated:
+
 - ✅ `public/index.html` - Source file corrected
 - ✅ `build/index.html` - Production build regenerated
 - ✅ All structured data now compliant with schema.org guidelines
@@ -77,6 +89,7 @@ Deployment was failing with:
 ## Next Steps to Restore Indexing
 
 ### 1. Deploy the Fixed Version
+
 ```bash
 # Commit and push changes
 git add public/index.html
@@ -87,7 +100,9 @@ git push origin main
 ```
 
 ### 2. Validate Your Structured Data
+
 Test your fixed structured data:
+
 - **Google Rich Results Test**: https://search.google.com/test/rich-results
 - **Schema.org Validator**: https://validator.schema.org/
 - **Test URL**: https://petrolpricesnearme.com.au/
@@ -120,15 +135,18 @@ Test your fixed structured data:
 ## What NOT to Do Going Forward
 
 ❌ **Never add fake reviews or ratings**
+
 - Only add `aggregateRating` if you have a real review system
 - Must be based on actual user reviews
 - Must be verifiable
 
 ❌ **Never use placeholder contact information**
+
 - Don't add phone/email unless it's real and monitored
 - Remove any "0000" or "example" placeholders
 
 ❌ **Don't overclaim in structured data**
+
 - Only claim features that actually exist
 - Don't exaggerate numbers (e.g., "millions of users" if you're new)
 - Keep descriptions accurate
@@ -151,6 +169,7 @@ If you want to add legitimate reviews later:
 ```
 
 **Requirements:**
+
 - Must have actual review system on site
 - Reviews must be visible to users
 - Must be real user-generated reviews
@@ -159,6 +178,7 @@ If you want to add legitimate reviews later:
 ## Technical Details
 
 ### Before (Problematic)
+
 ```json
 "aggregateRating": {
   "@type": "AggregateRating",
@@ -176,6 +196,7 @@ If you want to add legitimate reviews later:
 ```
 
 ### After (Compliant)
+
 ```json
 // No fake rating
 "featureList": [
@@ -214,4 +235,3 @@ If you want to add legitimate reviews later:
 **Status**: ✅ Fixed and Ready for Deployment  
 **Date**: October 16, 2025  
 **Impact**: Should resolve indexing rejection once deployed and re-crawled
-

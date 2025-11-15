@@ -8,7 +8,7 @@ import type { SWRConfiguration } from 'swr';
 // Custom fetcher function
 export const fetcher = async (url: string) => {
   const res = await fetch(url);
-  
+
   // If the status code is not in the range 200-299,
   // we still try to parse and throw it.
   if (!res.ok) {
@@ -18,7 +18,7 @@ export const fetcher = async (url: string) => {
     (error as any).status = res.status;
     throw error;
   }
-  
+
   return res.json();
 };
 
@@ -46,10 +46,10 @@ export const swrConfig: SWRConfiguration = {
   onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
     // Only retry on 408, 429, 500-599 errors
     if (error.status === 404) return;
-    
+
     // Only retry up to 3 times
     if (retryCount >= 3) return;
-    
+
     // Retry after 5 seconds
     setTimeout(() => revalidate({ retryCount }), 5000);
   },

@@ -15,12 +15,12 @@ import type { FuelTypeKey } from './listing';
 
 /** Available sort options */
 export type SortOption =
-  | 'price-low'      // Price: Low to High
-  | 'price-high'     // Price: High to Low
-  | 'distance'       // Nearest first (requires location)
-  | 'name'           // Alphabetical by name
-  | 'suburb'         // Alphabetical by suburb
-  | 'top-rated'      // Highest rated first
+  | 'price-low' // Price: Low to High
+  | 'price-high' // Price: High to Low
+  | 'distance' // Nearest first (requires location)
+  | 'name' // Alphabetical by name
+  | 'suburb' // Alphabetical by suburb
+  | 'top-rated' // Highest rated first
   | 'recently-updated'; // Most recently updated
 
 /** Sort direction */
@@ -48,17 +48,17 @@ export const SORT_OPTIONS: Record<SortOption, SortConfig> = {
     direction: 'desc',
     label: 'Price: High to Low',
   },
-  'distance': {
+  distance: {
     field: 'distance',
     direction: 'asc',
     label: 'Nearest First',
   },
-  'name': {
+  name: {
     field: 'name',
     direction: 'asc',
     label: 'Name (A-Z)',
   },
-  'suburb': {
+  suburb: {
     field: 'suburb',
     direction: 'asc',
     label: 'Suburb (A-Z)',
@@ -320,7 +320,15 @@ export function isSortOption(value: unknown): value is SortOption {
 export function isFuelTypeKey(value: unknown): value is FuelTypeKey {
   return (
     typeof value === 'string' &&
-    ['unleaded', 'diesel', 'premium95', 'premium98', 'lpg', 'e10', 'e85'].includes(value)
+    [
+      'unleaded',
+      'diesel',
+      'premium95',
+      'premium98',
+      'lpg',
+      'e10',
+      'e85',
+    ].includes(value)
   );
 }
 
@@ -335,7 +343,7 @@ export function hasActiveFilters(filters: FilterState): boolean {
     (filters.priceMax !== '' && filters.priceMax !== 0) ||
     filters.open24Hours === true ||
     filters.verifiedOnly === true ||
-    (filters.amenities && Object.values(filters.amenities).some(v => v))
+    (filters.amenities && Object.values(filters.amenities).some((v) => v))
   );
 }
 
@@ -366,17 +374,30 @@ export function filtersToQueryParams(filters: FilterState): URLQueryParams {
 }
 
 /** Parse URL query params to filters */
-export function queryParamsToFilters(params: URLQueryParams): PartialFilterState {
+export function queryParamsToFilters(
+  params: URLQueryParams
+): PartialFilterState {
   const filters: PartialFilterState = {};
 
   if (params.q && typeof params.q === 'string') filters.search = params.q;
-  if (params.fuel && typeof params.fuel === 'string' && isFuelTypeKey(params.fuel)) {
+  if (
+    params.fuel &&
+    typeof params.fuel === 'string' &&
+    isFuelTypeKey(params.fuel)
+  ) {
     filters.fuelType = params.fuel;
   }
-  if (params.brand && typeof params.brand === 'string') filters.brand = params.brand;
-  if (params.suburb && typeof params.suburb === 'string') filters.suburb = params.suburb;
-  if (params.region && typeof params.region === 'string') filters.region = params.region;
-  if (params.sort && typeof params.sort === 'string' && isSortOption(params.sort)) {
+  if (params.brand && typeof params.brand === 'string')
+    filters.brand = params.brand;
+  if (params.suburb && typeof params.suburb === 'string')
+    filters.suburb = params.suburb;
+  if (params.region && typeof params.region === 'string')
+    filters.region = params.region;
+  if (
+    params.sort &&
+    typeof params.sort === 'string' &&
+    isSortOption(params.sort)
+  ) {
     filters.sortBy = params.sort;
   }
   if (params.maxPrice && typeof params.maxPrice === 'string') {

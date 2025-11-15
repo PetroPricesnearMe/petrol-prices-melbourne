@@ -21,7 +21,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { type ReactNode } from 'react';
 
-import { fadeInUp, scaleIn, ANIMATION_DURATION, ANIMATION_EASING } from '@/utils/animations';
+import {
+  fadeInUp,
+  scaleIn,
+  ANIMATION_DURATION,
+  ANIMATION_EASING,
+} from '@/utils/animations';
 
 export interface EnhancedHeroSectionProps {
   /** Main heading text */
@@ -87,7 +92,7 @@ export function EnhancedHeroSection({
 
   return (
     <section
-      className={`relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden ${className}`}
+      className={`relative flex min-h-[80vh] items-center justify-center overflow-hidden md:min-h-screen ${className}`}
       role="banner"
       aria-label="Hero section"
     >
@@ -105,17 +110,17 @@ export function EnhancedHeroSection({
                 sizes="100vw"
               />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-purple-900/80 to-pink-900/70" />
+            <div className="from-blue-900/90 via-purple-900/80 to-pink-900/70 absolute inset-0 bg-gradient-to-br" />
           </>
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600" />
+          <div className="from-blue-600 via-purple-600 to-pink-600 absolute inset-0 bg-gradient-to-br" />
         )}
 
         {/* Animated background orbs */}
         {!shouldReduceMotion && (
           <>
             <motion.div
-              className="absolute top-20 left-20 w-72 h-72 bg-yellow-400/20 rounded-full blur-3xl"
+              className="bg-yellow-400/20 absolute left-20 top-20 h-72 w-72 rounded-full blur-3xl"
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.3, 0.6, 0.3],
@@ -128,7 +133,7 @@ export function EnhancedHeroSection({
               aria-hidden="true"
             />
             <motion.div
-              className="absolute bottom-20 right-20 w-96 h-96 bg-pink-400/20 rounded-full blur-3xl"
+              className="bg-pink-400/20 absolute bottom-20 right-20 h-96 w-96 rounded-full blur-3xl"
               animate={{
                 scale: [1.2, 1, 1.2],
                 opacity: [0.4, 0.2, 0.4],
@@ -150,7 +155,7 @@ export function EnhancedHeroSection({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
         <div className="text-center">
           {/* Badge */}
           {showBadges && (
@@ -158,9 +163,12 @@ export function EnhancedHeroSection({
               initial="hidden"
               animate="visible"
               variants={badgesVariants}
-              className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-lg"
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 shadow-lg backdrop-blur-md"
             >
-              <Sparkles className="w-4 h-4 text-yellow-300" aria-hidden="true" />
+              <Sparkles
+                className="text-yellow-300 h-4 w-4"
+                aria-hidden="true"
+              />
               <span className="text-sm font-semibold text-white">
                 Real-time fuel prices updated daily
               </span>
@@ -172,10 +180,10 @@ export function EnhancedHeroSection({
             initial="hidden"
             animate="visible"
             variants={headingVariants}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight"
+            className="mb-6 text-4xl font-black leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
           >
             {title.split(' ').slice(0, -2).join(' ')}{' '}
-            <span className="bg-gradient-to-r from-yellow-300 via-orange-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="from-yellow-300 via-orange-400 to-pink-400 bg-gradient-to-r bg-clip-text text-transparent">
               {title.split(' ').slice(-2).join(' ')}
             </span>
           </motion.h1>
@@ -186,7 +194,7 @@ export function EnhancedHeroSection({
               initial="hidden"
               animate="visible"
               variants={subtitleVariants}
-              className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed"
+              className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-gray-200 sm:text-xl md:text-2xl"
             >
               {subtitle}
             </motion.p>
@@ -197,22 +205,25 @@ export function EnhancedHeroSection({
             initial="hidden"
             animate="visible"
             variants={ctaVariants}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+            className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <Link
               href={primaryCtaLink}
-              className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-blue-700 font-bold rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-300 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600"
+              className="text-blue-700 focus-visible:ring-yellow-300 focus-visible:ring-offset-blue-600 group relative inline-flex transform items-center justify-center rounded-2xl bg-white px-8 py-4 font-bold shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2"
               aria-label={primaryCtaText}
             >
               {primaryCtaText}
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-              <span className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-300 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity -z-10" />
+              <ArrowRight
+                className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              />
+              <span className="from-yellow-300 to-orange-300 absolute inset-0 -z-10 rounded-2xl bg-gradient-to-r opacity-0 transition-opacity group-hover:opacity-100" />
             </Link>
 
             {secondaryCtaText && secondaryCtaLink && (
               <Link
                 href={secondaryCtaLink}
-                className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-md text-white font-bold rounded-2xl border-2 border-white/30 shadow-lg hover:bg-white/20 transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/50"
+                className="inline-flex items-center justify-center rounded-2xl border-2 border-white/30 bg-white/10 px-8 py-4 font-bold text-white shadow-lg backdrop-blur-md transition-all duration-300 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/50"
                 aria-label={secondaryCtaText}
               >
                 {secondaryCtaText}
@@ -229,14 +240,25 @@ export function EnhancedHeroSection({
               className="flex flex-wrap items-center justify-center gap-6 text-white"
             >
               <div className="flex items-center gap-2">
-                <TrendingDown className="w-5 h-5 text-green-300" aria-hidden="true" />
-                <span className="text-sm font-medium">Save up to $50/month</span>
+                <TrendingDown
+                  className="text-green-300 h-5 w-5"
+                  aria-hidden="true"
+                />
+                <span className="text-sm font-medium">
+                  Save up to $50/month
+                </span>
               </div>
-              <div className="hidden sm:block w-1 h-1 bg-white/40 rounded-full" aria-hidden="true" />
+              <div
+                className="hidden h-1 w-1 rounded-full bg-white/40 sm:block"
+                aria-hidden="true"
+              />
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">250+ Stations</span>
               </div>
-              <div className="hidden sm:block w-1 h-1 bg-white/40 rounded-full" aria-hidden="true" />
+              <div
+                className="hidden h-1 w-1 rounded-full bg-white/40 sm:block"
+                aria-hidden="true"
+              />
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">Real-time Prices</span>
               </div>
@@ -249,7 +271,10 @@ export function EnhancedHeroSection({
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent dark:from-gray-900" aria-hidden="true" />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent dark:from-gray-900"
+        aria-hidden="true"
+      />
     </section>
   );
 }

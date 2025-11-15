@@ -140,8 +140,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .trends-dashboard {
@@ -185,7 +189,8 @@
   margin: 0;
 }
 
-.trend-icon, .summary-icon {
+.trend-icon,
+.summary-icon {
   font-size: 1.5rem;
 }
 
@@ -193,7 +198,8 @@
   text-align: center;
 }
 
-.current-price, .average-price {
+.current-price,
+.average-price {
   font-size: 2rem;
   font-weight: 800;
   color: var(--primary-color);
@@ -207,7 +213,8 @@
   margin-bottom: 0.5rem;
 }
 
-.trend-description, .summary-description {
+.trend-description,
+.summary-description {
   font-size: 0.9rem;
   color: var(--text-secondary);
   font-weight: 500;
@@ -399,39 +406,41 @@
   .header-content h1 {
     font-size: 2rem;
   }
-  
+
   .trends-controls {
     gap: 1.5rem;
   }
-  
-  .fuel-type-buttons, .timeframe-buttons {
+
+  .fuel-type-buttons,
+  .timeframe-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
-  .fuel-btn, .timeframe-btn {
+
+  .fuel-btn,
+  .timeframe-btn {
     width: 100%;
     max-width: 300px;
     justify-content: center;
   }
-  
+
   .trend-summary {
     grid-template-columns: 1fr;
   }
-  
+
   .insights-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .chart-features {
     grid-template-columns: 1fr;
   }
-  
+
   .cta-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .cta-buttons .btn {
     width: 100%;
     max-width: 300px;
@@ -443,23 +452,25 @@
   .trends-header {
     padding: 1.5rem 0;
   }
-  
+
   .header-content h1 {
     font-size: 1.75rem;
   }
-  
+
   .trends-content {
     padding: 1rem 0;
   }
-  
-  .summary-card, .chart-container, .insights-section {
+
+  .summary-card,
+  .chart-container,
+  .insights-section {
     padding: 1.5rem;
   }
-  
+
   .cta-section {
     padding: 2rem 1.5rem;
   }
-  
+
   .cta-section h3 {
     font-size: 1.5rem;
   }

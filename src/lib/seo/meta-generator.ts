@@ -9,7 +9,8 @@ import type { Metadata } from 'next';
 import type { Station } from '@/types/station';
 
 const DEFAULT_SITE_NAME = 'Petrol Price Near Me';
-const _DEFAULT_DESCRIPTION = 'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations.';
+const _DEFAULT_DESCRIPTION =
+  'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations.';
 const DEFAULT_IMAGE = '/images/og-image.jpg';
 
 // ============================================================================
@@ -21,8 +22,10 @@ const DEFAULT_IMAGE = '/images/og-image.jpg';
  */
 export function generateHomeMetadata(baseUrl: string): Metadata {
   return {
-    title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L | Melbourne Fuel Finder',
-    description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
+    title:
+      'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L | Melbourne Fuel Finder',
+    description:
+      'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
     keywords: [
       'petrol prices near me',
       'cheap fuel melbourne',
@@ -41,7 +44,8 @@ export function generateHomeMetadata(baseUrl: string): Metadata {
       url: baseUrl,
       siteName: DEFAULT_SITE_NAME,
       title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L',
-      description: 'Compare live petrol prices from 250+ stations in Melbourne. Save money on every fill-up!',
+      description:
+        'Compare live petrol prices from 250+ stations in Melbourne. Save money on every fill-up!',
       images: [
         {
           url: `${baseUrl}${DEFAULT_IMAGE}`,
@@ -55,7 +59,8 @@ export function generateHomeMetadata(baseUrl: string): Metadata {
     twitter: {
       card: 'summary_large_image',
       title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L',
-      description: 'Compare live petrol prices from 250+ stations in Melbourne.',
+      description:
+        'Compare live petrol prices from 250+ stations in Melbourne.',
       images: [`${baseUrl}/images/twitter-card.jpg`],
       creator: '@ppnmelbourne',
       site: '@ppnmelbourne',
@@ -98,7 +103,7 @@ export function generateDirectoryMetadata(
   } = {}
 ): Metadata {
   const { suburb, brand, totalStations = 250 } = options;
-  
+
   let title = 'Petrol Station Directory';
   let description = `Browse ${totalStations} petrol stations in Melbourne`;
   let canonical = `${baseUrl}/directory`;
@@ -136,7 +141,9 @@ export function generateDirectoryMetadata(
           url: `${baseUrl}/images/og-directory.jpg`,
           width: 1200,
           height: 630,
-          alt: suburb ? `Petrol Stations in ${suburb}` : 'Petrol Station Directory',
+          alt: suburb
+            ? `Petrol Stations in ${suburb}`
+            : 'Petrol Station Directory',
         },
       ],
     },
@@ -165,7 +172,7 @@ export function generateStationMetadata(
 ): Metadata {
   const lowestPrice = getLowestFuelPrice(station.fuelPrices || []);
   const priceText = lowestPrice ? `from ${lowestPrice.toFixed(1)}¢/L` : '';
-  
+
   const title = `${station.name} - Fuel Prices ${priceText} | ${station.suburb || station.city}`;
   const description = `${station.name} in ${station.suburb || station.city}. ${
     lowestPrice ? `Unleaded ${priceText}. ` : ''
@@ -191,7 +198,9 @@ export function generateStationMetadata(
       description,
       images: [
         {
-          url: station.image || `${baseUrl}/images/stations/${station.brand?.toLowerCase()}-og.jpg`,
+          url:
+            station.image ||
+            `${baseUrl}/images/stations/${station.brand?.toLowerCase()}-og.jpg`,
           width: 1200,
           height: 630,
           alt: `${station.name} - ${station.suburb || station.city}`,
@@ -215,7 +224,7 @@ export function generateStationMetadata(
       'geo.position': `${station.latitude};${station.longitude}`,
       'geo.placename': station.suburb || station.city,
       'geo.region': 'AU-VIC',
-      'ICBM': `${station.latitude}, ${station.longitude}`,
+      ICBM: `${station.latitude}, ${station.longitude}`,
     },
   };
 }
@@ -274,7 +283,8 @@ export function generateSuburbMetadata(
 export function generateMapMetadata(baseUrl: string): Metadata {
   return {
     title: 'Interactive Petrol Station Map | Find Fuel Near You',
-    description: 'Explore 250+ petrol stations on an interactive map. Find the nearest and cheapest fuel with live prices, directions, and filters.',
+    description:
+      'Explore 250+ petrol stations on an interactive map. Find the nearest and cheapest fuel with live prices, directions, and filters.',
     keywords: [
       'petrol station map',
       'fuel station map melbourne',
@@ -288,7 +298,8 @@ export function generateMapMetadata(baseUrl: string): Metadata {
       url: `${baseUrl}/map`,
       siteName: DEFAULT_SITE_NAME,
       title: 'Interactive Petrol Station Map',
-      description: 'Find the nearest petrol stations with live fuel prices on an interactive map.',
+      description:
+        'Find the nearest petrol stations with live fuel prices on an interactive map.',
       images: [
         {
           url: `${baseUrl}/images/og-map.jpg`,
@@ -315,7 +326,7 @@ export function generateMapMetadata(baseUrl: string): Metadata {
 
 function getLowestFuelPrice(prices: FuelPrice[]): number | null {
   if (!prices || prices.length === 0) return null;
-  const validPrices = prices.filter(p => p.price > 0).map(p => p.price);
+  const validPrices = prices.filter((p) => p.price > 0).map((p) => p.price);
   return validPrices.length > 0 ? Math.min(...validPrices) : null;
 }
 
@@ -362,13 +373,14 @@ export function generateCustomMetadata(
     alternates: {
       canonical: `${baseUrl}${options.path}`,
     },
-    robots: options.noIndex ? {
-      index: false,
-      follow: false,
-    } : {
-      index: true,
-      follow: true,
-    },
+    robots: options.noIndex
+      ? {
+          index: false,
+          follow: false,
+        }
+      : {
+          index: true,
+          follow: true,
+        },
   };
 }
-

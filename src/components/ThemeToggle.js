@@ -1,9 +1,9 @@
 /**
  * ThemeToggle Component
- * 
+ *
  * Accessible theme switcher component
  * Supports light, dark, and system themes
- * 
+ *
  * @component
  */
 
@@ -42,8 +42,8 @@ const ThemeToggle = ({ variant = 'button', className = '' }) => {
   // Prevent hydration mismatch
   if (!mounted) {
     return (
-      <div className={`w-11 h-11 ${className}`} aria-hidden="true">
-        <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
+      <div className={`h-11 w-11 ${className}`} aria-hidden="true">
+        <div className="h-full w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
       </div>
     );
   }
@@ -59,27 +59,37 @@ const ThemeToggle = ({ variant = 'button', className = '' }) => {
           id="theme-select"
           value={currentTheme}
           onChange={handleSelectChange}
-          className="appearance-none pl-10 pr-10 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors cursor-pointer"
+          className="cursor-pointer appearance-none rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-10 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
           aria-label="Theme selection"
         >
           <option value="light">Light</option>
           <option value="dark">Dark</option>
           <option value="system">System</option>
         </select>
-        
+
         {/* Icon */}
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+        <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2">
           {activeTheme === 'dark' ? (
-            <MoonIcon className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+            <MoonIcon className="h-4 w-4 text-gray-700 dark:text-gray-300" />
           ) : (
-            <SunIcon className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+            <SunIcon className="h-4 w-4 text-gray-700 dark:text-gray-300" />
           )}
         </div>
 
         {/* Dropdown arrow */}
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-          <svg className="w-4 h-4 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+          <svg
+            className="h-4 w-4 text-gray-700 dark:text-gray-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </div>
       </div>
@@ -90,26 +100,26 @@ const ThemeToggle = ({ variant = 'button', className = '' }) => {
   return (
     <button
       onClick={handleToggle}
-      className={`relative inline-flex items-center justify-center w-11 h-11 p-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-colors ${className}`}
+      className={`relative inline-flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 p-2.5 transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900 ${className}`}
       aria-label={`Switch to ${activeTheme === 'dark' ? 'light' : 'dark'} mode`}
       aria-pressed={activeTheme === 'dark'}
       type="button"
     >
       {/* Sun icon (light mode) */}
       <SunIcon
-        className={`absolute w-6 h-6 text-amber-500 transition-all duration-300 ${
+        className={`text-amber-500 absolute h-6 w-6 transition-all duration-300 ${
           activeTheme === 'dark'
-            ? 'opacity-0 rotate-90 scale-0'
-            : 'opacity-100 rotate-0 scale-100'
+            ? 'rotate-90 scale-0 opacity-0'
+            : 'rotate-0 scale-100 opacity-100'
         }`}
       />
-      
+
       {/* Moon icon (dark mode) */}
       <MoonIcon
-        className={`absolute w-6 h-6 text-blue-400 transition-all duration-300 ${
+        className={`text-blue-400 absolute h-6 w-6 transition-all duration-300 ${
           activeTheme === 'dark'
-            ? 'opacity-100 rotate-0 scale-100'
-            : 'opacity-0 -rotate-90 scale-0'
+            ? 'rotate-0 scale-100 opacity-100'
+            : '-rotate-90 scale-0 opacity-0'
         }`}
       />
     </button>
@@ -153,4 +163,3 @@ const MoonIcon = ({ className }) => (
 );
 
 export default ThemeToggle;
-

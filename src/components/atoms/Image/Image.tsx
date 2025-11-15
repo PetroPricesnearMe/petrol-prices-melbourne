@@ -18,30 +18,31 @@ export interface OptimizedImageProps extends Omit<NextImageProps, 'onLoad'> {
    * @default false
    */
   isHero?: boolean;
-  
+
   /**
    * Show loading skeleton
    * @default true
    */
   showSkeleton?: boolean;
-  
+
   /**
    * Custom skeleton className
    */
   skeletonClassName?: string;
-  
+
   /**
    * Aspect ratio (e.g., '16/9', '4/3')
    */
   aspectRatio?: string;
-  
+
   /**
    * Callback when image loads
    */
   onLoad?: () => void;
 }
 
-const DEFAULT_BLUR_DATA = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=';
+const DEFAULT_BLUR_DATA =
+  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjQ3NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=';
 
 /**
  * Optimized image component for Next.js
@@ -51,7 +52,7 @@ const DEFAULT_BLUR_DATA = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAwIiBoZWl
  * - Responsive sizing
  * - Blur placeholders
  * - CLS prevention
- * 
+ *
  * @example
  * <Image
  *   src="/hero.jpg"
@@ -84,16 +85,16 @@ export function Image({
   // Auto-configure for hero images
   const isPriority = priority ?? isHero;
   const imageQuality = quality ?? (isHero ? 90 : 75);
-  
+
   // Default responsive sizes
-  const defaultSizes = props.sizes || (
-    props.fill 
+  const defaultSizes =
+    props.sizes ||
+    (props.fill
       ? '100vw'
-      : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
-  );
+      : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw');
 
   return (
-    <div 
+    <div
       className={cn('relative overflow-hidden', className)}
       style={aspectRatio ? { aspectRatio } : undefined}
     >
@@ -101,7 +102,7 @@ export function Image({
       {showSkeleton && !isLoaded && (
         <div
           className={cn(
-            'absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse',
+            'absolute inset-0 animate-pulse bg-gray-200 dark:bg-gray-700',
             skeletonClassName
           )}
           aria-hidden="true"
@@ -115,7 +116,10 @@ export function Image({
         quality={imageQuality}
         sizes={defaultSizes}
         placeholder={placeholder}
-        blurDataURL={blurDataURL || (placeholder === 'blur' ? DEFAULT_BLUR_DATA : undefined)}
+        blurDataURL={
+          blurDataURL ||
+          (placeholder === 'blur' ? DEFAULT_BLUR_DATA : undefined)
+        }
         onLoad={handleLoad}
         loading={isPriority ? undefined : 'lazy'}
         fetchPriority={isHero ? 'high' : 'auto'}
@@ -153,4 +157,3 @@ export function Avatar({
     />
   );
 }
-

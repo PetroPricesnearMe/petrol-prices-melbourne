@@ -9,7 +9,9 @@ Station cards now display beautiful brand logos with color-coded styling!
 ## 🎯 What Was Implemented
 
 ### 1. **Brand Logo Display** 🏢
+
 Each station card now has:
+
 - ✅ **Brand logo header** with gradient background
 - ✅ **Color-coded styling** matching brand identity
 - ✅ **Fallback handling** for missing logos
@@ -17,9 +19,11 @@ Each station card now has:
 - ✅ **Responsive design** for all screen sizes
 
 ### 2. **Brand Image Utility** 🛠️
+
 **File:** `src/utils/brandImages.ts`
 
 **Supported Brands:**
+
 - Shell (Red & Yellow)
 - BP (Green)
 - Caltex/Ampol (Blue & Red)
@@ -31,6 +35,7 @@ Each station card now has:
 - APCO (Red & Black)
 
 **Features:**
+
 ```typescript
 // Get brand information
 const brandInfo = getBrandInfo('Shell');
@@ -47,9 +52,11 @@ const className = getBrandClass('7-Eleven');
 ```
 
 ### 3. **Brand Styles** 🎨
+
 **File:** `src/styles/brand-styles.css`
 
 **Features:**
+
 - Brand-specific color gradients
 - Custom badge styling
 - Hover effects
@@ -61,6 +68,7 @@ const className = getBrandClass('7-Eleven');
 ## 📸 Visual Changes
 
 ### Before
+
 ```
 ┌─────────────────┐
 │ Station Name    │
@@ -72,6 +80,7 @@ const className = getBrandClass('7-Eleven');
 ```
 
 ### After
+
 ```
 ┌─────────────────┐
 │  ╔═══════╗  ✓  │ <- Brand Logo + Verified
@@ -91,23 +100,27 @@ const className = getBrandClass('7-Eleven');
 ## 🎨 Brand Colors
 
 ### Shell
+
 - **Logo:** `/images/brands/shell.svg`
 - **Primary:** Red (#DD1D21)
 - **Secondary:** Yellow (#FBCE07)
 - **Badge:** Red-to-Yellow gradient
 
 ### BP
+
 - **Logo:** `/images/brands/bp.svg`
 - **Primary:** Green (#00A850)
 - **Badge:** Solid green
 
 ### 7-Eleven
+
 - **Logo:** `/images/brands/7-eleven.svg`
 - **Primary:** Orange (#FF6201)
 - **Secondary:** Green (#008848)
 - **Badge:** Orange-to-Green gradient
 
 ### Caltex/Ampol
+
 - **Logo:** `/images/brands/caltex.svg` / `ampol.svg`
 - **Primary:** Blue (#003DA5)
 - **Secondary:** Red (#ED1C24)
@@ -162,7 +175,7 @@ const brandClass = getBrandClass(station.brand);
 ### Logo Display with Fallback
 
 ```tsx
-<div className="relative w-32 h-16">
+<div className="relative h-16 w-32">
   <Image
     src={brandInfo.logo}
     alt={`${brandInfo.name} logo`}
@@ -180,11 +193,11 @@ const brandClass = getBrandClass(station.brand);
 
 ```tsx
 <div
-  className="relative h-24 flex items-center justify-center"
+  className="relative flex h-24 items-center justify-center"
   style={{
     background: `linear-gradient(135deg,
       ${brandInfo.color}15 0%,
-      ${brandInfo.fallback}05 100%)`
+      ${brandInfo.fallback}05 100%)`,
   }}
 >
   {/* Logo goes here */}
@@ -196,11 +209,13 @@ const brandClass = getBrandClass(station.brand);
 ## 🎯 Features
 
 ### 1. **Smart Brand Matching**
+
 - Case-insensitive
 - Partial matching (e.g., "Shell Carlton" matches "Shell")
 - Alternative names (e.g., "7-Eleven" or "Seven Eleven")
 
 ### 2. **Responsive Design**
+
 ```css
 /* Mobile */
 @media (max-width: 768px) {
@@ -216,6 +231,7 @@ const brandClass = getBrandClass(station.brand);
 ```
 
 ### 3. **Dark Mode Support**
+
 ```css
 @media (prefers-color-scheme: dark) {
   Brand header: Darker gradients
@@ -225,6 +241,7 @@ const brandClass = getBrandClass(station.brand);
 ```
 
 ### 4. **Accessibility**
+
 - Alt text for all logos
 - Verified badge with tooltip
 - High contrast ratios
@@ -237,15 +254,17 @@ const brandClass = getBrandClass(station.brand);
 ### Add New Brand
 
 **1. Add logo to `/public/images/brands/`**
+
 ```
 newbrand.svg
 ```
 
 **2. Update `brandImages.ts`**
+
 ```typescript
 export const BRAND_LOGOS: Record<string, BrandInfo> = {
   // ...existing brands
-  'newbrand': {
+  newbrand: {
     name: 'New Brand',
     logo: '/images/brands/newbrand.svg',
     color: '#FF0000',
@@ -255,19 +274,21 @@ export const BRAND_LOGOS: Record<string, BrandInfo> = {
 ```
 
 **3. Add brand styles to `brand-styles.css`**
+
 ```css
 .brand-newbrand {
-  --brand-primary: #FF0000;
-  --brand-secondary: #0000FF;
+  --brand-primary: #ff0000;
+  --brand-secondary: #0000ff;
 }
 
 .brand-newbrand.badge {
-  background: linear-gradient(135deg, #FF0000 0%, #0000FF 100%);
+  background: linear-gradient(135deg, #ff0000 0%, #0000ff 100%);
   color: white;
 }
 ```
 
 **4. Update getBrandClass function**
+
 ```typescript
 if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 ```
@@ -288,7 +309,9 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 ### Change Header Height
 
 ```tsx
-<div className="relative h-32"> {/* Taller */}
+<div className="relative h-32">
+  {' '}
+  {/* Taller */}
   {/* Logo */}
 </div>
 ```
@@ -297,10 +320,10 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 
 ```css
 /* In brand-styles.css */
-.badge[class*="brand-"] {
-  font-weight: 700;          /* Bolder */
-  padding: 0.75rem 1.25rem;  /* Larger */
-  border-radius: 12px;       /* More rounded */
+.badge[class*='brand-'] {
+  font-weight: 700; /* Bolder */
+  padding: 0.75rem 1.25rem; /* Larger */
+  border-radius: 12px; /* More rounded */
 }
 ```
 
@@ -313,6 +336,7 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 **Problem:** Image returns 404
 
 **Solution:**
+
 1. Check file exists in `/public/images/brands/`
 2. Verify filename matches exactly (case-sensitive)
 3. Check image format (SVG, PNG, JPG supported)
@@ -323,6 +347,7 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 **Problem:** Brand colors don't match
 
 **Solution:**
+
 1. Update colors in `brandImages.ts`
 2. Update CSS in `brand-styles.css`
 3. Check `getBrandClass()` returns correct class
@@ -332,6 +357,7 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 **Problem:** Default logo appears instead of brand logo
 
 **Solution:**
+
 1. Check brand name spelling
 2. Verify brand mapping in `BRAND_LOGOS`
 3. Add to `getBrandClass()` if needed
@@ -342,12 +368,14 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 ## 📊 Performance
 
 ### Image Optimization
+
 - Next.js automatic image optimization
 - Lazy loading with `loading="lazy"`
 - Proper sizing with `fill` prop
 - SVG format for scalability
 
 ### CSS Optimization
+
 - Minimal CSS (~2KB)
 - No external dependencies
 - Critical CSS inlined
@@ -378,6 +406,7 @@ if (normalizedBrand.includes('newbrand')) return 'brand-newbrand';
 **After:** Beautiful brand logos with color-coded styling!
 
 **Benefits:**
+
 - 🎨 Better visual appeal
 - 🏢 Instant brand recognition
 - 💼 Professional appearance

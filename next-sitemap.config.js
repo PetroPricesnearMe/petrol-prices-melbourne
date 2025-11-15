@@ -2,12 +2,27 @@
  * next-sitemap Configuration
  * Automatically generates sitemap.xml and robots.txt
  *
+ * Environment-aware configuration:
+ * - Production: Full sitemap and robots.txt with allow rules
+ * - Staging: Disallow all crawlers to prevent indexing
+ * - Development: Disallow all crawlers
+ *
  * @see https://github.com/iamvishnusankar/next-sitemap
  */
 
+// Detect environment
+const isProduction = process.env.NODE_ENV === 'production';
+const isStaging =
+  process.env.NEXT_PUBLIC_ENV === 'staging' ||
+  process.env.VERCEL_ENV === 'preview' ||
+  process.env.NEXT_PUBLIC_APP_URL?.includes('staging') ||
+  process.env.NEXT_PUBLIC_APP_URL?.includes('preview');
+const siteUrl =
+  process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au',
+  siteUrl,
   generateRobotsTxt: true,
   generateIndexSitemap: true,
   sitemapSize: 7000,
@@ -29,59 +44,85 @@ module.exports = {
 
   // Robots.txt configuration
   robotsTxtOptions: {
-    policies: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: [
-          '/api/',
-          '/_next/',
-          '/admin/',
-          '/auth/',
-          '/private/',
-          '/hero-example',
-          '/map-demo',
-          '/*?sort=*', // Noindex sort parameters
-          '/*?filter=*', // Noindex filter parameters
-          '/*?filters=*', // Noindex filters parameters
-          '/*?page=*', // Noindex pagination parameters (except page 1)
-          '/*?search=*', // Noindex search parameters
-          '/*?q=*', // Noindex query parameters
-          '/*?s=*', // Noindex search variant
-          '/*?category=*', // Noindex category filters
-          '/*?brand=*', // Noindex brand filters
-          '/*?fuel=*', // Noindex fuel type filters
-          '/*?amenity=*', // Noindex amenity filters
-        ],
-      },
-      {
-        userAgent: 'Googlebot',
-        allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/', '/hero-example', '/map-demo'],
-        crawlDelay: 0.5,
-      },
-      {
-        userAgent: 'Bingbot',
-        allow: '/',
-        disallow: ['/api/', '/_next/', '/admin/', '/hero-example', '/map-demo'],
-        crawlDelay: 1,
-      },
-      {
-        userAgent: 'GPTBot',
-        disallow: ['/'], // Block AI scrapers if desired
-      },
-      {
-        userAgent: 'CCBot',
-        disallow: ['/'], // Block Common Crawl
-      },
-    ],
-    additionalSitemaps: [
-      `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}/server-sitemap.xml`,
-    ],
+    policies:
+      isStaging || !isProduction
+        ? [
+            // Staging/Development: Disallow all crawlers
+            {
+              userAgent: '*',
+              disallow: ['/'],
+            },
+          ]
+        : [
+            // Production: Allow with proper rules
+            {
+              userAgent: '*',
+              allow: '/',
+              disallow: [
+                '/api/',
+                '/_next/',
+                '/admin/',
+                '/auth/',
+                '/private/',
+                '/hero-example',
+                '/map-demo',
+                '/*?sort=*', // Noindex sort parameters
+                '/*?filter=*', // Noindex filter parameters
+                '/*?filters=*', // Noindex filters parameters
+                '/*?page=*', // Noindex pagination parameters (except page 1)
+                '/*?search=*', // Noindex search parameters
+                '/*?q=*', // Noindex query parameters
+                '/*?s=*', // Noindex search variant
+                '/*?category=*', // Noindex category filters
+                '/*?brand=*', // Noindex brand filters
+                '/*?fuel=*', // Noindex fuel type filters
+                '/*?amenity=*', // Noindex amenity filters
+              ],
+            },
+            {
+              userAgent: 'Googlebot',
+              allow: '/',
+              disallow: [
+                '/api/',
+                '/_next/',
+                '/admin/',
+                '/hero-example',
+                '/map-demo',
+              ],
+              crawlDelay: 0.5,
+            },
+            {
+              userAgent: 'Bingbot',
+              allow: '/',
+              disallow: [
+                '/api/',
+                '/_next/',
+                '/admin/',
+                '/hero-example',
+                '/map-demo',
+              ],
+              crawlDelay: 1,
+            },
+            {
+              userAgent: 'GPTBot',
+              disallow: ['/'], // Block AI scrapers if desired
+            },
+            {
+              userAgent: 'CCBot',
+              disallow: ['/'], // Block Common Crawl
+            },
+          ],
+    additionalSitemaps:
+      isProduction && !isStaging ? [`${siteUrl}/server-sitemap.xml`] : [],
   },
 
   // Transform function to customize each URL entry
   transform: async (config, path) => {
+    // Don't generate sitemap entries for staging/development
+    if (isStaging || !isProduction) {
+      return null;
+    }
+
     // Default values
     let priority = config.priority;
     let changefreq = config.changefreq;
@@ -155,9 +196,7 @@ module.exports = {
     ];
 
     for (const region of regions) {
-      result.push(
-        await config.transform(config, `/regions/${region}`)
-      );
+      result.push(await config.transform(config, `/regions/${region}`));
     }
 
     // Add popular suburb paths (top suburbs for SEO)
@@ -180,9 +219,7 @@ module.exports = {
     ];
 
     for (const suburb of popularSuburbs) {
-      result.push(
-        await config.transform(config, `/directory/${suburb}`)
-      );
+      result.push(await config.transform(config, `/directory/${suburb}`));
     }
 
     return result.filter(Boolean); // Filter out null values

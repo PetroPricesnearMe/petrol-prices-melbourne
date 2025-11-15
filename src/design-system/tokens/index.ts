@@ -1,13 +1,13 @@
 /**
  * Design System Tokens - Central Export
- * 
+ *
  * All design tokens in one place for easy importing.
- * 
+ *
  * @example
  * ```typescript
  * import { colors, spacing, typography } from '@/design-system/tokens';
  * ```
- * 
+ *
  * @module design-system/tokens
  */
 

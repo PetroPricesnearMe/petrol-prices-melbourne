@@ -33,7 +33,10 @@ export function LoadingSpinner({
   className,
 }: LoadingSpinnerProps) {
   return (
-    <div className={cn('flex items-center justify-center', className)} role="status">
+    <div
+      className={cn('flex items-center justify-center', className)}
+      role="status"
+    >
       <svg
         className={cn(
           sizeClasses[size],
@@ -78,7 +81,7 @@ export function LoadingSkeleton({
         <div
           key={i}
           className={cn(
-            'h-4 bg-gray-200 dark:bg-gray-700 rounded shimmer',
+            'shimmer h-4 rounded bg-gray-200 dark:bg-gray-700',
             i === lines - 1 && 'w-3/4'
           )}
         />
@@ -90,13 +93,13 @@ export function LoadingSkeleton({
 export function LoadingCard({ className }: { className?: string }) {
   return (
     <div className={cn('card', className)}>
-      <div className="p-6 space-y-4">
+      <div className="space-y-4 p-6">
         <div className="flex-between">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 shimmer" />
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 shimmer" />
+          <div className="shimmer h-6 w-1/3 rounded bg-gray-200 dark:bg-gray-700" />
+          <div className="shimmer h-6 w-16 rounded bg-gray-200 dark:bg-gray-700" />
         </div>
         <LoadingSkeleton lines={3} />
-        <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded shimmer" />
+        <div className="shimmer h-10 rounded bg-gray-200 dark:bg-gray-700" />
       </div>
     </div>
   );

@@ -23,11 +23,7 @@ export function createLazyObserver(
     return null;
   }
 
-  const {
-    threshold = 0.1,
-    rootMargin = '50px',
-    triggerOnce = true,
-  } = options;
+  const { threshold = 0.1, rootMargin = '50px', triggerOnce = true } = options;
 
   return new IntersectionObserver(
     (entries) => {
@@ -50,7 +46,10 @@ export function createLazyObserver(
 /**
  * Lazy load images using Intersection Observer
  */
-export function lazyLoadImage(img: HTMLImageElement, options?: LazyLoadOptions): void {
+export function lazyLoadImage(
+  img: HTMLImageElement,
+  options?: LazyLoadOptions
+): void {
   const dataSrc = img.dataset.src;
   const dataSrcset = img.dataset.srcset;
 

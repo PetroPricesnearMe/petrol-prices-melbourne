@@ -78,7 +78,9 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
   // Get value from position
   const getValueFromPosition = useCallback(
     (position: number) => {
-      const value = Math.round((position / range) * (absoluteMax - absoluteMin) + absoluteMin);
+      const value = Math.round(
+        (position / range) * (absoluteMax - absoluteMin) + absoluteMin
+      );
       return Math.min(Math.max(value, absoluteMin), absoluteMax);
     },
     [range, absoluteMin, absoluteMax]
@@ -152,9 +154,13 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
   const formatCurrency = (value: number) => `${currency}${value.toFixed(2)}`;
 
   return (
-    <div className={cn('price-range-slider', className)} role="group" aria-label="Price range filter">
+    <div
+      className={cn('price-range-slider', className)}
+      role="group"
+      aria-label="Price range filter"
+    >
       {showLabels && (
-        <div className="flex justify-between mb-2">
+        <div className="mb-2 flex justify-between">
           <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
             {formatCurrency(minVal)} - {formatCurrency(maxVal)}
           </div>
@@ -166,7 +172,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
 
       <div
         ref={trackRef}
-        className="relative h-6 w-full bg-gray-200 dark:bg-gray-700 rounded-full"
+        className="relative h-6 w-full rounded-full bg-gray-200 dark:bg-gray-700"
         role="slider"
         aria-label="Price range"
         aria-valuemin={absoluteMin.toString()}
@@ -175,8 +181,11 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
       >
         {/* Active range track */}
         <div
-          className="absolute h-full bg-gradient-to-r from-primary-500 to-primary-600 rounded-full"
-          style={{ left: `${minPercent}%`, width: `${maxPercent - minPercent}%` }}
+          className="absolute h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-600"
+          style={{
+            left: `${minPercent}%`,
+            width: `${maxPercent - minPercent}%`,
+          }}
           aria-hidden="true"
         />
 
@@ -190,14 +199,14 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
           onDragEnd={() => setIsDragging(null)}
           animate={{ x: `${minPercent}%` }}
           transition={{ type: 'spring', stiffness: 500, damping: 50 }}
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6"
+          className="absolute top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2"
         >
           <div
             className={cn(
-              'w-6 h-6 rounded-full border-2 border-white shadow-lg cursor-grab active:cursor-grabbing',
+              'h-6 w-6 cursor-grab rounded-full border-2 border-white shadow-lg active:cursor-grabbing',
               'bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-              disabled && 'opacity-50 cursor-not-allowed'
+              disabled && 'cursor-not-allowed opacity-50'
             )}
             role="slider"
             tabIndex={disabled ? -1 : 0}
@@ -221,14 +230,14 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
           onDragEnd={() => setIsDragging(null)}
           animate={{ x: `${maxPercent}%` }}
           transition={{ type: 'spring', stiffness: 500, damping: 50 }}
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6"
+          className="absolute top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2"
         >
           <div
             className={cn(
-              'w-6 h-6 rounded-full border-2 border-white shadow-lg cursor-grab active:cursor-grabbing',
+              'h-6 w-6 cursor-grab rounded-full border-2 border-white shadow-lg active:cursor-grabbing',
               'bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-              disabled && 'opacity-50 cursor-not-allowed'
+              disabled && 'cursor-not-allowed opacity-50'
             )}
             role="slider"
             tabIndex={disabled ? -1 : 0}
@@ -244,7 +253,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
       </div>
 
       {/* Min/Max labels on track */}
-      <div className="flex justify-between mt-1 text-xs text-gray-500 dark:text-gray-400">
+      <div className="mt-1 flex justify-between text-xs text-gray-500 dark:text-gray-400">
         <span className="font-medium">Min</span>
         <span className="font-medium">Max</span>
       </div>
@@ -255,7 +264,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute left-1/2 -translate-x-1/2 mt-2 px-3 py-1 bg-gray-900 dark:bg-gray-800 text-white text-sm rounded-lg shadow-lg pointer-events-none"
+          className="pointer-events-none absolute left-1/2 mt-2 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-1 text-sm text-white shadow-lg dark:bg-gray-800"
         >
           {formatCurrency(isDragging === 'min' ? minVal : maxVal)}
         </motion.div>

@@ -2,13 +2,13 @@ import type { NextConfig } from 'next';
 
 /**
  * Next.js Configuration - Production-Ready Setup for Next.js 15
- * 
+ *
  * This configuration optimizes for:
  * - Performance: Compression, caching, code splitting
  * - Security: Headers, CSP, XSS protection
  * - SEO: Metadata, structured data
  * - Developer Experience: TypeScript, ESLint
- * 
+ *
  * @see https://nextjs.org/docs/app/api-reference/next-config-js
  */
 
@@ -176,12 +176,13 @@ const nextConfig: NextConfig = {
   // Customize Webpack configuration for bundle optimization
   // ========================================
   webpack: (config, { isServer, dev }) => {
-    // Client-side optimizations only
+    // Client-side code splitting customization only
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
-        // Enable tree shaking
-        usedExports: true,
+        // Tree shaking is handled automatically by Next.js 15
+        // Removed usedExports: true to avoid conflict with cacheUnaffected
+        // Keep sideEffects: false for optimal tree shaking
         sideEffects: false,
 
         // Code splitting strategy

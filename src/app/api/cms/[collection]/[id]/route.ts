@@ -1,6 +1,6 @@
 /**
  * Dynamic CMS API Routes - Single Item
- * 
+ *
  * GET /api/cms/[collection]/[id] - Fetch single item by ID
  * PATCH /api/cms/[collection]/[id] - Update item
  * DELETE /api/cms/[collection]/[id] - Delete item
@@ -18,29 +18,20 @@ interface RouteContext {
 /**
  * GET /api/cms/[collection]/[id]
  */
-export async function GET(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function GET(request: NextRequest, context: RouteContext) {
   try {
     const { collection, id } = await context.params;
     const cms = getCMS();
 
-    const item = await withFallback(
-      () => cms.fetchById(collection, id),
-      {
-        getFallback: () => null,
-        onError: (error) => {
-          console.error('CMS fetch error:', error);
-        },
-      }
-    );
+    const item = await withFallback(() => cms.fetchById(collection, id), {
+      getFallback: () => null,
+      onError: (error) => {
+        console.error('CMS fetch error:', error);
+      },
+    });
 
     if (!item) {
-      return NextResponse.json(
-        { error: 'Item not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
     }
 
     return NextResponse.json(item, {
@@ -67,10 +58,7 @@ export async function GET(
 /**
  * PATCH /api/cms/[collection]/[id]
  */
-export async function PATCH(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   try {
     const { collection, id } = await context.params;
     const data = await request.json();
@@ -104,10 +92,7 @@ export async function PATCH(
 /**
  * DELETE /api/cms/[collection]/[id]
  */
-export async function DELETE(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function DELETE(request: NextRequest, context: RouteContext) {
   try {
     const { collection, id } = await context.params;
 
@@ -138,4 +123,3 @@ export async function DELETE(
 // Configure route segment
 export const runtime = 'edge';
 export const revalidate = 3600;
-

@@ -30,10 +30,14 @@ export const coordinatesSchema = z.object({
 export const stationFiltersSchema = z.object({
   suburb: z.string().min(1).max(100).optional(),
   brand: z.string().min(1).max(50).optional(),
-  fuelType: z.enum(['Unleaded', 'Premium 95', 'Premium 98', 'Diesel', 'LPG', 'E10']).optional(),
+  fuelType: z
+    .enum(['Unleaded', 'Premium 95', 'Premium 98', 'Diesel', 'LPG', 'E10'])
+    .optional(),
   maxPrice: z.number().positive().max(1000).optional(),
   amenities: z.array(z.string()).optional(),
-  sortBy: z.enum(['nearest', 'price-low', 'price-high', 'name', 'suburb', 'top-rated']).optional(),
+  sortBy: z
+    .enum(['nearest', 'price-low', 'price-high', 'name', 'suburb', 'top-rated'])
+    .optional(),
   latitude: z.number().optional(),
   longitude: z.number().optional(),
   radius: z.number().positive().max(50).optional(),
@@ -71,74 +75,119 @@ export const fuelPriceUpdateSchema = z.object({
 // VALIDATION FUNCTIONS
 // ============================================================================
 
-export function validateStationId(id: number | string): { success: boolean; data?: number; error?: string } {
+export function validateStationId(id: number | string): {
+  success: boolean;
+  data?: number;
+  error?: string;
+} {
   try {
     const parsed = typeof id === 'string' ? parseInt(id, 10) : id;
     const result = stationIdSchema.parse(parsed);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0]?.message || 'Invalid station ID' };
+      return {
+        success: false,
+        error: error.errors[0]?.message || 'Invalid station ID',
+      };
     }
     return { success: false, error: 'Invalid station ID' };
   }
 }
 
-export function validateFilters(filters: unknown): { success: boolean; data?: StationFilters; error?: string } {
+export function validateFilters(filters: unknown): {
+  success: boolean;
+  data?: StationFilters;
+  error?: string;
+} {
   try {
     const result = stationFiltersSchema.parse(filters);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0]?.message || 'Invalid filters' };
+      return {
+        success: false,
+        error: error.errors[0]?.message || 'Invalid filters',
+      };
     }
     return { success: false, error: 'Invalid filters' };
   }
 }
 
-export function validateCoordinates(lat: number, lng: number): { success: boolean; data?: { latitude: number; longitude: number }; error?: string } {
+export function validateCoordinates(
+  lat: number,
+  lng: number
+): {
+  success: boolean;
+  data?: { latitude: number; longitude: number };
+  error?: string;
+} {
   try {
     const result = coordinatesSchema.parse({ latitude: lat, longitude: lng });
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0]?.message || 'Invalid coordinates' };
+      return {
+        success: false,
+        error: error.errors[0]?.message || 'Invalid coordinates',
+      };
     }
     return { success: false, error: 'Invalid coordinates' };
   }
 }
 
-export function validatePagination(pagination: unknown): { success: boolean; data?: z.infer<typeof paginationSchema>; error?: string } {
+export function validatePagination(pagination: unknown): {
+  success: boolean;
+  data?: z.infer<typeof paginationSchema>;
+  error?: string;
+} {
   try {
     const result = paginationSchema.parse(pagination);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0]?.message || 'Invalid pagination' };
+      return {
+        success: false,
+        error: error.errors[0]?.message || 'Invalid pagination',
+      };
     }
     return { success: false, error: 'Invalid pagination' };
   }
 }
 
-export function validateSearchQuery(query: unknown): { success: boolean; data?: z.infer<typeof searchQuerySchema>; error?: string } {
+export function validateSearchQuery(query: unknown): {
+  success: boolean;
+  data?: z.infer<typeof searchQuerySchema>;
+  error?: string;
+} {
   try {
     const result = searchQuerySchema.parse(query);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0]?.message || 'Invalid search query' };
+      return {
+        success: false,
+        error: error.errors[0]?.message || 'Invalid search query',
+      };
     }
     return { success: false, error: 'Invalid search query' };
   }
 }
 
-export function validateFuelPriceUpdate(data: unknown): { success: boolean; data?: z.infer<typeof fuelPriceUpdateSchema>; error?: string } {
+export function validateFuelPriceUpdate(data: unknown): {
+  success: boolean;
+  data?: z.infer<typeof fuelPriceUpdateSchema>;
+  error?: string;
+} {
   try {
     const result = fuelPriceUpdateSchema.parse(data);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0]?.message || 'Invalid fuel price data' };
+      return {
+        success: false,
+        error: error.errors[0]?.message || 'Invalid fuel price data',
+      };
     }
     return { success: false, error: 'Invalid fuel price data' };
   }
@@ -169,4 +218,3 @@ export function sanitizeSearchQuery(query: string): string {
     .replace(/[^a-z0-9\s-]/g, '') // Only allow alphanumeric, spaces, hyphens
     .slice(0, 100);
 }
-

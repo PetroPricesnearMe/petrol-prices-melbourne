@@ -233,7 +233,7 @@ export function InfiniteScrollTransition({
 
   useEffect(() => {
     if (isTransitioning) {
-      setKey(prev => prev + 1);
+      setKey((prev) => prev + 1);
     }
   }, [isTransitioning]);
 
@@ -282,7 +282,7 @@ export function SkeletonCard({ className }: SkeletonCardProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className={cn(
-        'bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200',
+        'overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm',
         'animate-pulse',
         className
       )}
@@ -291,14 +291,14 @@ export function SkeletonCard({ className }: SkeletonCardProps) {
       <div className="h-20 bg-gray-200" />
 
       {/* Content skeleton */}
-      <div className="p-6 space-y-4">
-        <div className="h-6 bg-gray-200 rounded w-3/4" />
-        <div className="h-4 bg-gray-200 rounded w-1/2" />
+      <div className="space-y-4 p-6">
+        <div className="h-6 w-3/4 rounded bg-gray-200" />
+        <div className="h-4 w-1/2 rounded bg-gray-200" />
         <div className="space-y-2">
-          <div className="h-4 bg-gray-200 rounded w-full" />
-          <div className="h-4 bg-gray-200 rounded w-2/3" />
+          <div className="h-4 w-full rounded bg-gray-200" />
+          <div className="h-4 w-2/3 rounded bg-gray-200" />
         </div>
-        <div className="h-8 bg-gray-200 rounded w-full" />
+        <div className="h-8 w-full rounded bg-gray-200" />
       </div>
     </motion.div>
   );
@@ -314,7 +314,12 @@ interface SkeletonGridProps {
  */
 export function SkeletonGrid({ count = 6, className }: SkeletonGridProps) {
   return (
-    <div className={cn('grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6', className)}>
+    <div
+      className={cn(
+        'grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+        className
+      )}
+    >
       {Array.from({ length: count }).map((_, index) => (
         <SkeletonCard key={index} />
       ))}
@@ -334,11 +339,14 @@ interface ProgressIndicatorProps {
 /**
  * Progress indicator for loading states
  */
-export function ProgressIndicator({ progress, className }: ProgressIndicatorProps) {
+export function ProgressIndicator({
+  progress,
+  className,
+}: ProgressIndicatorProps) {
   return (
-    <div className={cn('w-full bg-gray-200 rounded-full h-2', className)}>
+    <div className={cn('h-2 w-full rounded-full bg-gray-200', className)}>
       <motion.div
-        className="bg-primary-600 h-2 rounded-full"
+        className="h-2 rounded-full bg-primary-600"
         initial={{ width: 0 }}
         animate={{ width: `${progress}%` }}
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
@@ -359,7 +367,10 @@ interface LoadingSpinnerProps {
 /**
  * Animated loading spinner
  */
-export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) {
+export function LoadingSpinner({
+  size = 'md',
+  className,
+}: LoadingSpinnerProps) {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6',
@@ -369,7 +380,7 @@ export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) 
   return (
     <motion.div
       className={cn(
-        'border-2 border-gray-300 border-t-primary-600 rounded-full',
+        'rounded-full border-2 border-gray-300 border-t-primary-600',
         sizeClasses[size],
         className
       )}

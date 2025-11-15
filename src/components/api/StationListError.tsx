@@ -1,9 +1,9 @@
 /**
  * StationListError Component
- * 
+ *
  * Error state display with retry functionality
  * Accessible and user-friendly
- * 
+ *
  * @component
  */
 
@@ -22,7 +22,7 @@ export interface StationListErrorProps {
 
 /**
  * StationListError - Error state display
- * 
+ *
  * Features:
  * - Clear error messaging
  * - Retry functionality
@@ -39,19 +39,21 @@ export function StationListError({
     error instanceof Error ? error.message : error || 'An error occurred';
 
   // Determine error type for better UX
-  const isNetworkError = errorMessage.toLowerCase().includes('network') ||
-                        errorMessage.toLowerCase().includes('fetch') ||
-                        errorMessage.toLowerCase().includes('connection');
+  const isNetworkError =
+    errorMessage.toLowerCase().includes('network') ||
+    errorMessage.toLowerCase().includes('fetch') ||
+    errorMessage.toLowerCase().includes('connection');
 
-  const isServerError = errorMessage.toLowerCase().includes('server') ||
-                       errorMessage.toLowerCase().includes('500');
+  const isServerError =
+    errorMessage.toLowerCase().includes('server') ||
+    errorMessage.toLowerCase().includes('500');
 
   return (
     <div
       className={`
         station-list-error
-        flex flex-col items-center justify-center
-        min-h-[400px]
+        flex min-h-[400px] flex-col items-center
+        justify-center
         p-8
         text-center
         ${className}
@@ -62,16 +64,16 @@ export function StationListError({
       {/* Error icon */}
       <div
         className="
-          w-16 h-16
-          rounded-full
           bg-red-100 dark:bg-red-900/30
-          flex items-center justify-center
           mb-4
+          flex h-16
+          w-16 items-center justify-center
+          rounded-full
         "
         aria-hidden="true"
       >
         <svg
-          className="w-8 h-8 text-red-600 dark:text-red-400"
+          className="text-red-600 dark:text-red-400 h-8 w-8"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -88,31 +90,31 @@ export function StationListError({
       {/* Error heading */}
       <h2
         className="
-          text-xl font-semibold
-          text-gray-900 dark:text-white
-          mb-2
+          mb-2 text-xl
+          font-semibold text-gray-900
+          dark:text-white
         "
       >
         {isNetworkError
           ? 'Connection Error'
           : isServerError
-          ? 'Server Error'
-          : 'Unable to Load Stations'}
+            ? 'Server Error'
+            : 'Unable to Load Stations'}
       </h2>
 
       {/* Error message */}
       <p
         className="
-          text-gray-600 dark:text-gray-300
-          mb-6
-          max-w-md
+          mb-6 max-w-md
+          text-gray-600
+          dark:text-gray-300
         "
       >
         {isNetworkError
           ? 'Unable to connect to the server. Please check your internet connection and try again.'
           : isServerError
-          ? 'The server is currently experiencing issues. Please try again later.'
-          : errorMessage}
+            ? 'The server is currently experiencing issues. Please try again later.'
+            : errorMessage}
       </p>
 
       {/* Retry button */}
@@ -121,15 +123,15 @@ export function StationListError({
           type="button"
           onClick={onRetry}
           className="
-            px-6 py-3
-            bg-primary-600 hover:bg-primary-700
-            text-white
-            font-medium
-            rounded-lg
-            transition-colors duration-200
-            focus:outline-none
-            focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
             min-h-[44px] min-w-[120px]
+            rounded-lg bg-primary-600
+            px-6
+            py-3
+            font-medium
+            text-white transition-colors
+            duration-200
+            hover:bg-primary-700 focus:outline-none focus:ring-2
+            focus:ring-primary-500 focus:ring-offset-2
           "
           aria-label="Retry loading stations"
         >
@@ -139,24 +141,24 @@ export function StationListError({
 
       {/* Debug info (development only) */}
       {process.env.NODE_ENV === 'development' && error instanceof Error && (
-        <details className="mt-6 text-left max-w-md">
+        <details className="mt-6 max-w-md text-left">
           <summary
             className="
               cursor-pointer
-              text-sm text-gray-500 dark:text-gray-400
-              hover:text-gray-700 dark:hover:text-gray-300
+              text-sm text-gray-500 hover:text-gray-700
+              dark:text-gray-400 dark:hover:text-gray-300
             "
           >
             Technical Details
           </summary>
           <pre
             className="
-              mt-2 p-4
-              bg-gray-100 dark:bg-gray-800
-              rounded
+              mt-2 max-h-48
+              overflow-auto rounded
+              bg-gray-100
+              p-4
               text-xs
-              overflow-auto
-              max-h-48
+              dark:bg-gray-800
             "
           >
             {error.stack || error.toString()}
@@ -168,4 +170,3 @@ export function StationListError({
 }
 
 StationListError.displayName = 'StationListError';
-

@@ -27,7 +27,9 @@ import { VIEWPORT_CONFIG, VIEWPORT_CONFIG_HERO } from './constants';
  * }
  * ```
  */
-export function usePerformanceMonitoring(enabled = process.env.NODE_ENV === 'production'): void {
+export function usePerformanceMonitoring(
+  enabled = process.env.NODE_ENV === 'production'
+): void {
   const startTimeRef = useRef<number>(Date.now());
   const observersRef = useRef<PerformanceObserver[]>([]);
 
@@ -340,4 +342,3 @@ export function useMediaQuery(query: string): boolean {
 export function usePrefersReducedMotion(): boolean {
   return useMediaQuery('(prefers-reduced-motion: reduce)');
 }
-

@@ -25,7 +25,9 @@
   background-color: #f0fdf4;
   border-bottom: 2px solid #86efac;
   color: #16a34a;
-  animation: slideDown 0.3s ease-out, fadeOut 0.3s ease-out 2.7s forwards;
+  animation:
+    slideDown 0.3s ease-out,
+    fadeOut 0.3s ease-out 2.7s forwards;
 }
 
 .network-status-content {
@@ -68,7 +70,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -82,9 +85,8 @@
     font-size: 0.85rem;
     padding: 0.6rem 0.75rem;
   }
-  
+
   .network-icon {
     font-size: 1rem;
   }
 }
-

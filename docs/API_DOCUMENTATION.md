@@ -31,6 +31,7 @@ Authorization: Bearer YOUR_TOKEN
 - **Auth endpoints**: 5 requests per 15 minutes
 
 Rate limit headers are included in all responses:
+
 - `X-RateLimit-Limit`: Maximum requests allowed
 - `X-RateLimit-Remaining`: Remaining requests in current window
 - `X-RateLimit-Reset`: Time when the limit resets (ISO 8601)
@@ -91,16 +92,16 @@ Rate limit headers are included in all responses:
 
 ## Error Codes
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `BAD_REQUEST` | 400 | Invalid request parameters |
-| `UNAUTHORIZED` | 401 | Authentication required |
-| `FORBIDDEN` | 403 | Insufficient permissions |
-| `NOT_FOUND` | 404 | Resource not found |
-| `VALIDATION_ERROR` | 400 | Request validation failed |
-| `RATE_LIMIT_EXCEEDED` | 429 | Too many requests |
-| `INTERNAL_ERROR` | 500 | Server error |
-| `SERVICE_UNAVAILABLE` | 503 | Service temporarily unavailable |
+| Code                  | HTTP Status | Description                     |
+| --------------------- | ----------- | ------------------------------- |
+| `BAD_REQUEST`         | 400         | Invalid request parameters      |
+| `UNAUTHORIZED`        | 401         | Authentication required         |
+| `FORBIDDEN`           | 403         | Insufficient permissions        |
+| `NOT_FOUND`           | 404         | Resource not found              |
+| `VALIDATION_ERROR`    | 400         | Request validation failed       |
+| `RATE_LIMIT_EXCEEDED` | 429         | Too many requests               |
+| `INTERNAL_ERROR`      | 500         | Server error                    |
+| `SERVICE_UNAVAILABLE` | 503         | Service temporarily unavailable |
 
 ## Endpoints
 
@@ -114,15 +115,15 @@ GET /api/v1/stations
 
 **Query Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `city` | string | No | Filter by city |
-| `region` | string | No | Filter by region |
-| `brand` | string | No | Filter by brand |
-| `page` | number | No | Page number (default: 1) |
-| `pageSize` | number | No | Items per page (default: 20, max: 100) |
-| `sortBy` | string | No | Sort field: `name`, `distance` |
-| `sortOrder` | string | No | Sort order: `asc`, `desc` (default: `asc`) |
+| Parameter   | Type   | Required | Description                                |
+| ----------- | ------ | -------- | ------------------------------------------ |
+| `city`      | string | No       | Filter by city                             |
+| `region`    | string | No       | Filter by region                           |
+| `brand`     | string | No       | Filter by brand                            |
+| `page`      | number | No       | Page number (default: 1)                   |
+| `pageSize`  | number | No       | Items per page (default: 20, max: 100)     |
+| `sortBy`    | string | No       | Sort field: `name`, `distance`             |
+| `sortOrder` | string | No       | Sort order: `asc`, `desc` (default: `asc`) |
 
 **Example Request:**
 
@@ -173,15 +174,15 @@ GET /api/v1/stations/nearby
 
 **Query Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `latitude` | number | **Yes** | Latitude (-90 to 90) |
-| `longitude` | number | **Yes** | Longitude (-180 to 180) |
-| `radius` | number | No | Search radius in km (default: 10, max: 50) |
-| `fuelType` | string | No | Filter by fuel type |
-| `brand` | string | No | Filter by brand |
-| `page` | number | No | Page number |
-| `pageSize` | number | No | Items per page |
+| Parameter   | Type   | Required | Description                                |
+| ----------- | ------ | -------- | ------------------------------------------ |
+| `latitude`  | number | **Yes**  | Latitude (-90 to 90)                       |
+| `longitude` | number | **Yes**  | Longitude (-180 to 180)                    |
+| `radius`    | number | No       | Search radius in km (default: 10, max: 50) |
+| `fuelType`  | string | No       | Filter by fuel type                        |
+| `brand`     | string | No       | Filter by brand                            |
+| `page`      | number | No       | Page number                                |
+| `pageSize`  | number | No       | Items per page                             |
 
 **Example Request:**
 
@@ -197,9 +198,9 @@ GET /api/v1/stations/{id}
 
 **Path Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | number | **Yes** | Station ID |
+| Parameter | Type   | Required | Description |
+| --------- | ------ | -------- | ----------- |
+| `id`      | number | **Yes**  | Station ID  |
 
 **Example Request:**
 
@@ -288,7 +289,7 @@ Always use pagination for large datasets:
 ```typescript
 const params = new URLSearchParams({
   page: '1',
-  pageSize: '20'
+  pageSize: '20',
 });
 
 const response = await fetch(`/api/v1/stations?${params}`);
@@ -332,6 +333,7 @@ async function getStations(city: string): Promise<Station[]> {
 ## Support
 
 For API support, please:
+
 1. Check this documentation
 2. Review error messages and codes
 3. Contact support at support@example.com
@@ -339,6 +341,7 @@ For API support, please:
 ## Changelog
 
 ### v1.0.0 (2024-01-15)
+
 - Initial API release
 - Stations CRUD endpoints
 - Nearby search functionality

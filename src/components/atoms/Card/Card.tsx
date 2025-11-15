@@ -95,4 +95,3 @@ export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
 );
 
 CardContent.displayName = 'CardContent';
-

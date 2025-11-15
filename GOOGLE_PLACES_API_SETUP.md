@@ -13,6 +13,7 @@ Your Google Places API key has been successfully added to the project!
 ### 1. Environment Variables
 
 Created/Updated:
+
 - ✅ `.env.local` - Local development configuration (not committed to git)
 - ✅ `.env.example` - Template for other developers
 - ✅ `src/config.js` - Application configuration with Google API keys
@@ -20,6 +21,7 @@ Created/Updated:
 ### 2. API Integration
 
 The following services are now configured:
+
 - ✅ **GooglePlacesService** (`src/services/GooglePlacesService.js`)
   - Search for petrol stations
   - Search by brand
@@ -36,6 +38,7 @@ The following services are now configured:
 ### 3. Available Endpoints
 
 The Google Places API (New) endpoints configured:
+
 ```
 POST https://places.googleapis.com/v1/places:searchText
 GET  https://places.googleapis.com/v1/places/{placeId}
@@ -56,14 +59,14 @@ const results = await googlePlacesService.searchPlaces({
   query: 'Shell petrol station',
   location: { latitude: -37.8136, longitude: 144.9631 },
   radius: 5000,
-  pageSize: 20
+  pageSize: 20,
 });
 
 // Search nearby stations
 const nearby = await googlePlacesService.searchPetrolStationsNearLocation(
   { latitude: -37.8136, longitude: 144.9631 },
   5000, // 5km radius
-  20    // max 20 results
+  20 // max 20 results
 );
 
 // Search by brand
@@ -97,22 +100,26 @@ import GooglePlacesSearch from '@/components/GooglePlacesSearch';
 ### Search Capabilities
 
 ✅ **Text Search**
+
 - Search by query string
 - Location bias (center + radius)
 - Pagination support
 - Type filtering (gas_station)
 
 ✅ **Nearby Search**
+
 - Find stations near coordinates
 - Configurable radius
 - Sort by distance
 
 ✅ **Brand Search**
+
 - Search by brand name (Shell, BP, 7-Eleven, etc.)
 - Auto-detect brand from station name
 - Regional coverage
 
 ✅ **Place Details**
+
 - Full station information
 - Rating and reviews count
 - Opening hours
@@ -163,6 +170,7 @@ The service automatically converts Google Places data to your application's stat
 ### API Key Restrictions (Recommended for Production)
 
 #### Application Restrictions
+
 - **Development:** None (or HTTP referrers: `http://localhost:3000/*`)
 - **Production:** HTTP referrers
   ```
@@ -171,7 +179,9 @@ The service automatically converts Google Places data to your application's stat
   ```
 
 #### API Restrictions
+
 Enable only these APIs:
+
 - Places API (New)
 - Maps JavaScript API
 - Geocoding API
@@ -182,18 +192,19 @@ Enable only these APIs:
 
 ### Google Places API (New) Pricing
 
-| Feature | Price per 1000 requests |
-|---------|------------------------|
-| Text Search | $32.00 |
-| Nearby Search | $32.00 |
-| Place Details | $17.00 (Basic) |
-| Place Photos | $7.00 per 1000 |
+| Feature       | Price per 1000 requests |
+| ------------- | ----------------------- |
+| Text Search   | $32.00                  |
+| Nearby Search | $32.00                  |
+| Place Details | $17.00 (Basic)          |
+| Place Photos  | $7.00 per 1000          |
 
 **Free Tier:** $200 credit/month (~6,250 requests)
 
 ### Optimization Tips
 
 1. **Cache Results**
+
    ```javascript
    // Cache place details for 24 hours
    const cacheKey = `place_${placeId}`;
@@ -202,12 +213,14 @@ Enable only these APIs:
    ```
 
 2. **Limit Fields**
+
    ```javascript
    // Only request needed fields
    'X-Goog-FieldMask': 'places.id,places.displayName,places.location'
    ```
 
 3. **Batch Requests**
+
    ```javascript
    // Fetch multiple places in one request
    requestBody.pageSize = 20; // max per request
@@ -232,13 +245,15 @@ await fetch('https://places.googleapis.com/v1/places:searchText', {
   headers: {
     'Content-Type': 'application/json',
     'X-Goog-Api-Key': 'AIzaSyDfEKO1GZBpuUuhhL-gz1miug6jdlT1nFk',
-    'X-Goog-FieldMask': 'places.displayName,places.formattedAddress'
+    'X-Goog-FieldMask': 'places.displayName,places.formattedAddress',
   },
   body: JSON.stringify({
     textQuery: 'Shell petrol station Melbourne',
-    pageSize: 5
-  })
-}).then(r => r.json()).then(console.log);
+    pageSize: 5,
+  }),
+})
+  .then((r) => r.json())
+  .then(console.log);
 ```
 
 ### Test the Service
@@ -252,7 +267,7 @@ useEffect(() => {
         query: 'petrol station',
         location: { latitude: -37.8136, longitude: 144.9631 },
         radius: 5000,
-        pageSize: 10
+        pageSize: 10,
       });
       console.log('Search Results:', results);
     } catch (error) {
@@ -274,6 +289,7 @@ useEffect(() => {
 **Cause:** API key not configured or incorrect
 
 **Fix:**
+
 ```bash
 # Check if environment variables are loaded
 console.log(process.env.REACT_APP_GOOGLE_PLACES_API_KEY);
@@ -285,6 +301,7 @@ npm run dev
 #### 2. "API not enabled" Error
 
 **Fix:**
+
 1. Go to: https://console.cloud.google.com/apis/library
 2. Search for "Places API (New)"
 3. Click "Enable"
@@ -294,6 +311,7 @@ npm run dev
 **Cause:** API restrictions or billing not enabled
 
 **Fix:**
+
 1. Enable billing in Google Cloud Console
 2. Check API key restrictions
 3. Verify referrer matches your domain
@@ -303,6 +321,7 @@ npm run dev
 **Cause:** API key restrictions too strict
 
 **Fix:**
+
 ```javascript
 // Remove HTTP referrer restrictions for development
 // Or add http://localhost:3000/* to allowed referrers
@@ -313,6 +332,7 @@ npm run dev
 **Cause:** Location or query too specific
 
 **Fix:**
+
 ```javascript
 // Increase search radius
 radius: 10000, // 10km instead of 5km
@@ -346,6 +366,7 @@ const apiKey = 'AIzaSyDfEKO1GZBpuUuhhL-gz1miug6jdlT1nFk';
 ### 3. Restrict API Key
 
 In Google Cloud Console → Credentials → API Key:
+
 - Set application restrictions (HTTP referrers)
 - Set API restrictions (only needed APIs)
 - Regenerate key if exposed
@@ -364,7 +385,7 @@ const RATE_LIMIT = 10; // requests per minute
 function checkRateLimit(userId) {
   const now = Date.now();
   const userRequests = rateLimiter.get(userId) || [];
-  const recentRequests = userRequests.filter(time => now - time < 60000);
+  const recentRequests = userRequests.filter((time) => now - time < 60000);
 
   if (recentRequests.length >= RATE_LIMIT) {
     throw new Error('Rate limit exceeded');
@@ -389,6 +410,7 @@ function checkRateLimit(userId) {
 ## ✨ Next Steps
 
 1. **Test the Integration**
+
    ```bash
    npm run dev
    # Visit: http://localhost:3000/google-places-search
@@ -418,6 +440,7 @@ function checkRateLimit(userId) {
 Your Google Places API is now fully configured and ready to use!
 
 **Current Status:**
+
 - ✅ API Key configured
 - ✅ Service layer implemented
 - ✅ UI components ready
@@ -426,6 +449,7 @@ Your Google Places API is now fully configured and ready to use!
 - ✅ Environment variables set
 
 **Test it now:**
+
 ```bash
 npm run dev
 ```

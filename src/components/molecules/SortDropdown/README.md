@@ -21,23 +21,14 @@ import { SortDropdown } from '@/components/molecules/SortDropdown';
 function MyComponent() {
   const [sortValue, setSortValue] = useState<SortOption>('price-low');
 
-  return (
-    <SortDropdown
-      value={sortValue}
-      onChange={setSortValue}
-    />
-  );
+  return <SortDropdown value={sortValue} onChange={setSortValue} />;
 }
 ```
 
 ### With URL Sync
 
 ```tsx
-<SortDropdown
-  value={sortValue}
-  onChange={setSortValue}
-  syncWithUrl={true}
-/>
+<SortDropdown value={sortValue} onChange={setSortValue} syncWithUrl={true} />
 ```
 
 ### Quick Sort Bar
@@ -64,25 +55,25 @@ function MyList() {
 
 ### SortDropdown
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `SortOption` | - | Current sort value |
-| `onChange` | `(value: SortOption) => void` | - | Callback when sort changes |
-| `syncWithUrl` | `boolean` | `true` | Sync sort state with URL query params |
-| `className` | `string` | - | Additional CSS classes |
-| `disabled` | `boolean` | `false` | Disable the dropdown |
+| Prop          | Type                          | Default | Description                           |
+| ------------- | ----------------------------- | ------- | ------------------------------------- |
+| `value`       | `SortOption`                  | -       | Current sort value                    |
+| `onChange`    | `(value: SortOption) => void` | -       | Callback when sort changes            |
+| `syncWithUrl` | `boolean`                     | `true`  | Sync sort state with URL query params |
+| `className`   | `string`                      | -       | Additional CSS classes                |
+| `disabled`    | `boolean`                     | `false` | Disable the dropdown                  |
 
 ### QuickSortBar
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `sortValue` | `SortOption` | - | Current sort value |
-| `onSortChange` | `(value: SortOption) => void` | - | Callback when sort changes |
-| `totalResults` | `number` | - | Total number of results |
-| `currentPage` | `number` | - | Current page number (optional) |
-| `totalPages` | `number` | - | Total pages (optional) |
-| `syncWithUrl` | `boolean` | `true` | Sync sort state with URL |
-| `className` | `string` | - | Additional CSS classes |
+| Prop           | Type                          | Default | Description                    |
+| -------------- | ----------------------------- | ------- | ------------------------------ |
+| `sortValue`    | `SortOption`                  | -       | Current sort value             |
+| `onSortChange` | `(value: SortOption) => void` | -       | Callback when sort changes     |
+| `totalResults` | `number`                      | -       | Total number of results        |
+| `currentPage`  | `number`                      | -       | Current page number (optional) |
+| `totalPages`   | `number`                      | -       | Total pages (optional)         |
+| `syncWithUrl`  | `boolean`                     | `true`  | Sync sort state with URL       |
+| `className`    | `string`                      | -       | Additional CSS classes         |
 
 ## Sort Options
 
@@ -114,6 +105,7 @@ The component uses Framer Motion for smooth animations:
 ## Styling
 
 Uses minimalistic Tailwind classes:
+
 - Subtle borders and shadows
 - Smooth hover transitions
 - Focus ring on keyboard navigation
@@ -127,7 +119,7 @@ Uses minimalistic Tailwind classes:
 <div className="grid grid-cols-4 gap-4">
   {/* Other filters */}
   <div>
-    <label className="block mb-2">Sort By</label>
+    <label className="mb-2 block">Sort By</label>
     <SortDropdown
       value={filters.sortBy}
       onChange={(value) => handleFilterChange('sortBy', value)}

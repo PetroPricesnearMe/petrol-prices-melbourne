@@ -2,7 +2,7 @@
 
 /**
  * Performance Verification Script
- * 
+ *
  * Automated checks for:
  * - Font preload configuration
  * - Hero image priority
@@ -48,34 +48,35 @@ function check(condition, successMsg, errorMsg) {
 // Check 1: Verify layout.tsx has font preload
 function checkFontPreload() {
   log.section('📝 Checking Font Preload Configuration');
-  
+
   const layoutPath = path.join(process.cwd(), 'src', 'app', 'layout.tsx');
-  
+
   if (!fs.existsSync(layoutPath)) {
     log.error('layout.tsx not found at src/app/layout.tsx');
     return false;
   }
-  
+
   const content = fs.readFileSync(layoutPath, 'utf-8');
-  
+
   check(
     content.includes('preload: true'),
     'Font preload is enabled in layout.tsx',
     'Font preload is NOT enabled - add "preload: true" to your font configuration'
   );
-  
+
   check(
     content.includes("display: 'swap'"),
     'Font display swap is enabled',
     'Font display swap is NOT enabled - add "display: \'swap\'" to prevent FOIT'
   );
-  
+
   check(
-    content.includes('rel="preconnect"') && content.includes('fonts.googleapis.com'),
+    content.includes('rel="preconnect"') &&
+      content.includes('fonts.googleapis.com'),
     'Preconnect to Google Fonts is configured',
     'Missing preconnect to Google Fonts - add <link rel="preconnect" href="https://fonts.googleapis.com" />'
   );
-  
+
   check(
     content.includes('rel="dns-prefetch"'),
     'DNS prefetch is configured',
@@ -86,41 +87,49 @@ function checkFontPreload() {
 // Check 2: Verify hero image exists and check for priority usage
 function checkHeroImage() {
   log.section('🖼️  Checking Hero Image');
-  
-  const heroImagePath = path.join(process.cwd(), 'public', 'images', 'hero-petrol-station.jpg');
-  
+
+  const heroImagePath = path.join(
+    process.cwd(),
+    'public',
+    'images',
+    'hero-petrol-station.jpg'
+  );
+
   check(
     fs.existsSync(heroImagePath),
     'Hero image found at /images/hero-petrol-station.jpg',
     'Hero image NOT found at /images/hero-petrol-station.jpg'
   );
-  
+
   // Check if hero image is used with priority in any component
   const srcDir = path.join(process.cwd(), 'src');
   let foundPriorityUsage = false;
-  
+
   function searchForPriority(dir) {
     if (!fs.existsSync(dir)) return;
-    
+
     const files = fs.readdirSync(dir);
-    
+
     for (const file of files) {
       const filePath = path.join(dir, file);
       const stat = fs.statSync(filePath);
-      
+
       if (stat.isDirectory() && !file.includes('node_modules')) {
         searchForPriority(filePath);
       } else if (file.match(/\.(tsx|jsx)$/)) {
         const content = fs.readFileSync(filePath, 'utf-8');
-        if (content.includes('hero-petrol-station') && content.includes('priority')) {
+        if (
+          content.includes('hero-petrol-station') &&
+          content.includes('priority')
+        ) {
           foundPriorityUsage = true;
         }
       }
     }
   }
-  
+
   searchForPriority(srcDir);
-  
+
   check(
     foundPriorityUsage,
     'Hero image is using priority loading',
@@ -131,28 +140,28 @@ function checkHeroImage() {
 // Check 3: Verify next.config.ts optimizations
 function checkNextConfig() {
   log.section('⚙️  Checking Next.js Configuration');
-  
+
   const configPath = path.join(process.cwd(), 'next.config.ts');
-  
+
   if (!fs.existsSync(configPath)) {
     log.warning('next.config.ts not found');
     return;
   }
-  
+
   const content = fs.readFileSync(configPath, 'utf-8');
-  
+
   check(
     content.includes('compress: true'),
     'Compression is enabled',
     'Compression is disabled - enable with "compress: true"'
   );
-  
+
   check(
     content.includes("formats: ['image/avif', 'image/webp']"),
     'Modern image formats (AVIF, WebP) are configured',
-    'Modern image formats not configured - add formats: [\'image/avif\', \'image/webp\']'
+    "Modern image formats not configured - add formats: ['image/avif', 'image/webp']"
   );
-  
+
   check(
     content.includes('optimizePackageImports'),
     'Package import optimization is enabled',
@@ -163,17 +172,17 @@ function checkNextConfig() {
 // Check 4: Verify build output exists and analyze
 function checkBuildOutput() {
   log.section('📦 Checking Build Output');
-  
+
   const nextDir = path.join(process.cwd(), '.next');
-  
+
   if (!fs.existsSync(nextDir)) {
     log.warning('No build found. Run "npm run build" first.');
     log.info('Skipping build analysis...');
     return;
   }
-  
+
   log.success('.next directory exists (build completed)');
-  
+
   // Check for build manifest
   const buildManifest = path.join(nextDir, 'build-manifest.json');
   if (fs.existsSync(buildManifest)) {
@@ -181,11 +190,13 @@ function checkBuildOutput() {
     const pages = Object.keys(manifest.pages || {}).length;
     log.info(`Found ${pages} pages in build manifest`);
   }
-  
+
   // Check static files
   const staticDir = path.join(nextDir, 'static');
   if (fs.existsSync(staticDir)) {
-    const chunks = fs.readdirSync(path.join(staticDir, 'chunks')).filter(f => f.endsWith('.js'));
+    const chunks = fs
+      .readdirSync(path.join(staticDir, 'chunks'))
+      .filter((f) => f.endsWith('.js'));
     log.info(`Found ${chunks.length} JavaScript chunks`);
   }
 }
@@ -193,60 +204,64 @@ function checkBuildOutput() {
 // Check 5: Look for potential performance issues in code
 function checkCommonIssues() {
   log.section('🔍 Scanning for Common Issues');
-  
+
   const srcDir = path.join(process.cwd(), 'src');
   const issues = [];
-  
+
   function scanDirectory(dir) {
     if (!fs.existsSync(dir)) return;
-    
+
     const files = fs.readdirSync(dir);
-    
+
     for (const file of files) {
       const filePath = path.join(dir, file);
       const stat = fs.statSync(filePath);
-      
+
       if (stat.isDirectory() && !file.includes('node_modules')) {
         scanDirectory(filePath);
       } else if (file.match(/\.(tsx|jsx)$/)) {
         const content = fs.readFileSync(filePath, 'utf-8');
-        
+
         // Check for images without next/image
         if (content.includes('<img ') && !content.includes('next/image')) {
           issues.push({
             file: filePath.replace(process.cwd(), ''),
             issue: 'Using <img> tag instead of next/image',
-            severity: 'warning'
+            severity: 'warning',
           });
         }
-        
+
         // Check for missing image dimensions
-        if (content.includes('<Image') && !content.includes('width=') && !content.includes('fill')) {
+        if (
+          content.includes('<Image') &&
+          !content.includes('width=') &&
+          !content.includes('fill')
+        ) {
           issues.push({
             file: filePath.replace(process.cwd(), ''),
             issue: 'Image component may be missing width/height props',
-            severity: 'info'
+            severity: 'info',
           });
         }
-        
+
         // Check for console.log in production code
         if (content.includes('console.log') && !filePath.includes('scripts')) {
           issues.push({
             file: filePath.replace(process.cwd(), ''),
             issue: 'Contains console.log statements',
-            severity: 'info'
+            severity: 'info',
           });
         }
       }
     }
   }
-  
+
   scanDirectory(srcDir);
-  
+
   if (issues.length === 0) {
     log.success('No common issues found');
   } else {
-    issues.forEach(issue => {
+    issues.forEach((issue) => {
       const logFn = issue.severity === 'warning' ? log.warning : log.info;
       logFn(`${issue.file}: ${issue.issue}`);
     });
@@ -256,29 +271,29 @@ function checkCommonIssues() {
 // Check 6: Verify package.json has required dependencies
 function checkDependencies() {
   log.section('📚 Checking Dependencies');
-  
+
   const packagePath = path.join(process.cwd(), 'package.json');
-  
+
   if (!fs.existsSync(packagePath)) {
     log.error('package.json not found');
     return;
   }
-  
+
   const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
   const deps = { ...pkg.dependencies, ...pkg.devDependencies };
-  
+
   check(
     deps['next'] && deps['next'].includes('15'),
     `Next.js 15 installed (${deps['next'] || 'not found'})`,
-    'Next.js 15 not found - ensure you\'re using the latest version'
+    "Next.js 15 not found - ensure you're using the latest version"
   );
-  
+
   check(
     deps['web-vitals'],
     'web-vitals package is installed',
     'web-vitals package missing - install with: npm install web-vitals'
   );
-  
+
   const hasImagePackage = deps['sharp'] || deps['@next/image'];
   check(
     hasImagePackage,
@@ -289,24 +304,33 @@ function checkDependencies() {
 
 // Main execution
 async function main() {
-  console.log('\n' + COLORS.bright + '🚀 Performance Verification Tool' + COLORS.reset);
+  console.log(
+    '\n' + COLORS.bright + '🚀 Performance Verification Tool' + COLORS.reset
+  );
   console.log('Checking Next.js 15 performance optimizations...\n');
-  
+
   checkFontPreload();
   checkHeroImage();
   checkNextConfig();
   checkBuildOutput();
   checkDependencies();
   checkCommonIssues();
-  
+
   // Summary
   log.section('📊 Summary');
-  
+
   const percentage = Math.round((passedChecks / totalChecks) * 100);
-  const color = percentage >= 90 ? COLORS.green : percentage >= 70 ? COLORS.yellow : COLORS.red;
-  
-  console.log(`${color}${passedChecks}/${totalChecks} checks passed (${percentage}%)${COLORS.reset}\n`);
-  
+  const color =
+    percentage >= 90
+      ? COLORS.green
+      : percentage >= 70
+        ? COLORS.yellow
+        : COLORS.red;
+
+  console.log(
+    `${color}${passedChecks}/${totalChecks} checks passed (${percentage}%)${COLORS.reset}\n`
+  );
+
   if (percentage >= 90) {
     log.success('Excellent! Your performance optimizations look good.');
   } else if (percentage >= 70) {
@@ -314,16 +338,17 @@ async function main() {
   } else {
     log.error('Several issues need attention for optimal performance.');
   }
-  
+
   console.log('\n' + COLORS.cyan + '📖 Next Steps:' + COLORS.reset);
   console.log('1. Fix any failed checks above');
   console.log('2. Run: npm run build');
   console.log('3. Run: npm start');
-  console.log('4. Test with Lighthouse: lighthouse http://localhost:3000 --view');
+  console.log(
+    '4. Test with Lighthouse: lighthouse http://localhost:3000 --view'
+  );
   console.log('5. Check the browser console for warnings\n');
-  
+
   process.exit(percentage >= 70 ? 0 : 1);
 }
 
 main().catch(console.error);
-

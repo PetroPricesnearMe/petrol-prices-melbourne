@@ -14,28 +14,28 @@ interface UseScrollAnimationOptions {
    * Threshold (0-1) - What % of element must be visible
    */
   threshold?: number | number[];
-  
+
   /**
    * Root margin - Trigger before element enters viewport
    * Example: '-50px' triggers 50px before element is visible
    */
   rootMargin?: string;
-  
+
   /**
    * Only trigger once (better performance)
    */
   triggerOnce?: boolean;
-  
+
   /**
    * Root element for intersection (default: viewport)
    */
   root?: Element | null;
-  
+
   /**
    * Callback when element enters view
    */
   onEnter?: () => void;
-  
+
   /**
    * Callback when element exits view
    */
@@ -45,10 +45,10 @@ interface UseScrollAnimationOptions {
 /**
  * Scroll animation hook using Intersection Observer
  * More performant than scroll event listeners
- * 
+ *
  * @example
  * const { ref, isInView } = useScrollAnimation({ triggerOnce: true });
- * 
+ *
  * return (
  *   <div ref={ref} className={isInView ? 'animate-fade-in' : 'opacity-0'}>
  *     Content
@@ -73,11 +73,11 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>({
     const observer = new IntersectionObserver(
       ([entry]) => {
         const inView = entry.isIntersecting;
-        
+
         if (inView) {
           setIsInView(true);
           onEnter?.();
-          
+
           // Disconnect if triggerOnce
           if (triggerOnce) {
             observer.disconnect();
@@ -100,13 +100,13 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>({
 
 /**
  * Hook for parallax scroll effects
- * 
+ *
  * @example
  * const { ref, progress } = useScrollProgress();
- * 
+ *
  * return (
- *   <div 
- *     ref={ref} 
+ *   <div
+ *     ref={ref}
  *     style={{ transform: `translateY(${progress * 100}px)` }}
  *   >
  *     Parallax content
@@ -124,15 +124,18 @@ export function useScrollProgress<T extends HTMLElement = HTMLDivElement>() {
     const handleScroll = () => {
       const rect = element.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       // Calculate progress (0 to 1)
       const elementTop = rect.top;
       const elementHeight = rect.height;
       const progress = Math.max(
         0,
-        Math.min(1, (windowHeight - elementTop) / (windowHeight + elementHeight))
+        Math.min(
+          1,
+          (windowHeight - elementTop) / (windowHeight + elementHeight)
+        )
       );
-      
+
       setProgress(progress);
     };
 
@@ -149,26 +152,29 @@ export function useScrollProgress<T extends HTMLElement = HTMLDivElement>() {
 /**
  * Hook for staggered animations in lists
  * Automatically calculates delay based on index
- * 
+ *
  * @example
  * const items = ['item1', 'item2', 'item3'];
- * 
+ *
  * return items.map((item, index) => {
  *   const delay = useStaggerDelay(index, 0.1);
  *   return <div style={{ animationDelay: `${delay}s` }}>{item}</div>;
  * });
  */
-export function useStaggerDelay(index: number, baseDelay: number = 0.1): number {
+export function useStaggerDelay(
+  index: number,
+  baseDelay: number = 0.1
+): number {
   return index * baseDelay;
 }
 
 /**
  * Hook for reduced motion preference
  * Respects user's accessibility settings
- * 
+ *
  * @example
  * const prefersReducedMotion = useReducedMotion();
- * 
+ *
  * return (
  *   <motion.div
  *     animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
@@ -211,7 +217,7 @@ export function useElementSize<T extends HTMLElement = HTMLDivElement>(): {
     const element = ref.current;
     if (!element) return;
 
-    const resizeObserver = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) {
         setDimensions({
@@ -227,4 +233,3 @@ export function useElementSize<T extends HTMLElement = HTMLDivElement>(): {
 
   return { ref, ...dimensions };
 }
-

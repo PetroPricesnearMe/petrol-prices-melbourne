@@ -1,6 +1,6 @@
 /**
  * SearchBar Component (Molecule)
- * 
+ *
  * Search input with integrated clear button and loading state
  */
 
@@ -133,7 +133,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         fullWidth
         ariaLabel="Search"
       />
-      
+
       {showButton && (
         <Button
           type="submit"

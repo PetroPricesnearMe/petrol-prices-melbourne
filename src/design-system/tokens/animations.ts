@@ -1,9 +1,9 @@
 /**
  * Animation Tokens - Design System
- * 
+ *
  * Smooth, performant animations using GPU-accelerated properties.
  * Respects user's motion preferences (prefers-reduced-motion).
- * 
+ *
  * @module design-system/tokens/animations
  */
 

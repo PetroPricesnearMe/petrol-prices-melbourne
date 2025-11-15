@@ -123,7 +123,7 @@ export function Modal({
               >
                 {/* Header */}
                 {(title || showCloseButton) && (
-                  <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
                     {title && (
                       <Dialog.Title
                         as="h3"
@@ -135,7 +135,7 @@ export function Modal({
                     {showCloseButton && (
                       <button
                         type="button"
-                        className="rounded-lg p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                        className="rounded-lg p-2 text-gray-400 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                         onClick={onClose}
                         aria-label="Close modal"
                       >
@@ -146,9 +146,7 @@ export function Modal({
                 )}
 
                 {/* Content */}
-                <div className="p-6">
-                  {children}
-                </div>
+                <div className="p-6">{children}</div>
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -165,7 +163,11 @@ export function Modal({
 /**
  * Specialized modal for displaying station details
  */
-export function StationDetailsModal({ isOpen, onClose, station }: StationDetailsModalProps) {
+export function StationDetailsModal({
+  isOpen,
+  onClose,
+  station,
+}: StationDetailsModalProps) {
   if (!station) return null;
 
   const getPriceColor = (price: number | null): string => {
@@ -177,14 +179,14 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
 
   const getBrandClass = (brand: string) => {
     const brandClassMap: Record<string, string> = {
-      'BP': 'badge-success',
-      'Shell': 'badge-warning',
-      'Caltex': 'badge-error',
+      BP: 'badge-success',
+      Shell: 'badge-warning',
+      Caltex: 'badge-error',
       '7-Eleven': 'badge-primary',
       'Coles Express': 'badge-error',
-      'Woolworths': 'badge-success',
-      'United': 'badge-primary',
-      'Puma': 'badge-secondary',
+      Woolworths: 'badge-success',
+      United: 'badge-primary',
+      Puma: 'badge-secondary',
     };
     return brandClassMap[brand] || 'badge-secondary';
   };
@@ -201,25 +203,27 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
         {/* Station Header */}
         <div className="flex items-start space-x-4">
           <div className="flex-shrink-0">
-            <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
               <span className="text-2xl font-bold text-gray-600 dark:text-gray-300">
                 {station.brand.charAt(0)}
               </span>
             </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center space-x-2 mb-2">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white truncate">
+          <div className="min-w-0 flex-1">
+            <div className="mb-2 flex items-center space-x-2">
+              <h2 className="truncate text-xl font-bold text-gray-900 dark:text-white">
                 {station.name}
               </h2>
               {station.verified && (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200">
+                <span className="text-success-800 dark:bg-success-900 dark:text-success-200 inline-flex items-center rounded-full bg-success-100 px-2 py-1 text-xs font-medium">
                   ✓ Verified
                 </span>
               )}
             </div>
             <div className="flex items-center space-x-2">
-              <span className={cn("badge text-sm", getBrandClass(station.brand))}>
+              <span
+                className={cn('badge text-sm', getBrandClass(station.brand))}
+              >
                 {station.brand}
               </span>
               {station.rating && (
@@ -235,16 +239,31 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
         </div>
 
         {/* Address */}
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+        <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0">
-              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg
+                className="h-5 w-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
               </svg>
             </div>
             <div>
-              <p className="text-gray-900 dark:text-white font-medium">
+              <p className="font-medium text-gray-900 dark:text-white">
                 {station.address}
               </p>
               <p className="text-gray-600 dark:text-gray-400">
@@ -256,7 +275,7 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
 
         {/* Fuel Prices */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
             Current Fuel Prices
           </h3>
           <div className="grid grid-cols-2 gap-4">
@@ -265,13 +284,18 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
               return (
                 <div
                   key={type}
-                  className="flex justify-between items-center p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
+                  className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-700"
                 >
-                  <span className="text-gray-700 dark:text-gray-300 capitalize">
-                    {type === 'premium95' ? 'Premium 95' :
-                     type === 'premium98' ? 'Premium 98' : type}
+                  <span className="capitalize text-gray-700 dark:text-gray-300">
+                    {type === 'premium95'
+                      ? 'Premium 95'
+                      : type === 'premium98'
+                        ? 'Premium 98'
+                        : type}
                   </span>
-                  <span className={cn('text-lg font-bold', getPriceColor(price))}>
+                  <span
+                    className={cn('text-lg font-bold', getPriceColor(price))}
+                  >
                     {price.toFixed(1)}¢
                   </span>
                 </div>
@@ -281,37 +305,46 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
         </div>
 
         {/* Amenities */}
-        {station.amenities && Object.values(station.amenities).some(Boolean) && (
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Amenities
-            </h3>
-            <div className="grid grid-cols-2 gap-2">
-              {Object.entries(station.amenities).map(([amenity, available]) => {
-                if (!available) return null;
-                return (
-                  <div key={amenity} className="flex items-center space-x-2">
-                    <span className="text-success-500">✓</span>
-                    <span className="text-gray-700 dark:text-gray-300 capitalize">
-                      {amenity.replace(/([A-Z])/g, ' $1').trim()}
-                    </span>
-                  </div>
-                );
-              })}
+        {station.amenities &&
+          Object.values(station.amenities).some(Boolean) && (
+            <div>
+              <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                Amenities
+              </h3>
+              <div className="grid grid-cols-2 gap-2">
+                {Object.entries(station.amenities).map(
+                  ([amenity, available]) => {
+                    if (!available) return null;
+                    return (
+                      <div
+                        key={amenity}
+                        className="flex items-center space-x-2"
+                      >
+                        <span className="text-success-500">✓</span>
+                        <span className="capitalize text-gray-700 dark:text-gray-300">
+                          {amenity.replace(/([A-Z])/g, ' $1').trim()}
+                        </span>
+                      </div>
+                    );
+                  }
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         {/* Operating Hours */}
         {station.operatingHours && (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
               Operating Hours
             </h3>
             <div className="space-y-2">
               {Object.entries(station.operatingHours).map(([day, hours]) => (
-                <div key={day} className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-600 last:border-b-0">
-                  <span className="text-gray-700 dark:text-gray-300 capitalize font-medium">
+                <div
+                  key={day}
+                  className="flex items-center justify-between border-b border-gray-200 py-2 last:border-b-0 dark:border-gray-600"
+                >
+                  <span className="font-medium capitalize text-gray-700 dark:text-gray-300">
                     {day}
                   </span>
                   <span className="text-gray-600 dark:text-gray-400">
@@ -325,18 +358,28 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
 
         {/* Contact Information */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
             Contact Information
           </h3>
           <div className="space-y-3">
             {station.phoneNumber && (
               <div className="flex items-center space-x-3">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
                 </svg>
                 <a
                   href={`tel:${station.phoneNumber}`}
-                  className="text-primary-600 dark:text-primary-400 hover:underline"
+                  className="text-primary-600 hover:underline dark:text-primary-400"
                 >
                   {station.phoneNumber}
                 </a>
@@ -344,14 +387,24 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
             )}
             {station.website && (
               <div className="flex items-center space-x-3">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
                 <a
                   href={station.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary-600 dark:text-primary-400 hover:underline"
+                  className="text-primary-600 hover:underline dark:text-primary-400"
                 >
                   Visit Website
                 </a>
@@ -361,21 +414,26 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
         </div>
 
         {/* Last Updated */}
-        <div className="text-sm text-gray-500 dark:text-gray-400 text-center pt-4 border-t border-gray-200 dark:border-gray-600">
+        <div className="border-t border-gray-200 pt-4 text-center text-sm text-gray-500 dark:border-gray-600 dark:text-gray-400">
           Last updated: {new Date(station.lastUpdated).toLocaleDateString()}
         </div>
 
         {/* Action Buttons */}
         <div className="flex space-x-3 pt-4">
           <button
-            onClick={() => window.open(`https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`, '_blank')}
-            className="flex-1 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+            onClick={() =>
+              window.open(
+                `https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`,
+                '_blank'
+              )
+            }
+            className="flex-1 rounded-lg bg-primary-600 px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-primary-700"
           >
             🧭 Get Directions
           </button>
           <button
             onClick={() => window.open(`/stations/${station.id}`, '_blank')}
-            className="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+            className="flex-1 rounded-lg bg-gray-600 px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-gray-700"
           >
             📄 View Full Page
           </button>

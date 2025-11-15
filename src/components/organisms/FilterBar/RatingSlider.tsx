@@ -140,18 +140,36 @@ export const RatingSlider: React.FC<RatingSliderProps> = ({
   const config = sizeClasses[size];
 
   return (
-    <div className={cn('rating-slider', className)} role="group" aria-label="Rating filter">
+    <div
+      className={cn('rating-slider', className)}
+      role="group"
+      aria-label="Rating filter"
+    >
       {showLabel && (
-        <div className="flex items-center justify-between mb-3">
-          <label className={cn('font-semibold text-gray-900 dark:text-gray-100', config.text)}>
+        <div className="mb-3 flex items-center justify-between">
+          <label
+            className={cn(
+              'font-semibold text-gray-900 dark:text-gray-100',
+              config.text
+            )}
+          >
             Minimum Rating
           </label>
           {currentRating > 0 && (
             <div className="flex items-center gap-1">
-              <span className={cn('font-medium text-primary-600 dark:text-primary-400', config.text)}>
+              <span
+                className={cn(
+                  'font-medium text-primary-600 dark:text-primary-400',
+                  config.text
+                )}
+              >
                 {currentRating}
               </span>
-              <span className={cn('text-gray-500 dark:text-gray-400', config.text)}>/ {maxRating}</span>
+              <span
+                className={cn('text-gray-500 dark:text-gray-400', config.text)}
+              >
+                / {maxRating}
+              </span>
             </div>
           )}
         </div>
@@ -177,9 +195,9 @@ export const RatingSlider: React.FC<RatingSliderProps> = ({
               onKeyDown={(e) => handleKeyDown(e, rating)}
               disabled={disabled}
               className={cn(
-                'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded',
+                'rounded focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
                 'transition-all duration-200',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
+                'disabled:cursor-not-allowed disabled:opacity-50',
                 config.star
               )}
               aria-pressed={isActive}
@@ -190,8 +208,12 @@ export const RatingSlider: React.FC<RatingSliderProps> = ({
               <svg
                 className={cn(
                   'transition-colors duration-200',
-                  isActive ? 'text-yellow-400 dark:text-yellow-500' : 'text-gray-300 dark:text-gray-600',
-                  isHovered && !isActive && 'text-yellow-300 dark:text-yellow-600'
+                  isActive
+                    ? 'text-yellow-400 dark:text-yellow-500'
+                    : 'text-gray-300 dark:text-gray-600',
+                  isHovered &&
+                    !isActive &&
+                    'text-yellow-300 dark:text-yellow-600'
                 )}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -215,7 +237,7 @@ export const RatingSlider: React.FC<RatingSliderProps> = ({
             onClick={() => handleRatingChange(0)}
             className={cn(
               'ml-2 px-2 py-1 text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200',
-              'transition-colors rounded',
+              'rounded transition-colors',
               'disabled:opacity-50'
             )}
             disabled={disabled}

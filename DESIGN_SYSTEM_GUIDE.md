@@ -35,22 +35,25 @@ This document outlines the comprehensive design system for petrolpricesnearme.co
 ## Color System
 
 ### Primary Colors
+
 - **Primary Blue** (`--primary-500: #3B82F6`): Trust, reliability, main brand color
 - **Secondary Green** (`--secondary-500: #10B981`): Success, eco-friendly, savings
 - **Accent Orange** (`--accent-500: #F97316`): Call-to-action, urgency, highlights
 
 ### Neutral Grays
+
 - `--gray-50` to `--gray-900`: Professional grayscale for text and backgrounds
 - All colors are WCAG AA compliant for accessibility
 
 ### Fuel Brand Colors
+
 ```css
---brand-shell: #FBCE07;
---brand-bp: #00853E;
---brand-caltex: #E31937;
---brand-seven-eleven: #F47920;
---brand-mobil: #E01F27;
---brand-united: #004C97;
+--brand-shell: #fbce07;
+--brand-bp: #00853e;
+--brand-caltex: #e31937;
+--brand-seven-eleven: #f47920;
+--brand-mobil: #e01f27;
+--brand-united: #004c97;
 ```
 
 ### Usage
@@ -72,11 +75,15 @@ This document outlines the comprehensive design system for petrolpricesnearme.co
 ## Typography
 
 ### Font Stack
+
 ```css
---font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Arial, sans-serif;
+--font-sans:
+  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Arial,
+  sans-serif;
 ```
 
 ### Type Scale
+
 - `--text-xs`: 0.75rem (12px)
 - `--text-sm`: 0.875rem (14px)
 - `--text-base`: 1rem (16px)
@@ -90,6 +97,7 @@ This document outlines the comprehensive design system for petrolpricesnearme.co
 - `--text-7xl`: 4.5rem (72px)
 
 ### Font Weights
+
 - `--font-light`: 300
 - `--font-normal`: 400
 - `--font-medium`: 500
@@ -114,6 +122,7 @@ h1 {
 ## Spacing & Layout
 
 ### Spacing Scale (based on 4px grid)
+
 - `--space-1`: 0.25rem (4px)
 - `--space-2`: 0.5rem (8px)
 - `--space-3`: 0.75rem (12px)
@@ -126,9 +135,11 @@ h1 {
 - `--space-24`: 6rem (96px)
 
 ### Container Widths
+
 - `--container-max`: 1400px (main content)
 
 ### Border Radius
+
 - `--radius-sm`: 0.25rem (4px)
 - `--radius-md`: 0.375rem (6px)
 - `--radius-lg`: 0.5rem (8px)
@@ -162,9 +173,7 @@ h1 {
 
 ```jsx
 <div className="card">
-  <div className="card-body">
-    Content here
-  </div>
+  <div className="card-body">Content here</div>
 </div>
 ```
 
@@ -181,6 +190,7 @@ The `AdvancedFilters` component provides comprehensive search and filtering:
 ```
 
 **Features:**
+
 - Text search across station name, address, suburb
 - Fuel type filtering
 - Brand filtering
@@ -204,6 +214,7 @@ The `StationMap` component provides interactive mapping:
 ```
 
 **Features:**
+
 - Geolocation support
 - Color-coded price markers
 - Interactive station selection
@@ -213,11 +224,17 @@ The `StationMap` component provides interactive mapping:
 ### Breadcrumbs Component
 
 ```jsx
-<Breadcrumbs customCrumbs={[
-  { label: 'Home', path: '/', icon: '🏠' },
-  { label: 'Directory', path: '/directory' },
-  { label: 'North Melbourne', path: '/directory?region=north', isActive: true }
-]} />
+<Breadcrumbs
+  customCrumbs={[
+    { label: 'Home', path: '/', icon: '🏠' },
+    { label: 'Directory', path: '/directory' },
+    {
+      label: 'North Melbourne',
+      path: '/directory?region=north',
+      isActive: true,
+    },
+  ]}
+/>
 ```
 
 ### SEO Component
@@ -300,7 +317,11 @@ const AboutPage = React.lazy(() => import('./components/AboutPage'));
 ### Analytics Tracking
 
 ```javascript
-import { trackPageView, trackSearch, trackStationInteraction } from '../utils/analytics';
+import {
+  trackPageView,
+  trackSearch,
+  trackStationInteraction,
+} from '../utils/analytics';
 
 // Track page views
 useEffect(() => {
@@ -328,10 +349,10 @@ trackStationInteraction(stationId, 'directions', { name: stationName });
 ### Breakpoints
 
 ```css
---breakpoint-sm: 640px;   /* Mobile landscape */
---breakpoint-md: 768px;   /* Tablet */
---breakpoint-lg: 1024px;  /* Desktop */
---breakpoint-xl: 1280px;  /* Large desktop */
+--breakpoint-sm: 640px; /* Mobile landscape */
+--breakpoint-md: 768px; /* Tablet */
+--breakpoint-lg: 1024px; /* Desktop */
+--breakpoint-xl: 1280px; /* Large desktop */
 ```
 
 ### Mobile-First Approach
@@ -405,7 +426,7 @@ src/
 /**
  * Component Name
  * Brief description of component purpose
- * 
+ *
  * @component
  * @param {Object} props - Component props
  * @param {string} props.propName - Prop description
@@ -413,7 +434,7 @@ src/
  */
 const ComponentName = ({ propName }) => {
   // Component logic
-  
+
   return (
     // JSX
   );
@@ -428,13 +449,14 @@ export default ComponentName;
 2. **Global styles**: In `src/styles/`
 3. **Design system**: In `src/styles/design-system.css`
 4. **Import order**:
+
    ```css
    /* 1. Normalize/Reset */
    @import './styles/normalize.css';
-   
+
    /* 2. Design System */
    @import './styles/design-system.css';
-   
+
    /* 3. Component styles */
    @import './components/ComponentName.css';
    ```
@@ -518,4 +540,3 @@ For questions or contributions, please contact the development team.
 
 **Last Updated**: October 2025
 **Version**: 2.0.0
-

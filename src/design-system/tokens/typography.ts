@@ -1,9 +1,9 @@
 /**
  * Typography Tokens - Design System
- * 
+ *
  * Responsive font sizes with proper line heights and letter spacing.
  * Follows a modular scale for visual hierarchy.
- * 
+ *
  * @module design-system/tokens/typography
  */
 
@@ -21,13 +21,7 @@ export const fontFamily = {
     'Arial',
     'sans-serif',
   ],
-  mono: [
-    'Fira Code',
-    'Consolas',
-    'Monaco',
-    'Courier New',
-    'monospace',
-  ],
+  mono: ['Fira Code', 'Consolas', 'Monaco', 'Courier New', 'monospace'],
 } as const;
 
 /**
@@ -51,67 +45,67 @@ export const fontWeight = {
  */
 export const fontSize = {
   xs: {
-    size: '0.75rem',      // 12px
-    lineHeight: '1rem',   // 16px
+    size: '0.75rem', // 12px
+    lineHeight: '1rem', // 16px
     letterSpacing: '0.025em',
   },
   sm: {
-    size: '0.875rem',     // 14px
+    size: '0.875rem', // 14px
     lineHeight: '1.25rem', // 20px
     letterSpacing: '0.016em',
   },
   base: {
-    size: '1rem',         // 16px
-    lineHeight: '1.5rem',  // 24px
+    size: '1rem', // 16px
+    lineHeight: '1.5rem', // 24px
     letterSpacing: '0',
   },
   lg: {
-    size: '1.125rem',     // 18px
+    size: '1.125rem', // 18px
     lineHeight: '1.75rem', // 28px
     letterSpacing: '-0.011em',
   },
   xl: {
-    size: '1.25rem',      // 20px
+    size: '1.25rem', // 20px
     lineHeight: '1.75rem', // 28px
     letterSpacing: '-0.014em',
   },
   '2xl': {
-    size: '1.5rem',       // 24px
-    lineHeight: '2rem',    // 32px
+    size: '1.5rem', // 24px
+    lineHeight: '2rem', // 32px
     letterSpacing: '-0.019em',
   },
   '3xl': {
-    size: '1.875rem',     // 30px
+    size: '1.875rem', // 30px
     lineHeight: '2.25rem', // 36px
     letterSpacing: '-0.021em',
   },
   '4xl': {
-    size: '2.25rem',      // 36px
-    lineHeight: '2.5rem',  // 40px
+    size: '2.25rem', // 36px
+    lineHeight: '2.5rem', // 40px
     letterSpacing: '-0.022em',
   },
   '5xl': {
-    size: '3rem',         // 48px
+    size: '3rem', // 48px
     lineHeight: '1',
     letterSpacing: '-0.024em',
   },
   '6xl': {
-    size: '3.75rem',      // 60px
+    size: '3.75rem', // 60px
     lineHeight: '1',
     letterSpacing: '-0.025em',
   },
   '7xl': {
-    size: '4.5rem',       // 72px
+    size: '4.5rem', // 72px
     lineHeight: '1',
     letterSpacing: '-0.026em',
   },
   '8xl': {
-    size: '6rem',         // 96px
+    size: '6rem', // 96px
     lineHeight: '1',
     letterSpacing: '-0.027em',
   },
   '9xl': {
-    size: '8rem',         // 128px
+    size: '8rem', // 128px
     lineHeight: '1',
     letterSpacing: '-0.028em',
   },

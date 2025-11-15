@@ -80,6 +80,7 @@ Quick visual reference for all component features.
 ## States Visual Guide
 
 ### Idle State (Default)
+
 ```
 ┌─────────────────────────┐
 │  Card Title             │
@@ -89,6 +90,7 @@ Quick visual reference for all component features.
 ```
 
 ### Loading State
+
 ```
 ┌─────────────────────────┐
 │  ┌───────────────────┐  │
@@ -99,6 +101,7 @@ Quick visual reference for all component features.
 ```
 
 ### Error State
+
 ```
 ┌─────────────────────────┐
 │  ⚠ Error Message        │ ← Alert Banner
@@ -108,6 +111,7 @@ Quick visual reference for all component features.
 ```
 
 ### Success State
+
 ```
 ┌─────────────────────────┐
 │  ✓ Success!             │ ← Success Styling
@@ -131,6 +135,7 @@ scale: 0.95 ──────────────────────�
 ```
 
 ### Hover Animation
+
 ```
 Normal State    Hover State
     │              │
@@ -141,6 +146,7 @@ Normal State    Hover State
 ```
 
 ### Click Animation
+
 ```
 Normal    Press     Release
   │         │         │
@@ -232,15 +238,15 @@ Desktop (> 1024px)
 </NorthernTradieCard>
 
 // Full Usage
-<NorthernTradieCard 
+<NorthernTradieCard
   variant="elevated"
   size="lg"
   clickable
   animated
 >
   <NorthernTradieCard.Media src="..." />
-  <NorthernTradieCard.Header 
-    title="..." 
+  <NorthernTradieCard.Header
+    title="..."
     subtitle="..."
     icon={<Icon />}
     action={<Button />}
@@ -258,6 +264,7 @@ Desktop (> 1024px)
 ## Common Patterns
 
 ### Product Card
+
 ```
 ┌─────────────────┐
 │    [IMAGE]      │  ← Media
@@ -273,6 +280,7 @@ Desktop (> 1024px)
 ```
 
 ### Stats Card
+
 ```
 ┌─────────────────┐
 │ [📊] Metric     │  ← Header with icon
@@ -283,6 +291,7 @@ Desktop (> 1024px)
 ```
 
 ### Action Card
+
 ```
 ┌─────────────────┐
 │ Title           │  ← Header
@@ -348,16 +357,16 @@ Component Tree:
 
 ## Quick Reference
 
-| Feature | Prop | Values |
-|---------|------|--------|
-| **Variant** | `variant` | default, elevated, outlined, filled, interactive, featured |
-| **Size** | `size` | xs, sm, md, lg, xl |
-| **State** | `state` | idle, loading, error, success |
-| **Interactive** | `clickable` | true/false |
-| **Animation** | `animated` | true/false |
-| **Accessibility** | `ariaLabel` | string |
-| **Styling** | `className` | string |
-| **Shadow** | `shadow` | false, true, sm, md, lg, xl |
+| Feature           | Prop        | Values                                                     |
+| ----------------- | ----------- | ---------------------------------------------------------- |
+| **Variant**       | `variant`   | default, elevated, outlined, filled, interactive, featured |
+| **Size**          | `size`      | xs, sm, md, lg, xl                                         |
+| **State**         | `state`     | idle, loading, error, success                              |
+| **Interactive**   | `clickable` | true/false                                                 |
+| **Animation**     | `animated`  | true/false                                                 |
+| **Accessibility** | `ariaLabel` | string                                                     |
+| **Styling**       | `className` | string                                                     |
+| **Shadow**        | `shadow`    | false, true, sm, md, lg, xl                                |
 
 ## File Locations
 
@@ -404,4 +413,3 @@ npm run dev  # → /northern-tradie-card-demo
 # Type check
 npm run type-check
 ```
-

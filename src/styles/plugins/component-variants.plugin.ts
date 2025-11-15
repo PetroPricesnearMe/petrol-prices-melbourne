@@ -5,7 +5,10 @@
 
 import plugin from 'tailwindcss/plugin';
 
-export const componentVariantsPlugin = plugin(function ({ addComponents, theme }) {
+export const componentVariantsPlugin = plugin(function ({
+  addComponents,
+  theme,
+}) {
   // ========================================
   // BUTTON VARIANTS
   // ========================================

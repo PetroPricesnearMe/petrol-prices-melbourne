@@ -40,11 +40,13 @@ npm install lucide-react clsx tailwind-merge
 ## 🔘 Button
 
 ### Import
+
 ```tsx
 import { Button } from '@/components/ui/primitives';
 ```
 
 ### Variants
+
 - `primary` - Primary CTA (default)
 - `secondary` - Secondary actions
 - `outlined` - Outlined style
@@ -53,6 +55,7 @@ import { Button } from '@/components/ui/primitives';
 - `link` - Link-styled button
 
 ### Sizes
+
 - `sm` - Small (36px min height)
 - `md` - Medium (44px min height) - **default**
 - `lg` - Large (48px min height)
@@ -62,17 +65,20 @@ import { Button } from '@/components/ui/primitives';
 ### Examples
 
 **Basic Usage**
+
 ```tsx
 <Button>Click me</Button>
 ```
 
 **With Variant**
+
 ```tsx
 <Button variant="outlined">Cancel</Button>
 <Button variant="destructive">Delete</Button>
 ```
 
 **With Icons**
+
 ```tsx
 import { Search, ChevronRight } from 'lucide-react';
 
@@ -81,33 +87,37 @@ import { Search, ChevronRight } from 'lucide-react';
 ```
 
 **Loading State**
+
 ```tsx
 <Button loading>Processing...</Button>
 ```
 
 **Full Width**
+
 ```tsx
 <Button fullWidth>Submit Form</Button>
 ```
 
 **Disabled**
+
 ```tsx
 <Button disabled>Can't click</Button>
 ```
 
 ### Props Reference
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `variant` | enum | `'primary'` | Visual variant |
-| `size` | enum | `'md'` | Size variant |
-| `loading` | boolean | `false` | Shows spinner |
-| `fullWidth` | boolean | `false` | 100% width |
-| `leftIcon` | ReactNode | - | Icon before text |
-| `rightIcon` | ReactNode | - | Icon after text |
-| `disabled` | boolean | `false` | Disabled state |
+| Prop        | Type      | Default     | Description      |
+| ----------- | --------- | ----------- | ---------------- |
+| `variant`   | enum      | `'primary'` | Visual variant   |
+| `size`      | enum      | `'md'`      | Size variant     |
+| `loading`   | boolean   | `false`     | Shows spinner    |
+| `fullWidth` | boolean   | `false`     | 100% width       |
+| `leftIcon`  | ReactNode | -           | Icon before text |
+| `rightIcon` | ReactNode | -           | Icon after text  |
+| `disabled`  | boolean   | `false`     | Disabled state   |
 
 ### Accessibility Features
+
 - ✅ Minimum 44px touch target
 - ✅ Focus ring with 4px offset
 - ✅ `aria-disabled` when disabled
@@ -119,11 +129,20 @@ import { Search, ChevronRight } from 'lucide-react';
 ## 📄 Card
 
 ### Import
+
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/primitives';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/primitives';
 ```
 
 ### Variants
+
 - `default` - White with shadow
 - `bordered` - Border instead of shadow
 - `elevated` - Larger shadow
@@ -133,6 +152,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 ### Examples
 
 **Basic Card**
+
 ```tsx
 <Card>
   <CardHeader>
@@ -149,6 +169,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 ```
 
 **Hoverable Card**
+
 ```tsx
 <Card hoverable>
   <CardContent>Hover me!</CardContent>
@@ -156,16 +177,15 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 ```
 
 **Clickable Card**
+
 ```tsx
-<Card 
-  clickable 
-  onClick={() => alert('Clicked!')}
->
+<Card clickable onClick={() => alert('Clicked!')}>
   <CardContent>Click me!</CardContent>
 </Card>
 ```
 
 **Station Card Example**
+
 ```tsx
 <Card hoverable variant="bordered">
   <CardHeader>
@@ -173,9 +193,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
     <CardDescription>123 Main Street, Carlton VIC</CardDescription>
   </CardHeader>
   <CardContent>
-    <div className="text-3xl font-bold text-primary-600">
-      189.9¢
-    </div>
+    <div className="text-3xl font-bold text-primary-600">189.9¢</div>
     <p className="text-sm text-gray-500">Unleaded</p>
   </CardContent>
   <CardFooter>
@@ -186,16 +204,17 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 
 ### Props Reference
 
-| Component | Props | Description |
-|-----------|-------|-------------|
-| `Card` | `variant`, `hoverable`, `clickable`, `active` | Main container |
-| `CardHeader` | - | Header section |
-| `CardTitle` | - | Card title (h3) |
-| `CardDescription` | - | Subtitle text |
-| `CardContent` | - | Main content |
-| `CardFooter` | - | Footer actions |
+| Component         | Props                                         | Description     |
+| ----------------- | --------------------------------------------- | --------------- |
+| `Card`            | `variant`, `hoverable`, `clickable`, `active` | Main container  |
+| `CardHeader`      | -                                             | Header section  |
+| `CardTitle`       | -                                             | Card title (h3) |
+| `CardDescription` | -                                             | Subtitle text   |
+| `CardContent`     | -                                             | Main content    |
+| `CardFooter`      | -                                             | Footer actions  |
 
 ### Accessibility Features
+
 - ✅ `role="button"` when clickable
 - ✅ `tabIndex={0}` for keyboard navigation
 - ✅ Enter/Space key activation
@@ -207,6 +226,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 ## 📝 Input
 
 ### Import
+
 ```tsx
 import { Input } from '@/components/ui/primitives';
 ```
@@ -214,8 +234,9 @@ import { Input } from '@/components/ui/primitives';
 ### Examples
 
 **Basic Input**
+
 ```tsx
-<Input 
+<Input
   label="Email Address"
   type="email"
   placeholder="john@example.com"
@@ -224,8 +245,9 @@ import { Input } from '@/components/ui/primitives';
 ```
 
 **With Helper Text**
+
 ```tsx
-<Input 
+<Input
   label="Password"
   type="password"
   helperText="Must be at least 8 characters"
@@ -234,32 +256,28 @@ import { Input } from '@/components/ui/primitives';
 ```
 
 **With Error**
+
 ```tsx
-<Input 
-  label="Username"
-  error="Username is already taken"
-/>
+<Input label="Username" error="Username is already taken" />
 ```
 
 **With Success**
+
 ```tsx
-<Input 
-  label="Email"
-  type="email"
-  success
-/>
+<Input label="Email" type="email" success />
 ```
 
 **With Icons**
+
 ```tsx
 import { Search, Mail } from 'lucide-react';
 
-<Input 
+<Input
   leftIcon={<Search />}
   placeholder="Search..."
 />
 
-<Input 
+<Input
   leftIcon={<Mail />}
   label="Email"
   type="email"
@@ -267,8 +285,9 @@ import { Search, Mail } from 'lucide-react';
 ```
 
 **Full Example**
+
 ```tsx
-<Input 
+<Input
   label="Search Stations"
   type="search"
   placeholder="Enter suburb or postcode..."
@@ -280,17 +299,18 @@ import { Search, Mail } from 'lucide-react';
 
 ### Props Reference
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | string | - | Label text |
-| `helperText` | string | - | Helper message |
-| `error` | string | - | Error message |
-| `success` | boolean | `false` | Success state |
-| `leftIcon` | ReactNode | - | Icon on left |
-| `rightIcon` | ReactNode | - | Icon on right |
-| `fullWidth` | boolean | `true` | 100% width |
+| Prop         | Type      | Default | Description    |
+| ------------ | --------- | ------- | -------------- |
+| `label`      | string    | -       | Label text     |
+| `helperText` | string    | -       | Helper message |
+| `error`      | string    | -       | Error message  |
+| `success`    | boolean   | `false` | Success state  |
+| `leftIcon`   | ReactNode | -       | Icon on left   |
+| `rightIcon`  | ReactNode | -       | Icon on right  |
+| `fullWidth`  | boolean   | `true`  | 100% width     |
 
 ### Accessibility Features
+
 - ✅ Connected label with htmlFor
 - ✅ `aria-invalid` for errors
 - ✅ `aria-describedby` for helper text
@@ -305,6 +325,7 @@ import { Search, Mail } from 'lucide-react';
 ### Color Contrast (WCAG 2.1 AA)
 
 All components meet WCAG 2.1 AA standards:
+
 - **Normal text**: 4.5:1 minimum
 - **Large text**: 3:1 minimum
 - **Interactive elements**: Clear focus states
@@ -312,6 +333,7 @@ All components meet WCAG 2.1 AA standards:
 ### Touch Targets
 
 All interactive elements have **minimum 44x44px** touch targets:
+
 - Buttons: `min-h-[44px]`
 - Inputs: `min-h-[44px]`
 - Clickable cards: `min-h-[44px]`
@@ -319,6 +341,7 @@ All interactive elements have **minimum 44x44px** touch targets:
 ### Keyboard Navigation
 
 All components support keyboard navigation:
+
 - **Tab**: Navigate between elements
 - **Enter/Space**: Activate buttons/cards
 - **Escape**: Close modals/dropdowns
@@ -327,9 +350,10 @@ All components support keyboard navigation:
 ### Focus Management
 
 Clear focus indicators with 4px offset:
+
 ```tsx
-focus-visible:outline-none 
-focus-visible:ring-4 
+focus-visible:outline-none
+focus-visible:ring-4
 focus-visible:ring-primary-300
 ```
 
@@ -359,10 +383,11 @@ yellow-50 to yellow-900
 ### Dark Mode
 
 All components support dark mode:
+
 ```tsx
-dark:bg-gray-800
-dark:text-white
-dark:border-gray-700
+dark: bg - gray - 800;
+dark: text - white;
+dark: border - gray - 700;
 ```
 
 ---
@@ -396,4 +421,3 @@ When creating new components, ensure:
 
 **Last Updated**: 2025-11-11  
 **Version**: 1.0.0
-

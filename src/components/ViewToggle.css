@@ -9,7 +9,9 @@
   border-radius: 12px;
   padding: 4px;
   gap: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06);
   position: relative;
 }
 
@@ -41,7 +43,7 @@
 }
 
 .view-toggle__btn:focus-visible {
-  outline: 2px solid #3B82F6;
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 
@@ -69,7 +71,7 @@
 .view-toggle__bg {
   position: absolute;
   inset: 0;
-  background: #3B82F6;
+  background: #3b82f6;
   border-radius: 8px;
   z-index: -1;
   box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
@@ -87,7 +89,7 @@
 }
 
 .view-toggle__btn:not(.active) .view-toggle__content {
-  color: #6B7280;
+  color: #6b7280;
 }
 
 .view-toggle__btn.active .view-toggle__content {
@@ -140,7 +142,7 @@
 .view-toggle-compact__btn {
   width: 44px;
   height: 44px;
-  border: 2px solid #E5E7EB;
+  border: 2px solid #e5e7eb;
   background: white;
   border-radius: 8px;
   cursor: pointer;
@@ -153,8 +155,8 @@
 }
 
 .view-toggle-compact__btn:hover {
-  background: #F9FAFB;
-  border-color: #D1D5DB;
+  background: #f9fafb;
+  border-color: #d1d5db;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -164,8 +166,8 @@
 }
 
 .view-toggle-compact__btn.active {
-  background: #3B82F6;
-  border-color: #3B82F6;
+  background: #3b82f6;
+  border-color: #3b82f6;
   color: white;
   box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
@@ -175,7 +177,7 @@
 }
 
 .view-toggle-compact__btn:focus-visible {
-  outline: 2px solid #3B82F6;
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 
@@ -218,27 +220,27 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   .view-toggle {
-    background: #1F2937;
+    background: #1f2937;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   }
 
   .view-toggle__btn:not(.active) .view-toggle__content {
-    color: #9CA3AF;
+    color: #9ca3af;
   }
 
   .view-toggle__btn:hover:not(.active) .view-toggle__content {
-    color: #D1D5DB;
+    color: #d1d5db;
   }
 
   .view-toggle-compact__btn {
-    background: #1F2937;
+    background: #1f2937;
     border-color: #374151;
-    color: #D1D5DB;
+    color: #d1d5db;
   }
 
   .view-toggle-compact__btn:hover {
     background: #111827;
-    border-color: #4B5563;
+    border-color: #4b5563;
   }
 }
 
@@ -304,7 +306,7 @@
   }
 
   .view-toggle__btn:focus-visible {
-    outline: 2px solid #3B82F6;
+    outline: 2px solid #3b82f6;
     outline-offset: 2px;
   }
 
@@ -313,7 +315,7 @@
   }
 
   .view-toggle-compact__btn:focus-visible {
-    outline: 2px solid #3B82F6;
+    outline: 2px solid #3b82f6;
     outline-offset: 2px;
   }
 }

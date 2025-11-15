@@ -1,6 +1,6 @@
 /**
  * Optimized Image Component
- * 
+ *
  * Production-ready image component optimized for Core Web Vitals:
  * - LCP optimization (priority loading, preload)
  * - CLS prevention (aspect ratio, dimensions)
@@ -9,7 +9,7 @@
  * - Lazy loading strategies
  * - Blur placeholders
  * - Error handling
- * 
+ *
  * Performance Features:
  * - Automatic format optimization (AVIF > WebP > JPG)
  * - Responsive image sizing
@@ -17,7 +17,7 @@
  * - Priority loading for hero/LCP images
  * - Blur placeholders for better perceived performance
  * - Aspect ratio preservation to prevent CLS
- * 
+ *
  * @module components/common/OptimizedImage
  */
 
@@ -44,97 +44,97 @@ export interface OptimizedImageProps {
    * Image source URL
    */
   src: string;
-  
+
   /**
    * Image alt text (required for accessibility)
    */
   alt: string;
-  
+
   /**
    * Image width
    */
   width?: number;
-  
+
   /**
    * Image height
    */
   height?: number;
-  
+
   /**
    * Fill container (use with aspect ratio)
    */
   fill?: boolean;
-  
+
   /**
    * Image quality (1-100, default: 85)
    */
   quality?: number;
-  
+
   /**
    * Image priority (for LCP optimization)
    */
   priority?: boolean;
-  
+
   /**
    * Loading strategy
    */
   loading?: 'lazy' | 'eager';
-  
+
   /**
    * Fetch priority
    */
   fetchPriority?: 'high' | 'auto' | 'low';
-  
+
   /**
    * Image usage type (affects quality and sizing)
    */
   usage?: 'hero' | 'thumbnail' | 'card' | 'icon' | 'background';
-  
+
   /**
    * Responsive sizes string
    */
   sizes?: string;
-  
+
   /**
    * Aspect ratio (e.g., "16/9")
    */
   aspectRatio?: string;
-  
+
   /**
    * Object fit
    */
   objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
-  
+
   /**
    * Blur placeholder
    */
   blurDataURL?: string;
-  
+
   /**
    * Show loading skeleton
    */
   showSkeleton?: boolean;
-  
+
   /**
    * Custom className
    */
   className?: string;
-  
+
   /**
    * Custom style
    */
   style?: React.CSSProperties;
-  
+
   /**
    * Click handler
    */
   onClick?: () => void;
-  
+
   /**
    * Load handler
    */
   onLoad?: () => void;
-  
+
   /**
    * Error handler
    */
@@ -143,7 +143,7 @@ export interface OptimizedImageProps {
 
 /**
  * Optimized Image Component
- * 
+ *
  * Production-ready image component with Core Web Vitals optimization
  */
 export function OptimizedImage({
@@ -190,10 +190,8 @@ export function OptimizedImage({
   const finalFetchPriority = fetchPriority ?? loadingStrategy.fetchPriority;
 
   // Generate blur placeholder
-  const defaultBlurDataURL = blurDataURL ?? generateBlurPlaceholder(
-    width || 10,
-    height || 10
-  );
+  const defaultBlurDataURL =
+    blurDataURL ?? generateBlurPlaceholder(width || 10, height || 10);
 
   // Preload image if it's a priority/LCP image
   useEffect(() => {
@@ -224,16 +222,14 @@ export function OptimizedImage({
     setHasError(true);
     setIsLoaded(false);
     onError?.(error);
-    
+
     if (process.env.NODE_ENV === 'development') {
       console.error('Image failed to load:', src, error);
     }
   };
 
   // Calculate aspect ratio style
-  const aspectRatioStyle = aspectRatio
-    ? { aspectRatio, ...style }
-    : style;
+  const aspectRatioStyle = aspectRatio ? { aspectRatio, ...style } : style;
 
   // Render error state
   if (hasError) {
@@ -246,9 +242,9 @@ export function OptimizedImage({
         )}
         style={aspectRatioStyle}
       >
-        <div className="text-center p-4">
+        <div className="p-4 text-center">
           <svg
-            className="w-12 h-12 mx-auto text-gray-400 mb-2"
+            className="mx-auto mb-2 h-12 w-12 text-gray-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -272,22 +268,19 @@ export function OptimizedImage({
   // Render image with Next.js Image component
   return (
     <div
-      className={cn(
-        'relative overflow-hidden',
-        className
-      )}
+      className={cn('relative overflow-hidden', className)}
       style={aspectRatioStyle}
     >
       {/* Loading skeleton */}
       {showSkeleton && !isLoaded && (
         <div
           className={cn(
-            'absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse',
+            'absolute inset-0 animate-pulse bg-gray-200 dark:bg-gray-700',
             'flex items-center justify-center'
           )}
           aria-hidden="true"
         >
-          <div className="w-8 h-8 border-2 border-gray-300 dark:border-gray-600 border-t-primary-600 rounded-full animate-spin" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-primary-600 dark:border-gray-600" />
         </div>
       )}
 
@@ -327,7 +320,9 @@ export function OptimizedImage({
 /**
  * Hero Image Component (optimized for LCP)
  */
-export function HeroImage(props: Omit<OptimizedImageProps, 'priority' | 'usage'>) {
+export function HeroImage(
+  props: Omit<OptimizedImageProps, 'priority' | 'usage'>
+) {
   return (
     <OptimizedImage
       {...props}

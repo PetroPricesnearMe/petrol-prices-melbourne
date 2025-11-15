@@ -22,8 +22,8 @@ export function validate(schema: ValidationSchema) {
     if (schema.query) {
       const result = schema.query.safeParse(req.query);
       if (!result.success) {
-        validationErrors.query = result.error.errors.map(err =>
-          `${err.path.join('.')}: ${err.message}`
+        validationErrors.query = result.error.errors.map(
+          (err) => `${err.path.join('.')}: ${err.message}`
         );
       }
     }
@@ -32,8 +32,8 @@ export function validate(schema: ValidationSchema) {
     if (schema.body) {
       const result = schema.body.safeParse(req.body);
       if (!result.success) {
-        validationErrors.body = result.error.errors.map(err =>
-          `${err.path.join('.')}: ${err.message}`
+        validationErrors.body = result.error.errors.map(
+          (err) => `${err.path.join('.')}: ${err.message}`
         );
       } else {
         req.body = result.data;
@@ -44,8 +44,8 @@ export function validate(schema: ValidationSchema) {
     if (schema.params) {
       const result = schema.params.safeParse(req.query);
       if (!result.success) {
-        validationErrors.params = result.error.errors.map(err =>
-          `${err.path.join('.')}: ${err.message}`
+        validationErrors.params = result.error.errors.map(
+          (err) => `${err.path.join('.')}: ${err.message}`
         );
       }
     }

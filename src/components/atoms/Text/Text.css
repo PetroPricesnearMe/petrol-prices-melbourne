@@ -122,23 +122,23 @@
 }
 
 .text--color-disabled {
-  color: #BDBDBD;
+  color: #bdbdbd;
 }
 
 .text--color-inverse {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .text--color-success {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .text--color-warning {
-  color: #FF9800;
+  color: #ff9800;
 }
 
 .text--color-error {
-  color: #F44336;
+  color: #f44336;
 }
 
 /* ============================================================================
@@ -278,4 +278,3 @@
     font-size: 1.125rem;
   }
 }
-

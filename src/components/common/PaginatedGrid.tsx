@@ -218,7 +218,9 @@ export function PaginatedGrid<T = any>({
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+              <p className="mt-4 text-gray-600 dark:text-gray-400">
+                Loading...
+              </p>
             </div>
           </div>
         )}
@@ -233,8 +235,8 @@ export function PaginatedGrid<T = any>({
         {emptyState || (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              <div className="mb-4 text-6xl">🔍</div>
+              <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
                 No items found
               </h3>
               <p className="text-gray-600 dark:text-gray-400">

@@ -51,9 +51,7 @@ export function createdResponse<T>(
   successResponse(res, data, HTTP_STATUS.CREATED, meta);
 }
 
-export function noContentResponse(
-  res: NextApiResponse
-): void {
+export function noContentResponse(res: NextApiResponse): void {
   res.status(HTTP_STATUS.NO_CONTENT).end();
 }
 
@@ -78,7 +76,9 @@ export function calculatePagination(
   };
 }
 
-export function getRateLimitInfo(res: NextApiResponse): RateLimitMeta | undefined {
+export function getRateLimitInfo(
+  res: NextApiResponse
+): RateLimitMeta | undefined {
   const limit = res.getHeader('X-RateLimit-Limit');
   const remaining = res.getHeader('X-RateLimit-Remaining');
   const reset = res.getHeader('X-RateLimit-Reset');

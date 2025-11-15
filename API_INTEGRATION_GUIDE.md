@@ -9,22 +9,26 @@ This project includes a comprehensive API integration system supporting multiple
 ## 🚀 Features
 
 ✅ **Multiple Data Providers**
+
 - Baserow (default)
 - Airtable
 - Supabase
 - REST API
 
 ✅ **Next.js 15 Server Components**
+
 - ISR support with configurable revalidation
 - Automatic request deduplication
 - Type-safe data fetching
 
 ✅ **Comprehensive State Management**
+
 - Loading states with skeletons
 - Error states with retry functionality
 - Empty states with helpful messaging
 
 ✅ **Accessibility (WCAG 2.1 AA)**
+
 - Keyboard navigation
 - Screen reader support
 - Focus management
@@ -87,6 +91,7 @@ DATA_PROVIDER=baserow  # Options: baserow, airtable, supabase, rest
 ### Provider Priority
 
 Providers are initialized in this order:
+
 1. Baserow (if `BASEROW_API_TOKEN` is set)
 2. Airtable (if `AIRTABLE_API_KEY` is set)
 3. Supabase (if `SUPABASE_URL` is set)
@@ -220,6 +225,7 @@ export async function GET() {
 Main component for displaying stations with automatic state handling.
 
 **Props:**
+
 - `stations: Station[]` - Array of station data
 - `isLoading?: boolean` - Loading state
 - `error?: Error | string | null` - Error state
@@ -228,6 +234,7 @@ Main component for displaying stations with automatic state handling.
 - `columns?: { mobile?: 1|2, tablet?: 2|3, desktop?: 3|4|5 }` - Grid columns
 
 **Example:**
+
 ```typescript
 <StationList
   stations={stations}
@@ -249,6 +256,7 @@ Main component for displaying stations with automatic state handling.
 Individual station card with accessibility features.
 
 **Props:**
+
 - `station: Station` - Station data
 - `onClick?: () => void` - Click handler
 - `asLink?: boolean` - Render as Link (default: true)
@@ -356,6 +364,7 @@ All components are WCAG 2.1 AA compliant:
 ### Example Page
 
 Visit `/api-example` to see a complete example with:
+
 - Server Component data fetching
 - Loading, error, and empty states
 - Multiple provider support
@@ -405,4 +414,3 @@ When adding new data providers:
 **Status:** ✅ Production Ready
 **Last Updated:** 2025
 **Maintainer:** Development Team
-

@@ -204,7 +204,8 @@ const buttonVariants = createVariants({
     variant: {
       primary: 'bg-primary-600 text-white hover:bg-primary-700',
       secondary: 'bg-secondary-600 text-white hover:bg-secondary-700',
-      outline: 'border-2 border-primary-600 text-primary-600 hover:bg-primary-50',
+      outline:
+        'border-2 border-primary-600 text-primary-600 hover:bg-primary-50',
     },
     size: {
       sm: 'px-4 py-2 text-sm',
@@ -226,9 +227,7 @@ const buttonVariants = createVariants({
 
 // Usage
 function Button({ variant, size, ...props }) {
-  return (
-    <button className={buttonVariants({ variant, size })} {...props} />
-  );
+  return <button className={buttonVariants({ variant, size })} {...props} />;
 }
 ```
 
@@ -242,14 +241,10 @@ import { patterns } from '@/styles/system/css-in-js';
   <h1 className={patterns.text.h1}>Heading</h1>
   <p className={patterns.text.body}>Body text</p>
 
-  <div className={patterns.grid(3, 'lg')}>
-    {/* 3-column responsive grid */}
-  </div>
+  <div className={patterns.grid(3, 'lg')}>{/* 3-column responsive grid */}</div>
 
-  <div className={patterns.flex.between}>
-    {/* Flex with space-between */}
-  </div>
-</div>
+  <div className={patterns.flex.between}>{/* Flex with space-between */}</div>
+</div>;
 ```
 
 ### Style Utilities
@@ -259,18 +254,18 @@ import { styleUtils } from '@/styles/system/css-in-js';
 
 // Responsive utilities
 const responsiveClass = styleUtils.responsive(
-  'text-base',   // base
-  'text-lg',     // sm
-  'text-xl',     // md
-  'text-2xl',    // lg
-  'text-3xl'     // xl
+  'text-base', // base
+  'text-lg', // sm
+  'text-xl', // md
+  'text-2xl', // lg
+  'text-3xl' // xl
 );
 
 // Interactive states
 const interactiveClass = styleUtils.interactive(
   'bg-white',
-  'bg-gray-100',     // hover
-  'ring-2 ring-primary-500'  // focus
+  'bg-gray-100', // hover
+  'ring-2 ring-primary-500' // focus
 );
 
 // Dark mode
@@ -340,19 +335,21 @@ export function ThemeToggle() {
 
 ```tsx
 // Tailwind classes
-<div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+<div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
   Content adapts to theme
-</div>
+</div>;
 
 // CSS-in-JS utility
 import { styleUtils } from '@/styles/system/css-in-js';
 
-<div className={styleUtils.darkMode(
-  'bg-white text-gray-900',
-  'bg-gray-900 text-white'
-)}>
+<div
+  className={styleUtils.darkMode(
+    'bg-white text-gray-900',
+    'bg-gray-900 text-white'
+  )}
+>
   Theme-aware content
-</div>
+</div>;
 ```
 
 ## Animation System
@@ -394,7 +391,11 @@ import { animations } from '@/styles/system/animations';
 ### Custom Animations
 
 ```tsx
-import { createAnimation, durations, easings } from '@/styles/system/animations';
+import {
+  createAnimation,
+  durations,
+  easings,
+} from '@/styles/system/animations';
 
 const customAnimation = createAnimation({
   name: 'customFade',
@@ -404,9 +405,7 @@ const customAnimation = createAnimation({
   iterations: 'infinite',
 });
 
-<div style={{ animation: customAnimation }}>
-  Custom animated element
-</div>
+<div style={{ animation: customAnimation }}>Custom animated element</div>;
 ```
 
 ### Staggered Animations
@@ -416,11 +415,13 @@ import { createStagger } from '@/styles/system/animations';
 
 const staggerClasses = createStagger(5, 100, 'animate-fade-in');
 
-{items.map((item, i) => (
-  <div key={item.id} className={staggerClasses[i]}>
-    {item.content}
-  </div>
-))}
+{
+  items.map((item, i) => (
+    <div key={item.id} className={staggerClasses[i]}>
+      {item.content}
+    </div>
+  ));
+}
 ```
 
 ## Responsive Design
@@ -631,6 +632,7 @@ See `docs/STYLING_EXAMPLES.md` for comprehensive component examples.
 ## Support
 
 For questions or issues:
+
 - Check the [Tailwind CSS documentation](https://tailwindcss.com/docs)
 - Review component examples in `src/components/`
 - Consult the team's style guide

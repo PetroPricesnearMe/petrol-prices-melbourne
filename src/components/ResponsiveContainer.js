@@ -6,29 +6,29 @@ import { useResponsive } from '../hooks/useResponsive';
 /**
  * ResponsiveContainer Component
  * Conditionally renders children based on breakpoint
- * 
+ *
  * @component
  * @example
  * <ResponsiveContainer mobile>
  *   <MobileMenu />
  * </ResponsiveContainer>
- * 
+ *
  * <ResponsiveContainer desktop>
  *   <DesktopNav />
  * </ResponsiveContainer>
  */
-const ResponsiveContainer = ({ 
-  children, 
-  mobile, 
-  tablet, 
-  desktop, 
-  smAndUp, 
-  mdAndUp, 
+const ResponsiveContainer = ({
+  children,
+  mobile,
+  tablet,
+  desktop,
+  smAndUp,
+  mdAndUp,
   lgAndUp,
   xlAndUp,
   portrait,
   landscape,
-  className 
+  className,
 }) => {
   const responsive = useResponsive();
 
@@ -43,12 +43,22 @@ const ResponsiveContainer = ({
     if (xlAndUp && responsive.isXlAndUp) return true;
     if (portrait && responsive.isPortrait) return true;
     if (landscape && responsive.isLandscape) return true;
-    
+
     // If no props specified, render by default
-    if (!mobile && !tablet && !desktop && !smAndUp && !mdAndUp && !lgAndUp && !xlAndUp && !portrait && !landscape) {
+    if (
+      !mobile &&
+      !tablet &&
+      !desktop &&
+      !smAndUp &&
+      !mdAndUp &&
+      !lgAndUp &&
+      !xlAndUp &&
+      !portrait &&
+      !landscape
+    ) {
       return true;
     }
-    
+
     return false;
   };
 
@@ -89,4 +99,3 @@ ResponsiveContainer.defaultProps = {
 };
 
 export default ResponsiveContainer;
-

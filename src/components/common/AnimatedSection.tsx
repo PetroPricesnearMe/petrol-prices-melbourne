@@ -17,8 +17,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
-import type {
-  AnimationPreset} from '@/utils/animations';
+import type { AnimationPreset } from '@/utils/animations';
 import {
   getAnimationVariants,
   DEFAULT_VIEWPORT,
@@ -90,7 +89,9 @@ export function AnimatedSection({
       visible: {
         ...variants.visible,
         transition: {
-          ...(typeof variants.visible.transition === 'object' ? variants.visible.transition : {}),
+          ...(typeof variants.visible.transition === 'object'
+            ? variants.visible.transition
+            : {}),
           duration,
           delay,
         },
@@ -99,13 +100,20 @@ export function AnimatedSection({
   }
 
   // Apply delay if provided and duration wasn't
-  if (delay && !duration && variants.visible && typeof variants.visible === 'object') {
+  if (
+    delay &&
+    !duration &&
+    variants.visible &&
+    typeof variants.visible === 'object'
+  ) {
     variants = {
       ...variants,
       visible: {
         ...variants.visible,
         transition: {
-          ...(typeof variants.visible.transition === 'object' ? variants.visible.transition : {}),
+          ...(typeof variants.visible.transition === 'object'
+            ? variants.visible.transition
+            : {}),
           delay,
         },
       },
@@ -113,7 +121,9 @@ export function AnimatedSection({
   }
 
   // Use reduced motion variants if user prefers
-  const finalVariants = shouldReduceMotion ? getReducedMotionVariants(variants) : variants;
+  const finalVariants = shouldReduceMotion
+    ? getReducedMotionVariants(variants)
+    : variants;
 
   const MotionComponent = motion[as] as any;
 

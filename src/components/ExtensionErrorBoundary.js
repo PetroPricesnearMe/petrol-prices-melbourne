@@ -15,7 +15,7 @@ class ExtensionErrorBoundary extends Component {
       error: null,
       errorInfo: null,
       isBfcacheError: false,
-      reconnectAttempts: 0
+      reconnectAttempts: 0,
     };
 
     this.handleExtensionError = this.handleExtensionError.bind(this);
@@ -24,31 +24,49 @@ class ExtensionErrorBoundary extends Component {
 
   componentDidMount() {
     // Listen for extension errors
-    extensionMessageHandler.addEventListener('error', this.handleExtensionError);
-    extensionMessageHandler.addEventListener('maxReconnectAttemptsReached', this.handleMaxReconnectAttempts);
+    extensionMessageHandler.addEventListener(
+      'error',
+      this.handleExtensionError
+    );
+    extensionMessageHandler.addEventListener(
+      'maxReconnectAttemptsReached',
+      this.handleMaxReconnectAttempts
+    );
 
     // Listen for successful reconnections
-    extensionMessageHandler.addEventListener('message', this.handleReconnection);
+    extensionMessageHandler.addEventListener(
+      'message',
+      this.handleReconnection
+    );
   }
 
   componentWillUnmount() {
-    extensionMessageHandler.removeEventListener('error', this.handleExtensionError);
-    extensionMessageHandler.removeEventListener('maxReconnectAttemptsReached', this.handleMaxReconnectAttempts);
-    extensionMessageHandler.removeEventListener('message', this.handleReconnection);
+    extensionMessageHandler.removeEventListener(
+      'error',
+      this.handleExtensionError
+    );
+    extensionMessageHandler.removeEventListener(
+      'maxReconnectAttemptsReached',
+      this.handleMaxReconnectAttempts
+    );
+    extensionMessageHandler.removeEventListener(
+      'message',
+      this.handleReconnection
+    );
   }
 
   static getDerivedStateFromError(error) {
     // Check if this is a bfcache-related error
-    const isBfcacheError = error.message && (
-      error.message.includes('back/forward cache') ||
-      error.message.includes('message channel is closed') ||
-      error.message.includes('runtime.lastError')
-    );
+    const isBfcacheError =
+      error.message &&
+      (error.message.includes('back/forward cache') ||
+        error.message.includes('message channel is closed') ||
+        error.message.includes('runtime.lastError'));
 
     return {
       hasError: true,
       error,
-      isBfcacheError
+      isBfcacheError,
     };
   }
 
@@ -58,7 +76,7 @@ class ExtensionErrorBoundary extends Component {
 
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     });
 
     // If it's a bfcache error, attempt to handle it gracefully
@@ -68,10 +86,11 @@ class ExtensionErrorBoundary extends Component {
   }
 
   isBfcacheError(error) {
-    return error.message && (
-      error.message.includes('back/forward cache') ||
-      error.message.includes('message channel is closed') ||
-      error.message.includes('runtime.lastError')
+    return (
+      error.message &&
+      (error.message.includes('back/forward cache') ||
+        error.message.includes('message channel is closed') ||
+        error.message.includes('runtime.lastError'))
     );
   }
 
@@ -84,18 +103,21 @@ class ExtensionErrorBoundary extends Component {
       this.setState({
         hasError: true,
         error: new Error(data.error),
-        isBfcacheError: false
+        isBfcacheError: false,
       });
     }
   }
 
   handleBfcacheError(error) {
-    console.log('[ExtensionErrorBoundary] Handling bfcache error:', error.message);
+    console.log(
+      '[ExtensionErrorBoundary] Handling bfcache error:',
+      error.message
+    );
 
     this.setState({
       hasError: true,
       error,
-      isBfcacheError: true
+      isBfcacheError: true,
     });
 
     // Attempt to reconnect
@@ -103,8 +125,8 @@ class ExtensionErrorBoundary extends Component {
   }
 
   handleMaxReconnectAttempts() {
-    this.setState(prevState => ({
-      reconnectAttempts: prevState.reconnectAttempts + 1
+    this.setState((prevState) => ({
+      reconnectAttempts: prevState.reconnectAttempts + 1,
     }));
   }
 
@@ -117,7 +139,7 @@ class ExtensionErrorBoundary extends Component {
         error: null,
         errorInfo: null,
         isBfcacheError: false,
-        reconnectAttempts: 0
+        reconnectAttempts: 0,
       });
     }
   }
@@ -133,7 +155,7 @@ class ExtensionErrorBoundary extends Component {
       error: null,
       errorInfo: null,
       isBfcacheError: false,
-      reconnectAttempts: 0
+      reconnectAttempts: 0,
     });
 
     // Force reconnection
@@ -145,7 +167,7 @@ class ExtensionErrorBoundary extends Component {
       hasError: false,
       error: null,
       errorInfo: null,
-      isBfcacheError: false
+      isBfcacheError: false,
     });
   };
 
@@ -159,8 +181,9 @@ class ExtensionErrorBoundary extends Component {
               <div className="error-icon">⚠️</div>
               <h3>Extension Connection Issue</h3>
               <p>
-                The page was moved to the back/forward cache, which closed the extension's message channel.
-                This is a normal browser behavior and doesn't affect the app's functionality.
+                The page was moved to the back/forward cache, which closed the
+                extension's message channel. This is a normal browser behavior
+                and doesn't affect the app's functionality.
               </p>
 
               <div className="error-actions">
@@ -169,20 +192,22 @@ class ExtensionErrorBoundary extends Component {
                   className="retry-button"
                   disabled={this.state.reconnectAttempts > 0}
                 >
-                  {this.state.reconnectAttempts > 0 ? 'Reconnecting...' : 'Reconnect Extension'}
+                  {this.state.reconnectAttempts > 0
+                    ? 'Reconnecting...'
+                    : 'Reconnect Extension'}
                 </button>
 
-                <button
-                  onClick={this.handleIgnore}
-                  className="ignore-button"
-                >
+                <button onClick={this.handleIgnore} className="ignore-button">
                   Continue Without Extension
                 </button>
               </div>
 
               {this.state.reconnectAttempts > 0 && (
                 <div className="reconnect-info">
-                  <p>Attempting to reconnect... ({this.state.reconnectAttempts} attempts)</p>
+                  <p>
+                    Attempting to reconnect... ({this.state.reconnectAttempts}{' '}
+                    attempts)
+                  </p>
                 </div>
               )}
             </div>
@@ -199,7 +224,9 @@ class ExtensionErrorBoundary extends Component {
                 align-items: center;
                 justify-content: center;
                 z-index: 9999;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                font-family:
+                  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                  sans-serif;
               }
 
               .error-content {
@@ -235,7 +262,8 @@ class ExtensionErrorBoundary extends Component {
                 flex-wrap: wrap;
               }
 
-              .retry-button, .ignore-button {
+              .retry-button,
+              .ignore-button {
                 padding: 0.75rem 1.5rem;
                 border: none;
                 border-radius: 4px;
@@ -310,7 +338,9 @@ class ExtensionErrorBoundary extends Component {
               align-items: center;
               justify-content: center;
               z-index: 9999;
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              font-family:
+                -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                sans-serif;
             }
 
             .error-content {
@@ -356,7 +386,8 @@ class ExtensionErrorBoundary extends Component {
               justify-content: center;
             }
 
-            .retry-button, .ignore-button {
+            .retry-button,
+            .ignore-button {
               padding: 0.75rem 1.5rem;
               border: none;
               border-radius: 4px;

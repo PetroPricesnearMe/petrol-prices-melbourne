@@ -84,4 +84,3 @@ const mockMotion = {
 };
 
 module.exports = mockMotion;
-

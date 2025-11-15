@@ -67,7 +67,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   className,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activePanel, setActivePanel] = useState<'categories' | 'price' | 'rating' | null>(null);
+  const [activePanel, setActivePanel] = useState<
+    'categories' | 'price' | 'rating' | null
+  >(null);
 
   const activeFilterCount =
     selectedCategories.length + (priceRange ? 1 : 0) + (minRating > 0 ? 1 : 0);
@@ -84,19 +86,19 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   return (
     <div
       className={cn(
-        'filter-bar bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700',
+        'filter-bar border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900',
         'sticky top-16 z-40 shadow-sm',
         className
       )}
       role="region"
       aria-label="Filter controls"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Compact View */}
-        <div className="flex items-center justify-between py-3 gap-4">
+        <div className="flex items-center justify-between gap-4 py-3">
           {/* Left: Categories */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar">
+          <div className="min-w-0 flex-1">
+            <div className="hide-scrollbar flex items-center gap-2 overflow-x-auto">
               <CategoryChips
                 categories={categories}
                 selectedCategories={selectedCategories}
@@ -108,17 +110,17 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           </div>
 
           {/* Right: Filter Controls */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex flex-shrink-0 items-center gap-2">
             {(showPrice || showRating) && (
               <div className="flex items-center gap-2">
                 {showPrice && (
                   <button
                     onClick={() => handlePanelToggle('price')}
                     className={cn(
-                      'px-3 py-1.5 text-sm font-medium rounded-lg border transition-all',
+                      'rounded-lg border px-3 py-1.5 text-sm font-medium transition-all',
                       activePanel === 'price'
-                        ? 'bg-primary-100 dark:bg-primary-900 border-primary-500 text-primary-700 dark:text-primary-300'
-                        : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-500 hover:text-primary-600'
+                        ? 'border-primary-500 bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300'
                     )}
                     aria-pressed={activePanel === 'price' ? 'true' : 'false'}
                     aria-label="Toggle price filter"
@@ -134,10 +136,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   <button
                     onClick={() => handlePanelToggle('rating')}
                     className={cn(
-                      'px-3 py-1.5 text-sm font-medium rounded-lg border transition-all',
+                      'rounded-lg border px-3 py-1.5 text-sm font-medium transition-all',
                       activePanel === 'rating'
-                        ? 'bg-primary-100 dark:bg-primary-900 border-primary-500 text-primary-700 dark:text-primary-300'
-                        : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-500 hover:text-primary-600'
+                        ? 'border-primary-500 bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300'
                     )}
                     aria-pressed={activePanel === 'rating' ? 'true' : 'false'}
                     aria-label="Toggle rating filter"
@@ -155,7 +157,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
                 onClick={handleClearAll}
-                className="px-3 py-1.5 text-sm font-medium rounded-lg bg-primary-600 text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all"
+                className="rounded-lg bg-primary-600 px-3 py-1.5 text-sm font-medium text-white transition-all hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 aria-label={`Clear ${activeFilterCount} active filters`}
               >
                 Clear All ({activeFilterCount})
@@ -188,7 +190,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
               {activePanel === 'rating' && (
                 <div className="py-4">
-                  <RatingSlider minRating={minRating} onChange={onRatingChange} />
+                  <RatingSlider
+                    minRating={minRating}
+                    onChange={onRatingChange}
+                  />
                 </div>
               )}
             </motion.div>

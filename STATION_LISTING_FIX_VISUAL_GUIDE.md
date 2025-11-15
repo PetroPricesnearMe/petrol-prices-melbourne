@@ -3,6 +3,7 @@
 ## Before Fix 🔴
 
 ### What Was Happening
+
 ```
 User Opens Directory Page
          ↓
@@ -20,6 +21,7 @@ Result: Only ~125 stations shown (those with unleaded prices)
 ```
 
 ### User Experience Issues
+
 ```
 🔴 Problem 1: Only half the stations visible
    - User expects to see all 250+ stations
@@ -40,6 +42,7 @@ Result: Only ~125 stations shown (those with unleaded prices)
 ## After Fix ✅
 
 ### What Now Happens
+
 ```
 User Opens Directory Page
          ↓
@@ -62,6 +65,7 @@ Result: All ~250 stations shown, sorted alphabetically
 ```
 
 ### Improved User Experience
+
 ```
 ✅ Benefit 1: See all stations immediately
    - User sees complete list of 250+ stations
@@ -82,6 +86,7 @@ Result: All ~250 stations shown, sorted alphabetically
 ## Code Comparison
 
 ### BEFORE (Lines 200-201)
+
 ```typescript
 // ❌ ALWAYS filters out stations without selected fuel type
 // Price filter (only show stations with selected fuel type)
@@ -89,11 +94,13 @@ result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
 ```
 
 ### AFTER (Lines 200-208)
+
 ```typescript
 // ✅ ONLY filters when price-based operations are active
 // ONLY filter by fuel type when user is actively sorting by price or filtering by max price
 // This ensures all stations show by default instead of just those with the selected fuel type
-const isPriceSorting = filters.sortBy === 'price-low' || filters.sortBy === 'price-high';
+const isPriceSorting =
+  filters.sortBy === 'price-low' || filters.sortBy === 'price-high';
 const hasPriceFilter = filters.priceMax !== '';
 
 if (isPriceSorting || hasPriceFilter) {
@@ -105,6 +112,7 @@ if (isPriceSorting || hasPriceFilter) {
 ## User Flow Examples
 
 ### Example 1: Browse All Stations
+
 ```
 User Journey (BEFORE):
 1. Open directory page → See only 125 stations 😕
@@ -118,11 +126,12 @@ User Journey (AFTER):
 ```
 
 ### Example 2: Find Cheapest Price
+
 ```
 User Journey (BEFORE):
 1. Page loads with price-low sorting
 2. See only stations with unleaded
-3. Get filtered results immediately 
+3. Get filtered results immediately
 4. But might miss stations with other fuel types
 
 User Journey (AFTER):
@@ -134,6 +143,7 @@ User Journey (AFTER):
 ```
 
 ### Example 3: Filter by Brand Then Price
+
 ```
 User Journey (BEFORE):
 1. Open directory → Already filtered (125 stations)
@@ -150,31 +160,28 @@ User Journey (AFTER):
 ## Testing Checklist
 
 ### Visual Tests
+
 - [ ] **Directory page loads with all stations visible**
   - Count should be ~250+ not ~125
   - Stations sorted alphabetically by default
-  
 - [ ] **Clicking "Price: Low to High" activates fuel filter**
   - Station count reduces to show only stations with selected fuel type
   - Stations sorted by price correctly
-  
 - [ ] **Clicking "Name" sort shows all stations again**
   - All stations reappear
   - Sorted alphabetically
-  
 - [ ] **Map view shows all station markers**
   - All ~250+ stations visible on map
   - Not filtered by default
 
 ### Functional Tests
+
 - [ ] **Fuel type selector works with price sorting**
   - Change fuel type while price sorting is active
   - Stations update to show new fuel type
-  
 - [ ] **Price filter applies fuel type filter**
   - Enter maximum price
   - Only stations with that fuel type + price range shown
-  
 - [ ] **Clear filters button resets to all stations**
   - Click clear filters
   - All stations reappear
@@ -182,22 +189,23 @@ User Journey (AFTER):
 
 ## Summary
 
-| Aspect | Before Fix 🔴 | After Fix ✅ |
-|--------|--------------|-------------|
-| **Default View** | ~125 stations (filtered) | ~250+ stations (all) |
-| **Default Sort** | Price (requires filter) | Name (no filter) |
-| **User Understanding** | Confusing, data seems missing | Clear, complete list |
-| **Flexibility** | Limited, always filtered | Full, filter on demand |
-| **Price Sorting** | Works but always on | Works when selected |
-| **Discoverability** | Poor, half the data hidden | Excellent, all data visible |
+| Aspect                 | Before Fix 🔴                 | After Fix ✅                |
+| ---------------------- | ----------------------------- | --------------------------- |
+| **Default View**       | ~125 stations (filtered)      | ~250+ stations (all)        |
+| **Default Sort**       | Price (requires filter)       | Name (no filter)            |
+| **User Understanding** | Confusing, data seems missing | Clear, complete list        |
+| **Flexibility**        | Limited, always filtered      | Full, filter on demand      |
+| **Price Sorting**      | Works but always on           | Works when selected         |
+| **Discoverability**    | Poor, half the data hidden    | Excellent, all data visible |
 
 ## 🎯 Key Takeaway
 
 The fix changes the default behavior from:
+
 - **"Show only stations I can sort by price"** 🔴
 
 To:
+
 - **"Show all stations, filter only when needed"** ✅
 
 This is more intuitive and user-friendly while maintaining all the filtering capabilities when users actually need them.
-

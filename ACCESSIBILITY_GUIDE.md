@@ -11,6 +11,7 @@ This guide documents all accessibility features implemented in the Petrol Prices
 ### 1. **Semantic HTML Structure**
 
 #### Proper Document Structure
+
 ```html
 <header role="banner">
   <nav role="navigation" aria-label="Main navigation">
@@ -30,6 +31,7 @@ This guide documents all accessibility features implemented in the Petrol Prices
 **Files:** `src/App.js`, `src/components/Navbar.js`, `src/components/HomePage.js`
 
 **Benefits:**
+
 - Screen readers can navigate by landmarks
 - Keyboard users can jump between sections
 - Better SEO and crawlability
@@ -39,12 +41,11 @@ This guide documents all accessibility features implemented in the Petrol Prices
 ### 2. **Skip to Content Link** ✨
 
 ```html
-<a href="#main-content" className="skip-link">
-  Skip to main content
-</a>
+<a href="#main-content" className="skip-link"> Skip to main content </a>
 ```
 
 **Keyboard Navigation:**
+
 - Press `Tab` on page load to reveal
 - Instantly jumps to main content
 - Hidden until focused
@@ -65,6 +66,7 @@ This guide documents all accessibility features implemented in the Petrol Prices
 ```
 
 **Features:**
+
 - Minimum 3px solid outline (exceeds WCAG 2.4.7 requirements)
 - High contrast color (#005fcc - 7:1 ratio)
 - 2px offset for clarity
@@ -81,14 +83,15 @@ This guide documents all accessibility features implemented in the Petrol Prices
 ```css
 button,
 a,
-input[type="button"],
-[role="button"] {
+input[type='button'],
+[role='button'] {
   min-height: 44px;
   min-width: 44px;
 }
 ```
 
 **Mobile-First:**
+
 - All interactive elements minimum 44x44px
 - Prevents accidental taps
 - Complies with WCAG 2.5.5
@@ -102,11 +105,12 @@ input[type="button"],
 ### 5. **Form Accessibility**
 
 #### Proper Labels
+
 ```jsx
 <label htmlFor="fuel-type-filter" className="filter-label">
   ⛽ Fuel Type
 </label>
-<select 
+<select
   id="fuel-type-filter"
   name="fuel-type-filter"
   value={selectedFuelType}
@@ -117,6 +121,7 @@ input[type="button"],
 ```
 
 #### ARIA Labels for Search
+
 ```jsx
 <input
   type="search"
@@ -129,6 +134,7 @@ input[type="button"],
 ```
 
 **Features:**
+
 - All inputs have associated labels
 - ARIA labels for icon-only buttons
 - Clear error messaging
@@ -136,7 +142,8 @@ input[type="button"],
 
 **Files:** `src/components/AdvancedFilters.js`
 
-**WCAG Criteria:** 
+**WCAG Criteria:**
+
 - 1.3.1 Info and Relationships (Level A)
 - 3.3.2 Labels or Instructions (Level A)
 - 4.1.2 Name, Role, Value (Level A)
@@ -146,20 +153,19 @@ input[type="button"],
 ### 6. **ARIA Attributes**
 
 #### Navigation
+
 ```jsx
 <nav role="navigation" aria-label="Main navigation">
-  <Link 
-    to="/" 
-    aria-current={location.pathname === '/' ? 'page' : undefined}
-  >
+  <Link to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>
     Home
   </Link>
 </nav>
 ```
 
 #### Mobile Menu Toggle
+
 ```jsx
-<button 
+<button
   className="nav-toggle"
   onClick={toggleMenu}
   aria-label="Toggle navigation menu"
@@ -171,11 +177,12 @@ input[type="button"],
 ```
 
 #### Filter Panel
+
 ```jsx
-<div 
-  id="filter-panel" 
-  className="filter-panel" 
-  role="region" 
+<div
+  id="filter-panel"
+  className="filter-panel"
+  role="region"
   aria-label="Filter options"
 >
   <!-- Filter controls -->
@@ -185,6 +192,7 @@ input[type="button"],
 **Files:** `src/components/Navbar.js`, `src/components/AdvancedFilters.js`
 
 **WCAG Criteria:**
+
 - 4.1.2 Name, Role, Value (Level A)
 - 4.1.3 Status Messages (Level AA)
 
@@ -197,36 +205,38 @@ input[type="button"],
 ```css
 /* Text on light background */
 body {
-  color: #1f2937;      /* 16.1:1 contrast ratio */
+  color: #1f2937; /* 16.1:1 contrast ratio */
   background: #ffffff;
 }
 
 /* Links */
 a {
-  color: #0056b3;      /* 7:1 contrast ratio */
+  color: #0056b3; /* 7:1 contrast ratio */
 }
 
 /* Focus indicator */
 *:focus {
-  outline: 3px solid #005fcc;  /* 7:1 contrast */
+  outline: 3px solid #005fcc; /* 7:1 contrast */
 }
 ```
 
 #### Dark Mode Support (Optional)
+
 ```css
 @media (prefers-color-scheme: dark) {
-  body { 
-    color: #eee; 
-    background: #181c20; 
+  body {
+    color: #eee;
+    background: #181c20;
   }
-  
-  a { 
-    color: #99c7ff;    /* Enhanced contrast for dark mode */
+
+  a {
+    color: #99c7ff; /* Enhanced contrast for dark mode */
   }
 }
 ```
 
 **Features:**
+
 - Minimum 4.5:1 for normal text
 - Minimum 3:1 for large text (18pt+)
 - Minimum 3:1 for UI components
@@ -240,6 +250,7 @@ a {
 ### 8. **Keyboard Navigation**
 
 #### Tab Detection
+
 ```javascript
 // Auto-detect keyboard navigation
 window.addEventListener('keydown', (e) => {
@@ -250,6 +261,7 @@ window.addEventListener('keydown', (e) => {
 ```
 
 #### Benefits:
+
 - Shows focus outlines only for keyboard users
 - Hides outlines when using mouse
 - Improves UX without sacrificing accessibility
@@ -257,6 +269,7 @@ window.addEventListener('keydown', (e) => {
 **Files:** `src/utils/keyboardNavigation.js`
 
 #### Keyboard Shortcuts
+
 - `Tab` - Move to next focusable element
 - `Shift + Tab` - Move to previous element
 - `Enter` / `Space` - Activate buttons and links
@@ -280,6 +293,7 @@ window.addEventListener('keydown', (e) => {
 ```
 
 **Benefits:**
+
 - Respects user's OS motion preferences
 - Prevents vestibular disorders from being triggered
 - Maintains functionality without animation
@@ -293,6 +307,7 @@ window.addEventListener('keydown', (e) => {
 ### 10. **Screen Reader Utilities**
 
 #### Visually Hidden Class
+
 ```css
 .sr-only,
 .visually-hidden {
@@ -309,6 +324,7 @@ window.addEventListener('keydown', (e) => {
 ```
 
 #### Usage Example
+
 ```jsx
 <button aria-label="Close dialog">
   <span className="sr-only">Close</span>
@@ -324,16 +340,17 @@ window.addEventListener('keydown', (e) => {
 
 ```css
 html {
-  font-size: 100%;  /* Respects user's browser settings */
+  font-size: 100%; /* Respects user's browser settings */
 }
 
 body {
   font-size: 1rem;
-  line-height: 1.6;  /* Minimum 1.5 for WCAG */
+  line-height: 1.6; /* Minimum 1.5 for WCAG */
 }
 ```
 
 **Features:**
+
 - Text can be resized up to 200%
 - Uses relative units (rem, em)
 - Maintains layout integrity
@@ -345,6 +362,7 @@ body {
 ### 12. **Descriptive Links** 🔗
 
 #### ✅ Good Examples
+
 ```jsx
 <Link to="/directory">View Station Directory</Link>
 <Link to="/about">About Petrol Prices Near Me</Link>
@@ -352,6 +370,7 @@ body {
 ```
 
 #### ❌ Avoid
+
 ```jsx
 // Don't use generic text
 <a href="/info">Click here</a>
@@ -360,6 +379,7 @@ body {
 ```
 
 **Benefits:**
+
 - Screen readers can list all links
 - Context is clear without surrounding text
 - Better SEO
@@ -371,7 +391,7 @@ body {
 ### 13. **Language Declaration**
 
 ```html
-<html lang="en">
+<html lang="en"></html>
 ```
 
 **Files:** `public/index.html`
@@ -391,6 +411,7 @@ body {
 ```
 
 **Features:**
+
 - Unique, descriptive titles for each page
 - Follows pattern: "Page Name - Site Name"
 - First thing screen readers announce
@@ -408,7 +429,7 @@ body {
   * {
     border-width: 2px !important;
   }
-  
+
   *:focus {
     outline-width: 4px !important;
   }
@@ -429,6 +450,7 @@ body {
 ## 📋 Accessibility Checklist
 
 ### Perceivable (WCAG Principle 1)
+
 - [x] 1.1.1 - Non-text Content: All images have alt text
 - [x] 1.3.1 - Info and Relationships: Semantic HTML structure
 - [x] 1.4.1 - Use of Color: Color is not the only indicator
@@ -438,6 +460,7 @@ body {
 - [x] 1.4.12 - Text Spacing: Adjustable without loss
 
 ### Operable (WCAG Principle 2)
+
 - [x] 2.1.1 - Keyboard: All functionality via keyboard
 - [x] 2.1.2 - No Keyboard Trap: Can navigate away
 - [x] 2.4.1 - Bypass Blocks: Skip to content link
@@ -448,6 +471,7 @@ body {
 - [x] 2.5.5 - Target Size: 44x44px minimum
 
 ### Understandable (WCAG Principle 3)
+
 - [x] 3.1.1 - Language of Page: lang="en" declared
 - [x] 3.2.1 - On Focus: No unexpected changes
 - [x] 3.2.2 - On Input: Predictable behavior
@@ -455,6 +479,7 @@ body {
 - [x] 3.3.2 - Labels or Instructions: All inputs labeled
 
 ### Robust (WCAG Principle 4)
+
 - [x] 4.1.1 - Parsing: Valid HTML5
 - [x] 4.1.2 - Name, Role, Value: Proper ARIA usage
 - [x] 4.1.3 - Status Messages: ARIA live regions
@@ -464,6 +489,7 @@ body {
 ## 🛠️ Testing Tools
 
 ### Automated Testing
+
 ```bash
 # Install axe DevTools
 npm install -D @axe-core/react
@@ -474,6 +500,7 @@ npx lighthouse http://localhost:3000 --view
 ```
 
 ### Manual Testing
+
 1. **Keyboard Navigation**
    - Tab through entire page
    - Verify focus indicators
@@ -494,6 +521,7 @@ npx lighthouse http://localhost:3000 --view
    - Chrome DevTools color picker
 
 ### User Testing
+
 - Test with actual users with disabilities
 - Get feedback from assistive technology users
 
@@ -502,15 +530,18 @@ npx lighthouse http://localhost:3000 --view
 ## 📚 Resources
 
 ### WCAG Guidelines
+
 - [WCAG 2.1 Quick Reference](https://www.w3.org/WAI/WCAG21/quickref/)
 - [WebAIM Checklist](https://webaim.org/standards/wcag/checklist)
 
 ### Tools
+
 - [axe DevTools](https://www.deque.com/axe/devtools/)
 - [WAVE Browser Extension](https://wave.webaim.org/extension/)
 - [Color Contrast Checker](https://webaim.org/resources/contrastchecker/)
 
 ### Learning
+
 - [MDN Accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility)
 - [A11y Project](https://www.a11yproject.com/)
 - [Inclusive Components](https://inclusive-components.design/)
@@ -520,11 +551,13 @@ npx lighthouse http://localhost:3000 --view
 ## 🔄 Continuous Improvement
 
 ### Regular Audits
+
 - Run Lighthouse audits monthly
 - Test with screen readers quarterly
 - Update based on user feedback
 
 ### Stay Updated
+
 - Follow WCAG updates
 - Monitor browser support changes
 - Keep dependencies updated
@@ -534,6 +567,7 @@ npx lighthouse http://localhost:3000 --view
 ## 📞 Reporting Issues
 
 If you encounter accessibility issues:
+
 1. Document the issue (screenshots, steps to reproduce)
 2. Note assistive technology used (if applicable)
 3. Submit feedback through our contact form
@@ -546,6 +580,7 @@ If you encounter accessibility issues:
 The PPNM application implements comprehensive accessibility features that meet and exceed WCAG 2.1 Level AA standards. From semantic HTML and keyboard navigation to color contrast and screen reader support, every aspect has been designed with all users in mind.
 
 **Key Achievements:**
+
 - ✅ WCAG 2.1 Level AA Compliant
 - ✅ 44x44px touch targets (exceeds AA, meets AAA)
 - ✅ 3px focus indicators (exceeds minimum)
@@ -558,4 +593,3 @@ The PPNM application implements comprehensive accessibility features that meet a
 
 **Last Updated:** October 15, 2025
 **Maintained By:** PPNM Development Team
-

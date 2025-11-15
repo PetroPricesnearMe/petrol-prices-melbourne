@@ -1,6 +1,6 @@
 /**
  * Dynamic CMS API Routes - Fetch by Slug
- * 
+ *
  * GET /api/cms/[collection]/slug/[slug] - Fetch single item by slug
  */
 
@@ -15,29 +15,20 @@ interface RouteContext {
 /**
  * GET /api/cms/[collection]/slug/[slug]
  */
-export async function GET(
-  request: NextRequest,
-  context: RouteContext
-) {
+export async function GET(request: NextRequest, context: RouteContext) {
   try {
     const { collection, slug } = await context.params;
     const cms = getCMS();
 
-    const item = await withFallback(
-      () => cms.fetchBySlug(collection, slug),
-      {
-        getFallback: () => null,
-        onError: (error) => {
-          console.error('CMS fetch error:', error);
-        },
-      }
-    );
+    const item = await withFallback(() => cms.fetchBySlug(collection, slug), {
+      getFallback: () => null,
+      onError: (error) => {
+        console.error('CMS fetch error:', error);
+      },
+    });
 
     if (!item) {
-      return NextResponse.json(
-        { error: 'Item not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
     }
 
     return NextResponse.json(item, {
@@ -64,4 +55,3 @@ export async function GET(
 // Configure route segment
 export const runtime = 'edge';
 export const revalidate = 3600;
-

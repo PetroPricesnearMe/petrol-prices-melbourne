@@ -29,7 +29,19 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', loading, icon, children, disabled, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = 'primary',
+      size = 'md',
+      loading,
+      icon,
+      children,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
     return (
       <button
         ref={ref}
@@ -37,16 +49,28 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'btn',
           `btn-${variant}`,
           `btn-${size}`,
-          loading && 'opacity-75 cursor-wait',
+          loading && 'cursor-wait opacity-75',
           className
         )}
         disabled={disabled || loading}
         {...props}
       >
         {loading && (
-          <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+              fill="none"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
           </svg>
         )}
         {icon && <span>{icon}</span>}
@@ -63,10 +87,18 @@ export function ButtonExamples() {
   return (
     <div className="space-y-4">
       <Button variant="primary">Primary Button</Button>
-      <Button variant="secondary" size="lg">Large Secondary</Button>
-      <Button variant="outline" size="sm">Small Outline</Button>
-      <Button variant="gradient" loading>Loading...</Button>
-      <Button variant="ghost" disabled>Disabled</Button>
+      <Button variant="secondary" size="lg">
+        Large Secondary
+      </Button>
+      <Button variant="outline" size="sm">
+        Small Outline
+      </Button>
+      <Button variant="gradient" loading>
+        Loading...
+      </Button>
+      <Button variant="ghost" disabled>
+        Disabled
+      </Button>
     </div>
   );
 }
@@ -78,12 +110,7 @@ export function ButtonExamples() {
 import { patterns } from '@/styles/system/css-in-js';
 
 export function DynamicButton({ variant, size, ...props }) {
-  return (
-    <button
-      className={patterns.button(variant, size)}
-      {...props}
-    />
-  );
+  return <button className={patterns.button(variant, size)} {...props} />;
 }
 ```
 
@@ -103,7 +130,10 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant = 'default', animate = false, children, ...props }, ref) => {
+  (
+    { className, variant = 'default', animate = false, children, ...props },
+    ref
+  ) => {
     return (
       <div
         ref={ref}
@@ -122,16 +152,37 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = 'Card';
 
-export const CardHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('p-6 border-b border-gray-200 dark:border-gray-700', className)} {...props} />
+export const CardHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'border-b border-gray-200 p-6 dark:border-gray-700',
+      className
+    )}
+    {...props}
+  />
 );
 
-export const CardContent = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+export const CardContent = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn('p-6', className)} {...props} />
 );
 
-export const CardFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('p-6 border-t border-gray-200 dark:border-gray-700', className)} {...props} />
+export const CardFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'border-t border-gray-200 p-6 dark:border-gray-700',
+      className
+    )}
+    {...props}
+  />
 );
 
 // Usage
@@ -170,13 +221,20 @@ interface StationCardProps {
 
 export function StationCard({ station }: StationCardProps) {
   return (
-    <div className={cn(
-      'card-hover',
-      animations.safe('animate-fade-in'),
-      'print-avoid-break'
-    )}>
+    <div
+      className={cn(
+        'card-hover',
+        animations.safe('animate-fade-in'),
+        'print-avoid-break'
+      )}
+    >
       {/* Header */}
-      <div className={patterns.flex.between + ' p-6 border-b border-gray-200 dark:border-gray-700'}>
+      <div
+        className={
+          patterns.flex.between +
+          ' border-b border-gray-200 p-6 dark:border-gray-700'
+        }
+      >
         <div>
           <h3 className="text-xl font-bold text-gray-900 dark:text-white">
             {station.name}
@@ -191,7 +249,7 @@ export function StationCard({ station }: StationCardProps) {
       </div>
 
       {/* Prices */}
-      <div className="p-6 space-y-3">
+      <div className="space-y-3 p-6">
         {station.prices.map((price) => (
           <div key={price.type} className={patterns.flex.between}>
             <span className="text-gray-700 dark:text-gray-300">
@@ -205,7 +263,7 @@ export function StationCard({ station }: StationCardProps) {
       </div>
 
       {/* Footer */}
-      <div className="p-6 border-t border-gray-200 dark:border-gray-700 print-hidden">
+      <div className="print-hidden border-t border-gray-200 p-6 dark:border-gray-700">
         <Button variant="primary" className="w-full">
           View Details
         </Button>
@@ -241,7 +299,7 @@ export function SearchForm() {
       <div>
         <label
           htmlFor="location"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
           Location
         </label>
@@ -253,16 +311,16 @@ export function SearchForm() {
             setLocation(e.target.value);
             setError('');
           }}
-          className={cn(
-            'input',
-            error && 'input-error'
-          )}
+          className={cn('input', error && 'input-error')}
           placeholder="Enter your location"
           aria-invalid={!!error}
           aria-describedby={error ? 'location-error' : undefined}
         />
         {error && (
-          <p id="location-error" className="mt-2 text-sm text-error-600 dark:text-error-400">
+          <p
+            id="location-error"
+            className="dark:text-error-400 mt-2 text-sm text-error-600"
+          >
             {error}
           </p>
         )}
@@ -314,7 +372,7 @@ export function CustomGrid({ items }) {
 ```tsx
 export function Header() {
   return (
-    <header className="sticky top-0 z-sticky bg-white dark:bg-gray-900 shadow-sm print-hidden">
+    <header className="print-hidden sticky top-0 z-sticky bg-white shadow-sm dark:bg-gray-900">
       <div className={patterns.container()}>
         <div className={patterns.flex.between + ' py-4'}>
           <Logo />
@@ -329,10 +387,10 @@ export function Header() {
 export function Hero() {
   return (
     <section className={patterns.flex.colCenter + ' min-h-screen py-20'}>
-      <h1 className={patterns.text.h1 + ' text-center text-balance'}>
+      <h1 className={patterns.text.h1 + ' text-balance text-center'}>
         Find the Best Fuel Prices Near You
       </h1>
-      <p className={patterns.text.body + ' text-center max-w-2xl mt-4'}>
+      <p className={patterns.text.body + ' mt-4 max-w-2xl text-center'}>
         Compare prices from thousands of stations
       </p>
       <SearchForm />
@@ -401,9 +459,9 @@ export function LoadingCard() {
   return (
     <div className="card">
       <div className="space-y-4 p-6">
-        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded shimmer" />
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 shimmer" />
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 shimmer" />
+        <div className="shimmer h-6 rounded bg-gray-200 dark:bg-gray-700" />
+        <div className="shimmer h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
+        <div className="shimmer h-4 w-1/2 rounded bg-gray-200 dark:bg-gray-700" />
       </div>
     </div>
   );
@@ -427,17 +485,17 @@ export function ThemeToggle() {
     <button
       onClick={toggleTheme}
       className={cn(
-        'btn btn-ghost',
+        'btn-ghost btn',
         animations.safe('transition-transform hover:scale-110')
       )}
       aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
     >
       {resolvedTheme === 'dark' ? (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
           <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
         </svg>
       ) : (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
           <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
         </svg>
       )}
@@ -451,12 +509,14 @@ export function ThemeToggle() {
 ```tsx
 export function ThemedCard({ children }) {
   return (
-    <div className="
+    <div
+      className="
       card
-      bg-white dark:bg-gray-800
-      text-gray-900 dark:text-white
-      border border-gray-200 dark:border-gray-700
-    ">
+      border border-gray-200
+      bg-white text-gray-900
+      dark:border-gray-700 dark:bg-gray-800 dark:text-white
+    "
+    >
       {children}
     </div>
   );
@@ -464,12 +524,14 @@ export function ThemedCard({ children }) {
 
 export function ThemedButton() {
   return (
-    <button className="
+    <button
+      className="
       btn
-      bg-primary-600 dark:bg-primary-500
-      hover:bg-primary-700 dark:hover:bg-primary-600
-      text-white
-    ">
+      bg-primary-600 text-white
+      hover:bg-primary-700 dark:bg-primary-500
+      dark:hover:bg-primary-600
+    "
+    >
       Themed Button
     </button>
   );
@@ -536,12 +598,19 @@ import { animations } from '@/styles/system/animations';
 
 export function StationCard({ station }) {
   return (
-    <div className={cn(
-      'card-hover',
-      animations.safe('animate-fade-in'),
-      'print-avoid-break'
-    )}>
-      <div className={patterns.flex.between + ' p-6 border-b border-gray-200 dark:border-gray-700'}>
+    <div
+      className={cn(
+        'card-hover',
+        animations.safe('animate-fade-in'),
+        'print-avoid-break'
+      )}
+    >
+      <div
+        className={
+          patterns.flex.between +
+          ' border-b border-gray-200 p-6 dark:border-gray-700'
+        }
+      >
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
           {station.name}
         </h3>
@@ -550,7 +619,7 @@ export function StationCard({ station }) {
         </span>
       </div>
 
-      <div className="p-6 space-y-3">
+      <div className="space-y-3 p-6">
         {station.prices.map((price) => (
           <div key={price.type} className={patterns.flex.between}>
             <span className="text-gray-700 dark:text-gray-300">
@@ -563,10 +632,8 @@ export function StationCard({ station }) {
         ))}
       </div>
 
-      <div className="p-6 border-t border-gray-200 dark:border-gray-700 print-hidden">
-        <button className="btn btn-primary w-full">
-          View Details
-        </button>
+      <div className="print-hidden border-t border-gray-200 p-6 dark:border-gray-700">
+        <button className="btn-primary btn w-full">View Details</button>
       </div>
     </div>
   );
@@ -612,10 +679,7 @@ import { useMemo } from 'react';
 import { patterns } from '@/styles/system/css-in-js';
 
 export function MemoizedCard({ variant, children }) {
-  const cardClass = useMemo(
-    () => patterns.card(variant),
-    [variant]
-  );
+  const cardClass = useMemo(() => patterns.card(variant), [variant]);
 
   return <div className={cardClass}>{children}</div>;
 }

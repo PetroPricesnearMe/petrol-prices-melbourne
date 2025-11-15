@@ -1,6 +1,7 @@
 # Production Deployment Guide
 
 ## Overview
+
 Complete guide for deploying Petrol Price Near Me to production with zero-downtime and high availability.
 
 ---
@@ -8,6 +9,7 @@ Complete guide for deploying Petrol Price Near Me to production with zero-downti
 ## 1. Vercel Deployment (Recommended)
 
 ### Setup
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -23,6 +25,7 @@ vercel --prod
 ```
 
 ### Environment Variables (Vercel Dashboard)
+
 ```env
 # Required
 NEXT_PUBLIC_APP_URL=https://your-domain.com
@@ -49,7 +52,9 @@ UPTIME_ROBOT_API_KEY=your-uptime-robot-key
 ```
 
 ### Vercel Configuration
+
 Already configured in `vercel.json`:
+
 - Framework: Next.js (auto-detected)
 - Build Command: `next build`
 - Output Directory: `.next`
@@ -60,9 +65,11 @@ Already configured in `vercel.json`:
 ## 2. Domain Configuration
 
 ### Custom Domain Setup (Vercel)
+
 1. Go to Project Settings → Domains
 2. Add your domain: `your-domain.com`
 3. Update DNS records:
+
    ```
    Type: CNAME
    Name: www
@@ -74,6 +81,7 @@ Already configured in `vercel.json`:
    ```
 
 ### SSL Certificate
+
 - **Automatic**: Vercel provides free SSL certificates
 - **Auto-renewal**: Certificates renew automatically
 - **HTTPS enforcement**: Enabled by default
@@ -83,12 +91,15 @@ Already configured in `vercel.json`:
 ## 3. Performance Optimization
 
 ### CDN Configuration
+
 Vercel Edge Network (automatic):
+
 - **Global CDN**: 300+ edge locations
 - **Smart caching**: Static assets cached globally
 - **Image optimization**: Next.js Image component optimized
 
 ### Caching Strategy
+
 ```javascript
 // Already configured in next.config.js
 module.exports = {
@@ -117,12 +128,14 @@ module.exports = {
 ## 4. Database Deployment
 
 ### Baserow Setup
+
 1. **Production Database**:
    - Use Baserow Cloud or self-hosted
    - Set up separate production database
    - Configure API tokens with minimal permissions
 
 2. **Migrations**:
+
    ```bash
    # Export schema from development
    npm run db:export
@@ -142,6 +155,7 @@ module.exports = {
 ### Application Performance Monitoring
 
 #### Vercel Analytics (Built-in)
+
 ```typescript
 // Already configured in pages/_app.tsx
 import { Analytics } from '@vercel/analytics/react';
@@ -157,6 +171,7 @@ export default function App({ Component, pageProps }) {
 ```
 
 #### Vercel Speed Insights
+
 ```typescript
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -173,11 +188,13 @@ export default function App({ Component, pageProps }) {
 ### Error Tracking (Sentry)
 
 #### Installation
+
 ```bash
 npm install @sentry/nextjs
 ```
 
 #### Configuration
+
 ```javascript
 // sentry.client.config.js
 import * as Sentry from '@sentry/nextjs';
@@ -186,10 +203,7 @@ Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.NEXT_PUBLIC_ENV || 'production',
   tracesSampleRate: 0.1,
-  integrations: [
-    new Sentry.BrowserTracing(),
-    new Sentry.Replay(),
-  ],
+  integrations: [new Sentry.BrowserTracing(), new Sentry.Replay()],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
 });
@@ -198,6 +212,7 @@ Sentry.init({
 ### Uptime Monitoring
 
 #### UptimeRobot Setup
+
 1. Create monitors for:
    - Main site: `https://your-domain.com`
    - API health: `https://your-domain.com/api/health`
@@ -213,6 +228,7 @@ Sentry.init({
 ## 6. Health Checks
 
 ### API Health Endpoint
+
 ```typescript
 // pages/api/health.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -267,6 +283,7 @@ async function checkServices() {
 ### Automated Backups
 
 #### Database Backups
+
 ```bash
 #!/bin/bash
 # scripts/backup-database.sh
@@ -290,13 +307,14 @@ gzip "$BACKUP_DIR/stations_$DATE.json"
 ```
 
 #### Schedule Backups (GitHub Actions)
+
 ```yaml
 # .github/workflows/backup.yml
 name: Daily Backup
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # 2 AM daily
+    - cron: '0 2 * * *' # 2 AM daily
   workflow_dispatch:
 
 jobs:
@@ -324,6 +342,7 @@ jobs:
 2. **Recovery Point Objective (RPO)**: < 24 hours
 
 **Recovery Steps**:
+
 ```bash
 # 1. Deploy to new Vercel project
 vercel --prod
@@ -343,11 +362,13 @@ npm run test:e2e:production
 ## 8. Scaling Configuration
 
 ### Automatic Scaling (Vercel)
+
 - **Serverless Functions**: Auto-scale based on traffic
 - **Edge Network**: Global distribution
 - **Concurrent Executions**: Up to 1000 (Pro plan)
 
 ### Performance Optimizations
+
 ```javascript
 // next.config.js
 module.exports = {
@@ -376,13 +397,16 @@ module.exports = {
 ## 9. Security Configuration
 
 ### Environment Variables Security
+
 - Never commit secrets to git
 - Use Vercel Environment Variables
 - Rotate secrets regularly
 - Use different secrets for preview/production
 
 ### Security Headers
+
 Already configured in `vercel.json`:
+
 ```json
 {
   "headers": [
@@ -416,6 +440,7 @@ Already configured in `vercel.json`:
 ## 10. Deployment Checklist
 
 ### Pre-Deployment
+
 - [ ] Run all tests: `npm run test:all`
 - [ ] Check build: `npm run build`
 - [ ] Review environment variables
@@ -423,12 +448,14 @@ Already configured in `vercel.json`:
 - [ ] Create git tag: `git tag v1.0.0`
 
 ### Deployment
+
 - [ ] Deploy to preview: `vercel`
 - [ ] Test preview deployment
 - [ ] Deploy to production: `vercel --prod`
 - [ ] Verify production deployment
 
 ### Post-Deployment
+
 - [ ] Monitor error rates (Sentry)
 - [ ] Check performance metrics (Vercel Analytics)
 - [ ] Verify health endpoints
@@ -436,6 +463,7 @@ Already configured in `vercel.json`:
 - [ ] Monitor server logs
 
 ### Rollback Procedure
+
 ```bash
 # List deployments
 vercel ls
@@ -449,8 +477,9 @@ vercel rollback <deployment-url>
 ## 11. Continuous Deployment
 
 Already configured in `.github/workflows/deploy.yml`:
+
 - **Preview deployments**: On PR creation
-- **Production deployments**: On tag creation (v*)
+- **Production deployments**: On tag creation (v\*)
 - **Automatic testing**: Before deployment
 
 ---
@@ -458,11 +487,13 @@ Already configured in `.github/workflows/deploy.yml`:
 ## 12. Cost Optimization
 
 ### Vercel Pricing
+
 - **Hobby**: Free (personal projects)
 - **Pro**: $20/month (commercial projects)
 - **Enterprise**: Custom pricing
 
 ### Optimization Tips
+
 1. Use Edge Functions for high-traffic endpoints
 2. Implement proper caching strategies
 3. Optimize images (WebP format)
@@ -476,6 +507,7 @@ Already configured in `.github/workflows/deploy.yml`:
 ### Common Issues
 
 **Build Failures**:
+
 ```bash
 # Clear cache and rebuild
 rm -rf .next node_modules
@@ -484,17 +516,20 @@ npm run build
 ```
 
 **Environment Variables Not Working**:
+
 - Check Vercel dashboard settings
 - Redeploy after adding variables
 - Use `NEXT_PUBLIC_` prefix for client-side vars
 
 **Performance Issues**:
+
 - Review Vercel Analytics
 - Check for slow API endpoints
 - Optimize database queries
 - Enable caching
 
 ### Getting Help
+
 - Vercel Documentation: https://vercel.com/docs
 - Next.js Documentation: https://nextjs.org/docs
 - GitHub Issues: Your repository issues page
@@ -504,6 +539,7 @@ npm run build
 ## Conclusion
 
 This deployment setup provides:
+
 - ✅ Zero-downtime deployments
 - ✅ High availability (99.99% uptime)
 - ✅ Global CDN distribution

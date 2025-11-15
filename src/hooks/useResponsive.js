@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
  * useResponsive Hook
  * Provides responsive breakpoint detection and utilities
  * Based on Tailwind CSS breakpoints
- * 
+ *
  * @returns {Object} Responsive state and utilities
  */
 
@@ -44,7 +44,8 @@ export const useResponsive = () => {
 
   // Breakpoint checks
   const isMobile = windowSize.width < breakpoints.sm;
-  const isTablet = windowSize.width >= breakpoints.sm && windowSize.width < breakpoints.lg;
+  const isTablet =
+    windowSize.width >= breakpoints.sm && windowSize.width < breakpoints.lg;
   const isDesktop = windowSize.width >= breakpoints.lg;
   const isLargeDesktop = windowSize.width >= breakpoints.xl;
 
@@ -115,7 +116,7 @@ export const useResponsive = () => {
 /**
  * useMediaQuery Hook
  * Check if a media query matches
- * 
+ *
  * @param {string} query - Media query string
  * @returns {boolean} Whether the media query matches
  */
@@ -126,7 +127,7 @@ export const useMediaQuery = (query) => {
     if (typeof window === 'undefined') return;
 
     const media = window.matchMedia(query);
-    
+
     // Set initial value
     setMatches(media.matches);
 
@@ -151,7 +152,7 @@ export const useMediaQuery = (query) => {
 /**
  * useViewportHeight Hook
  * Get accurate viewport height (accounts for mobile browsers)
- * 
+ *
  * @returns {number} Viewport height in pixels
  */
 export const useViewportHeight = () => {
@@ -165,7 +166,9 @@ export const useViewportHeight = () => {
     };
 
     window.addEventListener('resize', updateHeight, { passive: true });
-    window.addEventListener('orientationchange', updateHeight, { passive: true });
+    window.addEventListener('orientationchange', updateHeight, {
+      passive: true,
+    });
 
     // Set CSS custom property for use in CSS
     document.documentElement.style.setProperty('--vh', `${height * 0.01}px`);
@@ -182,7 +185,7 @@ export const useViewportHeight = () => {
 /**
  * useTouchDevice Hook
  * Detect if the device supports touch
- * 
+ *
  * @returns {boolean} Whether the device supports touch
  */
 export const useTouchDevice = () => {
@@ -192,8 +195,8 @@ export const useTouchDevice = () => {
     const checkTouch = () => {
       setIsTouch(
         'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        navigator.msMaxTouchPoints > 0
+          navigator.maxTouchPoints > 0 ||
+          navigator.msMaxTouchPoints > 0
       );
     };
 
@@ -204,4 +207,3 @@ export const useTouchDevice = () => {
 };
 
 export default useResponsive;
-

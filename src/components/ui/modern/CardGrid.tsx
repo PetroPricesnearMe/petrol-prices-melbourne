@@ -1,6 +1,6 @@
 /**
  * Modern Card Grid Component
- * 
+ *
  * Features:
  * - Responsive grid layout
  * - Hover animations with lift effect
@@ -48,8 +48,10 @@ interface CardGridProps {
 const cardVariants = {
   default: 'bg-white dark:bg-gray-800 shadow-md',
   elevated: 'bg-white dark:bg-gray-800 shadow-xl',
-  bordered: 'bg-white/50 dark:bg-gray-800/50 border-2 border-gray-200 dark:border-gray-700',
-  glass: 'bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50',
+  bordered:
+    'bg-white/50 dark:bg-gray-800/50 border-2 border-gray-200 dark:border-gray-700',
+  glass:
+    'bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl border border-gray-200/50 dark:border-gray-700/50',
 };
 
 // ============================================================================
@@ -84,15 +86,15 @@ function Card({
       )}
     >
       {/* Gradient Border on Hover */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500 via-secondary-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity -z-10 blur-xl" />
-      
+      <div className="to-purple-500 absolute inset-0 -z-10 rounded-2xl bg-gradient-to-r from-primary-500 via-secondary-500 opacity-0 blur-xl transition-opacity group-hover:opacity-100" />
+
       {/* Badge */}
       {card.badge && (
         <motion.div
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
           transition={{ delay: index * 0.1 + 0.2, type: 'spring' }}
-          className="absolute -top-3 -right-3 px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg"
+          className="absolute -right-3 -top-3 rounded-full bg-gradient-to-r from-primary-600 to-primary-700 px-3 py-1 text-xs font-bold text-white shadow-lg"
         >
           {card.badge}
         </motion.div>
@@ -101,31 +103,29 @@ function Card({
       {/* Icon */}
       {card.icon && (
         <motion.div
-          className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 mb-6 shadow-lg"
+          className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 shadow-lg"
           whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="text-3xl text-white">
-            {card.icon}
-          </div>
+          <div className="text-3xl text-white">{card.icon}</div>
         </motion.div>
       )}
 
       {/* Content */}
       <div className="space-y-4">
         {/* Title */}
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+        <h3 className="text-2xl font-bold text-gray-900 transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
           {card.title}
         </h3>
 
         {/* Description */}
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+        <p className="leading-relaxed text-gray-600 dark:text-gray-300">
           {card.description}
         </p>
 
         {/* Stat */}
         {card.stat && (
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="border-t border-gray-200 pt-4 dark:border-gray-700">
             <div className="text-3xl font-bold text-gray-900 dark:text-white">
               {card.stat.value}
             </div>
@@ -138,20 +138,30 @@ function Card({
         {/* Link Arrow */}
         {card.href && (
           <motion.div
-            className="flex items-center space-x-2 text-primary-600 dark:text-primary-400 font-semibold pt-2"
+            className="flex items-center space-x-2 pt-2 font-semibold text-primary-600 dark:text-primary-400"
             initial={{ x: 0 }}
             whileHover={{ x: 5 }}
           >
             <span>Learn more</span>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
             </svg>
           </motion.div>
         )}
       </div>
 
       {/* Hover Gradient Overlay */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/5 to-secondary-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/5 to-secondary-500/5 opacity-0 transition-opacity group-hover:opacity-100" />
     </CardWrapper>
   );
 }
@@ -176,12 +186,7 @@ export function CardGrid({
   return (
     <div className={cn('grid gap-8', gridCols[columns], className)}>
       {cards.map((card, index) => (
-        <Card
-          key={card.id}
-          card={card}
-          index={index}
-          variant={variant}
-        />
+        <Card key={card.id} card={card} index={index} variant={variant} />
       ))}
     </div>
   );
@@ -209,20 +214,20 @@ export function FeatureCard({
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
       className={cn(
-        'group relative p-8 rounded-2xl',
-        'bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl',
+        'group relative rounded-2xl p-8',
+        'bg-white/70 backdrop-blur-xl dark:bg-gray-800/70',
         'border border-gray-200/50 dark:border-gray-700/50',
-        'shadow-lg hover:shadow-2xl transition-all duration-300',
+        'shadow-lg transition-all duration-300 hover:shadow-2xl',
         className
       )}
     >
       {/* Gradient Background on Hover */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 opacity-0 transition-opacity group-hover:opacity-100" />
 
       <div className="relative z-10 space-y-4">
         {/* Icon */}
         <motion.div
-          className="inline-flex p-4 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 shadow-lg"
+          className="inline-flex rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 p-4 shadow-lg"
           whileHover={{ rotate: 360, scale: 1.1 }}
           transition={{ duration: 0.6 }}
         >
@@ -235,7 +240,7 @@ export function FeatureCard({
         </h3>
 
         {/* Description */}
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+        <p className="leading-relaxed text-gray-600 dark:text-gray-300">
           {description}
         </p>
       </div>
@@ -270,11 +275,11 @@ export function StatCard({
       viewport={{ once: true }}
       whileHover={{ scale: 1.05 }}
       className={cn(
-        'relative p-6 rounded-2xl',
+        'relative rounded-2xl p-6',
         'bg-gradient-to-br from-white to-gray-50',
         'dark:from-gray-800 dark:to-gray-900',
         'border border-gray-200 dark:border-gray-700',
-        'shadow-lg hover:shadow-xl transition-all duration-300',
+        'shadow-lg transition-all duration-300 hover:shadow-xl',
         className
       )}
     >
@@ -292,25 +297,37 @@ export function StatCard({
             {value}
           </motion.div>
           {trend && (
-            <div className={cn(
-              'flex items-center space-x-1 text-sm font-semibold',
-              trend.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-            )}>
-              <svg 
-                className={cn('w-4 h-4', trend.isPositive ? 'rotate-0' : 'rotate-180')} 
-                fill="none" 
-                viewBox="0 0 24 24" 
+            <div
+              className={cn(
+                'flex items-center space-x-1 text-sm font-semibold',
+                trend.isPositive
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'
+              )}
+            >
+              <svg
+                className={cn(
+                  'h-4 w-4',
+                  trend.isPositive ? 'rotate-0' : 'rotate-180'
+                )}
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 10l7-7m0 0l7 7m-7-7v18"
+                />
               </svg>
               <span>{trend.value}</span>
             </div>
           )}
         </div>
         {icon && (
-          <div className="p-3 rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500">
-            <div className="text-white text-2xl">{icon}</div>
+          <div className="rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500 p-3">
+            <div className="text-2xl text-white">{icon}</div>
           </div>
         )}
       </div>
@@ -324,7 +341,7 @@ export function StatCard({
 
 /**
  * Usage:
- * 
+ *
  * <CardGrid
  *   columns={3}
  *   variant="glass"
@@ -341,13 +358,13 @@ export function StatCard({
  *     // ... more cards
  *   ]}
  * />
- * 
+ *
  * <FeatureCard
  *   icon="🔍"
  *   title="Smart Search"
  *   description="Find stations by location, brand, and price"
  * />
- * 
+ *
  * <StatCard
  *   value="10K+"
  *   label="Active Users"
@@ -355,4 +372,3 @@ export function StatCard({
  *   trend={{ value: '+12%', isPositive: true }}
  * />
  */
-

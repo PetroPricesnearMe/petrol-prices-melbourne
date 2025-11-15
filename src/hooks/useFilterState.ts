@@ -63,7 +63,8 @@ export function useFilterState(initialFilters?: Partial<FilterState>) {
     filters.sortBy = searchParams.get('sortBy') || 'price-low';
     filters.priceMax = searchParams.get('priceMax') || '';
     filters.priceMin = searchParams.get('priceMin') || '';
-    filters.amenities = searchParams.get('amenities')?.split(',').filter(Boolean) || [];
+    filters.amenities =
+      searchParams.get('amenities')?.split(',').filter(Boolean) || [];
     filters.distance = searchParams.get('distance') || '';
     filters.rating = searchParams.get('rating') || '';
     filters.openNow = searchParams.get('openNow') === 'true';
@@ -73,23 +74,31 @@ export function useFilterState(initialFilters?: Partial<FilterState>) {
   }, [searchParams, initialFilters]);
 
   // Update URL when filters change
-  const updateFilters = useCallback((newFilters: Partial<FilterState>) => {
-    const params = new URLSearchParams(searchParams.toString());
+  const updateFilters = useCallback(
+    (newFilters: Partial<FilterState>) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    // Update URL parameters
-    Object.entries(newFilters).forEach(([key, value]) => {
-      if (value === '' || value === false || value === 'all' || (Array.isArray(value) && value.length === 0)) {
-        params.delete(key);
-      } else if (Array.isArray(value)) {
-        params.set(key, value.join(','));
-      } else {
-        params.set(key, String(value));
-      }
-    });
+      // Update URL parameters
+      Object.entries(newFilters).forEach(([key, value]) => {
+        if (
+          value === '' ||
+          value === false ||
+          value === 'all' ||
+          (Array.isArray(value) && value.length === 0)
+        ) {
+          params.delete(key);
+        } else if (Array.isArray(value)) {
+          params.set(key, value.join(','));
+        } else {
+          params.set(key, String(value));
+        }
+      });
 
-    // Update URL without causing a page reload
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [router, pathname, searchParams]);
+      // Update URL without causing a page reload
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [router, pathname, searchParams]
+  );
 
   // Clear all filters
   const clearFilters = useCallback(() => {
@@ -111,10 +120,12 @@ export function useFilterState(initialFilters?: Partial<FilterState>) {
 
     if (urlFilters.search) summary.push(`Search: "${urlFilters.search}"`);
     if (urlFilters.brand !== 'all') summary.push(`Brand: ${urlFilters.brand}`);
-    if (urlFilters.suburb !== 'all') summary.push(`Suburb: ${urlFilters.suburb}`);
+    if (urlFilters.suburb !== 'all')
+      summary.push(`Suburb: ${urlFilters.suburb}`);
     if (urlFilters.priceMax) summary.push(`Max Price: ${urlFilters.priceMax}¢`);
     if (urlFilters.priceMin) summary.push(`Min Price: ${urlFilters.priceMin}¢`);
-    if (urlFilters.amenities.length > 0) summary.push(`Amenities: ${urlFilters.amenities.join(', ')}`);
+    if (urlFilters.amenities.length > 0)
+      summary.push(`Amenities: ${urlFilters.amenities.join(', ')}`);
     if (urlFilters.distance) summary.push(`Distance: ${urlFilters.distance}km`);
     if (urlFilters.rating) summary.push(`Rating: ${urlFilters.rating}+`);
     if (urlFilters.openNow) summary.push('Open Now');

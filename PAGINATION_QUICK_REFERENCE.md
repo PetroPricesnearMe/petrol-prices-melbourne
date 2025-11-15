@@ -11,14 +11,14 @@ import Pagination from '@/components/common/Pagination';
   currentPage={currentPage}
   totalPages={totalPages}
   onPageChange={setCurrentPage}
-/>
+/>;
 ```
 
 ### Basic Grid
 
 ```tsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-  {items.map(item => (
+<div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {items.map((item) => (
     <div key={item.id} className="h-full">
       <Card {...item} />
     </div>
@@ -31,62 +31,59 @@ import Pagination from '@/components/common/Pagination';
 ```tsx
 import { PaginatedGrid } from '@/components/common/PaginatedGrid';
 
-<PaginatedGrid
-  items={items}
-  renderItem={(item) => <Card {...item} />}
-/>
+<PaginatedGrid items={items} renderItem={(item) => <Card {...item} />} />;
 ```
 
 ## 📋 Common Props
 
 ### Pagination Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `currentPage` | number | required | Current page (1-indexed) |
-| `totalPages` | number | required | Total pages |
-| `onPageChange` | function | required | Page change handler |
-| `size` | 'sm' \| 'md' \| 'lg' | 'md' | Button size |
-| `animationType` | 'fade' \| 'slide' \| 'none' | 'fade' | Animation type |
-| `showItemsInfo` | boolean | true | Show "Showing X-Y of Z" |
-| `scrollToTop` | boolean | true | Auto scroll on change |
+| Prop            | Type                        | Default  | Description              |
+| --------------- | --------------------------- | -------- | ------------------------ |
+| `currentPage`   | number                      | required | Current page (1-indexed) |
+| `totalPages`    | number                      | required | Total pages              |
+| `onPageChange`  | function                    | required | Page change handler      |
+| `size`          | 'sm' \| 'md' \| 'lg'        | 'md'     | Button size              |
+| `animationType` | 'fade' \| 'slide' \| 'none' | 'fade'   | Animation type           |
+| `showItemsInfo` | boolean                     | true     | Show "Showing X-Y of Z"  |
+| `scrollToTop`   | boolean                     | true     | Auto scroll on change    |
 
 ### PaginatedGrid Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `items` | array | required | Items to display |
-| `renderItem` | function | required | Render function |
-| `itemsPerPage` | number | 12 | Items per page |
-| `gap` | string | 'md' | Gap size |
-| `animationType` | string | 'fade' | Animation type |
+| Prop            | Type     | Default  | Description      |
+| --------------- | -------- | -------- | ---------------- |
+| `items`         | array    | required | Items to display |
+| `renderItem`    | function | required | Render function  |
+| `itemsPerPage`  | number   | 12       | Items per page   |
+| `gap`           | string   | 'md'     | Gap size         |
+| `animationType` | string   | 'fade'   | Animation type   |
 
 ## ⌨️ Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| `←` | Previous page |
-| `→` | Next page |
-| `Home` | First page |
-| `End` | Last page |
-| `Tab` | Navigate buttons |
-| `Enter` | Activate button |
+| Key     | Action           |
+| ------- | ---------------- |
+| `←`     | Previous page    |
+| `→`     | Next page        |
+| `Home`  | First page       |
+| `End`   | Last page        |
+| `Tab`   | Navigate buttons |
+| `Enter` | Activate button  |
 
 ## 🎨 Grid Breakpoints
 
-| Breakpoint | Columns | Screen |
-|------------|---------|--------|
-| base | 1 | < 640px |
-| sm | 2 | ≥ 640px |
-| lg | 3 | ≥ 1024px |
-| xl | 4 | ≥ 1280px |
+| Breakpoint | Columns | Screen   |
+| ---------- | ------- | -------- |
+| base       | 1       | < 640px  |
+| sm         | 2       | ≥ 640px  |
+| lg         | 3       | ≥ 1024px |
+| xl         | 4       | ≥ 1280px |
 
 ## 📏 Gap Sizes
 
 ```tsx
-gap-4  // 1rem (16px) - Small
-gap-6  // 1.5rem (24px) - Medium ⭐
-gap-8  // 2rem (32px) - Large
+gap - 4; // 1rem (16px) - Small
+gap - 6; // 1.5rem (24px) - Medium ⭐
+gap - 8; // 2rem (32px) - Large
 ```
 
 ## ✅ Checklist
@@ -105,6 +102,7 @@ gap-8  // 2rem (32px) - Large
 ## 🐛 Common Issues
 
 ### Cards Different Heights
+
 ```tsx
 // ❌ Wrong
 <div className="station-card">
@@ -114,15 +112,17 @@ gap-8  // 2rem (32px) - Large
 ```
 
 ### No Pagination Showing
+
 ```tsx
 // ❌ Wrong
-totalPages === 1  // Pagination hidden
+totalPages === 1; // Pagination hidden
 
 // ✅ Correct
-totalPages >= 2   // Pagination shows
+totalPages >= 2; // Pagination shows
 ```
 
 ### Animation Not Working
+
 ```bash
 # Install Framer Motion
 npm install framer-motion
@@ -142,11 +142,9 @@ const currentItems = items.slice(startIndex, startIndex + itemsPerPage);
 ### Uniform Card Heights
 
 ```tsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-  <div className="h-full flex flex-col">
-    <div className="flex-1">
-      {/* Content */}
-    </div>
+<div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <div className="flex h-full flex-col">
+    <div className="flex-1">{/* Content */}</div>
   </div>
 </div>
 ```
@@ -158,8 +156,8 @@ const [page, setPage] = useState(1);
 
 useEffect(() => {
   fetch(`/api/items?page=${page}`)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       setItems(data.items);
       setTotalPages(data.totalPages);
     });

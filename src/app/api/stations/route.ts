@@ -3,7 +3,7 @@
  * Enhanced with error handling, caching, validation, and rate limiting
  */
 
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -21,7 +21,7 @@ export const revalidate = 3600; // ISR - revalidate every hour
 
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
-  
+
   try {
     // Parse query parameters
     const searchParams = request.nextUrl.searchParams;
@@ -29,16 +29,24 @@ export async function GET(request: NextRequest) {
       suburb: searchParams.get('suburb') || undefined,
       brand: searchParams.get('brand') || undefined,
       fuelType: searchParams.get('fuelType') || undefined,
-      maxPrice: searchParams.get('maxPrice') ? parseFloat(searchParams.get('maxPrice')!) : undefined,
+      maxPrice: searchParams.get('maxPrice')
+        ? parseFloat(searchParams.get('maxPrice')!)
+        : undefined,
       sortBy: searchParams.get('sortBy') || undefined,
-      latitude: searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : undefined,
-      longitude: searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : undefined,
-      radius: searchParams.get('radius') ? parseFloat(searchParams.get('radius')!) : undefined,
+      latitude: searchParams.get('lat')
+        ? parseFloat(searchParams.get('lat')!)
+        : undefined,
+      longitude: searchParams.get('lng')
+        ? parseFloat(searchParams.get('lng')!)
+        : undefined,
+      radius: searchParams.get('radius')
+        ? parseFloat(searchParams.get('radius')!)
+        : undefined,
     };
 
     // Generate cache key
     const cacheKey = generateCacheKey('stations-api', filters);
-    
+
     // Try cache first
     const cached = stationsCache.get<any>(cacheKey);
     if (cached) {
@@ -52,7 +60,8 @@ export async function GET(request: NextRequest) {
         {
           status: 200,
           headers: {
-            'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
+            'Cache-Control':
+              'public, s-maxage=3600, stale-while-revalidate=7200',
             'X-Cache': 'HIT',
             'X-Response-Time': `${Date.now() - startTime}ms`,
           },
@@ -62,8 +71,8 @@ export async function GET(request: NextRequest) {
 
     // Fetch data
     let stations;
-    const hasFilters = Object.values(filters).some(v => v !== undefined);
-    
+    const hasFilters = Object.values(filters).some((v) => v !== undefined);
+
     if (hasFilters) {
       // Validate filters
       const validation = validateFilters(filters);
@@ -77,7 +86,7 @@ export async function GET(request: NextRequest) {
           { status: 400 }
         );
       }
-      
+
       stations = await searchStations(validation.data!);
     } else {
       stations = await getStations();
@@ -105,15 +114,17 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-
   } catch (error) {
     console.error('Error in GET /api/stations:', error);
-    
+
     return NextResponse.json(
       {
         success: false,
         error: 'Internal server error',
-        message: process.env.NODE_ENV === 'development' ? String(error) : 'Failed to fetch stations',
+        message:
+          process.env.NODE_ENV === 'development'
+            ? String(error)
+            : 'Failed to fetch stations',
         timestamp: new Date().toISOString(),
       },
       {
@@ -137,7 +148,7 @@ export async function POST(request: NextRequest) {
     // if (!session) return unauthorized();
 
     const body = await request.json();
-    
+
     // Validate input with Zod
     const stationSchema = z.object({
       name: z.string().min(1).max(200),
@@ -175,10 +186,9 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-
   } catch (error) {
     console.error('Error in POST /api/stations:', error);
-    
+
     return NextResponse.json(
       {
         success: false,

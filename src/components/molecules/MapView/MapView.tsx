@@ -24,7 +24,9 @@ import { cn } from '@/styles/system/css-in-js';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Mapbox access token - should be in environment variables
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 'pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUifQ.example';
+const MAPBOX_TOKEN =
+  process.env.NEXT_PUBLIC_MAPBOX_TOKEN ||
+  'pk.eyJ1IjoiZXhhbXBsZSIsImEiOiJjbGV4YW1wbGUifQ.example';
 
 interface FuelPrices {
   unleaded: number | null;
@@ -68,20 +70,26 @@ const CLUSTER_MAX_ZOOM = 14;
 // Brand colors for markers
 const getBrandColor = (brand: string): string => {
   const brandColors: Record<string, string> = {
-    'BP': '#00A651',
-    'Shell': '#FFD700',
-    'Caltex': '#FF6B35',
+    BP: '#00A651',
+    Shell: '#FFD700',
+    Caltex: '#FF6B35',
     '7-Eleven': '#FF6900',
     'Coles Express': '#E31837',
-    'Woolworths': '#1B5E20',
-    'United': '#1976D2',
-    'Puma': '#E91E63',
+    Woolworths: '#1B5E20',
+    United: '#1976D2',
+    Puma: '#E91E63',
   };
   return brandColors[brand] || '#6B7280';
 };
 
 // Custom marker component
-const StationMarker = ({ station, onClick }: { station: Station; onClick: () => void }) => {
+const StationMarker = ({
+  station,
+  onClick,
+}: {
+  station: Station;
+  onClick: () => void;
+}) => {
   const brandColor = getBrandColor(station.brand);
 
   return (
@@ -94,24 +102,24 @@ const StationMarker = ({ station, onClick }: { station: Station; onClick: () => 
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        className="relative cursor-pointer group"
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+        className="group relative cursor-pointer"
       >
         {/* Marker pin */}
         <div
-          className="w-8 h-8 rounded-full border-2 border-white shadow-lg flex items-center justify-center"
+          className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white shadow-lg"
           style={{ backgroundColor: brandColor }}
         >
-          <span className="text-white text-xs font-bold">
+          <span className="text-xs font-bold text-white">
             {station.brand.charAt(0)}
           </span>
         </div>
 
         {/* Hover tooltip */}
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-          <div className="bg-gray-900 text-white text-xs rounded-lg px-2 py-1 whitespace-nowrap">
+        <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <div className="whitespace-nowrap rounded-lg bg-gray-900 px-2 py-1 text-xs text-white">
             {station.name}
-            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
+            <div className="absolute left-1/2 top-full h-0 w-0 -translate-x-1/2 transform border-l-2 border-r-2 border-t-2 border-transparent border-t-gray-900"></div>
           </div>
         </div>
       </motion.div>
@@ -120,7 +128,13 @@ const StationMarker = ({ station, onClick }: { station: Station; onClick: () => 
 };
 
 // Station popup component
-const StationPopup = ({ station, onClose }: { station: Station; onClose: () => void }) => {
+const StationPopup = ({
+  station,
+  onClose,
+}: {
+  station: Station;
+  onClose: () => void;
+}) => {
   const brandColor = getBrandColor(station.brand);
 
   const getPriceColor = (price: number | null): string => {
@@ -135,51 +149,82 @@ const StationPopup = ({ station, onClose }: { station: Station; onClose: () => v
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      className="bg-white rounded-lg shadow-xl max-w-sm w-80"
+      className="w-80 max-w-sm rounded-lg bg-white shadow-xl"
     >
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="border-b border-gray-200 p-4">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 text-lg">{station.name}</h3>
+            <h3 className="text-lg font-bold text-gray-900">{station.name}</h3>
             <p className="text-sm text-gray-600">{station.brand}</p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 transition-colors hover:text-gray-600"
             aria-label="Close popup"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
       </div>
 
       {/* Address */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="border-b border-gray-200 p-4">
         <div className="flex items-start gap-2">
-          <svg className="w-4 h-4 text-gray-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg
+            className="mt-0.5 h-4 w-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            />
           </svg>
           <div className="text-sm text-gray-600">
             <p>{station.address}</p>
-            <p>{station.suburb}, {station.postcode}</p>
+            <p>
+              {station.suburb}, {station.postcode}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Fuel Prices */}
-      <div className="p-4 border-b border-gray-200">
-        <h4 className="font-semibold text-gray-900 mb-2">Current Prices</h4>
+      <div className="border-b border-gray-200 p-4">
+        <h4 className="mb-2 font-semibold text-gray-900">Current Prices</h4>
         <div className="space-y-2">
           {Object.entries(station.fuelPrices).map(([type, price]) => {
             if (price === null) return null;
             return (
-              <div key={type} className="flex justify-between items-center">
-                <span className="text-sm text-gray-600 capitalize">
-                  {type === 'premium95' ? 'Premium 95' : type === 'premium98' ? 'Premium 98' : type}
+              <div key={type} className="flex items-center justify-between">
+                <span className="text-sm capitalize text-gray-600">
+                  {type === 'premium95'
+                    ? 'Premium 95'
+                    : type === 'premium98'
+                      ? 'Premium 98'
+                      : type}
                 </span>
                 <span className={`font-bold ${getPriceColor(price)}`}>
                   {price.toFixed(1)}¢/L
@@ -191,10 +236,10 @@ const StationPopup = ({ station, onClose }: { station: Station; onClose: () => v
       </div>
 
       {/* Actions */}
-      <div className="p-4 flex gap-2">
+      <div className="flex gap-2 p-4">
         <Link
           href={`/stations/${station.id}`}
-          className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+          className="bg-blue-600 hover:bg-blue-700 flex-1 rounded-lg px-4 py-2 text-center text-sm font-medium text-white transition-colors"
         >
           View Details
         </Link>
@@ -202,7 +247,7 @@ const StationPopup = ({ station, onClose }: { station: Station; onClose: () => v
           href={`https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 bg-gray-600 text-white text-center py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
+          className="flex-1 rounded-lg bg-gray-600 px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-gray-700"
         >
           Directions
         </a>
@@ -223,7 +268,7 @@ export function MapView({
   selectedStation,
   onStationSelect,
   className,
-  height = "500px",
+  height = '500px',
   showClustering = true,
   defaultZoom = 10,
   defaultCenter = [144.9631, -37.8136], // Melbourne coordinates
@@ -238,18 +283,21 @@ export function MapView({
   const mapRef = useRef<MapRef>(null);
 
   // Handle marker click
-  const handleMarkerClick = useCallback((station: Station) => {
-    setPopupInfo(station);
-    onStationSelect?.(station);
+  const handleMarkerClick = useCallback(
+    (station: Station) => {
+      setPopupInfo(station);
+      onStationSelect?.(station);
 
-    // Center map on selected station
-    setViewState(prev => ({
-      ...prev,
-      longitude: station.longitude,
-      latitude: station.latitude,
-      zoom: Math.max(prev.zoom, 15),
-    }));
-  }, [onStationSelect]);
+      // Center map on selected station
+      setViewState((prev) => ({
+        ...prev,
+        longitude: station.longitude,
+        latitude: station.latitude,
+        zoom: Math.max(prev.zoom, 15),
+      }));
+    },
+    [onStationSelect]
+  );
 
   // Close popup
   const handleClosePopup = useCallback(() => {
@@ -263,27 +311,27 @@ export function MapView({
 
   // Filter stations with valid coordinates
   const validStations = stations.filter(
-    station => station.latitude && station.longitude
+    (station) => station.latitude && station.longitude
   );
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn('relative', className)}>
       {/* Loading overlay */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center z-10">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-100">
           <div className="flex items-center gap-2">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <div className="border-blue-600 h-6 w-6 animate-spin rounded-full border-b-2"></div>
             <span className="text-gray-600">Loading map...</span>
           </div>
         </div>
       )}
 
       {/* Map */}
-      <div style={{ height }} className="rounded-lg overflow-hidden">
+      <div style={{ height }} className="overflow-hidden rounded-lg">
         <Map
           ref={mapRef}
           {...viewState}
-          onMove={evt => setViewState(evt.viewState)}
+          onMove={(evt) => setViewState(evt.viewState)}
           onLoad={handleMapLoad}
           mapboxAccessToken={MAPBOX_TOKEN}
           mapStyle="mapbox://styles/mapbox/streets-v12"
@@ -320,31 +368,55 @@ export function MapView({
       </div>
 
       {/* Map controls */}
-      <div className="absolute top-4 right-4 flex flex-col gap-2">
+      <div className="absolute right-4 top-4 flex flex-col gap-2">
         {/* Zoom controls */}
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
           <button
-            onClick={() => setViewState(prev => ({ ...prev, zoom: prev.zoom + 1 }))}
-            className="block w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
+            onClick={() =>
+              setViewState((prev) => ({ ...prev, zoom: prev.zoom + 1 }))
+            }
+            className="block flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-50"
             aria-label="Zoom in"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
             </svg>
           </button>
           <button
-            onClick={() => setViewState(prev => ({ ...prev, zoom: prev.zoom - 1 }))}
-            className="block w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors border-t border-gray-200"
+            onClick={() =>
+              setViewState((prev) => ({ ...prev, zoom: prev.zoom - 1 }))
+            }
+            className="block flex h-8 w-8 items-center justify-center border-t border-gray-200 transition-colors hover:bg-gray-50"
             aria-label="Zoom out"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12H6" />
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M18 12H6"
+              />
             </svg>
           </button>
         </div>
 
         {/* Station count */}
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-3 py-2">
+        <div className="rounded-lg border border-gray-200 bg-white px-3 py-2 shadow-lg">
           <span className="text-sm text-gray-600">
             {validStations.length} stations
           </span>
@@ -352,13 +424,13 @@ export function MapView({
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg border border-gray-200 p-3">
-        <h4 className="font-semibold text-gray-900 text-sm mb-2">Legend</h4>
+      <div className="absolute bottom-4 left-4 rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
+        <h4 className="mb-2 text-sm font-semibold text-gray-900">Legend</h4>
         <div className="space-y-1">
           {['BP', 'Shell', 'Caltex', '7-Eleven'].map((brand) => (
             <div key={brand} className="flex items-center gap-2">
               <div
-                className="w-3 h-3 rounded-full"
+                className="h-3 w-3 rounded-full"
                 style={{ backgroundColor: getBrandColor(brand) }}
               />
               <span className="text-xs text-gray-600">{brand}</span>

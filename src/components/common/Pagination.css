@@ -64,7 +64,9 @@
 .page-transition-enter-active {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition:
+    opacity 300ms ease-in-out,
+    transform 300ms ease-in-out;
 }
 
 .page-transition-exit {
@@ -75,7 +77,9 @@
 .page-transition-exit-active {
   opacity: 0;
   transform: scale(0.98);
-  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition:
+    opacity 300ms ease-in-out,
+    transform 300ms ease-in-out;
 }
 
 /* Dark mode enhancements */
@@ -92,7 +96,7 @@
   }
 
   .pagination-container button {
-    @apply px-2 py-1 min-w-[36px];
+    @apply min-w-[36px] px-2 py-1;
   }
 }
 
@@ -102,7 +106,7 @@
     @apply border-2;
   }
 
-  .pagination-container button[aria-current="page"] {
+  .pagination-container button[aria-current='page'] {
     @apply border-4;
   }
 }

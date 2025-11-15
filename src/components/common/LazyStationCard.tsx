@@ -11,13 +11,14 @@ import { useEffect, useRef, useState } from 'react';
 
 // Lazy load the actual StationCard component
 const StationCard = dynamic(
-  () => import('@/components/molecules/StationCard').then(mod => ({
-    default: mod.StationCard
-  })),
+  () =>
+    import('@/components/molecules/StationCard').then((mod) => ({
+      default: mod.StationCard,
+    })),
   {
     loading: () => (
       <div className="card animate-pulse">
-        <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+        <div className="h-48 rounded-lg bg-gray-200 dark:bg-gray-700" />
       </div>
     ),
     ssr: false, // Don't render on server for below-fold cards
@@ -77,9 +78,8 @@ export function LazyStationCard({
       {isVisible ? (
         <StationCard station={station} onClick={onClick} />
       ) : (
-        <div className="card h-48 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-lg" />
+        <div className="card h-48 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-800" />
       )}
     </div>
   );
 }
-

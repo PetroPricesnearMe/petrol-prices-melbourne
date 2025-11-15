@@ -11,6 +11,7 @@
 ## 🔧 What Was Changed
 
 ### vercel.json
+
 ```json
 // ❌ OLD (Create React App)
 {
@@ -34,6 +35,7 @@
 ## 🚀 Correct Build Commands
 
 ### Local Development
+
 ```bash
 # Start development server
 npm run dev
@@ -42,6 +44,7 @@ npm run dev
 ```
 
 ### Production Build
+
 ```bash
 # Clean install dependencies
 npm ci
@@ -56,6 +59,7 @@ npm start
 ```
 
 ### Vercel Deployment
+
 ```bash
 # Vercel will automatically detect Next.js and use:
 # - Build Command: next build
@@ -64,6 +68,7 @@ npm start
 ```
 
 ### Manual Deployment (Other Platforms)
+
 ```bash
 # 1. Install dependencies
 npm ci
@@ -83,6 +88,7 @@ PORT=3000 npm start
 ## 📋 Deployment Checklist
 
 ### Before Deploying
+
 - [x] ✅ Updated vercel.json with Next.js config
 - [ ] Set environment variables (if any)
 - [ ] Test build locally: `npm run build`
@@ -91,7 +97,9 @@ PORT=3000 npm start
 - [ ] Verify images load properly
 
 ### Environment Variables Needed
+
 Check your `.env.local` or deployment platform for these:
+
 ```bash
 # API Keys (if applicable)
 NEXT_PUBLIC_BASEROW_API_TOKEN=your_token_here
@@ -111,15 +119,19 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ## 🐛 Troubleshooting
 
 ### Error: "react-scripts: command not found"
+
 ✅ **FIXED** - This was caused by incorrect vercel.json configuration.
 
 ### If you still see this error:
+
 1. Check if you're using the correct build command:
+
    ```bash
    npm run build  # Should run "next build"
    ```
 
 2. Verify package.json scripts:
+
    ```json
    "scripts": {
      "dev": "next dev",
@@ -136,6 +148,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
    ```
 
 ### Error: "Cannot find module 'next'"
+
 ```bash
 # Reinstall dependencies
 rm -rf node_modules package-lock.json
@@ -143,6 +156,7 @@ npm install
 ```
 
 ### Error: Port already in use
+
 ```bash
 # Kill process on port 3000
 npx kill-port 3000
@@ -152,6 +166,7 @@ PORT=3001 npm run dev
 ```
 
 ### Build succeeds but pages don't load
+
 1. Check that all imports are correct
 2. Verify file paths are case-sensitive
 3. Ensure all dependencies are installed
@@ -164,11 +179,13 @@ PORT=3001 npm run dev
 When deploying to Vercel, use these settings:
 
 ### Framework Preset
+
 ```
 Framework: Next.js
 ```
 
 ### Build & Development Settings
+
 ```
 Build Command: next build (auto-detected)
 Output Directory: .next (auto-detected)
@@ -177,7 +194,9 @@ Development Command: next dev (auto-detected)
 ```
 
 ### Environment Variables
+
 Add in Vercel Dashboard → Settings → Environment Variables:
+
 - Production
 - Preview
 - Development
@@ -189,15 +208,17 @@ Add in Vercel Dashboard → Settings → Environment Variables:
 If you're migrating from Create React App to Next.js, here's what changed:
 
 ### Build System
-| Aspect | CRA | Next.js |
-|--------|-----|---------|
-| Build Command | `react-scripts build` | `next build` |
-| Dev Command | `react-scripts start` | `next dev` |
-| Output Dir | `build/` | `.next/` |
-| Routing | React Router | File-based routing |
-| Image Optimization | Manual | Built-in `next/image` |
+
+| Aspect             | CRA                   | Next.js               |
+| ------------------ | --------------------- | --------------------- |
+| Build Command      | `react-scripts build` | `next build`          |
+| Dev Command        | `react-scripts start` | `next dev`            |
+| Output Dir         | `build/`              | `.next/`              |
+| Routing            | React Router          | File-based routing    |
+| Image Optimization | Manual                | Built-in `next/image` |
 
 ### Key Differences
+
 1. **Pages:** Components in `pages/` directory are routes
 2. **API Routes:** Backend endpoints in `pages/api/`
 3. **Image Optimization:** Use `next/image` component
@@ -209,6 +230,7 @@ If you're migrating from Create React App to Next.js, here's what changed:
 ## 🧪 Testing Your Build
 
 ### Test Locally
+
 ```bash
 # 1. Build
 npm run build
@@ -228,6 +250,7 @@ npm start
 ```
 
 ### Test on Vercel
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -300,6 +323,7 @@ After deploying, verify:
 If deployment fails:
 
 ### Vercel
+
 ```bash
 # List deployments
 vercel ls
@@ -309,6 +333,7 @@ vercel promote [deployment-url]
 ```
 
 ### Manual
+
 ```bash
 # Revert git changes
 git revert HEAD
@@ -324,11 +349,13 @@ git push --force
 ## 📞 Need Help?
 
 ### Logs to Check
+
 1. **Vercel Build Logs** - In deployment details
 2. **Browser Console** - For client-side errors
 3. **Network Tab** - For API/resource loading issues
 
 ### Useful Commands
+
 ```bash
 # Check Next.js version
 npx next --version
@@ -350,6 +377,7 @@ npm ls next react react-dom
 Your build configuration is now correct. The application will build using Next.js instead of Create React App.
 
 **Next steps:**
+
 1. Commit the vercel.json changes
 2. Push to your repository
 3. Vercel will automatically deploy with the correct settings

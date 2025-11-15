@@ -27,7 +27,12 @@ export const GlassmorphismHero: React.FC<GlassmorphismHeroProps> = ({
   className,
 }) => {
   return (
-    <section className={cn('relative min-h-screen flex items-center justify-center overflow-hidden', className)}>
+    <section
+      className={cn(
+        'relative flex min-h-screen items-center justify-center overflow-hidden',
+        className
+      )}
+    >
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -35,23 +40,23 @@ export const GlassmorphismHero: React.FC<GlassmorphismHeroProps> = ({
       />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/60 via-purple-900/50 to-pink-900/60" />
+      <div className="from-blue-900/60 via-purple-900/50 to-pink-900/60 absolute inset-0 bg-gradient-to-br" />
 
       {/* Glassmorphism Container */}
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: 'easeOut' }}
-        className="relative z-10 max-w-4xl mx-auto px-6 text-center"
+        className="relative z-10 mx-auto max-w-4xl px-6 text-center"
       >
         {/* Glass Card */}
-        <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-12 shadow-2xl">
+        <div className="rounded-3xl border border-white/20 bg-white/10 p-12 shadow-2xl backdrop-blur-xl">
           {/* Title */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+            className="mb-6 text-5xl font-bold leading-tight text-white md:text-7xl"
           >
             {title}
           </motion.h1>
@@ -61,7 +66,7 @@ export const GlassmorphismHero: React.FC<GlassmorphismHeroProps> = ({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed"
+            className="mb-8 text-xl leading-relaxed text-white/90 md:text-2xl"
           >
             {subtitle}
           </motion.p>
@@ -76,7 +81,7 @@ export const GlassmorphismHero: React.FC<GlassmorphismHeroProps> = ({
               href={ctaLink}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              className="from-blue-500 to-purple-600 inline-block rounded-full bg-gradient-to-r px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl"
             >
               {ctaText}
             </motion.a>
@@ -85,11 +90,11 @@ export const GlassmorphismHero: React.FC<GlassmorphismHeroProps> = ({
       </motion.div>
 
       {/* Floating Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-white/30 rounded-full"
+            className="absolute h-2 w-2 rounded-full bg-white/30"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,

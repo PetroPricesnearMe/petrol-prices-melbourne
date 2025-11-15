@@ -32,7 +32,9 @@ export interface StationListVirtualizedProps {
   emptyMessage?: React.ReactNode;
 }
 
-const StationListVirtualizedComponent: React.FC<StationListVirtualizedProps> = ({
+const StationListVirtualizedComponent: React.FC<
+  StationListVirtualizedProps
+> = ({
   stations,
   height,
   itemHeight = 200,

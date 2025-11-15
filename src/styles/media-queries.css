@@ -125,8 +125,8 @@
 
 /* High resolution displays (Retina, 4K) */
 @media (-webkit-min-device-pixel-ratio: 2),
-       (min-resolution: 192dpi),
-       (min-resolution: 2dppx) {
+  (min-resolution: 192dpi),
+  (min-resolution: 2dppx) {
   .high-res-image {
     image-rendering: -webkit-optimize-contrast;
   }

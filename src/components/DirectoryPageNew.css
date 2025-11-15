@@ -5,7 +5,11 @@
 
 /* Header Section */
 .directory-header {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   color: white;
   padding: 3rem 0 2rem;
 }
@@ -382,7 +386,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
   display: flex;
   align-items: flex-end;
   padding: var(--space-4);
@@ -585,7 +593,6 @@
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-
   .station-card,
   .pagination-btn,
   .pagination-number {

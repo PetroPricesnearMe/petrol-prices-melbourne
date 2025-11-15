@@ -7,9 +7,11 @@ This guide documents the comprehensive responsive design implementation for the 
 ## 📱 Design Philosophy
 
 ### Mobile-First Approach
+
 We design for mobile devices first, then progressively enhance for larger screens. This ensures optimal performance and user experience across all devices.
 
 ### Key Principles
+
 1. **Fluid Typography** - Text scales smoothly across all screen sizes
 2. **Flexible Layouts** - Grid and Flexbox-based responsive layouts
 3. **Touch-Friendly** - Minimum 44px touch targets for mobile devices
@@ -38,13 +40,13 @@ We use Tailwind CSS default breakpoints:
 ```jsx
 // Mobile first (default)
 <div className="w-full">
-  
+
 // Tablet and up
 <div className="w-full sm:w-1/2">
-  
+
 // Desktop and up
 <div className="w-full lg:w-1/3">
-  
+
 // Large desktop
 <div className="w-full xl:w-1/4">
 ```
@@ -60,26 +62,26 @@ We use Tailwind's responsive text sizes with `clamp()` for fluid scaling:
 ```jsx
 // Headings
 <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">
-  
+
 // Body text
 <p className="text-sm sm:text-base lg:text-lg">
-  
+
 // Small text
 <span className="text-xs sm:text-sm">
 ```
 
 ### Font Size Scale
 
-| Class | Mobile | Tablet (sm) | Desktop (lg) |
-|-------|--------|-------------|--------------|
-| text-xs | 0.75rem | 0.75rem | 0.75rem |
-| text-sm | 0.875rem | 0.875rem | 0.875rem |
-| text-base | 1rem | 1rem | 1rem |
-| text-lg | 1.125rem | 1.125rem | 1.25rem |
-| text-xl | 1.25rem | 1.5rem | 1.5rem |
-| text-2xl | 1.5rem | 1.875rem | 2rem |
-| text-3xl | 1.875rem | 2.25rem | 3rem |
-| text-4xl | 2.25rem | 3rem | 3.75rem |
+| Class     | Mobile   | Tablet (sm) | Desktop (lg) |
+| --------- | -------- | ----------- | ------------ |
+| text-xs   | 0.75rem  | 0.75rem     | 0.75rem      |
+| text-sm   | 0.875rem | 0.875rem    | 0.875rem     |
+| text-base | 1rem     | 1rem        | 1rem         |
+| text-lg   | 1.125rem | 1.125rem    | 1.25rem      |
+| text-xl   | 1.25rem  | 1.5rem      | 1.5rem       |
+| text-2xl  | 1.5rem   | 1.875rem    | 2rem         |
+| text-3xl  | 1.875rem | 2.25rem     | 3rem         |
+| text-4xl  | 2.25rem  | 3rem        | 3.75rem      |
 
 ---
 
@@ -88,17 +90,20 @@ We use Tailwind's responsive text sizes with `clamp()` for fluid scaling:
 ### StationCards Component
 
 **Mobile (< 640px)**
+
 - Single column grid
 - Full-width filters
 - Stacked fuel price cards
 - Touch-friendly buttons (min 44px height)
 
 **Tablet (640px - 1024px)**
+
 - 2 column grid
 - 2-column filter layout
 - Side-by-side fuel prices
 
 **Desktop (> 1024px)**
+
 - 3 column grid
 - Single row filters
 - Enhanced hover effects
@@ -111,12 +116,14 @@ We use Tailwind's responsive text sizes with `clamp()` for fluid scaling:
 ### Navbar Component
 
 **Mobile (< 1024px)**
+
 - Hamburger menu
 - Full-screen overlay
 - Slide-in drawer from right
 - Touch-friendly navigation items
 
 **Desktop (> 1024px)**
+
 - Horizontal navigation
 - Dropdown menus
 - Hover effects
@@ -124,7 +131,7 @@ We use Tailwind's responsive text sizes with `clamp()` for fluid scaling:
 ```jsx
 // Hide on mobile, show on desktop
 <div className="hidden lg:flex">
-  
+
 // Show on mobile, hide on desktop
 <button className="lg:hidden">
 ```
@@ -132,6 +139,7 @@ We use Tailwind's responsive text sizes with `clamp()` for fluid scaling:
 ### HomePage Component
 
 **Hero Section**
+
 - Stack content on mobile
 - Side-by-side on desktop
 - Fluid typography for title
@@ -157,10 +165,10 @@ import ResponsiveImage from '@/components/ResponsiveImage';
   srcTablet="/images/hero-tablet.jpg"
   srcDesktop="/images/hero-desktop.jpg"
   alt="Hero image"
-  className="w-full h-auto"
+  className="h-auto w-full"
   loading="lazy"
   decoding="async"
-/>
+/>;
 ```
 
 ### Best Practices
@@ -197,7 +205,7 @@ touch-action: manipulation; /* Prevents double-tap zoom */
 ### Tailwind Utility
 
 ```jsx
-className="touch-manipulation active:scale-95"
+className = 'touch-manipulation active:scale-95';
 ```
 
 ---
@@ -231,13 +239,8 @@ className="touch-manipulation active:scale-95"
 import { useResponsive } from '@/hooks/useResponsive';
 
 function Component() {
-  const { 
-    isMobile, 
-    isTablet, 
-    isDesktop,
-    breakpoint,
-    isTouchDevice 
-  } = useResponsive();
+  const { isMobile, isTablet, isDesktop, breakpoint, isTouchDevice } =
+    useResponsive();
 
   return (
     <div>
@@ -382,7 +385,7 @@ Load critical CSS inline for above-the-fold content:
 
 ```jsx
 // Images
-<img loading="lazy" decoding="async" />
+<img loading="lazy" decoding="async" />;
 
 // Components
 const StationCards = lazy(() => import('./StationCards'));
@@ -403,6 +406,7 @@ const Blog = lazy(() => import('./pages/Blog'));
 ### Responsive Testing Checklist
 
 #### Mobile (320px - 639px)
+
 - [ ] Single column layouts work
 - [ ] Text is readable without zooming
 - [ ] Touch targets are ≥ 44px
@@ -410,12 +414,14 @@ const Blog = lazy(() => import('./pages/Blog'));
 - [ ] Hamburger menu functions correctly
 
 #### Tablet (640px - 1023px)
+
 - [ ] 2-column layouts work
 - [ ] Filters display properly
 - [ ] Images scale appropriately
 - [ ] Navigation is accessible
 
 #### Desktop (1024px+)
+
 - [ ] Multi-column layouts work
 - [ ] Hover effects are smooth
 - [ ] Keyboard navigation works
@@ -432,16 +438,19 @@ const Blog = lazy(() => import('./pages/Blog'));
 ### Test Devices
 
 **Mobile**
+
 - iPhone SE (375x667)
 - iPhone 12/13 (390x844)
 - Samsung Galaxy S21 (360x800)
 - Pixel 5 (393x851)
 
 **Tablet**
+
 - iPad Mini (768x1024)
 - iPad Pro (1024x1366)
 
 **Desktop**
+
 - 1366x768 (Laptop)
 - 1920x1080 (Desktop)
 - 2560x1440 (Large Desktop)
@@ -452,13 +461,13 @@ const Blog = lazy(() => import('./pages/Blog'));
 
 ### Supported Browsers
 
-| Browser | Mobile | Desktop | Min Version |
-|---------|--------|---------|-------------|
-| Chrome | ✅ | ✅ | 90+ |
-| Firefox | ✅ | ✅ | 88+ |
-| Safari | ✅ | ✅ | 14+ |
-| Edge | ✅ | ✅ | 90+ |
-| Samsung Internet | ✅ | N/A | 14+ |
+| Browser          | Mobile | Desktop | Min Version |
+| ---------------- | ------ | ------- | ----------- |
+| Chrome           | ✅     | ✅      | 90+         |
+| Firefox          | ✅     | ✅      | 88+         |
+| Safari           | ✅     | ✅      | 14+         |
+| Edge             | ✅     | ✅      | 90+         |
+| Samsung Internet | ✅     | N/A     | 14+         |
 
 ### Fallbacks
 
@@ -532,11 +541,13 @@ theme: {
 ## 📚 Resources
 
 ### Documentation
+
 - [Tailwind CSS Responsive Design](https://tailwindcss.com/docs/responsive-design)
 - [MDN Responsive Images](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 - [Web.dev Responsive Design](https://web.dev/responsive-web-design-basics/)
 
 ### Tools
+
 - [Responsively App](https://responsively.app/) - Browser for responsive development
 - [Sizzy](https://sizzy.co/) - Browser for designers
 - [Polypane](https://polypane.app/) - Multi-viewport browser
@@ -546,6 +557,7 @@ theme: {
 ## 💡 Best Practices
 
 ### Do's ✅
+
 - Start with mobile design first
 - Use semantic HTML elements
 - Test on real devices
@@ -555,6 +567,7 @@ theme: {
 - Follow accessibility guidelines
 
 ### Don'ts ❌
+
 - Don't hide content on mobile without good reason
 - Don't use fixed pixel widths
 - Don't rely solely on hover states
@@ -567,12 +580,14 @@ theme: {
 ## 🔄 Continuous Improvement
 
 ### Performance Monitoring
+
 - Monthly Lighthouse audits
 - Real User Monitoring (RUM)
 - Core Web Vitals tracking
 - Bundle size monitoring
 
 ### User Feedback
+
 - Mobile usability testing
 - Analytics review (bounce rates, session duration)
 - Heat maps for touch interactions
@@ -583,6 +598,7 @@ theme: {
 ## 📞 Support
 
 For questions or issues with responsive design:
+
 1. Check this documentation
 2. Review component examples
 3. Test in Chrome DevTools
@@ -594,4 +610,3 @@ For questions or issues with responsive design:
 **Last Updated:** 2024
 **Version:** 2.0.0
 **Maintained by:** PPNM Development Team
-

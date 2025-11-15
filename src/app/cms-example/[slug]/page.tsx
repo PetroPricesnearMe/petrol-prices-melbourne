@@ -1,6 +1,6 @@
 /**
  * CMS Dynamic Page - Server Component with Dynamic Params
- * 
+ *
  * Demonstrates:
  * - Dynamic route generation with generateStaticParams
  * - Server-side data fetching by slug
@@ -56,7 +56,9 @@ export async function generateStaticParams() {
 /**
  * Generate metadata for SEO
  */
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
 
   try {
@@ -91,15 +93,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 async function fetchStation(slug: string) {
   const cms = getCMS();
 
-  return withFallback(
-    () => cms.fetchBySlug<Station>('stations', slug),
-    {
-      getFallback: () => null,
-      onError: (error) => {
-        console.error('Failed to fetch station:', error);
-      },
-    }
-  );
+  return withFallback(() => cms.fetchBySlug<Station>('stations', slug), {
+    getFallback: () => null,
+    onError: (error) => {
+      console.error('Failed to fetch station:', error);
+    },
+  });
 }
 
 /**
@@ -121,7 +120,10 @@ export default async function StationPage({ params }: PageProps) {
         <nav className="mb-8 text-sm" aria-label="Breadcrumb">
           <ol className="flex items-center gap-2">
             <li>
-              <a href="/cms-example" className="text-blue-600 hover:text-blue-800">
+              <a
+                href="/cms-example"
+                className="text-blue-600 hover:text-blue-800"
+              >
                 Stations
               </a>
             </li>
@@ -135,12 +137,14 @@ export default async function StationPage({ params }: PageProps) {
         <CMSErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
           <article className="rounded-lg border border-gray-200 bg-white shadow-lg">
             {/* Header */}
-            <div className="border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-8">
-              <h1 className="text-3xl font-bold text-gray-900">{station.name}</h1>
-              
+            <div className="from-blue-50 to-indigo-50 border-b border-gray-200 bg-gradient-to-r p-8">
+              <h1 className="text-3xl font-bold text-gray-900">
+                {station.name}
+              </h1>
+
               {station.brand && (
                 <div className="mt-3">
-                  <span className="inline-flex items-center rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-800">
+                  <span className="bg-blue-100 text-blue-800 inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium">
                     {station.brand}
                   </span>
                 </div>
@@ -151,12 +155,14 @@ export default async function StationPage({ params }: PageProps) {
             <div className="p-8">
               {/* Price */}
               {station.price && (
-                <div className="mb-6 rounded-lg bg-green-50 p-6">
+                <div className="bg-green-50 mb-6 rounded-lg p-6">
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-medium text-gray-700">Current Price</span>
-                    <span className="text-4xl font-bold text-green-600">
+                    <span className="text-lg font-medium text-gray-700">
+                      Current Price
+                    </span>
+                    <span className="text-green-600 text-4xl font-bold">
                       ${station.price.toFixed(2)}
-                      <span className="text-xl text-green-700">/L</span>
+                      <span className="text-green-700 text-xl">/L</span>
                     </span>
                   </div>
                 </div>
@@ -165,14 +171,18 @@ export default async function StationPage({ params }: PageProps) {
               {/* Description */}
               {station.description && (
                 <div className="mb-6">
-                  <h2 className="mb-3 text-lg font-semibold text-gray-900">Description</h2>
+                  <h2 className="mb-3 text-lg font-semibold text-gray-900">
+                    Description
+                  </h2>
                   <p className="text-gray-700">{station.description}</p>
                 </div>
               )}
 
               {/* Address */}
               <div className="mb-6">
-                <h2 className="mb-3 text-lg font-semibold text-gray-900">Location</h2>
+                <h2 className="mb-3 text-lg font-semibold text-gray-900">
+                  Location
+                </h2>
                 <p className="flex items-start gap-2 text-gray-700">
                   <svg
                     className="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-400"
@@ -200,12 +210,17 @@ export default async function StationPage({ params }: PageProps) {
               {/* Amenities */}
               {station.amenities && station.amenities.length > 0 && (
                 <div className="mb-6">
-                  <h2 className="mb-3 text-lg font-semibold text-gray-900">Amenities</h2>
+                  <h2 className="mb-3 text-lg font-semibold text-gray-900">
+                    Amenities
+                  </h2>
                   <ul className="grid gap-2 sm:grid-cols-2">
                     {station.amenities.map((amenity, index) => (
-                      <li key={index} className="flex items-center gap-2 text-gray-700">
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-gray-700"
+                      >
                         <svg
-                          className="h-5 w-5 text-green-500"
+                          className="text-green-500 h-5 w-5"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -227,7 +242,9 @@ export default async function StationPage({ params }: PageProps) {
               {/* Metadata */}
               <div className="mt-8 border-t border-gray-200 pt-6 text-sm text-gray-500">
                 <div className="flex justify-between">
-                  <span>Last updated: {new Date(station.updatedAt).toLocaleString()}</span>
+                  <span>
+                    Last updated: {new Date(station.updatedAt).toLocaleString()}
+                  </span>
                   <span>ID: {station.id}</span>
                 </div>
               </div>
@@ -238,4 +255,3 @@ export default async function StationPage({ params }: PageProps) {
     </main>
   );
 }
-

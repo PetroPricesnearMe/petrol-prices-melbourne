@@ -58,7 +58,8 @@ export function Modal({
     const originalPaddingRight = document.body.style.paddingRight;
 
     // Get scrollbar width to prevent layout shift
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = 'hidden';
     document.body.style.paddingRight = `${scrollbarWidth}px`;
 
@@ -110,9 +111,9 @@ export function Modal({
         <div
           ref={modalRef}
           className={`modal modal--${size} ${className}`}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={titleId}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
           aria-describedby={ariaDescribedBy}
         >
           {/* Modal Header */}

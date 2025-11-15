@@ -20,4 +20,3 @@ export function SearchSection() {
     </section>
   );
 }
-

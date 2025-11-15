@@ -16,12 +16,12 @@ This component architecture provides:
 
 ## 📚 Documentation
 
-| Document | Description |
-|----------|-------------|
-| `COMPONENT_ARCHITECTURE.md` | Complete architecture documentation |
+| Document                       | Description                         |
+| ------------------------------ | ----------------------------------- |
+| `COMPONENT_ARCHITECTURE.md`    | Complete architecture documentation |
 | `COMPONENT_QUICK_REFERENCE.md` | Quick reference guide with examples |
-| `COMPONENT_EXAMPLES.tsx` | Practical usage examples |
-| `COMPONENT_SETUP_GUIDE.md` | Setup and installation guide |
+| `COMPONENT_EXAMPLES.tsx`       | Practical usage examples            |
+| `COMPONENT_SETUP_GUIDE.md`     | Setup and installation guide        |
 
 ## 🚀 Quick Start
 
@@ -44,9 +44,7 @@ function App() {
     <MainLayout>
       <Card>
         <Text variant="h1">Welcome</Text>
-        <Button onClick={() => alert('Hello!')}>
-          Click Me
-        </Button>
+        <Button onClick={() => alert('Hello!')}>Click Me</Button>
       </Card>
     </MainLayout>
   );
@@ -68,6 +66,7 @@ Atoms (Basic elements)
 ### Available Components
 
 #### Atoms
+
 - `Button` - Versatile button with variants and states
 - `Input` - Form input with validation
 - `Text` - Typography component
@@ -75,16 +74,19 @@ Atoms (Basic elements)
 - `Spinner` - Loading indicators
 
 #### Molecules
+
 - `Card` - Content container with sections
 - `SearchBar` - Search input with actions
 - `Alert` - Feedback messages
 
 #### Organisms
+
 - `Header` - Application header with navigation
 - `Footer` - Application footer
 - `StationCard` - Domain-specific card component
 
 #### Templates
+
 - `MainLayout` - Standard page layout
 
 ## 🎨 Design System
@@ -94,9 +96,9 @@ Atoms (Basic elements)
 ```tsx
 import { colors } from '@/design-system/tokens';
 
-colors.primary[500]    // Brand color
-colors.success[500]    // Success state
-colors.text.primary    // Text color
+colors.primary[500]; // Brand color
+colors.success[500]; // Success state
+colors.text.primary; // Text color
 ```
 
 ### Typography
@@ -113,7 +115,7 @@ import { Text, Heading1 } from '@/components/atoms';
 ```tsx
 import { spacing } from '@/design-system/tokens';
 
-<div style={{ padding: spacing[4], margin: spacing[8] }} />
+<div style={{ padding: spacing[4], margin: spacing[8] }} />;
 ```
 
 ## 💡 Examples
@@ -130,7 +132,7 @@ import { Text, Button } from '@/components/atoms';
     <Text>Card content goes here.</Text>
     <Button>Action</Button>
   </CardBody>
-</Card>
+</Card>;
 ```
 
 ### Form with Validation
@@ -149,7 +151,7 @@ import { Input, Button } from '@/components/atoms';
   <Button type="submit" loading={isSubmitting}>
     Submit
   </Button>
-</form>
+</form>;
 ```
 
 ### Complete Page
@@ -164,10 +166,14 @@ export default function HomePage() {
     <MainLayout
       header={{
         logoText: 'My App',
-        navItems: [/* ... */]
+        navItems: [
+          /* ... */
+        ],
       }}
       footer={{
-        sections: [/* ... */]
+        sections: [
+          /* ... */
+        ],
       }}
     >
       <Heading1>Welcome</Heading1>
@@ -268,6 +274,7 @@ import type { ButtonProps, ColorVariant } from '@/components/atoms';
 ### Design Tokens
 
 Consistent design system with tokens for:
+
 - Colors (primary, secondary, semantic)
 - Typography (sizes, weights, line heights)
 - Spacing (4px base unit scale)
@@ -315,4 +322,3 @@ Part of the main application. See root LICENSE file.
 ---
 
 **Built with ❤️ using Atomic Design, TypeScript, and React**
-

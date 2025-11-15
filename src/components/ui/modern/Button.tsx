@@ -1,6 +1,6 @@
 /**
  * Modern Button Component
- * 
+ *
  * Features:
  * - Multiple variants and sizes
  * - Gradient effects
@@ -22,11 +22,11 @@ import { cn } from '@/lib/utils';
 // TYPES
 // ============================================================================
 
-type ButtonVariant = 
-  | 'primary' 
-  | 'secondary' 
-  | 'outline' 
-  | 'ghost' 
+type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
   | 'gradient'
   | 'danger';
 
@@ -106,7 +106,7 @@ const sizes = {
 function Ripple({ x, y }: { x: number; y: number }) {
   return (
     <motion.span
-      className="absolute bg-white/30 rounded-full pointer-events-none"
+      className="pointer-events-none absolute rounded-full bg-white/30"
       style={{
         left: x,
         top: y,
@@ -123,7 +123,10 @@ function Ripple({ x, y }: { x: number; y: number }) {
 // MAIN BUTTON COMPONENT
 // ============================================================================
 
-export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+export const Button = forwardRef<
+  HTMLButtonElement | HTMLAnchorElement,
+  ButtonProps
+>(
   (
     {
       children,
@@ -141,16 +144,20 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     },
     ref
   ) => {
-    const [ripples, setRipples] = useState<Array<{ x: number; y: number; key: number }>>([]);
+    const [ripples, setRipples] = useState<
+      Array<{ x: number; y: number; key: number }>
+    >([]);
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    const handleClick = (
+      e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+    ) => {
       // Create ripple effect
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
-      setRipples(prev => [...prev, { x, y, key: Date.now() }]);
-      setTimeout(() => setRipples(prev => prev.slice(1)), 600);
+
+      setRipples((prev) => [...prev, { x, y, key: Date.now() }]);
+      setTimeout(() => setRipples((prev) => prev.slice(1)), 600);
 
       // Call onClick if provided
       if (onClick && !disabled && !loading) {
@@ -184,15 +191,25 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         <span className="relative z-10 flex items-center justify-center space-x-2">
           {loading ? (
             <motion.svg
-              className="w-5 h-5"
+              className="h-5 w-5"
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
             >
-              <circle className="opacity-25" cx="12" cy="12" r="10" strokeWidth="4" />
-              <path className="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" strokeWidth="4" />
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                strokeWidth="4"
+              />
             </motion.svg>
           ) : (
             leftIcon
@@ -206,10 +223,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     // Render as Link if href provided
     if (href && !disabled && !loading) {
       return (
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
             href={href}
             className={baseClasses}
@@ -254,9 +268,7 @@ export function ButtonGroup({
   className?: string;
 }) {
   return (
-    <div className={cn('flex flex-wrap gap-3', className)}>
-      {children}
-    </div>
+    <div className={cn('flex flex-wrap gap-3', className)}>{children}</div>
   );
 }
 
@@ -266,22 +278,21 @@ export function ButtonGroup({
 
 /**
  * Usage:
- * 
+ *
  * <Button variant="primary" size="lg" leftIcon={<SearchIcon />}>
  *   Search Stations
  * </Button>
- * 
+ *
  * <Button variant="gradient" href="/directory">
  *   Browse All
  * </Button>
- * 
+ *
  * <Button variant="outline" size="sm" loading>
  *   Loading...
  * </Button>
- * 
+ *
  * <ButtonGroup>
  *   <Button variant="primary">Save</Button>
  *   <Button variant="secondary">Cancel</Button>
  * </ButtonGroup>
  */
-

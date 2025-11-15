@@ -1,7 +1,7 @@
 /**
  * App Template - Page Transitions
  * Provides smooth route transitions using Framer Motion
- * 
+ *
  * Note: template.tsx re-renders on navigation (unlike layout.tsx)
  * Perfect for page transitions
  */
@@ -49,4 +49,3 @@ export default function Template({ children }: { children: React.ReactNode }) {
     </AnimatePresence>
   );
 }
-

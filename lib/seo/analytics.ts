@@ -3,17 +3,24 @@
  * Google Analytics 4 and Search Console utilities
  */
 
+// gtag type declaration - compatible with GoogleAnalytics.tsx
+// Using same signature to avoid type conflicts
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag?: (
+      command: 'config' | 'event' | 'consent' | 'js' | string,
+      targetId?: string | Date,
+      config?: Record<string, any>
+    ) => void;
+    dataLayer?: unknown[];
   }
 }
 
 /**
  * Initialize Google Analytics
  */
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+export const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 
 export function initGA() {
   if (!GA_MEASUREMENT_ID || typeof window === 'undefined') {
@@ -169,7 +176,12 @@ export function trackError(error: string, fatal: boolean = false) {
 /**
  * Track user timing
  */
-export function trackTiming(category: string, variable: string, value: number, label?: string) {
+export function trackTiming(
+  category: string,
+  variable: string,
+  value: number,
+  label?: string
+) {
   if (!GA_MEASUREMENT_ID || typeof window === 'undefined') {
     return;
   }

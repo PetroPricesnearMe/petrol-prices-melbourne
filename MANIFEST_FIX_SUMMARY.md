@@ -1,6 +1,7 @@
 # 🔧 Manifest.json 401 Error - Fix Summary
 
 ## 🎯 Problem
+
 The `manifest.json` file was returning a **401 Unauthorized** error when the browser tried to fetch it, preventing proper PWA functionality.
 
 ---
@@ -27,16 +28,19 @@ This was **rewriting ALL requests** (including `manifest.json`) to `index.html`,
 ### 1. **Fixed Rewrites to Exclude Static Files**
 
 **Before:**
+
 ```json
 "source": "/(.*)"
 ```
 
 **After:**
+
 ```json
 "source": "/:path((?!manifest\\.json|robots\\.txt|sitemap\\.xml|favicon\\.ico|static/|images/|data/).*)"
 ```
 
 This negative lookahead regex **excludes** these files from being rewritten to index.html:
+
 - ✅ `manifest.json`
 - ✅ `robots.txt`
 - ✅ `sitemap.xml`
@@ -52,6 +56,7 @@ This negative lookahead regex **excludes** these files from being rewritten to i
 ### 2. **Added CORS Headers for Manifest**
 
 **Added headers:**
+
 ```json
 {
   "key": "Access-Control-Allow-Origin",
@@ -72,6 +77,7 @@ This allows the manifest to be fetched cross-origin, which is essential for PWA 
 ### 3. **Enhanced Manifest.json for PWA**
 
 **Improvements:**
+
 ```json
 {
   "description": "Find the cheapest petrol prices...",
@@ -85,6 +91,7 @@ This allows the manifest to be fetched cross-origin, which is essential for PWA 
 ```
 
 **Benefits:**
+
 - Better app store listings
 - Proper scope definition
 - Language and direction set
@@ -97,13 +104,19 @@ This allows the manifest to be fetched cross-origin, which is essential for PWA 
 ### 4. **Updated HTML Manifest Link**
 
 **Before:**
+
 ```html
 <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 ```
 
 **After:**
+
 ```html
-<link rel="manifest" href="%PUBLIC_URL%/manifest.json" crossorigin="use-credentials" />
+<link
+  rel="manifest"
+  href="%PUBLIC_URL%/manifest.json"
+  crossorigin="use-credentials"
+/>
 ```
 
 The `crossorigin="use-credentials"` attribute ensures proper authentication when fetching the manifest.
@@ -143,6 +156,7 @@ The `crossorigin="use-credentials"` attribute ensures proper authentication when
 ## 🚀 Testing the Fix
 
 ### 1. **Local Testing**
+
 ```bash
 npm run build
 npx serve -s build
@@ -155,6 +169,7 @@ http://localhost:3000
 ```
 
 ### 2. **After Deployment**
+
 ```bash
 # Visit your Vercel URL
 https://your-app.vercel.app
@@ -165,6 +180,7 @@ https://your-app.vercel.app
 ```
 
 ### 3. **Verify in Network Tab**
+
 ```
 Request URL: https://your-app.vercel.app/manifest.json
 Status Code: 200 OK (should NOT be 401)
@@ -177,17 +193,19 @@ Access-Control-Allow-Origin: *
 ## 🎯 Expected Results
 
 ### Before Fix:
+
 ❌ `manifest.json` - 401 Unauthorized  
 ❌ PWA install prompt not working  
 ❌ Console errors about manifest  
-❌ Service worker issues  
+❌ Service worker issues
 
 ### After Fix:
+
 ✅ `manifest.json` - 200 OK  
 ✅ PWA install prompt works  
 ✅ No console errors  
 ✅ Service worker registers properly  
-✅ App can be installed on mobile/desktop  
+✅ App can be installed on mobile/desktop
 
 ---
 
@@ -206,17 +224,20 @@ With the manifest accessible:
 ## 🔒 Security Considerations
 
 ### CORS Policy
+
 ```json
 "Access-Control-Allow-Origin": "*"
 ```
 
 This is **safe** for manifest.json because:
+
 - It's a public configuration file
 - Contains no sensitive data
 - Required for PWA functionality
 - Only allows GET requests
 
 ### Credentials
+
 ```html
 crossorigin="use-credentials"
 ```
@@ -243,6 +264,7 @@ This ensures the browser sends credentials (cookies) when fetching the manifest,
 ## 🔄 Deployment Steps
 
 1. **Commit Changes:**
+
    ```bash
    git add vercel.json public/manifest.json public/index.html
    git commit -m "Fix: Resolve 401 error on manifest.json"
@@ -270,6 +292,7 @@ This ensures the browser sends credentials (cookies) when fetching the manifest,
 ### If Still Getting 401:
 
 1. **Clear Browser Cache**
+
    ```
    Ctrl+Shift+Delete (Chrome)
    Clear cached images and files
@@ -277,6 +300,7 @@ This ensures the browser sends credentials (cookies) when fetching the manifest,
    ```
 
 2. **Check Vercel Deployment**
+
    ```bash
    # Verify vercel.json was deployed
    # Check deployment logs
@@ -284,10 +308,11 @@ This ensures the browser sends credentials (cookies) when fetching the manifest,
    ```
 
 3. **Verify File Exists**
+
    ```bash
    # In your build folder
    ls build/manifest.json
-   
+
    # Should exist and be readable
    ```
 
@@ -301,16 +326,18 @@ This ensures the browser sends credentials (cookies) when fetching the manifest,
 ### If Manifest Not Loading:
 
 1. **Check HTML Link**
+
    ```html
    <!-- Should be in <head> -->
    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
    ```
 
 2. **Validate JSON**
+
    ```bash
    # Use online validator
    https://manifest-validator.appspot.com/
-   
+
    # Paste your manifest.json content
    ```
 
@@ -354,6 +381,7 @@ This ensures the browser sends credentials (cookies) when fetching the manifest,
 ### Want Offline Support?
 
 Add a service worker:
+
 ```bash
 # In src/index.js
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
@@ -366,6 +394,7 @@ serviceWorkerRegistration.register();
 ## 📊 Impact on Performance
 
 ### Caching Strategy
+
 ```json
 "Cache-Control": "public, max-age=86400"
 ```
@@ -376,6 +405,7 @@ serviceWorkerRegistration.register();
 - Updates once per day
 
 ### Load Time Improvement
+
 - Manifest cached after first visit
 - Subsequent visits: ~0ms (from cache)
 - Better Lighthouse PWA score
@@ -386,15 +416,16 @@ serviceWorkerRegistration.register();
 
 ### React vs Next.js Differences:
 
-| Feature | React (CRA) | Next.js |
-|---------|-------------|---------|
-| Static files | `/public/` | `/public/` |
-| Routing | Client-side | Server-side |
-| Middleware | N/A | `middleware.ts` |
-| Manifest | Static JSON | Can use `.ts` |
-| Rewrites | `vercel.json` | `next.config.js` |
+| Feature      | React (CRA)   | Next.js          |
+| ------------ | ------------- | ---------------- |
+| Static files | `/public/`    | `/public/`       |
+| Routing      | Client-side   | Server-side      |
+| Middleware   | N/A           | `middleware.ts`  |
+| Manifest     | Static JSON   | Can use `.ts`    |
+| Rewrites     | `vercel.json` | `next.config.js` |
 
 **Your app is React**, so we use:
+
 - ✅ `vercel.json` for configuration
 - ✅ `public/manifest.json` (static)
 - ✅ No middleware.ts needed
@@ -404,6 +435,7 @@ serviceWorkerRegistration.register();
 ## ✅ Summary
 
 ### What Was Fixed:
+
 1. ✅ Excluded `manifest.json` from rewrites
 2. ✅ Added CORS headers (`Access-Control-Allow-Origin: *`)
 3. ✅ Enhanced manifest.json with PWA metadata
@@ -412,14 +444,14 @@ serviceWorkerRegistration.register();
 6. ✅ 24-hour caching for performance
 
 ### Result:
+
 🎉 **Manifest.json now returns 200 OK**  
 🎉 **PWA functionality fully working**  
 🎉 **No more 401 errors**  
-🎉 **Users can install your app**  
+🎉 **Users can install your app**
 
 ---
 
 **Last Updated:** October 15, 2025  
 **Status:** ✅ RESOLVED  
 **Deploy Status:** Ready for production
-

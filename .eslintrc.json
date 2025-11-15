@@ -14,12 +14,7 @@
       "jsx": true
     }
   },
-  "plugins": [
-    "@typescript-eslint",
-    "react",
-    "jsx-a11y",
-    "import"
-  ],
+  "plugins": ["@typescript-eslint", "react", "jsx-a11y", "import"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],

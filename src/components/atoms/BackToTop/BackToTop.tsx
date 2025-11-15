@@ -1,15 +1,15 @@
 /**
  * BackToTop - Scroll to Top Button
- * 
+ *
  * A floating button that appears when user scrolls down,
  * allowing quick navigation back to the top of the page.
- * 
+ *
  * Features:
  * - Smooth scroll animation
  * - Appears after scrolling threshold
  * - Accessible with keyboard support
  * - Respects reduced motion preferences
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -41,18 +41,24 @@ export interface BackToTopProps extends ComponentBaseProps {
    * @default 'smooth'
    */
   behavior?: ScrollBehavior;
+
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
 }
 
 /**
  * BackToTop Component
- * 
+ *
  * Displays a floating button that scrolls to top when clicked.
  * Only appears after scrolling past the threshold.
  */
 export const BackToTop = React.memo<BackToTopProps>(
   ({ threshold = 400, behavior = 'smooth', className, ...props }) => {
     const [isVisible, setIsVisible] = React.useState(false);
-    const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
+    const [prefersReducedMotion, setPrefersReducedMotion] =
+      React.useState(false);
 
     // Check for reduced motion preference
     React.useEffect(() => {
@@ -114,10 +120,10 @@ export const BackToTop = React.memo<BackToTopProps>(
             onKeyDown={handleKeyDown}
             className={cn(
               'fixed',
-              'right-4 bottom-4',
+              'bottom-4 right-4',
               'z-50',
               'flex items-center justify-center',
-              'w-12 h-12',
+              'h-12 w-12',
               'bg-primary-600 text-white',
               'rounded-full',
               'shadow-lg',
@@ -135,7 +141,7 @@ export const BackToTop = React.memo<BackToTopProps>(
             {...props}
           >
             <ArrowUp
-              className="w-5 h-5 transition-transform group-hover:-translate-y-0.5"
+              className="h-5 w-5 transition-transform group-hover:-translate-y-0.5"
               aria-hidden="true"
             />
           </motion.button>
@@ -146,4 +152,3 @@ export const BackToTop = React.memo<BackToTopProps>(
 );
 
 BackToTop.displayName = 'BackToTop';
-

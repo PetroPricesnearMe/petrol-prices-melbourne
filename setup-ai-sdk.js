@@ -1,43 +1,46 @@
 /* eslint-disable no-console */
 /* eslint-disable import/first */
 
-import { execSync } from "child_process";
-import fs from "fs";
+import { execSync } from 'child_process';
+import fs from 'fs';
 
 // ----------- MAIN SCRIPT START -----------
-console.log("🚀 Starting AI SDK integration...");
+console.log('🚀 Starting AI SDK integration...');
 
 // 1. Install Dependencies
 try {
-  console.log("📦 Installing AI SDK dependencies...");
-  execSync("npm install ai @ai-sdk/react @ai-sdk/openai @ai-sdk/anthropic zod", {
-    stdio: "inherit",
-  });
+  console.log('📦 Installing AI SDK dependencies...');
+  execSync(
+    'npm install ai @ai-sdk/react @ai-sdk/openai @ai-sdk/anthropic zod',
+    {
+      stdio: 'inherit',
+    }
+  );
 } catch (e) {
-  console.error("⚠️ Error during npm install:", e.message);
+  console.error('⚠️ Error during npm install:', e.message);
 }
 
 // 2. Create .env.local if it doesn’t exist
-if (!fs.existsSync(".env.local")) {
+if (!fs.existsSync('.env.local')) {
   fs.writeFileSync(
-    ".env.local",
+    '.env.local',
     [
-      "# AI SDK Configuration",
-      "# Add one or more API keys below (only one is required):",
-      "ANTHROPIC_API_KEY=your-claude-api-key",
-      "PPLX_API_KEY=your-perplexity-api-key",
-      "OPENAI_API_KEY=your-openai-api-key",
-      "",
-    ].join("\n")
+      '# AI SDK Configuration',
+      '# Add one or more API keys below (only one is required):',
+      'ANTHROPIC_API_KEY=your-claude-api-key',
+      'PPLX_API_KEY=your-perplexity-api-key',
+      'OPENAI_API_KEY=your-openai-api-key',
+      '',
+    ].join('\n')
   );
-  console.log("🧩 Created .env.local");
+  console.log('🧩 Created .env.local');
 }
 
 // 3. Create API route directory & file
-fs.mkdirSync("app/api/chat", { recursive: true });
+fs.mkdirSync('app/api/chat', { recursive: true });
 
 fs.writeFileSync(
-  "app/api/chat/route.ts",
+  'app/api/chat/route.ts',
   `import { NextResponse } from 'next/server';
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
@@ -62,13 +65,13 @@ export async function POST(req: Request) {
   return NextResponse.json({ text });
 }`
 );
-console.log("✅ Created app/api/chat/route.ts");
+console.log('✅ Created app/api/chat/route.ts');
 
 // 4. Create React Chat Client
-fs.mkdirSync("app/chat", { recursive: true });
+fs.mkdirSync('app/chat', { recursive: true });
 
 fs.writeFileSync(
-  "app/chat/chat-client.tsx",
+  'app/chat/chat-client.tsx',
   `'use client';
 import { useChat } from '@ai-sdk/react';
 
@@ -98,11 +101,11 @@ export default function ChatClient() {
   );
 }`
 );
-console.log("✅ Created app/chat/chat-client.tsx");
+console.log('✅ Created app/chat/chat-client.tsx');
 
 // 5. Create Chat Page
 fs.writeFileSync(
-  "app/chat/page.tsx",
+  'app/chat/page.tsx',
   `import ChatClient from './chat-client';
 
 export default function ChatPage() {
@@ -114,7 +117,7 @@ export default function ChatPage() {
   );
 }`
 );
-console.log("✅ Created app/chat/page.tsx");
+console.log('✅ Created app/chat/page.tsx');
 
 // Final message
 console.log(`

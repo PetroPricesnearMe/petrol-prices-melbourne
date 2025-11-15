@@ -1,6 +1,6 @@
 /**
  * Badge Component (Atom)
- * 
+ *
  * Small status indicators and labels
  */
 
@@ -56,7 +56,11 @@ export const Badge: React.FC<BadgeProps> = ({
       aria-label={ariaLabel}
     >
       {dot && <span className="badge__dot" aria-hidden="true" />}
-      {icon && <span className="badge__icon" aria-hidden="true">{icon}</span>}
+      {icon && (
+        <span className="badge__icon" aria-hidden="true">
+          {icon}
+        </span>
+      )}
       <span className="badge__content">{children}</span>
       {onRemove && (
         <button

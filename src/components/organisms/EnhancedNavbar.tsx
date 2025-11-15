@@ -106,8 +106,8 @@ export function EnhancedNavbar({
 
   return (
     <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'shadow-lg py-3' : 'shadow-sm py-4'
+      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+        scrolled ? 'py-3 shadow-lg' : 'py-4 shadow-sm'
       } ${className}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -116,22 +116,24 @@ export function EnhancedNavbar({
       aria-label="Main navigation"
     >
       {/* Glassmorphism backdrop */}
-      <div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50" />
+      <div className="absolute inset-0 border-b border-gray-200/50 bg-white/80 backdrop-blur-xl dark:border-gray-700/50 dark:bg-gray-900/80" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 font-bold text-2xl group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg"
+            className="focus-visible:ring-blue-500 group flex items-center gap-3 rounded-lg text-2xl font-bold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2"
             aria-label="Home"
           >
             {logo || (
               <>
-                <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow">
-                  <span className="text-xl" role="img" aria-label="Fuel">⛽</span>
+                <div className="from-blue-500 to-purple-600 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br shadow-lg transition-shadow group-hover:shadow-xl">
+                  <span className="text-xl" role="img" aria-label="Fuel">
+                    ⛽
+                  </span>
                 </div>
-                <span className="hidden sm:block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="from-blue-600 to-purple-600 hidden bg-gradient-to-r bg-clip-text text-transparent sm:block">
                   Fuel Finder
                 </span>
               </>
@@ -139,15 +141,15 @@ export function EnhancedNavbar({
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden items-center gap-1 lg:flex">
             {items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+                className={`focus-visible:ring-blue-500 relative rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 ${
                   isActive(item.href)
                     ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    : 'hover:text-blue-600 dark:hover:text-blue-400 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                 }`}
                 aria-current={isActive(item.href) ? 'page' : undefined}
               >
@@ -157,37 +159,40 @@ export function EnhancedNavbar({
           </div>
 
           {/* Desktop Search & CTA */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden items-center gap-4 lg:flex">
             {showSearch && (
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+                <Search
+                  className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400"
+                  aria-hidden="true"
+                />
                 <input
                   type="search"
                   placeholder={searchPlaceholder}
-                  className="w-64 pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  className="focus:ring-blue-500 w-64 rounded-xl border border-gray-200 bg-gray-100 py-2 pl-10 pr-4 text-gray-900 transition-all focus:outline-none focus:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                   aria-label="Search"
                 />
               </div>
             )}
             <Link
               href="/directory"
-              className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="from-blue-500 to-purple-600 focus-visible:ring-blue-500 transform rounded-xl bg-gradient-to-r px-6 py-2 font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2"
             >
               Get Started
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
-                     <button
-             onClick={toggleMenu}
-             className="lg:hidden p-2 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 transition-colors"
-             aria-label="Toggle menu"
-             aria-expanded={isOpen ? 'true' : 'false'}
-           >
+          <button
+            onClick={toggleMenu}
+            className="focus-visible:ring-blue-500 rounded-xl p-2 text-gray-700 transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-4 dark:text-gray-300 dark:hover:bg-gray-800 lg:hidden"
+            aria-label="Toggle menu"
+            aria-expanded={isOpen ? 'true' : 'false'}
+          >
             {isOpen ? (
-              <X className="w-6 h-6" aria-hidden="true" />
+              <X className="h-6 w-6" aria-hidden="true" />
             ) : (
-              <Menu className="w-6 h-6" aria-hidden="true" />
+              <Menu className="h-6 w-6" aria-hidden="true" />
             )}
           </button>
         </div>
@@ -201,7 +206,7 @@ export function EnhancedNavbar({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden fixed inset-0 top-16 bg-white dark:bg-gray-900 z-40"
+            className="fixed inset-0 top-16 z-40 bg-white dark:bg-gray-900 lg:hidden"
           >
             <motion.div
               initial={{ x: '100%' }}
@@ -213,7 +218,7 @@ export function EnhancedNavbar({
               }}
               className="h-full overflow-y-auto"
             >
-              <div className="p-4 space-y-2">
+              <div className="space-y-2 p-4">
                 {items.map((item, index) => (
                   <motion.div
                     key={item.href}
@@ -225,10 +230,10 @@ export function EnhancedNavbar({
                   >
                     <Link
                       href={item.href}
-                      className={`flex items-center px-4 py-3 text-base font-semibold rounded-xl transition-all ${
+                      className={`flex items-center rounded-xl px-4 py-3 text-base font-semibold transition-all ${
                         isActive(item.href)
                           ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                       }`}
                       onClick={() => setIsOpen(false)}
                       aria-current={isActive(item.href) ? 'page' : undefined}

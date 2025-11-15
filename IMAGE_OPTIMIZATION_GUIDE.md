@@ -9,6 +9,7 @@ This guide provides comprehensive instructions for optimizing the Melbourne map 
 ## 🎯 Optimization Goals
 
 ### Target Metrics
+
 - **File Size:** Reduce by 60-80% without visible quality loss
 - **Load Time:** < 1 second on 3G connection
 - **Format Support:** WebP, AVIF, PNG fallback
@@ -16,6 +17,7 @@ This guide provides comprehensive instructions for optimizing the Melbourne map 
 - **Quality:** Maintain visual clarity of region boundaries
 
 ### Expected Results
+
 ```
 Before Optimization:  ~500 KB PNG
 After Optimization:   ~120 KB WebP (76% reduction)
@@ -108,10 +110,12 @@ If you prefer manual control, here are the recommended tools:
 #### Desktop Applications
 
 1. **ImageOptim** (macOS)
+
    ```bash
    # Install via Homebrew
    brew install --cask imageoptim
    ```
+
    - Drag images to optimize
    - Lossless PNG compression
    - Removes metadata
@@ -124,6 +128,7 @@ If you prefer manual control, here are the recommended tools:
 #### Command Line Tools
 
 1. **Sharp CLI**
+
    ```bash
    npx sharp-cli --input melbourne-map-vector.png \
                  --output melbourne-map-optimized.webp \
@@ -131,12 +136,13 @@ If you prefer manual control, here are the recommended tools:
    ```
 
 2. **ImageMagick**
+
    ```bash
    # Convert to WebP
    convert melbourne-map-vector.png \
            -quality 85 \
            melbourne-map-optimized.webp
-   
+
    # Optimize PNG
    convert melbourne-map-vector.png \
            -strip -quality 90 \
@@ -154,6 +160,7 @@ If you prefer manual control, here are the recommended tools:
 ## 📊 Format Comparison
 
 ### WebP
+
 - **Browser Support:** 95%+ (all modern browsers)
 - **File Size:** 25-35% smaller than PNG
 - **Quality:** Excellent, nearly lossless at 85%
@@ -161,6 +168,7 @@ If you prefer manual control, here are the recommended tools:
 - **Recommendation:** ⭐⭐⭐⭐⭐
 
 ### AVIF
+
 - **Browser Support:** 85%+ (Chrome, Firefox, Opera)
 - **File Size:** 40-50% smaller than PNG
 - **Quality:** Excellent, best compression
@@ -168,6 +176,7 @@ If you prefer manual control, here are the recommended tools:
 - **Recommendation:** ⭐⭐⭐⭐⭐
 
 ### PNG (Optimized)
+
 - **Browser Support:** 100% (universal fallback)
 - **File Size:** 40-60% smaller than original
 - **Quality:** Lossless
@@ -175,6 +184,7 @@ If you prefer manual control, here are the recommended tools:
 - **Recommendation:** ⭐⭐⭐⭐☆
 
 ### JPEG
+
 - **Browser Support:** 100%
 - **File Size:** Comparable to WebP
 - **Quality:** Lossy, artifacts on graphics
@@ -189,10 +199,10 @@ If you prefer manual control, here are the recommended tools:
 
 ```javascript
 const OPTIMAL_QUALITY = {
-  webp: 85,      // Sweet spot: great quality, good compression
-  avif: 75,      // AVIF can go lower due to better algorithm
-  png: 90,       // Higher for lossless appearance
-  jpeg: 85       // If you must use JPEG (not recommended)
+  webp: 85, // Sweet spot: great quality, good compression
+  avif: 75, // AVIF can go lower due to better algorithm
+  png: 90, // Higher for lossless appearance
+  jpeg: 85, // If you must use JPEG (not recommended)
 };
 ```
 
@@ -267,6 +277,7 @@ View both side-by-side and choose the best balance of quality/size.
 ### Next.js Automatic Optimization
 
 Next.js automatically:
+
 - ✅ Generates WebP versions
 - ✅ Serves optimal format per browser
 - ✅ Lazy loads below-fold images
@@ -320,6 +331,7 @@ Mobile (3G):
 ### Visual Quality Test
 
 1. **Side-by-Side Comparison**
+
    ```bash
    # Open both in browser tabs
    # Switch back and forth rapidly
@@ -341,6 +353,7 @@ Mobile (3G):
 ### Performance Testing
 
 1. **Chrome DevTools Network Tab**
+
    ```
    Before: melbourne-map-vector.png (500 KB)
    After:  melbourne-map-optimized.webp (120 KB)
@@ -348,6 +361,7 @@ Mobile (3G):
    ```
 
 2. **Lighthouse Audit**
+
    ```bash
    # Run Lighthouse
    npm run lighthouse
@@ -380,7 +394,7 @@ const OPTIMAL_SIZES = {
   mobile: { width: 640, target: 'phones up to 640px' },
   tablet: { width: 1024, target: 'tablets up to 1024px' },
   desktop: { width: 1920, target: 'laptops and desktops' },
-  large: { width: 2560, target: '4K and large displays' }
+  large: { width: 2560, target: '4K and large displays' },
 };
 ```
 
@@ -418,6 +432,7 @@ module.exports = {
 **Cause:** Quality setting too low or image stretched beyond original size
 
 **Solution:**
+
 1. Increase quality setting to 85-90
 2. Ensure original image is high-resolution
 3. Don't enlarge beyond 100% of original
@@ -428,6 +443,7 @@ module.exports = {
 **Cause:** Color profile loss or format conversion issues
 
 **Solution:**
+
 1. Convert to sRGB color space first
 2. Use `-strip` to remove profiles but maintain colors
 3. Test in multiple browsers
@@ -438,6 +454,7 @@ module.exports = {
 **Cause:** Image may contain unnecessary data or complexity
 
 **Solution:**
+
 1. Remove metadata: `exiftool -all= image.png`
 2. Reduce color palette if possible
 3. Try vector format (SVG) if map is simple enough
@@ -448,6 +465,7 @@ module.exports = {
 **Cause:** Missing dependencies or file permissions
 
 **Solution:**
+
 ```bash
 # Reinstall Sharp
 npm install sharp --force
@@ -467,6 +485,7 @@ NODE_ENV=development node scripts/optimize-melbourne-map.js
 ## 📝 Optimization Checklist
 
 ### Pre-Optimization
+
 - [ ] Backup original image
 - [ ] Document current file size
 - [ ] Take screenshot for comparison
@@ -474,6 +493,7 @@ NODE_ENV=development node scripts/optimize-melbourne-map.js
 - [ ] Test current load time
 
 ### Optimization Process
+
 - [ ] Run automated script OR
 - [ ] Manually optimize with chosen tool
 - [ ] Generate WebP version
@@ -482,6 +502,7 @@ NODE_ENV=development node scripts/optimize-melbourne-map.js
 - [ ] Create responsive sizes
 
 ### Post-Optimization
+
 - [ ] Verify visual quality (zoom test)
 - [ ] Compare file sizes
 - [ ] Test in multiple browsers
@@ -492,6 +513,7 @@ NODE_ENV=development node scripts/optimize-melbourne-map.js
 - [ ] Check caching headers
 
 ### Deployment
+
 - [ ] Replace original with optimized version
 - [ ] Update image paths if changed
 - [ ] Clear CDN cache if applicable
@@ -528,17 +550,20 @@ npm run dev
 **Good News:** Next.js `<Image>` component already performs optimization!
 
 The current implementation with:
+
 ```typescript
 <Image src="/images/melbourne-map-vector.png" ... />
 ```
 
 Automatically:
+
 - Generates WebP
 - Lazy loads
 - Provides responsive sizes
 - Optimizes on-the-fly
 
 **However**, pre-optimizing the source image still provides benefits:
+
 - Faster first-time generation
 - Lower server CPU usage
 - Better compression control
@@ -561,7 +586,7 @@ if (typeof window !== 'undefined') {
         gtag('event', 'image_load', {
           name: 'melbourne_map',
           duration: entry.duration,
-          size: entry.transferSize
+          size: entry.transferSize,
         });
       }
     }
@@ -583,6 +608,7 @@ if (typeof window !== 'undefined') {
 ### Current Status
 
 The MelbourneMapSection component is already configured with:
+
 - ✅ Next.js Image component (automatic optimization)
 - ✅ Lazy loading (not priority)
 - ✅ Responsive sizes configured
@@ -592,11 +618,13 @@ The MelbourneMapSection component is already configured with:
 ### Recommended Actions
 
 **Immediate (Optional but Beneficial):**
+
 1. Run the optimization script: `node scripts/optimize-melbourne-map.js`
 2. Review generated files
 3. Replace original if satisfied
 
 **Future (When needed):**
+
 1. If image changes, re-run optimization
 2. Monitor Core Web Vitals
 3. Consider AVIF format when browser support hits 90%+
@@ -614,6 +642,7 @@ The MelbourneMapSection component is already configured with:
 **Status:** ✅ **OPTIMIZATION TOOLS PROVIDED**
 
 **Deliverables:**
+
 - Automated optimization script
 - Comprehensive optimization guide
 - Multiple optimization methods documented
@@ -623,6 +652,5 @@ The MelbourneMapSection component is already configured with:
 
 ---
 
-*Last Updated: January 11, 2025*
-*Petrol Price Near Me - Melbourne*
-
+_Last Updated: January 11, 2025_
+_Petrol Price Near Me - Melbourne_

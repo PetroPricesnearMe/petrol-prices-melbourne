@@ -22,6 +22,7 @@ We are committed to providing a welcoming and inclusive environment for everyone
 ### Standards
 
 **Positive behavior includes:**
+
 - Using welcoming and inclusive language
 - Being respectful of differing viewpoints
 - Gracefully accepting constructive criticism
@@ -29,6 +30,7 @@ We are committed to providing a welcoming and inclusive environment for everyone
 - Showing empathy towards other community members
 
 **Unacceptable behavior includes:**
+
 - Harassment, trolling, or insulting comments
 - Public or private harassment
 - Publishing others' private information
@@ -46,27 +48,32 @@ We are committed to providing a welcoming and inclusive environment for everyone
 ### Initial Setup
 
 1. **Fork the repository**
+
    ```bash
    # Click the "Fork" button on GitHub
    ```
 
 2. **Clone your fork**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/petrol-price-near-me.git
    cd petrol-price-near-me
    ```
 
 3. **Add upstream remote**
+
    ```bash
    git remote add upstream https://github.com/ORIGINAL_OWNER/petrol-price-near-me.git
    ```
 
 4. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 5. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    # Edit .env with your values
@@ -103,6 +110,7 @@ git checkout -b fix/bug-description
 - `chore/` - Maintenance tasks
 
 Examples:
+
 - `feature/add-dark-mode`
 - `fix/station-card-layout`
 - `docs/update-readme`
@@ -115,6 +123,7 @@ Examples:
    - Add comments for complex logic
 
 2. **Test your changes**
+
    ```bash
    npm run lint
    npm run type-check
@@ -123,6 +132,7 @@ Examples:
    ```
 
 3. **Commit your changes**
+
    ```bash
    git add .
    git commit -m "feat: add dark mode toggle"
@@ -220,12 +230,12 @@ export default function Button(props) {
 
 Follow this structure for all component files:
 
-```typescript
+````typescript
 /**
  * ComponentName - Brief description
- * 
+ *
  * Detailed description with usage examples.
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -274,25 +284,25 @@ export const ComponentName = React.forwardRef<HTMLDivElement, ComponentNameProps
     // 4a. Hooks
     const [state, setState] = React.useState();
     const { data } = useStations();
-    
+
     // 4b. Derived values
     const computed = React.useMemo(() => {
       // Compute something
     }, []);
-    
+
     // 4c. Event handlers
     const handleClick = React.useCallback(() => {
       // Handle event
     }, []);
-    
+
     // 4d. Effects
     React.useEffect(() => {
       // Side effects
     }, []);
-    
+
     // 4e. Early returns
     if (!data) return null;
-    
+
     // 4f. Render
     return (
       <div ref={ref} className={cn(componentVariants(), className)} {...props}>
@@ -307,7 +317,7 @@ ComponentName.displayName = 'ComponentName';
 
 // 5. Helper functions (if needed, outside component)
 function helperFunction() {}
-```
+````
 
 ### Import Order
 
@@ -429,13 +439,13 @@ src/
 
 Use this production-ready template for all new components:
 
-```typescript
+````typescript
 /**
  * ComponentName - Brief description
- * 
+ *
  * Detailed description of what the component does,
  * its features, and when to use it.
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -494,17 +504,17 @@ export interface ComponentNameProps
    * Component title
    */
   title: string;
-  
+
   /**
    * Optional description
    */
   description?: string;
-  
+
   /**
    * Children content
    */
   children?: React.ReactNode;
-  
+
   /**
    * Enable animations
    */
@@ -530,22 +540,22 @@ export const ComponentName = React.forwardRef<HTMLDivElement, ComponentNameProps
   ) => {
     // Hooks
     const [state, setState] = React.useState();
-    
+
     // Derived values
     const computed = React.useMemo(() => {
       // Compute something
     }, []);
-    
+
     // Event handlers
     const handleClick = () => {
       // Handle event
     };
-    
+
     // Effects
     React.useEffect(() => {
       // Side effects
     }, []);
-    
+
     // Component content
     const content = (
       <div
@@ -558,7 +568,7 @@ export const ComponentName = React.forwardRef<HTMLDivElement, ComponentNameProps
         {children}
       </div>
     );
-    
+
     // Return with or without animation
     if (animated) {
       return (
@@ -571,13 +581,13 @@ export const ComponentName = React.forwardRef<HTMLDivElement, ComponentNameProps
         </motion.div>
       );
     }
-    
+
     return content;
   }
 );
 
 ComponentName.displayName = 'ComponentName';
-```
+````
 
 ### Component Index File (Barrel Export)
 
@@ -599,6 +609,7 @@ export * from './Input';
 ```
 
 This allows clean imports:
+
 ```typescript
 // ✅ Good - Clean barrel import
 import { Button, Input } from '@/components/atoms';
@@ -680,21 +691,26 @@ docs: update API documentation
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Testing
+
 How has this been tested?
 
 ## Screenshots (if applicable)
+
 Add screenshots here
 
 ## Checklist
+
 - [ ] My code follows the project style guidelines
 - [ ] I have performed a self-review
 - [ ] I have commented my code where necessary
@@ -746,6 +762,7 @@ describe('Button', () => {
 ### Test Coverage
 
 Aim for:
+
 - **70%+ overall coverage**
 - **80%+ for utilities**
 - **70%+ for components**
@@ -848,6 +865,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 ### UI/UX Best Practices
 
 #### Visual Hierarchy
+
 - Use typography scale for clear hierarchy
 - Apply appropriate spacing between elements
 - Use color and contrast to guide attention
@@ -860,6 +878,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 ```
 
 #### Whitespace Balance
+
 - Use consistent spacing scale (8px grid)
 - Group related elements with less spacing
 - Separate sections with more spacing
@@ -875,6 +894,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 ```
 
 #### Hover States & Micro-interactions
+
 - Add subtle hover effects for interactive elements
 - Use smooth transitions (200-300ms)
 - Provide visual feedback on interaction
@@ -894,6 +914,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 ```
 
 #### Dark Mode Support
+
 - Always design with dark mode in mind
 - Use semantic color tokens
 - Test contrast in both modes
@@ -966,6 +987,7 @@ Follow mobile-first approach with breakpoints:
 ```
 
 Breakpoints:
+
 - `xs`: 475px (extra small)
 - `sm`: 640px (small tablets)
 - `md`: 768px (tablets)
@@ -986,7 +1008,7 @@ const success = colors.semantic.success.DEFAULT;
 
 // Spacing (8px grid)
 const padding = spacing[4]; // 16px
-const margin = spacing[8];  // 32px
+const margin = spacing[8]; // 32px
 
 // Typography
 const headingStyle = typography.textStyles.h1;
@@ -1007,7 +1029,9 @@ const classes = cn('base', isActive && 'active', className);
 const price = formatPrice(1.85); // "$1.85"
 
 // Validate
-if (isValidEmail(email)) { /* ... */ }
+if (isValidEmail(email)) {
+  /* ... */
+}
 
 // Debounce
 const debouncedSearch = debounce(handleSearch, 300);
@@ -1056,17 +1080,20 @@ export const Button = ({ variant, size, children, className }: ButtonProps) => {
 ## 📚 Additional Resources
 
 ### Architecture Documentation
+
 - **`ARCHITECTURE_REFACTORED.md`** - Complete architecture guide
 - **`PROJECT_INITIALIZATION_SUMMARY.md`** - Project setup summary
 - **`QUICK_START_ARCHITECTURE.md`** - Quick reference guide
 - **`src/components/__examples__/README.md`** - Component examples
 
 ### Design System
+
 - **`src/design-system/tokens/`** - All design tokens
 - **`tailwind.config.js`** - Tailwind configuration
 - **`docs/DESIGN_SYSTEM.md`** - Design system documentation
 
 ### Code Examples
+
 - **`src/components/__examples__/Button.example.tsx`** - Button component example
 - **`src/components/__examples__/Card.example.tsx`** - Card component example
 
@@ -1083,6 +1110,7 @@ export const Button = ({ variant, size, children, className }: ButtonProps) => {
 ## 🙏 Recognition
 
 Contributors will be:
+
 - Added to the contributors list
 - Mentioned in release notes
 - Credited in the README

@@ -23,16 +23,21 @@ class Logger {
 
   constructor() {
     const configLevel = process.env.LOG_LEVEL?.toLowerCase() as LogLevel;
-    this.minLevel = configLevel && this.levels[configLevel] !== undefined
-      ? configLevel
-      : 'info';
+    this.minLevel =
+      configLevel && this.levels[configLevel] !== undefined
+        ? configLevel
+        : 'info';
   }
 
   private shouldLog(level: LogLevel): boolean {
     return this.levels[level] >= this.levels[this.minLevel];
   }
 
-  private formatLog(level: LogLevel, message: string, data?: Record<string, unknown>): LogEntry {
+  private formatLog(
+    level: LogLevel,
+    message: string,
+    data?: Record<string, unknown>
+  ): LogEntry {
     return {
       level,
       message,
@@ -83,11 +88,20 @@ class Logger {
   }
 
   // API-specific logging helpers
-  apiRequest(method: string, path: string, data?: Record<string, unknown>): void {
+  apiRequest(
+    method: string,
+    path: string,
+    data?: Record<string, unknown>
+  ): void {
     this.info(`API Request: ${method} ${path}`, data);
   }
 
-  apiResponse(method: string, path: string, statusCode: number, duration: number): void {
+  apiResponse(
+    method: string,
+    path: string,
+    statusCode: number,
+    duration: number
+  ): void {
     this.info(`API Response: ${method} ${path}`, { statusCode, duration });
   }
 

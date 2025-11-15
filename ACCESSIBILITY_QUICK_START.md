@@ -3,6 +3,7 @@
 ## 🚀 TL;DR - What's New
 
 **Your app now has:**
+
 1. ✅ Skip navigation links (press Tab on any page)
 2. ✅ Visible focus indicators on ALL interactive elements
 3. ✅ Focus trapping in modals, dropdowns, and fullscreen map
@@ -18,6 +19,7 @@
 ### 1. Skip Navigation (Already Active!)
 
 **How it works:**
+
 - Press **Tab** on any page
 - You'll see "Skip to main content" link appear
 - Press **Enter** to jump past navigation
@@ -27,6 +29,7 @@
 ### 2. Keyboard Navigation
 
 **Essential Keys:**
+
 - `Tab` - Move forward through interactive elements
 - `Shift + Tab` - Move backward
 - `Enter` or `Space` - Activate buttons/links
@@ -34,6 +37,7 @@
 - `Arrow Keys` - Navigate within dropdowns/radio groups
 
 **Try it now:**
+
 1. Click in browser address bar
 2. Press Tab repeatedly
 3. Watch the blue focus outline move through your page
@@ -66,6 +70,7 @@ function MyComponent() {
 ```
 
 **Features:**
+
 - ✅ Focus trapped inside modal
 - ✅ ESC key closes modal
 - ✅ Click outside closes modal
@@ -83,15 +88,10 @@ function Dropdown() {
 
   return (
     <>
-      <button onClick={() => setIsOpen(!isOpen)}>
-        Open Menu
-      </button>
+      <button onClick={() => setIsOpen(!isOpen)}>Open Menu</button>
 
       {isOpen && (
-        <FocusTrap
-          active={isOpen}
-          onEscape={() => setIsOpen(false)}
-        >
+        <FocusTrap active={isOpen} onEscape={() => setIsOpen(false)}>
           <div className="dropdown">
             <button>Option 1</button>
             <button>Option 2</button>
@@ -109,6 +109,7 @@ function Dropdown() {
 All your interactive elements now have visible focus indicators. No additional code needed!
 
 **Example - Custom focus colors:**
+
 ```tsx
 // Success action
 <button className="focus-success">Save</button>
@@ -141,12 +142,14 @@ All your interactive elements now have visible focus indicators. No additional c
 ### Screen Reader Test (Optional)
 
 **Windows (NVDA - Free):**
+
 1. Download from https://www.nvaccess.org/
 2. Install and start NVDA
 3. Press Tab through your site
 4. Listen to announcements
 
 **Mac (VoiceOver - Built-in):**
+
 1. Press `Cmd + F5` to enable
 2. Press `Ctrl + Option + Right Arrow` to navigate
 3. Press `Ctrl + Option + Space` to click
@@ -155,15 +158,15 @@ All your interactive elements now have visible focus indicators. No additional c
 
 ## 📋 Components Checklist
 
-| Component | Keyboard | Focus Trap | Screen Reader | Status |
-|-----------|----------|------------|---------------|--------|
-| Skip Navigation | ✅ | N/A | ✅ | ✅ Ready |
-| Modal | ✅ | ✅ | ✅ | ✅ Ready |
-| Map (Fullscreen) | ✅ | ✅ | ✅ | ✅ Ready |
-| View Toggle | ✅ | N/A | ✅ | ✅ Ready |
-| Dropdowns | ✅ | ✅ | ✅ | ✅ Ready |
-| Forms | ✅ | N/A | ✅ | ✅ Ready |
-| Buttons | ✅ | N/A | ✅ | ✅ Ready |
+| Component        | Keyboard | Focus Trap | Screen Reader | Status   |
+| ---------------- | -------- | ---------- | ------------- | -------- |
+| Skip Navigation  | ✅       | N/A        | ✅            | ✅ Ready |
+| Modal            | ✅       | ✅         | ✅            | ✅ Ready |
+| Map (Fullscreen) | ✅       | ✅         | ✅            | ✅ Ready |
+| View Toggle      | ✅       | N/A        | ✅            | ✅ Ready |
+| Dropdowns        | ✅       | ✅         | ✅            | ✅ Ready |
+| Forms            | ✅       | N/A        | ✅            | ✅ Ready |
+| Buttons          | ✅       | N/A        | ✅            | ✅ Ready |
 
 ---
 
@@ -193,6 +196,7 @@ Your app uses a consistent blue focus indicator:
 ## 🚨 Common Mistakes to Avoid
 
 ### ❌ DON'T:
+
 ```css
 /* Remove outline without replacement */
 button {
@@ -201,6 +205,7 @@ button {
 ```
 
 ### ✅ DO:
+
 ```css
 /* Use focus-visible for better UX */
 button:focus:not(:focus-visible) {
@@ -208,7 +213,7 @@ button:focus:not(:focus-visible) {
 }
 
 button:focus-visible {
-  outline: 3px solid #3B82F6; /* Show for keyboard */
+  outline: 3px solid #3b82f6; /* Show for keyboard */
 }
 ```
 
@@ -225,6 +230,7 @@ button:focus-visible {
 ## ✅ You're All Set!
 
 Your app is now:
+
 - ✅ Fully keyboard accessible
 - ✅ Screen reader friendly
 - ✅ WCAG 2.1 Level AA compliant
@@ -235,6 +241,7 @@ Your app is now:
 ---
 
 **Quick Links:**
+
 - Skip Navigation: Auto-included in layout
 - Focus Styles: `src/styles/accessibility/focus-visible.css`
 - Components: `src/components/accessibility/`

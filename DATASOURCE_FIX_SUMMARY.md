@@ -23,6 +23,7 @@ The DataSourceManager was experiencing errors when trying to load data from Base
 **File**: `src/services/DataSourceManager.js`
 
 **Changes**:
+
 - Added support for CSV field names (`X`, `Y`, etc.)
 - Added fallback field name resolution
 - Improved coordinate validation with better error messages
@@ -33,7 +34,7 @@ The DataSourceManager was experiencing errors when trying to load data from Base
 let lat = station.Latitude || station.field_5072136 || station.lat;
 let lng = station.Longitude || station.field_5072137 || station.lng;
 
-// After  
+// After
 let lat = station.Latitude || station.Y || station.lat || station.latitude;
 let lng = station.Longitude || station.X || station.lng || station.longitude;
 ```
@@ -43,11 +44,13 @@ let lng = station.Longitude || station.X || station.lng || station.longitude;
 **File**: `src/utils/validation.js`
 
 **Changes**:
+
 - Added CSV field name support in validation
 - Updated field mapping to include all CSV variants
 - Enhanced error messages for debugging
 
 **New Field Mappings**:
+
 - `name`: `Station Name` || `station_name` || `field_5072130` || `name`
 - `lat`: `Latitude` || `Y` || `lat` || `latitude` || `field_5072136`
 - `lng`: `Longitude` || `X` || `lng` || `longitude` || `field_5072137`
@@ -98,6 +101,7 @@ let lng = station.Longitude || station.X || station.lng || station.longitude;
 ### 5. Created Documentation
 
 **`BASEROW_IMPORT_GUIDE.md`**
+
 - Complete import guide with 3 methods
 - Field mapping reference
 - Troubleshooting section
@@ -109,26 +113,27 @@ let lng = station.Longitude || station.X || station.lng || station.longitude;
 
 The Baserow "Petrol Stations" table (ID: 623329) should have:
 
-| Field Name | Type | Validation |
-|------------|------|------------|
-| Station Name | Text | Required |
-| Address | Text | - |
-| City | Text | - |
-| Postal Code | Text | - |
-| Region | Text | - |
-| Country | Text | Default: "AUSTRALIA" |
-| Latitude | Decimal | Max 4 decimal places |
-| Longitude | Decimal | Max 4 decimal places |
-| Location Details | Long Text | - |
-| Category | Single Select | Options: 3812405, 3812406, 3812407 |
-| brand | Multiple Select | - |
-| Fuel Prices | Link to Fuel Prices table | - |
+| Field Name       | Type                      | Validation                         |
+| ---------------- | ------------------------- | ---------------------------------- |
+| Station Name     | Text                      | Required                           |
+| Address          | Text                      | -                                  |
+| City             | Text                      | -                                  |
+| Postal Code      | Text                      | -                                  |
+| Region           | Text                      | -                                  |
+| Country          | Text                      | Default: "AUSTRALIA"               |
+| Latitude         | Decimal                   | Max 4 decimal places               |
+| Longitude        | Decimal                   | Max 4 decimal places               |
+| Location Details | Long Text                 | -                                  |
+| Category         | Single Select             | Options: 3812405, 3812406, 3812407 |
+| brand            | Multiple Select           | -                                  |
+| Fuel Prices      | Link to Fuel Prices table | -                                  |
 
 ## Import Instructions
 
 ### Quick Start (Recommended)
 
 1. **Run the import scripts**:
+
    ```bash
    node scripts/import-csv-to-baserow.js
    node scripts/test-baserow-import.js
@@ -194,7 +199,7 @@ The DataSourceManager now handles all these field name variations automatically:
 // CSV format
 { X: 144.9483, Y: -37.5264, station_name: "KALKALLO" }
 
-// Baserow format  
+// Baserow format
 { Longitude: 144.9483, Latitude: -37.5264, "Station Name": "KALKALLO" }
 
 // Legacy format
@@ -206,6 +211,7 @@ The DataSourceManager now handles all these field name variations automatically:
 ### 3. Verify Data Quality
 
 After import, check:
+
 - ✅ All coordinates have max 4 decimal places
 - ✅ All required fields are populated
 - ✅ Categories use correct option IDs
@@ -249,19 +255,23 @@ ERROR: No valid stations found after transformation
 ## Files Modified
 
 ### Core Application Files
+
 - `src/services/DataSourceManager.js` - Field mapping updates
 - `src/utils/validation.js` - Validation enhancements
 
 ### New Script Files
+
 - `scripts/import-csv-to-baserow.js`
 - `scripts/test-baserow-import.js`
 - `scripts/single-row-import-test.js`
 
 ### Generated Data Files
+
 - `database/baserow-import-data.json`
 - `database/baserow-import.csv`
 
 ### Documentation Files
+
 - `BASEROW_IMPORT_GUIDE.md`
 - `DATASOURCE_FIX_SUMMARY.md` (this file)
 
@@ -278,6 +288,7 @@ If you encounter any issues:
 ## Conclusion
 
 The DataSourceManager error has been resolved by:
+
 1. ✅ Updating field name mappings to support CSV format
 2. ✅ Fixing coordinate precision issues
 3. ✅ Creating automated import scripts
@@ -285,4 +296,3 @@ The DataSourceManager error has been resolved by:
 5. ✅ Documenting the import process
 
 The application is now ready to work with Baserow data, local CSV files, or mock data as fallbacks.
-

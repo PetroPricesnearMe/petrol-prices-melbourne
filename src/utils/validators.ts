@@ -64,4 +64,3 @@ export function isValidUrl(url: string): boolean {
 export function sanitizeInput(input: string): string {
   return input.trim().replace(/[<>]/g, '');
 }
-

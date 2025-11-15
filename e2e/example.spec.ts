@@ -37,7 +37,9 @@ test.describe('Homepage', () => {
     await searchInput.press('Enter');
 
     // Wait for results
-    await page.waitForSelector('[data-testid="station-card"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="station-card"]', {
+      timeout: 5000,
+    });
 
     // Check that results are displayed
     const stationCards = page.locator('[data-testid="station-card"]');
@@ -65,7 +67,9 @@ test.describe('Station List', () => {
     await filterButton.click();
 
     // Select fuel type
-    const unleadedCheckbox = page.locator('input[type="checkbox"][value="unleaded"]');
+    const unleadedCheckbox = page.locator(
+      'input[type="checkbox"][value="unleaded"]'
+    );
     await unleadedCheckbox.check();
 
     // Apply filters

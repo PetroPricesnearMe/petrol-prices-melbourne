@@ -10,7 +10,14 @@ import { BASE_URL } from './metadata';
 export interface SitemapEntry {
   url: string;
   lastModified?: string | Date;
-  changeFrequency?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+  changeFrequency?:
+    | 'always'
+    | 'hourly'
+    | 'daily'
+    | 'weekly'
+    | 'monthly'
+    | 'yearly'
+    | 'never';
   priority?: number;
 }
 
@@ -62,7 +69,9 @@ export function generateStaticSitemap(): MetadataRoute.Sitemap {
 /**
  * Generate sitemap for dynamic pages (regions)
  */
-export function generateRegionSitemap(regions: string[]): MetadataRoute.Sitemap {
+export function generateRegionSitemap(
+  regions: string[]
+): MetadataRoute.Sitemap {
   return regions.map((region) => ({
     url: `${BASE_URL}/directory?region=${region.toLowerCase()}`,
     lastModified: new Date(),

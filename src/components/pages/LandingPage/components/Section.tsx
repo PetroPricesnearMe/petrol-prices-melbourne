@@ -6,7 +6,12 @@
 import { forwardRef, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import type { SectionProps, SectionHeaderProps } from '../types';
-import { CONTAINER_CLASSES, SECTION_PADDING, SECTION_BACKGROUNDS, TYPOGRAPHY } from '../constants';
+import {
+  CONTAINER_CLASSES,
+  SECTION_PADDING,
+  SECTION_BACKGROUNDS,
+  TYPOGRAPHY,
+} from '../constants';
 
 /**
  * Section Component
@@ -43,9 +48,7 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
         )}
       >
         <div className={fullWidth ? '' : CONTAINER_CLASSES}>
-          <div className={fullWidth ? '' : 'max-w-6xl mx-auto'}>
-            {children}
-          </div>
+          <div className={fullWidth ? '' : 'mx-auto max-w-6xl'}>{children}</div>
         </div>
       </section>
     );
@@ -77,16 +80,11 @@ export function SectionHeader({
   return (
     <div className={cn('mb-16', centered && 'text-center')}>
       {subtitle && (
-        <p className="text-primary-600 dark:text-primary-400 font-semibold mb-2 tracking-wide uppercase text-sm">
+        <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary-600 dark:text-primary-400">
           {subtitle}
         </p>
       )}
-      <h2
-        className={cn(
-          TYPOGRAPHY.h2,
-          'text-gray-900 dark:text-white mb-6'
-        )}
-      >
+      <h2 className={cn(TYPOGRAPHY.h2, 'mb-6 text-gray-900 dark:text-white')}>
         {title}
       </h2>
       {description && (
@@ -94,7 +92,7 @@ export function SectionHeader({
           className={cn(
             TYPOGRAPHY.body,
             'text-gray-600 dark:text-gray-400',
-            centered && 'max-w-3xl mx-auto'
+            centered && 'mx-auto max-w-3xl'
           )}
         >
           {description}
@@ -145,4 +143,3 @@ export function GridContainer({
     </div>
   );
 }
-

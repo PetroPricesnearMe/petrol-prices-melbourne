@@ -1,6 +1,6 @@
 /**
  * Airtable CMS Provider
- * 
+ *
  * Implementation of the CMS provider interface for Airtable
  */
 
@@ -333,4 +333,3 @@ export class AirtableProvider implements ICMSProvider {
     };
   }
 }
-

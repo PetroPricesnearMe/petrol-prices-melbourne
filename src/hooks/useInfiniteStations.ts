@@ -1,9 +1,9 @@
 /**
  * Infinite Scroll Hook with React Query
- * 
+ *
  * Provides infinite scrolling functionality with smooth transitions
  * and optimized performance for directory listings
- * 
+ *
  * @module hooks/useInfiniteStations
  */
 
@@ -82,10 +82,10 @@ export function useInfiniteStations(
     queryKey: ['stations', 'infinite', filters],
     queryFn: async ({ pageParam = 0 }) => {
       const allStations = await getAllStations();
-      
+
       // Apply filters
       let filteredStations = [...allStations];
-      
+
       // Search filter
       if (filters.search) {
         const search = filters.search.toLowerCase();
@@ -100,12 +100,16 @@ export function useInfiniteStations(
 
       // Brand filter
       if (filters.brand && filters.brand !== 'all') {
-        filteredStations = filteredStations.filter((s) => s.brand === filters.brand);
+        filteredStations = filteredStations.filter(
+          (s) => s.brand === filters.brand
+        );
       }
 
       // Suburb filter
       if (filters.suburb && filters.suburb !== 'all') {
-        filteredStations = filteredStations.filter((s) => s.suburb === filters.suburb);
+        filteredStations = filteredStations.filter(
+          (s) => s.suburb === filters.suburb
+        );
       }
 
       // Fuel type filter (only show stations with selected fuel type)
@@ -128,17 +132,24 @@ export function useInfiniteStations(
         filteredStations.sort((a, b) => {
           switch (filters.sortBy) {
             case 'price-low': {
-              const priceA = a.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
-              const priceB = b.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
+              const priceA =
+                a.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
+              const priceB =
+                b.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
               return priceA - priceB;
             }
             case 'price-high': {
-              const priceA = a.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
-              const priceB = b.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
+              const priceA =
+                a.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
+              const priceB =
+                b.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
               return priceB - priceA;
             }
             case 'suburb':
-              return a.suburb?.localeCompare(b.suburb || '') || a.name.localeCompare(b.name);
+              return (
+                a.suburb?.localeCompare(b.suburb || '') ||
+                a.name.localeCompare(b.name)
+              );
             case 'name':
             default:
               return a.name.localeCompare(b.name);
@@ -153,7 +164,8 @@ export function useInfiniteStations(
 
       return {
         data: pageData,
-        nextCursor: endIndex < filteredStations.length ? pageParam + 1 : undefined,
+        nextCursor:
+          endIndex < filteredStations.length ? pageParam + 1 : undefined,
         totalCount: filteredStations.length,
         hasMore: endIndex < filteredStations.length,
       };
@@ -206,11 +218,7 @@ export function useInfiniteScroll(
     enabled?: boolean;
   } = {}
 ) {
-  const {
-    threshold = 0.1,
-    rootMargin = '100px',
-    enabled = true,
-  } = options;
+  const { threshold = 0.1, rootMargin = '100px', enabled = true } = options;
 
   const observerRef = useRef<IntersectionObserver | null>(null);
   const elementRef = useRef<HTMLDivElement | null>(null);
@@ -256,12 +264,14 @@ export function useInfiniteScroll(
  */
 export function useSmoothTransitions() {
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [transitionDirection, setTransitionDirection] = useState<'up' | 'down'>('down');
+  const [transitionDirection, setTransitionDirection] = useState<'up' | 'down'>(
+    'down'
+  );
 
   const startTransition = useCallback((direction: 'up' | 'down' = 'down') => {
     setTransitionDirection(direction);
     setIsTransitioning(true);
-    
+
     // Reset transition state after animation completes
     const timer = setTimeout(() => {
       setIsTransitioning(false);
@@ -298,12 +308,15 @@ export function useVirtualizedInfiniteScroll(
 
   const getVisibleRange = useCallback(
     (totalItems: number) => {
-      const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
+      const startIndex = Math.max(
+        0,
+        Math.floor(scrollTop / itemHeight) - overscan
+      );
       const endIndex = Math.min(
         totalItems - 1,
         Math.floor((scrollTop + containerHeight) / itemHeight) + overscan
       );
-      
+
       return { startIndex, endIndex };
     },
     [scrollTop, itemHeight, containerHeight, overscan]

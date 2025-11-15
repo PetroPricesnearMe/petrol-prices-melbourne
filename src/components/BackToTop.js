@@ -26,7 +26,7 @@ const BackToTop = () => {
         borderRadius: '999px',
         boxShadow: 'var(--shadow)',
         cursor: 'pointer',
-        zIndex: 1000
+        zIndex: 1000,
       }}
     >
       ↑ Top
@@ -35,5 +35,3 @@ const BackToTop = () => {
 };
 
 export default BackToTop;
-
-

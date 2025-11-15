@@ -172,7 +172,9 @@ export function getWebSiteSchema(): WebSite {
 // Local Business Schema (Gas Station)
 // ============================================================================
 
-export function getGasStationSchema(station: Station & { fuelPrices?: FuelPrice[] }): LocalBusiness {
+export function getGasStationSchema(
+  station: Station & { fuelPrices?: FuelPrice[] }
+): LocalBusiness {
   const schema: LocalBusiness = {
     '@context': 'https://schema.org',
     '@type': 'GasStation',
@@ -208,7 +210,7 @@ export function getGasStationSchema(station: Station & { fuelPrices?: FuelPrice[
 
   // Add price range
   if (station.fuelPrices && station.fuelPrices.length > 0) {
-    const prices = station.fuelPrices.map(fp => fp.pricePerLiter);
+    const prices = station.fuelPrices.map((fp) => fp.pricePerLiter);
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
     schema.priceRange = `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`;
@@ -217,7 +219,7 @@ export function getGasStationSchema(station: Station & { fuelPrices?: FuelPrice[
     schema.hasOfferCatalog = {
       '@type': 'OfferCatalog',
       name: 'Fuel Prices',
-      itemListElement: station.fuelPrices.map(fuelPrice => ({
+      itemListElement: station.fuelPrices.map((fuelPrice) => ({
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Product',
@@ -226,9 +228,10 @@ export function getGasStationSchema(station: Station & { fuelPrices?: FuelPrice[
         price: fuelPrice.pricePerLiter.toFixed(2),
         priceCurrency: 'AUD',
         availability: 'https://schema.org/InStock',
-        validFrom: typeof fuelPrice.lastUpdated === 'string'
-          ? fuelPrice.lastUpdated
-          : fuelPrice.lastUpdated.toISOString(),
+        validFrom:
+          typeof fuelPrice.lastUpdated === 'string'
+            ? fuelPrice.lastUpdated
+            : fuelPrice.lastUpdated.toISOString(),
       })),
     };
   }
@@ -238,7 +241,15 @@ export function getGasStationSchema(station: Station & { fuelPrices?: FuelPrice[
     schema.openingHoursSpecification = [
       {
         '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        dayOfWeek: [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday',
+        ],
         opens: '00:00',
         closes: '23:59',
       },
@@ -252,7 +263,9 @@ export function getGasStationSchema(station: Station & { fuelPrices?: FuelPrice[
 // Breadcrumb Schema
 // ============================================================================
 
-export function getBreadcrumbSchema(items: Array<{ name: string; url?: string }>): BreadcrumbList {
+export function getBreadcrumbSchema(
+  items: Array<{ name: string; url?: string }>
+): BreadcrumbList {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -269,11 +282,13 @@ export function getBreadcrumbSchema(items: Array<{ name: string; url?: string }>
 // FAQ Schema
 // ============================================================================
 
-export function getFAQSchema(faqs: Array<{ question: string; answer: string }>): FAQPage {
+export function getFAQSchema(
+  faqs: Array<{ question: string; answer: string }>
+): FAQPage {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
+    mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: {

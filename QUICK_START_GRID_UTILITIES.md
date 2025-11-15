@@ -149,14 +149,14 @@ function MyPage() {
 
 The utilities use Tailwind's default breakpoints:
 
-| Screen Size | Breakpoint | Width |
-|-------------|-----------|-------|
-| Mobile | base | < 640px |
-| Tablet | sm | ≥ 640px |
-| Desktop | md | ≥ 768px |
-| Large Desktop | lg | ≥ 1024px |
-| XL Desktop | xl | ≥ 1280px |
-| 2XL Desktop | 2xl | ≥ 1536px |
+| Screen Size   | Breakpoint | Width    |
+| ------------- | ---------- | -------- |
+| Mobile        | base       | < 640px  |
+| Tablet        | sm         | ≥ 640px  |
+| Desktop       | md         | ≥ 768px  |
+| Large Desktop | lg         | ≥ 1024px |
+| XL Desktop    | xl         | ≥ 1280px |
+| 2XL Desktop   | 2xl        | ≥ 1536px |
 
 ### Visual Example
 
@@ -176,12 +176,12 @@ Mobile (base)    Tablet (sm)     Desktop (lg)    XL (xl)
 
 ## 🎨 Gap Sizes
 
-| Gap | Mobile | Tablet | Desktop |
-|-----|--------|--------|---------|
-| `sm` | 1rem (16px) | 1.25rem (20px) | 1.25rem |
-| `md` | 1.25rem (20px) | 1.5rem (24px) | 2rem (32px) |
-| `lg` | 1.5rem (24px) | 2rem (32px) | 2.5rem (40px) |
-| `xl` | 2rem (32px) | 2.5rem (40px) | 3rem (48px) |
+| Gap  | Mobile         | Tablet         | Desktop       |
+| ---- | -------------- | -------------- | ------------- |
+| `sm` | 1rem (16px)    | 1.25rem (20px) | 1.25rem       |
+| `md` | 1.25rem (20px) | 1.5rem (24px)  | 2rem (32px)   |
+| `lg` | 1.5rem (24px)  | 2rem (32px)    | 2.5rem (40px) |
+| `xl` | 2rem (32px)    | 2.5rem (40px)  | 3rem (48px)   |
 
 ---
 
@@ -253,7 +253,10 @@ const gaps = getGapClasses('md');
 ## 🎨 TypeScript Types
 
 ```typescript
-import type { ResponsiveColumns, GapSize } from '@/components/organisms/EnhancedCardGrid';
+import type {
+  ResponsiveColumns,
+  GapSize,
+} from '@/components/organisms/EnhancedCardGrid';
 
 const columns: ResponsiveColumns = {
   base: 1,
@@ -272,12 +275,14 @@ const gap: GapSize = 'md';
 ### Static Class Generation
 
 ✅ **Before** (Dynamic - Broken):
+
 ```typescript
 const classes = `grid-cols-${columns.base}`;
 // Tailwind can't purge this ❌
 ```
 
 ✅ **After** (Static - Works):
+
 ```typescript
 const classes = buildGridClasses({ columns: { base: 1 } });
 // Returns: "grid-cols-1" (statically analyzable) ✅
@@ -323,11 +328,11 @@ const classes = buildGridClasses({ columns: { base: 1 } });
 
 ```typescript
 // ✅ Good - Consistent across project
-gap="md"
+gap = 'md';
 
 // ❌ Bad - Inconsistent
-gap="sm"  // Sometimes
-gap="xl"  // Other times
+gap = 'sm'; // Sometimes
+gap = 'xl'; // Other times
 ```
 
 ---

@@ -2,7 +2,8 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -35,7 +36,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1.5">
+          <label
+            htmlFor={inputId}
+            className="mb-1.5 block text-sm font-medium text-gray-700"
+          >
             {label}
           </label>
         )}

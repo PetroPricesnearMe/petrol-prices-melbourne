@@ -38,24 +38,23 @@ app.post('/api/chat', async (req, res) => {
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
-      messages: messages.map(msg => ({
+      messages: messages.map((msg) => ({
         role: msg.role,
-        content: msg.content
-      }))
+        content: msg.content,
+      })),
     });
 
     res.json({
       id: response.id,
       role: response.role,
       content: response.content[0].text,
-      model: response.model
+      model: response.model,
     });
-
   } catch (error) {
     console.error('Error calling Claude API:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to get AI response',
-      details: error.message 
+      details: error.message,
     });
   }
 });
@@ -64,4 +63,3 @@ app.listen(PORT, () => {
   console.log(`🚀 AI Chat Backend running on http://localhost:${PORT}`);
   console.log(`📡 API endpoint: http://localhost:${PORT}/api/chat`);
 });
-

@@ -9,11 +9,13 @@ A production-ready, full-stack CMS integration system for Next.js with support f
 ### 1. Unified CMS Abstraction Layer
 
 **Files:**
+
 - `src/lib/cms/types.ts` - Type definitions
 - `src/lib/cms/index.ts` - Main entry point and factory
 - `src/lib/cms/config.ts` - Configuration and validation
 
 **Capabilities:**
+
 - ✅ Provider abstraction with unified interface
 - ✅ Support for Baserow, Sanity, and Airtable
 - ✅ Easy to extend for Contentful, Strapi, etc.
@@ -25,6 +27,7 @@ A production-ready, full-stack CMS integration system for Next.js with support f
 **File:** `src/lib/cms/cache.ts`
 
 **Features:**
+
 - ✅ In-memory LRU cache with TTL
 - ✅ Stale-while-revalidate support
 - ✅ Cache tags for grouped invalidation
@@ -37,6 +40,7 @@ A production-ready, full-stack CMS integration system for Next.js with support f
 **File:** `src/lib/cms/error-handler.ts`
 
 **Features:**
+
 - ✅ Structured error types with context
 - ✅ Retry logic with exponential backoff
 - ✅ Circuit breaker pattern
@@ -47,11 +51,13 @@ A production-ready, full-stack CMS integration system for Next.js with support f
 ### 4. CMS Provider Implementations
 
 **Files:**
+
 - `src/lib/cms/providers/baserow.ts` - Baserow provider
 - `src/lib/cms/providers/sanity.ts` - Sanity.io provider
 - `src/lib/cms/providers/airtable.ts` - Airtable provider
 
 **Each provider supports:**
+
 - ✅ Fetch all items with pagination
 - ✅ Fetch by ID
 - ✅ Fetch by slug
@@ -64,12 +70,14 @@ A production-ready, full-stack CMS integration system for Next.js with support f
 ### 5. Production-Ready API Routes
 
 **Files:**
+
 - `src/app/api/cms/[collection]/route.ts` - List endpoint
 - `src/app/api/cms/[collection]/[id]/route.ts` - Single item CRUD
 - `src/app/api/cms/[collection]/slug/[slug]/route.ts` - Fetch by slug
 - `src/app/api/revalidate/route.ts` - Cache revalidation
 
 **Features:**
+
 - ✅ Edge runtime support
 - ✅ Proper caching headers (s-maxage, stale-while-revalidate)
 - ✅ Error handling with fallbacks
@@ -80,11 +88,13 @@ A production-ready, full-stack CMS integration system for Next.js with support f
 ### 6. Reusable React Components
 
 **Files:**
+
 - `src/components/cms/CMSErrorBoundary.tsx` - Error boundary
 - `src/components/cms/CMSContent.tsx` - Content renderer
 - `src/components/cms/CMSList.tsx` - Paginated list
 
 **Features:**
+
 - ✅ Loading states with skeletons
 - ✅ Error states with retry
 - ✅ Empty states
@@ -97,11 +107,13 @@ A production-ready, full-stack CMS integration system for Next.js with support f
 ### 7. Example Pages
 
 **Files:**
+
 - `src/app/cms-example/page.tsx` - Server-side with ISR
 - `src/app/cms-example/[slug]/page.tsx` - Dynamic routes with ISR
 - `src/app/cms-example/client/page.tsx` - Client-side fetching
 
 **Demonstrates:**
+
 - ✅ Server Component pattern
 - ✅ ISR with revalidation
 - ✅ Dynamic route generation
@@ -192,26 +204,33 @@ import { CMSList } from '@/components/cms/CMSList';
 ```typescript
 interface ICMSProvider {
   // Fetch all items
-  fetchAll<T>(collection: string, options?: CMSQueryOptions): Promise<CMSPaginatedResponse<T>>;
-  
+  fetchAll<T>(
+    collection: string,
+    options?: CMSQueryOptions
+  ): Promise<CMSPaginatedResponse<T>>;
+
   // Fetch single item by ID
   fetchById<T>(collection: string, id: string): Promise<T | null>;
-  
+
   // Fetch by slug
   fetchBySlug<T>(collection: string, slug: string): Promise<T | null>;
-  
+
   // Create item
   create<T>(collection: string, data: Partial<T>): Promise<T>;
-  
+
   // Update item
   update<T>(collection: string, id: string, data: Partial<T>): Promise<T>;
-  
+
   // Delete item
   delete(collection: string, id: string): Promise<void>;
-  
+
   // Search
-  search<T>(collection: string, query: string, options?: CMSQueryOptions): Promise<CMSPaginatedResponse<T>>;
-  
+  search<T>(
+    collection: string,
+    query: string,
+    options?: CMSQueryOptions
+  ): Promise<CMSPaginatedResponse<T>>;
+
   // Revalidate cache
   revalidate(paths?: string[], tags?: string[]): Promise<void>;
 }
@@ -241,21 +260,25 @@ interface CMSQueryOptions {
 See `.env.example` for complete configuration options.
 
 **Essential:**
+
 - `CMS_PROVIDER` - Provider type (baserow, sanity, airtable)
 - `CMS_API_URL` - API endpoint
 - `CMS_API_TOKEN` - Authentication token
 
 **Cache:**
+
 - `CMS_CACHE_ENABLED` - Enable/disable caching
 - `CMS_CACHE_TIME` - Cache TTL in seconds
 - `CMS_STALE_WHILE_REVALIDATE` - Stale period in seconds
 
 **Retry:**
+
 - `CMS_RETRY_ATTEMPTS` - Number of retries
 - `CMS_RETRY_DELAY` - Initial delay in ms
 - `CMS_RETRY_MAX_DELAY` - Maximum delay in ms
 
 **Feature Flags:**
+
 - `CMS_ENABLE_CIRCUIT_BREAKER` - Circuit breaker pattern
 - `CMS_ENABLE_DEBUG_LOGGING` - Debug logs
 
@@ -325,7 +348,7 @@ import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
 ```typescript
 // Fetch with tags
 const data = await cms.fetchAll('posts', {
-  tags: ['posts', 'featured']
+  tags: ['posts', 'featured'],
 });
 
 // Revalidate by tag
@@ -391,10 +414,10 @@ export const revalidate = 3600;
 fetch('/api/revalidate', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer secret',
-    'Content-Type': 'application/json'
+    Authorization: 'Bearer secret',
+    'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ tags: ['stations'] })
+  body: JSON.stringify({ tags: ['stations'] }),
 });
 ```
 
@@ -421,13 +444,10 @@ const data = await cms.fetchAll('items');
 ```typescript
 import { withFallback } from '@/lib/cms/error-handler';
 
-const data = await withFallback(
-  () => cms.fetchAll('items'),
-  {
-    getFallback: () => cachedData,
-    onError: (error) => console.error(error)
-  }
-);
+const data = await withFallback(() => cms.fetchAll('items'), {
+  getFallback: () => cachedData,
+  onError: (error) => console.error(error),
+});
 ```
 
 ### Circuit Breaker
@@ -476,6 +496,7 @@ export function createCMSProvider(config: CMSConfig): ICMSProvider {
 ## 📦 Dependencies
 
 Required:
+
 - Next.js 15+
 - React 19+
 - TypeScript 5+
@@ -522,7 +543,7 @@ console.log({
   misses: stats.misses,
   hitRate: stats.hits / (stats.hits + stats.misses),
   size: stats.size,
-  evictions: stats.evictions
+  evictions: stats.evictions,
 });
 ```
 
@@ -568,4 +589,3 @@ MIT
 **Last Updated**: 2025-11-11  
 **Version**: 1.0.0  
 **Status**: ✅ Production Ready
-

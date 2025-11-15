@@ -1,7 +1,7 @@
 /**
  * useMCPUpdates Hook
  * React hook for subscribing to real-time Baserow updates via MCP
- * 
+ *
  * Usage:
  * const { connected, updates } = useMCPUpdates('price.updated');
  */
@@ -25,15 +25,18 @@ export function useMCPUpdates(events, onUpdate) {
   const eventArray = Array.isArray(events) ? events : [events];
 
   // Handle update
-  const handleUpdate = useCallback((data) => {
-    console.log('🔔 [useMCPUpdates] Received update:', data);
-    setLatestUpdate(data);
-    setError(null);
-    
-    if (onUpdate) {
-      onUpdate(data);
-    }
-  }, [onUpdate]);
+  const handleUpdate = useCallback(
+    (data) => {
+      console.log('🔔 [useMCPUpdates] Received update:', data);
+      setLatestUpdate(data);
+      setError(null);
+
+      if (onUpdate) {
+        onUpdate(data);
+      }
+    },
+    [onUpdate]
+  );
 
   // Handle connection status changes
   useEffect(() => {
@@ -57,7 +60,10 @@ export function useMCPUpdates(events, onUpdate) {
     // Subscribe to connection events
     const unsubConnect = mcpService.on('connected', handleConnect);
     const unsubDisconnect = mcpService.on('disconnected', handleDisconnect);
-    const unsubMaxAttempts = mcpService.on('max-reconnect-attempts', handleMaxAttempts);
+    const unsubMaxAttempts = mcpService.on(
+      'max-reconnect-attempts',
+      handleMaxAttempts
+    );
 
     // Cleanup
     return () => {
@@ -69,14 +75,14 @@ export function useMCPUpdates(events, onUpdate) {
 
   // Subscribe to specified events
   useEffect(() => {
-    const unsubscribers = eventArray.map(event => {
+    const unsubscribers = eventArray.map((event) => {
       console.log(`📡 [useMCPUpdates] Subscribing to '${event}'`);
       return mcpService.on(event, handleUpdate);
     });
 
     // Cleanup subscriptions
     return () => {
-      unsubscribers.forEach(unsub => unsub());
+      unsubscribers.forEach((unsub) => unsub());
     };
   }, [eventArray.join(','), handleUpdate]);
 
@@ -84,7 +90,7 @@ export function useMCPUpdates(events, onUpdate) {
     connected,
     latestUpdate,
     error,
-    status: mcpService.getStatus()
+    status: mcpService.getStatus(),
   };
 }
 
@@ -106,8 +112,16 @@ export function useStationUpdates(onStationUpdate) {
  * Hook for all updates
  */
 export function useAllMCPUpdates(onUpdate) {
-  return useMCPUpdates(['price.updated', 'station.updated', 'row.created', 'row.updated', 'row.deleted'], onUpdate);
+  return useMCPUpdates(
+    [
+      'price.updated',
+      'station.updated',
+      'row.created',
+      'row.updated',
+      'row.deleted',
+    ],
+    onUpdate
+  );
 }
 
 export default useMCPUpdates;
-

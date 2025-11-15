@@ -1,6 +1,7 @@
 # 🧪 Verification & Testing Guide - Next.js 15 Performance Optimization
 
 ## 📋 Project Context
+
 - **Framework**: Next.js 15 with App Router
 - **Hero Image**: `/images/hero-petrol-station.jpg`
 - **Image Optimization**: All images using `next/image`
@@ -13,6 +14,7 @@
 ### **A. Local Development (npm run dev)**
 
 #### Step 1: Clear Cache & Start Fresh
+
 ```bash
 # Clear all caches
 rm -rf .next
@@ -23,21 +25,25 @@ npm run dev
 ```
 
 #### Step 2: Check Browser Console
+
 1. Open `http://localhost:3000` in Chrome/Edge
 2. Open DevTools (F12)
 3. Go to **Console** tab
 4. Look for these specific warnings (should NOT appear):
 
 **Font-related warnings to verify are GONE:**
+
 - ❌ "A preload for 'font-url' is found but is not used"
 - ❌ "The resource was preloaded using link preload but not used"
 - ❌ "Font resource not found"
 
 **What you SHOULD see:**
+
 - ✅ No font warnings
 - ✅ Clean console (except dev HMR messages)
 
 #### Step 3: Check Network Tab
+
 1. Open DevTools → **Network** tab
 2. Filter by **Font** (click the Font button)
 3. Reload page (Ctrl+R)
@@ -53,6 +59,7 @@ npm run dev
 ### **B. Production Build Testing**
 
 #### Step 1: Build and Start Production Server
+
 ```bash
 # Build for production
 npm run build
@@ -62,6 +69,7 @@ npm start
 ```
 
 **Expected build output:**
+
 ```
 Route (app)                              Size     First Load JS
 ┌ ○ /                                    5 kB        85 kB
@@ -72,11 +80,13 @@ Route (app)                              Size     First Load JS
 ```
 
 #### Step 2: Verify Production Console
+
 1. Open `http://localhost:3000`
 2. Open DevTools Console
 3. **No warnings should appear** - production should be completely clean
 
 #### Step 3: Check Production Network
+
 1. Hard reload with cache disabled (Ctrl+Shift+R)
 2. Network tab → Filter by Font
 3. Verify:
@@ -92,6 +102,7 @@ Route (app)                              Size     First Load JS
 ### **Method 1: Chrome DevTools Lighthouse**
 
 #### Step 1: Open Lighthouse
+
 ```bash
 # Make sure production build is running
 npm run build && npm start
@@ -107,6 +118,7 @@ npm run build && npm start
    - ✅ Simulated throttling: ✓ (checked)
 
 #### Step 2: Run Audit
+
 Click **Analyze page load** → Wait for results
 
 #### Step 3: Check Specific Metrics
@@ -114,6 +126,7 @@ Click **Analyze page load** → Wait for results
 **Performance Score Target: 90+**
 
 **Core Web Vitals:**
+
 ```
 ✅ Largest Contentful Paint (LCP)    < 2.5s    [Target: < 1.5s]
 ✅ Total Blocking Time (TBT)         < 200ms   [Target: < 150ms]
@@ -128,11 +141,13 @@ Click **Analyze page load** → Wait for results
 In the Lighthouse report, scroll to **"Opportunities"** section:
 
 **Should NOT see:**
+
 - ❌ "Preload key requests"
 - ❌ "Eliminate render-blocking resources" (for fonts)
 - ❌ "Preload Largest Contentful Paint image"
 
 **Should see (if present):**
+
 - ✅ "Properly size images" - should have minimal issues
 - ✅ "Serve images in next-gen formats" - should be marked as ✓
 - ✅ "Efficiently encode images" - should be marked as ✓
@@ -142,12 +157,14 @@ In the Lighthouse report, scroll to **"Opportunities"** section:
 Scroll to **"Diagnostics"** section:
 
 **Font Display:**
+
 ```
 ✅ Ensure text remains visible during webload
    - Inter font should use font-display: swap
 ```
 
 **Preload:**
+
 ```
 ✅ Preconnect to required origins
    - https://fonts.googleapis.com
@@ -159,11 +176,13 @@ Scroll to **"Diagnostics"** section:
 ### **Method 2: Lighthouse CLI (More Detailed)**
 
 #### Step 1: Install Lighthouse CLI
+
 ```bash
 npm install -g lighthouse
 ```
 
 #### Step 2: Run Comprehensive Audit
+
 ```bash
 # Make sure production server is running on port 3000
 npm run build && npm start
@@ -178,10 +197,12 @@ lighthouse http://localhost:3000 \
 ```
 
 This generates:
+
 - `lighthouse-report.report.html` - Visual report
 - `lighthouse-report.report.json` - Detailed JSON data
 
 #### Step 3: Run Mobile & Desktop Separately
+
 ```bash
 # Mobile audit (default)
 lighthouse http://localhost:3000 \
@@ -199,14 +220,16 @@ lighthouse http://localhost:3000 \
 ```
 
 #### Step 4: Analyze JSON Report
+
 ```bash
 # Extract specific metrics
-cat lighthouse-report.report.json | jq '.audits | 
-  with_entries(select(.key | 
+cat lighthouse-report.report.json | jq '.audits |
+  with_entries(select(.key |
   test("largest-contentful-paint|first-contentful-paint|cumulative-layout-shift|total-blocking-time")))'
 ```
 
 **Expected Output:**
+
 ```json
 {
   "largest-contentful-paint": {
@@ -231,6 +254,7 @@ cat lighthouse-report.report.json | jq '.audits |
 ### **A. Performance Panel**
 
 #### Step 1: Record Page Load
+
 1. Open DevTools → **Performance** tab
 2. Click **Record** (or Ctrl+Shift+E)
 3. Reload page (Ctrl+R)
@@ -239,24 +263,28 @@ cat lighthouse-report.report.json | jq '.audits |
 #### Step 2: Analyze Timeline
 
 **Check for LCP (Largest Contentful Paint):**
+
 1. Look for the **LCP marker** (blue flag icon)
 2. Click on it to see which element is LCP
 3. **Expected**: Hero image (`hero-petrol-station.jpg`)
 4. **Target timing**: < 2.5s (ideally < 1.5s)
 
 **Verify Font Loading:**
+
 1. In the timeline, find **Network** track
 2. Look for font requests
 3. They should appear **early** in the timeline
 4. Check for "Preload" label in the initiator
 
 **Check CLS (Cumulative Layout Shift):**
+
 1. Look for red markers labeled "Layout Shift"
 2. Click on each to see what caused it
 3. **Target**: < 0.1 (ideally < 0.05)
 4. **Common causes**: Images without dimensions, fonts loading
 
 #### Step 3: Bottom-Up Analysis
+
 1. Click **Bottom-Up** tab in Performance panel
 2. Group by: **URL**
 3. Look for:
@@ -265,6 +293,7 @@ cat lighthouse-report.report.json | jq '.audits |
    - JavaScript execution time
 
 **Expected Results:**
+
 ```
 Activity               Self Time    Total Time
 -------------------------------------------------
@@ -286,6 +315,7 @@ Layout                 < 50ms       < 100ms
 4. Stop recording
 
 **Analyze Coverage:**
+
 ```
 Resource                Type    Total      Unused    Unused %
 ------------------------------------------------------------
@@ -295,6 +325,7 @@ fonts/inter...woff2     Font    120 KB     0 KB      0%     ✅ Perfect
 ```
 
 **Targets:**
+
 - ✅ CSS unused < 20%
 - ✅ JS unused < 40% (initial page load)
 - ✅ Fonts unused = 0%
@@ -310,6 +341,7 @@ fonts/inter...woff2     Font    120 KB     0 KB      0%     ✅ Perfect
 3. Look at **Waterfall** view
 
 **Expected Request Order:**
+
 ```
 1. [Priority: Highest] index.html
 2. [Priority: Highest] Inter font (PRELOADED)
@@ -340,6 +372,7 @@ Content Download        < 50ms     ✅
 ### **Method 1: Online WebPageTest**
 
 #### Step 1: Deploy to Production
+
 ```bash
 # Deploy to Vercel/Netlify/your host
 npm run build
@@ -347,6 +380,7 @@ npm run build
 ```
 
 #### Step 2: Run WebPageTest
+
 1. Go to [https://www.webpagetest.org/](https://www.webpagetest.org/)
 2. Enter your production URL
 3. Configure test:
@@ -362,6 +396,7 @@ npm run build
 #### Step 3: Analyze Results
 
 **Core Web Vitals from Field Data:**
+
 ```
 Metric                  First View    Repeat View   Target
 ------------------------------------------------------------
@@ -373,11 +408,13 @@ Speed Index             1.8s          1.2s          < 3.4s  ✅
 ```
 
 **Filmstrip View:**
+
 - Check when hero image appears
 - Verify no layout shifts
 - Confirm smooth loading progression
 
 #### Step 4: Check Request Details
+
 1. Click **Waterfall View**
 2. Filter by "font"
 3. Verify:
@@ -408,15 +445,18 @@ docker run -d \
 Your layout.tsx already has Web Vitals tracking. Here's how to verify it's working:
 
 #### Method 1: Browser Console
+
 1. Open production site
 2. Open DevTools Console
 3. Type:
+
 ```javascript
 // Check if Web Vitals are being tracked
-JSON.parse(localStorage.getItem('web-vitals') || '{}')
+JSON.parse(localStorage.getItem('web-vitals') || '{}');
 ```
 
 **Expected Output:**
+
 ```json
 {
   "LCP": {
@@ -435,6 +475,7 @@ JSON.parse(localStorage.getItem('web-vitals') || '{}')
 ```
 
 #### Method 2: Network Tab (if sending to analytics)
+
 1. Network tab → Filter: **gtag** or your analytics endpoint
 2. Reload page and interact
 3. Look for events with:
@@ -448,11 +489,13 @@ JSON.parse(localStorage.getItem('web-vitals') || '{}')
 ### **Verify Hero Image Preload**
 
 #### Step 1: Check HTML Source
+
 ```bash
 curl http://localhost:3000 | grep -A 5 "hero-petrol-station"
 ```
 
 **Should see** (for priority image):
+
 ```html
 <link
   rel="preload"
@@ -463,6 +506,7 @@ curl http://localhost:3000 | grep -A 5 "hero-petrol-station"
 ```
 
 #### Step 2: Verify in Browser
+
 1. View page source (Ctrl+U)
 2. Search for "hero-petrol-station"
 3. Should find:
@@ -471,6 +515,7 @@ curl http://localhost:3000 | grep -A 5 "hero-petrol-station"
    - ✅ Responsive srcset
 
 #### Step 3: Check Network Priority
+
 1. Network tab → Filter: **Img**
 2. Find `hero-petrol-station.jpg`
 3. Check **Priority** column: Should be **High** or **Highest**
@@ -503,7 +548,7 @@ cat > public/web-vitals-dashboard.html << 'EOF'
 <body>
   <h1>Web Vitals Dashboard</h1>
   <div id="metrics"></div>
-  
+
   <script>
     const data = JSON.parse(localStorage.getItem('web-vitals') || '{}');
     const thresholds = {
@@ -513,15 +558,15 @@ cat > public/web-vitals-dashboard.html << 'EOF'
       FCP: { good: 1800, poor: 3000 },
       TTFB: { good: 600, poor: 1500 }
     };
-    
+
     const metricsDiv = document.getElementById('metrics');
-    
+
     Object.entries(data).forEach(([name, metric]) => {
       const threshold = thresholds[name];
-      const rating = metric.value <= threshold.good ? 'good' 
-        : metric.value <= threshold.poor ? 'needs-improvement' 
+      const rating = metric.value <= threshold.good ? 'good'
+        : metric.value <= threshold.poor ? 'needs-improvement'
         : 'poor';
-      
+
       metricsDiv.innerHTML += `
         <div class="metric">
           <h2>${name}</h2>
@@ -555,6 +600,7 @@ npm run type-check        # ✓ No TypeScript errors
 ```
 
 **Manual Checks:**
+
 - [ ] No console warnings in dev
 - [ ] No console warnings in production
 - [ ] Fonts load with priority
@@ -576,13 +622,14 @@ npm run type-check        # ✓ No TypeScript errors
 ### **Issue: Fonts Still Show Warning**
 
 **Solution:**
+
 ```tsx
 // src/app/layout.tsx
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
-  preload: true,  // ← Ensure this is set
+  preload: true, // ← Ensure this is set
   weight: ['400', '500', '600', '700'], // Specify used weights
 });
 ```
@@ -590,6 +637,7 @@ const inter = Inter({
 ### **Issue: Hero Image Not Prioritized**
 
 **Solution:**
+
 ```tsx
 import Image from 'next/image';
 
@@ -598,15 +646,16 @@ import Image from 'next/image';
   alt="Hero"
   width={1920}
   height={1080}
-  priority={true}  // ← Must be true
+  priority={true} // ← Must be true
   quality={90}
   sizes="100vw"
-/>
+/>;
 ```
 
 ### **Issue: Poor LCP on Mobile**
 
 **Solution:**
+
 ```tsx
 <Image
   src="/images/hero-petrol-station.jpg"
@@ -616,7 +665,7 @@ import Image from 'next/image';
   priority={true}
   quality={90}
   sizes="100vw"
-  placeholder="blur"  // ← Add blur placeholder
+  placeholder="blur" // ← Add blur placeholder
   blurDataURL="data:image/svg+xml;base64,..." // ← Add placeholder
 />
 ```
@@ -624,6 +673,7 @@ import Image from 'next/image';
 ### **Issue: High CLS**
 
 **Solution:**
+
 - Always specify width and height on images
 - Use aspect-ratio CSS for responsive images
 - Reserve space for dynamic content
@@ -634,6 +684,7 @@ import Image from 'next/image';
 ## 📊 Expected Results Summary
 
 ### **Before Optimization**
+
 ```
 Performance Score:        45
 LCP:                     3.8s
@@ -644,6 +695,7 @@ First Load JS:           780KB
 ```
 
 ### **After Optimization (Target)**
+
 ```
 Performance Score:        95+  ✅
 LCP:                     1.2s  ✅
@@ -703,4 +755,3 @@ You've successfully optimized when you see:
 ---
 
 **Ready to test?** Start with the Local Development section and work your way through each testing method! 🎯
-

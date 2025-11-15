@@ -16,7 +16,7 @@ const OUTPUT_DIR = resolve(__dirname, '../public');
 // Parse CSV file
 function parseStationsCSV() {
   const csvContent = readFileSync(STATIONS_CSV, 'utf-8');
-  const lines = csvContent.split('\n').filter(line => line.trim());
+  const lines = csvContent.split('\n').filter((line) => line.trim());
   const headers = lines[0].split('|');
 
   const stations = [];
@@ -48,8 +48,8 @@ async function generateMainSitemap() {
       image: true,
       news: false,
       video: false,
-      xhtml: false
-    }
+      xhtml: false,
+    },
   });
 
   const writeStream = createWriteStream(resolve(OUTPUT_DIR, 'sitemap.xml'));
@@ -59,14 +59,44 @@ async function generateMainSitemap() {
   const corePages = [
     { url: '/', changefreq: 'daily', priority: 1.0, lastmod: currentDate },
     { url: '/map', changefreq: 'hourly', priority: 0.95, lastmod: currentDate },
-    { url: '/directory', changefreq: 'daily', priority: 0.9, lastmod: currentDate },
-    { url: '/faq', changefreq: 'monthly', priority: 0.85, lastmod: currentDate },
-    { url: '/fuel-price-trends', changefreq: 'weekly', priority: 0.8, lastmod: currentDate },
+    {
+      url: '/directory',
+      changefreq: 'daily',
+      priority: 0.9,
+      lastmod: currentDate,
+    },
+    {
+      url: '/faq',
+      changefreq: 'monthly',
+      priority: 0.85,
+      lastmod: currentDate,
+    },
+    {
+      url: '/fuel-price-trends',
+      changefreq: 'weekly',
+      priority: 0.8,
+      lastmod: currentDate,
+    },
     { url: '/blog', changefreq: 'weekly', priority: 0.8, lastmod: currentDate },
-    { url: '/station-amenities', changefreq: 'weekly', priority: 0.75, lastmod: currentDate },
-    { url: '/how-pricing-works', changefreq: 'monthly', priority: 0.75, lastmod: currentDate },
+    {
+      url: '/station-amenities',
+      changefreq: 'weekly',
+      priority: 0.75,
+      lastmod: currentDate,
+    },
+    {
+      url: '/how-pricing-works',
+      changefreq: 'monthly',
+      priority: 0.75,
+      lastmod: currentDate,
+    },
     { url: '/chat', changefreq: 'weekly', priority: 0.7, lastmod: currentDate },
-    { url: '/about', changefreq: 'monthly', priority: 0.6, lastmod: currentDate },
+    {
+      url: '/about',
+      changefreq: 'monthly',
+      priority: 0.6,
+      lastmod: currentDate,
+    },
   ];
 
   // Regional pages
@@ -76,49 +106,80 @@ async function generateMainSitemap() {
     'southern-suburbs',
     'eastern-suburbs',
     'western-suburbs',
-    'south-east'
+    'south-east',
   ];
 
-  const regionalPages = regions.flatMap(region => [
-    { url: `/regions/${region}`, changefreq: 'daily', priority: 0.85, lastmod: currentDate },
-    { url: `/directory?region=${region.toUpperCase().replace('-', '')}`, changefreq: 'daily', priority: 0.85, lastmod: currentDate }
+  const regionalPages = regions.flatMap((region) => [
+    {
+      url: `/regions/${region}`,
+      changefreq: 'daily',
+      priority: 0.85,
+      lastmod: currentDate,
+    },
+    {
+      url: `/directory?region=${region.toUpperCase().replace('-', '')}`,
+      changefreq: 'daily',
+      priority: 0.85,
+      lastmod: currentDate,
+    },
   ]);
 
   // Brand pages
-  const brands = ['bp', 'caltex', 'shell', '7-eleven', 'coles-express', 'united', 'ampol', 'mobil'];
-  const brandPages = brands.map(brand => ({
+  const brands = [
+    'bp',
+    'caltex',
+    'shell',
+    '7-eleven',
+    'coles-express',
+    'united',
+    'ampol',
+    'mobil',
+  ];
+  const brandPages = brands.map((brand) => ({
     url: `/brands/${brand}`,
     changefreq: 'daily',
     priority: 0.8,
-    lastmod: currentDate
+    lastmod: currentDate,
   }));
 
   // Popular suburbs
   const suburbs = [
-    'melbourne', 'carlton', 'richmond', 'st-kilda', 'frankston',
-    'dandenong', 'geelong', 'ballarat', 'bendigo', 'werribee',
-    'box-hill', 'sunshine', 'preston', 'ringwood'
+    'melbourne',
+    'carlton',
+    'richmond',
+    'st-kilda',
+    'frankston',
+    'dandenong',
+    'geelong',
+    'ballarat',
+    'bendigo',
+    'werribee',
+    'box-hill',
+    'sunshine',
+    'preston',
+    'ringwood',
   ];
-  const suburbPages = suburbs.map(suburb => ({
+  const suburbPages = suburbs.map((suburb) => ({
     url: `/location/${suburb}`,
     changefreq: 'daily',
     priority: 0.75,
-    lastmod: currentDate
+    lastmod: currentDate,
   }));
 
   // Write all URLs
-  const allPages = [...corePages, ...regionalPages, ...brandPages, ...suburbPages];
+  const allPages = [
+    ...corePages,
+    ...regionalPages,
+    ...brandPages,
+    ...suburbPages,
+  ];
 
-  pipeline(
-    sitemap,
-    writeStream,
-    (err) => {
-      if (err) {
-        console.error('❌ Error generating sitemap:', err);
-        process.exit(1);
-      }
+  pipeline(sitemap, writeStream, (err) => {
+    if (err) {
+      console.error('❌ Error generating sitemap:', err);
+      process.exit(1);
     }
-  );
+  });
 
   for (const page of allPages) {
     sitemap.write(page);
@@ -139,19 +200,17 @@ async function generateStationsSitemap() {
     console.log(`   Found ${stations.length} stations`);
 
     const sitemap = new SitemapStream({ hostname: DOMAIN });
-    const writeStream = createWriteStream(resolve(OUTPUT_DIR, 'sitemap-stations.xml'));
+    const writeStream = createWriteStream(
+      resolve(OUTPUT_DIR, 'sitemap-stations.xml')
+    );
     const currentDate = new Date().toISOString().split('T')[0];
 
-    pipeline(
-      sitemap,
-      writeStream,
-      (err) => {
-        if (err) {
-          console.error('❌ Error generating stations sitemap:', err);
-          process.exit(1);
-        }
+    pipeline(sitemap, writeStream, (err) => {
+      if (err) {
+        console.error('❌ Error generating stations sitemap:', err);
+        process.exit(1);
       }
-    );
+    });
 
     // Add each station
     for (const station of stations) {
@@ -160,7 +219,7 @@ async function generateStationsSitemap() {
           url: `/stations/${station.id}`,
           changefreq: 'daily',
           priority: 0.6,
-          lastmod: currentDate
+          lastmod: currentDate,
         });
       }
     }
@@ -224,4 +283,8 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { generateMainSitemap, generateStationsSitemap, generateSitemapIndex };
+module.exports = {
+  generateMainSitemap,
+  generateStationsSitemap,
+  generateSitemapIndex,
+};

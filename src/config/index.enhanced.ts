@@ -1,13 +1,13 @@
 /**
  * Configuration - Central Export
- * 
+ *
  * All configuration files in one place for easy importing.
- * 
+ *
  * @example
  * ```typescript
  * import { siteConfig, env, routes } from '@/config';
  * ```
- * 
+ *
  * @module config
  */
 
@@ -62,4 +62,3 @@ export * from './footerConfig';
  * Type exports for configuration objects
  */
 export type { Metadata } from 'next';
-

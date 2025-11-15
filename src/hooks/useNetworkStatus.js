@@ -1,6 +1,6 @@
 /**
  * useNetworkStatus Hook
- * 
+ *
  * Custom React hook to monitor network connection status
  * Provides real-time updates when user goes online/offline
  */
@@ -22,7 +22,7 @@ export function useNetworkStatus() {
     const handleOnline = () => {
       console.log('🌐 Network connection restored');
       setIsOnline(true);
-      
+
       // Keep wasOffline true for a few seconds to show reconnection message
       setTimeout(() => {
         setWasOffline(false);
@@ -73,13 +73,15 @@ export function useNetworkPing(interval = 30000) {
         const response = await fetch('/favicon.ico', {
           method: 'HEAD',
           cache: 'no-cache',
-          signal: AbortSignal.timeout(5000)
+          signal: AbortSignal.timeout(5000),
         });
 
         if (mounted) {
           const newStatus = response.ok;
           if (newStatus !== isOnline) {
-            console.log(`🌐 Connectivity check: ${newStatus ? 'Online' : 'Offline'}`);
+            console.log(
+              `🌐 Connectivity check: ${newStatus ? 'Online' : 'Offline'}`
+            );
           }
           setIsOnline(newStatus);
           setLastChecked(new Date());
@@ -113,4 +115,3 @@ export function useNetworkPing(interval = 30000) {
 }
 
 export default useNetworkStatus;
-

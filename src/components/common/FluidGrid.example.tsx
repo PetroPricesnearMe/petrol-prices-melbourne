@@ -24,10 +24,10 @@ export function StationCardsGridExample() {
     >
       {stations.map((station) => (
         <GridItem key={station.id}>
-          <div className="bg-white rounded-xl shadow-md p-6 h-full flex flex-col">
+          <div className="flex h-full flex-col rounded-xl bg-white p-6 shadow-md">
             {/* Station card content */}
-            <h3 className="text-xl font-bold mb-2">{station.name}</h3>
-            <p className="text-gray-600 mb-4">{station.address}</p>
+            <h3 className="mb-2 text-xl font-bold">{station.name}</h3>
+            <p className="mb-4 text-gray-600">{station.address}</p>
             <div className="mt-auto">
               <span className="text-2xl font-bold text-primary-600">
                 ${station.price}
@@ -63,11 +63,7 @@ export function CustomColumnsExample() {
 // Example 3: Static grid without animations
 export function StaticGridExample() {
   return (
-    <FluidGrid
-      gap="sm"
-      animate={false}
-      uniformHeights={false}
-    >
+    <FluidGrid gap="sm" animate={false} uniformHeights={false}>
       {/* Grid items without animation */}
     </FluidGrid>
   );
@@ -102,6 +98,12 @@ export function StationCardsIntegrationExample() {
 }
 
 // Mock components for example
-const StationCard = ({ station, className, ...props }: { station: Record<string, unknown>; className?: string; [key: string]: unknown }) => (
-  <div className={className}>{/* Card content */}</div>
-);
+const StationCard = ({
+  station,
+  className,
+  ...props
+}: {
+  station: Record<string, unknown>;
+  className?: string;
+  [key: string]: unknown;
+}) => <div className={className}>{/* Card content */}</div>;

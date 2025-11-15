@@ -7,7 +7,7 @@ import { useResponsive } from '../hooks/useResponsive';
  * ResponsiveImage Component
  * Renders optimized images based on screen size
  * Provides art direction and resolution switching
- * 
+ *
  * @component
  * @example
  * <ResponsiveImage
@@ -51,31 +51,11 @@ const ResponsiveImage = ({
   return (
     <picture>
       {/* Provide sources for different screen sizes */}
-      {srcXl && (
-        <source
-          media="(min-width: 1280px)"
-          srcSet={srcXl}
-        />
-      )}
-      {srcDesktop && (
-        <source
-          media="(min-width: 1024px)"
-          srcSet={srcDesktop}
-        />
-      )}
-      {srcTablet && (
-        <source
-          media="(min-width: 640px)"
-          srcSet={srcTablet}
-        />
-      )}
-      {srcMobile && (
-        <source
-          media="(max-width: 639px)"
-          srcSet={srcMobile}
-        />
-      )}
-      
+      {srcXl && <source media="(min-width: 1280px)" srcSet={srcXl} />}
+      {srcDesktop && <source media="(min-width: 1024px)" srcSet={srcDesktop} />}
+      {srcTablet && <source media="(min-width: 640px)" srcSet={srcTablet} />}
+      {srcMobile && <source media="(max-width: 639px)" srcSet={srcMobile} />}
+
       {/* Fallback image */}
       <img
         src={imageSrc}
@@ -127,4 +107,3 @@ ResponsiveImage.defaultProps = {
 };
 
 export default ResponsiveImage;
-

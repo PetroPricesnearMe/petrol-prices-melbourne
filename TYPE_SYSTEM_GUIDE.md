@@ -127,7 +127,11 @@ interface StationListProps {
   onFilterChange: (filters: FilterState) => void;
 }
 
-export function StationList({ stations, filters, onFilterChange }: StationListProps) {
+export function StationList({
+  stations,
+  filters,
+  onFilterChange,
+}: StationListProps) {
   // Implementation
 }
 ```
@@ -156,11 +160,7 @@ export function useStations(): AsyncState<Listing[], APIError> {
 ### API Service with Types
 
 ```typescript
-import {
-  GetListingsRequest,
-  GetListingsResponse,
-  APIError
-} from '@/types';
+import { GetListingsRequest, GetListingsResponse, APIError } from '@/types';
 
 export async function getListings(
   request: GetListingsRequest
@@ -233,7 +233,9 @@ import {
   getSortLabel,
 } from '@/types';
 
-const listing: Listing = { /* ... */ };
+const listing: Listing = {
+  /* ... */
+};
 const cheapest = getCheapestPrice(listing);
 const formatted = formatListingPrice(cheapest);
 const color = getBrandColor(listing.brand);
@@ -342,7 +344,9 @@ const label = FUEL_TYPE_LABELS['unleaded']; // "Unleaded"
 ```typescript
 import { FILTER_PRESETS } from '@/types';
 
-const cheapestUnleaded = FILTER_PRESETS.find(p => p.id === 'cheapest-unleaded');
+const cheapestUnleaded = FILTER_PRESETS.find(
+  (p) => p.id === 'cheapest-unleaded'
+);
 // Apply preset
 setFilters({ ...DEFAULT_FILTER_STATE, ...cheapestUnleaded.filters });
 ```
@@ -410,23 +414,18 @@ import {
   Listing,
   FuelPrices,
   ListingMetadata,
-  PaginatedListings
+  PaginatedListings,
 } from '@/types';
 
 // Filter types
-import {
-  FilterState,
-  SortOption,
-  FilterOption,
-  QueryParams
-} from '@/types';
+import { FilterState, SortOption, FilterOption, QueryParams } from '@/types';
 
 // API types
 import {
   APIResponse,
   PaginatedAPIResponse,
   APIError,
-  AsyncState
+  AsyncState,
 } from '@/types';
 
 // Utilities

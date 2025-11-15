@@ -20,7 +20,11 @@ interface MobileMenuOverlayProps {
   className?: string;
 }
 
-export function MobileMenuOverlay({ isOpen, onClose, className }: MobileMenuOverlayProps) {
+export function MobileMenuOverlay({
+  isOpen,
+  onClose,
+  className,
+}: MobileMenuOverlayProps) {
   if (!isOpen) return null;
 
   return (

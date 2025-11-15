@@ -236,7 +236,10 @@ export interface ArticleSchema {
 /**
  * Generate LocalBusiness schema for a petrol station
  */
-export function generateLocalBusinessSchema(station: Station, baseUrl: string): LocalBusinessSchema {
+export function generateLocalBusinessSchema(
+  station: Station,
+  baseUrl: string
+): LocalBusinessSchema {
   const schema: LocalBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -279,7 +282,10 @@ export function generateLocalBusinessSchema(station: Station, baseUrl: string): 
   if (station.operatingHours) {
     schema.openingHours = Object.entries(station.operatingHours)
       .filter(([_, hours]) => hours && hours !== 'Closed')
-      .map(([day, hours]) => `${day.charAt(0).toUpperCase() + day.slice(1)} ${hours}`);
+      .map(
+        ([day, hours]) =>
+          `${day.charAt(0).toUpperCase() + day.slice(1)} ${hours}`
+      );
   }
 
   // Add logo/brand image if available
@@ -330,7 +336,10 @@ export function generateLocalBusinessSchema(station: Station, baseUrl: string): 
 /**
  * Generate Place schema for a petrol station
  */
-export function generatePlaceSchema(station: Station, baseUrl: string): PlaceSchema {
+export function generatePlaceSchema(
+  station: Station,
+  baseUrl: string
+): PlaceSchema {
   const schema: PlaceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Place',
@@ -365,7 +374,10 @@ export function generatePlaceSchema(station: Station, baseUrl: string): PlaceSch
   if (station.operatingHours) {
     schema.openingHours = Object.entries(station.operatingHours)
       .filter(([_, hours]) => hours && hours !== 'Closed')
-      .map(([day, hours]) => `${day.charAt(0).toUpperCase() + day.slice(1)} ${hours}`);
+      .map(
+        ([day, hours]) =>
+          `${day.charAt(0).toUpperCase() + day.slice(1)} ${hours}`
+      );
   }
 
   // Add amenities if available
@@ -397,10 +409,12 @@ export function generateFuelProductSchema(
     name: getFuelDisplayName(fuelType),
     description: `${getFuelDisplayName(fuelType)} fuel available at ${station.name}`,
     category: 'Automotive Fuel',
-    brand: station.brand ? {
-      '@type': 'Brand',
-      name: station.brand,
-    } : undefined,
+    brand: station.brand
+      ? {
+          '@type': 'Brand',
+          name: station.brand,
+        }
+      : undefined,
     offers: {
       '@type': 'Offer',
       price: `${price}`,
@@ -429,7 +443,9 @@ export function generateFuelProductSchema(
         value: `${station.suburb}, Victoria`,
       },
     ],
-    image: station.brand ? `${baseUrl}/images/brands/${station.brand.toLowerCase().replace(/\s+/g, '-')}.png` : undefined,
+    image: station.brand
+      ? `${baseUrl}/images/brands/${station.brand.toLowerCase().replace(/\s+/g, '-')}.png`
+      : undefined,
   };
 }
 
@@ -442,7 +458,8 @@ export function generateWebSiteSchema(baseUrl: string): WebSiteSchema {
     '@type': 'WebSite',
     name: 'Petrol Price Near Me',
     url: baseUrl,
-    description: 'Find the cheapest petrol stations near you in Melbourne with real-time fuel prices',
+    description:
+      'Find the cheapest petrol stations near you in Melbourne with real-time fuel prices',
     publisher: {
       '@type': 'Organization',
       name: 'Petrol Price Near Me',
@@ -465,7 +482,10 @@ export function generateWebSiteSchema(baseUrl: string): WebSiteSchema {
 /**
  * Generate BreadcrumbList schema
  */
-export function generateBreadcrumbSchema(breadcrumbs: Array<{ label: string; href: string }>, baseUrl: string): BreadcrumbListSchema {
+export function generateBreadcrumbSchema(
+  breadcrumbs: Array<{ label: string; href: string }>,
+  baseUrl: string
+): BreadcrumbListSchema {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -481,11 +501,13 @@ export function generateBreadcrumbSchema(breadcrumbs: Array<{ label: string; hre
 /**
  * Generate FAQPage schema
  */
-export function generateFAQSchema(faqs: Array<{ question: string; answer: string }>): FAQPageSchema {
+export function generateFAQSchema(
+  faqs: Array<{ question: string; answer: string }>
+): FAQPageSchema {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
+    mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: {
@@ -514,10 +536,12 @@ export function generateArticleSchema(article: {
     '@type': 'Article',
     headline: article.headline,
     description: article.description,
-    author: article.authorName ? {
-      '@type': 'Person',
-      name: article.authorName,
-    } : undefined,
+    author: article.authorName
+      ? {
+          '@type': 'Person',
+          name: article.authorName,
+        }
+      : undefined,
     publisher: {
       '@type': 'Organization',
       name: 'Petrol Price Near Me',
@@ -575,7 +599,10 @@ function getFuelDisplayName(fuelType: string): string {
     e85: 'E85',
   };
 
-  return fuelTypeMap[fuelType] || fuelType.charAt(0).toUpperCase() + fuelType.slice(1);
+  return (
+    fuelTypeMap[fuelType] ||
+    fuelType.charAt(0).toUpperCase() + fuelType.slice(1)
+  );
 }
 
 /**
@@ -599,7 +626,9 @@ function getAmenityDisplayName(amenity: string): string {
     isOpen24Hours: '24 Hour Service',
   };
 
-  return amenityMap[amenity] || amenity.charAt(0).toUpperCase() + amenity.slice(1);
+  return (
+    amenityMap[amenity] || amenity.charAt(0).toUpperCase() + amenity.slice(1)
+  );
 }
 
 /**
@@ -615,7 +644,9 @@ export function generateStationPageSchemas(station: Station, baseUrl: string) {
   if (station.fuelPrices) {
     Object.entries(station.fuelPrices).forEach(([fuelType, price]) => {
       if (price !== null && price !== undefined) {
-        schemas.push(generateFuelProductSchema(fuelType, price, station, baseUrl));
+        schemas.push(
+          generateFuelProductSchema(fuelType, price, station, baseUrl)
+        );
       }
     });
   }

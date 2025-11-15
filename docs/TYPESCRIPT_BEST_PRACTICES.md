@@ -443,9 +443,7 @@ async function getUsers(
   page: number = 1,
   pageSize: number = 20
 ): Promise<PaginatedResponse<User>> {
-  const response = await fetch(
-    `/api/users?page=${page}&pageSize=${pageSize}`
-  );
+  const response = await fetch(`/api/users?page=${page}&pageSize=${pageSize}`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }

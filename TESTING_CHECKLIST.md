@@ -18,11 +18,13 @@ npm run dev
 ## ✅ Test 1: Hydration Errors (CRITICAL)
 
 ### Steps
+
 1. Open browser to `http://localhost:3000`
 2. Open DevTools (F12) → Console tab
 3. Look for hydration warnings
 
 ### Expected Result
+
 ```
 ✅ NO warnings like:
    - "Text content did not match"
@@ -31,6 +33,7 @@ npm run dev
 ```
 
 ### If You See Errors
+
 Check `DEBUGGING_TROUBLESHOOTING_GUIDE.md` section 1
 
 ---
@@ -38,12 +41,14 @@ Check `DEBUGGING_TROUBLESHOOTING_GUIDE.md` section 1
 ## ✅ Test 2: Missing Image (404 Check)
 
 ### Steps
+
 1. Open DevTools → Network tab
 2. Filter by "Img"
 3. Reload page (Ctrl+R / Cmd+R)
 4. Check for red/failed requests
 
 ### Expected Result
+
 ```
 ✅ NO 404 errors for:
    /images/hero-petrol-station.jpg
@@ -53,7 +58,9 @@ Check `DEBUGGING_TROUBLESHOOTING_GUIDE.md` section 1
 ```
 
 ### Visual Check
+
 Hero section should show:
+
 - Blue to green gradient background
 - Subtle floating white circles with blur
 - Smooth pulse animation
@@ -63,12 +70,14 @@ Hero section should show:
 ## ✅ Test 3: Font Loading Performance
 
 ### Steps
+
 1. Open DevTools → Network tab
 2. Clear cache (Ctrl+Shift+Del)
 3. Reload page
 4. Look for font requests
 
 ### Expected Result
+
 ```
 ✅ NO external requests to:
    - fonts.googleapis.com
@@ -87,7 +96,7 @@ Hero section should show:
 1. Open DevTools → Lighthouse tab
 2. Select:
    - ✅ Performance
-   - ✅ Accessibility  
+   - ✅ Accessibility
    - ✅ Best Practices
    - ✅ SEO
 3. Device: Desktop
@@ -96,6 +105,7 @@ Hero section should show:
 ### Expected Results
 
 #### Performance: 90+ (Green)
+
 - **FCP:** < 1.8s ✅
 - **LCP:** < 2.5s ✅
 - **TBT:** < 300ms ✅
@@ -103,6 +113,7 @@ Hero section should show:
 - **Speed Index:** < 3.4s ✅
 
 #### Accessibility: 95+ (Green)
+
 - Color contrast passing
 - ARIA labels present
 - Keyboard navigation working
@@ -112,6 +123,7 @@ Hero section should show:
 ## ✅ Test 5: Mobile Responsiveness
 
 ### Steps
+
 1. Open DevTools → Toggle device toolbar (Ctrl+Shift+M)
 2. Test these viewports:
    - Mobile: 375x667 (iPhone SE)
@@ -119,6 +131,7 @@ Hero section should show:
    - Desktop: 1920x1080
 
 ### Expected Result
+
 ```
 ✅ All breakpoints:
    - No horizontal scroll
@@ -131,16 +144,19 @@ Hero section should show:
 ### Visual Checks
 
 **Mobile (< 640px)**
+
 - Single column layout
 - Stack navigation
 - Full-width hero
 
 **Tablet (640-1024px)**
+
 - 2-3 column grid
 - Readable typography
 - Proper spacing
 
 **Desktop (> 1024px)**
+
 - Multi-column layout
 - Hero section with content + visual
 - Footer grid layout
@@ -150,11 +166,13 @@ Hero section should show:
 ## ✅ Test 6: Dark Mode
 
 ### Steps
+
 1. Look for theme toggle (usually top-right)
 2. Click to toggle dark mode
 3. Check all sections
 
 ### Expected Result
+
 ```
 ✅ Dark mode works:
    - Background: Dark gray/black
@@ -169,6 +187,7 @@ Hero section should show:
 ## ✅ Test 7: Console Errors
 
 ### Steps
+
 1. DevTools → Console
 2. Clear console
 3. Navigate through pages:
@@ -178,6 +197,7 @@ Hero section should show:
    - About `/about`
 
 ### Expected Result
+
 ```
 ✅ NO errors (red messages)
 ✅ NO warnings about:
@@ -192,6 +212,7 @@ Hero section should show:
 ## ✅ Test 8: Production Build
 
 ### Steps
+
 ```bash
 # Build for production
 npm run build
@@ -206,6 +227,7 @@ npm run start
 ```
 
 ### Expected Result
+
 ```
 ✅ Build succeeds without errors
 ✅ All pages generated
@@ -215,7 +237,9 @@ npm run start
 ```
 
 ### Check Bundle Size
+
 Look for in build output:
+
 ```
 Route (app)                              Size     First Load JS
 ┌ ○ /                                    X KB     XXX KB
@@ -232,6 +256,7 @@ Route (app)                              Size     First Load JS
 ## ✅ Test 9: Accessibility
 
 ### Keyboard Navigation
+
 1. Press Tab to navigate
 2. Check:
    - Visible focus indicators
@@ -240,6 +265,7 @@ Route (app)                              Size     First Load JS
    - Modal traps focus correctly
 
 ### Screen Reader
+
 1. Enable screen reader:
    - Windows: NVDA (free)
    - Mac: VoiceOver (Cmd+F5)
@@ -250,6 +276,7 @@ Route (app)                              Size     First Load JS
    - Button descriptions
 
 ### Expected Result
+
 ```
 ✅ Focus visible on all elements
 ✅ Logical tab order
@@ -262,10 +289,12 @@ Route (app)                              Size     First Load JS
 ## ✅ Test 10: SEO & Metadata
 
 ### Steps
+
 1. View page source (Ctrl+U)
 2. Check `<head>` section
 
 ### Expected Result
+
 ```html
 ✅ Title present and unique
 <title>Find Cheapest Petrol Prices Near Me | Save Up to 20c/L</title>
@@ -283,11 +312,11 @@ Route (app)                              Size     First Load JS
 
 ✅ Structured data (JSON-LD)
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  ...
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    ...
+  }
 </script>
 ```
 
@@ -298,6 +327,7 @@ Route (app)                              Size     First Load JS
 ### Issue: Hydration Error Still Appears
 
 **Solution:**
+
 ```bash
 # Clear .next cache
 rm -rf .next
@@ -307,6 +337,7 @@ npm run dev
 ### Issue: Styles Not Updating
 
 **Solution:**
+
 ```bash
 # Clear Tailwind cache
 rm -rf .next
@@ -317,6 +348,7 @@ npm run dev
 ### Issue: Module Not Found
 
 **Solution:**
+
 ```bash
 # Reinstall dependencies
 rm -rf node_modules
@@ -327,6 +359,7 @@ npm install
 ### Issue: TypeScript Errors
 
 **Solution:**
+
 ```bash
 # Check types
 npm run type-check
@@ -341,23 +374,23 @@ npm run type-check
 
 ### Target Metrics (Desktop)
 
-| Metric | Target | Good | Needs Improvement |
-|--------|--------|------|-------------------|
-| **FCP** | < 1.2s | < 1.8s | 1.8s - 3s |
-| **LCP** | < 1.8s | < 2.5s | 2.5s - 4s |
-| **TBT** | < 200ms | < 300ms | 300ms - 600ms |
-| **CLS** | < 0.05 | < 0.1 | 0.1 - 0.25 |
-| **Speed Index** | < 2.0s | < 3.4s | 3.4s - 5.8s |
+| Metric          | Target  | Good    | Needs Improvement |
+| --------------- | ------- | ------- | ----------------- |
+| **FCP**         | < 1.2s  | < 1.8s  | 1.8s - 3s         |
+| **LCP**         | < 1.8s  | < 2.5s  | 2.5s - 4s         |
+| **TBT**         | < 200ms | < 300ms | 300ms - 600ms     |
+| **CLS**         | < 0.05  | < 0.1   | 0.1 - 0.25        |
+| **Speed Index** | < 2.0s  | < 3.4s  | 3.4s - 5.8s       |
 
 ### Target Metrics (Mobile)
 
-| Metric | Target | Good | Needs Improvement |
-|--------|--------|------|-------------------|
-| **FCP** | < 1.8s | < 3s | 3s - 5s |
-| **LCP** | < 2.5s | < 4s | 4s - 6s |
-| **TBT** | < 300ms | < 600ms | 600ms - 900ms |
-| **CLS** | < 0.1 | < 0.25 | 0.25 - 0.5 |
-| **Speed Index** | < 3.4s | < 5.8s | 5.8s - 8s |
+| Metric          | Target  | Good    | Needs Improvement |
+| --------------- | ------- | ------- | ----------------- |
+| **FCP**         | < 1.8s  | < 3s    | 3s - 5s           |
+| **LCP**         | < 2.5s  | < 4s    | 4s - 6s           |
+| **TBT**         | < 300ms | < 600ms | 600ms - 900ms     |
+| **CLS**         | < 0.1   | < 0.25  | 0.25 - 0.5        |
+| **Speed Index** | < 3.4s  | < 5.8s  | 5.8s - 8s         |
 
 ---
 
@@ -365,7 +398,7 @@ npm run type-check
 
 - [ ] ✅ No hydration errors in console
 - [ ] ✅ No 404 errors for images
-- [ ] ✅ Fonts load from /_next/static/
+- [ ] ✅ Fonts load from /\_next/static/
 - [ ] ✅ Lighthouse Performance > 90
 - [ ] ✅ Lighthouse Accessibility > 95
 - [ ] ✅ Mobile responsive (test 3 breakpoints)
@@ -383,11 +416,13 @@ npm run type-check
 ## 📞 Need Help?
 
 ### Documentation
+
 - `DEBUGGING_TROUBLESHOOTING_GUIDE.md` - Comprehensive solutions
 - `DEBUGGING_FIXES_APPLIED.md` - Summary of changes
 - `VERIFICATION_TESTING_GUIDE.md` - Testing strategies
 
 ### Check Specific Issues
+
 1. **Hydration:** See guide section 1
 2. **Images:** See guide section 2
 3. **Fonts/Preload:** See guide section 3
@@ -413,4 +448,3 @@ Your application is production-ready when:
 
 **Last Updated:** November 10, 2025  
 **Status:** Ready for Testing ✅
-

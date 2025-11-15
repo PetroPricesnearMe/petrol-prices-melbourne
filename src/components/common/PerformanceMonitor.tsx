@@ -61,7 +61,12 @@ export const PerformanceMonitor = () => {
             reportMetric({
               name: 'FP',
               value: entry.startTime,
-              rating: entry.startTime < 1000 ? 'good' : entry.startTime < 2500 ? 'needs-improvement' : 'poor',
+              rating:
+                entry.startTime < 1000
+                  ? 'good'
+                  : entry.startTime < 2500
+                    ? 'needs-improvement'
+                    : 'poor',
               delta: entry.startTime,
               id: 'fp',
             });
@@ -75,8 +80,11 @@ export const PerformanceMonitor = () => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'resource') {
             const resource = entry as PerformanceResourceTiming;
-            if (resource.duration > 1000) { // Log slow resources (>1s)
-              console.warn(`[Performance] Slow resource: ${resource.name} (${Math.round(resource.duration)}ms)`);
+            if (resource.duration > 1000) {
+              // Log slow resources (>1s)
+              console.warn(
+                `[Performance] Slow resource: ${resource.name} (${Math.round(resource.duration)}ms)`
+              );
             }
           }
         }

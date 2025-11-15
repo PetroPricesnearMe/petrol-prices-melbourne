@@ -53,6 +53,17 @@ export interface BaseProps {
   testId?: string;
 }
 
+/**
+ * Component base props with common properties
+ * Alias for BaseProps for backward compatibility
+ */
+export interface ComponentBaseProps {
+  className?: string;
+  style?: React.CSSProperties;
+  id?: string;
+  'data-testid'?: string;
+}
+
 /** Component with loading state */
 export interface WithLoadingState {
   isLoading?: boolean;
@@ -72,7 +83,11 @@ export interface WithDisabledState {
 }
 
 /** Fully featured component props */
-export interface ComponentProps extends BaseProps, WithLoadingState, WithErrorState, WithDisabledState {}
+export interface ComponentProps
+  extends BaseProps,
+    WithLoadingState,
+    WithErrorState,
+    WithDisabledState {}
 
 // ============================================================================
 // API Types
@@ -276,7 +291,10 @@ export class NetworkError extends AppError {
 
 /** Validation error */
 export class ValidationError extends AppError {
-  constructor(message: string, public errors: FieldError[]) {
+  constructor(
+    message: string,
+    public errors: FieldError[]
+  ) {
     super(message, 'VALIDATION_ERROR', 400, { errors });
     this.name = 'ValidationError';
     Object.setPrototypeOf(this, ValidationError.prototype);

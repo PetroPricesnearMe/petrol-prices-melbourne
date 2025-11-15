@@ -1,7 +1,7 @@
 /**
  * Button Component (Atom)
- * shadcn/ui inspired button with variants
- * 
+ * shadcn/ui inspired button with variants and Framer Motion animations
+ *
  * @example
  * ```tsx
  * <Button variant="primary" size="lg">Click me</Button>
@@ -10,6 +10,9 @@
  * ```
  */
 
+'use client';
+
+import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import React from 'react';
@@ -22,7 +25,13 @@ import { cn } from '@/lib/utils';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual variant */
-  variant?: 'primary' | 'secondary' | 'outlined' | 'ghost' | 'destructive' | 'link';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'outlined'
+    | 'ghost'
+    | 'destructive'
+    | 'link';
   /** Size variant */
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'icon';
   /** Loading state */
@@ -126,8 +135,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const isDisabled = disabled || loading;
 
+    const MotionButton = motion.button;
+
     return (
-      <button
+      <MotionButton
         ref={ref}
         type={type}
         disabled={isDisabled}
@@ -140,29 +151,29 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         aria-disabled={isDisabled}
         aria-busy={loading}
+        whileHover={!isDisabled ? { scale: 1.02 } : undefined}
+        whileTap={!isDisabled ? { scale: 0.98 } : undefined}
+        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
         {...props}
       >
         {loading && (
-          <Loader2 
-            className="w-4 h-4 animate-spin" 
-            aria-hidden="true"
-          />
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
         )}
-        
+
         {!loading && leftIcon && (
           <span className="flex-shrink-0" aria-hidden="true">
             {leftIcon}
           </span>
         )}
-        
+
         {children && <span>{children}</span>}
-        
+
         {!loading && rightIcon && (
           <span className="flex-shrink-0" aria-hidden="true">
             {rightIcon}
           </span>
         )}
-      </button>
+      </MotionButton>
     );
   }
 );
@@ -170,4 +181,3 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export default Button;
-

@@ -6,105 +6,105 @@
 
 /* Shell */
 .brand-shell {
-  --brand-primary: #DD1D21;
-  --brand-secondary: #FBCE07;
+  --brand-primary: #dd1d21;
+  --brand-secondary: #fbce07;
 }
 
 .brand-shell.badge {
-  background: linear-gradient(135deg, #DD1D21 0%, #FBCE07 100%);
+  background: linear-gradient(135deg, #dd1d21 0%, #fbce07 100%);
   color: white;
 }
 
 /* BP */
 .brand-bp {
-  --brand-primary: #00A850;
-  --brand-secondary: #FFD200;
+  --brand-primary: #00a850;
+  --brand-secondary: #ffd200;
 }
 
 .brand-bp.badge {
-  background: #00A850;
+  background: #00a850;
   color: white;
 }
 
 /* Caltex/Ampol */
 .brand-caltex {
-  --brand-primary: #003DA5;
-  --brand-secondary: #ED1C24;
+  --brand-primary: #003da5;
+  --brand-secondary: #ed1c24;
 }
 
 .brand-caltex.badge {
-  background: linear-gradient(135deg, #003DA5 0%, #ED1C24 100%);
+  background: linear-gradient(135deg, #003da5 0%, #ed1c24 100%);
   color: white;
 }
 
 /* 7-Eleven */
 .brand-seven-eleven {
-  --brand-primary: #FF6201;
+  --brand-primary: #ff6201;
   --brand-secondary: #008848;
 }
 
 .brand-seven-eleven.badge {
-  background: linear-gradient(135deg, #FF6201 0%, #008848 100%);
+  background: linear-gradient(135deg, #ff6201 0%, #008848 100%);
   color: white;
 }
 
 /* Mobil */
 .brand-mobil {
-  --brand-primary: #EE3124;
-  --brand-secondary: #0066B3;
+  --brand-primary: #ee3124;
+  --brand-secondary: #0066b3;
 }
 
 .brand-mobil.badge {
-  background: linear-gradient(135deg, #EE3124 0%, #0066B3 100%);
+  background: linear-gradient(135deg, #ee3124 0%, #0066b3 100%);
   color: white;
 }
 
 /* Coles */
 .brand-coles {
-  --brand-primary: #E31E26;
-  --brand-secondary: #E31E26;
+  --brand-primary: #e31e26;
+  --brand-secondary: #e31e26;
 }
 
 .brand-coles.badge {
-  background: #E31E26;
+  background: #e31e26;
   color: white;
 }
 
 /* United */
 .brand-united {
-  --brand-primary: #0066B3;
-  --brand-secondary: #0066B3;
+  --brand-primary: #0066b3;
+  --brand-secondary: #0066b3;
 }
 
 .brand-united.badge {
-  background: #0066B3;
+  background: #0066b3;
   color: white;
 }
 
 /* Liberty */
 .brand-liberty {
   --brand-primary: #003087;
-  --brand-secondary: #E20714;
+  --brand-secondary: #e20714;
 }
 
 .brand-liberty.badge {
-  background: linear-gradient(135deg, #003087 0%, #E20714 100%);
+  background: linear-gradient(135deg, #003087 0%, #e20714 100%);
   color: white;
 }
 
 /* APCO */
 .brand-apco {
-  --brand-primary: #E31E26;
+  --brand-primary: #e31e26;
   --brand-secondary: #000000;
 }
 
 .brand-apco.badge {
-  background: linear-gradient(135deg, #E31E26 0%, #000000 100%);
+  background: linear-gradient(135deg, #e31e26 0%, #000000 100%);
   color: white;
 }
 
 /* Brand Badge Enhancements */
-.badge[class*="brand-"] {
+.badge[class*='brand-'] {
   font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -115,14 +115,14 @@
 }
 
 /* Brand Header Hover Effects */
-.card:hover [class*="brand-"] {
+.card:hover [class*='brand-'] {
   transform: scale(1.02);
   transition: transform 0.2s ease;
 }
 
 /* Dark Mode Adjustments */
 @media (prefers-color-scheme: dark) {
-  .badge[class*="brand-"] {
+  .badge[class*='brand-'] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 }

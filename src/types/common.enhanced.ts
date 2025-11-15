@@ -1,9 +1,9 @@
 /**
  * Common Types - Enhanced
- * 
+ *
  * Shared types used across the application.
  * Includes utility types for better type safety.
- * 
+ *
  * @module types/common
  */
 
@@ -30,7 +30,8 @@ export type RequireKeys<T, K extends keyof T> = T & Required<Pick<T, K>>;
 /**
  * Make specific properties optional
  */
-export type OptionalKeys<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+export type OptionalKeys<T, K extends keyof T> = Omit<T, K> &
+  Partial<Pick<T, K>>;
 
 /**
  * Deep partial type
@@ -68,7 +69,7 @@ export type KeysOfType<T, V> = {
 /**
  * Async return type helper
  */
-export type AsyncReturnType<T extends (...args: any) => Promise<any>> = 
+export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
   T extends (...args: any) => Promise<infer R> ? R : never;
 
 /**
@@ -124,15 +125,15 @@ export interface SortConfig<T = string> {
 /**
  * Filter operator
  */
-export type FilterOperator = 
-  | 'eq'    // equals
-  | 'ne'    // not equals
-  | 'gt'    // greater than
-  | 'gte'   // greater than or equals
-  | 'lt'    // less than
-  | 'lte'   // less than or equals
-  | 'in'    // in array
-  | 'nin'   // not in array
+export type FilterOperator =
+  | 'eq' // equals
+  | 'ne' // not equals
+  | 'gt' // greater than
+  | 'gte' // greater than or equals
+  | 'lt' // less than
+  | 'lte' // less than or equals
+  | 'in' // in array
+  | 'nin' // not in array
   | 'contains'
   | 'startsWith'
   | 'endsWith';
@@ -192,7 +193,7 @@ export interface ContactInfo {
  * Operating hours for a single day
  */
 export interface DayHours {
-  open: string;  // HH:mm format
+  open: string; // HH:mm format
   close: string; // HH:mm format
   isOpen: boolean;
 }
@@ -363,4 +364,3 @@ export type ClickHandler = (event: React.MouseEvent) => void;
  * Submit handler type
  */
 export type SubmitHandler<T = any> = (values: T) => void | Promise<void>;
-

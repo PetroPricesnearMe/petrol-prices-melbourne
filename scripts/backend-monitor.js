@@ -1,7 +1,7 @@
 /**
  * Backend Monitoring Agent
  * Scans backend for issues and reports to master agent every 30 minutes
- * 
+ *
  * Monitors:
  * - API endpoints health
  * - Data file integrity
@@ -35,7 +35,7 @@ class BackendMonitor {
     this.reportLog.push({
       type: 'scan_start',
       timestamp: this.timestamp,
-      message: 'Backend monitoring scan initiated'
+      message: 'Backend monitoring scan initiated',
     });
 
     // Run all checks
@@ -59,35 +59,38 @@ class BackendMonitor {
    */
   async checkAPIEndpoints() {
     console.log('📡 Checking API endpoints...');
-    
+
     const endpoints = [
       { path: 'pages/api/health.js', name: 'Health Check API' },
-      { path: 'pages/api/stations.js', name: 'Stations API' }
+      { path: 'pages/api/stations.js', name: 'Stations API' },
     ];
 
     for (const endpoint of endpoints) {
       const fullPath = path.join(process.cwd(), endpoint.path);
-      
+
       if (fs.existsSync(fullPath)) {
         try {
           const content = fs.readFileSync(fullPath, 'utf8');
-          
+
           // Check for common issues
           if (!content.includes('export default')) {
             this.errors.push({
               category: 'API',
               file: endpoint.path,
               issue: 'Missing default export',
-              severity: 'HIGH'
+              severity: 'HIGH',
             });
           }
 
-          if (content.includes('console.log') && !content.includes('console.error')) {
+          if (
+            content.includes('console.log') &&
+            !content.includes('console.error')
+          ) {
             this.warnings.push({
               category: 'API',
               file: endpoint.path,
               issue: 'Console.log found but no error handling',
-              severity: 'LOW'
+              severity: 'LOW',
             });
           }
 
@@ -95,15 +98,14 @@ class BackendMonitor {
             category: 'API',
             file: endpoint.path,
             status: 'OK',
-            message: `${endpoint.name} file exists and is readable`
+            message: `${endpoint.name} file exists and is readable`,
           });
-
         } catch (error) {
           this.errors.push({
             category: 'API',
             file: endpoint.path,
             issue: `Failed to read file: ${error.message}`,
-            severity: 'HIGH'
+            severity: 'HIGH',
           });
         }
       } else {
@@ -111,7 +113,7 @@ class BackendMonitor {
           category: 'API',
           file: endpoint.path,
           issue: 'API endpoint file not found',
-          severity: 'CRITICAL'
+          severity: 'CRITICAL',
         });
       }
     }
@@ -122,34 +124,38 @@ class BackendMonitor {
    */
   async checkDataFiles() {
     console.log('📊 Checking data files...');
-    
+
     const dataFiles = [
       { path: 'public/data/stations.geojson', type: 'geojson', required: true },
       { path: 'public/data/stations.csv', type: 'csv', required: false },
-      { path: 'database/Petrol_Stations.geojson', type: 'geojson', required: false }
+      {
+        path: 'database/Petrol_Stations.geojson',
+        type: 'geojson',
+        required: false,
+      },
     ];
 
     for (const dataFile of dataFiles) {
       const fullPath = path.join(process.cwd(), dataFile.path);
-      
+
       if (fs.existsSync(fullPath)) {
         try {
           const stats = fs.statSync(fullPath);
-          
+
           // Check file size
           if (stats.size === 0) {
             this.errors.push({
               category: 'DATA',
               file: dataFile.path,
               issue: 'Data file is empty',
-              severity: 'HIGH'
+              severity: 'HIGH',
             });
           } else if (stats.size < 100) {
             this.warnings.push({
               category: 'DATA',
               file: dataFile.path,
               issue: `Data file is very small (${stats.size} bytes)`,
-              severity: 'MEDIUM'
+              severity: 'MEDIUM',
             });
           } else {
             // Validate JSON structure for geojson
@@ -162,21 +168,21 @@ class BackendMonitor {
                     category: 'DATA',
                     file: dataFile.path,
                     issue: 'Invalid GeoJSON structure: missing features array',
-                    severity: 'HIGH'
+                    severity: 'HIGH',
                   });
                 } else if (json.features.length === 0) {
                   this.warnings.push({
                     category: 'DATA',
                     file: dataFile.path,
                     issue: 'GeoJSON has no features',
-                    severity: 'MEDIUM'
+                    severity: 'MEDIUM',
                   });
                 } else {
                   this.info.push({
                     category: 'DATA',
                     file: dataFile.path,
                     status: 'OK',
-                    message: `Valid GeoJSON with ${json.features.length} features`
+                    message: `Valid GeoJSON with ${json.features.length} features`,
                   });
                 }
               } catch (jsonError) {
@@ -184,7 +190,7 @@ class BackendMonitor {
                   category: 'DATA',
                   file: dataFile.path,
                   issue: `Invalid JSON: ${jsonError.message}`,
-                  severity: 'HIGH'
+                  severity: 'HIGH',
                 });
               }
             } else {
@@ -192,7 +198,7 @@ class BackendMonitor {
                 category: 'DATA',
                 file: dataFile.path,
                 status: 'OK',
-                message: `File exists (${(stats.size / 1024).toFixed(2)} KB)`
+                message: `File exists (${(stats.size / 1024).toFixed(2)} KB)`,
               });
             }
           }
@@ -201,7 +207,7 @@ class BackendMonitor {
             category: 'DATA',
             file: dataFile.path,
             issue: `Failed to read file: ${error.message}`,
-            severity: 'HIGH'
+            severity: 'HIGH',
           });
         }
       } else if (dataFile.required) {
@@ -209,14 +215,14 @@ class BackendMonitor {
           category: 'DATA',
           file: dataFile.path,
           issue: 'Required data file not found',
-          severity: 'CRITICAL'
+          severity: 'CRITICAL',
         });
       } else {
         this.info.push({
           category: 'DATA',
           file: dataFile.path,
           status: 'MISSING',
-          message: 'Optional data file not found'
+          message: 'Optional data file not found',
         });
       }
     }
@@ -227,14 +233,11 @@ class BackendMonitor {
    */
   async checkEnvironmentVariables() {
     console.log('🔐 Checking environment variables...');
-    
+
     const envFile = path.join(process.cwd(), '.env.local');
     const envExampleFile = path.join(process.cwd(), '.env.example');
-    
-    const requiredVars = [
-      'ANTHROPIC_API_KEY',
-      'NEXT_PUBLIC_MAPBOX_TOKEN'
-    ];
+
+    const requiredVars = ['ANTHROPIC_API_KEY', 'NEXT_PUBLIC_MAPBOX_TOKEN'];
 
     // Check if .env.local exists
     if (!fs.existsSync(envFile)) {
@@ -242,26 +245,26 @@ class BackendMonitor {
         category: 'ENV',
         file: '.env.local',
         issue: 'Environment file not found',
-        severity: 'MEDIUM'
+        severity: 'MEDIUM',
       });
     } else {
       try {
         const envContent = fs.readFileSync(envFile, 'utf8');
-        
+
         for (const varName of requiredVars) {
           if (!envContent.includes(varName)) {
             this.warnings.push({
               category: 'ENV',
               file: '.env.local',
               issue: `Missing or empty ${varName}`,
-              severity: 'MEDIUM'
+              severity: 'MEDIUM',
             });
           } else {
             this.info.push({
               category: 'ENV',
               file: '.env.local',
               status: 'OK',
-              message: `${varName} is configured`
+              message: `${varName} is configured`,
             });
           }
         }
@@ -270,7 +273,7 @@ class BackendMonitor {
           category: 'ENV',
           file: '.env.local',
           issue: `Failed to read environment file: ${error.message}`,
-          severity: 'HIGH'
+          severity: 'HIGH',
         });
       }
     }
@@ -281,7 +284,7 @@ class BackendMonitor {
         category: 'ENV',
         file: '.env.example',
         status: 'OK',
-        message: 'Example environment file exists'
+        message: 'Example environment file exists',
       });
     }
   }
@@ -291,20 +294,20 @@ class BackendMonitor {
    */
   async checkServerFiles() {
     console.log('🖥️  Checking server files...');
-    
+
     const serverFiles = [
       { path: 'server.js', name: 'Express Server', required: true },
       { path: 'next.config.js', name: 'Next.js Config', required: true },
-      { path: 'package.json', name: 'Package Config', required: true }
+      { path: 'package.json', name: 'Package Config', required: true },
     ];
 
     for (const file of serverFiles) {
       const fullPath = path.join(process.cwd(), file.path);
-      
+
       if (fs.existsSync(fullPath)) {
         try {
           const content = fs.readFileSync(fullPath, 'utf8');
-          
+
           // Specific checks based on file type
           if (file.path === 'server.js') {
             if (!content.includes('express')) {
@@ -312,7 +315,7 @@ class BackendMonitor {
                 category: 'SERVER',
                 file: file.path,
                 issue: 'Express not imported in server.js',
-                severity: 'HIGH'
+                severity: 'HIGH',
               });
             }
             if (!content.includes('app.listen')) {
@@ -320,7 +323,7 @@ class BackendMonitor {
                 category: 'SERVER',
                 file: file.path,
                 issue: 'No app.listen() call found',
-                severity: 'HIGH'
+                severity: 'HIGH',
               });
             }
           }
@@ -333,14 +336,14 @@ class BackendMonitor {
                   category: 'SERVER',
                   file: file.path,
                   issue: 'No dependencies found in package.json',
-                  severity: 'HIGH'
+                  severity: 'HIGH',
                 });
               } else {
                 this.info.push({
                   category: 'SERVER',
                   file: file.path,
                   status: 'OK',
-                  message: `${Object.keys(pkg.dependencies).length} dependencies configured`
+                  message: `${Object.keys(pkg.dependencies).length} dependencies configured`,
                 });
               }
             } catch (jsonError) {
@@ -348,7 +351,7 @@ class BackendMonitor {
                 category: 'SERVER',
                 file: file.path,
                 issue: `Invalid JSON: ${jsonError.message}`,
-                severity: 'CRITICAL'
+                severity: 'CRITICAL',
               });
             }
           }
@@ -357,15 +360,14 @@ class BackendMonitor {
             category: 'SERVER',
             file: file.path,
             status: 'OK',
-            message: `${file.name} exists and is readable`
+            message: `${file.name} exists and is readable`,
           });
-
         } catch (error) {
           this.errors.push({
             category: 'SERVER',
             file: file.path,
             issue: `Failed to read file: ${error.message}`,
-            severity: 'HIGH'
+            severity: 'HIGH',
           });
         }
       } else if (file.required) {
@@ -373,7 +375,7 @@ class BackendMonitor {
           category: 'SERVER',
           file: file.path,
           issue: `Required server file not found`,
-          severity: 'CRITICAL'
+          severity: 'CRITICAL',
         });
       }
     }
@@ -384,20 +386,20 @@ class BackendMonitor {
    */
   async checkDatabaseConfig() {
     console.log('🗄️  Checking database configuration...');
-    
+
     const mcpConfigPath = path.join(process.cwd(), 'mcp.json');
-    
+
     if (fs.existsSync(mcpConfigPath)) {
       try {
         const content = fs.readFileSync(mcpConfigPath, 'utf8');
         const config = JSON.parse(content);
-        
+
         if (!config.mcpServers) {
           this.errors.push({
             category: 'DATABASE',
             file: 'mcp.json',
             issue: 'No mcpServers configuration found',
-            severity: 'HIGH'
+            severity: 'HIGH',
           });
         } else {
           const serverCount = Object.keys(config.mcpServers).length;
@@ -405,7 +407,7 @@ class BackendMonitor {
             category: 'DATABASE',
             file: 'mcp.json',
             status: 'OK',
-            message: `${serverCount} MCP server(s) configured`
+            message: `${serverCount} MCP server(s) configured`,
           });
         }
       } catch (error) {
@@ -413,7 +415,7 @@ class BackendMonitor {
           category: 'DATABASE',
           file: 'mcp.json',
           issue: `Failed to parse MCP config: ${error.message}`,
-          severity: 'HIGH'
+          severity: 'HIGH',
         });
       }
     } else {
@@ -421,7 +423,7 @@ class BackendMonitor {
         category: 'DATABASE',
         file: 'mcp.json',
         issue: 'MCP configuration file not found',
-        severity: 'MEDIUM'
+        severity: 'MEDIUM',
       });
     }
   }
@@ -431,24 +433,20 @@ class BackendMonitor {
    */
   async checkPublicAssets() {
     console.log('🖼️  Checking public assets...');
-    
+
     const publicPath = path.join(process.cwd(), 'public');
-    
+
     if (!fs.existsSync(publicPath)) {
       this.errors.push({
         category: 'ASSETS',
         file: 'public/',
         issue: 'Public directory not found',
-        severity: 'CRITICAL'
+        severity: 'CRITICAL',
       });
       return;
     }
 
-    const requiredAssets = [
-      'favicon.ico',
-      'manifest.json',
-      'robots.txt'
-    ];
+    const requiredAssets = ['favicon.ico', 'manifest.json', 'robots.txt'];
 
     for (const asset of requiredAssets) {
       const assetPath = path.join(publicPath, asset);
@@ -457,14 +455,14 @@ class BackendMonitor {
           category: 'ASSETS',
           file: `public/${asset}`,
           status: 'OK',
-          message: 'Asset exists'
+          message: 'Asset exists',
         });
       } else {
         this.warnings.push({
           category: 'ASSETS',
           file: `public/${asset}`,
           issue: 'Recommended asset not found',
-          severity: 'LOW'
+          severity: 'LOW',
         });
       }
     }
@@ -475,22 +473,22 @@ class BackendMonitor {
    */
   async checkNodeModules() {
     console.log('📦 Checking node_modules...');
-    
+
     const nodeModulesPath = path.join(process.cwd(), 'node_modules');
-    
+
     if (fs.existsSync(nodeModulesPath)) {
       this.info.push({
         category: 'DEPENDENCIES',
         file: 'node_modules/',
         status: 'OK',
-        message: 'Dependencies are installed'
+        message: 'Dependencies are installed',
       });
     } else {
       this.errors.push({
         category: 'DEPENDENCIES',
         file: 'node_modules/',
         issue: 'node_modules directory not found. Run npm install',
-        severity: 'CRITICAL'
+        severity: 'CRITICAL',
       });
     }
   }
@@ -500,12 +498,16 @@ class BackendMonitor {
    */
   generateReport() {
     console.log('\n📋 ===== BACKEND MONITORING REPORT =====\n');
-    
+
     const totalIssues = this.errors.length + this.warnings.length;
-    const criticalIssues = this.errors.filter(e => e.severity === 'CRITICAL').length;
-    const highIssues = this.errors.filter(e => e.severity === 'HIGH').length;
-    const mediumIssues = this.warnings.filter(w => w.severity === 'MEDIUM').length;
-    const lowIssues = this.warnings.filter(w => w.severity === 'LOW').length;
+    const criticalIssues = this.errors.filter(
+      (e) => e.severity === 'CRITICAL'
+    ).length;
+    const highIssues = this.errors.filter((e) => e.severity === 'HIGH').length;
+    const mediumIssues = this.warnings.filter(
+      (w) => w.severity === 'MEDIUM'
+    ).length;
+    const lowIssues = this.warnings.filter((w) => w.severity === 'LOW').length;
 
     console.log(`⏰ Scan Time: ${this.timestamp}`);
     console.log(`📊 Total Issues: ${totalIssues}`);
@@ -518,7 +520,9 @@ class BackendMonitor {
     if (this.errors.length > 0) {
       console.log('❌ ERRORS:');
       this.errors.forEach((error, index) => {
-        console.log(`  ${index + 1}. [${error.severity}] ${error.category} - ${error.file}`);
+        console.log(
+          `  ${index + 1}. [${error.severity}] ${error.category} - ${error.file}`
+        );
         console.log(`     ${error.issue}\n`);
       });
     }
@@ -526,7 +530,9 @@ class BackendMonitor {
     if (this.warnings.length > 0) {
       console.log('⚠️  WARNINGS:');
       this.warnings.forEach((warning, index) => {
-        console.log(`  ${index + 1}. [${warning.severity}] ${warning.category} - ${warning.file}`);
+        console.log(
+          `  ${index + 1}. [${warning.severity}] ${warning.category} - ${warning.file}`
+        );
         console.log(`     ${warning.issue}\n`);
       });
     }
@@ -543,7 +549,7 @@ class BackendMonitor {
    */
   saveReport() {
     const reportsDir = path.join(process.cwd(), 'logs', 'backend-reports');
-    
+
     // Create directory if it doesn't exist
     if (!fs.existsSync(reportsDir)) {
       fs.mkdirSync(reportsDir, { recursive: true });
@@ -556,16 +562,16 @@ class BackendMonitor {
       timestamp: this.timestamp,
       summary: {
         totalIssues: this.errors.length + this.warnings.length,
-        critical: this.errors.filter(e => e.severity === 'CRITICAL').length,
-        high: this.errors.filter(e => e.severity === 'HIGH').length,
-        medium: this.warnings.filter(w => w.severity === 'MEDIUM').length,
-        low: this.warnings.filter(w => w.severity === 'LOW').length,
-        info: this.info.length
+        critical: this.errors.filter((e) => e.severity === 'CRITICAL').length,
+        high: this.errors.filter((e) => e.severity === 'HIGH').length,
+        medium: this.warnings.filter((w) => w.severity === 'MEDIUM').length,
+        low: this.warnings.filter((w) => w.severity === 'LOW').length,
+        info: this.info.length,
       },
       errors: this.errors,
       warnings: this.warnings,
       info: this.info,
-      reportLog: this.reportLog
+      reportLog: this.reportLog,
     };
 
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
@@ -587,7 +593,7 @@ class BackendMonitor {
       errors: this.errors,
       warnings: this.warnings,
       info: this.info,
-      status: this.errors.length === 0 ? 'HEALTHY' : 'ISSUES_FOUND'
+      status: this.errors.length === 0 ? 'HEALTHY' : 'ISSUES_FOUND',
     };
   }
 }
@@ -598,7 +604,8 @@ module.exports = BackendMonitor;
 // Run if called directly
 if (require.main === module) {
   const monitor = new BackendMonitor();
-  monitor.runFullScan()
+  monitor
+    .runFullScan()
     .then((summary) => {
       console.log('✅ Monitoring scan completed');
       process.exit(summary.errors.length > 0 ? 1 : 0);
@@ -608,4 +615,3 @@ if (require.main === module) {
       process.exit(1);
     });
 }
-

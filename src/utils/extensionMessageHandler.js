@@ -60,7 +60,10 @@ class ExtensionMessageHandler {
 
       console.log('[ExtensionMessageHandler] Connected to extension');
     } catch (error) {
-      console.warn('[ExtensionMessageHandler] Failed to connect to extension:', error);
+      console.warn(
+        '[ExtensionMessageHandler] Failed to connect to extension:',
+        error
+      );
       this.handleConnectionError(error);
     }
   }
@@ -74,11 +77,16 @@ class ExtensionMessageHandler {
 
     // Check for runtime.lastError
     if (chrome.runtime.lastError) {
-      console.warn('[ExtensionMessageHandler] Runtime error:', chrome.runtime.lastError.message);
+      console.warn(
+        '[ExtensionMessageHandler] Runtime error:',
+        chrome.runtime.lastError.message
+      );
 
       // Handle specific bfcache error
-      if (chrome.runtime.lastError.message.includes('back/forward cache') ||
-          chrome.runtime.lastError.message.includes('message channel is closed')) {
+      if (
+        chrome.runtime.lastError.message.includes('back/forward cache') ||
+        chrome.runtime.lastError.message.includes('message channel is closed')
+      ) {
         this.handleBfcacheDisconnection();
       } else {
         this.handleConnectionError(chrome.runtime.lastError);
@@ -93,12 +101,16 @@ class ExtensionMessageHandler {
    * Handle bfcache-specific disconnection
    */
   handleBfcacheDisconnection() {
-    console.log('[ExtensionMessageHandler] Page moved to bfcache, message channel closed');
+    console.log(
+      '[ExtensionMessageHandler] Page moved to bfcache, message channel closed'
+    );
 
     // Clear the error to prevent it from persisting
     if (chrome.runtime.lastError) {
       // Note: We can't clear lastError directly, but we can handle it gracefully
-      console.log('[ExtensionMessageHandler] Handled bfcache disconnection gracefully');
+      console.log(
+        '[ExtensionMessageHandler] Handled bfcache disconnection gracefully'
+      );
     }
 
     // Notify listeners about the disconnection
@@ -110,7 +122,9 @@ class ExtensionMessageHandler {
    */
   handleConnectionError(error) {
     console.error('[ExtensionMessageHandler] Connection error:', error);
-    this.notifyListeners('error', { error: error.message || 'Unknown connection error' });
+    this.notifyListeners('error', {
+      error: error.message || 'Unknown connection error',
+    });
   }
 
   /**
@@ -118,7 +132,9 @@ class ExtensionMessageHandler {
    */
   attemptReconnection() {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.warn('[ExtensionMessageHandler] Max reconnection attempts reached');
+      console.warn(
+        '[ExtensionMessageHandler] Max reconnection attempts reached'
+      );
       this.notifyListeners('maxReconnectAttemptsReached');
       return;
     }
@@ -126,7 +142,9 @@ class ExtensionMessageHandler {
     this.reconnectAttempts++;
     const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1); // Exponential backoff
 
-    console.log(`[ExtensionMessageHandler] Attempting reconnection ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay}ms`);
+    console.log(
+      `[ExtensionMessageHandler] Attempting reconnection ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay}ms`
+    );
 
     setTimeout(() => {
       this.setupMessagePort();
@@ -140,7 +158,9 @@ class ExtensionMessageHandler {
     // Handle page becoming visible again (potential bfcache restoration)
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && !this.isConnected) {
-        console.log('[ExtensionMessageHandler] Page became visible, attempting reconnection');
+        console.log(
+          '[ExtensionMessageHandler] Page became visible, attempting reconnection'
+        );
         this.attemptReconnection();
       }
     });
@@ -174,7 +194,9 @@ class ExtensionMessageHandler {
     // Listen for the beforeunload event to detect navigation
     window.addEventListener('beforeunload', () => {
       if (this.isConnected) {
-        console.log('[ExtensionMessageHandler] Page unloading, preparing for potential bfcache');
+        console.log(
+          '[ExtensionMessageHandler] Page unloading, preparing for potential bfcache'
+        );
       }
     });
 
@@ -212,12 +234,14 @@ class ExtensionMessageHandler {
   processMessageQueue() {
     if (this.messageQueue.length === 0) return;
 
-    console.log(`[ExtensionMessageHandler] Processing ${this.messageQueue.length} queued messages`);
+    console.log(
+      `[ExtensionMessageHandler] Processing ${this.messageQueue.length} queued messages`
+    );
 
     const messages = [...this.messageQueue];
     this.messageQueue = [];
 
-    messages.forEach(message => {
+    messages.forEach((message) => {
       this.sendMessage(message);
     });
   }
@@ -259,7 +283,7 @@ class ExtensionMessageHandler {
   notifyListeners(event, data) {
     if (!this.listeners.has(event)) return;
 
-    this.listeners.get(event).forEach(callback => {
+    this.listeners.get(event).forEach((callback) => {
       try {
         callback(data);
       } catch (error) {
@@ -275,7 +299,7 @@ class ExtensionMessageHandler {
     return {
       isConnected: this.isConnected,
       reconnectAttempts: this.reconnectAttempts,
-      queuedMessages: this.messageQueue.length
+      queuedMessages: this.messageQueue.length,
     };
   }
 

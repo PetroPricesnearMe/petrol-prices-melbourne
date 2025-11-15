@@ -1,9 +1,9 @@
 /**
  * Metadata Configuration
- * 
+ *
  * Centralized metadata for SEO and social sharing.
  * Used in root layout and page-specific metadata.
- * 
+ *
  * @module config/metadata
  */
 
@@ -14,7 +14,8 @@ import type { Metadata } from 'next';
  */
 export const siteConfig = {
   name: 'Petrol Price Near Me',
-  description: 'Find the cheapest petrol prices near you in Australia. Real-time fuel prices, station locations, and detailed information for all major fuel brands.',
+  description:
+    'Find the cheapest petrol prices near you in Australia. Real-time fuel prices, station locations, and detailed information for all major fuel brands.',
   url: 'https://petrolpricenearme.com.au',
   ogImage: 'https://petrolpricenearme.com.au/og-image.jpg',
   keywords: [
@@ -56,7 +57,7 @@ export const defaultMetadata: Metadata = {
   keywords: siteConfig.keywords,
   authors: authors,
   creator: siteConfig.creator,
-  
+
   // Open Graph
   openGraph: {
     type: 'website',
@@ -90,9 +91,7 @@ export const defaultMetadata: Metadata = {
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180' },
-    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
 
   // Manifest
@@ -127,12 +126,12 @@ export const defaultMetadata: Metadata = {
 
 /**
  * Generate page metadata
- * 
+ *
  * @param title - Page title
  * @param description - Page description
  * @param path - Page path (e.g., '/about')
  * @returns Metadata object
- * 
+ *
  * @example
  * ```tsx
  * export const metadata = generateMetadata(
@@ -220,4 +219,3 @@ export const websiteSchema = {
     'query-input': 'required name=search_term_string',
   },
 } as const;
-

@@ -1,6 +1,6 @@
 /**
  * Unified CMS Client
- * 
+ *
  * Factory pattern for creating CMS provider instances
  * Supports multiple CMS backends with a unified interface
  */
@@ -53,7 +53,8 @@ export function createCMSProvider(config: CMSConfig): ICMSProvider {
  * Get CMS provider from environment variables
  */
 export function getCMSProvider(): ICMSProvider {
-  const provider = (process.env.CMS_PROVIDER || 'baserow') as CMSConfig['provider'];
+  const provider = (process.env.CMS_PROVIDER ||
+    'baserow') as CMSConfig['provider'];
 
   const config: CMSConfig = {
     provider,
@@ -104,4 +105,3 @@ export function getCMS(): ICMSProvider {
 export function resetCMS(): void {
   cmsProviderInstance = null;
 }
-

@@ -58,7 +58,7 @@ export function Navigation() {
   return (
     <nav
       className={cn(
-        'sticky top-0 z-sticky bg-white dark:bg-gray-900 print-hidden transition-shadow',
+        'print-hidden sticky top-0 z-sticky bg-white transition-shadow dark:bg-gray-900',
         scrolled && 'shadow-md'
       )}
     >
@@ -70,7 +70,7 @@ export function Navigation() {
             className={cn(
               'text-2xl font-bold',
               'text-primary-600 dark:text-primary-400',
-              'hover:opacity-80 transition-opacity',
+              'transition-opacity hover:opacity-80',
               'focus-primary'
             )}
           >
@@ -79,7 +79,7 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden items-center gap-6 lg:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -89,7 +89,7 @@ export function Navigation() {
                   'focus-primary rounded-md px-3 py-2',
                   pathname === link.href
                     ? 'text-primary-600 dark:text-primary-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
+                    : 'text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400'
                 )}
               >
                 {link.label}
@@ -101,12 +101,12 @@ export function Navigation() {
           {/* Mobile Menu Button - Touch-Friendly */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden btn btn-ghost btn-sm min-h-[44px] min-w-[44px] touch-manipulation"
+            className="btn-ghost btn-sm btn min-h-[44px] min-w-[44px] touch-manipulation lg:hidden"
             aria-label="Toggle menu"
             aria-expanded={isOpen}
           >
             <svg
-              className="w-6 h-6"
+              className="h-6 w-6"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -127,7 +127,7 @@ export function Navigation() {
         {isOpen && (
           <div
             className={cn(
-              'lg:hidden pb-4',
+              'pb-4 lg:hidden',
               animations.safe('animate-slide-down')
             )}
           >
@@ -137,11 +137,11 @@ export function Navigation() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'block px-4 py-3 rounded-lg text-sm font-medium transition-colors',
-                    'min-h-[44px] flex items-center touch-manipulation',
+                    'block rounded-lg px-4 py-3 text-sm font-medium transition-colors',
+                    'flex min-h-[44px] touch-manipulation items-center',
                     pathname === link.href
-                      ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
+                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                   )}
                 >
                   {link.label}

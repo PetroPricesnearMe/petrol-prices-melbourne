@@ -3,26 +3,30 @@
 ## Colors
 
 ### Primary (Blue)
+
 ```tsx
 bg-primary-500    text-primary-600    border-primary-500
 ```
 
 ### Secondary (Purple)
+
 ```tsx
 bg-secondary-500  text-secondary-600  border-secondary-500
 ```
 
 ### Accent (Cyan)
+
 ```tsx
 bg-accent-500     text-accent-600     border-accent-500
 ```
 
 ### States
+
 ```tsx
-bg-success-500    // Green
-bg-warning-500    // Amber
-bg-error-500      // Red
-bg-info-500       // Blue
+bg - success - 500; // Green
+bg - warning - 500; // Amber
+bg - error - 500; // Red
+bg - info - 500; // Blue
 ```
 
 ---
@@ -30,18 +34,18 @@ bg-info-500       // Blue
 ## Spacing
 
 ```tsx
-p-2   // 8px
-p-4   // 16px
-p-6   // 24px
-p-8   // 32px
+p - 2; // 8px
+p - 4; // 16px
+p - 6; // 24px
+p - 8; // 32px
 
-m-2   // 8px
-m-4   // 16px
-m-6   // 24px
-m-8   // 32px
+m - 2; // 8px
+m - 4; // 16px
+m - 6; // 24px
+m - 8; // 32px
 
-space-y-4  // 16px vertical gap
-gap-6      // 24px flex/grid gap
+space - y - 4; // 16px vertical gap
+gap - 6; // 24px flex/grid gap
 ```
 
 ---
@@ -84,11 +88,11 @@ rounded-full  // Fully rounded
 ## Shadows
 
 ```tsx
-shadow-sm   // Subtle
-shadow-md   // Medium
-shadow-lg   // Large
-shadow-xl   // Extra large
-shadow-soft // Custom soft
+shadow - sm; // Subtle
+shadow - md; // Medium
+shadow - lg; // Large
+shadow - xl; // Extra large
+shadow - soft; // Custom soft
 ```
 
 ---
@@ -97,10 +101,8 @@ shadow-soft // Custom soft
 
 ```tsx
 // Always include dark mode variants
-<div className="bg-white dark:bg-neutral-950">
-  <p className="text-gray-900 dark:text-white">
-    Text
-  </p>
+<div className="dark:bg-neutral-950 bg-white">
+  <p className="text-gray-900 dark:text-white">Text</p>
 </div>
 ```
 
@@ -109,29 +111,33 @@ shadow-soft // Custom soft
 ## Common Patterns
 
 ### Button
+
 ```tsx
-<button className="btn bg-primary-600 hover:bg-primary-700 text-white rounded-lg px-6 py-2 shadow-sm">
+<button className="btn rounded-lg bg-primary-600 px-6 py-2 text-white shadow-sm hover:bg-primary-700">
   Click Me
 </button>
 ```
 
 ### Card
+
 ```tsx
-<div className="bg-white dark:bg-neutral-900 rounded-xl shadow-md p-6">
+<div className="dark:bg-neutral-900 rounded-xl bg-white p-6 shadow-md">
   Card Content
 </div>
 ```
 
 ### Badge
+
 ```tsx
-<span className="px-3 py-1 text-sm font-medium rounded-full bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
+<span className="rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200">
   Badge
 </span>
 ```
 
 ### Input
+
 ```tsx
-<input className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900" />
+<input className="dark:border-neutral-700 dark:bg-neutral-900 w-full rounded-lg border border-gray-300 bg-white px-4 py-2" />
 ```
 
 ---
@@ -163,9 +169,9 @@ const { theme, resolvedTheme, setTheme, toggleTheme } = useTheme();
 ## Z-Index Layers
 
 ```tsx
-z-dropdown  // 1000
-z-sticky    // 1020
-z-fixed     // 1030
-z-modal     // 1050
-z-tooltip   // 1070
+z - dropdown; // 1000
+z - sticky; // 1020
+z - fixed; // 1030
+z - modal; // 1050
+z - tooltip; // 1070
 ```

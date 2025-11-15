@@ -10,14 +10,14 @@ This guide provides a comprehensive responsive layout system using Tailwind's 12
 
 ### Tailwind Breakpoints
 
-| Breakpoint | Min Width | Device | Use Case |
-|------------|-----------|--------|----------|
-| `default` | 0px | Mobile portrait | Stacked layouts, single column |
-| `sm` | 640px | Mobile landscape, small tablets | 2-column grids |
-| `md` | 768px | Tablets | 2-3 column layouts |
-| `lg` | 1024px | Laptops, small desktops | 3-4 column grids |
-| `xl` | 1280px | Desktops | 4+ column grids |
-| `2xl` | 1536px | Large screens | Maximum width layouts |
+| Breakpoint | Min Width | Device                          | Use Case                       |
+| ---------- | --------- | ------------------------------- | ------------------------------ |
+| `default`  | 0px       | Mobile portrait                 | Stacked layouts, single column |
+| `sm`       | 640px     | Mobile landscape, small tablets | 2-column grids                 |
+| `md`       | 768px     | Tablets                         | 2-3 column layouts             |
+| `lg`       | 1024px    | Laptops, small desktops         | 3-4 column grids               |
+| `xl`       | 1280px    | Desktops                        | 4+ column grids                |
+| `2xl`      | 1536px    | Large screens                   | Maximum width layouts          |
 
 ### Mobile-First Approach
 
@@ -72,10 +72,10 @@ The 12-column system provides maximum flexibility:
 ```tsx
 <ResponsiveGrid
   cols={{
-    default: 1,      // Mobile: single column
-    sm: 2,           // Small screens: 2 per row
-    lg: 3,           // Desktop: 3 per row
-    xl: 4,           // Large: 4 per row
+    default: 1, // Mobile: single column
+    sm: 2, // Small screens: 2 per row
+    lg: 3, // Desktop: 3 per row
+    xl: 4, // Large: 4 per row
   }}
   gap="lg"
   className="mb-12"
@@ -89,6 +89,7 @@ The 12-column system provides maximum flexibility:
 ```
 
 **Visual Hierarchy**:
+
 - ✅ Consistent card heights
 - ✅ Adequate spacing (gap-6 to gap-8)
 - ✅ Clear visual grouping
@@ -103,8 +104,8 @@ The 12-column system provides maximum flexibility:
 ```tsx
 <ResponsiveGrid
   cols={{
-    default: 1,      // Mobile: stacked
-    lg: 12,          // Desktop: 12-column grid
+    default: 1, // Mobile: stacked
+    lg: 12, // Desktop: 12-column grid
   }}
   gap="xl"
 >
@@ -131,10 +132,7 @@ The 12-column system provides maximum flexibility:
 ```tsx
 <ResponsiveGrid cols={{ default: 1, sm: 2, lg: 4 }} gap="lg">
   {/* Featured - Spans 2 columns + 2 rows */}
-  <GridItem
-    colSpan={{ default: 1, sm: 2, lg: 2 }}
-    rowSpan={2}
-  >
+  <GridItem colSpan={{ default: 1, sm: 2, lg: 2 }} rowSpan={2}>
     <FeaturedCard />
   </GridItem>
 
@@ -181,7 +179,7 @@ The 12-column system provides maximum flexibility:
 **Use Case**: Visual interest, varied content
 
 ```tsx
-<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+<div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
   <div className="col-span-2 row-span-2">Large</div>
   <div>Small</div>
   <div className="col-span-1 row-span-2">Tall</div>
@@ -197,12 +195,12 @@ The 12-column system provides maximum flexibility:
 
 ```tsx
 const gapGuide = {
-  none: 'gap-0',      // No space - rare
-  xs: 'gap-2 sm:gap-3',    // 8-12px - tight lists
-  sm: 'gap-3 sm:gap-4',    // 12-16px - compact cards
-  md: 'gap-4 sm:gap-6',    // 16-24px - standard cards
-  lg: 'gap-6 sm:gap-8',    // 24-32px - spacious layout
-  xl: 'gap-8 sm:gap-10',   // 32-40px - feature sections
+  none: 'gap-0', // No space - rare
+  xs: 'gap-2 sm:gap-3', // 8-12px - tight lists
+  sm: 'gap-3 sm:gap-4', // 12-16px - compact cards
+  md: 'gap-4 sm:gap-6', // 16-24px - standard cards
+  lg: 'gap-6 sm:gap-8', // 24-32px - spacious layout
+  xl: 'gap-8 sm:gap-10', // 32-40px - feature sections
   '2xl': 'gap-10 sm:gap-12 lg:gap-16', // 40-64px - hero sections
 };
 ```
@@ -211,10 +209,10 @@ const gapGuide = {
 
 ```tsx
 const sectionSpacing = {
-  sm: 'py-8 sm:py-12',         // 32-48px
-  md: 'py-12 sm:py-16 lg:py-20',  // 48-80px (default)
-  lg: 'py-16 sm:py-20 lg:py-24',  // 64-96px
-  xl: 'py-20 sm:py-24 lg:py-32',  // 80-128px (hero)
+  sm: 'py-8 sm:py-12', // 32-48px
+  md: 'py-12 sm:py-16 lg:py-20', // 48-80px (default)
+  lg: 'py-16 sm:py-20 lg:py-24', // 64-96px
+  xl: 'py-20 sm:py-24 lg:py-32', // 80-128px (hero)
 };
 ```
 
@@ -222,13 +220,13 @@ const sectionSpacing = {
 
 ```tsx
 // Standard container padding
-className="px-4 sm:px-6 lg:px-8"
+className = 'px-4 sm:px-6 lg:px-8';
 
 // Tight padding
-className="px-3 sm:px-4"
+className = 'px-3 sm:px-4';
 
-// Generous padding  
-className="px-6 sm:px-8 lg:px-12"
+// Generous padding
+className = 'px-6 sm:px-8 lg:px-12';
 ```
 
 ---
@@ -238,22 +236,26 @@ className="px-6 sm:px-8 lg:px-12"
 ### 1. Whitespace Ratios
 
 **60-30-10 Rule**:
+
 - 60% content
 - 30% whitespace
 - 10% accents/CTAs
 
 ```tsx
 // Good balance
-<div className="p-6">              {/* Generous padding */}
-  <h2 className="mb-4">Title</h2>   {/* Space after heading */}
-  <p className="mb-6">Text</p>      {/* Space after paragraph */}
-  <button>CTA</button>              {/* Accent element */}
+<div className="p-6">
+  {' '}
+  {/* Generous padding */}
+  <h2 className="mb-4">Title</h2> {/* Space after heading */}
+  <p className="mb-6">Text</p> {/* Space after paragraph */}
+  <button>CTA</button> {/* Accent element */}
 </div>
 ```
 
 ### 2. Avoid Visual Congestion
 
 **Before** (Congested):
+
 ```tsx
 <div className="grid grid-cols-4 gap-2 p-2">
   {/* Too tight, feels cramped */}
@@ -261,8 +263,9 @@ className="px-6 sm:px-8 lg:px-12"
 ```
 
 **After** (Balanced):
+
 ```tsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+<div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-4">
   {/* Breathing room, clear hierarchy */}
 </div>
 ```
@@ -292,7 +295,7 @@ className="px-6 sm:px-8 lg:px-12"
 ```tsx
 <Flex
   responsive={{
-    direction: { default: 'col', lg: 'row' }
+    direction: { default: 'col', lg: 'row' },
   }}
   gap="lg"
   justify="between"
@@ -305,12 +308,12 @@ className="px-6 sm:px-8 lg:px-12"
 ### Pattern 2: Reorder on Mobile
 
 ```tsx
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
   {/* Image first on mobile, second on desktop */}
   <div className="order-2 lg:order-1">
     <img src="..." alt="..." />
   </div>
-  
+
   {/* Text first on desktop, second on mobile */}
   <div className="order-1 lg:order-2">
     <h2>Title</h2>
@@ -322,29 +325,29 @@ className="px-6 sm:px-8 lg:px-12"
 ### Pattern 3: Hide/Show by Breakpoint
 
 ```tsx
-{/* Show only on mobile */}
+{
+  /* Show only on mobile */
+}
 <div className="block lg:hidden">
   <MobileMenu />
-</div>
+</div>;
 
-{/* Show only on desktop */}
+{
+  /* Show only on desktop */
+}
 <div className="hidden lg:block">
   <DesktopNav />
-</div>
+</div>;
 ```
 
 ### Pattern 4: Sticky Sidebar
 
 ```tsx
-<div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-  <div className="lg:col-span-8">
-    {/* Main scrolling content */}
-  </div>
-  
+<div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+  <div className="lg:col-span-8">{/* Main scrolling content */}</div>
+
   <div className="lg:col-span-4">
-    <div className="lg:sticky lg:top-4">
-      {/* Sidebar stays in view */}
-    </div>
+    <div className="lg:sticky lg:top-4">{/* Sidebar stays in view */}</div>
   </div>
 </div>
 ```
@@ -361,8 +364,8 @@ export function StationDirectoryPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <Section spacing="lg" background="white">
-        <div className="text-center max-w-3xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <h1 className="mb-6 text-4xl font-bold sm:text-5xl lg:text-6xl">
             Find Petrol Stations
           </h1>
           <SearchBar />
@@ -371,24 +374,18 @@ export function StationDirectoryPage() {
 
       {/* Filters + Results */}
       <Section spacing="xl">
-        <ResponsiveGrid
-          cols={{ default: 1, lg: 12 }}
-          gap="xl"
-        >
+        <ResponsiveGrid cols={{ default: 1, lg: 12 }} gap="xl">
           {/* Filters - Sidebar */}
           <GridItem colSpan={{ default: 1, lg: 3 }}>
             <div className="card p-6 lg:sticky lg:top-4">
-              <h2 className="text-xl font-bold mb-4">Filters</h2>
+              <h2 className="mb-4 text-xl font-bold">Filters</h2>
               <FilterOptions />
             </div>
           </GridItem>
 
           {/* Results Grid */}
           <GridItem colSpan={{ default: 1, lg: 9 }}>
-            <ResponsiveGrid
-              cols={{ default: 1, sm: 2, xl: 3 }}
-              gap="lg"
-            >
+            <ResponsiveGrid cols={{ default: 1, sm: 2, xl: 3 }} gap="lg">
               {stations.map((station) => (
                 <GridItem key={station.id}>
                   <StationCard station={station} />
@@ -409,13 +406,13 @@ export function StationDirectoryPage() {
 export function PricingPage() {
   return (
     <Section spacing="xl" background="gray">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold mb-4">Simple Pricing</h2>
+      <div className="mb-12 text-center">
+        <h2 className="mb-4 text-4xl font-bold">Simple Pricing</h2>
         <p className="text-xl text-gray-600">Choose the plan that fits</p>
       </div>
 
       {/* Pricing Cards - Centered */}
-      <div className="max-w-6xl mx-auto">
+      <div className="mx-auto max-w-6xl">
         <ResponsiveGrid
           cols={{
             default: 1,
@@ -445,6 +442,7 @@ export function PricingPage() {
 ## ✅ Best Practices Checklist
 
 ### Layout
+
 - [ ] Use mobile-first approach (default, then sm, md, lg)
 - [ ] Maintain consistent column counts across sections
 - [ ] Ensure grid items have equal heights where appropriate
@@ -452,6 +450,7 @@ export function PricingPage() {
 - [ ] Stack on mobile, expand on desktop
 
 ### Spacing
+
 - [ ] Use consistent gap sizes (lg for most grids)
 - [ ] Add section padding (py-12 to py-24)
 - [ ] Include container padding (px-4 sm:px-6 lg:px-8)
@@ -459,6 +458,7 @@ export function PricingPage() {
 - [ ] Avoid cramped layouts (minimum gap-4)
 
 ### Visual Hierarchy
+
 - [ ] Feature important content with larger spans
 - [ ] Use asymmetry for visual interest
 - [ ] Align elements consistently
@@ -466,6 +466,7 @@ export function PricingPage() {
 - [ ] Clear focal points
 
 ### Responsiveness
+
 - [ ] Test at all breakpoints (mobile, tablet, desktop)
 - [ ] Touch targets 44x44px minimum on mobile
 - [ ] Readable line lengths (max-w-prose)
@@ -473,6 +474,7 @@ export function PricingPage() {
 - [ ] Sticky elements on desktop only
 
 ### Accessibility
+
 - [ ] Semantic HTML (section, article, aside)
 - [ ] Logical reading order
 - [ ] Keyboard navigation works at all sizes
@@ -487,11 +489,11 @@ export function PricingPage() {
 
 ```tsx
 import {
-  ResponsiveGrid,  // Main grid container
-  GridItem,        // Grid item with span control
-  Container,       // Max-width container
-  Flex,           // Flexible layout
-  Section,        // Section wrapper with spacing
+  ResponsiveGrid, // Main grid container
+  GridItem, // Grid item with span control
+  Container, // Max-width container
+  Flex, // Flexible layout
+  Section, // Section wrapper with spacing
 } from '@/components/layout/ResponsiveGrid';
 ```
 
@@ -512,7 +514,7 @@ import {
 </Section>
 
 // Flex layout
-<Flex 
+<Flex
   responsive={{ direction: { default: 'col', lg: 'row' } }}
   justify="between"
   gap="lg"
@@ -530,14 +532,12 @@ import {
 
 ```tsx
 // Reserve space for images
-<img 
-  className="w-full h-auto aspect-video object-cover"
-  src={src}
-  alt={alt}
-/>
+<img className="aspect-video h-auto w-full object-cover" src={src} alt={alt} />;
 
 // Use skeleton loaders
-{loading && <Skeleton className="h-48" />}
+{
+  loading && <Skeleton className="h-48" />;
+}
 ```
 
 ### 2. Optimize Grid Rendering
@@ -565,6 +565,7 @@ import {
 ## 🎯 Common Mistakes to Avoid
 
 ### ❌ Don't
+
 ```tsx
 // Too many columns on mobile
 <div className="grid-cols-3">
@@ -580,6 +581,7 @@ import {
 ```
 
 ### ✅ Do
+
 ```tsx
 // Mobile-first with breakpoints
 <div className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -604,4 +606,3 @@ import {
 
 **Last Updated**: 2025-11-11  
 **Tested With**: Tailwind CSS 3.4+, React 19, Next.js 15
-

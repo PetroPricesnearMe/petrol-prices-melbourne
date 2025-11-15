@@ -64,7 +64,9 @@ export function ModernStationCard({
 
   // Get lowest price for badge
   const getLowestPrice = () => {
-    const prices = Object.values(fuelPrices).filter((p): p is number => p !== null && p !== undefined);
+    const prices = Object.values(fuelPrices).filter(
+      (p): p is number => p !== null && p !== undefined
+    );
     return prices.length > 0 ? Math.min(...prices) : null;
   };
 
@@ -103,9 +105,12 @@ export function ModernStationCard({
       <div className="card-glass-overlay" aria-hidden="true" />
 
       {/* Brand Image Header */}
-      <div className="card-image-header" style={{
-        background: `linear-gradient(135deg, ${brandInfo.color}20 0%, ${brandInfo.fallback}10 100%)`
-      }}>
+      <div
+        className="card-image-header"
+        style={{
+          background: `linear-gradient(135deg, ${brandInfo.color}20 0%, ${brandInfo.fallback}10 100%)`,
+        }}
+      >
         <div className="brand-logo-container">
           {!imageError ? (
             <LazyImage
@@ -155,7 +160,9 @@ export function ModernStationCard({
               aria-label={`Lowest price ${lowestPrice.toFixed(1)} cents per liter`}
             >
               <span className="price-badge-label">From</span>
-              <span className="price-badge-value">{lowestPrice.toFixed(1)}¢</span>
+              <span className="price-badge-value">
+                {lowestPrice.toFixed(1)}¢
+              </span>
               {showTooltip === 'lowest' && (
                 <div className="tooltip" role="tooltip">
                   Lowest fuel price
@@ -176,7 +183,7 @@ export function ModernStationCard({
           <div
             className="brand-chip"
             style={{
-              background: `linear-gradient(135deg, ${brandInfo.color} 0%, ${brandInfo.fallback} 100%)`
+              background: `linear-gradient(135deg, ${brandInfo.color} 0%, ${brandInfo.fallback} 100%)`,
             }}
           >
             {brand}
@@ -190,7 +197,9 @@ export function ModernStationCard({
           itemScope
           itemType="https://schema.org/PostalAddress"
         >
-          <span className="address-icon" aria-hidden="true">📍</span>
+          <span className="address-icon" aria-hidden="true">
+            📍
+          </span>
           <div>
             <div itemProp="streetAddress">{address}</div>
             <div className="address-locality">

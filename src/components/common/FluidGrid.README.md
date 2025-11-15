@@ -34,16 +34,16 @@ function StationDirectory() {
 
 ### FluidGrid Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | ReactNode | required | Grid items to render |
-| `className` | string | - | Additional CSS classes |
-| `gap` | 'sm' \| 'md' \| 'lg' \| 'xl' | 'md' | Gap size between items |
-| `animate` | boolean | false | Enable staggered entrance animations |
-| `staggerDelay` | number | 0.05 | Delay between each item animation (seconds) |
-| `columns` | object | See below | Column configuration |
-| `uniformHeights` | boolean | true | Enable uniform card heights |
-| `fluidGap` | boolean | false | Enable fluid gap spacing |
+| Prop             | Type                         | Default   | Description                                 |
+| ---------------- | ---------------------------- | --------- | ------------------------------------------- |
+| `children`       | ReactNode                    | required  | Grid items to render                        |
+| `className`      | string                       | -         | Additional CSS classes                      |
+| `gap`            | 'sm' \| 'md' \| 'lg' \| 'xl' | 'md'      | Gap size between items                      |
+| `animate`        | boolean                      | false     | Enable staggered entrance animations        |
+| `staggerDelay`   | number                       | 0.05      | Delay between each item animation (seconds) |
+| `columns`        | object                       | See below | Column configuration                        |
+| `uniformHeights` | boolean                      | true      | Enable uniform card heights                 |
+| `fluidGap`       | boolean                      | false     | Enable fluid gap spacing                    |
 
 ### Column Configuration
 
@@ -60,11 +60,11 @@ columns={{
 
 ### Standard Gaps
 
-| Size | Classes | Description |
-|------|---------|-------------|
-| `sm` | `gap-4 sm:gap-5` | 16px → 20px |
-| `md` | `gap-5 sm:gap-6 lg:gap-7` | 20px → 24px → 28px |
-| `lg` | `gap-6 sm:gap-8 lg:gap-10` | 24px → 32px → 40px |
+| Size | Classes                     | Description        |
+| ---- | --------------------------- | ------------------ |
+| `sm` | `gap-4 sm:gap-5`            | 16px → 20px        |
+| `md` | `gap-5 sm:gap-6 lg:gap-7`   | 20px → 24px → 28px |
+| `lg` | `gap-6 sm:gap-8 lg:gap-10`  | 24px → 32px → 40px |
 | `xl` | `gap-8 sm:gap-10 lg:gap-12` | 32px → 40px → 48px |
 
 ### Fluid Gaps
@@ -85,7 +85,9 @@ When `fluidGap={true}`, gaps scale smoothly across all viewport sizes:
 import { FluidGrid, GridItem } from '@/components/common';
 
 function BasicGrid() {
-  const items = [/* your data */];
+  const items = [
+    /* your data */
+  ];
 
   return (
     <FluidGrid>
@@ -102,11 +104,7 @@ function BasicGrid() {
 ### With Animations
 
 ```tsx
-<FluidGrid
-  animate={true}
-  staggerDelay={0.05}
-  gap="md"
->
+<FluidGrid animate={true} staggerDelay={0.05} gap="md">
   {stations.map((station) => (
     <GridItem key={station.id}>
       <StationCard station={station} />
@@ -143,7 +141,7 @@ import { DefaultFluidGrid } from '@/components/common';
       <Card>{item.name}</Card>
     </GridItem>
   ))}
-</DefaultFluidGrid>
+</DefaultFluidGrid>;
 ```
 
 ## Grid Structure
@@ -151,8 +149,10 @@ import { DefaultFluidGrid } from '@/components/common';
 ### HTML Output
 
 ```html
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 lg:gap-7 auto-rows-fr">
-  <div class="h-full flex flex-col" role="gridcell">
+<div
+  class="grid auto-rows-fr grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7 xl:grid-cols-4"
+>
+  <div class="flex h-full flex-col" role="gridcell">
     <!-- Card content -->
   </div>
 </div>
@@ -177,7 +177,7 @@ The grid ensures all cards have equal height within each row:
 
 ```tsx
 <GridItem>
-  <div className="h-full flex flex-col">
+  <div className="flex h-full flex-col">
     <header>Card Header</header>
     <div className="flex-1">Card Body</div>
     <footer className="mt-auto">Card Footer</footer>
@@ -205,9 +205,7 @@ Enable smooth, staggered animations when items mount:
   staggerDelay={0.05} // 50ms delay between each item
 >
   {items.map((item, index) => (
-    <GridItem key={item.id}>
-      {/* Item animates in with delay */}
-    </GridItem>
+    <GridItem key={item.id}>{/* Item animates in with delay */}</GridItem>
   ))}
 </FluidGrid>
 ```
@@ -220,12 +218,12 @@ Enable smooth, staggered animations when items mount:
 
 ## Responsive Breakpoints
 
-| Breakpoint | Width | Columns (default) |
-|------------|-------|-------------------|
-| base       | < 640px | 1 column |
-| sm         | ≥ 640px | 2 columns |
-| lg         | ≥ 1024px | 3 columns |
-| xl         | ≥ 1280px | 4 columns |
+| Breakpoint | Width    | Columns (default) |
+| ---------- | -------- | ----------------- |
+| base       | < 640px  | 1 column          |
+| sm         | ≥ 640px  | 2 columns         |
+| lg         | ≥ 1024px | 3 columns         |
+| xl         | ≥ 1280px | 4 columns         |
 
 ## Best Practices
 
@@ -323,9 +321,7 @@ Adjust gap size:
 Check that `animate={true}` is set and children are valid React elements:
 
 ```tsx
-<FluidGrid animate={true}>
-  {/* Valid JSX elements */}
-</FluidGrid>
+<FluidGrid animate={true}>{/* Valid JSX elements */}</FluidGrid>
 ```
 
 ## Migration Guide
@@ -335,6 +331,7 @@ Check that `animate={true}` is set and children are valid React elements:
 Replace custom grid styles:
 
 **Before:**
+
 ```css
 .station-grid {
   display: grid;
@@ -344,9 +341,10 @@ Replace custom grid styles:
 ```
 
 **After:**
+
 ```tsx
 <FluidGrid gap="md">
-  {stations.map(station => (
+  {stations.map((station) => (
     <GridItem key={station.id}>
       <StationCard station={station} />
     </GridItem>
@@ -359,16 +357,20 @@ Replace custom grid styles:
 Migrate flex containers:
 
 **Before:**
+
 ```jsx
 <div className="flex flex-wrap gap-4">
-  {items.map(item => <Card key={item.id} />)}
+  {items.map((item) => (
+    <Card key={item.id} />
+  ))}
 </div>
 ```
 
 **After:**
+
 ```tsx
 <FluidGrid gap="sm">
-  {items.map(item => (
+  {items.map((item) => (
     <GridItem key={item.id}>
       <Card />
     </GridItem>
@@ -385,6 +387,7 @@ Migrate flex containers:
 ## Support
 
 For issues or questions, please refer to:
+
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 - [Framer Motion Docs](https://www.framer.com/motion/)
 - Project README

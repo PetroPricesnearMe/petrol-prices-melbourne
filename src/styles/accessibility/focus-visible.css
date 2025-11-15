@@ -13,7 +13,7 @@
 
 /* Default Focus Styles - High visibility */
 :focus {
-  outline: 3px solid #3B82F6;
+  outline: 3px solid #3b82f6;
   outline-offset: 2px;
 }
 
@@ -23,7 +23,7 @@
 }
 
 :focus-visible {
-  outline: 3px solid #3B82F6;
+  outline: 3px solid #3b82f6;
   outline-offset: 2px;
   transition: outline-color 0.2s ease;
 }
@@ -35,19 +35,19 @@
 /* Buttons */
 button:focus-visible,
 .btn:focus-visible {
-  outline: 3px solid #3B82F6;
+  outline: 3px solid #3b82f6;
   outline-offset: 3px;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
 button:focus-visible:active,
 .btn:focus-visible:active {
-  outline-color: #1E40AF;
+  outline-color: #1e40af;
 }
 
 /* Links */
 a:focus-visible {
-  outline: 3px solid #3B82F6;
+  outline: 3px solid #3b82f6;
   outline-offset: 3px;
   text-decoration-thickness: 3px;
   border-radius: 2px;
@@ -57,34 +57,34 @@ a:focus-visible {
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid #3B82F6;
+  outline: 3px solid #3b82f6;
   outline-offset: 0;
-  border-color: #3B82F6;
+  border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Checkboxes and Radio Buttons */
-input[type="checkbox"]:focus-visible,
-input[type="radio"]:focus-visible {
-  outline: 3px solid #3B82F6;
+input[type='checkbox']:focus-visible,
+input[type='radio']:focus-visible {
+  outline: 3px solid #3b82f6;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
 /* Cards and Interactive Containers */
 .card:focus-visible,
-[role="button"]:focus-visible,
+[role='button']:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #3B82F6;
+  outline: 3px solid #3b82f6;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
 }
 
 /* Dropdowns and Selects */
 .dropdown:focus-visible,
-[role="listbox"]:focus-visible,
-[role="option"]:focus-visible {
-  outline: 3px solid #3B82F6;
+[role='listbox']:focus-visible,
+[role='option']:focus-visible {
+  outline: 3px solid #3b82f6;
   outline-offset: 2px;
   background-color: rgba(59, 130, 246, 0.05);
 }
@@ -93,21 +93,21 @@ input[type="radio"]:focus-visible {
 .leaflet-control:focus-visible,
 .map-control-btn:focus-visible,
 .leaflet-marker-icon:focus-visible {
-  outline: 4px solid #FCD34D;
+  outline: 4px solid #fcd34d;
   outline-offset: 3px;
   z-index: 10000;
   box-shadow: 0 0 0 6px rgba(252, 211, 77, 0.3);
 }
 
 /* Modal and Dialog */
-[role="dialog"]:focus,
+[role='dialog']:focus,
 .modal:focus {
   outline: none;
 }
 
-[role="dialog"] *:focus-visible,
+[role='dialog'] *:focus-visible,
 .modal *:focus-visible {
-  outline: 3px solid #3B82F6;
+  outline: 3px solid #3b82f6;
   outline-offset: 2px;
 }
 
@@ -142,30 +142,30 @@ input[type="radio"]:focus-visible {
 
 @media (prefers-color-scheme: dark) {
   :focus-visible {
-    outline-color: #60A5FA;
+    outline-color: #60a5fa;
   }
 
   button:focus-visible,
   .btn:focus-visible {
-    outline-color: #60A5FA;
+    outline-color: #60a5fa;
     box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.2);
   }
 
   a:focus-visible {
-    outline-color: #60A5FA;
+    outline-color: #60a5fa;
   }
 
   input:focus-visible,
   textarea:focus-visible,
   select:focus-visible {
-    outline-color: #60A5FA;
-    border-color: #60A5FA;
+    outline-color: #60a5fa;
+    border-color: #60a5fa;
     box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
   }
 
   .map-control-btn:focus-visible,
   .leaflet-marker-icon:focus-visible {
-    outline-color: #FDE047;
+    outline-color: #fde047;
     box-shadow: 0 0 0 6px rgba(253, 224, 71, 0.3);
   }
 }
@@ -186,19 +186,19 @@ input[type="radio"]:focus-visible {
 
 /* Success State Focus */
 .focus-success:focus-visible {
-  outline-color: #10B981;
+  outline-color: #10b981;
   box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
 }
 
 /* Warning State Focus */
 .focus-warning:focus-visible {
-  outline-color: #F59E0B;
+  outline-color: #f59e0b;
   box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
 }
 
 /* Error State Focus */
 .focus-error:focus-visible {
-  outline-color: #EF4444;
+  outline-color: #ef4444;
   box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
 }
 
@@ -215,7 +215,7 @@ input[type="radio"]:focus-visible {
 
 /* Highlight parent when child is focused */
 .focus-within-highlight:focus-within {
-  border-color: #3B82F6;
+  border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -246,7 +246,7 @@ input[type="radio"]:focus-visible {
 
 .skip-link:focus,
 .skip-link:focus-visible {
-  outline: 4px solid #FCD34D;
+  outline: 4px solid #fcd34d;
   outline-offset: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -272,13 +272,13 @@ input[type="radio"]:focus-visible {
 
 /* Enhanced focus for critical actions */
 .focus-critical:focus-visible {
-  outline: 4px solid #DC2626;
+  outline: 4px solid #dc2626;
   outline-offset: 3px;
   box-shadow: 0 0 0 6px rgba(220, 38, 38, 0.25);
 }
 
 /* Focus for disabled elements (for context only) */
 [disabled]:focus,
-[aria-disabled="true"]:focus {
-  outline-color: #9CA3AF;
+[aria-disabled='true']:focus {
+  outline-color: #9ca3af;
 }

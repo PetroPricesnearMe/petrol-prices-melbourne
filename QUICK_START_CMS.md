@@ -89,10 +89,9 @@ const post = await cms.fetchBySlug('posts', 'my-post');
 ```typescript
 import { withFallback } from '@/lib/cms/error-handler';
 
-const data = await withFallback(
-  () => cms.fetchAll('posts'),
-  { getFallback: () => ({ data: [], total: 0 }) }
-);
+const data = await withFallback(() => cms.fetchAll('posts'), {
+  getFallback: () => ({ data: [], total: 0 }),
+});
 ```
 
 ### Dynamic Route
@@ -219,15 +218,15 @@ curl -X POST http://localhost:3000/api/revalidate \
 ### useCMS - Fetch Collection
 
 ```typescript
-const { 
-  data,           // Array of items
-  total,          // Total count
-  page,           // Current page
-  hasMore,        // Has more pages
-  isLoading,      // Loading state
-  error,          // Error object
-  refetch,        // Refetch function
-  loadMore        // Load next page
+const {
+  data, // Array of items
+  total, // Total count
+  page, // Current page
+  hasMore, // Has more pages
+  isLoading, // Loading state
+  error, // Error object
+  refetch, // Refetch function
+  loadMore, // Load next page
 } = useCMS('posts', {
   pageSize: 20,
   sort: { field: 'date', order: 'desc' },
@@ -276,13 +275,10 @@ try {
 ```typescript
 import { withFallback } from '@/lib/cms/error-handler';
 
-const data = await withFallback(
-  () => cms.fetchAll('posts'),
-  { 
-    getFallback: () => [],
-    onError: (err) => console.error(err)
-  }
-);
+const data = await withFallback(() => cms.fetchAll('posts'), {
+  getFallback: () => [],
+  onError: (err) => console.error(err),
+});
 ```
 
 ---
@@ -422,4 +418,3 @@ Before going live:
 
 **Version**: 1.0.0  
 **Status**: ✅ Production Ready
-

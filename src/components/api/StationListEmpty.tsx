@@ -1,9 +1,9 @@
 /**
  * StationListEmpty Component
- * 
+ *
  * Empty state display when no stations are found
  * Provides helpful messaging and actions
- * 
+ *
  * @component
  */
 
@@ -20,7 +20,7 @@ export interface StationListEmptyProps {
 
 /**
  * StationListEmpty - Empty state display
- * 
+ *
  * Features:
  * - Clear messaging
  * - Helpful suggestions
@@ -35,8 +35,8 @@ export function StationListEmpty({
     <div
       className={`
         station-list-empty
-        flex flex-col items-center justify-center
-        min-h-[400px]
+        flex min-h-[400px] flex-col items-center
+        justify-center
         p-8
         text-center
         ${className}
@@ -47,16 +47,16 @@ export function StationListEmpty({
       {/* Empty icon */}
       <div
         className="
-          w-16 h-16
-          rounded-full
-          bg-gray-100 dark:bg-gray-800
-          flex items-center justify-center
-          mb-4
+          mb-4 flex
+          h-16
+          w-16 items-center
+          justify-center rounded-full bg-gray-100
+          dark:bg-gray-800
         "
         aria-hidden="true"
       >
         <svg
-          className="w-8 h-8 text-gray-400 dark:text-gray-500"
+          className="h-8 w-8 text-gray-400 dark:text-gray-500"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -73,9 +73,9 @@ export function StationListEmpty({
       {/* Empty message */}
       <h2
         className="
-          text-xl font-semibold
-          text-gray-900 dark:text-white
-          mb-2
+          mb-2 text-xl
+          font-semibold text-gray-900
+          dark:text-white
         "
       >
         {message}
@@ -85,7 +85,7 @@ export function StationListEmpty({
       {showSuggestions && (
         <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
           <p className="mb-2">Try:</p>
-          <ul className="list-disc list-inside space-y-1 text-left max-w-md">
+          <ul className="max-w-md list-inside list-disc space-y-1 text-left">
             <li>Adjusting your search filters</li>
             <li>Clearing any active filters</li>
             <li>Expanding your search radius</li>
@@ -98,4 +98,3 @@ export function StationListEmpty({
 }
 
 StationListEmpty.displayName = 'StationListEmpty';
-

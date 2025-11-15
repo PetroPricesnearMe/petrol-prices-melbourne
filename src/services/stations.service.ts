@@ -1,6 +1,9 @@
 import { api } from '@/lib/api/client';
-import type { PaginatedResponse, PetrolStation, SearchFilters } from '@/types/index';
-
+import type {
+  PaginatedResponse,
+  PetrolStation,
+  SearchFilters,
+} from '@/types/index';
 
 /**
  * Stations Service
@@ -63,4 +66,3 @@ export const stationsService = {
     return response.data;
   },
 };
-

@@ -20,6 +20,7 @@
 ## Related Issues
 
 <!-- Link to related issues -->
+
 Closes #(issue number)
 
 ## Changes Made
@@ -35,7 +36,7 @@ Closes #(issue number)
 <!-- If applicable, add screenshots or recordings to demonstrate the changes -->
 
 | Before | After |
-|--------|-------|
+| ------ | ----- |
 |        |       |
 
 ## Testing
@@ -55,11 +56,13 @@ Closes #(issue number)
 <!-- Describe how you manually tested this change -->
 
 **Steps to test:**
+
 1.
 2.
 3.
 
 **Test environment:**
+
 - Browser:
 - Device:
 - OS:
@@ -69,6 +72,7 @@ Closes #(issue number)
 <!-- Mark completed items with an "x" -->
 
 ### Code Quality
+
 - [ ] My code follows the project's style guidelines
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
@@ -76,32 +80,38 @@ Closes #(issue number)
 - [ ] My changes generate no new warnings or errors
 
 ### Documentation
+
 - [ ] I have made corresponding changes to the documentation
 - [ ] I have updated the README if needed
 - [ ] I have added/updated JSDoc comments
 
 ### Testing
+
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] Test coverage is maintained or improved (target: 80%+)
 
 ### Performance
+
 - [ ] I have checked for performance implications
 - [ ] My changes don't introduce memory leaks
 - [ ] Bundle size impact is acceptable
 
 ### Accessibility
+
 - [ ] I have tested keyboard navigation
 - [ ] I have tested with screen readers
 - [ ] Color contrast ratios meet WCAG 2.1 AA standards
 - [ ] All interactive elements are properly labeled
 
 ### Security
+
 - [ ] I have checked for security vulnerabilities
 - [ ] No sensitive data is exposed
 - [ ] Input validation is implemented where needed
 
 ### Breaking Changes
+
 - [ ] This PR includes breaking changes
 - [ ] I have updated the CHANGELOG.md
 - [ ] Migration guide has been provided (if applicable)
@@ -110,13 +120,12 @@ Closes #(issue number)
 
 <!-- Any special considerations for deployment -->
 
-**Environment variables needed:**
--
+## **Environment variables needed:**
 
-**Database migrations:**
--
+## **Database migrations:**
 
 **Special deployment steps:**
+
 1.
 2.
 
@@ -139,4 +148,5 @@ Closes #(issue number)
 ---
 
 **Reviewer notes:**
+
 <!-- Reviewers, add your feedback here -->

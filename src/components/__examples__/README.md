@@ -7,9 +7,11 @@ This directory contains example implementations of production-ready components f
 Our components follow the **Atomic Design** methodology:
 
 ### Atoms
+
 Small, indivisible UI elements like buttons, inputs, and labels.
 
 **Example: Button**
+
 ```tsx
 <Button variant="primary" size="md">
   Click me
@@ -17,9 +19,11 @@ Small, indivisible UI elements like buttons, inputs, and labels.
 ```
 
 ### Molecules
+
 Combinations of atoms that form simple UI elements.
 
 **Example: Card**
+
 ```tsx
 <Card variant="elevated">
   <CardHeader>
@@ -30,25 +34,26 @@ Combinations of atoms that form simple UI elements.
 ```
 
 ### Organisms
+
 Complex components made of molecules and atoms.
 
 **Example: StationCard**
+
 ```tsx
-<StationCard
-  station={stationData}
-  onSelect={handleSelect}
-/>
+<StationCard station={stationData} onSelect={handleSelect} />
 ```
 
 ## Best Practices Demonstrated
 
 ### 1. **TypeScript Excellence**
+
 - Proper typing with interfaces
 - Generic types where appropriate
 - Type-safe props with `VariantProps`
 - Export types for consumers
 
 ### 2. **Accessibility (A11Y)**
+
 - Semantic HTML
 - ARIA attributes
 - Keyboard navigation
@@ -56,6 +61,7 @@ Complex components made of molecules and atoms.
 - Screen reader support
 
 ### 3. **Styling**
+
 - Tailwind CSS with design tokens
 - Class variance authority (CVA) for variants
 - `cn()` utility for class merging
@@ -63,18 +69,21 @@ Complex components made of molecules and atoms.
 - Theme support
 
 ### 4. **Component Composition**
+
 - Flexible and composable
 - Compound components pattern
 - Controlled/uncontrolled modes
 - Forward refs for DOM access
 
 ### 5. **Performance**
+
 - `React.forwardRef` for ref forwarding
 - Memoization where needed
 - Lazy loading for heavy components
 - Code splitting
 
 ### 6. **Developer Experience**
+
 - JSDoc documentation
 - Usage examples
 - Clear prop descriptions
@@ -84,13 +93,13 @@ Complex components made of molecules and atoms.
 
 Use this template for new components:
 
-```tsx
+````tsx
 /**
  * ComponentName - Brief description
- * 
+ *
  * Detailed description of what the component does,
  * its features, and when to use it.
- * 
+ *
  * @component
  * @example
  * ```tsx
@@ -138,7 +147,7 @@ export interface ComponentNameProps
    * Children content
    */
   children: React.ReactNode;
-  
+
   /**
    * Custom prop with description
    */
@@ -151,54 +160,39 @@ export interface ComponentNameProps
 export const ComponentName = React.forwardRef<
   HTMLDivElement,
   ComponentNameProps
->(
-  (
-    {
-      className,
-      variant,
-      size,
-      children,
-      customProp,
-      ...props
-    },
-    ref
-  ) => {
-    // Hooks
-    const [state, setState] = React.useState();
-    
-    // Derived values
-    const computed = React.useMemo(() => {
-      // Compute something
-    }, []);
-    
-    // Event handlers
-    const handleEvent = () => {
-      // Handle event
-    };
-    
-    // Effects
-    React.useEffect(() => {
-      // Side effects
-    }, []);
-    
-    // Render
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          componentVariants({ variant, size }),
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+>(({ className, variant, size, children, customProp, ...props }, ref) => {
+  // Hooks
+  const [state, setState] = React.useState();
+
+  // Derived values
+  const computed = React.useMemo(() => {
+    // Compute something
+  }, []);
+
+  // Event handlers
+  const handleEvent = () => {
+    // Handle event
+  };
+
+  // Effects
+  React.useEffect(() => {
+    // Side effects
+  }, []);
+
+  // Render
+  return (
+    <div
+      ref={ref}
+      className={cn(componentVariants({ variant, size }), className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});
 
 ComponentName.displayName = 'ComponentName';
-```
+````
 
 ## Testing Components
 
@@ -225,7 +219,7 @@ describe('Button', () => {
   it('handles click events', async () => {
     const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Click</Button>);
-    
+
     await userEvent.click(screen.getByText('Click'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -293,4 +287,3 @@ export const WithIcon: Story = {
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [CVA Documentation](https://cva.style/docs)
 - [A11Y Checklist](https://www.a11yproject.com/checklist/)
-

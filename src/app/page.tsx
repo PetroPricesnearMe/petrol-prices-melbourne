@@ -5,7 +5,8 @@ import { StructuredData } from '@/components/StructuredData';
 import { generateWebSiteSchema } from '@/lib/schema';
 
 export const metadata: Metadata = {
-  title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L | Melbourne Fuel Finder',
+  title:
+    'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L | Melbourne Fuel Finder',
   description:
     'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
   keywords: [
@@ -32,7 +33,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L',
-    description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Free to use!',
+    description:
+      'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Free to use!',
     type: 'website',
     locale: 'en_AU',
     url: 'https://petrolpricenearme.com.au',
@@ -49,7 +51,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L',
-    description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Free to use!',
+    description:
+      'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Free to use!',
     images: ['/images/twitter-landing-page.jpg'],
   },
   alternates: {
@@ -69,7 +72,8 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const structuredDataSchemas = generateWebSiteSchema(baseUrl);
 
   return (

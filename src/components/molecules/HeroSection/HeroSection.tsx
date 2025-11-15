@@ -76,7 +76,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {/* Content */}
       <div
         className={cn(
-          'relative z-10 h-full flex items-center',
+          'relative z-10 flex h-full items-center',
           contentPositionClasses[contentPosition]
         )}
       >
@@ -84,41 +84,39 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div
             className={cn(
               'max-w-4xl',
-              contentPosition === 'center' && 'text-center mx-auto',
+              contentPosition === 'center' && 'mx-auto text-center',
               contentPosition === 'right' && 'ml-auto'
             )}
           >
             {/* Subtitle */}
             {subtitle && (
-              <p className="text-sm font-semibold text-primary-400 uppercase tracking-wide mb-2">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary-400">
                 {subtitle}
               </p>
             )}
 
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+            <h1 className="mb-4 text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
               {title}
             </h1>
 
             {/* Description */}
             {description && (
-              <p className="text-lg sm:text-xl text-gray-200 mb-6 max-w-2xl">
+              <p className="mb-6 max-w-2xl text-lg text-gray-200 sm:text-xl">
                 {description}
               </p>
             )}
 
             {/* Additional Content */}
             {children && (
-              <div className="flex flex-col sm:flex-row gap-4">
-                {children}
-              </div>
+              <div className="flex flex-col gap-4 sm:flex-row">{children}</div>
             )}
           </div>
         </div>
       </div>
 
       {/* Gradient Overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
     </section>
   );
 };

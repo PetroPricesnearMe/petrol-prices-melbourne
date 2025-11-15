@@ -59,24 +59,24 @@ function mapToBaserowFormat(csvRow) {
   const lng = csvRow.X ? parseFloat(parseFloat(csvRow.X).toFixed(4)) : null;
 
   return {
-    "Station Name": csvRow.station_name || '',
-    "Address": csvRow.station_address || '',
-    "City": csvRow.station_suburb || '',
-    "Postal Code": csvRow.station_postcode || '',
-    "Region": csvRow.station_state || '',
-    "Country": "AUSTRALIA",
-    "Latitude": lat,
-    "Longitude": lng,
-    "Location Details": csvRow.station_description || '',
-    "Category": getCategoryId(csvRow.feature_type),
-    "brand": csvRow.station_owner ? [csvRow.station_owner] : []
+    'Station Name': csvRow.station_name || '',
+    Address: csvRow.station_address || '',
+    City: csvRow.station_suburb || '',
+    'Postal Code': csvRow.station_postcode || '',
+    Region: csvRow.station_state || '',
+    Country: 'AUSTRALIA',
+    Latitude: lat,
+    Longitude: lng,
+    'Location Details': csvRow.station_description || '',
+    Category: getCategoryId(csvRow.feature_type),
+    brand: csvRow.station_owner ? [csvRow.station_owner] : [],
   };
 }
 
 // Get category ID based on feature type
 function getCategoryId(featureType) {
   const categoryMap = {
-    'PETROL STATION': 3812407
+    'PETROL STATION': 3812407,
   };
   return categoryMap[featureType] || 3812405;
 }
@@ -91,12 +91,15 @@ async function importData() {
   console.log(`📊 Parsed ${data.length} rows from CSV`);
 
   // Filter for Victoria (VIC) stations only for initial import
-  const vicStations = data.filter(row => row.station_state === 'VIC');
+  const vicStations = data.filter((row) => row.station_state === 'VIC');
   console.log(`📍 Found ${vicStations.length} VIC stations`);
 
   // Create output file with mapped data
-  const outputPath = path.join(__dirname, '../database/baserow-import-data.json');
-  const mappedData = vicStations.map(row => mapToBaserowFormat(row));
+  const outputPath = path.join(
+    __dirname,
+    '../database/baserow-import-data.json'
+  );
+  const mappedData = vicStations.map((row) => mapToBaserowFormat(row));
 
   fs.writeFileSync(outputPath, JSON.stringify(mappedData, null, 2));
   console.log(`✅ Mapped data saved to ${outputPath}`);
@@ -109,4 +112,3 @@ async function importData() {
 
 // Run import
 importData().catch(console.error);
-

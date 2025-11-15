@@ -19,7 +19,10 @@ import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
-import { calculateAspectRatio, generateBlurPlaceholder } from '@/lib/performance/image-optimization';
+import {
+  calculateAspectRatio,
+  generateBlurPlaceholder,
+} from '@/lib/performance/image-optimization';
 import { cn } from '@/lib/utils';
 
 // ============================================================================
@@ -181,25 +184,25 @@ export function SEOImage({
   const imageQuality = quality ?? (isHero ? 90 : 85);
 
   // Determine sizes
-  const imageSizes = sizes ?? (
-    isHero
+  const imageSizes =
+    sizes ??
+    (isHero
       ? '100vw'
-      : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
-  );
+      : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw');
 
   // Calculate aspect ratio for CLS prevention
-  const calculatedAspectRatio = aspectRatio || (
-    width && height && !fill
+  const calculatedAspectRatio =
+    aspectRatio ||
+    (width && height && !fill
       ? calculateAspectRatio(Number(width), Number(height))
-      : undefined
-  );
+      : undefined);
 
   // Generate blur placeholder
-  const generatedBlurDataURL = blurDataURL || (
-    width && height && !fill
+  const generatedBlurDataURL =
+    blurDataURL ||
+    (width && height && !fill
       ? generateBlurPlaceholder(Number(width), Number(height))
-      : undefined
-  );
+      : undefined);
 
   // Handle load event
   const handleLoad = () => {
@@ -233,13 +236,17 @@ export function SEOImage({
   return (
     <figure
       className={cn('relative', containerClassName)}
-      style={calculatedAspectRatio ? { aspectRatio: calculatedAspectRatio } : undefined}
+      style={
+        calculatedAspectRatio
+          ? { aspectRatio: calculatedAspectRatio }
+          : undefined
+      }
     >
       {/* Loading skeleton */}
       {showSkeleton && !isLoaded && !hasError && (
         <div
           className={cn(
-            'absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 animate-pulse',
+            'absolute inset-0 animate-pulse bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700',
             skeletonClassName
           )}
           aria-hidden="true"
@@ -257,7 +264,7 @@ export function SEOImage({
           quality={imageQuality}
           sizes={imageSizes}
           priority={shouldPriority}
-          loading={shouldPriority ? 'eager' : (loading || 'lazy')}
+          loading={shouldPriority ? 'eager' : loading || 'lazy'}
           placeholder={placeholder || (generatedBlurDataURL ? 'blur' : 'empty')}
           blurDataURL={generatedBlurDataURL}
           fetchPriority={shouldPriority ? 'high' : 'auto'}
@@ -280,7 +287,7 @@ export function SEOImage({
       {/* Error fallback */}
       {hasError && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-          <div className="text-center p-4">
+          <div className="p-4 text-center">
             <svg
               className="mx-auto h-12 w-12 text-gray-400"
               fill="none"
@@ -306,9 +313,7 @@ export function SEOImage({
         <figcaption className="mt-2 text-sm text-gray-600 dark:text-gray-400">
           {caption && <span className="block">{caption}</span>}
           {credit && (
-            <span className="block text-xs italic mt-1">
-              {credit}
-            </span>
+            <span className="mt-1 block text-xs italic">{credit}</span>
           )}
         </figcaption>
       )}
@@ -321,12 +326,12 @@ export function SEOImage({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'ImageObject',
-              'contentUrl': typeof props.src === 'string' ? props.src : undefined,
-              'description': alt,
-              'width': width?.toString(),
-              'height': height?.toString(),
-              'caption': caption,
-              'creditText': credit,
+              contentUrl: typeof props.src === 'string' ? props.src : undefined,
+              description: alt,
+              width: width?.toString(),
+              height: height?.toString(),
+              caption: caption,
+              creditText: credit,
             }),
           }}
         />
@@ -389,13 +394,7 @@ export function AvatarImage({
  * Optimized for small preview images
  */
 export function ThumbnailImage(props: Omit<SEOImageProps, 'quality'>) {
-  return (
-    <SEOImage
-      {...props}
-      quality={75}
-      objectFit="cover"
-    />
-  );
+  return <SEOImage {...props} quality={75} objectFit="cover" />;
 }
 
 /**

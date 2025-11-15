@@ -1,6 +1,6 @@
 /**
  * CMS Configuration & Validation
- * 
+ *
  * Centralized configuration with environment variable validation
  */
 
@@ -132,7 +132,8 @@ export function loadConfig(): CMSConfigSchema {
     ...defaultConfig,
 
     // Provider settings
-    provider: (process.env.CMS_PROVIDER as CMSProvider) || defaultConfig.provider,
+    provider:
+      (process.env.CMS_PROVIDER as CMSProvider) || defaultConfig.provider,
     apiUrl: process.env.CMS_API_URL || process.env.BASEROW_API_URL || '',
     apiToken: process.env.CMS_API_TOKEN || process.env.BASEROW_API_TOKEN,
     projectId: process.env.CMS_PROJECT_ID,
@@ -140,18 +141,30 @@ export function loadConfig(): CMSConfigSchema {
 
     // Cache settings
     cacheEnabled: process.env.CMS_CACHE_ENABLED !== 'false',
-    cacheTime: parseInt(process.env.CMS_CACHE_TIME || String(defaultConfig.cacheTime)),
-    cacheMaxSize: parseInt(process.env.CMS_CACHE_MAX_SIZE || String(defaultConfig.cacheMaxSize)),
+    cacheTime: parseInt(
+      process.env.CMS_CACHE_TIME || String(defaultConfig.cacheTime)
+    ),
+    cacheMaxSize: parseInt(
+      process.env.CMS_CACHE_MAX_SIZE || String(defaultConfig.cacheMaxSize)
+    ),
     staleWhileRevalidate: parseInt(
-      process.env.CMS_STALE_WHILE_REVALIDATE || String(defaultConfig.staleWhileRevalidate)
+      process.env.CMS_STALE_WHILE_REVALIDATE ||
+        String(defaultConfig.staleWhileRevalidate)
     ),
 
     // Retry settings
-    retryAttempts: parseInt(process.env.CMS_RETRY_ATTEMPTS || String(defaultConfig.retryAttempts)),
-    retryDelay: parseInt(process.env.CMS_RETRY_DELAY || String(defaultConfig.retryDelay)),
-    retryMaxDelay: parseInt(process.env.CMS_RETRY_MAX_DELAY || String(defaultConfig.retryMaxDelay)),
+    retryAttempts: parseInt(
+      process.env.CMS_RETRY_ATTEMPTS || String(defaultConfig.retryAttempts)
+    ),
+    retryDelay: parseInt(
+      process.env.CMS_RETRY_DELAY || String(defaultConfig.retryDelay)
+    ),
+    retryMaxDelay: parseInt(
+      process.env.CMS_RETRY_MAX_DELAY || String(defaultConfig.retryMaxDelay)
+    ),
     retryBackoffMultiplier: parseFloat(
-      process.env.CMS_RETRY_BACKOFF_MULTIPLIER || String(defaultConfig.retryBackoffMultiplier)
+      process.env.CMS_RETRY_BACKOFF_MULTIPLIER ||
+        String(defaultConfig.retryBackoffMultiplier)
     ),
 
     // Timeout
@@ -239,4 +252,3 @@ export function verifyConfig(): boolean {
     return false;
   }
 }
-

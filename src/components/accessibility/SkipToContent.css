@@ -24,7 +24,7 @@
   top: -100%;
   left: 0;
   padding: 16px 24px;
-  background: #3B82F6;
+  background: #3b82f6;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;
@@ -32,7 +32,9 @@
   border: 3px solid #ffffff;
   border-radius: 0 0 8px 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: top 0.3s ease, transform 0.2s ease;
+  transition:
+    top 0.3s ease,
+    transform 0.2s ease;
   pointer-events: auto;
   z-index: 10001;
   white-space: nowrap;
@@ -55,19 +57,19 @@
 .skip-link:focus,
 .skip-link:active {
   top: 0;
-  outline: 4px solid #FCD34D;
+  outline: 4px solid #fcd34d;
   outline-offset: 4px;
 }
 
 /* Hover Effect (for when visible) */
 .skip-link:hover {
-  background: #2563EB;
+  background: #2563eb;
   transform: scale(1.02);
 }
 
 /* Active/Pressed State */
 .skip-link:active {
-  background: #1E40AF;
+  background: #1e40af;
   transform: scale(0.98);
 }
 
@@ -87,17 +89,17 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   .skip-link {
-    background: #1E40AF;
-    border-color: #E5E7EB;
-    color: #F9FAFB;
+    background: #1e40af;
+    border-color: #e5e7eb;
+    color: #f9fafb;
   }
 
   .skip-link:focus {
-    outline-color: #FCD34D;
+    outline-color: #fcd34d;
   }
 
   .skip-link:hover {
-    background: #1E3A8A;
+    background: #1e3a8a;
   }
 }
 

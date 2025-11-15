@@ -151,7 +151,11 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
                       key={index}
                       href={social.href}
                       className="footer-social-link"
-                      style={{ '--social-color': social.color } as React.CSSProperties}
+                      style={
+                        {
+                          '--social-color': social.color,
+                        } as React.CSSProperties
+                      }
                       aria-label={`Follow us on ${social.name}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -168,7 +172,11 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
 
           {/* Navigation Sections */}
           {sections.map((section, sectionIndex) => (
-            <motion.div key={sectionIndex} className="footer-section" variants={itemVariants}>
+            <motion.div
+              key={sectionIndex}
+              className="footer-section"
+              variants={itemVariants}
+            >
               <h3 className="footer-section-title">{section.title}</h3>
               <ul className="footer-links">
                 {section.links.map((link, linkIndex) => (
@@ -200,7 +208,9 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
                       )}
                     </a>
                     {link.description && (
-                      <p className="footer-link-description">{link.description}</p>
+                      <p className="footer-link-description">
+                        {link.description}
+                      </p>
                     )}
                   </li>
                 ))}
@@ -215,7 +225,13 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
               <div className="footer-contact-info">
                 {contactInfo.email && (
                   <div className="footer-contact-item">
-                    <svg className="footer-contact-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <svg
+                      className="footer-contact-icon"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
                       <path
                         d="M2.5 4.5h11a1 1 0 011 1v5a1 1 0 01-1 1h-11a1 1 0 01-1-1v-5a1 1 0 011-1z"
                         stroke="currentColor"
@@ -231,7 +247,10 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <a href={`mailto:${contactInfo.email}`} className="footer-contact-link">
+                    <a
+                      href={`mailto:${contactInfo.email}`}
+                      className="footer-contact-link"
+                    >
                       {contactInfo.email}
                     </a>
                   </div>
@@ -239,7 +258,13 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
 
                 {contactInfo.phone && (
                   <div className="footer-contact-item">
-                    <svg className="footer-contact-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <svg
+                      className="footer-contact-icon"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
                       <path
                         d="M3.5 1.5h9a1 1 0 011 1v11a1 1 0 01-1 1h-9a1 1 0 01-1-1v-11a1 1 0 011-1z"
                         stroke="currentColor"
@@ -255,7 +280,10 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <a href={`tel:${contactInfo.phone}`} className="footer-contact-link">
+                    <a
+                      href={`tel:${contactInfo.phone}`}
+                      className="footer-contact-link"
+                    >
                       {contactInfo.phone}
                     </a>
                   </div>
@@ -263,7 +291,13 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
 
                 {contactInfo.address && (
                   <div className="footer-contact-item">
-                    <svg className="footer-contact-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <svg
+                      className="footer-contact-icon"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
                       <path
                         d="M8 1.5c-2.5 0-4.5 2-4.5 4.5 0 3.5 4.5 7.5 4.5 7.5s4.5-4 4.5-7.5c0-2.5-2-4.5-4.5-4.5z"
                         stroke="currentColor"
@@ -273,17 +307,38 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
                       />
                       <circle cx="8" cy="6" r="1.5" fill="currentColor" />
                     </svg>
-                    <span className="footer-contact-text">{contactInfo.address}</span>
+                    <span className="footer-contact-text">
+                      {contactInfo.address}
+                    </span>
                   </div>
                 )}
 
                 {contactInfo.businessHours && (
                   <div className="footer-contact-item">
-                    <svg className="footer-contact-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M8 4v4l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <svg
+                      className="footer-contact-icon"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <circle
+                        cx="8"
+                        cy="8"
+                        r="6.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      />
+                      <path
+                        d="M8 4v4l3 2"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
                     </svg>
-                    <span className="footer-contact-text">{contactInfo.businessHours}</span>
+                    <span className="footer-contact-text">
+                      {contactInfo.businessHours}
+                    </span>
                   </div>
                 )}
               </div>
@@ -294,10 +349,15 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
           {newsletter && (
             <motion.div className="footer-newsletter" variants={itemVariants}>
               <h3 className="footer-section-title">{newsletter.title}</h3>
-              <p className="footer-newsletter-description">{newsletter.description}</p>
+              <p className="footer-newsletter-description">
+                {newsletter.description}
+              </p>
 
               {!subscribed ? (
-                <form onSubmit={handleNewsletterSubmit} className="footer-newsletter-form">
+                <form
+                  onSubmit={handleNewsletterSubmit}
+                  className="footer-newsletter-form"
+                >
                   <div className="footer-newsletter-input-group">
                     <input
                       type="email"
@@ -314,9 +374,26 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
                       disabled={isSubmitting || !email.trim()}
                     >
                       {isSubmitting ? (
-                        <svg className="footer-newsletter-spinner" width="16" height="16" viewBox="0 0 16 16">
-                          <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="2" fill="none" />
-                          <path d="M8 2a6 6 0 016 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <svg
+                          className="footer-newsletter-spinner"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                        >
+                          <circle
+                            cx="8"
+                            cy="8"
+                            r="6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            fill="none"
+                          />
+                          <path
+                            d="M8 2a6 6 0 016 6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          />
                         </svg>
                       ) : (
                         newsletter.buttonText
@@ -349,9 +426,15 @@ export const ModernFooter: React.FC<ModernFooterProps> = ({
               {copyright.replace('{year}', currentYear.toString())}
             </p>
             <div className="footer-bottom-links">
-              <a href="/privacy" className="footer-bottom-link">Privacy Policy</a>
-              <a href="/terms" className="footer-bottom-link">Terms of Service</a>
-              <a href="/cookies" className="footer-bottom-link">Cookie Policy</a>
+              <a href="/privacy" className="footer-bottom-link">
+                Privacy Policy
+              </a>
+              <a href="/terms" className="footer-bottom-link">
+                Terms of Service
+              </a>
+              <a href="/cookies" className="footer-bottom-link">
+                Cookie Policy
+              </a>
             </div>
           </div>
         </motion.div>

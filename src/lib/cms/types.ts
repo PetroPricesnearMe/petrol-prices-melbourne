@@ -1,11 +1,16 @@
 /**
  * Unified CMS Types
- * 
+ *
  * Type definitions for the unified CMS abstraction layer
  * Supports multiple CMS providers (Baserow, Sanity, Airtable, etc.)
  */
 
-export type CMSProvider = 'baserow' | 'sanity' | 'airtable' | 'contentful' | 'strapi';
+export type CMSProvider =
+  | 'baserow'
+  | 'sanity'
+  | 'airtable'
+  | 'contentful'
+  | 'strapi';
 
 /**
  * Base CMS configuration
@@ -155,4 +160,3 @@ export interface ResponseTransformer<TSource, TTarget> {
   transform(source: TSource): TTarget;
   transformMany(sources: TSource[]): TTarget[];
 }
-

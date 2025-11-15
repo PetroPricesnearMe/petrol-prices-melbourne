@@ -62,9 +62,9 @@ button:focus,
 input:focus,
 textarea:focus,
 select:focus,
-[role="button"]:focus,
-[role="link"]:focus,
-[tabindex]:not([tabindex="-1"]):focus {
+[role='button']:focus,
+[role='link']:focus,
+[tabindex]:not([tabindex='-1']):focus {
   outline: 3px solid #005fcc;
   outline-offset: 2px;
 }
@@ -128,11 +128,11 @@ main a:focus {
 
 button,
 a,
-input[type="button"],
-input[type="submit"],
-input[type="reset"],
-[role="button"],
-[tabindex]:not([tabindex="-1"]) {
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
+[role='button'],
+[tabindex]:not([tabindex='-1']) {
   min-height: 44px;
   min-width: 44px;
 }
@@ -160,7 +160,7 @@ label {
 /* Required field indicator */
 .required::after,
 label.required::after {
-  content: " *";
+  content: ' *';
   color: #dc2626;
   font-weight: bold;
 }
@@ -189,7 +189,7 @@ select:invalid:focus {
 }
 
 .error-message::before {
-  content: "⚠";
+  content: '⚠';
   font-weight: bold;
 }
 
@@ -335,13 +335,13 @@ body.user-is-tabbing *:focus {
   border-left: 4px solid;
 }
 
-.status-message[role="status"] {
+.status-message[role='status'] {
   background-color: #dbeafe;
   border-color: #2563eb;
   color: #1e40af;
 }
 
-.status-message[role="alert"] {
+.status-message[role='alert'] {
   background-color: #fee2e2;
   border-color: #dc2626;
   color: #991b1b;
@@ -442,7 +442,7 @@ tbody tr:nth-child(even) {
 
   /* Ensure links are visible */
   a[href]::after {
-    content: " (" attr(href) ")";
+    content: ' (' attr(href) ')';
   }
 
   /* Avoid page breaks in content */
@@ -457,7 +457,7 @@ tbody tr:nth-child(even) {
 
   /* Show ARIA labels in print */
   [aria-label]::after {
-    content: " [" attr(aria-label) "]";
+    content: ' [' attr(aria-label) ']';
     font-size: 0.8em;
     color: #666;
   }
@@ -494,4 +494,3 @@ tbody tr:nth-child(even) {
 .text-center {
   text-align: center;
 }
-

@@ -1,13 +1,13 @@
 /**
  * LoadingSpinner - Production-Ready Loading Component
- * 
+ *
  * A fully accessible, performant loading spinner with timeout handling,
  * progress indication, and error states.
- * 
+ *
  * @component
  * @example
  * ```tsx
- * <LoadingSpinner 
+ * <LoadingSpinner
  *   message="Loading stations..."
  *   size="large"
  *   showTips
@@ -31,14 +31,7 @@ import type { ComponentBaseProps } from '@/types';
  * Loading spinner variants
  */
 const spinnerVariants = cva(
-  [
-    'flex',
-    'flex-col',
-    'items-center',
-    'justify-center',
-    'gap-4',
-    'p-8',
-  ],
+  ['flex', 'flex-col', 'items-center', 'justify-center', 'gap-4', 'p-8'],
   {
     variants: {
       size: {
@@ -110,11 +103,16 @@ export interface LoadingSpinnerProps
    * @default false
    */
   fullScreen?: boolean;
+
+  /**
+   * Size variant
+   */
+  size?: 'sm' | 'md' | 'lg';
 }
 
 /**
  * LoadingSpinner Component
- * 
+ *
  * Displays a loading spinner with optional timeout handling,
  * progress indication, and error states.
  */
@@ -174,11 +172,11 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center gap-6 max-w-md text-center"
+            className="flex max-w-md flex-col items-center gap-6 text-center"
           >
-            <div className="p-4 rounded-full bg-error-50 dark:bg-error-900/20">
+            <div className="dark:bg-error-900/20 rounded-full bg-error-50 p-4">
               <AlertCircle
-                className="w-12 h-12 text-error-500 dark:text-error-400"
+                className="dark:text-error-400 h-12 w-12 text-error-500"
                 aria-hidden="true"
               />
             </div>
@@ -195,24 +193,24 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 w-full">
+            <div className="flex w-full flex-col gap-3 sm:flex-row">
               <button
                 type="button"
                 onClick={() => window.location.reload()}
                 className="
                   flex items-center justify-center gap-2
+                  rounded-lg bg-primary-600
                   px-4 py-2
-                  bg-primary-600 text-white
-                  rounded-lg
-                  hover:bg-primary-700
-                  active:bg-primary-800
-                  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                  transition-colors
                   font-medium
+                  text-white
+                  transition-colors
+                  hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500
+                  focus:ring-offset-2
+                  active:bg-primary-800
                 "
                 aria-label="Refresh page"
               >
-                <RefreshCw className="w-4 h-4" aria-hidden="true" />
+                <RefreshCw className="h-4 w-4" aria-hidden="true" />
                 Refresh Page
               </button>
               <button
@@ -222,19 +220,19 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
                 }}
                 className="
                   flex items-center justify-center gap-2
+                  rounded-lg bg-gray-100
                   px-4 py-2
-                  bg-gray-100 text-gray-900
-                  dark:bg-gray-800 dark:text-white
-                  rounded-lg
-                  hover:bg-gray-200 dark:hover:bg-gray-700
-                  active:bg-gray-300 dark:active:bg-gray-600
-                  focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2
+                  font-medium text-gray-900
                   transition-colors
-                  font-medium
+                  hover:bg-gray-200 focus:outline-none
+                  focus:ring-2 focus:ring-gray-500
+                  focus:ring-offset-2 active:bg-gray-300 dark:bg-gray-800 dark:text-white
+                  dark:hover:bg-gray-700
+                  dark:active:bg-gray-600
                 "
                 aria-label="Go to homepage"
               >
-                <Home className="w-4 h-4" aria-hidden="true" />
+                <Home className="h-4 w-4" aria-hidden="true" />
                 Go to Homepage
               </button>
             </div>
@@ -266,10 +264,10 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
                 repeat: Infinity,
                 ease: 'linear',
               }}
-              className="w-16 h-16"
+              className="h-16 w-16"
             >
               <Loader2
-                className="w-full h-full text-primary-600 dark:text-primary-400"
+                className="h-full w-full text-primary-600 dark:text-primary-400"
                 aria-hidden="true"
               />
             </motion.div>
@@ -281,7 +279,7 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
           </div>
 
           {/* Message */}
-          <div className="text-center space-y-2">
+          <div className="space-y-2 text-center">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               {message}
             </h3>
@@ -308,7 +306,7 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
 
           {/* Progress bar */}
           <div className="w-full max-w-xs">
-            <div className="h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-1 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
               <motion.div
                 className="h-full bg-primary-600 dark:bg-primary-400"
                 initial={{ width: 0 }}
@@ -324,4 +322,3 @@ export const LoadingSpinner = React.memo<LoadingSpinnerProps>(
 );
 
 LoadingSpinner.displayName = 'LoadingSpinner';
-

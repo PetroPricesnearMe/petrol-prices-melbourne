@@ -1,7 +1,7 @@
 /**
  * Lazy-Loaded Framer Motion Wrapper
  * Reduces bundle size by ~60KB using lazy loading and feature flags
- * 
+ *
  * Performance benefits:
  * - Only loads features you actually use
  * - Reduces initial bundle by 60KB
@@ -26,15 +26,15 @@ interface MotionProviderProps {
 /**
  * Optimized Motion Provider
  * Wraps app sections that need animations
- * 
+ *
  * Usage:
  * <MotionProvider>
  *   <m.div animate={{ opacity: 1 }} />
  * </MotionProvider>
  */
-export function MotionProvider({ 
-  children, 
-  features = 'domAnimation' 
+export function MotionProvider({
+  children,
+  features = 'domAnimation',
 }: MotionProviderProps) {
   const featureBundle = features === 'domMax' ? domMax : domAnimation;
 
@@ -50,13 +50,13 @@ export { m as motion };
 
 /**
  * Example usage in components:
- * 
+ *
  * // Instead of:
  * import { motion } from 'framer-motion';
- * 
+ *
  * // Use:
  * import { motion, MotionProvider } from '@/components/motion/LazyMotion';
- * 
+ *
  * function MyComponent() {
  *   return (
  *     <MotionProvider>
@@ -70,4 +70,3 @@ export { m as motion };
  *   );
  * }
  */
-

@@ -108,7 +108,9 @@ export function getGapClasses(gap: GapSize): string {
  * Build responsive grid column classes
  * Uses static class lookups to ensure proper Tailwind purging
  */
-export function buildGridColumnClasses(columns: ResponsiveColumns = {}): string {
+export function buildGridColumnClasses(
+  columns: ResponsiveColumns = {}
+): string {
   const classes: ClassValue[] = [];
 
   // Base columns

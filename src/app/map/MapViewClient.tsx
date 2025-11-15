@@ -14,7 +14,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useCallback, useMemo } from 'react';
 
 import { MapView } from '@/components/molecules/MapView/MapView';
-import { SortDropdown, type SortOption } from '@/components/molecules/SortDropdown';
+import {
+  SortDropdown,
+  type SortOption,
+} from '@/components/molecules/SortDropdown';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
 interface FuelPrices {
@@ -61,7 +64,7 @@ interface Props {
 
 interface SearchFilters {
   search: string;
-  fuelType: keyof FuelPrices;
+  fuelType: keyof FuelPrices | 'all';
   brand: string;
   suburb: string;
   sortBy: SortOption;
@@ -71,7 +74,7 @@ interface SearchFilters {
 export function MapViewClient({ initialStations, metadata }: Props) {
   const [filters, setFilters] = useState<SearchFilters>({
     search: '',
-    fuelType: 'unleaded',
+    fuelType: 'all',
     brand: 'all',
     suburb: 'all',
     sortBy: 'name',
@@ -107,18 +110,21 @@ export function MapViewClient({ initialStations, metadata }: Props) {
       result = result.filter((s) => s.suburb === filters.suburb);
     }
 
-    // ONLY filter by fuel type when user is actively sorting by price or filtering by max price
+    // Filter by fuel type only if not 'all' and when user is actively sorting by price or filtering by max price
     // This ensures all stations show by default instead of just those with the selected fuel type
-    const isPriceSorting = filters.sortBy === 'price-low' || filters.sortBy === 'price-high';
-    const hasPriceFilter = filters.priceMax !== '';
-    
-    if (isPriceSorting || hasPriceFilter) {
-      // Only show stations with selected fuel type when price sorting/filtering is active
-      result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+    if (filters.fuelType !== 'all') {
+      const isPriceSorting =
+        filters.sortBy === 'price-low' || filters.sortBy === 'price-high';
+      const hasPriceFilter = filters.priceMax !== '';
+
+      if (isPriceSorting || hasPriceFilter) {
+        // Only show stations with selected fuel type when price sorting/filtering is active
+        result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+      }
     }
 
     // Max price filter
-    if (filters.priceMax) {
+    if (filters.priceMax && filters.fuelType !== 'all') {
       const maxPrice = parseFloat(filters.priceMax);
       result = result.filter((s) => {
         const price = s.fuelPrices[filters.fuelType];
@@ -130,17 +136,35 @@ export function MapViewClient({ initialStations, metadata }: Props) {
     result.sort((a, b) => {
       switch (filters.sortBy) {
         case 'price-low': {
+          // If fuelType is 'all', use the minimum price across all fuel types
+          if (filters.fuelType === 'all') {
+            const pricesA = Object.values(a.fuelPrices).filter((p): p is number => p !== null);
+            const pricesB = Object.values(b.fuelPrices).filter((p): p is number => p !== null);
+            const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : Infinity;
+            const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
+            return minPriceA - minPriceB;
+          }
           const priceA = a.fuelPrices[filters.fuelType] || Infinity;
           const priceB = b.fuelPrices[filters.fuelType] || Infinity;
           return priceA - priceB;
         }
         case 'price-high': {
+          // If fuelType is 'all', use the minimum price across all fuel types
+          if (filters.fuelType === 'all') {
+            const pricesA = Object.values(a.fuelPrices).filter((p): p is number => p !== null);
+            const pricesB = Object.values(b.fuelPrices).filter((p): p is number => p !== null);
+            const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : 0;
+            const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : 0;
+            return minPriceB - minPriceA;
+          }
           const priceA = a.fuelPrices[filters.fuelType] || 0;
           const priceB = b.fuelPrices[filters.fuelType] || 0;
           return priceB - priceA;
         }
         case 'suburb':
-          return a.suburb.localeCompare(b.suburb) || a.name.localeCompare(b.name);
+          return (
+            a.suburb.localeCompare(b.suburb) || a.name.localeCompare(b.name)
+          );
         case 'name':
         default:
           return a.name.localeCompare(b.name);
@@ -150,9 +174,12 @@ export function MapViewClient({ initialStations, metadata }: Props) {
     return result;
   }, [initialStations, filters]);
 
-  const handleFilterChange = useCallback((key: keyof SearchFilters, value: string) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-  }, []);
+  const handleFilterChange = useCallback(
+    (key: keyof SearchFilters, value: string) => {
+      setFilters((prev) => ({ ...prev, [key]: value }));
+    },
+    []
+  );
 
   const clearFilters = useCallback(() => {
     setFilters({
@@ -166,7 +193,13 @@ export function MapViewClient({ initialStations, metadata }: Props) {
   }, []);
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value && value !== 'all' && value !== 'unleaded' && value !== 'name' && key !== 'sortBy' && key !== 'fuelType'
+    ([key, value]) =>
+      value &&
+      value !== 'all' &&
+      value !== 'unleaded' &&
+      value !== 'name' &&
+      key !== 'sortBy' &&
+      key !== 'fuelType'
   ).length;
 
   const handleStationSelect = useCallback((station: Station) => {
@@ -176,24 +209,31 @@ export function MapViewClient({ initialStations, metadata }: Props) {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-gradient-primary text-white py-8 print-hidden">
+      <header className="print-hidden bg-gradient-primary py-8 text-white">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter}>
-            <h1 className={cn(patterns.text.h1, 'text-white mb-4 text-center')}>
+            <h1 className={cn(patterns.text.h1, 'mb-4 text-center text-white')}>
               Melbourne Petrol Stations Map
             </h1>
-            <p className={cn(patterns.text.body, 'text-white/90 text-center max-w-2xl mb-6')}>
-              Explore {metadata.totalStations}+ stations across {metadata.suburbs.length}+ suburbs on our interactive map
+            <p
+              className={cn(
+                patterns.text.body,
+                'mb-6 max-w-2xl text-center text-white/90'
+              )}
+            >
+              Explore {metadata.totalStations}+ stations across{' '}
+              {metadata.suburbs.length}+ suburbs on our interactive map
             </p>
-            <div className="flex gap-4 flex-wrap justify-center text-sm">
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <strong>{metadata.totalStations}</strong> Total Stations
               </div>
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+              <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <strong>{metadata.suburbs.length}+</strong> Suburbs
               </div>
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-                Average Price: <strong>{metadata.priceRange.unleaded.average}¢/L</strong>
+              <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
+                Average Price:{' '}
+                <strong>{metadata.priceRange.unleaded.average}¢/L</strong>
               </div>
             </div>
           </div>
@@ -201,16 +241,16 @@ export function MapViewClient({ initialStations, metadata }: Props) {
       </header>
 
       {/* Controls */}
-      <section className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 print-hidden sticky top-0 z-10 shadow-sm">
+      <section className="print-hidden sticky top-0 z-10 border-b border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <div className={patterns.container()}>
-          <div className="py-4 space-y-4">
+          <div className="space-y-4 py-4">
             {/* View Toggle */}
-            <div className="flex gap-4 flex-wrap items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setMapView('map')}
                   className={cn(
-                    'btn btn-sm',
+                    'btn-sm btn',
                     mapView === 'map' ? 'btn-primary' : 'btn-outline'
                   )}
                 >
@@ -219,7 +259,7 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                 <button
                   onClick={() => setMapView('list')}
                   className={cn(
-                    'btn btn-sm',
+                    'btn-sm btn',
                     mapView === 'list' ? 'btn-primary' : 'btn-outline'
                   )}
                 >
@@ -229,18 +269,21 @@ export function MapViewClient({ initialStations, metadata }: Props) {
 
               <div className="flex items-center gap-4">
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {filteredStations.length} station{filteredStations.length !== 1 ? 's' : ''} found
+                  {filteredStations.length} station
+                  {filteredStations.length !== 1 ? 's' : ''} found
                 </div>
                 <button
                   onClick={() => setShowFilters(!showFilters)}
                   className={cn(
-                    'btn btn-sm',
+                    'btn-sm btn',
                     showFilters ? 'btn-primary' : 'btn-outline'
                   )}
                 >
                   ⚙️ Filters
                   {activeFilterCount > 0 && (
-                    <span className="badge badge-secondary ml-2">{activeFilterCount}</span>
+                    <span className="badge badge-secondary ml-2">
+                      {activeFilterCount}
+                    </span>
                   )}
                 </button>
               </div>
@@ -253,12 +296,15 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 space-y-4 overflow-hidden"
+                  className="space-y-4 overflow-hidden rounded-xl bg-gray-50 p-6 dark:bg-gray-900"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                     {/* Search */}
                     <div>
-                      <label htmlFor="search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label
+                        htmlFor="search"
+                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
                         🔍 Search
                       </label>
                       <input
@@ -266,22 +312,33 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                         type="text"
                         placeholder="Search stations..."
                         value={filters.search}
-                        onChange={(e) => handleFilterChange('search', e.target.value)}
+                        onChange={(e) =>
+                          handleFilterChange('search', e.target.value)
+                        }
                         className="input w-full"
                       />
                     </div>
 
                     {/* Fuel Type */}
                     <div>
-                      <label htmlFor="fuel-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label
+                        htmlFor="fuel-type"
+                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
                         ⛽ Fuel Type
                       </label>
                       <select
                         id="fuel-type"
                         value={filters.fuelType}
-                        onChange={(e) => handleFilterChange('fuelType', e.target.value as keyof FuelPrices)}
+                        onChange={(e) =>
+                          handleFilterChange(
+                            'fuelType',
+                            e.target.value as keyof FuelPrices | 'all'
+                          )
+                        }
                         className="input w-full"
                       >
+                        <option value="all">All Fuel Types</option>
                         <option value="unleaded">Unleaded 91</option>
                         <option value="diesel">Diesel</option>
                         <option value="premium95">Premium 95</option>
@@ -292,13 +349,18 @@ export function MapViewClient({ initialStations, metadata }: Props) {
 
                     {/* Brand */}
                     <div>
-                      <label htmlFor="brand" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label
+                        htmlFor="brand"
+                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
                         🏪 Brand
                       </label>
                       <select
                         id="brand"
                         value={filters.brand}
-                        onChange={(e) => handleFilterChange('brand', e.target.value)}
+                        onChange={(e) =>
+                          handleFilterChange('brand', e.target.value)
+                        }
                         className="input w-full"
                       >
                         <option value="all">All Brands</option>
@@ -312,13 +374,18 @@ export function MapViewClient({ initialStations, metadata }: Props) {
 
                     {/* Suburb */}
                     <div>
-                      <label htmlFor="suburb" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label
+                        htmlFor="suburb"
+                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
                         📍 Suburb
                       </label>
                       <select
                         id="suburb"
                         value={filters.suburb}
-                        onChange={(e) => handleFilterChange('suburb', e.target.value)}
+                        onChange={(e) =>
+                          handleFilterChange('suburb', e.target.value)
+                        }
                         className="input w-full"
                       >
                         <option value="all">All Suburbs</option>
@@ -331,22 +398,27 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {/* Sort */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                         🔄 Sort By
                       </label>
                       <SortDropdown
                         value={filters.sortBy}
-                        onChange={(value) => handleFilterChange('sortBy', value)}
+                        onChange={(value) =>
+                          handleFilterChange('sortBy', value)
+                        }
                         syncWithUrl={false}
                       />
                     </div>
 
                     {/* Price Range */}
                     <div>
-                      <label htmlFor="price-max" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      <label
+                        htmlFor="price-max"
+                        className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
                         💰 Maximum Price (¢/L)
                       </label>
                       <input
@@ -355,18 +427,26 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                         placeholder="e.g., 210"
                         step="0.1"
                         value={filters.priceMax}
-                        onChange={(e) => handleFilterChange('priceMax', e.target.value)}
+                        onChange={(e) =>
+                          handleFilterChange('priceMax', e.target.value)
+                        }
                         className="input w-full"
                       />
                     </div>
                   </div>
 
                   {/* Filter Actions */}
-                  <div className="flex gap-3 justify-end border-t border-gray-200 dark:border-gray-700 pt-4">
-                    <button onClick={clearFilters} className="btn btn-ghost btn-sm">
+                  <div className="flex justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
+                    <button
+                      onClick={clearFilters}
+                      className="btn-ghost btn-sm btn"
+                    >
                       Clear All
                     </button>
-                    <button onClick={() => setShowFilters(false)} className="btn btn-primary btn-sm">
+                    <button
+                      onClick={() => setShowFilters(false)}
+                      className="btn-primary btn-sm btn"
+                    >
                       Apply Filters
                     </button>
                   </div>
@@ -401,10 +481,10 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                     onClick={() => handleStationSelect(station)}
                   >
                     <div className="p-4">
-                      <h3 className="font-bold text-gray-900 dark:text-white mb-2">
+                      <h3 className="mb-2 font-bold text-gray-900 dark:text-white">
                         {station.name}
                       </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
                         {station.brand} • {station.suburb}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -412,8 +492,9 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                       </p>
                       {station.fuelPrices[filters.fuelType] && (
                         <div className="mt-2">
-                          <span className="text-lg font-bold text-green-600">
-                            {station.fuelPrices[filters.fuelType]?.toFixed(1)}¢/L
+                          <span className="text-green-600 text-lg font-bold">
+                            {station.fuelPrices[filters.fuelType]?.toFixed(1)}
+                            ¢/L
                           </span>
                         </div>
                       )}

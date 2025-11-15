@@ -38,6 +38,7 @@ With rising fuel costs, finding the cheapest petrol near you can save significan
 ## ✨ Features
 
 ### Core Functionality
+
 - 🗺️ **Interactive Map** - Find stations with clustering and custom markers
 - 💰 **Price Comparison** - Real-time fuel price comparisons across stations
 - 📍 **Location-Based** - Geolocation-powered nearby station discovery
@@ -46,6 +47,7 @@ With rising fuel costs, finding the cheapest petrol near you can save significan
 - 📱 **Responsive Design** - Optimized for desktop, tablet, and mobile
 
 ### Advanced Features
+
 - ⚡ **Real-Time Data** - Live fuel prices from multiple sources
 - 🌙 **Dark Mode** - System-aware theme switching
 - ♿ **WCAG 2.1 AA** - Full accessibility compliance
@@ -57,6 +59,7 @@ With rising fuel costs, finding the cheapest petrol near you can save significan
 ## 🏗️ Tech Stack
 
 ### Frontend
+
 - **Next.js 15** - React framework with App Router
 - **React 19** - UI library with Server Components
 - **TypeScript 5.3** - Type safety and better DX
@@ -65,18 +68,21 @@ With rising fuel costs, finding the cheapest petrol near you can save significan
 - **Lucide React** - Icon library
 
 ### State Management & Data
+
 - **TanStack Query** - Server state management
 - **SWR** - Data fetching and caching
 - **React Context** - Global state management
 - **Zod** - Runtime type validation
 
 ### UI Component Library
+
 - **Atomic Design** - Atoms → Molecules → Organisms
 - **shadcn/ui** - Reusable UI primitives
 - **Radix UI** - Accessible component primitives
 - **class-variance-authority** - Component variants
 
 ### SEO & Performance
+
 - **Next.js Metadata API** - Advanced SEO configuration
 - **JSON-LD Schema** - Structured data markup
 - **next/image** - Optimized image loading
@@ -85,6 +91,7 @@ With rising fuel costs, finding the cheapest petrol near you can save significan
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 22.x or higher
 - npm 10.x or higher
 
@@ -165,13 +172,11 @@ import {
     <CardTitle>Card Title</CardTitle>
     <CardDescription>Card description goes here</CardDescription>
   </CardHeader>
-  <CardContent>
-    Main card content
-  </CardContent>
+  <CardContent>Main card content</CardContent>
   <CardFooter>
     <Button>Action</Button>
   </CardFooter>
-</Card>
+</Card>;
 ```
 
 ### Input Component
@@ -222,16 +227,14 @@ import {
   <DialogContent>
     <DialogHeader>
       <DialogTitle>Are you absolutely sure?</DialogTitle>
-      <DialogDescription>
-        This action cannot be undone.
-      </DialogDescription>
+      <DialogDescription>This action cannot be undone.</DialogDescription>
     </DialogHeader>
     <DialogFooter>
       <Button variant="outline">Cancel</Button>
       <Button variant="destructive">Delete</Button>
     </DialogFooter>
   </DialogContent>
-</Dialog>
+</Dialog>;
 ```
 
 ### Navbar Component
@@ -261,7 +264,7 @@ import { Navbar } from '@/components/ui/navbar';
     label: 'Find Stations',
     href: '/directory',
   }}
-/>
+/>;
 ```
 
 ## 🔍 SEO & Performance
@@ -269,6 +272,7 @@ import { Navbar } from '@/components/ui/navbar';
 ### SEO Optimizations
 
 #### 1. Metadata Configuration
+
 - **Title templates** for consistent branding
 - **Open Graph tags** for social sharing
 - **Twitter Cards** for rich previews
@@ -276,12 +280,14 @@ import { Navbar } from '@/components/ui/navbar';
 - **Structured data** (JSON-LD) for rich snippets
 
 #### 2. Core Web Vitals
+
 - **LCP** < 2.5s (Largest Contentful Paint)
 - **FID** < 100ms (First Input Delay)
 - **CLS** < 0.1 (Cumulative Layout Shift)
 - **FCP** < 1.8s (First Contentful Paint)
 
 #### 3. Image Optimization
+
 - **next/image** with automatic WebP/AVIF conversion
 - **Priority loading** for above-fold images
 - **Lazy loading** for below-fold content
@@ -289,15 +295,17 @@ import { Navbar } from '@/components/ui/navbar';
 - **Responsive sizes** based on viewport
 
 #### 4. Structured Data
+
 ```tsx
 import { StructuredData } from '@/components/StructuredData';
 import { generateWebSiteSchema } from '@/lib/schema';
 
 const schemas = generateWebSiteSchema(baseUrl);
-<StructuredData data={schemas} />
+<StructuredData data={schemas} />;
 ```
 
 Available schemas:
+
 - WebSite (with SearchAction)
 - LocalBusiness
 - Place
@@ -413,19 +421,44 @@ npm start                # Start production server
 
 # Code Quality
 npm run lint             # Run ESLint
-npm run lint:fix         # Fix ESLint errors
+npm run lint:fix         # Fix ESLint errors automatically
 npm run type-check       # TypeScript type checking
-npm run format           # Format with Prettier
+npm run format           # Format all files with Prettier
+npm run format:check     # Check formatting without fixing
+npm run quality          # Run lint + type-check + format-check
+npm run quality:fix      # Fix all auto-fixable issues (lint + format)
 
 # Testing
-npm run test             # Run tests
-npm run test:watch       # Watch mode
-npm run test:coverage    # Coverage report
-npm run test:e2e         # E2E tests
+npm run test             # Run all tests
+npm run test:watch       # Watch mode for tests
+npm run test:coverage    # Generate coverage report
+npm run test:unit        # Run unit tests only
+npm run test:integration # Run integration tests only
+npm run test:e2e         # Run E2E tests with Playwright
+npm run test:e2e:ui      # Run E2E tests with UI mode
+npm run test:all         # Run all tests (lint + type-check + unit + e2e)
 
-# Performance
-npm run analyze          # Bundle analysis
-npm run lighthouse       # Lighthouse audit
+# Performance & Analysis
+npm run analyze          # Bundle size analysis
+npm run analyze:bundle   # Detailed bundle analysis
+npm run lighthouse       # Lighthouse performance audit
+npm run lighthouse:ci    # Lighthouse CI mode
+npm run lighthouse:prod  # Audit production site
+npm run performance:check # Run lighthouse + bundle analysis
+
+# Code Maintenance
+npm run cleanup          # Clean up unused code
+npm run cleanup:duplicates # Find duplicate code
+npm run code:quality     # Comprehensive code quality check
+npm run code:unused      # Detect unused code
+
+# Data & CMS
+npm run sync:baserow     # Sync data from Baserow
+npm run update:data      # Update station data
+
+# Storybook
+npm run storybook        # Start Storybook dev server
+npm run build-storybook  # Build Storybook for production
 ```
 
 ## 🤝 Contributing

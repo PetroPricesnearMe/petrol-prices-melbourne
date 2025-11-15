@@ -10,7 +10,10 @@
 @layer base {
   :root {
     --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-system:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
 
     /* ============================================================
      * COLOR SYSTEM - SEMANTIC TOKENS
@@ -60,10 +63,10 @@
      * ============================================================ */
 
     /* Background Colors */
-    --color-bg-primary: 255 255 255;        /* Main background */
-    --color-bg-secondary: 249 250 251;      /* Secondary background */
-    --color-bg-tertiary: 243 244 246;       /* Tertiary background */
-    --color-bg-inverse: 17 24 39;           /* Inverse background */
+    --color-bg-primary: 255 255 255; /* Main background */
+    --color-bg-secondary: 249 250 251; /* Secondary background */
+    --color-bg-tertiary: 243 244 246; /* Tertiary background */
+    --color-bg-inverse: 17 24 39; /* Inverse background */
 
     /* Surface Colors (Cards, Panels) */
     --color-surface-primary: 255 255 255;
@@ -72,18 +75,18 @@
     --color-surface-overlay: 255 255 255;
 
     /* Text Colors */
-    --color-text-primary: 17 24 39;         /* Primary text */
-    --color-text-secondary: 75 85 99;       /* Secondary text */
-    --color-text-tertiary: 156 163 175;     /* Tertiary text */
-    --color-text-inverse: 255 255 255;      /* Inverse text */
-    --color-text-link: 37 99 235;           /* Link text */
-    --color-text-link-hover: 29 78 216;     /* Link hover */
+    --color-text-primary: 17 24 39; /* Primary text */
+    --color-text-secondary: 75 85 99; /* Secondary text */
+    --color-text-tertiary: 156 163 175; /* Tertiary text */
+    --color-text-inverse: 255 255 255; /* Inverse text */
+    --color-text-link: 37 99 235; /* Link text */
+    --color-text-link-hover: 29 78 216; /* Link hover */
 
     /* Border Colors */
-    --color-border: 229 231 235;            /* Default border */
-    --color-border-secondary: 243 244 246;  /* Secondary border */
-    --color-border-strong: 209 213 219;     /* Strong border */
-    --color-border-inverse: 55 65 81;       /* Inverse border */
+    --color-border: 229 231 235; /* Default border */
+    --color-border-secondary: 243 244 246; /* Secondary border */
+    --color-border-strong: 209 213 219; /* Strong border */
+    --color-border-inverse: 55 65 81; /* Inverse border */
 
     /* State Colors */
     --color-success: 34 197 94;
@@ -110,9 +113,12 @@
 
     /* Shadow Colors */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-md:
+      0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg:
+      0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl:
+      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
     /* Overlay */
     --color-overlay: 0 0 0;
@@ -124,10 +130,10 @@
    * ============================================================ */
   .dark {
     /* Background Colors */
-    --color-bg-primary: 10 10 10;           /* Main background */
-    --color-bg-secondary: 23 23 23;         /* Secondary background */
-    --color-bg-tertiary: 38 38 38;          /* Tertiary background */
-    --color-bg-inverse: 255 255 255;        /* Inverse background */
+    --color-bg-primary: 10 10 10; /* Main background */
+    --color-bg-secondary: 23 23 23; /* Secondary background */
+    --color-bg-tertiary: 38 38 38; /* Tertiary background */
+    --color-bg-inverse: 255 255 255; /* Inverse background */
 
     /* Surface Colors (Cards, Panels) */
     --color-surface-primary: 23 23 23;
@@ -136,18 +142,18 @@
     --color-surface-overlay: 38 38 38;
 
     /* Text Colors */
-    --color-text-primary: 250 250 250;      /* Primary text */
-    --color-text-secondary: 163 163 163;    /* Secondary text */
-    --color-text-tertiary: 115 115 115;     /* Tertiary text */
-    --color-text-inverse: 17 24 39;         /* Inverse text */
-    --color-text-link: 96 165 250;          /* Link text */
-    --color-text-link-hover: 147 197 253;   /* Link hover */
+    --color-text-primary: 250 250 250; /* Primary text */
+    --color-text-secondary: 163 163 163; /* Secondary text */
+    --color-text-tertiary: 115 115 115; /* Tertiary text */
+    --color-text-inverse: 17 24 39; /* Inverse text */
+    --color-text-link: 96 165 250; /* Link text */
+    --color-text-link-hover: 147 197 253; /* Link hover */
 
     /* Border Colors */
-    --color-border: 38 38 38;               /* Default border */
-    --color-border-secondary: 64 64 64;     /* Secondary border */
-    --color-border-strong: 82 82 82;        /* Strong border */
-    --color-border-inverse: 229 231 235;    /* Inverse border */
+    --color-border: 38 38 38; /* Default border */
+    --color-border-secondary: 64 64 64; /* Secondary border */
+    --color-border-strong: 82 82 82; /* Strong border */
+    --color-border-inverse: 229 231 235; /* Inverse border */
 
     /* State Colors - Dark Mode Adjusted */
     --color-success: 34 197 94;
@@ -174,9 +180,12 @@
 
     /* Shadow Colors - Darker shadows for dark mode */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+    --shadow-md:
+      0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg:
+      0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl:
+      0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
 
     /* Overlay */
     --color-overlay: 0 0 0;
@@ -196,7 +205,9 @@
 
   body {
     @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-50;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   /* Focus visible styles */
@@ -213,15 +224,15 @@
 @layer components {
   /* Basic components */
   .container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md;
+    @apply rounded-lg bg-white shadow-md dark:bg-gray-800;
   }
 
   .card-hover {
-    @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-1;
+    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lg;
   }
 
   .focus-ring {

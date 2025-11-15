@@ -50,19 +50,27 @@ export function StationAmenitiesClient() {
 
   const filteredStations = useMemo(() => {
     if (selectedAmenity === 'all') return mockStations;
-    return mockStations.filter((station) => station.amenities[selectedAmenity as keyof typeof station.amenities]);
+    return mockStations.filter(
+      (station) =>
+        station.amenities[selectedAmenity as keyof typeof station.amenities]
+    );
   }, [selectedAmenity]);
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-12">
+      <header className="border-b border-gray-200 bg-white py-12 dark:border-gray-700 dark:bg-gray-800">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter}>
-            <h1 className={cn(patterns.text.h1, 'text-gradient-primary text-center mb-4')}>
+            <h1
+              className={cn(
+                patterns.text.h1,
+                'text-gradient-primary mb-4 text-center'
+              )}
+            >
               Station Amenities
             </h1>
-            <p className={cn(patterns.text.body, 'text-center max-w-2xl')}>
+            <p className={cn(patterns.text.body, 'max-w-2xl text-center')}>
               Find petrol stations with the services you need
             </p>
           </div>
@@ -70,13 +78,17 @@ export function StationAmenitiesClient() {
       </header>
 
       {/* Amenity Filter */}
-      <section className="bg-gray-100 dark:bg-gray-800 py-8 print-hidden">
+      <section className="print-hidden bg-gray-100 py-8 dark:bg-gray-800">
         <div className={patterns.container()}>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {amenities.map((amenity) => {
-              const count = amenity.key === 'all'
-                ? mockStations.length
-                : mockStations.filter((s) => s.amenities[amenity.key as keyof typeof s.amenities]).length;
+              const count =
+                amenity.key === 'all'
+                  ? mockStations.length
+                  : mockStations.filter(
+                      (s) =>
+                        s.amenities[amenity.key as keyof typeof s.amenities]
+                    ).length;
 
               return (
                 <button
@@ -84,11 +96,13 @@ export function StationAmenitiesClient() {
                   onClick={() => setSelectedAmenity(amenity.key)}
                   className={cn(
                     'btn',
-                    selectedAmenity === amenity.key ? 'btn-primary' : 'btn-outline',
-                    'flex-col h-auto py-4'
+                    selectedAmenity === amenity.key
+                      ? 'btn-primary'
+                      : 'btn-outline',
+                    'h-auto flex-col py-4'
                   )}
                 >
-                  <span className="text-2xl mb-1">{amenity.icon}</span>
+                  <span className="mb-1 text-2xl">{amenity.icon}</span>
                   <span className="text-sm">{amenity.label}</span>
                   <span className="badge badge-secondary mt-2">{count}</span>
                 </button>
@@ -106,7 +120,13 @@ export function StationAmenitiesClient() {
               Found <strong>{filteredStations.length}</strong> station
               {filteredStations.length !== 1 && 's'}
               {selectedAmenity !== 'all' && (
-                <> with <strong>{amenities.find((a) => a.key === selectedAmenity)?.label}</strong></>
+                <>
+                  {' '}
+                  with{' '}
+                  <strong>
+                    {amenities.find((a) => a.key === selectedAmenity)?.label}
+                  </strong>
+                </>
               )}
             </p>
           </div>
@@ -115,26 +135,31 @@ export function StationAmenitiesClient() {
             {filteredStations.map((station, index) => (
               <div
                 key={station.id}
-                className={cn('card-hover print-avoid-break', animations.safe('animate-fade-in'))}
+                className={cn(
+                  'card-hover print-avoid-break',
+                  animations.safe('animate-fade-in')
+                )}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 {/* Header */}
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                <div className="border-b border-gray-200 p-6 dark:border-gray-700">
+                  <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                     {station.name}
                   </h3>
                   <span className="badge badge-primary">{station.brand}</span>
                 </div>
 
                 {/* Content */}
-                <div className="p-6 space-y-4">
+                <div className="space-y-4 p-6">
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     📍 {station.address}
                   </p>
 
                   {/* Amenities */}
                   <div>
-                    <h4 className="text-sm font-semibold mb-2">Available Services:</h4>
+                    <h4 className="mb-2 text-sm font-semibold">
+                      Available Services:
+                    </h4>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(station.amenities)
                         .filter(([_, hasIt]) => hasIt)
@@ -152,12 +177,21 @@ export function StationAmenitiesClient() {
                   {/* Prices */}
                   {station.fuelPrices.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-semibold mb-2">Current Prices:</h4>
+                      <h4 className="mb-2 text-sm font-semibold">
+                        Current Prices:
+                      </h4>
                       <div className="space-y-1">
                         {station.fuelPrices.map((price, i) => (
-                          <div key={i} className={patterns.flex.between + ' text-sm'}>
-                            <span className="text-gray-600 dark:text-gray-400">{price.type}</span>
-                            <span className="font-bold text-primary-600">${price.price.toFixed(2)}</span>
+                          <div
+                            key={i}
+                            className={patterns.flex.between + ' text-sm'}
+                          >
+                            <span className="text-gray-600 dark:text-gray-400">
+                              {price.type}
+                            </span>
+                            <span className="font-bold text-primary-600">
+                              ${price.price.toFixed(2)}
+                            </span>
                           </div>
                         ))}
                       </div>

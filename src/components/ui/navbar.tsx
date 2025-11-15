@@ -28,7 +28,9 @@ export interface NavbarProps {
 
 const Navbar = ({ brand, items, cta, className }: NavbarProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
+  const [activeDropdown, setActiveDropdown] = React.useState<string | null>(
+    null
+  );
 
   return (
     <nav
@@ -43,7 +45,7 @@ const Navbar = ({ brand, items, cta, className }: NavbarProps) => {
           {brand && (
             <Link
               href={brand.href || '/'}
-              className="flex items-center gap-2 font-bold text-xl text-gray-900 dark:text-white"
+              className="flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white"
             >
               {brand.logo && (
                 <img src={brand.logo} alt={brand.name} className="h-8 w-8" />
@@ -55,11 +57,15 @@ const Navbar = ({ brand, items, cta, className }: NavbarProps) => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:gap-8">
             {items.map((item) => (
-              <div key={item.label} className="relative group">
+              <div key={item.label} className="group relative">
                 {item.children ? (
                   <button
                     className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                    onClick={() => setActiveDropdown(activeDropdown === item.label ? null : item.label)}
+                    onClick={() =>
+                      setActiveDropdown(
+                        activeDropdown === item.label ? null : item.label
+                      )
+                    }
                   >
                     {item.label}
                     <ChevronDown className="h-4 w-4" />
@@ -67,7 +73,7 @@ const Navbar = ({ brand, items, cta, className }: NavbarProps) => {
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+                    className="text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                   >
                     {item.label}
                   </Link>
@@ -99,25 +105,29 @@ const Navbar = ({ brand, items, cta, className }: NavbarProps) => {
             {cta && (
               <Link
                 href={cta.href}
-                className="hidden md:inline-flex items-center justify-center h-9 px-4 rounded-lg bg-primary-600 text-white text-sm font-semibold hover:bg-primary-700 transition-colors"
+                className="hidden h-9 items-center justify-center rounded-lg bg-primary-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-primary-700 md:inline-flex"
               >
                 {cta.label}
               </Link>
             )}
 
             <button
-              className="md:hidden p-2 text-gray-700 dark:text-gray-300"
+              className="p-2 text-gray-700 dark:text-gray-300 md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="border-t border-gray-200 px-4 py-4 md:hidden dark:border-gray-800">
+          <div className="border-t border-gray-200 px-4 py-4 dark:border-gray-800 md:hidden">
             <div className="space-y-2">
               {items.map((item) => (
                 <div key={item.label}>
@@ -127,7 +137,7 @@ const Navbar = ({ brand, items, cta, className }: NavbarProps) => {
                         {item.label}
                         <ChevronDown className="h-4 w-4" />
                       </button>
-                      <div className="pl-4 space-y-1">
+                      <div className="space-y-1 pl-4">
                         {item.children.map((child) => (
                           <Link
                             key={child.label}

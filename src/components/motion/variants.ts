@@ -381,14 +381,14 @@ export const transitions = {
     stiffness: 400,
     damping: 25,
   },
-  
+
   // Smooth and elegant
   smooth: {
     type: 'spring' as const,
     stiffness: 100,
     damping: 20,
   },
-  
+
   // Bouncy and playful
   bouncy: {
     type: 'spring' as const,
@@ -396,7 +396,7 @@ export const transitions = {
     damping: 10,
     bounce: 0.4,
   },
-  
+
   // Simple tween
   tween: {
     type: 'tween' as const,
@@ -416,4 +416,3 @@ export const easings = {
   sharp: [0.4, 0, 0.6, 1],
   anticipate: [0.22, 1, 0.36, 1],
 };
-

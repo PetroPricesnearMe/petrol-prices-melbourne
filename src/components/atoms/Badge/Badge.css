@@ -42,32 +42,32 @@
  * ============================================================================ */
 
 .badge--solid.badge--primary {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
 }
 
 .badge--solid.badge--secondary {
-  background-color: #9C27B0;
+  background-color: #9c27b0;
   color: white;
 }
 
 .badge--solid.badge--success {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
 .badge--solid.badge--warning {
-  background-color: #FF9800;
+  background-color: #ff9800;
   color: white;
 }
 
 .badge--solid.badge--error {
-  background-color: #F44336;
+  background-color: #f44336;
   color: white;
 }
 
 .badge--solid.badge--info {
-  background-color: #03A9F4;
+  background-color: #03a9f4;
   color: white;
 }
 
@@ -86,27 +86,27 @@
 }
 
 .badge--outlined.badge--primary {
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .badge--outlined.badge--secondary {
-  color: #9C27B0;
+  color: #9c27b0;
 }
 
 .badge--outlined.badge--success {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .badge--outlined.badge--warning {
-  color: #FF9800;
+  color: #ff9800;
 }
 
 .badge--outlined.badge--error {
-  color: #F44336;
+  color: #f44336;
 }
 
 .badge--outlined.badge--info {
-  color: #03A9F4;
+  color: #03a9f4;
 }
 
 .badge--outlined.badge--neutral {
@@ -119,32 +119,32 @@
 
 .badge--soft.badge--primary {
   background-color: rgba(33, 150, 243, 0.1);
-  color: #1565C0;
+  color: #1565c0;
 }
 
 .badge--soft.badge--secondary {
   background-color: rgba(156, 39, 176, 0.1);
-  color: #6A1B9A;
+  color: #6a1b9a;
 }
 
 .badge--soft.badge--success {
   background-color: rgba(76, 175, 80, 0.1);
-  color: #2E7D32;
+  color: #2e7d32;
 }
 
 .badge--soft.badge--warning {
   background-color: rgba(255, 152, 0, 0.1);
-  color: #EF6C00;
+  color: #ef6c00;
 }
 
 .badge--soft.badge--error {
   background-color: rgba(244, 67, 54, 0.1);
-  color: #C62828;
+  color: #c62828;
 }
 
 .badge--soft.badge--info {
   background-color: rgba(3, 169, 244, 0.1);
-  color: #0277BD;
+  color: #0277bd;
 }
 
 .badge--soft.badge--neutral {
@@ -210,4 +210,3 @@
 .badge__remove svg {
   display: block;
 }
-

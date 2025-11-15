@@ -21,7 +21,9 @@ const RegionSelectorNext = ({ regionCounts, totalStations }) => {
         >
           <div className="region-header">
             <h2>Explore Melbourne by Region</h2>
-            <p>Find the cheapest fuel in your area - Select your region below</p>
+            <p>
+              Find the cheapest fuel in your area - Select your region below
+            </p>
           </div>
 
           <div className="region-content">
@@ -40,37 +42,54 @@ const RegionSelectorNext = ({ regionCounts, totalStations }) => {
                     className="modern-region-link"
                     onClick={() => {
                       console.log('🔗 Region link clicked:', region.id);
-                      console.log('📍 Navigation URL:', `/directory?region=${region.id}`);
+                      console.log(
+                        '📍 Navigation URL:',
+                        `/directory?region=${region.id}`
+                      );
                     }}
                     onMouseEnter={() => setHoveredRegion(region.id)}
                     onMouseLeave={() => setHoveredRegion(null)}
                     style={{
-                      background: hoveredRegion === region.id
-                        ? `linear-gradient(135deg, ${region.color}25, ${region.color}15)`
-                        : 'white',
-                      transform: hoveredRegion === region.id ? 'translateY(-10px) scale(1.02)' : 'translateY(0) scale(1)'
+                      background:
+                        hoveredRegion === region.id
+                          ? `linear-gradient(135deg, ${region.color}25, ${region.color}15)`
+                          : 'white',
+                      transform:
+                        hoveredRegion === region.id
+                          ? 'translateY(-10px) scale(1.02)'
+                          : 'translateY(0) scale(1)',
                     }}
                   >
                     {/* Icon Circle */}
-                    <div className="region-icon-circle" style={{ backgroundColor: region.color }}>
+                    <div
+                      className="region-icon-circle"
+                      style={{ backgroundColor: region.color }}
+                    >
                       <span className="region-emoji">{region.icon}</span>
                     </div>
 
                     {/* Region Info */}
                     <div className="modern-region-info">
                       <h3 className="modern-region-name">{region.name}</h3>
-                      <p className="modern-region-description">{region.description}</p>
+                      <p className="modern-region-description">
+                        {region.description}
+                      </p>
                     </div>
 
                     {/* Fuel Pump Station Counter */}
-                    <div className="fuel-pump-counter" style={{ '--region-color': region.color }}>
+                    <div
+                      className="fuel-pump-counter"
+                      style={{ '--region-color': region.color }}
+                    >
                       <div className="pump-display">
                         <div className="pump-screen">
                           <div className="pump-screen-content">
                             <div className="pump-icon">⛽</div>
                             <div className="pump-stats">
                               <div className="station-count">
-                                <span className="count-number">{regionCounts[region.id.toUpperCase()] || 0}</span>
+                                <span className="count-number">
+                                  {regionCounts[region.id.toUpperCase()] || 0}
+                                </span>
                                 <span className="count-unit">Stations</span>
                               </div>
                               <div className="fuel-price-display">
@@ -99,7 +118,9 @@ const RegionSelectorNext = ({ regionCounts, totalStations }) => {
               <div className="summary-icon">🚗</div>
               <div className="summary-text">
                 <span className="summary-number">{totalStations}</span>
-                <span className="summary-label">Petrol Stations Across Greater Melbourne</span>
+                <span className="summary-label">
+                  Petrol Stations Across Greater Melbourne
+                </span>
               </div>
             </div>
           </div>
@@ -110,4 +131,3 @@ const RegionSelectorNext = ({ regionCounts, totalStations }) => {
 };
 
 export default RegionSelectorNext;
-

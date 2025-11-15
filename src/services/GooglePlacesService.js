@@ -29,13 +29,13 @@ class GooglePlacesService {
     radius = 5000,
     pageSize = 20,
     pageToken = null,
-    includedType = 'gas_station'
+    includedType = 'gas_station',
   }) {
     try {
       const requestBody = {
         textQuery: query,
         pageSize: Math.min(Math.max(pageSize, 1), 20),
-        includedType: includedType
+        includedType: includedType,
       };
 
       // Add location bias if provided
@@ -45,23 +45,23 @@ class GooglePlacesService {
             circle: {
               center: {
                 latitude: location.latitude,
-                longitude: location.longitude
+                longitude: location.longitude,
               },
-              radius: radius
-            }
+              radius: radius,
+            },
           };
         } else {
           requestBody.locationBias = {
             rectangle: {
               low: {
                 latitude: location.latitude - 0.01,
-                longitude: location.longitude - 0.01
+                longitude: location.longitude - 0.01,
               },
               high: {
                 latitude: location.latitude + 0.01,
-                longitude: location.longitude + 0.01
-              }
-            }
+                longitude: location.longitude + 0.01,
+              },
+            },
           };
         }
       }
@@ -76,14 +76,17 @@ class GooglePlacesService {
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': this.apiKey,
-          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.location,places.types,places.rating,places.userRatingCount,places.priceLevel,places.businessStatus,places.currentOpeningHours,places.websiteUri,places.nationalPhoneNumber,places.photos,nextPageToken'
+          'X-Goog-FieldMask':
+            'places.id,places.displayName,places.formattedAddress,places.location,places.types,places.rating,places.userRatingCount,places.priceLevel,places.businessStatus,places.currentOpeningHours,places.websiteUri,places.nationalPhoneNumber,places.photos,nextPageToken',
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Google Places API error: ${response.status} - ${errorData.error?.message || response.statusText}`);
+        throw new Error(
+          `Google Places API error: ${response.status} - ${errorData.error?.message || response.statusText}`
+        );
       }
 
       const data = await response.json();
@@ -103,14 +106,18 @@ class GooglePlacesService {
    * @param {number} pageSize - Number of results (default: 20)
    * @returns {Promise<Array>} Array of petrol stations
    */
-  async searchPetrolStationsNearLocation(location, radius = 5000, pageSize = 20) {
+  async searchPetrolStationsNearLocation(
+    location,
+    radius = 5000,
+    pageSize = 20
+  ) {
     try {
       const response = await this.searchPlaces({
         query: 'petrol stations gas stations fuel',
         location: location,
         radius: radius,
         pageSize: pageSize,
-        includedType: 'gas_station'
+        includedType: 'gas_station',
       });
 
       return response.places || [];
@@ -134,7 +141,7 @@ class GooglePlacesService {
         query: query,
         location: location,
         radius: radius,
-        includedType: 'gas_station'
+        includedType: 'gas_station',
       });
 
       return response.places || [];
@@ -151,17 +158,23 @@ class GooglePlacesService {
    */
   async getPlaceDetails(placeId) {
     try {
-      const response = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
-        method: 'GET',
-        headers: {
-          'X-Goog-Api-Key': this.apiKey,
-          'X-Goog-FieldMask': 'id,displayName,formattedAddress,location,types,rating,userRatingCount,priceLevel,businessStatus,currentOpeningHours,websiteUri,nationalPhoneNumber,photos,reviews'
+      const response = await fetch(
+        `https://places.googleapis.com/v1/places/${placeId}`,
+        {
+          method: 'GET',
+          headers: {
+            'X-Goog-Api-Key': this.apiKey,
+            'X-Goog-FieldMask':
+              'id,displayName,formattedAddress,location,types,rating,userRatingCount,priceLevel,businessStatus,currentOpeningHours,websiteUri,nationalPhoneNumber,photos,reviews',
+          },
         }
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Google Places API error: ${response.status} - ${errorData.error?.message || response.statusText}`);
+        throw new Error(
+          `Google Places API error: ${response.status} - ${errorData.error?.message || response.statusText}`
+        );
       }
 
       const data = await response.json();
@@ -179,16 +192,21 @@ class GooglePlacesService {
    * @param {number} radius - Search radius in meters (optional)
    * @returns {Promise<Array>} Array of petrol stations
    */
-  async searchPetrolStationsWithAmenities(amenities = [], location = null, radius = 10000) {
+  async searchPetrolStationsWithAmenities(
+    amenities = [],
+    location = null,
+    radius = 10000
+  ) {
     try {
-      const amenityQuery = amenities.length > 0 ? ` ${amenities.join(' ')}` : '';
+      const amenityQuery =
+        amenities.length > 0 ? ` ${amenities.join(' ')}` : '';
       const query = `petrol station gas station fuel${amenityQuery}`;
-      
+
       const response = await this.searchPlaces({
         query: query,
         location: location,
         radius: radius,
-        includedType: 'gas_station'
+        includedType: 'gas_station',
       });
 
       return response.places || [];
@@ -205,7 +223,9 @@ class GooglePlacesService {
    */
   formatPlaceToStation(place) {
     return {
-      id: place.id || `google_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id:
+        place.id ||
+        `google_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       name: place.displayName?.text || 'Unknown Station',
       address: place.formattedAddress || '',
       latitude: place.location?.latitude || 0,
@@ -221,7 +241,7 @@ class GooglePlacesService {
       photos: place.photos || [],
       types: place.types || [],
       isGooglePlaces: true,
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     };
   }
 
@@ -244,7 +264,7 @@ class GooglePlacesService {
       { pattern: /apco/i, brand: 'APCO' },
       { pattern: /metro/i, brand: 'Metro' },
       { pattern: /puma/i, brand: 'Puma' },
-      { pattern: /vibe/i, brand: 'Vibe' }
+      { pattern: /vibe/i, brand: 'Vibe' },
     ];
 
     for (const { pattern, brand } of brandPatterns) {
@@ -265,7 +285,7 @@ class GooglePlacesService {
    */
   getPhotoUrl(photo, maxWidth = 400, maxHeight = 400) {
     if (!photo || !photo.name) return null;
-    
+
     return `https://places.googleapis.com/v1/${photo.name}/media?maxWidthPx=${maxWidth}&maxHeightPx=${maxHeight}&key=${this.apiKey}`;
   }
 }

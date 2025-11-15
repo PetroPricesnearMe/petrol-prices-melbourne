@@ -50,7 +50,7 @@ export const SEO_FEATURES: Feature[] = [
     icon: '📊',
     title: 'Melbourne Fuel Price Trends & Cycles',
     description:
-      'Understand Melbourne's fuel price cycles with our historical data and trend analysis. Learn when to fill up to maximize savings. Track price movements across different suburbs and brands.',
+      'Understand Melbourne&apos;s fuel price cycles with our historical data and trend analysis. Learn when to fill up to maximize savings. Track price movements across different suburbs and brands.',
   },
 ];
 
@@ -141,7 +141,7 @@ export const SEO_SECTION_HEADINGS = {
     subtitle: 'Trusted Fuel Price Finder',
     title: 'Trusted by 10,000+ Melbourne Drivers Every Month',
     description:
-      'Join thousands of smart drivers who save money on fuel every day using Australia's most trusted petrol price comparison service. Real-time data from 250+ stations, 50+ suburbs, and all major fuel brands.',
+      'Join thousands of smart drivers who save money on fuel every day using Australia&apos;s most trusted petrol price comparison service. Real-time data from 250+ stations, 50+ suburbs, and all major fuel brands.',
     keywords: ['trusted fuel finder', 'melbourne drivers', 'save on petrol'],
   },
   cta: {

@@ -1,6 +1,6 @@
 /**
  * Card Component (Molecule)
- * 
+ *
  * Container component with elevation and content sections
  */
 
@@ -115,4 +115,3 @@ CardHeader.displayName = 'CardHeader';
 CardBody.displayName = 'CardBody';
 CardFooter.displayName = 'CardFooter';
 CardMedia.displayName = 'CardMedia';
-

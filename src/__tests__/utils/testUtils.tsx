@@ -21,9 +21,7 @@ interface AllTheProvidersProps {
 const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children }) => {
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        {children}
-      </BrowserRouter>
+      <BrowserRouter>{children}</BrowserRouter>
     </HelmetProvider>
   );
 };

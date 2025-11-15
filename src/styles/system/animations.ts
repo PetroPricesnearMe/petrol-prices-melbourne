@@ -54,7 +54,9 @@ export function prefersReducedMotion(): boolean {
 /**
  * Create animation style string
  */
-export function createAnimation(config: AnimationConfig & { name: string }): string {
+export function createAnimation(
+  config: AnimationConfig & { name: string }
+): string {
   const {
     name,
     duration = durations.normal,
@@ -102,7 +104,10 @@ export const animationStyles = {
   /**
    * Slide out to top
    */
-  slideOutUp: (duration = durations.normal, delay = 0): React.CSSProperties => ({
+  slideOutUp: (
+    duration = durations.normal,
+    delay = 0
+  ): React.CSSProperties => ({
     animation: prefersReducedMotion()
       ? 'none'
       : `slideOut ${duration}ms ${easings.easeIn} ${delay}ms both`,
@@ -139,7 +144,9 @@ export const animationStyles = {
    * Shimmer effect
    */
   shimmer: (): React.CSSProperties => ({
-    animation: prefersReducedMotion() ? 'none' : `shimmer 2s ${easings.linear} infinite`,
+    animation: prefersReducedMotion()
+      ? 'none'
+      : `shimmer 2s ${easings.linear} infinite`,
   }),
 
   /**
@@ -306,17 +313,20 @@ export function createIntersectionAnimation(
     return () => {};
   }
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add(animationClass);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    ...options,
-  });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(animationClass);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+      ...options,
+    }
+  );
 
   observer.observe(element);
 

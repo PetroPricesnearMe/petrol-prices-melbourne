@@ -1,6 +1,6 @@
 /**
  * Design System Utilities - Central Export
- * 
+ *
  * @module design-system/utils
  */
 
@@ -19,4 +19,3 @@ export {
   prefersDarkMode,
   isTouchDevice,
 } from './responsive';
-

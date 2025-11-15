@@ -1,8 +1,12 @@
 'use client';
 
-
 import { Badge } from '@/components/atoms/Badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/atoms/Card';
 import type { PetrolStation } from '@/types/index';
 import { formatDistance, formatPrice } from '@/utils/formatters';
 
@@ -36,11 +40,11 @@ export function StationCard({ station, onClick }: StationCardProps) {
           </p>
 
           {cheapestPrice && (
-            <div className="flex items-center justify-between rounded-md bg-success-50 p-2 dark:bg-success-900/20">
-              <span className="text-sm font-medium text-success-800 dark:text-success-300">
+            <div className="dark:bg-success-900/20 flex items-center justify-between rounded-md bg-success-50 p-2">
+              <span className="text-success-800 dark:text-success-300 text-sm font-medium">
                 From
               </span>
-              <span className="text-lg font-bold text-success-700 dark:text-success-400">
+              <span className="dark:text-success-400 text-lg font-bold text-success-700">
                 {formatPrice(cheapestPrice)}
               </span>
             </div>
@@ -60,4 +64,3 @@ export function StationCard({ station, onClick }: StationCardProps) {
     </Card>
   );
 }
-

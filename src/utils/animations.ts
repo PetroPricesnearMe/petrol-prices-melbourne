@@ -388,7 +388,7 @@ export const staggerItem: Variants = {
 
 /** Default viewport options - trigger once when element enters */
 export const DEFAULT_VIEWPORT = {
-  once: true,  // Only animate once
+  once: true, // Only animate once
   amount: 0.2, // Trigger when 20% of element is visible
   margin: '0px 0px -100px 0px', // Trigger slightly before element enters
 };
@@ -466,7 +466,12 @@ export function createFadeAnimation(options: {
   duration?: number;
   delay?: number;
 }): Variants {
-  const { direction = 'none', distance = 40, duration = 0.5, delay = 0 } = options;
+  const {
+    direction = 'none',
+    distance = 40,
+    duration = 0.5,
+    delay = 0,
+  } = options;
 
   const initialOffset = {
     up: { y: distance },
@@ -524,7 +529,11 @@ export function createStaggerAnimation(options: {
   itemDelay?: number;
   childAnimation?: Variants;
 }): { container: Variants; item: Variants } {
-  const { staggerDelay = 0.1, itemDelay = 0, childAnimation = staggerItem } = options;
+  const {
+    staggerDelay = 0.1,
+    itemDelay = 0,
+    childAnimation = staggerItem,
+  } = options;
 
   return {
     container: {
@@ -579,7 +588,7 @@ export function shouldReduceMotion(): boolean {
 export function getReducedMotionVariants(variants: Variants): Variants {
   const reduced: Variants = {};
 
-  Object.keys(variants).forEach(key => {
+  Object.keys(variants).forEach((key) => {
     const variant = variants[key];
     if (typeof variant === 'object') {
       reduced[key] = {

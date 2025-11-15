@@ -48,7 +48,9 @@ export function AccessibleForm({
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<
+    'idle' | 'success' | 'error'
+  >('idle');
   const [submitMessage, setSubmitMessage] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
   const firstErrorRef = useRef<HTMLElement | null>(null);
@@ -66,7 +68,11 @@ export function AccessibleForm({
       return `${field.label} is required`;
     }
 
-    if (field.type === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    if (
+      field.type === 'email' &&
+      value &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+    ) {
       return 'Please enter a valid email address';
     }
 
@@ -121,7 +127,9 @@ export function AccessibleForm({
       setErrors(newErrors);
 
       // Focus first error field
-      const firstErrorField = document.getElementById(`field-${Object.keys(newErrors)[0]}`);
+      const firstErrorField = document.getElementById(
+        `field-${Object.keys(newErrors)[0]}`
+      );
       firstErrorRef.current = firstErrorField;
 
       return;
@@ -138,12 +146,17 @@ export function AccessibleForm({
 
       // Focus submit button after success
       setTimeout(() => {
-        const submitButton = formRef.current?.querySelector('button[type="submit"]');
+        const submitButton = formRef.current?.querySelector(
+          'button[type="submit"]'
+        );
         (submitButton as HTMLElement)?.focus();
       }, 100);
     } catch (error: unknown) {
       setSubmitStatus('error');
-      const message = error instanceof Error ? error.message : 'Failed to submit form. Please try again.';
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to submit form. Please try again.';
       setSubmitMessage(message);
     } finally {
       setIsSubmitting(false);
@@ -167,16 +180,22 @@ export function AccessibleForm({
             exit={{ opacity: 0, y: -10 }}
             role="alert"
             aria-live="assertive"
-            className={`flex items-start gap-3 p-4 rounded-xl ${
+            className={`flex items-start gap-3 rounded-xl p-4 ${
               submitStatus === 'success'
-                ? 'bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800'
-                : 'bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800'
+                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 border-2'
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 border-2'
             }`}
           >
             {submitStatus === 'success' ? (
-              <Check className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <Check
+                className="text-green-600 dark:text-green-400 mt-0.5 h-5 w-5 flex-shrink-0"
+                aria-hidden="true"
+              />
             ) : (
-              <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <AlertCircle
+                className="text-red-600 dark:text-red-400 mt-0.5 h-5 w-5 flex-shrink-0"
+                aria-hidden="true"
+              />
             )}
             <p
               className={`text-sm font-medium ${
@@ -208,16 +227,16 @@ export function AccessibleForm({
         type="submit"
         disabled={isSubmitting}
         className={`
-          w-full py-4 px-6
-          bg-gradient-to-r from-blue-600 to-purple-600
-          text-white font-bold rounded-2xl
-          shadow-lg hover:shadow-xl
-          disabled:opacity-50 disabled:cursor-not-allowed
-          transform hover:-translate-y-1
-          transition-all duration-200
-          focus-visible:outline-none focus-visible:ring-4
-          focus-visible:ring-blue-500 focus-visible:ring-offset-2
-          min-h-[56px] min-w-[120px]
+          from-blue-600 to-purple-600 focus-visible:ring-blue-500
+          min-h-[56px] w-full min-w-[120px]
+          transform rounded-2xl bg-gradient-to-r
+          px-6 py-4
+          font-bold text-white
+          shadow-lg transition-all
+          duration-200 hover:-translate-y-1
+          hover:shadow-xl focus-visible:outline-none
+          focus-visible:ring-4 focus-visible:ring-offset-2
+          disabled:cursor-not-allowed disabled:opacity-50
         `}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -225,7 +244,7 @@ export function AccessibleForm({
       >
         {isSubmitting ? (
           <span className="flex items-center justify-center gap-2">
-            <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
+            <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
             <span>Submitting...</span>
           </span>
         ) : (
@@ -351,9 +370,9 @@ function FormField({ field, value, error, onChange, onBlur }: FormFieldProps) {
         <motion.div
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400"
+          className="text-red-600 dark:text-red-400 flex items-center gap-2 text-sm"
         >
-          <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+          <AlertCircle className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
           <span id={errorId} role="alert">
             {error}
           </span>

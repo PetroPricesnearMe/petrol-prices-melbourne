@@ -305,6 +305,7 @@ Use the provided template. Include:
 #### Providing Feedback
 
 **Good Feedback:**
+
 - Specific and actionable
 - Explains the "why"
 - Suggests alternatives
@@ -313,17 +314,20 @@ Use the provided template. Include:
 **Examples:**
 
 ✅ Good:
+
 ```
 Consider using `useMemo` here to prevent unnecessary recalculations.
 This component re-renders frequently, so memoization would improve performance.
 ```
 
 ❌ Bad:
+
 ```
 This is slow.
 ```
 
 ✅ Good:
+
 ```
 Great use of TypeScript here! The type definitions make the API very clear.
 ```
@@ -422,21 +426,25 @@ git push origin develop
 ## [1.2.0] - 2025-01-15
 
 ### Added
+
 - New station search with advanced filters
 - User authentication system
 - Favorite stations feature
 
 ### Changed
+
 - Improved map performance
 - Updated UI components
 - Enhanced accessibility
 
 ### Fixed
+
 - Fixed login redirect issue
 - Resolved map marker clustering bug
 - Fixed mobile menu display
 
 ### Security
+
 - Updated dependencies with security patches
 ```
 
@@ -504,6 +512,7 @@ git push --no-verify
 ### Main Branch
 
 **Protected with:**
+
 - Require pull request reviews (2 approvals)
 - Require status checks to pass
 - Require branches to be up to date
@@ -514,6 +523,7 @@ git push --no-verify
 ### Develop Branch
 
 **Protected with:**
+
 - Require pull request reviews (1 approval)
 - Require status checks to pass
 - No force pushes

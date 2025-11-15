@@ -12,6 +12,7 @@
 Your project **cannot be deployed** until these issues are fixed:
 
 ### Blocking Issues:
+
 1. ❌ **42 ESLint errors** - Build will fail
 2. ❌ **78 TypeScript errors** - Runtime failures likely
 3. ⚠️ **Missing environment variables** - Features won't work
@@ -23,6 +24,7 @@ Your project **cannot be deployed** until these issues are fixed:
 ## 📋 **Current Configuration**
 
 ### Vercel Settings (vercel.json):
+
 ```json
 {
   "name": "petrol-prices-melbourne",
@@ -36,6 +38,7 @@ Your project **cannot be deployed** until these issues are fixed:
 ```
 
 ### Build Configuration:
+
 - **Framework:** Next.js 15.5.6
 - **Node Version:** 22.x
 - **Package Manager:** npm
@@ -72,18 +75,21 @@ npm run build
 **Add these variables for Production:**
 
 #### Critical (App Won't Work Without These):
+
 ```
 NEXTAUTH_URL=https://petrol-prices-melbourne-d614y6o41-al-s-projects-1f045bac.vercel.app
 NEXTAUTH_SECRET=<generate with: openssl rand -base64 32>
 ```
 
 #### Important (Features Will Break):
+
 ```
 NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your_google_key
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_key
 ```
 
 #### Baserow Integration:
+
 ```
 BASEROW_API_URL=https://api.baserow.io
 BASEROW_API_TOKEN=ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE
@@ -93,6 +99,7 @@ BASEROW_CACHE_TIME=3600
 ```
 
 #### Application Settings:
+
 ```
 NEXT_PUBLIC_APP_URL=https://petrol-prices-melbourne-d614y6o41-al-s-projects-1f045bac.vercel.app
 NEXT_PUBLIC_ENV=production
@@ -142,6 +149,7 @@ vercel --prod
 ### Priority 1: Make Build Pass (Required)
 
 #### Fix 1: ESLint Auto-fixes
+
 ```bash
 npm run lint:fix
 ```
@@ -149,22 +157,26 @@ npm run lint:fix
 **Result:** Fixes ~20 import order issues
 
 #### Fix 2: Remove Unused Imports
+
 Edit `src/app/directory/StationDirectoryClient.tsx`:
+
 ```typescript
 // Line 10 - DELETE THIS:
 import Link from 'next/link';
 ```
 
 Edit `src/app/directory/StationDirectoryWithMap.tsx`:
+
 ```typescript
 // Line 15 - DELETE THIS:
 import Link from 'next/link';
 
 // Line 16 - DELETE useEffect from import:
-import { useState } from 'react';  // Remove useEffect
+import { useState } from 'react'; // Remove useEffect
 ```
 
 #### Fix 3: Prefix Unused Function Parameters
+
 ```typescript
 // Anywhere you see unused parameter errors, prefix with _:
 const SearchBar = ({
@@ -177,6 +189,7 @@ const SearchBar = ({
 ```
 
 #### Fix 4: Install Missing Types
+
 ```bash
 npm install --save-dev @types/jest-axe
 ```
@@ -184,6 +197,7 @@ npm install --save-dev @types/jest-axe
 ### Priority 2: Fix Type Errors (Required)
 
 #### Fix 5: Update Station Interface
+
 ```typescript
 // src/types/station.ts
 export interface Station {
@@ -191,12 +205,12 @@ export interface Station {
   name: string;
   brand: string;
   address: string;
-  suburb: string;               // ← ADD THIS
+  suburb: string; // ← ADD THIS
   city: string;
   postcode: string;
   region: string;
-  latitude: number | null;      // ← Change to allow null
-  longitude: number | null;     // ← Change to allow null
+  latitude: number | null; // ← Change to allow null
+  longitude: number | null; // ← Change to allow null
   category: StationCategory;
   fuelPrices: FuelPrice[];
   amenities: StationAmenities;
@@ -206,6 +220,7 @@ export interface Station {
 ```
 
 #### Fix 6: Fix Mock Data
+
 ```typescript
 // src/__tests__/mocks/mockData.ts
 import { StationCategory } from '@/types/station';
@@ -213,21 +228,22 @@ import { StationCategory } from '@/types/station';
 export const mockStations: Station[] = [
   {
     // ... other fields
-    category: StationCategory.PETROL_STATION,  // ← Use enum
-    suburb: 'Melbourne',                       // ← Add suburb
-    latitude: -37.8136,                        // ← Not null
-    longitude: 144.9631,                       // ← Not null
-  }
+    category: StationCategory.PETROL_STATION, // ← Use enum
+    suburb: 'Melbourne', // ← Add suburb
+    latitude: -37.8136, // ← Not null
+    longitude: 144.9631, // ← Not null
+  },
 ];
 ```
 
 #### Fix 7: Replace `any` Types
+
 ```typescript
 // components/seo/StructuredData.tsx (Line 10)
-export function StructuredData({ 
-  data 
-}: { 
-  data: Record<string, unknown> | Array<Record<string, unknown>> 
+export function StructuredData({
+  data,
+}: {
+  data: Record<string, unknown> | Array<Record<string, unknown>>;
 }) {
   const jsonLd = Array.isArray(data) ? data : [data];
   // ...
@@ -237,6 +253,7 @@ export function StructuredData({
 ### Priority 3: Environment Setup
 
 #### Fix 8: Generate Secure NEXTAUTH_SECRET
+
 ```bash
 # On Windows PowerShell:
 [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))
@@ -248,6 +265,7 @@ export function StructuredData({
 Copy the generated secret and add to Vercel environment variables.
 
 #### Fix 9: Get Google API Keys
+
 1. Go to: https://console.cloud.google.com/apis/credentials
 2. Create API Key
 3. Enable these APIs:
@@ -304,13 +322,13 @@ git push origin main
 
 ## 📊 **CURRENT STATUS**
 
-| Item | Status | Action |
-|------|--------|--------|
-| Vercel Config | ✅ Updated | None |
-| Code Quality | ❌ 120 issues | Fix per QA report |
-| Build | ❌ Failing | Fix ESLint/TS errors |
-| Environment Vars | ⚠️ Partial | Add Google keys & secure secret |
-| Ready to Deploy | ❌ NO | Complete fixes above |
+| Item             | Status        | Action                          |
+| ---------------- | ------------- | ------------------------------- |
+| Vercel Config    | ✅ Updated    | None                            |
+| Code Quality     | ❌ 120 issues | Fix per QA report               |
+| Build            | ❌ Failing    | Fix ESLint/TS errors            |
+| Environment Vars | ⚠️ Partial    | Add Google keys & secure secret |
+| Ready to Deploy  | ❌ NO         | Complete fixes above            |
 
 ---
 
@@ -339,6 +357,7 @@ After these quick wins, you'll have ~70 issues left to fix manually.
 ---
 
 **Ready to proceed with fixes? I can help you:**
+
 1. **Auto-fix all fixable issues** (I can edit the files)
 2. **Focus on TypeScript errors first** (biggest blocker)
 3. **Guide you through each fix** step-by-step

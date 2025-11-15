@@ -25,13 +25,18 @@ export default function HowPricingWorksPage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-gradient-primary text-white py-20">
+      <header className="bg-gradient-primary py-20 text-white">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter}>
-            <h1 className={cn(patterns.text.h1, 'text-white mb-4 text-center')}>
+            <h1 className={cn(patterns.text.h1, 'mb-4 text-center text-white')}>
               How Fuel Pricing Works
             </h1>
-            <p className={cn(patterns.text.body, 'text-white/90 text-center max-w-2xl')}>
+            <p
+              className={cn(
+                patterns.text.body,
+                'max-w-2xl text-center text-white/90'
+              )}
+            >
               Understanding the factors that affect petrol prices in Melbourne
             </p>
           </div>
@@ -40,23 +45,26 @@ export default function HowPricingWorksPage() {
 
       {/* Content */}
       <div className={patterns.container() + ' py-16'}>
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="mx-auto max-w-4xl space-y-8">
           {/* Overview */}
           <section className="card p-8">
             <h2 className={patterns.text.h2 + ' mb-4'}>Price Cycle Overview</h2>
             <p className={patterns.text.body + ' mb-4'}>
-              Melbourne, like many Australian cities, experiences a weekly fuel price cycle. Prices
-              typically start low early in the week and gradually increase, peaking on weekends
-              before dropping again.
+              Melbourne, like many Australian cities, experiences a weekly fuel
+              price cycle. Prices typically start low early in the week and
+              gradually increase, peaking on weekends before dropping again.
             </p>
             <p className={patterns.text.body}>
-              Understanding this cycle can help you save significantly on fuel costs over time.
+              Understanding this cycle can help you save significantly on fuel
+              costs over time.
             </p>
           </section>
 
           {/* Factors */}
           <section className="card p-8">
-            <h2 className={patterns.text.h2 + ' mb-6'}>Factors Affecting Fuel Prices</h2>
+            <h2 className={patterns.text.h2 + ' mb-6'}>
+              Factors Affecting Fuel Prices
+            </h2>
             <div className="space-y-6">
               {[
                 {
@@ -90,38 +98,70 @@ export default function HowPricingWorksPage() {
                   desc: 'Areas with more stations tend to have more competitive pricing',
                 },
               ].map((factor, i) => (
-                <div key={i} className="border-l-4 border-primary-500 pl-6 py-2">
-                  <div className="flex items-center gap-3 mb-2">
+                <div
+                  key={i}
+                  className="border-l-4 border-primary-500 py-2 pl-6"
+                >
+                  <div className="mb-2 flex items-center gap-3">
                     <span className="text-2xl">{factor.icon}</span>
                     <h3 className="text-lg font-semibold">{factor.title}</h3>
-                    <span className={cn(
-                      'badge',
-                      factor.impact === 'High' ? 'badge-error' : 'badge-warning'
-                    )}>
+                    <span
+                      className={cn(
+                        'badge',
+                        factor.impact === 'High'
+                          ? 'badge-error'
+                          : 'badge-warning'
+                      )}
+                    >
                       {factor.impact} Impact
                     </span>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400">{factor.desc}</p>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {factor.desc}
+                  </p>
                 </div>
               ))}
             </div>
           </section>
 
           {/* Saving Tips */}
-          <section className="card p-8 bg-success-50 dark:bg-gray-800">
-            <h2 className={patterns.text.h2 + ' mb-6'}>Money-Saving Strategies</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <section className="card bg-success-50 p-8 dark:bg-gray-800">
+            <h2 className={patterns.text.h2 + ' mb-6'}>
+              Money-Saving Strategies
+            </h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {[
-                { icon: '📅', title: 'Time Your Fill-ups', tip: 'Fill up early in the week when prices are lowest' },
-                { icon: '🗺️', title: 'Use Our Tools', tip: 'Compare prices before heading out' },
-                { icon: '🚗', title: 'Maintain Your Vehicle', tip: 'Proper maintenance improves fuel efficiency' },
-                { icon: '🛣️', title: 'Plan Your Route', tip: 'Avoid unnecessary trips and combine errands' },
+                {
+                  icon: '📅',
+                  title: 'Time Your Fill-ups',
+                  tip: 'Fill up early in the week when prices are lowest',
+                },
+                {
+                  icon: '🗺️',
+                  title: 'Use Our Tools',
+                  tip: 'Compare prices before heading out',
+                },
+                {
+                  icon: '🚗',
+                  title: 'Maintain Your Vehicle',
+                  tip: 'Proper maintenance improves fuel efficiency',
+                },
+                {
+                  icon: '🛣️',
+                  title: 'Plan Your Route',
+                  tip: 'Avoid unnecessary trips and combine errands',
+                },
               ].map((item, i) => (
-                <div key={i} className="flex gap-4 p-4 bg-white dark:bg-gray-700 rounded-lg">
+                <div
+                  key={i}
+                  className="flex gap-4 rounded-lg bg-white p-4 dark:bg-gray-700"
+                >
                   <div className="text-4xl">{item.icon}</div>
                   <div>
-                    <h4 className="font-semibold mb-1">{item.title}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{item.tip}</p>
+                    <h4 className="mb-1 font-semibold">{item.title}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {item.tip}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -130,7 +170,7 @@ export default function HowPricingWorksPage() {
 
           {/* CTA */}
           <section className="text-center">
-            <Link href="/directory" className="btn btn-primary btn-lg">
+            <Link href="/directory" className="btn-primary btn-lg btn">
               Find Cheap Fuel Now →
             </Link>
           </section>

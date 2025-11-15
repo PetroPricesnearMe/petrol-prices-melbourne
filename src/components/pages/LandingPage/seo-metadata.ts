@@ -12,7 +12,8 @@ import type { Metadata } from 'next';
 export const LANDING_PAGE_METADATA: Metadata = {
   // Title optimized for CTR and keyword ranking
   title: {
-    default: 'Find Cheapest Petrol Prices Near Me in Melbourne | Save Up to 20c/L | Free Fuel Finder',
+    default:
+      'Find Cheapest Petrol Prices Near Me in Melbourne | Save Up to 20c/L | Free Fuel Finder',
     template: '%s | Petrol Price Near Me - Melbourne Fuel Finder',
   },
 
@@ -27,45 +28,45 @@ export const LANDING_PAGE_METADATA: Metadata = {
     'cheapest petrol melbourne',
     'fuel prices melbourne',
     'petrol station finder',
-    
+
     // Long-tail keywords (high intent)
     'find cheapest petrol prices melbourne',
     'compare fuel prices melbourne',
     'real-time petrol prices victoria',
     'save money on petrol melbourne',
-    
+
     // Local SEO keywords
     'melbourne petrol stations',
     'melbourne fuel comparison',
     'victoria fuel prices',
     'melbourne cbd petrol prices',
-    
+
     // Fuel type keywords
     'unleaded 91 prices melbourne',
     'premium 95 fuel prices',
     'premium 98 petrol melbourne',
     'diesel prices melbourne',
     'lpg prices melbourne',
-    
+
     // Brand keywords
     'bp petrol prices melbourne',
     'shell fuel prices',
     'caltex petrol melbourne',
     '7-eleven fuel prices',
     'coles express prices',
-    
+
     // Action keywords (transactional intent)
     'petrol price comparison australia',
     'fuel price finder',
     'petrol price tracker',
     'fuel savings calculator',
     'cheap fuel finder melbourne',
-    
+
     // Question keywords (voice search)
     'where is cheapest petrol near me',
     'how to find cheap fuel melbourne',
     'when to buy petrol melbourne',
-    
+
     // Semantic keywords
     'fuel price trends',
     'petrol price alerts',
@@ -86,7 +87,7 @@ export const LANDING_PAGE_METADATA: Metadata = {
 
   // Geographic targeting
   category: 'Business & Finance',
-  
+
   // Open Graph for social sharing (improves CTR from social)
   openGraph: {
     type: 'website',
@@ -130,7 +131,7 @@ export const LANDING_PAGE_METADATA: Metadata = {
     canonical: 'https://petrolpricenearme.com.au',
     languages: {
       'en-AU': 'https://petrolpricenearme.com.au',
-      'en': 'https://petrolpricenearme.com.au',
+      en: 'https://petrolpricenearme.com.au',
     },
   },
 
@@ -179,7 +180,8 @@ export const SEO_JSON_LD = {
     url: 'https://petrolpricenearme.com.au',
     name: 'Petrol Price Near Me',
     alternateName: 'PPNM Fuel Finder',
-    description: 'Melbourne's most trusted petrol price comparison service. Find cheapest fuel prices from 250+ stations.',
+    description:
+      'Melbourne&apos;s most trusted petrol price comparison service. Find cheapest fuel prices from 250+ stations.',
     publisher: {
       '@type': 'Organization',
       '@id': 'https://petrolpricenearme.com.au/#organization',
@@ -188,7 +190,8 @@ export const SEO_JSON_LD = {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://petrolpricenearme.com.au/directory?search={search_term_string}',
+        urlTemplate:
+          'https://petrolpricenearme.com.au/directory?search={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -208,7 +211,8 @@ export const SEO_JSON_LD = {
       width: 512,
       height: 512,
     },
-    description: 'Leading fuel price comparison service helping Melbourne drivers save money on petrol.',
+    description:
+      'Leading fuel price comparison service helping Melbourne drivers save money on petrol.',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Melbourne',
@@ -386,9 +390,4 @@ export const ADDITIONAL_SEO_TAGS = `
 // EXPORT ALL SEO DATA
 // ============================================================================
 
-export {
-  LANDING_PAGE_METADATA as default,
-  SEO_JSON_LD,
-  ADDITIONAL_SEO_TAGS,
-};
-
+export { LANDING_PAGE_METADATA as default, SEO_JSON_LD, ADDITIONAL_SEO_TAGS };

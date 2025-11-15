@@ -25,7 +25,7 @@ class RateLimiter {
 
   private cleanup(): void {
     const now = Date.now();
-    Object.keys(this.store).forEach(key => {
+    Object.keys(this.store).forEach((key) => {
       if (this.store[key].resetTime < now) {
         delete this.store[key];
       }
@@ -91,7 +91,9 @@ const defaultConfig: Required<RateLimitConfig> = {
     // Use IP address as default identifier
     const forwarded = req.headers['x-forwarded-for'];
     const ip = forwarded
-      ? (Array.isArray(forwarded) ? forwarded[0] : forwarded.split(',')[0])
+      ? Array.isArray(forwarded)
+        ? forwarded[0]
+        : forwarded.split(',')[0]
       : req.socket.remoteAddress;
     return ip || 'unknown';
   },

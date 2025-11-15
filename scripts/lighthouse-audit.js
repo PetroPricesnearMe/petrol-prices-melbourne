@@ -72,7 +72,7 @@ const thresholds = {
   'speed-index': 1500,
   'cumulative-layout-shift': 0.1,
   'total-blocking-time': 200,
-  'interactive': 2000,
+  interactive: 2000,
   'max-potential-fid': 100,
 };
 
@@ -122,7 +122,7 @@ async function runLighthouseAudit(url) {
 
     let allVitalsPass = true;
 
-    coreWebVitals.forEach(vital => {
+    coreWebVitals.forEach((vital) => {
       const audit = audits[vital];
       if (audit) {
         const value = audit.numericValue;
@@ -130,7 +130,9 @@ async function runLighthouseAudit(url) {
         const status = value <= threshold ? '✅' : '❌';
         const unit = vital === 'cumulative-layout-shift' ? '' : 'ms';
 
-        console.log(`${status} ${audit.title}: ${Math.round(value)}${unit} (target: ≤${threshold}${unit})`);
+        console.log(
+          `${status} ${audit.title}: ${Math.round(value)}${unit} (target: ≤${threshold}${unit})`
+        );
 
         if (value > threshold) {
           allVitalsPass = false;
@@ -148,7 +150,7 @@ async function runLighthouseAudit(url) {
       'max-potential-fid',
     ];
 
-    additionalMetrics.forEach(metric => {
+    additionalMetrics.forEach((metric) => {
       const audit = audits[metric];
       if (audit) {
         const value = audit.numericValue;
@@ -156,7 +158,9 @@ async function runLighthouseAudit(url) {
         const status = value <= threshold ? '✅' : '⚠️';
         const unit = 'ms';
 
-        console.log(`${status} ${audit.title}: ${Math.round(value)}${unit} (target: ≤${threshold}${unit})`);
+        console.log(
+          `${status} ${audit.title}: ${Math.round(value)}${unit} (target: ≤${threshold}${unit})`
+        );
       }
     });
 
@@ -184,13 +188,15 @@ async function runLighthouseAudit(url) {
       'uses-rel-preload',
     ];
 
-    optimizationAudits.forEach(auditName => {
+    optimizationAudits.forEach((auditName) => {
       const audit = audits[auditName];
       if (audit && audit.score < 0.9) {
         const score = Math.round(audit.score * 100);
         console.log(`⚠️  ${audit.title}: ${score}/100`);
         if (audit.details && audit.details.overallSavingsMs) {
-          console.log(`   Potential savings: ${Math.round(audit.details.overallSavingsMs)}ms`);
+          console.log(
+            `   Potential savings: ${Math.round(audit.details.overallSavingsMs)}ms`
+          );
         }
       }
     });
@@ -217,8 +223,10 @@ async function runLighthouseAudit(url) {
       }, {}),
       allVitalsPass,
       recommendations: optimizationAudits
-        .filter(auditName => audits[auditName] && audits[auditName].score < 0.9)
-        .map(auditName => ({
+        .filter(
+          (auditName) => audits[auditName] && audits[auditName].score < 0.9
+        )
+        .map((auditName) => ({
           name: auditName,
           title: audits[auditName].title,
           score: Math.round(audits[auditName].score * 100),
@@ -234,9 +242,15 @@ async function runLighthouseAudit(url) {
     // Final summary
     console.log('\n🎯 Summary:');
     console.log('===========');
-    console.log(`Performance Score: ${performanceScore}/100 ${performanceScore >= 95 ? '✅' : '❌'}`);
-    console.log(`Core Web Vitals: ${allVitalsPass ? '✅ All pass' : '❌ Some fail'}`);
-    console.log(`Optimization Opportunities: ${reportData.recommendations.length}`);
+    console.log(
+      `Performance Score: ${performanceScore}/100 ${performanceScore >= 95 ? '✅' : '❌'}`
+    );
+    console.log(
+      `Core Web Vitals: ${allVitalsPass ? '✅ All pass' : '❌ Some fail'}`
+    );
+    console.log(
+      `Optimization Opportunities: ${reportData.recommendations.length}`
+    );
 
     if (performanceScore >= 95 && allVitalsPass) {
       console.log('\n🎉 Excellent! All performance targets met!');
@@ -245,12 +259,11 @@ async function runLighthouseAudit(url) {
       console.log('\n⚠️  Performance improvements needed.');
       process.exit(1);
     }
-
   } catch (error) {
     console.error('❌ Lighthouse audit failed:', error);
     process.exit(1);
   } finally {
-      await chrome.kill();
+    await chrome.kill();
   }
 }
 

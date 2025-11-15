@@ -7,6 +7,7 @@ Comprehensive guide for the interactive map view toggle system with Leaflet inte
 ## ✨ Features Implemented
 
 ### 1. **Interactive Leaflet Map**
+
 - ✅ Real-time station markers with custom icons
 - ✅ Color-coded pins based on fuel prices
 - ✅ Interactive popups with station details
@@ -15,6 +16,7 @@ Comprehensive guide for the interactive map view toggle system with Leaflet inte
 - ✅ OpenStreetMap tiles
 
 ### 2. **Marker Clustering**
+
 - ✅ Automatic clustering when zoomed out
 - ✅ Dynamic cluster sizing based on station count
 - ✅ Smooth cluster expansion on click
@@ -22,6 +24,7 @@ Comprehensive guide for the interactive map view toggle system with Leaflet inte
 - ✅ Performance optimized for 1000+ stations
 
 ### 3. **View Toggle Component**
+
 - ✅ Switch between List, Grid, and Map views
 - ✅ Keyboard navigation (Arrow keys, Enter, Space)
 - ✅ ARIA accessibility labels
@@ -30,6 +33,7 @@ Comprehensive guide for the interactive map view toggle system with Leaflet inte
 - ✅ Responsive design
 
 ### 4. **Responsive Full-Screen Mode**
+
 - ✅ Full-screen map on mobile and desktop
 - ✅ Exit full-screen button
 - ✅ Responsive controls placement
@@ -37,6 +41,7 @@ Comprehensive guide for the interactive map view toggle system with Leaflet inte
 - ✅ Smooth enter/exit transitions
 
 ### 5. **Pin Interactivity**
+
 - ✅ Click to view station details
 - ✅ Popup with fuel prices
 - ✅ Get directions button
@@ -74,10 +79,7 @@ function StationDirectory() {
 
   return (
     <div>
-      <ViewToggle
-        currentView={viewMode}
-        onViewChange={setViewMode}
-      />
+      <ViewToggle currentView={viewMode} onViewChange={setViewMode} />
 
       {viewMode === 'map' && (
         <InteractiveStationMap
@@ -98,16 +100,16 @@ function StationDirectory() {
 
 ```typescript
 interface InteractiveStationMapProps {
-  stations: Station[];              // Array of stations to display
-  onStationClick?: (station) => void;  // Callback when marker clicked
-  selectedStation?: Station | null;    // Currently selected station
-  height?: number | string;           // Map height (default: 600)
-  center?: [number, number];          // Initial center coordinates
-  zoom?: number;                      // Initial zoom level (default: 11)
-  fullScreen?: boolean;               // Enable full-screen mode
-  onFullScreenToggle?: () => void;    // Full-screen toggle callback
-  showUserLocation?: boolean;         // Show user location (default: true)
-  className?: string;                 // Custom CSS class
+  stations: Station[]; // Array of stations to display
+  onStationClick?: (station) => void; // Callback when marker clicked
+  selectedStation?: Station | null; // Currently selected station
+  height?: number | string; // Map height (default: 600)
+  center?: [number, number]; // Initial center coordinates
+  zoom?: number; // Initial zoom level (default: 11)
+  fullScreen?: boolean; // Enable full-screen mode
+  onFullScreenToggle?: () => void; // Full-screen toggle callback
+  showUserLocation?: boolean; // Show user location (default: true)
+  className?: string; // Custom CSS class
 }
 ```
 
@@ -133,12 +135,12 @@ interface Station {
 
 Markers are automatically color-coded based on average fuel prices:
 
-| Price Range | Color | Hex Code |
-|-------------|-------|----------|
-| < $1.80 | 🟢 Green | #10B981 |
-| $1.80 - $2.00 | 🟠 Orange | #F59E0B |
-| > $2.00 | 🔴 Red | #EF4444 |
-| No data | ⚫ Gray | #6B7280 |
+| Price Range   | Color     | Hex Code |
+| ------------- | --------- | -------- |
+| < $1.80       | 🟢 Green  | #10B981  |
+| $1.80 - $2.00 | 🟠 Orange | #F59E0B  |
+| > $2.00       | 🔴 Red    | #EF4444  |
+| No data       | ⚫ Gray   | #6B7280  |
 
 ### Custom Icons
 
@@ -166,10 +168,10 @@ transform: rotate(-45deg);
 interface ViewToggleProps {
   currentView: 'list' | 'grid' | 'map';
   onViewChange: (view) => void;
-  showGrid?: boolean;              // Show grid option (default: true)
+  showGrid?: boolean; // Show grid option (default: true)
   className?: string;
-  size?: 'sm' | 'md' | 'lg';      // Button size (default: 'md')
-  orientation?: 'horizontal' | 'vertical';  // Layout direction
+  size?: 'sm' | 'md' | 'lg'; // Button size (default: 'md')
+  orientation?: 'horizontal' | 'vertical'; // Layout direction
 }
 ```
 
@@ -192,12 +194,12 @@ interface ViewToggleProps {
 
 ### Keyboard Navigation
 
-| Key | Action |
-|-----|--------|
-| `←` or `→` | Navigate between views (horizontal) |
-| `↑` or `↓` | Navigate between views (vertical) |
-| `Enter` or `Space` | Select view |
-| `Tab` | Focus next element |
+| Key                | Action                              |
+| ------------------ | ----------------------------------- |
+| `←` or `→`         | Navigate between views (horizontal) |
+| `↑` or `↓`         | Navigate between views (vertical)   |
+| `Enter` or `Space` | Select view                         |
+| `Tab`              | Focus next element                  |
 
 ## 🔧 Configuration
 
@@ -207,7 +209,7 @@ Using OpenStreetMap tiles by default:
 
 ```tsx
 <TileLayer
-  attribution='&copy; OpenStreetMap contributors'
+  attribution="&copy; OpenStreetMap contributors"
   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   maxZoom={19}
 />
@@ -217,24 +219,25 @@ Using OpenStreetMap tiles by default:
 
 ```tsx
 // Mapbox (requires API key)
-url="https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}"
+url =
+  'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
 
 // CartoDB
-url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+url = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 
 // Stamen
-url="https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg"
+url = 'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg';
 ```
 
 ### Clustering Options
 
 ```tsx
 <MarkerClusterGroup
-  chunkedLoading              // Load markers in chunks
-  maxClusterRadius={50}       // Max radius for clustering
-  spiderfyOnMaxZoom={true}    // Expand overlapping markers
-  showCoverageOnHover={true}  // Show cluster area on hover
-  zoomToBoundsOnClick={true}  // Zoom to cluster on click
+  chunkedLoading // Load markers in chunks
+  maxClusterRadius={50} // Max radius for clustering
+  spiderfyOnMaxZoom={true} // Expand overlapping markers
+  showCoverageOnHover={true} // Show cluster area on hover
+  zoomToBoundsOnClick={true} // Zoom to cluster on click
 />
 ```
 
@@ -323,9 +326,7 @@ const createCustomIcon = (station, isSelected) => {
     <h3>{station.name}</h3>
     <p>{station.address}</p>
     {/* Add custom content */}
-    <button onClick={handleCustomAction}>
-      Custom Action
-    </button>
+    <button onClick={handleCustomAction}>Custom Action</button>
   </div>
 </Popup>
 ```
@@ -419,8 +420,8 @@ const MapController = ({ selectedStation }) => {
     if (selectedStation) {
       map.flyTo(
         [selectedStation.latitude, selectedStation.longitude],
-        15,  // Zoom level
-        { duration: 1.5 }  // Animation duration
+        15, // Zoom level
+        { duration: 1.5 } // Animation duration
       );
     }
   }, [selectedStation]);
@@ -433,9 +434,7 @@ const MapController = ({ selectedStation }) => {
 
 ```tsx
 // Fit map to show all stations
-const bounds = L.latLngBounds(
-  stations.map(s => [s.latitude, s.longitude])
-);
+const bounds = L.latLngBounds(stations.map((s) => [s.latitude, s.longitude]));
 map.fitBounds(bounds, { padding: [50, 50] });
 ```
 
@@ -463,8 +462,13 @@ map.fitBounds(bounds, { padding: [50, 50] });
 
 ```css
 @keyframes markerBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 ```
 
@@ -505,9 +509,10 @@ map.fitBounds(bounds, { padding: [50, 50] });
 
 ```tsx
 const memoizedMarkers = useMemo(
-  () => stations.map(station => (
-    <Marker key={station.id} position={[station.lat, station.lng]} />
-  )),
+  () =>
+    stations.map((station) => (
+      <Marker key={station.id} position={[station.lat, station.lng]} />
+    )),
   [stations]
 );
 ```
@@ -516,7 +521,7 @@ const memoizedMarkers = useMemo(
 
 ```tsx
 // Only render markers within viewport
-const visibleStations = stations.filter(station =>
+const visibleStations = stations.filter((station) =>
   map.getBounds().contains([station.latitude, station.longitude])
 );
 ```
@@ -526,6 +531,7 @@ const visibleStations = stations.filter(station =>
 ### Issue: Markers not appearing
 
 **Solution:**
+
 ```tsx
 // Fix default marker icons
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -541,6 +547,7 @@ L.Icon.Default.mergeOptions({
 ### Issue: Map not sizing correctly
 
 **Solution:**
+
 ```tsx
 // Ensure container has explicit height
 <div style={{ height: '600px' }}>
@@ -557,6 +564,7 @@ L.Icon.Default.mergeOptions({
 ### Issue: Clusters not working
 
 **Solution:**
+
 ```bash
 # Install clustering library
 npm install react-leaflet-cluster
@@ -568,6 +576,7 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 ### Issue: Full-screen z-index conflicts
 
 **Solution:**
+
 ```css
 .interactive-station-map.fullscreen {
   position: fixed !important;
@@ -613,7 +622,9 @@ describe('InteractiveStationMap', () => {
     const { container } = render(
       <InteractiveStationMap stations={mockStations} />
     );
-    expect(container.querySelectorAll('.marker-pin')).toHaveLength(mockStations.length);
+    expect(container.querySelectorAll('.marker-pin')).toHaveLength(
+      mockStations.length
+    );
   });
 
   it('calls onStationClick when marker is clicked', () => {

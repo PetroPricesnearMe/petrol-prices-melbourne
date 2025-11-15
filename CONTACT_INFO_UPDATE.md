@@ -13,40 +13,47 @@ Successfully added contact information across the website including contact name
 ## Files Updated
 
 ### 1. **src/config/constants.ts**
-   - Updated `CONTACT` constant with new fields
-   - Added `NAME`, `MOBILE`, and `MOBILE_RAW` properties
-   - Central configuration for contact information
+
+- Updated `CONTACT` constant with new fields
+- Added `NAME`, `MOBILE`, and `MOBILE_RAW` properties
+- Central configuration for contact information
 
 ### 2. **src/components/layout/Footer.tsx**
-   - Added new "Contact" section in footer
-   - Displays contact name, mobile number (with click-to-call), and email
-   - Updated grid layout from 4 columns to 5 columns to accommodate contact section
-   - Contact information is visible on every page
+
+- Added new "Contact" section in footer
+- Displays contact name, mobile number (with click-to-call), and email
+- Updated grid layout from 4 columns to 5 columns to accommodate contact section
+- Contact information is visible on every page
 
 ### 3. **src/app/about/page.tsx**
-   - Added "Get In Touch" section before the CTA
-   - Displays contact cards with:
-     - Contact name with person icon
-     - Mobile number with phone icon (clickable)
-     - Email with envelope icon (clickable)
-   - Responsive grid layout (1 column on mobile, 2 columns on desktop)
+
+- Added "Get In Touch" section before the CTA
+- Displays contact cards with:
+  - Contact name with person icon
+  - Mobile number with phone icon (clickable)
+  - Email with envelope icon (clickable)
+- Responsive grid layout (1 column on mobile, 2 columns on desktop)
 
 ### 4. **README.md**
-   - Updated Support section with contact information
-   - Added contact name and mobile number at the top of support options
+
+- Updated Support section with contact information
+- Added contact name and mobile number at the top of support options
 
 ## Features Implemented
 
 ### Click-to-Call & Email
+
 - **Mobile Number:** `tel:0423530204` - Users can tap/click to call directly
 - **Email:** `mailto:contact@petrolpricenearme.com.au` - Users can tap/click to compose email
 
 ### Responsive Design
+
 - Contact section adapts to different screen sizes
 - Mobile-friendly layout with touch-friendly links
 - Icons for visual clarity
 
 ### Accessibility
+
 - Proper link labels for screen readers
 - Focus states for keyboard navigation
 - Semantic HTML structure
@@ -88,6 +95,7 @@ Users can now contact via:
 ## Browser Compatibility
 
 All features tested and compatible with:
+
 - Modern browsers (Chrome, Firefox, Safari, Edge)
 - Mobile browsers (iOS Safari, Chrome Mobile)
 - `tel:` and `mailto:` protocols are universally supported
@@ -95,6 +103,7 @@ All features tested and compatible with:
 ## Next Steps
 
 Consider adding:
+
 - Contact form page (optional)
 - Business hours information
 - WhatsApp click-to-chat button (optional)

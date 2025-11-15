@@ -1,14 +1,14 @@
 /**
  * Library Functions - Central Export
- * 
+ *
  * All library functions and services in one place.
  * Organized by category for better maintainability.
- * 
+ *
  * @example
  * ```typescript
  * import { stationsApi, formatPrice, cn } from '@/lib';
  * ```
- * 
+ *
  * @module lib
  */
 
@@ -25,14 +25,14 @@ export {
   formatDate,
   formatPhoneNumber,
   formatNumber,
-  
+
   // Validators
   isValidEmail,
   isValidPhone,
   isValidUrl,
   isEmpty,
   isNumber,
-  
+
   // Helpers
   debounce,
   throttle,
@@ -102,4 +102,3 @@ export * from './schema';
  * Common utility re-exports for convenience
  */
 export { cn, cva } from '@/design-system/utils';
-

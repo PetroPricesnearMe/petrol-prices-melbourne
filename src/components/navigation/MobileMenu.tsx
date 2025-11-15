@@ -108,7 +108,8 @@ export function MobileMenu({ className }: MobileMenuProps) {
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      return () =>
+        document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isOpen]);
 
@@ -135,13 +136,13 @@ export function MobileMenu({ className }: MobileMenuProps) {
       <button
         onClick={toggleMenu}
         className={cn(
-          'relative z-50 flex flex-col justify-center items-center',
-          'w-10 h-10 rounded-lg',
+          'relative z-50 flex flex-col items-center justify-center',
+          'h-10 w-10 rounded-lg',
           'bg-white dark:bg-gray-800',
           'border border-gray-200 dark:border-gray-700',
           'shadow-sm hover:shadow-md',
           'transition-all duration-200',
-          'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+          'focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2',
           isOpen && 'bg-gray-50 dark:bg-gray-700'
         )}
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
@@ -150,8 +151,8 @@ export function MobileMenu({ className }: MobileMenuProps) {
         {/* Hamburger Lines */}
         <motion.span
           className={cn(
-            'block w-5 h-0.5 bg-gray-700 dark:bg-gray-200',
-            'transition-all duration-300 ease-in-out',
+            'block h-0.5 w-5 bg-gray-700 dark:bg-gray-200',
+            'ease-in-out transition-all duration-300',
             'origin-center'
           )}
           animate={{
@@ -162,8 +163,8 @@ export function MobileMenu({ className }: MobileMenuProps) {
         />
         <motion.span
           className={cn(
-            'block w-5 h-0.5 bg-gray-700 dark:bg-gray-200',
-            'transition-all duration-300 ease-in-out',
+            'block h-0.5 w-5 bg-gray-700 dark:bg-gray-200',
+            'ease-in-out transition-all duration-300',
             'origin-center'
           )}
           animate={{
@@ -174,8 +175,8 @@ export function MobileMenu({ className }: MobileMenuProps) {
         />
         <motion.span
           className={cn(
-            'block w-5 h-0.5 bg-gray-700 dark:bg-gray-200',
-            'transition-all duration-300 ease-in-out',
+            'block h-0.5 w-5 bg-gray-700 dark:bg-gray-200',
+            'ease-in-out transition-all duration-300',
             'origin-center'
           )}
           animate={{
@@ -200,11 +201,11 @@ export function MobileMenu({ className }: MobileMenuProps) {
             transition={{
               duration: 0.3,
               ease: 'easeInOut',
-              opacity: { duration: 0.2 }
+              opacity: { duration: 0.2 },
             }}
             className={cn(
-              'fixed top-0 left-0 z-50',
-              'w-80 h-full',
+              'fixed left-0 top-0 z-50',
+              'h-full w-80',
               'bg-white dark:bg-gray-900',
               'border-r border-gray-200 dark:border-gray-700',
               'shadow-2xl',
@@ -212,23 +213,33 @@ export function MobileMenu({ className }: MobileMenuProps) {
             )}
           >
             {/* Menu Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-700">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
                 Menu
               </h2>
               <button
                 onClick={closeMenu}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
                 aria-label="Close menu"
               >
-                <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-5 w-5 text-gray-600 dark:text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
 
             {/* Navigation Items */}
-            <nav className="p-6 space-y-2">
+            <nav className="space-y-2 p-6">
               {navigationItems.map((item, index) => {
                 const isActive = pathname === item.href;
 
@@ -243,25 +254,28 @@ export function MobileMenu({ className }: MobileMenuProps) {
                       href={item.href}
                       onClick={closeMenu}
                       className={cn(
-                        'flex items-center gap-4 p-4 rounded-xl',
+                        'flex items-center gap-4 rounded-xl p-4',
                         'transition-all duration-200',
                         'hover:bg-gray-50 dark:hover:bg-gray-800',
-                        'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-                        isActive && 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500'
+                        'focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2',
+                        isActive &&
+                          'bg-blue-50 dark:bg-blue-900/20 border-blue-500 border-l-4'
                       )}
                     >
                       <span className="text-2xl" aria-hidden="true">
                         {item.icon}
                       </span>
                       <div className="flex-1">
-                        <div className={cn(
-                          'font-semibold text-gray-900 dark:text-white',
-                          isActive && 'text-blue-600 dark:text-blue-400'
-                        )}>
+                        <div
+                          className={cn(
+                            'font-semibold text-gray-900 dark:text-white',
+                            isActive && 'text-blue-600 dark:text-blue-400'
+                          )}
+                        >
                           {item.label}
                         </div>
                         {item.description && (
-                          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                             {item.description}
                           </div>
                         )}
@@ -270,7 +284,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="w-2 h-2 bg-blue-500 rounded-full"
+                          className="bg-blue-500 h-2 w-2 rounded-full"
                         />
                       )}
                     </Link>
@@ -280,15 +294,15 @@ export function MobileMenu({ className }: MobileMenuProps) {
             </nav>
 
             {/* Menu Footer */}
-            <div className="p-6 border-t border-gray-200 dark:border-gray-700 mt-auto">
+            <div className="mt-auto border-t border-gray-200 p-6 dark:border-gray-700">
               <div className="space-y-4">
                 {/* User Actions */}
                 <div className="space-y-2">
-                  <button className="w-full flex items-center gap-3 p-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                  <button className="bg-blue-600 hover:bg-blue-700 flex w-full items-center gap-3 rounded-lg p-3 text-white transition-colors">
                     <span className="text-lg">👤</span>
                     <span className="font-medium">Sign In</span>
                   </button>
-                  <button className="w-full flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                  <button className="flex w-full items-center gap-3 rounded-lg border border-gray-200 p-3 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
                     <span className="text-lg">📧</span>
                     <span className="font-medium">Contact Us</span>
                   </button>

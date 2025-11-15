@@ -5,7 +5,13 @@
 
 import React from 'react';
 
-import { ResponsiveGrid, GridItem, Container, Flex, Section } from './ResponsiveGrid';
+import {
+  ResponsiveGrid,
+  GridItem,
+  Container,
+  Flex,
+  Section,
+} from './ResponsiveGrid';
 
 // ============================================================================
 // EXAMPLE 1: STATION CARDS GRID
@@ -23,24 +29,24 @@ export function StationCardsGrid({ stations }: { stations: any[] }) {
     <Section spacing="lg">
       <ResponsiveGrid
         cols={{
-          default: 1,      // Mobile: stacked
-          sm: 2,           // Tablet: 2 per row
-          lg: 3,           // Desktop: 3 per row
-          xl: 4,           // Large: 4 per row
+          default: 1, // Mobile: stacked
+          sm: 2, // Tablet: 2 per row
+          lg: 3, // Desktop: 3 per row
+          xl: 4, // Large: 4 per row
         }}
         gap="lg"
       >
         {stations.map((station) => (
           <GridItem key={station.id}>
             <div className="card h-full">
-              <div className="p-6 space-y-4">
+              <div className="space-y-4 p-6">
                 <h3 className="text-xl font-bold">{station.name}</h3>
                 <p className="text-sm text-gray-600">{station.address}</p>
-                <div className="flex justify-between items-center pt-4 border-t">
+                <div className="flex items-center justify-between border-t pt-4">
                   <span className="text-2xl font-bold text-primary-600">
                     ${station.price}
                   </span>
-                  <button className="btn btn-primary">View</button>
+                  <button className="btn-primary btn">View</button>
                 </div>
               </div>
             </div>
@@ -65,8 +71,8 @@ export function HeroWithSidebar() {
     <Section spacing="xl" background="gray">
       <ResponsiveGrid
         cols={{
-          default: 1,      // Mobile: stack
-          lg: 12,          // Desktop: 12-column grid
+          default: 1, // Mobile: stack
+          lg: 12, // Desktop: 12-column grid
         }}
         gap="xl"
       >
@@ -79,19 +85,19 @@ export function HeroWithSidebar() {
         >
           <div className="space-y-8">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
                 Find the{' '}
-                <span className="text-primary-600">Cheapest Petrol</span>{' '}
-                Near You
+                <span className="text-primary-600">Cheapest Petrol</span> Near
+                You
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl">
+              <p className="max-w-2xl text-xl text-gray-600">
                 Compare real-time fuel prices from 250+ stations across
                 Australia. Save money on every fill-up.
               </p>
             </div>
 
             {/* Search Bar */}
-            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6">
+            <div className="rounded-2xl bg-white p-4 shadow-xl sm:p-6">
               <Flex
                 responsive={{
                   direction: { default: 'col', sm: 'row' },
@@ -100,7 +106,7 @@ export function HeroWithSidebar() {
                 align="end"
               >
                 <div className="flex-1">
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="mb-2 block text-sm font-medium">
                     Location
                   </label>
                   <input
@@ -110,7 +116,7 @@ export function HeroWithSidebar() {
                   />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="mb-2 block text-sm font-medium">
                     Fuel Type
                   </label>
                   <select className="input w-full">
@@ -119,7 +125,7 @@ export function HeroWithSidebar() {
                     <option>Diesel</option>
                   </select>
                 </div>
-                <button className="btn btn-primary w-full sm:w-auto whitespace-nowrap">
+                <button className="btn-primary btn w-full whitespace-nowrap sm:w-auto">
                   Search Prices
                 </button>
               </Flex>
@@ -137,7 +143,7 @@ export function HeroWithSidebar() {
           <div className="space-y-6">
             {/* Quick Stats */}
             <div className="card p-6">
-              <h3 className="text-lg font-bold mb-4">Today&apos;s Stats</h3>
+              <h3 className="mb-4 text-lg font-bold">Today&apos;s Stats</h3>
               <div className="space-y-3">
                 <StatItem label="Avg Price" value="$1.89" trend="down" />
                 <StatItem label="Stations" value="250+" />
@@ -146,12 +152,12 @@ export function HeroWithSidebar() {
             </div>
 
             {/* Featured Promotion */}
-            <div className="card bg-gradient-to-br from-primary-500 to-primary-600 text-white p-6">
-              <h3 className="text-xl font-bold mb-2">Save More!</h3>
-              <p className="text-primary-100 mb-4">
+            <div className="card bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-white">
+              <h3 className="mb-2 text-xl font-bold">Save More!</h3>
+              <p className="mb-4 text-primary-100">
                 Get price alerts for your favourite stations
               </p>
-              <button className="btn bg-white text-primary-600 hover:bg-gray-100 w-full">
+              <button className="btn w-full bg-white text-primary-600 hover:bg-gray-100">
                 Enable Alerts
               </button>
             </div>
@@ -173,7 +179,7 @@ function StatItem({
   trend?: 'up' | 'down';
 }) {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex items-center justify-between">
       <span className="text-sm text-gray-600">{label}</span>
       <div className="flex items-center gap-2">
         <span className="font-bold">{value}</span>
@@ -207,7 +213,8 @@ export function FeaturesGrid() {
     {
       icon: '🗺️',
       title: 'Interactive Map',
-      description: 'See all stations on an interactive map with real-time prices',
+      description:
+        'See all stations on an interactive map with real-time prices',
     },
     {
       icon: '💰',
@@ -238,11 +245,11 @@ export function FeaturesGrid() {
 
   return (
     <Section spacing="xl" background="white">
-      <div className="text-center mb-12 sm:mb-16">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+      <div className="mb-12 text-center sm:mb-16">
+        <h2 className="mb-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
           Why Choose Us?
         </h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="mx-auto max-w-2xl text-xl text-gray-600">
           Everything you need to find the best fuel prices
         </p>
       </div>
@@ -257,9 +264,9 @@ export function FeaturesGrid() {
       >
         {features.map((feature, index) => (
           <GridItem key={index}>
-            <div className="card h-full p-6 sm:p-8 hover:shadow-xl transition-shadow">
-              <div className="text-5xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+            <div className="card h-full p-6 transition-shadow hover:shadow-xl sm:p-8">
+              <div className="mb-4 text-5xl">{feature.icon}</div>
+              <h3 className="mb-2 text-xl font-bold">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
             </div>
           </GridItem>
@@ -293,7 +300,7 @@ export function DashboardLayout() {
           <div className="card p-4 sm:p-6">
             <Flex justify="between" align="center" gap="md">
               <h1 className="text-2xl font-bold">Dashboard</h1>
-              <button className="btn btn-primary">Add Station</button>
+              <button className="btn-primary btn">Add Station</button>
             </Flex>
           </div>
         </GridItem>
@@ -308,22 +315,22 @@ export function DashboardLayout() {
           <div className="space-y-6">
             {/* Chart */}
             <div className="card p-6">
-              <h2 className="text-xl font-bold mb-4">Price Trends</h2>
-              <div className="h-64 bg-gray-100 rounded flex items-center justify-center">
+              <h2 className="mb-4 text-xl font-bold">Price Trends</h2>
+              <div className="flex h-64 items-center justify-center rounded bg-gray-100">
                 Chart Component
               </div>
             </div>
 
             {/* Recent Activity */}
             <div className="card p-6">
-              <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
+              <h2 className="mb-4 text-xl font-bold">Recent Activity</h2>
               <div className="space-y-3">
                 {[1, 2, 3, 4, 5].map((item) => (
                   <div
                     key={item}
-                    className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                    className="flex items-center gap-4 rounded-lg p-3 transition-colors hover:bg-gray-50"
                   >
-                    <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100">
                       ⛽
                     </div>
                     <div className="flex-1">
@@ -348,15 +355,15 @@ export function DashboardLayout() {
           <div className="space-y-6 md:sticky md:top-4">
             {/* Quick Actions */}
             <div className="card p-6">
-              <h3 className="text-lg font-bold mb-4">Quick Actions</h3>
+              <h3 className="mb-4 text-lg font-bold">Quick Actions</h3>
               <div className="space-y-2">
-                <button className="btn btn-outlined w-full justify-start">
+                <button className="btn-outlined btn w-full justify-start">
                   🔍 Search Stations
                 </button>
-                <button className="btn btn-outlined w-full justify-start">
+                <button className="btn-outlined btn w-full justify-start">
                   📍 Near Me
                 </button>
-                <button className="btn btn-outlined w-full justify-start">
+                <button className="btn-outlined btn w-full justify-start">
                   ⭐ Favorites
                 </button>
               </div>
@@ -366,17 +373,17 @@ export function DashboardLayout() {
             <div className="grid grid-cols-2 gap-4">
               <div className="card p-4 text-center">
                 <div className="text-3xl font-bold text-primary-600">15</div>
-                <div className="text-sm text-gray-600 mt-1">Favorites</div>
+                <div className="mt-1 text-sm text-gray-600">Favorites</div>
               </div>
               <div className="card p-4 text-center">
-                <div className="text-3xl font-bold text-green-600">$45</div>
-                <div className="text-sm text-gray-600 mt-1">Saved</div>
+                <div className="text-green-600 text-3xl font-bold">$45</div>
+                <div className="mt-1 text-sm text-gray-600">Saved</div>
               </div>
             </div>
 
             {/* Alerts */}
-            <div className="card p-6 bg-yellow-50 border-yellow-200">
-              <h3 className="text-lg font-bold mb-2">⚠️ Price Alert</h3>
+            <div className="card bg-yellow-50 border-yellow-200 p-6">
+              <h3 className="mb-2 text-lg font-bold">⚠️ Price Alert</h3>
               <p className="text-sm text-gray-700">
                 Prices increased by 5¢ at 3 nearby stations
               </p>
@@ -416,14 +423,10 @@ export function AsymmetricGrid({ items }: { items: any[] }) {
           }}
           rowSpan={2}
         >
-          <div className="card h-full p-8 bg-gradient-to-br from-primary-500 to-primary-600 text-white">
-            <div className="text-6xl mb-4">⛽</div>
-            <h2 className="text-3xl font-bold mb-4">
-              Featured Station
-            </h2>
-            <p className="text-primary-100 mb-6">
-              Lowest prices in your area
-            </p>
+          <div className="card h-full bg-gradient-to-br from-primary-500 to-primary-600 p-8 text-white">
+            <div className="mb-4 text-6xl">⛽</div>
+            <h2 className="mb-4 text-3xl font-bold">Featured Station</h2>
+            <p className="mb-6 text-primary-100">Lowest prices in your area</p>
             <button className="btn bg-white text-primary-600 hover:bg-gray-100">
               View Details
             </button>
@@ -434,7 +437,7 @@ export function AsymmetricGrid({ items }: { items: any[] }) {
         {items.slice(0, 6).map((item, index) => (
           <GridItem key={index}>
             <div className="card h-full p-6">
-              <h3 className="font-bold mb-2">{item.title}</h3>
+              <h3 className="mb-2 font-bold">{item.title}</h3>
               <p className="text-sm text-gray-600">{item.description}</p>
             </div>
           </GridItem>
@@ -467,26 +470,30 @@ export function ResponsiveNavbar() {
           className="py-4"
         >
           {/* Logo */}
-          <div className="flex items-center justify-between w-full md:w-auto">
-            <h1 className="text-2xl font-bold text-primary-600">
-              ⛽ PPNM
-            </h1>
+          <div className="flex w-full items-center justify-between md:w-auto">
+            <h1 className="text-2xl font-bold text-primary-600">⛽ PPNM</h1>
             {/* Mobile menu button */}
-            <button className="md:hidden btn btn-ghost">
-              ☰
-            </button>
+            <button className="btn-ghost btn md:hidden">☰</button>
           </div>
 
           {/* Navigation Links - Hidden on mobile */}
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#" className="nav-link">Home</a>
-            <a href="#" className="nav-link">Directory</a>
-            <a href="#" className="nav-link">Trends</a>
-            <a href="#" className="nav-link">About</a>
+          <div className="hidden items-center gap-6 md:flex">
+            <a href="#" className="nav-link">
+              Home
+            </a>
+            <a href="#" className="nav-link">
+              Directory
+            </a>
+            <a href="#" className="nav-link">
+              Trends
+            </a>
+            <a href="#" className="nav-link">
+              About
+            </a>
           </div>
 
           {/* CTA */}
-          <button className="btn btn-primary hidden md:block">
+          <button className="btn-primary btn hidden md:block">
             Get Started
           </button>
         </Flex>
@@ -511,4 +518,3 @@ export default {
   AsymmetricGrid,
   ResponsiveNavbar,
 };
-

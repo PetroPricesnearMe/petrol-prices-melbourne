@@ -1,13 +1,13 @@
 /**
  * Types - Central Export
- * 
+ *
  * All type definitions in one place for easy importing.
- * 
+ *
  * @example
  * ```typescript
  * import type { Station, ApiResponse, QueryParams } from '@/types';
  * ```
- * 
+ *
  * @module types
  */
 
@@ -41,4 +41,3 @@ export type {
   ComponentBaseProps,
   ComponentWithChildren,
 } from './common.enhanced';
-

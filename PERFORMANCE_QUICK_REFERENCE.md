@@ -6,21 +6,37 @@ Quick reference for React performance optimization techniques.
 
 ```tsx
 // Hooks
-import { useDebounce, useRenderTime, useIntersectionObserver } from '@/hooks/usePerformance';
+import {
+  useDebounce,
+  useRenderTime,
+  useIntersectionObserver,
+} from '@/hooks/usePerformance';
 import { useVirtualization } from '@/hooks/useVirtualization';
 
 // Components
-import { ErrorBoundary, VirtualList, LazyLoad, LazyImage } from '@/components/common';
+import {
+  ErrorBoundary,
+  VirtualList,
+  LazyLoad,
+  LazyImage,
+} from '@/components/common';
 
 // Optimized Components
 import { StationCardOptimized } from '@/components/organisms/StationCard/StationCard.optimized';
 import { StationListVirtualized } from '@/components/organisms/StationList';
 
 // Context
-import { createOptimizedContext, shallowEqual } from '@/context/PerformanceContext';
+import {
+  createOptimizedContext,
+  shallowEqual,
+} from '@/context/PerformanceContext';
 
 // Utilities
-import { measurePerformance, FPSMonitor, reportWebVitals } from '@/utils/performance';
+import {
+  measurePerformance,
+  FPSMonitor,
+  reportWebVitals,
+} from '@/utils/performance';
 ```
 
 ## 🎯 Common Patterns
@@ -47,7 +63,7 @@ const MyComponent = memo(
 import { useMemo } from 'react';
 
 const filteredData = useMemo(() => {
-  return data.filter(item => item.active);
+  return data.filter((item) => item.active);
 }, [data]);
 ```
 
@@ -85,7 +101,7 @@ import { VirtualList } from '@/components/common';
   height={600}
   renderItem={(item) => <ItemCard item={item} />}
   getItemKey={(item) => item.id}
-/>
+/>;
 ```
 
 ### 6. Lazy Load Components
@@ -97,7 +113,7 @@ const HeavyComponent = lazy(() => import('./HeavyComponent'));
 
 <Suspense fallback={<Spinner />}>
   <HeavyComponent />
-</Suspense>
+</Suspense>;
 ```
 
 ### 7. Lazy Load Images
@@ -109,7 +125,7 @@ import { LazyImage } from '@/components/common';
   src="/large-image.jpg"
   alt="Description"
   placeholderSrc="/placeholder.jpg"
-/>
+/>;
 ```
 
 ### 8. Add Error Boundaries
@@ -119,7 +135,7 @@ import { ErrorBoundary } from '@/components/common';
 
 <ErrorBoundary fallback={<ErrorPage />}>
   <YourComponent />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ### 9. Optimize Context
@@ -130,12 +146,10 @@ import { createOptimizedContext } from '@/context/PerformanceContext';
 const MyContext = createOptimizedContext<MyState>();
 
 // Provider
-<MyContext.Provider initialState={initialState}>
-  {children}
-</MyContext.Provider>
+<MyContext.Provider initialState={initialState}>{children}</MyContext.Provider>;
 
 // Consumer
-const value = MyContext.useSelector(state => state.value);
+const value = MyContext.useSelector((state) => state.value);
 ```
 
 ### 10. Monitor Performance
@@ -259,4 +273,3 @@ const handleClick = useCallback(() => doSomething(), []);
 ---
 
 **Remember**: Profile first, optimize second! 🎯
-

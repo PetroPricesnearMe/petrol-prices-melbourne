@@ -1,13 +1,13 @@
 /**
  * StationList Component
- * 
+ *
  * Dynamic React component for displaying stations from API
  * Features:
  * - Loading, error, and empty states
  * - Accessible design (WCAG 2.1 AA)
  * - Responsive grid layout
  * - Server Component compatible
- * 
+ *
  * @component
  */
 
@@ -60,7 +60,7 @@ export interface StationListProps {
 
 /**
  * StationList - Displays list of petrol stations
- * 
+ *
  * Automatically handles loading, error, and empty states
  */
 export function StationList({
@@ -135,4 +135,3 @@ export function StationList({
  * Display name for React DevTools
  */
 StationList.displayName = 'StationList';
-

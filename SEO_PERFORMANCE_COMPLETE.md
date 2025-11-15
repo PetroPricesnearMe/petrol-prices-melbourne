@@ -9,9 +9,11 @@ A comprehensive SEO and performance optimization system has been implemented for
 ## 📦 What's Been Created
 
 ### 1. **Advanced Metadata System**
+
 📁 `src/lib/seo/advanced-metadata.ts`
 
 Complete metadata configuration using Next.js 14+ Metadata API:
+
 - ✅ Title templates with automatic generation
 - ✅ Meta descriptions with keyword optimization
 - ✅ Open Graph tags for social sharing
@@ -21,6 +23,7 @@ Complete metadata configuration using Next.js 14+ Metadata API:
 - ✅ Specialized generators for different page types
 
 **Usage:**
+
 ```typescript
 import { generatePageMetadata } from '@/lib/seo/advanced-metadata';
 
@@ -35,9 +38,11 @@ export const metadata = generatePageMetadata({
 ---
 
 ### 2. **Comprehensive Structured Data (JSON-LD)**
+
 📁 `src/lib/seo/comprehensive-schemas.ts`
 
 Complete Schema.org implementations for rich search results:
+
 - ✅ **Organization Schema** - Company information
 - ✅ **WebSite Schema** - Site-wide search action
 - ✅ **LocalBusiness/GasStation** - Station details
@@ -51,6 +56,7 @@ Complete Schema.org implementations for rich search results:
 - ✅ **Video Schema** - Video content
 
 **Usage:**
+
 ```typescript
 import { StructuredData } from '@/components/StructuredData';
 import { generateStationPageSchemas } from '@/lib/seo/comprehensive-schemas';
@@ -63,26 +69,31 @@ const schemas = generateStationPageSchemas(station);
 ---
 
 ### 3. **Core Web Vitals Optimization**
+
 📁 `src/lib/performance/core-web-vitals.ts`
 
 Complete performance monitoring and optimization utilities:
 
 #### **LCP (Largest Contentful Paint) - Target: < 2.5s**
+
 - ✅ `preloadLCPImage()` - Preload critical images
 - ✅ `preconnect()` - Preconnect to external domains
 - ✅ `dnsPrefetch()` - DNS prefetch for faster loading
 
 #### **FID/INP (First Input Delay / Interaction to Next Paint) - Target: < 100ms / < 200ms**
+
 - ✅ `deferExecution()` - Defer non-critical code
 - ✅ `debounce()` - Debounce input handlers
 - ✅ `throttle()` - Throttle scroll/resize handlers
 
 #### **CLS (Cumulative Layout Shift) - Target: < 0.1**
+
 - ✅ `calculateAspectRatio()` - Prevent layout shifts
 - ✅ `getImagePlaceholder()` - SVG placeholders
 - ✅ `reserveSpace()` - Reserve space for dynamic content
 
 #### **Web Vitals Monitoring**
+
 - ✅ `initWebVitalsReporter()` - Initialize reporter
 - ✅ Real-time metric tracking
 - ✅ Google Analytics integration
@@ -90,6 +101,7 @@ Complete performance monitoring and optimization utilities:
 - ✅ LocalStorage persistence
 
 **Usage:**
+
 ```typescript
 import { initWebVitalsReporter } from '@/lib/performance/core-web-vitals';
 import { onCLS, onFID, onLCP } from 'web-vitals';
@@ -107,9 +119,11 @@ onLCP(reporter.report);
 ---
 
 ### 4. **SEO-Optimized Image Component**
+
 📁 `src/components/seo/SEOImage.tsx`
 
 Enhanced Next.js Image component with comprehensive optimization:
+
 - ✅ Automatic lazy loading
 - ✅ Priority loading for LCP images
 - ✅ Responsive sizing
@@ -120,6 +134,7 @@ Enhanced Next.js Image component with comprehensive optimization:
 - ✅ Caption and credit support
 
 **Specialized Components:**
+
 - `<SEOImage />` - Base optimized image
 - `<HeroImage />` - LCP-optimized hero images
 - `<LogoImage />` - Brand logos
@@ -128,6 +143,7 @@ Enhanced Next.js Image component with comprehensive optimization:
 - `<GalleryImage />` - Gallery images with smart loading
 
 **Usage:**
+
 ```typescript
 import { HeroImage, SEOImage } from '@/components/seo/SEOImage';
 
@@ -152,9 +168,11 @@ import { HeroImage, SEOImage } from '@/components/seo/SEOImage';
 ---
 
 ### 5. **SEO Head Component**
+
 📁 `src/components/seo/SEOHead.tsx`
 
 Comprehensive head component with all meta tags:
+
 - ✅ Basic meta tags
 - ✅ Open Graph tags
 - ✅ Twitter Cards
@@ -166,6 +184,7 @@ Comprehensive head component with all meta tags:
 - ✅ Additional custom meta tags
 
 **Specialized Components:**
+
 - `<SEOHead />` - Base SEO head
 - `<ArticleSEOHead />` - Article pages
 - `<ProductSEOHead />` - Product pages
@@ -174,39 +193,45 @@ Comprehensive head component with all meta tags:
 ---
 
 ### 6. **Mobile-First Optimization**
+
 📁 `src/lib/seo/mobile-optimization.ts`
 
 Complete mobile optimization utilities:
 
 #### **Mobile Detection**
+
 - ✅ `isMobileDevice()` - Detect mobile devices
 - ✅ `isIOSDevice()` - Detect iOS
 - ✅ `isAndroidDevice()` - Detect Android
 - ✅ `hasTouchCapability()` - Check touch support
 
 #### **Touch Optimization**
+
 - ✅ Touch target size validation (44x44px min)
 - ✅ iOS zoom prevention
 - ✅ Tap delay optimization
 
 #### **Mobile Performance**
+
 - ✅ `hasLowMemory()` - Detect low memory devices
 - ✅ `hasSlowConnection()` - Detect slow connections
 - ✅ `shouldUseReducedData()` - Data saver mode
 - ✅ `getMobileImageQuality()` - Adaptive image quality
 
 #### **Responsive Design**
+
 - ✅ Breakpoint utilities
 - ✅ Responsive image sizes
 - ✅ Safe area insets for notched devices
 - ✅ Orientation detection
 
 **Usage:**
+
 ```typescript
 import {
   isMobileDevice,
   generateResponsiveSizes,
-  mobileViewport
+  mobileViewport,
 } from '@/lib/seo/mobile-optimization';
 
 // Export mobile viewport
@@ -257,6 +282,7 @@ const sizes = generateResponsiveSizes({
 ### **`src/app/example-seo-page/page.tsx`**
 
 A complete, production-ready example page demonstrating:
+
 - ✅ Full metadata configuration
 - ✅ Multiple structured data schemas
 - ✅ Hero image with LCP optimization
@@ -277,6 +303,7 @@ A complete, production-ready example page demonstrating:
 ### **For a New Page:**
 
 1. **Add Metadata**
+
 ```typescript
 import { generatePageMetadata } from '@/lib/seo/advanced-metadata';
 
@@ -289,6 +316,7 @@ export const metadata = generatePageMetadata({
 ```
 
 2. **Add Structured Data**
+
 ```typescript
 import { StructuredData } from '@/components/StructuredData';
 import { getOrganizationSchema, getWebSiteSchema } from '@/lib/seo/comprehensive-schemas';
@@ -302,6 +330,7 @@ const schemas = [
 ```
 
 3. **Add Hero Image**
+
 ```typescript
 import { HeroImage } from '@/components/seo/SEOImage';
 
@@ -314,6 +343,7 @@ import { HeroImage } from '@/components/seo/SEOImage';
 ```
 
 4. **Add Regular Images**
+
 ```typescript
 import { SEOImage } from '@/components/seo/SEOImage';
 
@@ -327,6 +357,7 @@ import { SEOImage } from '@/components/seo/SEOImage';
 ```
 
 5. **Use Semantic HTML**
+
 ```typescript
 <main>
   <h1>Main Page Title</h1>
@@ -342,6 +373,7 @@ import { SEOImage } from '@/components/seo/SEOImage';
 ## ✅ Checklist for Every Page
 
 ### **SEO Checklist**
+
 - [ ] Unique `<h1>` tag (one per page)
 - [ ] Page title < 60 characters
 - [ ] Meta description < 160 characters
@@ -355,6 +387,7 @@ import { SEOImage } from '@/components/seo/SEOImage';
 - [ ] Proper heading hierarchy
 
 ### **Performance Checklist**
+
 - [ ] Hero image with `priority` prop
 - [ ] Lazy loading for below-fold images
 - [ ] Responsive image sizes
@@ -366,6 +399,7 @@ import { SEOImage } from '@/components/seo/SEOImage';
 - [ ] Resource hints (preconnect, prefetch)
 
 ### **Mobile Checklist**
+
 - [ ] Mobile viewport configured
 - [ ] Touch targets >= 44x44px
 - [ ] Responsive design
@@ -378,23 +412,25 @@ import { SEOImage } from '@/components/seo/SEOImage';
 ## 📊 Performance Targets
 
 ### **Core Web Vitals**
-| Metric | Target | Rating |
-|--------|--------|--------|
-| LCP | < 2.5s | Good |
-| FID | < 100ms | Good |
-| INP | < 200ms | Good |
-| CLS | < 0.1 | Good |
-| FCP | < 1.8s | Good |
-| TTFB | < 600ms | Good |
+
+| Metric | Target  | Rating |
+| ------ | ------- | ------ |
+| LCP    | < 2.5s  | Good   |
+| FID    | < 100ms | Good   |
+| INP    | < 200ms | Good   |
+| CLS    | < 0.1   | Good   |
+| FCP    | < 1.8s  | Good   |
+| TTFB   | < 600ms | Good   |
 
 ### **Performance Budget**
-| Resource | Budget |
-|----------|--------|
+
+| Resource        | Budget   |
+| --------------- | -------- |
 | Total Page Size | < 1.5 MB |
-| JavaScript | < 350 KB |
-| CSS | < 100 KB |
-| Images | < 800 KB |
-| Fonts | < 100 KB |
+| JavaScript      | < 350 KB |
+| CSS             | < 100 KB |
+| Images          | < 800 KB |
+| Fonts           | < 100 KB |
 
 ---
 
@@ -416,15 +452,17 @@ npm run seo:check
 ### **Monitor Web Vitals**
 
 Web Vitals are automatically tracked and sent to:
+
 - Google Analytics (if configured)
 - Custom endpoint (if configured)
 - Browser localStorage (for development)
 
 View metrics in browser console:
+
 ```javascript
-localStorage.getItem('web-vitals-LCP')
-localStorage.getItem('web-vitals-FID')
-localStorage.getItem('web-vitals-CLS')
+localStorage.getItem('web-vitals-LCP');
+localStorage.getItem('web-vitals-FID');
+localStorage.getItem('web-vitals-CLS');
 ```
 
 ---
@@ -476,21 +514,25 @@ localStorage.getItem('web-vitals-CLS')
 ### **Common Issues**
 
 **Q: Poor LCP score?**
+
 - Add `priority` to hero images
 - Preload critical resources
 - Optimize image sizes
 
 **Q: High CLS?**
+
 - Always specify image dimensions
 - Use aspect ratios
 - Reserve space for dynamic content
 
 **Q: Missing structured data?**
+
 - Add `<StructuredData />` component
 - Generate appropriate schemas
 - Test with Google Rich Results Test
 
 **Q: Mobile performance issues?**
+
 - Use mobile viewport configuration
 - Optimize images for mobile
 - Check connection speed

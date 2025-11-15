@@ -18,16 +18,40 @@ import type { BaseProps } from './common';
 export type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 /** Common component variants */
-export type Variant = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'ghost' | 'outline';
+export type Variant =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'info'
+  | 'ghost'
+  | 'outline';
 
 /** Color schemes */
-export type ColorScheme = 'blue' | 'green' | 'red' | 'yellow' | 'purple' | 'gray' | 'pink' | 'indigo';
+export type ColorScheme =
+  | 'blue'
+  | 'green'
+  | 'red'
+  | 'yellow'
+  | 'purple'
+  | 'gray'
+  | 'pink'
+  | 'indigo';
 
 /** Component alignment */
 export type Alignment = 'left' | 'center' | 'right' | 'justify';
 
 /** Component position */
-export type Position = 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+export type Position =
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right';
 
 // ============================================================================
 // Accessibility Props
@@ -110,7 +134,16 @@ export interface InputProps extends BaseProps, AccessibilityProps {
   /** Placeholder text */
   placeholder?: string;
   /** Input type */
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time';
+  type?:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'tel'
+    | 'url'
+    | 'search'
+    | 'date'
+    | 'time';
   /** Disabled state */
   disabled?: boolean;
   /** Readonly state */
@@ -323,7 +356,9 @@ export interface StackProps extends BaseProps {
 /** Grid component props */
 export interface GridProps extends BaseProps {
   /** Number of columns */
-  columns?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  columns?:
+    | number
+    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
   /** Gap between items */
   gap?: Size | number;
   /** Row gap */
@@ -521,10 +556,14 @@ export type PolymorphicProps<E extends React.ElementType> = {
 } & Omit<React.ComponentPropsWithoutRef<E>, 'as'>;
 
 /** Extract component props */
-export type ExtractProps<T> = T extends React.ComponentType<infer P> ? P : never;
+export type ExtractProps<T> =
+  T extends React.ComponentType<infer P> ? P : never;
 
 /** Component with children */
-export type WithChildren<P = Record<string, never>> = P & { children?: ReactNode };
+export type WithChildren<P = Record<string, never>> = P & {
+  children?: ReactNode;
+};
 
 /** Component ref type */
-export type ComponentRef<T extends React.ElementType> = React.ComponentPropsWithRef<T>['ref'];
+export type ComponentRef<T extends React.ElementType> =
+  React.ComponentPropsWithRef<T>['ref'];

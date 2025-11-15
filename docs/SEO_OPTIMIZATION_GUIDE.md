@@ -7,6 +7,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## ✅ Completed Optimizations
 
 ### 1. **Meta Tags & Structured Data**
+
 - ✅ Added SEO component to all pages (Blog, FAQ, Fuel Price Trends, Station Amenities, How Pricing Works)
 - ✅ Implemented FAQPage schema markup on FAQ page
 - ✅ Implemented BlogPosting/Article schema on Blog page
@@ -14,6 +15,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - ✅ Comprehensive Open Graph and Twitter Card meta tags
 
 ### 2. **Sitemap Optimization**
+
 - ✅ Updated sitemap with current dates (2025-10-13)
 - ✅ Added Blog and FAQ pages (high priority for SEO)
 - ✅ Added all regional directory pages for local SEO
@@ -21,6 +23,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - ✅ Image sitemap entries for visual content
 
 ### 3. **Breadcrumbs Navigation**
+
 - ✅ Added breadcrumbs to:
   - BlogPage
   - FAQPage
@@ -31,6 +34,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - ✅ Schema.org BreadcrumbList markup included
 
 ### 4. **Analytics & Tracking**
+
 - ✅ Page view tracking on all pages
 - ✅ Search tracking
 - ✅ Filter usage tracking
@@ -41,42 +45,53 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ### **Guidelines for All Images:**
 
 #### 1. **Hero Images**
+
 ```html
 <!-- ✅ GOOD -->
-<img src="fuel-nozzles.jpg" 
-     alt="Fuel nozzles at petrol station showing different fuel types - Diesel, 98 Octane, 95 Octane, Unleaded, and 91 Octane"
-     loading="eager"
-     fetchPriority="high" />
+<img
+  src="fuel-nozzles.jpg"
+  alt="Fuel nozzles at petrol station showing different fuel types - Diesel, 98 Octane, 95 Octane, Unleaded, and 91 Octane"
+  loading="eager"
+  fetchpriority="high"
+/>
 
 <!-- ❌ BAD -->
 <img src="fuel-nozzles.jpg" alt="fuel nozzles" />
 ```
 
 #### 2. **Station Images**
+
 ```html
 <!-- ✅ GOOD -->
-<img src="shell-station.jpg" 
-     alt="Shell petrol station in Melbourne CBD with convenience store and car wash facilities"
-     loading="lazy" />
+<img
+  src="shell-station.jpg"
+  alt="Shell petrol station in Melbourne CBD with convenience store and car wash facilities"
+  loading="lazy"
+/>
 
 <!-- ❌ BAD -->
 <img src="shell-station.jpg" alt="shell" />
 ```
 
 #### 3. **Brand Logos**
+
 ```html
 <!-- ✅ GOOD -->
-<img src="bp-logo.svg" 
-     alt="BP Australia logo - British Petroleum fuel and convenience stores"
-     loading="lazy" />
+<img
+  src="bp-logo.svg"
+  alt="BP Australia logo - British Petroleum fuel and convenience stores"
+  loading="lazy"
+/>
 
 <!-- ❌ BAD -->
 <img src="bp-logo.svg" alt="BP" />
 ```
 
 #### 4. **Icon/Decorative Images**
+
 - Use `aria-hidden="true"` for purely decorative images
 - Provide empty alt="" for screen readers to skip
+
 ```html
 <span aria-hidden="true">🏪</span>
 <img src="decorative-pattern.png" alt="" aria-hidden="true" />
@@ -96,6 +111,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## 🔍 Local SEO Enhancements
 
 ### **Implemented:**
+
 1. ✅ Geo meta tags (Melbourne, Victoria, Australia)
 2. ✅ LocalBusiness schema markup
 3. ✅ Regional directory pages in sitemap
@@ -104,6 +120,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ### **Keywords Strategy:**
 
 #### **Primary Keywords:**
+
 - melbourne petrol prices
 - fuel prices melbourne
 - cheapest petrol melbourne
@@ -111,6 +128,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - live fuel prices
 
 #### **Long-tail Keywords:**
+
 - cheapest petrol prices in melbourne today
 - 24 hour petrol station melbourne cbd
 - premium fuel prices melbourne eastern suburbs
@@ -118,6 +136,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - unleaded 91 prices melbourne north
 
 #### **Location-Specific Keywords:**
+
 - petrol prices [suburb] melbourne
 - fuel prices [region] melbourne
 - cheapest petrol near [landmark]
@@ -125,6 +144,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## 📊 Performance Metrics
 
 ### **Target Metrics:**
+
 - **Lighthouse SEO Score:** 100/100
 - **Core Web Vitals:**
   - LCP (Largest Contentful Paint): < 2.5s
@@ -137,6 +157,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ### **SEO Checklist:**
 
 #### **On-Page SEO:**
+
 - [x] Unique title tags on every page (50-60 characters)
 - [x] Unique meta descriptions (150-160 characters)
 - [x] H1 tags present and optimized
@@ -149,6 +170,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - [x] HTTPS enabled
 
 #### **Technical SEO:**
+
 - [x] XML sitemap submitted
 - [x] Robots.txt optimized
 - [x] Structured data markup
@@ -161,6 +183,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - [x] Redirect management
 
 #### **Content SEO:**
+
 - [x] High-quality, original content
 - [x] Keyword optimization (natural)
 - [x] FAQ page for voice search
@@ -175,18 +198,21 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ### **Hub and Spoke Model:**
 
 **Homepage (Hub)** →
+
 - Directory Page → Regional Pages
 - Blog Page → Related Articles
 - FAQ Page → How It Works
 - Price Trends → Directory
 
 ### **Link Distribution:**
+
 - Homepage: Link to all major pages
 - Blog: Link to relevant service pages
 - FAQ: Link to explanatory pages
 - Directory: Link back to homepage and related features
 
 ### **Anchor Text Guidelines:**
+
 - Use descriptive, keyword-rich anchor text
 - Vary anchor text naturally
 - Don't over-optimize (no keyword stuffing)
@@ -195,6 +221,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## 🎨 Social Sharing Optimization
 
 ### **Open Graph Tags:**
+
 ```html
 <meta property="og:title" content="[Page Title]" />
 <meta property="og:description" content="[Description]" />
@@ -206,6 +233,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ```
 
 ### **Twitter Cards:**
+
 ```html
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="[Page Title]" />
@@ -214,6 +242,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ```
 
 ### **Image Requirements:**
+
 - **Open Graph:** 1200x630px (1.91:1 ratio)
 - **Twitter:** 1200x675px (16:9 ratio) or 1200x628px
 - **Format:** JPG or PNG
@@ -223,18 +252,21 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## 📈 Ranking Strategies
 
 ### **Voice Search Optimization:**
+
 1. FAQ page with natural language questions
 2. Structured data for featured snippets
 3. Long-tail keyword targeting
 4. Conversational content style
 
 ### **Featured Snippet Opportunities:**
+
 - "How does fuel pricing work in Australia?"
 - "What is the cheapest day to buy petrol in Melbourne?"
 - "How often do petrol prices change?"
 - "What factors affect petrol prices?"
 
 ### **Local Pack Optimization:**
+
 1. Google My Business listing
 2. NAP consistency (Name, Address, Phone)
 3. Local citations
@@ -244,6 +276,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## 🛠️ Tools & Resources
 
 ### **SEO Tools:**
+
 - Google Search Console
 - Google Analytics
 - Lighthouse (Chrome DevTools)
@@ -253,6 +286,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 - PageSpeed Insights
 
 ### **Monitoring:**
+
 - Track keyword rankings weekly
 - Monitor Core Web Vitals monthly
 - Analyze user behavior (bounce rate, time on page)
@@ -263,6 +297,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## 📝 Content Calendar
 
 ### **Blog Topics (SEO-Focused):**
+
 1. "Best Times to Fill Up in Melbourne - Price Cycle Guide"
 2. "Top 10 Cheapest Petrol Stations in [Suburb]"
 3. "Diesel vs Unleaded: Which is Cheaper in Melbourne?"
@@ -270,6 +305,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 5. "Melbourne Petrol Price Forecast - Next 7 Days"
 
 ### **Update Frequency:**
+
 - Homepage: Daily (prices)
 - Blog: Weekly (new content)
 - FAQ: Monthly (additions)
@@ -279,6 +315,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 ## 🎯 Success Metrics
 
 ### **KPIs to Track:**
+
 1. **Organic Traffic:** Month-over-month growth
 2. **Keyword Rankings:** Top 10 positions for target keywords
 3. **Click-Through Rate (CTR):** > 3% from search results
@@ -288,6 +325,7 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 7. **Conversion Rate:** Station clicks, directions
 
 ### **Monthly SEO Reports:**
+
 - Ranking positions for target keywords
 - Organic traffic trends
 - Top performing pages
@@ -299,4 +337,3 @@ This document outlines the comprehensive SEO optimizations implemented for maxim
 
 **Last Updated:** October 13, 2025  
 **Maintained By:** Development Team
-

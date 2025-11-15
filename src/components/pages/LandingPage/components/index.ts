@@ -9,5 +9,10 @@ export { Icon, IconFilled, SocialIcon } from './Icon';
 export { Section, SectionHeader, GridContainer } from './Section';
 
 // Re-export types
-export type { ButtonProps, BadgeProps, IconProps, SectionProps, SectionHeaderProps } from '../types';
-
+export type {
+  ButtonProps,
+  BadgeProps,
+  IconProps,
+  SectionProps,
+  SectionHeaderProps,
+} from '../types';

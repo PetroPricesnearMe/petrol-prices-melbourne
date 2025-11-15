@@ -1,6 +1,6 @@
 /**
  * CMS Error Boundary
- * 
+ *
  * React Error Boundary specifically designed for CMS content
  * with fallback UI and error reporting
  */
@@ -71,14 +71,14 @@ export class CMSErrorBoundary extends Component<Props, State> {
       // Default fallback UI
       return (
         <div
-          className="rounded-lg border-2 border-red-200 bg-red-50 p-6"
+          className="border-red-200 bg-red-50 rounded-lg border-2 p-6"
           role="alert"
           aria-live="assertive"
         >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
               <svg
-                className="h-6 w-6 text-red-600"
+                className="text-red-600 h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -93,19 +93,20 @@ export class CMSErrorBoundary extends Component<Props, State> {
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-red-800">
+              <h3 className="text-red-800 text-lg font-semibold">
                 Content Loading Error
               </h3>
-              <p className="mt-2 text-sm text-red-700">
-                We encountered an issue loading this content. Please try again later.
+              <p className="text-red-700 mt-2 text-sm">
+                We encountered an issue loading this content. Please try again
+                later.
               </p>
 
               {this.props.showDetails && this.state.error && (
                 <details className="mt-4">
-                  <summary className="cursor-pointer text-sm font-medium text-red-800">
+                  <summary className="text-red-800 cursor-pointer text-sm font-medium">
                     Technical Details
                   </summary>
-                  <pre className="mt-2 overflow-auto rounded bg-red-100 p-3 text-xs text-red-900">
+                  <pre className="bg-red-100 text-red-900 mt-2 overflow-auto rounded p-3 text-xs">
                     {this.state.error.toString()}
                     {this.state.errorInfo && (
                       <>
@@ -119,7 +120,7 @@ export class CMSErrorBoundary extends Component<Props, State> {
 
               <button
                 onClick={this.handleReset}
-                className="mt-4 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                className="bg-red-600 hover:bg-red-700 focus:ring-red-500 mt-4 rounded-md px-4 py-2 text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
                 type="button"
               >
                 Try Again
@@ -149,4 +150,3 @@ export function withCMSErrorBoundary<P extends object>(
     );
   };
 }
-

@@ -5,16 +5,15 @@ import type {
   BaserowFuelPrice,
   BaserowListResponse,
 } from '@/types/baserow';
-import {
-  FUEL_TYPE_OPTIONS,
-  PRICE_TREND_OPTIONS,
-} from '@/types/baserow';
+import { FUEL_TYPE_OPTIONS, PRICE_TREND_OPTIONS } from '@/types/baserow';
 import type { PetrolStation, FuelPrice } from '@/types/index';
 
 const BASEROW_API_URL = process.env.BASEROW_API_URL || 'https://api.baserow.io';
 const BASEROW_API_TOKEN = process.env.BASEROW_API_TOKEN || '';
-const PETROL_STATIONS_TABLE_ID = process.env.BASEROW_PETROL_STATIONS_TABLE_ID || '623329';
-const FUEL_PRICES_TABLE_ID = process.env.BASEROW_FUEL_PRICES_TABLE_ID || '623330';
+const PETROL_STATIONS_TABLE_ID =
+  process.env.BASEROW_PETROL_STATIONS_TABLE_ID || '623329';
+const FUEL_PRICES_TABLE_ID =
+  process.env.BASEROW_FUEL_PRICES_TABLE_ID || '623330';
 
 /**
  * Baserow API client
@@ -48,7 +47,9 @@ function convertPriceTrend(optionId: number): string {
 /**
  * Map Baserow station to application Station type
  */
-function mapBaserowStation(baserowStation: BaserowPetrolStation): PetrolStation {
+function mapBaserowStation(
+  baserowStation: BaserowPetrolStation
+): PetrolStation {
   return {
     id: baserowStation.id,
     stationName: baserowStation['Station Name'],
@@ -81,9 +82,10 @@ export const baserowService = {
 
       // Fetch all pages
       while (hasMore) {
-        const response = await baserowClient.get<
-          BaserowListResponse<BaserowPetrolStation>
-        >(url);
+        const response =
+          await baserowClient.get<BaserowListResponse<BaserowPetrolStation>>(
+            url
+          );
 
         allStations = allStations.concat(response.data.results);
 
@@ -164,13 +166,11 @@ export const baserowService = {
     try {
       const baserowData: Partial<BaserowPetrolStation> = {};
 
-      if (data.stationName)
-        baserowData['Station Name'] = data.stationName;
+      if (data.stationName) baserowData['Station Name'] = data.stationName;
       if (data.address) baserowData.Address = data.address;
       if (data.city) baserowData.City = data.city;
       if (data.region) baserowData.Region = data.region;
-      if (data.postalCode)
-        baserowData['Postal Code'] = data.postalCode;
+      if (data.postalCode) baserowData['Postal Code'] = data.postalCode;
       if (data.country) baserowData.Country = data.country;
       if (data.latitude) baserowData.Latitude = data.latitude;
       if (data.longitude) baserowData.Longitude = data.longitude;

@@ -114,11 +114,31 @@ export function getFooterLinks(): {
     {
       category: 'Regions',
       links: [
-        { href: '/directory?region=cbd', text: 'CBD', title: 'CBD petrol prices' },
-        { href: '/directory?region=north', text: 'North', title: 'North Melbourne prices' },
-        { href: '/directory?region=south', text: 'South', title: 'South Melbourne prices' },
-        { href: '/directory?region=east', text: 'East', title: 'East Melbourne prices' },
-        { href: '/directory?region=west', text: 'West', title: 'West Melbourne prices' },
+        {
+          href: '/directory?region=cbd',
+          text: 'CBD',
+          title: 'CBD petrol prices',
+        },
+        {
+          href: '/directory?region=north',
+          text: 'North',
+          title: 'North Melbourne prices',
+        },
+        {
+          href: '/directory?region=south',
+          text: 'South',
+          title: 'South Melbourne prices',
+        },
+        {
+          href: '/directory?region=east',
+          text: 'East',
+          title: 'East Melbourne prices',
+        },
+        {
+          href: '/directory?region=west',
+          text: 'West',
+          title: 'West Melbourne prices',
+        },
       ],
     },
     {
@@ -136,10 +156,22 @@ export function getFooterLinks(): {
     {
       category: 'Company',
       links: [
-        { href: '/about', text: 'About Us', title: 'About Petrol Prices Near Me' },
+        {
+          href: '/about',
+          text: 'About Us',
+          title: 'About Petrol Prices Near Me',
+        },
         { href: '/contact', text: 'Contact', title: 'Get in touch' },
-        { href: '/privacy', text: 'Privacy Policy', title: 'Our privacy policy' },
-        { href: '/terms', text: 'Terms of Service', title: 'Terms and conditions' },
+        {
+          href: '/privacy',
+          text: 'Privacy Policy',
+          title: 'Our privacy policy',
+        },
+        {
+          href: '/terms',
+          text: 'Terms of Service',
+          title: 'Terms and conditions',
+        },
       ],
     },
   ];
@@ -198,7 +230,10 @@ export function getPaginationLinks(
 /**
  * Generate tag cloud links
  */
-export function getTagLinks(tags: string[], basePath: string = '/blog'): InternalLink[] {
+export function getTagLinks(
+  tags: string[],
+  basePath: string = '/blog'
+): InternalLink[] {
   return tags.map((tag) => ({
     href: `${basePath}?tag=${encodeURIComponent(tag.toLowerCase())}`,
     text: tag,
@@ -212,7 +247,12 @@ export function getTagLinks(tags: string[], basePath: string = '/blog'): Interna
 export function getRelatedContent(
   currentId: string,
   category: string,
-  allContent: Array<{ id: string; title: string; slug: string; category: string }>
+  allContent: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    category: string;
+  }>
 ): InternalLink[] {
   return allContent
     .filter((item) => item.id !== currentId && item.category === category)

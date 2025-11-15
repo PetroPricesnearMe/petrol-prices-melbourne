@@ -96,7 +96,13 @@ const generatePageRange = (
     { length: rightSiblingIndex - leftSiblingIndex + 1 },
     (_, i) => leftSiblingIndex + i
   );
-  return [firstPageIndex, 'ellipsis', ...middleRange, 'ellipsis', lastPageIndex];
+  return [
+    firstPageIndex,
+    'ellipsis',
+    ...middleRange,
+    'ellipsis',
+    lastPageIndex,
+  ];
 };
 
 /**
@@ -106,14 +112,14 @@ const fadeAnimation = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
-  transition: { duration: 0.2 }
+  transition: { duration: 0.2 },
 };
 
 const slideAnimation = {
   initial: { opacity: 0, x: 20 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -20 },
-  transition: { duration: 0.3 }
+  transition: { duration: 0.3 },
 };
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -182,7 +188,14 @@ export const Pagination: React.FC<PaginationProps> = ({
         window.scrollTo({ top: 0, behavior: scrollBehavior });
       }
     },
-    [currentPage, totalPages, onPageChange, disabled, scrollToTop, scrollBehavior]
+    [
+      currentPage,
+      totalPages,
+      onPageChange,
+      disabled,
+      scrollToTop,
+      scrollBehavior,
+    ]
   );
 
   /**
@@ -255,19 +268,20 @@ export const Pagination: React.FC<PaginationProps> = ({
           {/* Items info */}
           {showItemsInfo && itemsInfo && (
             <div
-              className="text-gray-600 dark:text-gray-400 text-sm"
+              className="text-sm text-gray-600 dark:text-gray-400"
               role="status"
               aria-live="polite"
               aria-atomic="true"
             >
-              Showing <span className="font-semibold">{itemsInfo.startItem}</span> to{' '}
+              Showing{' '}
+              <span className="font-semibold">{itemsInfo.startItem}</span> to{' '}
               <span className="font-semibold">{itemsInfo.endItem}</span> of{' '}
               <span className="font-semibold">{totalItems}</span> items
             </div>
           )}
 
           {/* Pagination controls */}
-          <div className="flex items-center gap-2 flex-wrap justify-center">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             {/* First page button */}
             {showFirstLast && (
               <button
@@ -275,14 +289,14 @@ export const Pagination: React.FC<PaginationProps> = ({
                 disabled={disabled || currentPage === 1}
                 className={`
                   ${buttonSizeClasses[size]}
-                  rounded-lg border border-gray-300 dark:border-gray-600
-                  bg-white dark:bg-gray-800
-                  text-gray-700 dark:text-gray-300
-                  hover:bg-gray-50 dark:hover:bg-gray-700
-                  disabled:opacity-50 disabled:cursor-not-allowed
+                  touch-manipulation rounded-lg border border-gray-300
+                  bg-white text-gray-700
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                  touch-manipulation
+                  hover:bg-gray-50 focus:outline-none
+                  focus:ring-2 focus:ring-primary-500
+                  focus:ring-offset-2 disabled:cursor-not-allowed
+                  disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300
+                  dark:hover:bg-gray-700
                 `}
                 aria-label="Go to first page"
               >
@@ -297,15 +311,15 @@ export const Pagination: React.FC<PaginationProps> = ({
                 disabled={disabled || currentPage === 1}
                 className={`
                   ${buttonSizeClasses[size]}
-                  rounded-lg border border-gray-300 dark:border-gray-600
-                  bg-white dark:bg-gray-800
-                  text-gray-700 dark:text-gray-300
-                  hover:bg-gray-50 dark:hover:bg-gray-700
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                  touch-manipulation
-                  font-medium
+                  touch-manipulation rounded-lg border border-gray-300
+                  bg-white font-medium
+                  text-gray-700 transition-all
+                  duration-200 hover:bg-gray-50
+                  focus:outline-none focus:ring-2
+                  focus:ring-primary-500 focus:ring-offset-2
+                  disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800
+                  dark:text-gray-300
+                  dark:hover:bg-gray-700
                 `}
                 aria-label="Go to previous page"
               >
@@ -341,17 +355,17 @@ export const Pagination: React.FC<PaginationProps> = ({
                     disabled={disabled}
                     className={`
                       ${buttonSizeClasses[size]}
-                      rounded-lg border
-                      transition-all duration-200
-                      focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                      touch-manipulation
-                      font-medium
+                      touch-manipulation rounded-lg
+                      border font-medium
+                      transition-all duration-200 focus:outline-none focus:ring-2
+                      focus:ring-primary-500
+                      focus:ring-offset-2
                       ${
                         isActive
-                          ? 'bg-primary-600 border-primary-600 text-white shadow-md'
-                          : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                          ? 'border-primary-600 bg-primary-600 text-white shadow-md'
+                          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
                       }
-                      ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+                      ${disabled ? 'cursor-not-allowed opacity-50' : ''}
                     `}
                     aria-label={`Go to page ${page}`}
                     aria-current={isActive ? 'page' : undefined}
@@ -370,15 +384,15 @@ export const Pagination: React.FC<PaginationProps> = ({
                 disabled={disabled || currentPage === totalPages}
                 className={`
                   ${buttonSizeClasses[size]}
-                  rounded-lg border border-gray-300 dark:border-gray-600
-                  bg-white dark:bg-gray-800
-                  text-gray-700 dark:text-gray-300
-                  hover:bg-gray-50 dark:hover:bg-gray-700
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                  touch-manipulation
-                  font-medium
+                  touch-manipulation rounded-lg border border-gray-300
+                  bg-white font-medium
+                  text-gray-700 transition-all
+                  duration-200 hover:bg-gray-50
+                  focus:outline-none focus:ring-2
+                  focus:ring-primary-500 focus:ring-offset-2
+                  disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800
+                  dark:text-gray-300
+                  dark:hover:bg-gray-700
                 `}
                 aria-label="Go to next page"
               >
@@ -396,14 +410,14 @@ export const Pagination: React.FC<PaginationProps> = ({
                 disabled={disabled || currentPage === totalPages}
                 className={`
                   ${buttonSizeClasses[size]}
-                  rounded-lg border border-gray-300 dark:border-gray-600
-                  bg-white dark:bg-gray-800
-                  text-gray-700 dark:text-gray-300
-                  hover:bg-gray-50 dark:hover:bg-gray-700
-                  disabled:opacity-50 disabled:cursor-not-allowed
+                  touch-manipulation rounded-lg border border-gray-300
+                  bg-white text-gray-700
                   transition-all duration-200
-                  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                  touch-manipulation
+                  hover:bg-gray-50 focus:outline-none
+                  focus:ring-2 focus:ring-primary-500
+                  focus:ring-offset-2 disabled:cursor-not-allowed
+                  disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300
+                  dark:hover:bg-gray-700
                 `}
                 aria-label="Go to last page"
               >
@@ -413,7 +427,12 @@ export const Pagination: React.FC<PaginationProps> = ({
           </div>
 
           {/* Page info (for screen readers) */}
-          <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+          <div
+            className="sr-only"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             Page {currentPage} of {totalPages}
           </div>
         </motion.div>

@@ -11,7 +11,8 @@ import { Hero } from '@/components/organisms/Hero';
 
 export const metadata: Metadata = {
   title: 'Hero Component Example | Petrol Price Near Me',
-  description: 'Example page showcasing the Hero component with different configurations',
+  description:
+    'Example page showcasing the Hero component with different configurations',
 };
 
 export default function HeroExamplePage() {
@@ -21,22 +22,22 @@ export default function HeroExamplePage() {
       <Hero />
 
       {/* Content Section */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
+      <section className="mx-auto max-w-7xl px-4 py-16">
         <div className="space-y-12">
           {/* Overview */}
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
               Hero Component Examples
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              The Hero component is a fully responsive, animated section designed for
-              introducing the directory. It includes accessibility features, dark mode
-              support, and GPU-optimized animations.
+              The Hero component is a fully responsive, animated section
+              designed for introducing the directory. It includes accessibility
+              features, dark mode support, and GPU-optimized animations.
             </p>
           </div>
 
           {/* Features List */}
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid gap-8 md:grid-cols-2">
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                 Features
@@ -44,7 +45,9 @@ export default function HeroExamplePage() {
               <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 dark:text-green-400">✓</span>
-                  <span>Framer Motion animations with reduced motion support</span>
+                  <span>
+                    Framer Motion animations with reduced motion support
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-green-600 dark:text-green-400">✓</span>
@@ -103,11 +106,11 @@ export default function HeroExamplePage() {
           </div>
 
           {/* Usage Example */}
-          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="rounded-xl bg-gray-50 p-6 dark:bg-gray-900">
+            <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
               Usage Example
             </h3>
-            <pre className="bg-gray-900 dark:bg-gray-950 text-gray-100 p-4 rounded-lg overflow-x-auto">
+            <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-gray-100 dark:bg-gray-950">
               <code>{`import { Hero } from '@/components/organisms/Hero';
 
 export default function Page() {
@@ -127,41 +130,51 @@ export default function Page() {
           </div>
 
           {/* Accessibility */}
-          <div className="border-l-4 border-blue-500 pl-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+          <div className="border-blue-500 border-l-4 pl-6">
+            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
               Accessibility
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
-              This component is optimized for Lighthouse 100 accessibility score with
-              semantic HTML elements (<code className="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">header</code>,{' '}
-              <code className="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">h1</code>,{' '}
-              <code className="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">p</code>),
-              proper ARIA labels, keyboard navigation support, and respects user&apos;s
-              motion preferences.
+              This component is optimized for Lighthouse 100 accessibility score
+              with semantic HTML elements (
+              <code className="rounded bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800">
+                header
+              </code>
+              ,{' '}
+              <code className="rounded bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800">
+                h1
+              </code>
+              ,{' '}
+              <code className="rounded bg-gray-100 px-2 py-1 text-sm dark:bg-gray-800">
+                p
+              </code>
+              ), proper ARIA labels, keyboard navigation support, and respects
+              user&apos;s motion preferences.
             </p>
           </div>
 
           {/* Performance */}
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+          <div className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 rounded-xl border p-6">
+            <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
               Performance
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
-              All animations use GPU-accelerated properties (transform, opacity) for
-              smooth 60fps performance. The component automatically respects the user&apos;s
-              <code className="text-sm bg-white dark:bg-gray-800 px-2 py-1 rounded mx-1">
+            <p className="mb-4 text-gray-600 dark:text-gray-300">
+              All animations use GPU-accelerated properties (transform, opacity)
+              for smooth 60fps performance. The component automatically respects
+              the user&apos;s
+              <code className="mx-1 rounded bg-white px-2 py-1 text-sm dark:bg-gray-800">
                 prefers-reduced-motion
               </code>
               setting.
             </p>
             <div className="flex flex-wrap gap-4 text-sm">
-              <div className="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg">
+              <div className="rounded-lg bg-white px-4 py-2 dark:bg-gray-800">
                 <span className="font-semibold">LCP:</span> &lt;2.5s
               </div>
-              <div className="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg">
+              <div className="rounded-lg bg-white px-4 py-2 dark:bg-gray-800">
                 <span className="font-semibold">CLS:</span> 0
               </div>
-              <div className="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg">
+              <div className="rounded-lg bg-white px-4 py-2 dark:bg-gray-800">
                 <span className="font-semibold">FID:</span> &lt;100ms
               </div>
             </div>
@@ -170,15 +183,15 @@ export default function Page() {
       </section>
 
       {/* Custom Hero Examples */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+      <section className="bg-gray-50 py-16 dark:bg-gray-900">
+        <div className="mx-auto max-w-7xl px-4">
+          <h2 className="mb-8 text-3xl font-bold text-gray-900 dark:text-white">
             Custom Variations
           </h2>
 
           {/* Without Illustration */}
           <div className="mb-16">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
               Without Illustration
             </h3>
             <Hero showIllustration={false} />
@@ -186,7 +199,7 @@ export default function Page() {
 
           {/* Custom Text */}
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+            <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
               Custom Text & CTAs
             </h3>
             <Hero

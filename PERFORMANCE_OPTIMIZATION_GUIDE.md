@@ -14,6 +14,7 @@
 ### 1. Image Optimization
 
 #### Next.js Image Component
+
 - **Automatic format detection**: AVIF, WebP fallback
 - **Responsive images**: Multiple sizes for different viewports
 - **Lazy loading**: Images load only when visible
@@ -33,22 +34,26 @@
 ```
 
 #### Responsive Sizes
+
 ```tsx
-sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1280px"
+sizes =
+  '(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1280px';
 ```
 
 ### 2. Code Splitting & Dynamic Imports
 
 #### React.lazy for Components
+
 ```tsx
 const HeavyComponent = React.lazy(() => import('./HeavyComponent'));
 
 <Suspense fallback={<Loading />}>
   <HeavyComponent />
-</Suspense>
+</Suspense>;
 ```
 
 #### Dynamic Imports
+
 ```tsx
 // Load libraries only when needed
 const loadChart = async () => {
@@ -60,6 +65,7 @@ const loadChart = async () => {
 ### 3. Script Optimization
 
 #### Next.js Script Component
+
 ```tsx
 // After interactive - best for analytics
 <Script src="/analytics.js" strategy="afterInteractive" />
@@ -69,6 +75,7 @@ const loadChart = async () => {
 ```
 
 #### Strategy Comparison
+
 - `beforeInteractive`: Critical, blocks hydration
 - `afterInteractive` (default): Loads after page becomes interactive
 - `lazyOnload`: Loads during browser idle time
@@ -76,18 +83,22 @@ const loadChart = async () => {
 ### 4. Caching Strategy
 
 #### Static Assets (1 year)
+
 ```http
 Cache-Control: public, max-age=31536000, immutable
 ```
+
 - Images, fonts, JS/CSS files
 
 #### Static Pages (ISR)
+
 ```tsx
 export const revalidate = 3600; // Revalidate every hour
 export const dynamic = 'force-static';
 ```
 
 #### Dynamic Content (1 hour)
+
 ```http
 Cache-Control: public, max-age=3600, must-revalidate
 ```
@@ -95,6 +106,7 @@ Cache-Control: public, max-age=3600, must-revalidate
 ### 5. Bundle Optimization
 
 #### Automatic Code Splitting
+
 - Route-based splitting (automatic)
 - Dynamic imports
 - Vendor chunks separation
@@ -102,6 +114,7 @@ Cache-Control: public, max-age=3600, must-revalidate
 - Lucide icons tree-shaking
 
 #### Bundle Size Monitoring
+
 ```tsx
 import { warnLargeImport } from '@/utils/performance';
 
@@ -112,6 +125,7 @@ warnLargeImport('chart.js', 150); // 150KB
 ### 6. Font Optimization
 
 #### Next.js Font Optimization
+
 ```tsx
 import { Inter } from 'next/font/google';
 
@@ -124,6 +138,7 @@ const inter = Inter({
 ```
 
 **Benefits**:
+
 - Self-hosted fonts (no external requests)
 - Automatic font-display: swap
 - CSS variable generation
@@ -132,6 +147,7 @@ const inter = Inter({
 ### 7. Web Vitals Tracking
 
 #### Automatic Tracking
+
 ```tsx
 // Automatic tracking in production
 import { onCLS, onFID, onFCP, onLCP, onTTFB } from 'web-vitals';
@@ -142,6 +158,7 @@ onFID(trackWebVitals);
 ```
 
 #### Performance Dashboard
+
 ```tsx
 import { generatePerformanceReport } from '@/utils/performance';
 
@@ -153,17 +170,20 @@ console.log('Recommendations:', report.recommendations);
 ### 8. Resource Preloading
 
 #### Preconnect to External Domains
+
 ```tsx
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 ```
 
 #### Prefetch Critical Resources
+
 ```tsx
 <link rel="prefetch" href="/critical-resource.js" />
 ```
 
 #### Preload Critical Images
+
 ```tsx
 import { preloadImage } from '@/utils/performance';
 
@@ -175,10 +195,12 @@ useEffect(() => {
 ### 9. Compression
 
 #### Gzip/Brotli Compression
+
 - Automatic compression in production
 - Optimized compression level
 
 #### Image Compression
+
 - WebP format (70% smaller than JPEG)
 - AVIF format (50% smaller than WebP)
 - Quality level: 85 (optimal balance)
@@ -186,6 +208,7 @@ useEffect(() => {
 ### 10. Lazy Loading
 
 #### Images Below the Fold
+
 ```tsx
 <Image
   src="/image.jpg"
@@ -194,6 +217,7 @@ useEffect(() => {
 ```
 
 #### Intersection Observer
+
 ```tsx
 const { ref, inView } = useInView({
   triggerOnce: true,
@@ -218,7 +242,7 @@ console.log('CLS:', metrics.CLS);
 
 // Analyze resources
 const resources = analyzeResourceTiming();
-const slowResources = resources.filter(r => r.duration > 1000);
+const slowResources = resources.filter((r) => r.duration > 1000);
 ```
 
 ### Generate Performance Report
@@ -227,9 +251,12 @@ const slowResources = resources.filter(r => r.duration > 1000);
 import { generatePerformanceReport } from '@/utils/performance';
 
 const report = generatePerformanceReport();
-console.log(`
+console.log(
+  `
   Score: ${report.score}/100
-  Metrics:`, report.metrics);
+  Metrics:`,
+  report.metrics
+);
 console.log('Recommendations:', report.recommendations);
 ```
 
@@ -273,17 +300,18 @@ console.log('Recommendations:', report.recommendations);
 
 ### Current Performance (Target)
 
-| Metric | Current | Target | Status |
-|--------|---------|--------|--------|
-| LCP | < 1.0s | < 2.5s | ✅ Excellent |
-| FID | < 100ms | < 100ms | ✅ Excellent |
-| CLS | < 0.1 | < 0.1 | ✅ Excellent |
-| TTFB | < 800ms | < 800ms | ✅ Excellent |
-| FCP | < 1.8s | < 1.8s | ✅ Excellent |
+| Metric | Current | Target  | Status       |
+| ------ | ------- | ------- | ------------ |
+| LCP    | < 1.0s  | < 2.5s  | ✅ Excellent |
+| FID    | < 100ms | < 100ms | ✅ Excellent |
+| CLS    | < 0.1   | < 0.1   | ✅ Excellent |
+| TTFB   | < 800ms | < 800ms | ✅ Excellent |
+| FCP    | < 1.8s  | < 1.8s  | ✅ Excellent |
 
 ### Testing Tools
 
 1. **Lighthouse** (Chrome DevTools)
+
    ```bash
    npm run lighthouse
    ```
@@ -306,26 +334,31 @@ console.log('Recommendations:', report.recommendations);
 ## 🔧 Quick Performance Fixes
 
 ### 1. Reduce JavaScript Execution Time
+
 - Code split large components
 - Use dynamic imports
 - Remove unused code
 
 ### 2. Optimize Images
+
 - Compress images
 - Use modern formats (WebP/AVIF)
 - Proper sizing
 
 ### 3. Minify and Compress
+
 - Enable compression
 - Minify CSS/JS
 - Remove comments
 
 ### 4. Use CDN
+
 - Serve static assets from CDN
 - Edge caching
 - Reduce latency
 
 ### 5. Optimize Fonts
+
 - Use next/font
 - Self-host fonts
 - Subset fonts
@@ -334,24 +367,29 @@ console.log('Recommendations:', report.recommendations);
 ## 📝 Additional Recommendations
 
 ### 1. Service Worker (PWA)
+
 - Cache static assets
 - Offline support
 - Background sync
 
 ### 2. HTTP/2 Server Push
+
 - Push critical resources
 - Reduce RTT
 
 ### 3. Critical CSS
+
 - Inline critical CSS
 - Defer non-critical CSS
 
 ### 4. Resource Hints
+
 - Preconnect to external domains
 - Prefetch next page
 - Preload critical resources
 
 ### 5. Database Optimization
+
 - Index frequently queried fields
 - Pagination for large datasets
 - Query optimization
@@ -395,6 +433,7 @@ npm run bundle-size
 ## 📞 Support
 
 For performance issues or questions:
+
 - Check [Next.js Performance Docs](https://nextjs.org/docs/advanced-features/measuring-performance)
 - Review [Web Vitals Guide](https://web.dev/vitals/)
 - Use [Chrome DevTools](https://developer.chrome.com/docs/devtools/)

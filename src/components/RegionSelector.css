@@ -6,7 +6,7 @@
 /* Premium Region Selector */
 .region-selector-section {
   padding: var(--space-3xl) 0;
-  background: linear-gradient(to bottom, white 0%, #F8FAFC 100%);
+  background: linear-gradient(to bottom, white 0%, #f8fafc 100%);
   position: relative;
 }
 
@@ -55,14 +55,18 @@
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   height: 100%;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
   min-height: 280px;
 }
 
 .modern-region-link:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   border-color: transparent;
 }
 
@@ -80,7 +84,9 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   position: relative;
   z-index: 1;
@@ -164,10 +170,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg,
+  background: linear-gradient(
+    45deg,
     transparent 30%,
     rgba(255, 255, 255, 0.1) 50%,
-    transparent 70%);
+    transparent 70%
+  );
   animation: screenGlow 3s ease-in-out infinite;
 }
 
@@ -282,22 +290,40 @@
   animation: loadingBounce 1.4s ease-in-out infinite both;
 }
 
-.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-.loading-dots span:nth-child(3) { animation-delay: 0s; }
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+.loading-dots span:nth-child(3) {
+  animation-delay: 0s;
+}
 
 @keyframes screenGlow {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes pumpPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 @keyframes loadingBounce {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
     opacity: 0.5;
   }
@@ -314,10 +340,12 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg,
-      transparent 30%,
-      rgba(255, 255, 255, 0.3) 50%,
-      transparent 70%);
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
   transform: translateX(-100%) translateY(-100%) rotate(45deg);
   transition: transform 0.6s ease;
   pointer-events: none;
@@ -328,7 +356,6 @@
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;
@@ -573,7 +600,6 @@
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-
   .region-link,
   .region-color-indicator,
   .region-arrow {

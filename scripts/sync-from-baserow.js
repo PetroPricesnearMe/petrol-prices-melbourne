@@ -14,22 +14,27 @@ require('dotenv').config();
 
 const BASEROW_API_URL = process.env.BASEROW_API_URL || 'https://api.baserow.io';
 const BASEROW_API_TOKEN = process.env.BASEROW_API_TOKEN;
-const PETROL_STATIONS_TABLE_ID = process.env.BASEROW_PETROL_STATIONS_TABLE_ID || '623329';
-const FUEL_PRICES_TABLE_ID = process.env.BASEROW_FUEL_PRICES_TABLE_ID || '623330';
+const PETROL_STATIONS_TABLE_ID =
+  process.env.BASEROW_PETROL_STATIONS_TABLE_ID || '623329';
+const FUEL_PRICES_TABLE_ID =
+  process.env.BASEROW_FUEL_PRICES_TABLE_ID || '623330';
 
 const JSON_PATH = path.join(__dirname, '../src/data/stations.json');
-const METADATA_PATH = path.join(__dirname, '../src/data/stations-metadata.json');
+const METADATA_PATH = path.join(
+  __dirname,
+  '../src/data/stations-metadata.json'
+);
 
 // Brand logo mapping
 const BRAND_LOGOS = {
-  'BP': '/images/brands/bp.png',
-  'Shell': '/images/brands/shell.png',
-  'Caltex': '/images/brands/caltex.png',
+  BP: '/images/brands/bp.png',
+  Shell: '/images/brands/shell.png',
+  Caltex: '/images/brands/caltex.png',
   '7-Eleven': '/images/brands/7eleven.png',
   'Coles Express': '/images/brands/coles.png',
-  'Ampol': '/images/brands/ampol.png',
-  'United': '/images/brands/united.png',
-  'Mobil': '/images/brands/mobil.png',
+  Ampol: '/images/brands/ampol.png',
+  United: '/images/brands/united.png',
+  Mobil: '/images/brands/mobil.png',
 };
 
 const baserowClient = axios.create({
@@ -57,7 +62,9 @@ async function fetchAllStations() {
       const response = await baserowClient.get(url);
 
       allStations = allStations.concat(response.data.results);
-      console.log(`   ✓ Got ${response.data.results.length} stations (Total: ${allStations.length})`);
+      console.log(
+        `   ✓ Got ${response.data.results.length} stations (Total: ${allStations.length})`
+      );
 
       // Check if there's a next page
       if (response.data.next) {
@@ -69,7 +76,9 @@ async function fetchAllStations() {
       }
     }
 
-    console.log(`\n✅ Successfully fetched ${allStations.length} stations from Baserow\n`);
+    console.log(
+      `\n✅ Successfully fetched ${allStations.length} stations from Baserow\n`
+    );
     return allStations;
   } catch (error) {
     console.error('❌ Error fetching stations from Baserow:', error.message);
@@ -98,7 +107,9 @@ async function fetchAllFuelPrices() {
       const response = await baserowClient.get(url);
 
       allPrices = allPrices.concat(response.data.results);
-      console.log(`   ✓ Got ${response.data.results.length} prices (Total: ${allPrices.length})`);
+      console.log(
+        `   ✓ Got ${response.data.results.length} prices (Total: ${allPrices.length})`
+      );
 
       // Check if there's a next page
       if (response.data.next) {
@@ -110,7 +121,9 @@ async function fetchAllFuelPrices() {
       }
     }
 
-    console.log(`\n✅ Successfully fetched ${allPrices.length} fuel prices from Baserow\n`);
+    console.log(
+      `\n✅ Successfully fetched ${allPrices.length} fuel prices from Baserow\n`
+    );
     return allPrices;
   } catch (error) {
     console.error('❌ Error fetching fuel prices from Baserow:', error.message);
@@ -128,9 +141,10 @@ async function fetchAllFuelPrices() {
  */
 function convertStation(baserowStation, fuelPricesMap) {
   const stationId = baserowStation.id;
-  const brand = Array.isArray(baserowStation.brand) && baserowStation.brand.length > 0
-    ? baserowStation.brand[0]
-    : 'Independent';
+  const brand =
+    Array.isArray(baserowStation.brand) && baserowStation.brand.length > 0
+      ? baserowStation.brand[0]
+      : 'Independent';
 
   // Get fuel prices for this station
   const stationPrices = fuelPricesMap.get(stationId) || {};
@@ -175,7 +189,7 @@ const FUEL_TYPE_MAP = {
 function buildFuelPricesMap(fuelPrices) {
   const pricesMap = new Map();
 
-  fuelPrices.forEach(price => {
+  fuelPrices.forEach((price) => {
     const stationIds = price['Petrol Station'] || [];
     const fuelTypeId = price['Fuel Type'];
     const fuelType = FUEL_TYPE_MAP[fuelTypeId] || 'unknown';
@@ -183,7 +197,7 @@ function buildFuelPricesMap(fuelPrices) {
 
     if (isNaN(priceValue) || fuelType === 'unknown') return;
 
-    stationIds.forEach(stationId => {
+    stationIds.forEach((stationId) => {
       if (!pricesMap.has(stationId)) {
         pricesMap.set(stationId, {
           lastUpdated: price['Last Updated'] || new Date().toISOString(),
@@ -211,7 +225,7 @@ function generateMetadata(stations) {
     bySuburb: {},
   };
 
-  stations.forEach(station => {
+  stations.forEach((station) => {
     suburbs.add(station.suburb);
     brands.add(station.brand);
     regions.add(station.region);
@@ -224,9 +238,10 @@ function generateMetadata(stations) {
     }
   });
 
-  const avgPrice = prices.length > 0
-    ? (prices.reduce((sum, p) => sum + p, 0) / prices.length).toFixed(1)
-    : '0.0';
+  const avgPrice =
+    prices.length > 0
+      ? (prices.reduce((sum, p) => sum + p, 0) / prices.length).toFixed(1)
+      : '0.0';
 
   return {
     totalStations: stations.length,
@@ -239,7 +254,7 @@ function generateMetadata(stations) {
         min: prices.length > 0 ? Math.min(...prices) : 0,
         max: prices.length > 0 ? Math.max(...prices) : 0,
         average: avgPrice,
-      }
+      },
     },
     stats,
   };
@@ -252,7 +267,9 @@ async function syncFromBaserow() {
   console.log('🚀 Starting Baserow sync...\n');
 
   if (!BASEROW_API_TOKEN) {
-    console.error('❌ Error: BASEROW_API_TOKEN environment variable is not set');
+    console.error(
+      '❌ Error: BASEROW_API_TOKEN environment variable is not set'
+    );
     console.error('   Please add it to your .env file');
     process.exit(1);
   }
@@ -271,11 +288,13 @@ async function syncFromBaserow() {
     // Convert stations
     console.log('🔄 Converting stations...\n');
     const stations = baserowStations
-      .map(bs => convertStation(bs, fuelPricesMap))
-      .filter(s => s.name && s.suburb)
+      .map((bs) => convertStation(bs, fuelPricesMap))
+      .filter((s) => s.name && s.suburb)
       .sort((a, b) => {
         const suburbCompare = a.suburb.localeCompare(b.suburb);
-        return suburbCompare !== 0 ? suburbCompare : a.name.localeCompare(b.name);
+        return suburbCompare !== 0
+          ? suburbCompare
+          : a.name.localeCompare(b.name);
       });
 
     console.log(`✅ Converted ${stations.length} stations\n`);

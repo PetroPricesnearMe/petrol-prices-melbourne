@@ -3,8 +3,8 @@
  */
 
 .header {
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #E0E0E0;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
   transition: box-shadow 0.25s ease-out;
 }
 
@@ -15,7 +15,9 @@
 }
 
 .header--elevated {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
 }
 
 /* ============================================================================
@@ -50,7 +52,7 @@
 }
 
 .header__brand:focus-visible {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
   outline-offset: 4px;
   border-radius: 0.25rem;
 }
@@ -102,17 +104,17 @@
 }
 
 .header__nav-link:hover {
-  color: #2196F3;
+  color: #2196f3;
   background-color: rgba(33, 150, 243, 0.08);
 }
 
 .header__nav-link:focus-visible {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
   outline-offset: 2px;
 }
 
 .header__nav-link--active {
-  color: #2196F3;
+  color: #2196f3;
   background-color: rgba(33, 150, 243, 0.12);
 }
 
@@ -148,7 +150,7 @@
 }
 
 .header__mobile-toggle:focus-visible {
-  outline: 2px solid #2196F3;
+  outline: 2px solid #2196f3;
   outline-offset: 2px;
 }
 
@@ -193,12 +195,12 @@
 }
 
 .header__mobile-nav-link:hover {
-  color: #2196F3;
+  color: #2196f3;
   background-color: rgba(33, 150, 243, 0.08);
 }
 
 .header__mobile-nav-link--active {
-  color: #2196F3;
+  color: #2196f3;
   background-color: rgba(33, 150, 243, 0.12);
 }
 
@@ -240,4 +242,3 @@
     font-size: 1.125rem;
   }
 }
-

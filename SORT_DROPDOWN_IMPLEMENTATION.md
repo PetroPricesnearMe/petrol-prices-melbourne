@@ -7,35 +7,42 @@ Successfully built an animated, accessible sorting dropdown component with URL q
 ## Components Created
 
 ### 1. **SortDropdown** (`src/components/molecules/SortDropdown/SortDropdown.tsx`)
-   Main dropdown component with:
-   - ✅ Framer Motion animations (fade, scale, slide)
-   - ✅ URL query parameter sync
-   - ✅ 6 sort options: nearest, price-low, price-high, top-rated, name, suburb
-   - ✅ Keyboard accessibility (Escape, click outside)
-   - ✅ Dark mode support
-   - ✅ Minimalistic Tailwind design
+
+Main dropdown component with:
+
+- ✅ Framer Motion animations (fade, scale, slide)
+- ✅ URL query parameter sync
+- ✅ 6 sort options: nearest, price-low, price-high, top-rated, name, suburb
+- ✅ Keyboard accessibility (Escape, click outside)
+- ✅ Dark mode support
+- ✅ Minimalistic Tailwind design
 
 ### 2. **QuickSortBar** (`src/components/molecules/SortDropdown/QuickSortBar.tsx`)
-   Compact sort bar with result count:
-   - Shows total results
-   - Optional page numbers
-   - Integrates SortDropdown
-   - Responsive layout
+
+Compact sort bar with result count:
+
+- Shows total results
+- Optional page numbers
+- Integrates SortDropdown
+- Responsive layout
 
 ### 3. **Type Definitions** (`src/components/molecules/SortDropdown/SortDropdown.types.ts`)
-   - SortOption type
-   - SortItem interface
-   - SortDropdownProps interface
+
+- SortOption type
+- SortItem interface
+- SortDropdownProps interface
 
 ### 4. **Documentation** (`src/components/molecules/SortDropdown/README.md`)
-   - Usage examples
-   - Props documentation
-   - Accessibility features
-   - Animation details
+
+- Usage examples
+- Props documentation
+- Accessibility features
+- Animation details
 
 ## Features Implemented
 
 ### Animations (Framer Motion)
+
 ```typescript
 // Dropdown open/close
 initial={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -54,12 +61,14 @@ transition={{ delay: index * 0.03 }}
 ```
 
 ### URL Query Sync
+
 - Syncs sort state with `?sort=` parameter
 - Updates URL without page reload
 - Preserves other query parameters
 - Restores state on page load
 
 ### Design Elements
+
 - **Borders**: `border border-gray-300 dark:border-gray-600`
 - **Shadows**: `shadow-sm hover:shadow-md` and `shadow-lg` for dropdown
 - **Hover**: Smooth color transitions
@@ -68,6 +77,7 @@ transition={{ delay: index * 0.03 }}
 - **Responsive**: Works on mobile and desktop
 
 ### Accessibility
+
 - ARIA labels and roles
 - `aria-expanded`, `aria-haspopup`, `aria-selected`
 - Keyboard navigation
@@ -78,7 +88,9 @@ transition={{ delay: index * 0.03 }}
 ## Integration
 
 ### Directory Page
+
 Updated `src/app/directory/StationDirectoryClient.tsx`:
+
 - Imported SortDropdown and QuickSortBar
 - Replaced old select with SortDropdown
 - Added QuickSortBar above station grid
@@ -86,29 +98,27 @@ Updated `src/app/directory/StationDirectoryClient.tsx`:
 
 ### Sort Options
 
-| Value | Label | Icon | Description |
-|-------|-------|------|-------------|
-| `nearest` | Nearest | 📍 | Closest to you |
-| `price-low` | Lowest Price | 💰 | Cheapest first |
-| `price-high` | Highest Price | 💸 | Most expensive first |
-| `top-rated` | Top Rated | ⭐ | Best reviews |
-| `name` | Name (A-Z) | 🔤 | Alphabetical |
-| `suburb` | Suburb | 🏘️ | By location |
+| Value        | Label         | Icon | Description          |
+| ------------ | ------------- | ---- | -------------------- |
+| `nearest`    | Nearest       | 📍   | Closest to you       |
+| `price-low`  | Lowest Price  | 💰   | Cheapest first       |
+| `price-high` | Highest Price | 💸   | Most expensive first |
+| `top-rated`  | Top Rated     | ⭐   | Best reviews         |
+| `name`       | Name (A-Z)    | 🔤   | Alphabetical         |
+| `suburb`     | Suburb        | 🏘️   | By location          |
 
 ## Usage Examples
 
 ### Basic Usage
+
 ```tsx
 import { SortDropdown } from '@/components/molecules/SortDropdown';
 
-<SortDropdown
-  value={sortBy}
-  onChange={setSortBy}
-  syncWithUrl={true}
-/>
+<SortDropdown value={sortBy} onChange={setSortBy} syncWithUrl={true} />;
 ```
 
 ### With QuickSortBar
+
 ```tsx
 import { QuickSortBar } from '@/components/molecules/SortDropdown';
 
@@ -118,14 +128,15 @@ import { QuickSortBar } from '@/components/molecules/SortDropdown';
   totalResults={results.length}
   currentPage={page}
   totalPages={totalPages}
-/>
+/>;
 ```
 
 ### In Filters
+
 ```tsx
 <div className="grid grid-cols-4 gap-4">
   <div>
-    <label className="block mb-2">Sort By</label>
+    <label className="mb-2 block">Sort By</label>
     <SortDropdown
       value={filters.sortBy}
       onChange={(value) => handleFilterChange('sortBy', value)}
@@ -186,6 +197,7 @@ src/components/molecules/SortDropdown/
 ## Future Enhancements
 
 Potential improvements:
+
 - [ ] Custom sort options
 - [ ] Multi-column sort
 - [ ] Save user preferences
@@ -205,6 +217,7 @@ Potential improvements:
 For existing code using old select dropdowns:
 
 **Before:**
+
 ```tsx
 <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
   <option value="price-low">Price (Low to High)</option>
@@ -213,17 +226,15 @@ For existing code using old select dropdowns:
 ```
 
 **After:**
+
 ```tsx
-<SortDropdown
-  value={sortBy}
-  onChange={setSortBy}
-  syncWithUrl={true}
-/>
+<SortDropdown value={sortBy} onChange={setSortBy} syncWithUrl={true} />
 ```
 
 ## Support
 
 For issues or questions:
+
 - Check the README.md in the component folder
 - Review example usage in StationDirectoryClient.tsx
 - See type definitions in SortDropdown.types.ts

@@ -14,7 +14,14 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Mail,
+  Phone,
+  MapPin,
+} from 'lucide-react';
 import { type ReactNode } from 'react';
 
 import { useMounted } from '@/hooks/useMounted';
@@ -84,19 +91,19 @@ const defaultSocialLinks: SocialLink[] = [
   {
     name: 'Facebook',
     href: 'https://facebook.com',
-    icon: <Facebook className="w-5 h-5" />,
+    icon: <Facebook className="h-5 w-5" />,
     ariaLabel: 'Visit our Facebook page',
   },
   {
     name: 'Twitter',
     href: 'https://twitter.com',
-    icon: <Twitter className="w-5 h-5" />,
+    icon: <Twitter className="h-5 w-5" />,
     ariaLabel: 'Follow us on Twitter',
   },
   {
     name: 'Instagram',
     href: 'https://instagram.com',
-    icon: <Instagram className="w-5 h-5" />,
+    icon: <Instagram className="h-5 w-5" />,
     ariaLabel: 'Follow us on Instagram',
   },
 ];
@@ -151,14 +158,14 @@ export function EnhancedFooter({
       role="contentinfo"
       aria-label="Footer"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand Column */}
           <motion.div variants={itemVariants} className="lg:col-span-1">
-            <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h3 className="from-blue-400 to-purple-400 mb-4 bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent">
               {companyName}
             </h3>
-            <p className="text-gray-400 mb-6 leading-relaxed">{description}</p>
+            <p className="mb-6 leading-relaxed text-gray-400">{description}</p>
 
             {/* Social Links */}
             <div className="flex gap-3">
@@ -168,9 +175,11 @@ export function EnhancedFooter({
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl border border-white/20 hover:border-white/40 transition-all duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
+                  className="focus-visible:ring-blue-500 flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-4"
                   aria-label={social.ariaLabel}
-                  whileHover={shouldReduceMotion ? undefined : { y: -4, scale: 1.1 }}
+                  whileHover={
+                    shouldReduceMotion ? undefined : { y: -4, scale: 1.1 }
+                  }
                   whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
                 >
                   {social.icon}
@@ -182,13 +191,13 @@ export function EnhancedFooter({
           {/* Footer Sections */}
           {sections.map((section, index) => (
             <motion.div key={section.title} variants={itemVariants}>
-              <h4 className="text-white font-semibold mb-4">{section.title}</h4>
+              <h4 className="mb-4 font-semibold text-white">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:text-white focus-visible:underline"
+                      className="text-gray-400 transition-colors duration-200 hover:text-white focus-visible:text-white focus-visible:underline focus-visible:outline-none"
                     >
                       {link.label}
                     </a>
@@ -201,20 +210,20 @@ export function EnhancedFooter({
           {/* Newsletter Column */}
           {showNewsletter && (
             <motion.div variants={itemVariants}>
-              <h4 className="text-white font-semibold mb-4">Stay Updated</h4>
-              <p className="text-gray-400 mb-4 text-sm">
+              <h4 className="mb-4 font-semibold text-white">Stay Updated</h4>
+              <p className="mb-4 text-sm text-gray-400">
                 Subscribe to get updates on price changes.
               </p>
               <form className="space-y-3">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="focus:ring-blue-500 w-full rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2"
                   aria-label="Email address"
                 />
                 <button
                   type="submit"
-                  className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
+                  className="from-blue-500 to-purple-600 focus-visible:ring-blue-500 w-full transform rounded-xl bg-gradient-to-r px-4 py-2 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4"
                 >
                   Subscribe
                 </button>
@@ -226,15 +235,15 @@ export function EnhancedFooter({
         {/* Bottom Bar */}
         <motion.div
           variants={itemVariants}
-          className="pt-8 border-t border-white/10"
+          className="border-t border-white/10 pt-8"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm text-center md:text-left">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <p className="text-center text-sm text-gray-400 md:text-left">
               {copyright ||
                 `© ${currentYear} ${companyName}. All rights reserved.`}
             </p>
-            <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <MapPin className="w-4 h-4" aria-hidden="true" />
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <MapPin className="h-4 w-4" aria-hidden="true" />
               <span>Melbourne, Australia</span>
             </div>
           </div>

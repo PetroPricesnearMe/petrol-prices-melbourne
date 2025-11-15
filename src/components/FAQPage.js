@@ -10,63 +10,63 @@ const faqs = [
   {
     q: 'How do you get petrol prices?',
     a: 'We aggregate prices from public sources and community reports, then validate and surface them in a user-friendly directory and map. Our data comes from multiple sources including government APIs, station websites, and user submissions.',
-    category: 'Data Sources'
+    category: 'Data Sources',
   },
   {
     q: 'How often are prices updated?',
     a: 'Continuously. The directory sorts by most recently updated by default so you see fresh data first. Prices are typically updated every few hours during business hours.',
-    category: 'Data Sources'
+    category: 'Data Sources',
   },
   {
     q: 'Which areas are covered?',
     a: 'We focus on Melbourne and surrounding suburbs, with broader coverage growing over time. Currently covering 250+ stations across Greater Melbourne.',
-    category: 'Coverage'
+    category: 'Coverage',
   },
   {
     q: 'Can I report a new price?',
     a: 'Yes. Use the "Report price" button on station cards to submit updates. All submissions are verified before being published.',
-    category: 'User Input'
+    category: 'User Input',
   },
   {
     q: 'Are the prices accurate?',
     a: 'We strive for accuracy by cross-referencing multiple sources and validating user submissions. However, prices can change frequently, so we recommend calling ahead for critical trips.',
-    category: 'Accuracy'
+    category: 'Accuracy',
   },
   {
     q: 'Why do prices vary so much between stations?',
     a: 'Prices vary due to location, competition, operating costs, and the weekly price cycle. Stations in high-rent areas or near highways often charge more due to convenience premiums.',
-    category: 'Pricing'
+    category: 'Pricing',
   },
   {
     q: 'What is the fuel price cycle?',
     a: 'Australia has a weekly price cycle where prices typically start low on Sunday/Monday, rise through the week, peak on Friday/Saturday, then drop again. This varies by city and can be used to your advantage.',
-    category: 'Pricing'
+    category: 'Pricing',
   },
   {
     q: 'How can I save money on fuel?',
     a: 'Fill up on Sunday/Monday when prices are lowest, use our price comparison tools, maintain your vehicle properly, drive efficiently, and consider alternative transport for short trips.',
-    category: 'Saving Tips'
+    category: 'Saving Tips',
   },
   {
     q: 'Do you have a mobile app?',
-    a: 'Our website is fully mobile-responsive and works like an app when added to your home screen. We\'re also developing a dedicated mobile app for even better functionality.',
-    category: 'Mobile'
+    a: "Our website is fully mobile-responsive and works like an app when added to your home screen. We're also developing a dedicated mobile app for even better functionality.",
+    category: 'Mobile',
   },
   {
     q: 'Is this service free?',
     a: 'Yes, our basic price comparison service is completely free. We may introduce premium features in the future, but core functionality will always remain free.',
-    category: 'Cost'
+    category: 'Cost',
   },
   {
     q: 'How do I contact support?',
     a: 'You can reach us through our contact form, email support@petrolpricesnearme.com.au, or follow us on social media for updates and support.',
-    category: 'Support'
+    category: 'Support',
   },
   {
     q: 'Can I use this for business purposes?',
     a: 'Yes, our data can be used for business purposes. Please contact us for API access and commercial licensing options.',
-    category: 'Business'
-  }
+    category: 'Business',
+  },
 ];
 
 const FAQPage = () => {
@@ -79,28 +79,30 @@ const FAQPage = () => {
   }, []);
 
   // Get unique categories
-  const categories = ['All', ...new Set(faqs.map(faq => faq.category))];
+  const categories = ['All', ...new Set(faqs.map((faq) => faq.category))];
 
   // Filter FAQs based on category and search term
-  const filteredFaqs = faqs.filter(faq => {
-    const matchesCategory = selectedCategory === 'All' || faq.category === selectedCategory;
-    const matchesSearch = faq.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredFaqs = faqs.filter((faq) => {
+    const matchesCategory =
+      selectedCategory === 'All' || faq.category === selectedCategory;
+    const matchesSearch =
+      faq.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
       faq.a.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   // Generate FAQ structured data for SEO
   const faqStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.q,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.a
-      }
-    }))
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    })),
   };
 
   return (
@@ -113,15 +115,20 @@ const FAQPage = () => {
         structuredData={faqStructuredData}
       />
       <div className="faq-page">
-        <Breadcrumbs customCrumbs={[
-          { label: 'Home', path: '/', icon: '🏠' },
-          { label: 'FAQ', path: '/faq', isActive: true }
-        ]} />
+        <Breadcrumbs
+          customCrumbs={[
+            { label: 'Home', path: '/', icon: '🏠' },
+            { label: 'FAQ', path: '/faq', isActive: true },
+          ]}
+        />
         <div className="faq-header">
           <div className="container">
             <header>
               <h1>Frequently Asked Questions</h1>
-              <p>Find answers to common questions about fuel prices, our service, and how to save money</p>
+              <p>
+                Find answers to common questions about fuel prices, our service,
+                and how to save money
+              </p>
             </header>
 
             <div className="faq-controls">
@@ -147,8 +154,10 @@ const FAQPage = () => {
                   onChange={(e) => setSelectedCategory(e.target.value)}
                   className="category-select"
                 >
-                  {categories.map(category => (
-                    <option key={category} value={category}>{category}</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -188,7 +197,10 @@ const FAQPage = () => {
                   <span className="help-icon">📧</span>
                   <h3>Email Support</h3>
                   <p>Get personalized help from our support team</p>
-                  <a href="mailto:support@petrolpricesnearme.com.au" className="help-link">
+                  <a
+                    href="mailto:support@petrolpricesnearme.com.au"
+                    className="help-link"
+                  >
                     support@petrolpricesnearme.com.au
                   </a>
                 </div>
@@ -202,7 +214,9 @@ const FAQPage = () => {
                   <span className="help-icon">📚</span>
                   <h3>Learn More</h3>
                   <p>Explore our comprehensive guides and resources</p>
-                  <a href="/how-pricing-works" className="help-link">View Guides</a>
+                  <a href="/how-pricing-works" className="help-link">
+                    View Guides
+                  </a>
                 </div>
               </div>
             </div>
@@ -214,5 +228,3 @@ const FAQPage = () => {
 };
 
 export default FAQPage;
-
-

@@ -126,12 +126,14 @@ export function StationListCMS({
         aria-live="polite"
         aria-atomic="true"
       >
-        Showing {stations.length} petrol station{stations.length !== 1 ? 's' : ''}
+        Showing {stations.length} petrol station
+        {stations.length !== 1 ? 's' : ''}
       </div>
 
       {/* Instructions for keyboard users */}
       <div className="sr-only" role="region" aria-label="Keyboard instructions">
-        Use arrow keys to navigate between stations. Press Enter or Space to select a station.
+        Use arrow keys to navigate between stations. Press Enter or Space to
+        select a station.
       </div>
 
       <EnhancedCardGrid
@@ -178,12 +180,15 @@ const StationCard = React.forwardRef<HTMLButtonElement, StationCardProps>(
     const [isPressed, setIsPressed] = useState(false);
 
     const cheapestPrice = station.Fuel_Prices
-      ? station.Fuel_Prices.reduce((min, price) => {
-          const priceNum = parseFloat(price.Price_Per_Liter);
-          return priceNum < min.priceNum
-            ? { priceNum, text: price.Price_Per_Liter }
-            : min;
-        }, { priceNum: Infinity, text: 'N/A' }).text
+      ? station.Fuel_Prices.reduce(
+          (min, price) => {
+            const priceNum = parseFloat(price.Price_Per_Liter);
+            return priceNum < min.priceNum
+              ? { priceNum, text: price.Price_Per_Liter }
+              : min;
+          },
+          { priceNum: Infinity, text: 'N/A' }
+        ).text
       : 'N/A';
 
     return (
@@ -205,17 +210,17 @@ const StationCard = React.forwardRef<HTMLButtonElement, StationCardProps>(
           }
         }}
         className={`
-          w-full text-left
-          bg-white dark:bg-gray-800
-          rounded-2xl
-          border-2 border-gray-200 dark:border-gray-700
-          shadow-md hover:shadow-xl
+          focus-visible:ring-blue-500 w-full
+          rounded-2xl border-2
+          border-gray-200
+          bg-white text-left shadow-md
           transition-all duration-200
-          focus-visible:outline-none focus-visible:ring-4
-          focus-visible:ring-blue-500 focus-visible:ring-offset-2
+          hover:shadow-xl focus-visible:outline-none
+          focus-visible:ring-4 focus-visible:ring-offset-2
+          dark:border-gray-700 dark:bg-gray-800
           ${
             isFocused
-              ? 'border-blue-500 dark:border-blue-400 ring-4 ring-blue-200 dark:ring-blue-900'
+              ? 'border-blue-500 dark:border-blue-400 ring-blue-200 dark:ring-blue-900 ring-4'
               : ''
           }
           ${isPressed ? 'scale-95' : ''}
@@ -231,31 +236,36 @@ const StationCard = React.forwardRef<HTMLButtonElement, StationCardProps>(
       >
         <div className="p-6">
           {/* Station Name */}
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+          <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">
             {station.Station_Name}
           </h3>
 
           {/* Location */}
-          <div className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
-            <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" aria-hidden="true" />
+          <div className="mb-4 flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <MapPin
+              className="mt-0.5 h-4 w-4 flex-shrink-0"
+              aria-hidden="true"
+            />
             <div>
               <p>{station.Address}</p>
-              <p>{station.City}, {station.Region}</p>
+              <p>
+                {station.City}, {station.Region}
+              </p>
             </div>
           </div>
 
           {/* Price */}
           {cheapestPrice !== 'N/A' && (
-            <div className="flex items-center gap-2 text-base font-semibold text-green-600 dark:text-green-400 mb-4">
-              <DollarSign className="w-5 h-5" aria-hidden="true" />
+            <div className="text-green-600 dark:text-green-400 mb-4 flex items-center gap-2 text-base font-semibold">
+              <DollarSign className="h-5 w-5" aria-hidden="true" />
               <span>${cheapestPrice}/L</span>
             </div>
           )}
 
           {/* Call to action */}
-          <div className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400">
+          <div className="text-blue-600 dark:text-blue-400 flex items-center gap-2 text-sm font-medium">
             <span>View Details</span>
-            <Navigation className="w-4 h-4" aria-hidden="true" />
+            <Navigation className="h-4 w-4" aria-hidden="true" />
           </div>
         </div>
       </motion.button>
@@ -276,10 +286,8 @@ function LoadingState() {
       className="flex items-center justify-center py-20"
     >
       <div className="text-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4" />
-        <p className="text-gray-600 dark:text-gray-400">
-          Loading stations...
-        </p>
+        <div className="border-blue-500 mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-t-transparent" />
+        <p className="text-gray-600 dark:text-gray-400">Loading stations...</p>
         <span className="sr-only">Loading petrol stations</span>
       </div>
     </div>
@@ -297,15 +305,15 @@ function ErrorState({ error }: ErrorStateProps) {
   return (
     <div
       role="alert"
-      className="rounded-2xl border-2 border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-8"
+      className="border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 rounded-2xl border-2 p-8"
     >
-      <h2 className="text-lg font-semibold text-red-900 dark:text-red-200 mb-2">
+      <h2 className="text-red-900 dark:text-red-200 mb-2 text-lg font-semibold">
         Error Loading Stations
       </h2>
       <p className="text-red-700 dark:text-red-300">{error}</p>
       <button
         onClick={() => window.location.reload()}
-        className="mt-4 px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+        className="bg-red-600 hover:bg-red-700 focus-visible:ring-red-500 mt-4 rounded-xl px-4 py-2 text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2"
       >
         Retry
       </button>
@@ -318,12 +326,8 @@ function ErrorState({ error }: ErrorStateProps) {
  */
 function EmptyState() {
   return (
-    <div
-      role="status"
-      aria-live="polite"
-      className="text-center py-20"
-    >
-      <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
+    <div role="status" aria-live="polite" className="py-20 text-center">
+      <p className="mb-2 text-lg text-gray-600 dark:text-gray-400">
         No stations found
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-500">

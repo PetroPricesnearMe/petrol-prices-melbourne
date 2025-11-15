@@ -46,7 +46,7 @@ export function OptimizedImage({
         <div
           className={
             skeletonClassName ||
-            'absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded'
+            'absolute inset-0 animate-pulse rounded bg-gray-200 dark:bg-gray-700'
           }
         />
       )}
@@ -94,4 +94,3 @@ export function OptimizedBackground(props: OptimizedImageProps) {
     />
   );
 }
-

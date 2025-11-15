@@ -109,7 +109,7 @@ function Navbar() {
     <nav>
       {/* Button variant */}
       <ThemeToggle variant="button" />
-      
+
       {/* Dropdown variant */}
       <ThemeToggle variant="dropdown" />
     </nav>
@@ -140,7 +140,7 @@ function Navbar() {
 
 /* Tailwind Classes */
 .my-component {
-  @apply text-gray-900 bg-white p-4 rounded-lg;
+  @apply rounded-lg bg-white p-4 text-gray-900;
 }
 ```
 
@@ -161,6 +161,7 @@ function Navbar() {
 ### Color Palettes
 
 #### Primary (Blue) - Trust & Energy
+
 ```
 primary-50  → #EFF6FF  (Lightest)
 primary-600 → #2563EB  (Main brand color)
@@ -168,6 +169,7 @@ primary-950 → #172554  (Darkest)
 ```
 
 #### Secondary (Green) - Fresh & Eco-friendly
+
 ```
 secondary-50  → #ECFDF5  (Lightest)
 secondary-500 → #10B981  (Main accent)
@@ -175,6 +177,7 @@ secondary-950 → #022C22  (Darkest)
 ```
 
 #### Accent (Orange) - Warm & Actionable
+
 ```
 accent-50  → #FFF7ED  (Lightest)
 accent-500 → #F97316  (Call-to-action)
@@ -182,6 +185,7 @@ accent-950 → #431407  (Darkest)
 ```
 
 #### Neutral (Gray) - Professional & Clean
+
 ```
 gray-50  → #F9FAFB  (Backgrounds)
 gray-500 → #6B7280  (Secondary text)
@@ -191,11 +195,11 @@ gray-900 → #111827  (Primary text)
 ### Semantic Colors
 
 | Purpose | Light Mode | Dark Mode | Contrast Ratio |
-|---------|------------|-----------|----------------|
-| Success | `#059669` | `#34D399` | 4.52:1 |
-| Warning | `#D97706` | `#F59E0B` | 5.13:1 |
-| Error | `#DC2626` | `#EF4444` | 5.51:1 |
-| Info | `#2563EB` | `#3B82F6` | 5.14:1 |
+| ------- | ---------- | --------- | -------------- |
+| Success | `#059669`  | `#34D399` | 4.52:1         |
+| Warning | `#D97706`  | `#F59E0B` | 5.13:1         |
+| Error   | `#DC2626`  | `#EF4444` | 5.51:1         |
+| Info    | `#2563EB`  | `#3B82F6` | 5.14:1         |
 
 ### Color Usage Guidelines
 
@@ -231,18 +235,18 @@ gray-900 → #111827  (Primary text)
 
 ### Type Scale
 
-| Size | Pixels | Usage | Tailwind Class |
-|------|--------|-------|----------------|
-| xs | 12px | Helper text, labels | `text-xs` |
-| sm | 14px | Secondary text, captions | `text-sm` |
-| base | 16px | Body text (default) | `text-base` |
-| lg | 18px | Emphasized body text | `text-lg` |
-| xl | 20px | Small headings | `text-xl` |
-| 2xl | 24px | Section headings | `text-2xl` |
-| 3xl | 30px | Page titles | `text-3xl` |
-| 4xl | 36px | Large titles | `text-4xl` |
-| 5xl | 48px | Hero headings | `text-5xl` |
-| 6xl | 60px | Display text | `text-6xl` |
+| Size | Pixels | Usage                    | Tailwind Class |
+| ---- | ------ | ------------------------ | -------------- |
+| xs   | 12px   | Helper text, labels      | `text-xs`      |
+| sm   | 14px   | Secondary text, captions | `text-sm`      |
+| base | 16px   | Body text (default)      | `text-base`    |
+| lg   | 18px   | Emphasized body text     | `text-lg`      |
+| xl   | 20px   | Small headings           | `text-xl`      |
+| 2xl  | 24px   | Section headings         | `text-2xl`     |
+| 3xl  | 30px   | Page titles              | `text-3xl`     |
+| 4xl  | 36px   | Large titles             | `text-4xl`     |
+| 5xl  | 48px   | Hero headings            | `text-5xl`     |
+| 6xl  | 60px   | Display text             | `text-6xl`     |
 
 ### Font Weights
 
@@ -286,15 +290,15 @@ gray-900 → #111827  (Primary text)
 
 All spacing follows an 8px base unit for consistency and alignment.
 
-| Token | Pixels | Tailwind | Usage |
-|-------|--------|----------|-------|
-| `space-1` | 4px | `p-1`, `m-1` | Tight spacing |
-| `space-2` | 8px | `p-2`, `m-2` | Base unit |
-| `space-4` | 16px | `p-4`, `m-4` | Standard spacing |
-| `space-6` | 24px | `p-6`, `m-6` | Component padding |
-| `space-8` | 32px | `p-8`, `m-8` | Section spacing |
-| `space-12` | 48px | `p-12`, `m-12` | Large spacing |
-| `space-16` | 64px | `p-16`, `m-16` | Section padding |
+| Token      | Pixels | Tailwind       | Usage             |
+| ---------- | ------ | -------------- | ----------------- |
+| `space-1`  | 4px    | `p-1`, `m-1`   | Tight spacing     |
+| `space-2`  | 8px    | `p-2`, `m-2`   | Base unit         |
+| `space-4`  | 16px   | `p-4`, `m-4`   | Standard spacing  |
+| `space-6`  | 24px   | `p-6`, `m-6`   | Component padding |
+| `space-8`  | 32px   | `p-8`, `m-8`   | Section spacing   |
+| `space-12` | 48px   | `p-12`, `m-12` | Large spacing     |
+| `space-16` | 64px   | `p-16`, `m-16` | Section padding   |
 
 ### Spacing Utilities
 
@@ -320,9 +324,7 @@ All spacing follows an 8px base unit for consistency and alignment.
 
 ```jsx
 // All interactive elements have minimum touch targets
-<button className="min-w-touch min-h-touch">
-  Touch-friendly button
-</button>
+<button className="min-h-touch min-w-touch">Touch-friendly button</button>
 ```
 
 ---
@@ -394,7 +396,7 @@ All spacing follows an 8px base unit for consistency and alignment.
     <p>Card content goes here.</p>
   </div>
   <div className="card-footer">
-    <button className="btn btn-primary btn-sm">Action</button>
+    <button className="btn-primary btn-sm btn">Action</button>
   </div>
 </div>
 ```
@@ -486,9 +488,9 @@ function MyComponent() {
   const handleToggle = () => {
     toggleTheme(); // Switches between light and dark
   };
-  
+
   const currentTheme = getActiveTheme(); // 'light' or 'dark'
-  
+
   return (
     <button onClick={handleToggle}>
       Toggle Theme (Current: {currentTheme})
@@ -536,9 +538,11 @@ import ThemeToggle from '@/components/ThemeToggle';
 The theme initialization script in `_document.js` prevents the flash:
 
 ```jsx
-<script dangerouslySetInnerHTML={{
-  __html: `/* Theme init script */`
-}} />
+<script
+  dangerouslySetInnerHTML={{
+    __html: `/* Theme init script */`,
+  }}
+/>
 ```
 
 ---
@@ -613,7 +617,7 @@ Respects user's motion preferences:
 
 ```jsx
 // Animations automatically reduced
-<div className="transition-all duration-300 animate-fade-in">
+<div className="animate-fade-in transition-all duration-300">
   Respects prefers-reduced-motion
 </div>
 ```
@@ -774,4 +778,3 @@ For questions or issues with the design system:
 **Last Updated:** 2025-10-22  
 **Maintained by:** Development Team  
 **License:** Proprietary
-

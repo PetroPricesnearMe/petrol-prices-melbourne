@@ -13,7 +13,7 @@ import { Container, Section } from '@/components/layout/ResponsiveGrid';
 export const metadata: Metadata = {
   title: 'Contact Us | Petrol Price Near Me',
   description:
-    'Get in touch with Petrol Price Near Me. Email us at petrolpricesnearme@gmail.com or call 0423 530 204. We\'re here to help Melbourne drivers save on fuel.',
+    "Get in touch with Petrol Price Near Me. Email us at petrolpricesnearme@gmail.com or call 0423 530 204. We're here to help Melbourne drivers save on fuel.",
   openGraph: {
     title: 'Contact Petrol Price Near Me',
     description: 'Questions about fuel prices? Get in touch with our team.',
@@ -24,20 +24,21 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <Section 
-        spacing="lg" 
+      <Section
+        spacing="lg"
         background="white"
         className="border-b border-gray-200 dark:border-gray-700"
       >
         <Container size="lg">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="mb-6 text-4xl font-bold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
               Get In Touch
             </h1>
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-4">
-              Have questions about fuel prices or our service? We&apos;d love to hear from you.
+            <p className="mb-4 text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
+              Have questions about fuel prices or our service? We&apos;d love to
+              hear from you.
             </p>
-            <p 
+            <p
               className="text-base text-gray-500 dark:text-gray-400"
               aria-label="Average response time"
             >
@@ -50,44 +51,45 @@ export default function ContactPage() {
       {/* Main Content */}
       <Section spacing="xl">
         <Container size="lg">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12">
             {/* Contact Information */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="space-y-6 lg:col-span-1">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
                   Contact Information
                 </h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-8">
-                  Choose your preferred way to reach us. We&apos;re here to help!
+                <p className="mb-8 text-gray-600 dark:text-gray-300">
+                  Choose your preferred way to reach us. We&apos;re here to
+                  help!
                 </p>
               </div>
 
               {/* Contact Cards */}
               <div className="space-y-4">
                 {/* Email */}
-                <article 
-                  className="card p-6 hover:shadow-lg transition-shadow duration-200"
+                <article
+                  className="card p-6 transition-shadow duration-200 hover:shadow-lg"
                   aria-label="Email contact information"
                 >
                   <div className="flex items-start gap-4">
-                    <div 
-                      className="flex-shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center"
+                    <div
+                      className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-900/30"
                       aria-hidden="true"
                     >
-                      <Mail className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                      <Mail className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                         Email Us
                       </h3>
                       <a
                         href="mailto:petrolpricesnearme@gmail.com"
-                        className="text-lg font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded underline break-all"
+                        className="break-all rounded text-lg font-semibold text-primary-600 underline hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:text-primary-400 dark:hover:text-primary-300 dark:focus:ring-offset-gray-900"
                         aria-label="Send email to petrolpricesnearme@gmail.com"
                       >
                         petrolpricesnearme@gmail.com
                       </a>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                         For general inquiries and support
                       </p>
                     </div>
@@ -95,29 +97,29 @@ export default function ContactPage() {
                 </article>
 
                 {/* Phone */}
-                <article 
-                  className="card p-6 hover:shadow-lg transition-shadow duration-200"
+                <article
+                  className="card p-6 transition-shadow duration-200 hover:shadow-lg"
                   aria-label="Phone contact information"
                 >
                   <div className="flex items-start gap-4">
-                    <div 
-                      className="flex-shrink-0 w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center"
+                    <div
+                      className="bg-green-100 dark:bg-green-900/30 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg"
                       aria-hidden="true"
                     >
-                      <Phone className="w-6 h-6 text-green-600 dark:text-green-400" />
+                      <Phone className="text-green-600 dark:text-green-400 h-6 w-6" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+                      <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                         Call Us
                       </h3>
                       <a
                         href="tel:+61423530204"
-                        className="text-lg font-semibold text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded underline"
+                        className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 focus:ring-green-500 rounded text-lg font-semibold underline focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                         aria-label="Call 0423 530 204"
                       >
                         0423 530 204
                       </a>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                         Mon-Fri, 9am-5pm AEST
                       </p>
                     </div>
@@ -125,25 +127,25 @@ export default function ContactPage() {
                 </article>
 
                 {/* Location */}
-                <article 
-                  className="card p-6 hover:shadow-lg transition-shadow duration-200"
+                <article
+                  className="card p-6 transition-shadow duration-200 hover:shadow-lg"
                   aria-label="Location information"
                 >
                   <div className="flex items-start gap-4">
-                    <div 
-                      className="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center"
+                    <div
+                      className="bg-blue-100 dark:bg-blue-900/30 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg"
                       aria-hidden="true"
                     >
-                      <MapPin className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      <MapPin className="text-blue-600 dark:text-blue-400 h-6 w-6" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+                      <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                         Location
                       </h3>
                       <p className="text-lg font-semibold text-gray-900 dark:text-white">
                         Melbourne, VIC
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                         Australia
                       </p>
                     </div>
@@ -152,14 +154,14 @@ export default function ContactPage() {
               </div>
 
               {/* Social Links */}
-              <div className="pt-6 border-t border-gray-200 dark:border-gray-700">
-                <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
+              <div className="border-t border-gray-200 pt-6 dark:border-gray-700">
+                <h3 className="mb-4 text-sm font-medium text-gray-900 dark:text-white">
                   Follow Us
                 </h3>
                 <div className="flex gap-3">
                   <a
                     href="#"
-                    className="w-10 h-10 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-900"
                     aria-label="Follow us on Twitter"
                   >
                     <span className="sr-only">Twitter</span>
@@ -167,7 +169,7 @@ export default function ContactPage() {
                   </a>
                   <a
                     href="#"
-                    className="w-10 h-10 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-900"
                     aria-label="Follow us on Facebook"
                   >
                     <span className="sr-only">Facebook</span>
@@ -180,27 +182,31 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="lg:col-span-2">
               <div className="card p-8">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
                   Send Us a Message
                 </h2>
-                <p className="text-gray-600 dark:text-gray-300 mb-8">
-                  Fill out the form below and we&apos;ll get back to you as soon as possible.
+                <p className="mb-8 text-gray-600 dark:text-gray-300">
+                  Fill out the form below and we&apos;ll get back to you as soon
+                  as possible.
                 </p>
 
-                <form 
-                  action="#" 
-                  method="POST" 
+                <form
+                  action="#"
+                  method="POST"
                   className="space-y-6"
                   aria-label="Contact form"
                   noValidate
                 >
                   {/* Name */}
                   <div>
-                    <label 
-                      htmlFor="name" 
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    <label
+                      htmlFor="name"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Full Name <span className="text-red-500" aria-label="required">*</span>
+                      Full Name{' '}
+                      <span className="text-red-500" aria-label="required">
+                        *
+                      </span>
                     </label>
                     <input
                       type="text"
@@ -209,7 +215,7 @@ export default function ContactPage() {
                       required
                       aria-required="true"
                       aria-describedby="name-error"
-                      className="input w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 min-h-[44px]"
+                      className="input min-h-[44px] w-full focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                       placeholder="John Smith"
                     />
                     <p id="name-error" className="sr-only" role="alert"></p>
@@ -217,11 +223,14 @@ export default function ContactPage() {
 
                   {/* Email */}
                   <div>
-                    <label 
-                      htmlFor="email" 
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    <label
+                      htmlFor="email"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Email Address <span className="text-red-500" aria-label="required">*</span>
+                      Email Address{' '}
+                      <span className="text-red-500" aria-label="required">
+                        *
+                      </span>
                     </label>
                     <input
                       type="email"
@@ -231,10 +240,13 @@ export default function ContactPage() {
                       aria-required="true"
                       aria-describedby="email-error email-help"
                       autoComplete="email"
-                      className="input w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 min-h-[44px]"
+                      className="input min-h-[44px] w-full focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                       placeholder="john@example.com"
                     />
-                    <p id="email-help" className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p
+                      id="email-help"
+                      className="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                    >
                       We&apos;ll never share your email
                     </p>
                     <p id="email-error" className="sr-only" role="alert"></p>
@@ -242,11 +254,12 @@ export default function ContactPage() {
 
                   {/* Phone (Optional) */}
                   <div>
-                    <label 
-                      htmlFor="phone" 
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    <label
+                      htmlFor="phone"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Phone Number <span className="text-gray-400">(optional)</span>
+                      Phone Number{' '}
+                      <span className="text-gray-400">(optional)</span>
                     </label>
                     <input
                       type="tel"
@@ -254,28 +267,34 @@ export default function ContactPage() {
                       name="phone"
                       autoComplete="tel"
                       aria-describedby="phone-help"
-                      className="input w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 min-h-[44px]"
+                      className="input min-h-[44px] w-full focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                       placeholder="0400 000 000"
                     />
-                    <p id="phone-help" className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p
+                      id="phone-help"
+                      className="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                    >
                       For urgent inquiries
                     </p>
                   </div>
 
                   {/* Subject */}
                   <div>
-                    <label 
-                      htmlFor="subject" 
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    <label
+                      htmlFor="subject"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Subject <span className="text-red-500" aria-label="required">*</span>
+                      Subject{' '}
+                      <span className="text-red-500" aria-label="required">
+                        *
+                      </span>
                     </label>
                     <select
                       id="subject"
                       name="subject"
                       required
                       aria-required="true"
-                      className="input w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 min-h-[44px]"
+                      className="input min-h-[44px] w-full focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                     >
                       <option value="">Select a topic...</option>
                       <option value="general">General Inquiry</option>
@@ -288,11 +307,14 @@ export default function ContactPage() {
 
                   {/* Message */}
                   <div>
-                    <label 
-                      htmlFor="message" 
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    <label
+                      htmlFor="message"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                     >
-                      Message <span className="text-red-500" aria-label="required">*</span>
+                      Message{' '}
+                      <span className="text-red-500" aria-label="required">
+                        *
+                      </span>
                     </label>
                     <textarea
                       id="message"
@@ -301,27 +323,34 @@ export default function ContactPage() {
                       required
                       aria-required="true"
                       aria-describedby="message-help"
-                      className="input w-full focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-y min-h-[120px]"
+                      className="input min-h-[120px] w-full resize-y focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                       placeholder="Tell us how we can help you..."
                     />
-                    <p id="message-help" className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p
+                      id="message-help"
+                      className="mt-1 text-xs text-gray-500 dark:text-gray-400"
+                    >
                       Minimum 10 characters
                     </p>
                   </div>
 
                   {/* Privacy Notice */}
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 rounded-lg border p-4">
                     <div className="flex gap-3">
-                      <CheckCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                      <CheckCircle
+                        className="text-blue-600 dark:text-blue-400 mt-0.5 h-5 w-5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
                       <p className="text-sm text-gray-700 dark:text-gray-300">
                         By submitting this form, you agree to our{' '}
-                        <Link 
-                          href="/privacy" 
-                          className="text-primary-600 dark:text-primary-400 hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
+                        <Link
+                          href="/privacy"
+                          className="rounded text-primary-600 hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-primary-400"
                         >
                           Privacy Policy
-                        </Link>.
-                        We respect your privacy and will never share your information.
+                        </Link>
+                        . We respect your privacy and will never share your
+                        information.
                       </p>
                     </div>
                   </div>
@@ -330,15 +359,15 @@ export default function ContactPage() {
                   <div className="flex gap-4 pt-4">
                     <button
                       type="submit"
-                      className="btn btn-primary flex-1 sm:flex-initial min-w-[200px] min-h-[44px] flex items-center justify-center gap-2 focus:ring-4 focus:ring-primary-300 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                      className="btn-primary btn flex min-h-[44px] min-w-[200px] flex-1 items-center justify-center gap-2 focus:ring-4 focus:ring-primary-300 focus:ring-offset-2 dark:focus:ring-offset-gray-900 sm:flex-initial"
                       aria-label="Send message"
                     >
-                      <Send className="w-5 h-5" aria-hidden="true" />
+                      <Send className="h-5 w-5" aria-hidden="true" />
                       <span>Send Message</span>
                     </button>
                     <button
                       type="reset"
-                      className="btn btn-outlined min-h-[44px] focus:ring-4 focus:ring-gray-300 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                      className="btn-outlined btn min-h-[44px] focus:ring-4 focus:ring-gray-300 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                       aria-label="Clear form"
                     >
                       Clear
@@ -354,8 +383,8 @@ export default function ContactPage() {
       {/* FAQ Section */}
       <Section spacing="lg" background="white">
         <Container size="lg">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
@@ -363,48 +392,52 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
             <article className="card p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                 How often are prices updated?
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Our prices are updated in real-time from official sources, ensuring you always have the latest information.
+                Our prices are updated in real-time from official sources,
+                ensuring you always have the latest information.
               </p>
             </article>
 
             <article className="card p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                 Is the service free?
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Yes! Petrol Price Near Me is completely free to use. No registration or payment required.
+                Yes! Petrol Price Near Me is completely free to use. No
+                registration or payment required.
               </p>
             </article>
 
             <article className="card p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                 Can I report incorrect prices?
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                Absolutely! Please email us at petrolpricesnearme@gmail.com with the station details and we&apos;ll investigate.
+                Absolutely! Please email us at petrolpricesnearme@gmail.com with
+                the station details and we&apos;ll investigate.
               </p>
             </article>
 
             <article className="card p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                 Do you cover all of Melbourne?
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
-                We cover 250+ stations across Melbourne metro area. If you find a station missing, let us know!
+                We cover 250+ stations across Melbourne metro area. If you find
+                a station missing, let us know!
               </p>
             </article>
           </div>
 
-          <div className="text-center mt-12">
-            <Link 
-              href="/faq" 
-              className="btn btn-outlined min-h-[44px] focus:ring-4 focus:ring-primary-300 focus:ring-offset-2"
+          <div className="mt-12 text-center">
+            <Link
+              href="/faq"
+              className="btn-outlined btn min-h-[44px] focus:ring-4 focus:ring-primary-300 focus:ring-offset-2"
             >
               View All FAQs →
             </Link>
@@ -414,4 +447,3 @@ export default function ContactPage() {
     </main>
   );
 }
-

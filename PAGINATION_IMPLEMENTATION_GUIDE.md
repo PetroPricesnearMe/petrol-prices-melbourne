@@ -50,21 +50,21 @@ A reusable, fully-featured pagination component supporting both client-side and 
 
 ```typescript
 interface PaginationProps {
-  currentPage: number;           // Current active page (1-indexed)
-  totalPages: number;            // Total number of pages
-  onPageChange: (page: number) => void;  // Page change callback
-  siblingCount?: number;         // Page buttons on each side (default: 1)
-  showFirstLast?: boolean;       // Show first/last buttons (default: true)
-  showPrevNext?: boolean;        // Show prev/next buttons (default: true)
-  disabled?: boolean;            // Disable pagination (default: false)
-  className?: string;            // Custom class name
-  size?: 'sm' | 'md' | 'lg';    // Size variant (default: 'md')
-  animationType?: 'fade' | 'slide' | 'none';  // Animation type
-  totalItems?: number;           // Total items count (for display)
-  itemsPerPage?: number;         // Items per page (for display)
-  showItemsInfo?: boolean;       // Show items info (default: true)
-  scrollToTop?: boolean;         // Scroll to top on change (default: true)
-  scrollBehavior?: ScrollBehavior;  // Scroll behavior (default: 'smooth')
+  currentPage: number; // Current active page (1-indexed)
+  totalPages: number; // Total number of pages
+  onPageChange: (page: number) => void; // Page change callback
+  siblingCount?: number; // Page buttons on each side (default: 1)
+  showFirstLast?: boolean; // Show first/last buttons (default: true)
+  showPrevNext?: boolean; // Show prev/next buttons (default: true)
+  disabled?: boolean; // Disable pagination (default: false)
+  className?: string; // Custom class name
+  size?: 'sm' | 'md' | 'lg'; // Size variant (default: 'md')
+  animationType?: 'fade' | 'slide' | 'none'; // Animation type
+  totalItems?: number; // Total items count (for display)
+  itemsPerPage?: number; // Items per page (for display)
+  showItemsInfo?: boolean; // Show items info (default: true)
+  scrollToTop?: boolean; // Scroll to top on change (default: true)
+  scrollBehavior?: ScrollBehavior; // Scroll behavior (default: 'smooth')
 }
 ```
 
@@ -116,11 +116,12 @@ A responsive grid component with built-in pagination and animations.
 
 ```typescript
 interface PaginatedGridProps<T = any> {
-  items: T[];                    // Array of items to display
-  renderItem: (item: T, index: number) => ReactNode;  // Render function
-  itemsPerPage?: number;         // Items per page (default: 12)
+  items: T[]; // Array of items to display
+  renderItem: (item: T, index: number) => ReactNode; // Render function
+  itemsPerPage?: number; // Items per page (default: 12)
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  columns?: {                    // Responsive column configuration
+  columns?: {
+    // Responsive column configuration
     base?: 1 | 2 | 3 | 4;
     sm?: 1 | 2 | 3 | 4;
     md?: 1 | 2 | 3 | 4;
@@ -128,17 +129,17 @@ interface PaginatedGridProps<T = any> {
     xl?: 1 | 2 | 3 | 4;
     '2xl'?: 1 | 2 | 3 | 4;
   };
-  gridClassName?: string;        // Custom grid class
-  containerClassName?: string;   // Container class
-  loading?: boolean;             // Loading state
-  emptyState?: ReactNode;        // Empty state component
-  loadingState?: ReactNode;      // Loading state component
+  gridClassName?: string; // Custom grid class
+  containerClassName?: string; // Container class
+  loading?: boolean; // Loading state
+  emptyState?: ReactNode; // Empty state component
+  loadingState?: ReactNode; // Loading state component
   paginationPosition?: 'top' | 'bottom' | 'both';
   animationType?: 'fade' | 'slide' | 'scale' | 'none';
-  staggerChildren?: boolean;     // Stagger animations (default: true)
-  keyboardNav?: boolean;         // Keyboard navigation (default: true)
-  scrollToTop?: boolean;         // Scroll to top (default: true)
-  showItemsInfo?: boolean;       // Show items info (default: true)
+  staggerChildren?: boolean; // Stagger animations (default: true)
+  keyboardNav?: boolean; // Keyboard navigation (default: true)
+  scrollToTop?: boolean; // Scroll to top (default: true)
+  showItemsInfo?: boolean; // Show items info (default: true)
   paginationSize?: 'sm' | 'md' | 'lg';
 }
 ```
@@ -152,9 +153,7 @@ function StationList({ stations }) {
   return (
     <PaginatedGrid
       items={stations}
-      renderItem={(station) => (
-        <StationCard station={station} />
-      )}
+      renderItem={(station) => <StationCard station={station} />}
     />
   );
 }
@@ -179,7 +178,7 @@ function StationList({ stations }) {
     sm: 2,
     lg: 3,
     xl: 4,
-    '2xl': 5
+    '2xl': 5,
   }}
   loading={isLoading}
   emptyState={<NoStationsFound />}
@@ -198,18 +197,16 @@ function StationList({ stations }) {
 The grid system uses Tailwind CSS responsive utilities to create a fluid layout:
 
 ```jsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
+<div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
   {/* Cards with h-full for uniform heights */}
-  <div className="h-full flex flex-col">
-    {/* Card content */}
-  </div>
+  <div className="flex h-full flex-col">{/* Card content */}</div>
 </div>
 ```
 
 #### Breakpoints
 
 | Breakpoint | Columns | Screen Size |
-|------------|---------|-------------|
+| ---------- | ------- | ----------- |
 | base       | 1       | < 640px     |
 | sm         | 2       | ≥ 640px     |
 | lg         | 3       | ≥ 1024px    |
@@ -235,17 +232,11 @@ To ensure all cards have the same height:
 3. **Card content**: Uses `flex flex-col` with `flex-1` for proper spacing
 
 ```jsx
-<div className="station-card h-full flex flex-col">
-  <div className="station-image-header">
-    {/* Image */}
-  </div>
-  <div className="station-content flex-1 flex flex-col">
-    <div className="flex-1">
-      {/* Main content */}
-    </div>
-    <div className="mt-4">
-      {/* Footer content */}
-    </div>
+<div className="station-card flex h-full flex-col">
+  <div className="station-image-header">{/* Image */}</div>
+  <div className="station-content flex flex-1 flex-col">
+    <div className="flex-1">{/* Main content */}</div>
+    <div className="mt-4">{/* Footer content */}</div>
   </div>
 </div>
 ```
@@ -261,7 +252,7 @@ const fadeAnimation = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
-  transition: { duration: 0.2 }
+  transition: { duration: 0.2 },
 };
 ```
 
@@ -272,7 +263,7 @@ const slideAnimation = {
   initial: { opacity: 0, x: 20 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -20 },
-  transition: { duration: 0.3 }
+  transition: { duration: 0.3 },
 };
 ```
 
@@ -283,7 +274,7 @@ const scaleAnimation = {
   initial: { opacity: 0, scale: 0.9 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.9 },
-  transition: { duration: 0.3 }
+  transition: { duration: 0.3 },
 };
 ```
 
@@ -299,7 +290,6 @@ const generatePageRange = (
 ): (number | 'ellipsis')[] => {
   // Always show: first page, last page, current page, and siblings
   // Use ellipsis for gaps
-
   // Example with siblingCount=1:
   // [1] ... [5] [6] [7] ... [20]
   //          ^siblings  ^current
@@ -324,14 +314,14 @@ All interactive elements have proper ARIA labels:
 
 ### Keyboard Navigation
 
-| Key | Action |
-|-----|--------|
-| `←` (Left Arrow) | Previous page |
-| `→` (Right Arrow) | Next page |
-| `Home` | First page |
-| `End` | Last page |
-| `Tab` | Navigate between buttons |
-| `Enter/Space` | Activate button |
+| Key               | Action                   |
+| ----------------- | ------------------------ |
+| `←` (Left Arrow)  | Previous page            |
+| `→` (Right Arrow) | Next page                |
+| `Home`            | First page               |
+| `End`             | Last page                |
+| `Tab`             | Navigate between buttons |
+| `Enter/Space`     | Activate button          |
 
 ### Screen Reader Support
 
@@ -371,10 +361,7 @@ All interactive elements have proper ARIA labels:
 ### Custom Styling
 
 ```tsx
-<Pagination
-  className="my-custom-pagination"
-  {...props}
-/>
+<Pagination className="my-custom-pagination" {...props} />
 ```
 
 ### Disable Features
@@ -393,7 +380,7 @@ All interactive elements have proper ARIA labels:
 
 ```tsx
 <PaginatedGrid
-  gap="xl"  // or 'none', 'xs', 'sm', 'md', 'lg', '2xl'
+  gap="xl" // or 'none', 'xs', 'sm', 'md', 'lg', '2xl'
   {...props}
 />
 ```
@@ -403,12 +390,12 @@ All interactive elements have proper ARIA labels:
 ```tsx
 <PaginatedGrid
   columns={{
-    base: 1,    // Mobile: 1 column
-    sm: 2,      // Tablet: 2 columns
-    md: 3,      // Small desktop: 3 columns
-    lg: 4,      // Desktop: 4 columns
-    xl: 5,      // Large desktop: 5 columns
-    '2xl': 6    // Extra large: 6 columns
+    base: 1, // Mobile: 1 column
+    sm: 2, // Tablet: 2 columns
+    md: 3, // Small desktop: 3 columns
+    lg: 4, // Desktop: 4 columns
+    xl: 5, // Large desktop: 5 columns
+    '2xl': 6, // Extra large: 6 columns
   }}
   {...props}
 />
@@ -432,8 +419,8 @@ function ProductList({ products }) {
 
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {currentProducts.map(product => (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {currentProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
@@ -481,8 +468,8 @@ function ServerPaginatedList() {
         <div>Loading...</div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {data.map(item => (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {data.map((item) => (
               <ItemCard key={item.id} item={item} />
             ))}
           </div>
@@ -523,10 +510,10 @@ function StationDirectory({ stations }) {
         base: 1,
         sm: 2,
         lg: 3,
-        xl: 4
+        xl: 4,
       }}
       emptyState={
-        <div className="text-center py-12">
+        <div className="py-12 text-center">
           <p>No stations found</p>
         </div>
       }
@@ -586,7 +573,7 @@ const itemsPerPage = 16;
 <PaginatedGrid
   items={items}
   emptyState={
-    <div className="text-center py-12">
+    <div className="py-12 text-center">
       <h3>No results found</h3>
       <button onClick={resetFilters}>Clear Filters</button>
     </div>
@@ -599,15 +586,12 @@ const itemsPerPage = 16;
 
 ```tsx
 // Memoize render function
-const renderItem = useCallback((item) => (
-  <ItemCard key={item.id} item={item} />
-), []);
+const renderItem = useCallback(
+  (item) => <ItemCard key={item.id} item={item} />,
+  []
+);
 
-<PaginatedGrid
-  items={items}
-  renderItem={renderItem}
-  {...props}
-/>
+<PaginatedGrid items={items} renderItem={renderItem} {...props} />;
 ```
 
 ### 5. Responsive Gap Spacing
@@ -621,6 +605,7 @@ Use appropriate gap sizes for different screen sizes:
 ### 6. Accessibility First
 
 Always include:
+
 - ARIA labels
 - Keyboard navigation
 - Focus indicators
@@ -717,10 +702,8 @@ const totalPages = Math.ceil(items.length / itemsPerPage);
 **Solution**: Ensure proper flexbox setup
 
 ```tsx
-<div className="h-full flex flex-col">
-  <div className="flex-1">
-    {/* Content */}
-  </div>
+<div className="flex h-full flex-col">
+  <div className="flex-1">{/* Content */}</div>
 </div>
 ```
 
@@ -762,6 +745,7 @@ npm install framer-motion
 ## 📞 Support
 
 For issues or questions, please refer to:
+
 - Project documentation
 - Component source code
 - GitHub issues

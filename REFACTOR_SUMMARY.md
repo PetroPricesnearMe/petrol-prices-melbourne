@@ -18,14 +18,20 @@ This refactoring focused on **creating a production-ready, scalable architecture
 
 ```typescript
 // Before (Problematic)
-const gridColsClasses = `grid-cols-${columns.base}` // Won't be purged
+const gridColsClasses = `grid-cols-${columns.base}`; // Won't be purged
 
 // After (Fixed)
-const gridColsClasses = buildGridColumnClasses({ base: 1, sm: 2, lg: 3, xl: 4 })
+const gridColsClasses = buildGridColumnClasses({
+  base: 1,
+  sm: 2,
+  lg: 3,
+  xl: 4,
+});
 // Uses static class lookups: 'grid-cols-1 sm:grid-cols-2 ...'
 ```
 
 **Benefits**:
+
 - ✅ Proper Tailwind purging (smaller bundle)
 - ✅ Type-safe column configuration
 - ✅ Reusable across all components
@@ -40,16 +46,20 @@ const gridColsClasses = buildGridColumnClasses({ base: 1, sm: 2, lg: 3, xl: 4 })
 **Key Changes**:
 
 **Before**:
+
 ```typescript
 // Manual string construction
 const gridColsClasses = [
   columns.base ? `grid-cols-${columns.base}` : 'grid-cols-1',
   columns.sm ? `sm:grid-cols-${columns.sm}` : '',
   // ... more manual construction
-].filter(Boolean).join(' ');
+]
+  .filter(Boolean)
+  .join(' ');
 ```
 
 **After**:
+
 ```typescript
 // Clean utility function usage with memoization
 const gridClasses = useMemo(
@@ -59,6 +69,7 @@ const gridClasses = useMemo(
 ```
 
 **Benefits**:
+
 - ✅ Proper memoization for performance
 - ✅ Cleaner, more maintainable code
 - ✅ Static classes ensure proper purging
@@ -69,6 +80,7 @@ const gridClasses = useMemo(
 ### 3. **GridItem Component Improvements**
 
 **Key Changes**:
+
 ```typescript
 // Added proper memoization
 const itemVariants = useMemo<Variants>(() => ({
@@ -84,6 +96,7 @@ const hoverProps = useMemo(() => {
 ```
 
 **Benefits**:
+
 - ✅ Prevents unnecessary re-renders
 - ✅ Respects motion preferences
 - ✅ Configurable hover behavior
@@ -95,6 +108,7 @@ const hoverProps = useMemo(() => {
 #### Created: `DEPLOYMENT_CHECKLIST.md`
 
 **Comprehensive deployment guide** covering:
+
 - ✅ Environment variable setup
 - ✅ Build optimization verification
 - ✅ SEO file configuration
@@ -107,6 +121,7 @@ const hoverProps = useMemo(() => {
 #### Created: `.env.example`
 
 **Template for environment variables** including:
+
 - Application URLs
 - Baserow integration
 - Map services (Mapbox)
@@ -122,6 +137,7 @@ const hoverProps = useMemo(() => {
 #### Created: `ARCHITECTURE_GUIDE.md`
 
 **Comprehensive guide** covering:
+
 - ✅ Directory structure with explanations
 - ✅ Architectural principles
 - ✅ Code organization standards
@@ -139,13 +155,13 @@ const hoverProps = useMemo(() => {
 
 ### Code Quality
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| **DRY Compliance** | Partial | Full | ✅ No duplicated logic |
-| **Type Safety** | Mixed | Strict | ✅ Full TypeScript coverage |
-| **Bundle Size** | Large | Optimized | ✅ Static classes only |
-| **Reusability** | Low | High | ✅ Shared utilities |
-| **Maintainability** | Medium | High | ✅ Clear structure |
+| Metric              | Before  | After     | Improvement                 |
+| ------------------- | ------- | --------- | --------------------------- |
+| **DRY Compliance**  | Partial | Full      | ✅ No duplicated logic      |
+| **Type Safety**     | Mixed   | Strict    | ✅ Full TypeScript coverage |
+| **Bundle Size**     | Large   | Optimized | ✅ Static classes only      |
+| **Reusability**     | Low     | High      | ✅ Shared utilities         |
+| **Maintainability** | Medium  | High      | ✅ Clear structure          |
 
 ### Performance Optimizations
 
@@ -168,13 +184,13 @@ const hoverProps = useMemo(() => {
 
 ```typescript
 // utils/responsive-grid.ts (Pure utilities)
-export function buildGridClasses(options: GridOptions): string
+export function buildGridClasses(options: GridOptions): string;
 
 // components/organisms/EnhancedCardGrid.tsx (UI components)
-export function EnhancedCardGrid(props: EnhancedCardGridProps)
+export function EnhancedCardGrid(props: EnhancedCardGridProps);
 
 // components/organisms/EnhancedCardGrid/GridItem.tsx (Sub-components)
-export function GridItem(props: GridItemProps)
+export function GridItem(props: GridItemProps);
 ```
 
 ### 2. **DRY Principle**

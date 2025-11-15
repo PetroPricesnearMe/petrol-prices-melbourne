@@ -108,6 +108,7 @@ git push origin main
 ## 🧪 What to Expect
 
 ### ✅ Should Pass Now:
+
 - **Build** - With CI=false and proper env setup
 - **Lint** - Soft warnings, won't block
 - **TypeCheck** - Soft warnings for gradual migration
@@ -115,11 +116,13 @@ git push origin main
 - **Bundle Size** - Proper analysis
 
 ### ⚠️ May Still Warn:
+
 - **TypeScript** - Expected during gradual migration
 - **ESLint** - Minor issues, non-blocking
 - **Tests** - Some type-related test failures
 
 ### 🔄 Will Retry:
+
 - **Lighthouse** - Up to 2 runs
 - **E2E Tests** - With proper server startup
 - **Security Scans** - Non-blocking
@@ -127,11 +130,13 @@ git push origin main
 ## 📊 Monitoring Workflows
 
 After pushing, monitor at:
+
 ```
 https://github.com/PetroPricesnearMe/petrol-prices-melbourne/actions
 ```
 
 ### Expected Timeline:
+
 - **Lint**: ~2-3 min ✅
 - **TypeCheck**: ~2-3 min ⚠️
 - **Test**: ~5-7 min ⚠️
@@ -169,6 +174,7 @@ npm run test -- <test-file-path>
 ### If Deployment Fails
 
 Check these secrets in GitHub:
+
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`
 - `VERCEL_PROJECT_ID`
@@ -196,16 +202,19 @@ npx lhci autorun
 ## 📈 Next Steps (Post-Deployment)
 
 ### Week 1-2: Monitor
+
 - Check all workflows pass
 - Review warnings
 - Monitor deployment stability
 
 ### Week 3-4: Type Migration
+
 - Fix TypeScript errors gradually
 - Update component props
 - Remove soft-fail flags
 
 ### Week 5-6: Re-enable Strict Mode
+
 ```typescript
 // next.config.ts
 typescript: {

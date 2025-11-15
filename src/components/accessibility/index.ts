@@ -4,7 +4,10 @@
  * Central export point for all accessibility-related components
  */
 
-export { SkipToContent, default as SkipToContentComponent } from './SkipToContent';
+export {
+  SkipToContent,
+  default as SkipToContentComponent,
+} from './SkipToContent';
 export { FocusTrap, useFocusTrap } from './FocusTrap';
 export { Modal, default as ModalComponent } from './Modal';
 

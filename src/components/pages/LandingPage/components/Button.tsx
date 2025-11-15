@@ -7,7 +7,11 @@ import Link from 'next/link';
 import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import type { ButtonProps } from '../types';
-import { BUTTON_BASE_CLASSES, BUTTON_VARIANTS, BUTTON_SIZES } from '../constants';
+import {
+  BUTTON_BASE_CLASSES,
+  BUTTON_VARIANTS,
+  BUTTON_SIZES,
+} from '../constants';
 
 /**
  * Button Component
@@ -20,7 +24,10 @@ import { BUTTON_BASE_CLASSES, BUTTON_VARIANTS, BUTTON_SIZES } from '../constants
  * </Button>
  * ```
  */
-export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<
+  HTMLAnchorElement | HTMLButtonElement,
+  ButtonProps
+>(
   (
     {
       children,
@@ -46,20 +53,20 @@ export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonPr
 
     const content = (
       <>
-        {icon && iconPosition === 'left' && <span className="mr-2">{icon}</span>}
+        {icon && iconPosition === 'left' && (
+          <span className="mr-2">{icon}</span>
+        )}
         {children}
-        {icon && iconPosition === 'right' && <span className="ml-2">{icon}</span>}
+        {icon && iconPosition === 'right' && (
+          <span className="ml-2">{icon}</span>
+        )}
       </>
     );
 
     // Render as Link if href is provided
     if (href && !disabled) {
       return (
-        <Link
-          href={href}
-          className={classes}
-          aria-label={ariaLabel}
-        >
+        <Link href={href} className={classes} aria-label={ariaLabel}>
           {content}
         </Link>
       );
@@ -82,4 +89,3 @@ export const Button = forwardRef<HTMLAnchorElement | HTMLButtonElement, ButtonPr
 );
 
 Button.displayName = 'Button';
-

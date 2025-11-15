@@ -29,6 +29,7 @@ import { siteConfig, env, generateMetadata } from '@/config';
 ## 🎨 Design System Quick Use
 
 ### Colors
+
 ```typescript
 // Use directly in Tailwind classes
 <div className="bg-primary-600 text-white">
@@ -39,6 +40,7 @@ const primary = colors.primary[600];
 ```
 
 ### Spacing
+
 ```typescript
 // Tailwind classes
 <div className="p-4 mt-8 gap-2">
@@ -49,6 +51,7 @@ const padding = spacing[4]; // 16px
 ```
 
 ### Merge Classes
+
 ```typescript
 import { cn } from '@/lib';
 
@@ -64,6 +67,7 @@ import { cn } from '@/lib';
 ## 🧱 Component Creation
 
 ### Step 1: Create Component File
+
 ```typescript
 // src/components/atoms/MyButton/MyButton.tsx
 import React from 'react';
@@ -100,6 +104,7 @@ MyButton.displayName = 'MyButton';
 ```
 
 ### Step 2: Create Index File
+
 ```typescript
 // src/components/atoms/MyButton/index.ts
 export { MyButton } from './MyButton';
@@ -107,6 +112,7 @@ export type { MyButtonProps } from './MyButton';
 ```
 
 ### Step 3: Export from Parent
+
 ```typescript
 // src/components/atoms/index.ts
 export * from './MyButton';
@@ -117,34 +123,37 @@ export * from './MyButton';
 ## 🔧 Utility Functions
 
 ### Formatters
+
 ```typescript
-import { 
-  formatPrice,      // formatPrice(1.85) → "$1.85"
-  formatDistance,   // formatDistance(1234) → "1.2 km"
-  formatDate,       // formatDate(new Date()) → "Nov 11, 2025"
+import {
+  formatPrice, // formatPrice(1.85) → "$1.85"
+  formatDistance, // formatDistance(1234) → "1.2 km"
+  formatDate, // formatDate(new Date()) → "Nov 11, 2025"
   formatRelativeTime, // formatRelativeTime(date) → "2 hours ago"
 } from '@/lib';
 ```
 
 ### Validators
+
 ```typescript
-import { 
-  isValidEmail,   // isValidEmail('test@example.com') → true
-  isValidPhone,   // isValidPhone('0412345678') → true
-  isValidUrl,     // isValidUrl('https://example.com') → true
-  isEmpty,        // isEmpty('  ') → true
+import {
+  isValidEmail, // isValidEmail('test@example.com') → true
+  isValidPhone, // isValidPhone('0412345678') → true
+  isValidUrl, // isValidUrl('https://example.com') → true
+  isEmpty, // isEmpty('  ') → true
 } from '@/lib';
 ```
 
 ### Helpers
+
 ```typescript
-import { 
-  debounce,   // debounce(fn, 300)
-  throttle,   // throttle(fn, 100)
-  deepClone,  // deepClone(obj)
-  groupBy,    // groupBy(array, 'key')
-  unique,     // unique([1, 1, 2]) → [1, 2]
-  chunk,      // chunk([1,2,3,4], 2) → [[1,2], [3,4]]
+import {
+  debounce, // debounce(fn, 300)
+  throttle, // throttle(fn, 100)
+  deepClone, // deepClone(obj)
+  groupBy, // groupBy(array, 'key')
+  unique, // unique([1, 1, 2]) → [1, 2]
+  chunk, // chunk([1,2,3,4], 2) → [[1,2], [3,4]]
 } from '@/lib';
 ```
 
@@ -153,6 +162,7 @@ import {
 ## 🪝 Custom Hooks
 
 ### Data Fetching
+
 ```typescript
 import { useStations } from '@/hooks';
 
@@ -160,6 +170,7 @@ const { stations, isLoading, error } = useStations();
 ```
 
 ### Geolocation
+
 ```typescript
 import { useGeolocation } from '@/hooks';
 
@@ -167,6 +178,7 @@ const { location, error } = useGeolocation();
 ```
 
 ### Performance
+
 ```typescript
 import { usePerformance } from '@/hooks';
 
@@ -174,6 +186,7 @@ usePerformance('ComponentName');
 ```
 
 ### Mounted State
+
 ```typescript
 import { useMounted } from '@/hooks';
 
@@ -185,6 +198,7 @@ const isMounted = useMounted();
 ## 📝 TypeScript Types
 
 ### Common Types
+
 ```typescript
 import type {
   ID,
@@ -203,6 +217,7 @@ const state: AsyncState<Station> = { data: null, error: null, loading: true };
 ```
 
 ### Component Props
+
 ```typescript
 import type { ComponentBaseProps, ComponentWithChildren } from '@/types';
 
@@ -216,6 +231,7 @@ interface MyComponentProps extends ComponentBaseProps {
 ## 🎯 Page Metadata
 
 ### Basic Page
+
 ```typescript
 import { generateMetadata } from '@/config';
 
@@ -227,6 +243,7 @@ export const metadata = generateMetadata(
 ```
 
 ### Custom Metadata
+
 ```typescript
 import type { Metadata } from 'next';
 
@@ -242,6 +259,7 @@ export const metadata: Metadata = {
 ## 🎨 Styling Patterns
 
 ### Tailwind Classes
+
 ```typescript
 // ✅ Good - Semantic classes
 <Button className="bg-primary-600 hover:bg-primary-700">
@@ -254,6 +272,7 @@ export const metadata: Metadata = {
 ```
 
 ### Responsive Design
+
 ```typescript
 <div className="
   grid
@@ -266,6 +285,7 @@ export const metadata: Metadata = {
 ```
 
 ### Dark Mode
+
 ```typescript
 <div className="
   bg-white
@@ -300,12 +320,14 @@ src/
 ## 🔄 Common Workflows
 
 ### Adding a New Page
+
 1. Create `src/app/my-page/page.tsx`
 2. Add metadata
 3. Build UI with existing components
 4. Export page component
 
 ### Adding a New Component
+
 1. Choose category (atoms/molecules/organisms)
 2. Create component file with types
 3. Add index.ts barrel export
@@ -313,12 +335,14 @@ src/
 5. Document with JSDoc
 
 ### Adding a New Hook
+
 1. Create `src/hooks/useMyHook.ts`
 2. Implement hook logic
 3. Export from `src/hooks/index.ts`
 4. Add JSDoc documentation
 
 ### Adding a New Utility
+
 1. Choose category (formatters/validators/helpers)
 2. Create function in appropriate file
 3. Export from `src/lib/utils/index.ts`
@@ -329,6 +353,7 @@ src/
 ## 🧪 Testing Quick Reference
 
 ### Component Test
+
 ```typescript
 import { render, screen } from '@testing-library/react';
 import { Button } from './Button';
@@ -340,6 +365,7 @@ test('renders button', () => {
 ```
 
 ### Utility Test
+
 ```typescript
 import { formatPrice } from '@/lib';
 
@@ -353,6 +379,7 @@ test('formats price', () => {
 ## 🎯 Best Practices Checklist
 
 ### Code Quality
+
 - [ ] TypeScript types for all props
 - [ ] JSDoc documentation
 - [ ] Descriptive variable names
@@ -360,6 +387,7 @@ test('formats price', () => {
 - [ ] DRY principle followed
 
 ### Accessibility
+
 - [ ] Semantic HTML
 - [ ] ARIA attributes
 - [ ] Keyboard navigation
@@ -367,6 +395,7 @@ test('formats price', () => {
 - [ ] Color contrast (WCAG AA)
 
 ### Performance
+
 - [ ] Lazy loading for heavy components
 - [ ] Memoization where needed
 - [ ] Optimized images
@@ -374,6 +403,7 @@ test('formats price', () => {
 - [ ] No unnecessary re-renders
 
 ### Testing
+
 - [ ] Unit tests for utilities
 - [ ] Component tests
 - [ ] Integration tests
@@ -384,6 +414,7 @@ test('formats price', () => {
 ## 🆘 Troubleshooting
 
 ### Import Errors
+
 ```typescript
 // ❌ Don't do deep imports
 import { Button } from '@/components/atoms/Button/Button';
@@ -393,6 +424,7 @@ import { Button } from '@/components';
 ```
 
 ### Type Errors
+
 ```typescript
 // ✅ Always import types separately
 import type { Station } from '@/types';
@@ -404,6 +436,7 @@ if (isStation(data)) {
 ```
 
 ### Styling Issues
+
 ```typescript
 // ✅ Use cn() to merge classes
 import { cn } from '@/lib';
@@ -434,4 +467,3 @@ className={cn('base-class', conditionalClass && 'active-class')}
 ---
 
 **Happy coding! 🚀**
-

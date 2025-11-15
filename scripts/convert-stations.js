@@ -11,18 +11,21 @@ const path = require('path');
 
 const CSV_PATH = path.join(__dirname, '../public/data/stations.csv');
 const JSON_PATH = path.join(__dirname, '../src/data/stations.json');
-const METADATA_PATH = path.join(__dirname, '../src/data/stations-metadata.json');
+const METADATA_PATH = path.join(
+  __dirname,
+  '../src/data/stations-metadata.json'
+);
 
 // Brand logo mapping
 const BRAND_LOGOS = {
-  'BP': '/images/brands/bp.png',
-  'Shell': '/images/brands/shell.png',
-  'Caltex': '/images/brands/caltex.png',
+  BP: '/images/brands/bp.png',
+  Shell: '/images/brands/shell.png',
+  Caltex: '/images/brands/caltex.png',
   '7-Eleven': '/images/brands/7eleven.png',
   'Coles Express': '/images/brands/coles.png',
-  'Ampol': '/images/brands/ampol.png',
-  'United': '/images/brands/united.png',
-  'Mobil': '/images/brands/mobil.png',
+  Ampol: '/images/brands/ampol.png',
+  United: '/images/brands/united.png',
+  Mobil: '/images/brands/mobil.png',
 };
 
 function parseCSVLine(line) {
@@ -55,7 +58,8 @@ function cleanBrandName(brand) {
   if (brand.includes('Shell') || brand.includes('shell')) return 'Shell';
   if (brand.includes('CALTEX') || brand.includes('Caltex')) return 'Caltex';
   if (brand.includes('7')) return '7-Eleven';
-  if (brand.includes('Coles') || brand.includes('COLES')) return 'Coles Express';
+  if (brand.includes('Coles') || brand.includes('COLES'))
+    return 'Coles Express';
   if (brand.includes('Ampol') || brand.includes('AMPOL')) return 'Ampol';
   if (brand.includes('United') || brand.includes('UNITED')) return 'United';
   if (brand.includes('Mobil') || brand.includes('MOBIL')) return 'Mobil';
@@ -68,7 +72,7 @@ function convertCSVToJSON() {
 
   // Read CSV file
   const csvContent = fs.readFileSync(CSV_PATH, 'utf-8');
-  const lines = csvContent.split('\n').filter(line => line.trim());
+  const lines = csvContent.split('\n').filter((line) => line.trim());
 
   // Parse header
   const headers = parseCSVLine(lines[0]);
@@ -132,9 +136,15 @@ function convertCSVToJSON() {
 
     // Generate sample prices (in production, these would come from API)
     if (brand !== 'Independent') {
-      station.fuelPrices.unleaded = parseFloat((185 + Math.random() * 25).toFixed(1));
-      station.fuelPrices.diesel = parseFloat((190 + Math.random() * 20).toFixed(1));
-      station.fuelPrices.premium95 = parseFloat((195 + Math.random() * 25).toFixed(1));
+      station.fuelPrices.unleaded = parseFloat(
+        (185 + Math.random() * 25).toFixed(1)
+      );
+      station.fuelPrices.diesel = parseFloat(
+        (190 + Math.random() * 20).toFixed(1)
+      );
+      station.fuelPrices.premium95 = parseFloat(
+        (195 + Math.random() * 25).toFixed(1)
+      );
     }
 
     stations.push(station);
@@ -160,21 +170,36 @@ function convertCSVToJSON() {
     regions: Array.from(regions).sort(),
     priceRange: {
       unleaded: {
-        min: Math.min(...stations.filter(s => s.fuelPrices.unleaded).map(s => s.fuelPrices.unleaded)),
-        max: Math.max(...stations.filter(s => s.fuelPrices.unleaded).map(s => s.fuelPrices.unleaded)),
-        average: (stations.filter(s => s.fuelPrices.unleaded).reduce((sum, s) => sum + s.fuelPrices.unleaded, 0) / stations.filter(s => s.fuelPrices.unleaded).length).toFixed(1),
-      }
+        min: Math.min(
+          ...stations
+            .filter((s) => s.fuelPrices.unleaded)
+            .map((s) => s.fuelPrices.unleaded)
+        ),
+        max: Math.max(
+          ...stations
+            .filter((s) => s.fuelPrices.unleaded)
+            .map((s) => s.fuelPrices.unleaded)
+        ),
+        average: (
+          stations
+            .filter((s) => s.fuelPrices.unleaded)
+            .reduce((sum, s) => sum + s.fuelPrices.unleaded, 0) /
+          stations.filter((s) => s.fuelPrices.unleaded).length
+        ).toFixed(1),
+      },
     },
     stats: {
       byBrand: {},
       bySuburb: {},
-    }
+    },
   };
 
   // Count by brand
-  stations.forEach(station => {
-    metadata.stats.byBrand[station.brand] = (metadata.stats.byBrand[station.brand] || 0) + 1;
-    metadata.stats.bySuburb[station.suburb] = (metadata.stats.bySuburb[station.suburb] || 0) + 1;
+  stations.forEach((station) => {
+    metadata.stats.byBrand[station.brand] =
+      (metadata.stats.byBrand[station.brand] || 0) + 1;
+    metadata.stats.bySuburb[station.suburb] =
+      (metadata.stats.bySuburb[station.suburb] || 0) + 1;
   });
 
   // Ensure data directory exists

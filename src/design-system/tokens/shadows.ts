@@ -1,9 +1,9 @@
 /**
  * Shadow Tokens - Design System
- * 
+ *
  * Elevation system using box shadows.
  * Creates depth and visual hierarchy.
- * 
+ *
  * @module design-system/tokens/shadows
  */
 

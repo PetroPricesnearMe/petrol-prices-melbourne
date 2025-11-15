@@ -18,16 +18,17 @@ interface MobileMenuLayoutProps {
   className?: string;
 }
 
-export function MobileMenuLayout({ children, className }: MobileMenuLayoutProps) {
+export function MobileMenuLayout({
+  children,
+  className,
+}: MobileMenuLayoutProps) {
   return (
     <div className={cn('min-h-screen bg-gray-50 dark:bg-gray-900', className)}>
       {/* Navigation */}
       <ResponsiveNavigation />
 
       {/* Main Content */}
-      <main className="pt-16">
-        {children}
-      </main>
+      <main className="pt-16">{children}</main>
     </div>
   );
 }

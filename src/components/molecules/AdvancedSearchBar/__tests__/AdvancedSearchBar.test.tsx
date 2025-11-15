@@ -54,7 +54,7 @@ describe('AdvancedSearchBar', () => {
     mockOnSearch = jest.fn();
     mockOnCategoryChange = jest.fn();
     localStorage.clear();
-    
+
     // Mock scrollIntoView which is not implemented in jsdom
     Element.prototype.scrollIntoView = jest.fn();
   });
@@ -105,7 +105,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole('option', { name: /Shell.*Carlton/i })
+        ).toBeInTheDocument();
       });
     });
 
@@ -126,7 +128,8 @@ describe('AdvancedSearchBar', () => {
 
       await waitFor(() => {
         expect(mockOnSearch).toHaveBeenCalled();
-        const results = mockOnSearch.mock.calls[mockOnSearch.mock.calls.length - 1][1];
+        const results =
+          mockOnSearch.mock.calls[mockOnSearch.mock.calls.length - 1][1];
         expect(results.length).toBeGreaterThan(0);
         expect(results[0].name).toContain('Shell');
       });
@@ -147,7 +150,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole('option', { name: /Shell.*Carlton/i })
+        ).toBeInTheDocument();
       });
 
       const clearButton = screen.getByLabelText('Clear search');
@@ -177,8 +182,11 @@ describe('AdvancedSearchBar', () => {
 
       await waitFor(() => {
         expect(mockOnSearch).toHaveBeenCalled();
-        const results = mockOnSearch.mock.calls[mockOnSearch.mock.calls.length - 1][1];
-        expect(results.some((r: Record<string, unknown>) => r.brand === 'Shell')).toBe(true);
+        const results =
+          mockOnSearch.mock.calls[mockOnSearch.mock.calls.length - 1][1];
+        expect(
+          results.some((r: Record<string, unknown>) => r.brand === 'Shell')
+        ).toBe(true);
       });
     });
 
@@ -198,8 +206,11 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        const results = mockOnSearch.mock.calls[mockOnSearch.mock.calls.length - 1][1];
-        expect(results.some((r: Record<string, unknown>) => r.suburb === 'Carlton')).toBe(true);
+        const results =
+          mockOnSearch.mock.calls[mockOnSearch.mock.calls.length - 1][1];
+        expect(
+          results.some((r: Record<string, unknown>) => r.suburb === 'Carlton')
+        ).toBe(true);
       });
     });
   });
@@ -261,7 +272,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole('option', { name: /Shell.*Carlton/i })
+        ).toBeInTheDocument();
       });
 
       // ACT REQUIRED: ArrowDown keypress triggers setSelectedIndex state update
@@ -270,7 +283,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       // First suggestion should be selected
-      const firstSuggestion = screen.getByRole('option', { name: /Shell.*Carlton/i });
+      const firstSuggestion = screen.getByRole('option', {
+        name: /Shell.*Carlton/i,
+      });
       expect(firstSuggestion).toHaveClass('selected');
     });
 
@@ -290,7 +305,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole('option', { name: /Shell.*Carlton/i })
+        ).toBeInTheDocument();
       });
 
       // ACT REQUIRED: ArrowDown updates selectedIndex, Enter updates query/suggestions/showSuggestions
@@ -298,7 +315,7 @@ describe('AdvancedSearchBar', () => {
       act(() => {
         fireEvent.keyDown(input, { key: 'ArrowDown' });
       });
-      
+
       act(() => {
         fireEvent.keyDown(input, { key: 'Enter' });
       });
@@ -324,7 +341,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByRole('option', { name: /Shell.*Carlton/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole('option', { name: /Shell.*Carlton/i })
+        ).toBeInTheDocument();
       });
 
       // ACT REQUIRED: Escape key triggers setShowSuggestions(false) and setSelectedIndex(-1)
@@ -333,7 +352,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        expect(screen.queryByRole('option', { name: /Shell.*Carlton/i })).not.toBeInTheDocument();
+        expect(
+          screen.queryByRole('option', { name: /Shell.*Carlton/i })
+        ).not.toBeInTheDocument();
       });
     });
   });
@@ -355,12 +376,14 @@ describe('AdvancedSearchBar', () => {
       await act(async () => {
         await userEvent.type(input, 'Shell Carlton');
       });
-      
+
       // Wait for suggestions to appear
       await waitFor(() => {
-        expect(screen.getByRole('option', { name: /Shell Carlton/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole('option', { name: /Shell Carlton/i })
+        ).toBeInTheDocument();
       });
-      
+
       // ACT REQUIRED: Enter key triggers saveRecentSearch which updates setRecentSearches state
       // and also calls setShowSuggestions to close the dropdown
       act(() => {
@@ -378,7 +401,10 @@ describe('AdvancedSearchBar', () => {
 
     it('should show recent searches when input is focused and empty', async () => {
       // Pre-populate recent searches
-      localStorage.setItem('advanced_search_recent', JSON.stringify(['Shell', 'BP']));
+      localStorage.setItem(
+        'advanced_search_recent',
+        JSON.stringify(['Shell', 'BP'])
+      );
 
       render(
         <AdvancedSearchBar
@@ -458,7 +484,9 @@ describe('AdvancedSearchBar', () => {
       });
 
       await waitFor(() => {
-        const suggestion = screen.getByRole('option', { name: /Shell Carlton/i });
+        const suggestion = screen.getByRole('option', {
+          name: /Shell Carlton/i,
+        });
         expect(suggestion).toHaveAttribute('aria-selected');
       });
     });

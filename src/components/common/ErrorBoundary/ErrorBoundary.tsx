@@ -96,9 +96,12 @@ export class ErrorBoundary extends Component<Props, State> {
             backgroundColor: '#FFEBEE',
           }}
         >
-          <h2 style={{ color: '#C62828', marginTop: 0 }}>Something went wrong</h2>
+          <h2 style={{ color: '#C62828', marginTop: 0 }}>
+            Something went wrong
+          </h2>
           <p style={{ color: '#424242' }}>
-            An error occurred while rendering this component. Please try refreshing the page.
+            An error occurred while rendering this component. Please try
+            refreshing the page.
           </p>
 
           {process.env.NODE_ENV === 'development' && (

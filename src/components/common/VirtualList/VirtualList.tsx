@@ -43,7 +43,12 @@ function VirtualListComponent<T>({
   emptyMessage = 'No items to display',
   getItemKey,
 }: VirtualListProps<T>) {
-  const { virtualItems, totalHeight: _totalHeight, containerRef, contentStyle } = useVirtualization({
+  const {
+    virtualItems,
+    totalHeight: _totalHeight,
+    containerRef,
+    contentStyle,
+  } = useVirtualization({
     itemCount: items.length,
     itemHeight,
     containerHeight: height,
@@ -122,4 +127,6 @@ function VirtualListComponent<T>({
 }
 
 // Memoize to prevent unnecessary re-renders
-export const VirtualList = memo(VirtualListComponent) as typeof VirtualListComponent;
+export const VirtualList = memo(
+  VirtualListComponent
+) as typeof VirtualListComponent;

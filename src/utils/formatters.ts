@@ -4,10 +4,7 @@
  * @param currency - Currency code (default: AUD)
  * @returns Formatted price string
  */
-export function formatPrice(
-  price: number,
-  currency: string = 'AUD'
-): string {
+export function formatPrice(price: number, currency: string = 'AUD'): string {
   return new Intl.NumberFormat('en-AU', {
     style: 'currency',
     currency,

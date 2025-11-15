@@ -5,7 +5,10 @@
 
 import React from 'react';
 
-import { useExtensionMessage, useBfcacheHandler } from '../hooks/useExtensionMessage';
+import {
+  useExtensionMessage,
+  useBfcacheHandler,
+} from '../hooks/useExtensionMessage';
 
 const ExtensionStatus = () => {
   const {
@@ -15,7 +18,7 @@ const ExtensionStatus = () => {
     reconnectAttempts,
     queuedMessages,
     sendMessage,
-    reconnect
+    reconnect,
   } = useExtensionMessage();
 
   const { isInBfcache, bfcacheEvents } = useBfcacheHandler({
@@ -24,7 +27,7 @@ const ExtensionStatus = () => {
     },
     onBfcacheRestore: (event) => {
       console.log('Page restored from bfcache:', event);
-    }
+    },
   });
 
   const handleSendTestMessage = () => {
@@ -32,8 +35,8 @@ const ExtensionStatus = () => {
       type: 'test',
       data: {
         timestamp: Date.now(),
-        message: 'Hello from the web page!'
-      }
+        message: 'Hello from the web page!',
+      },
     });
   };
 
@@ -48,7 +51,9 @@ const ExtensionStatus = () => {
       <div className="status-grid">
         <div className="status-item">
           <span className="label">Connection:</span>
-          <span className={`value ${isConnected ? 'connected' : 'disconnected'}`}>
+          <span
+            className={`value ${isConnected ? 'connected' : 'disconnected'}`}
+          >
             {isConnected ? '✅ Connected' : '❌ Disconnected'}
           </span>
         </div>
@@ -98,10 +103,7 @@ const ExtensionStatus = () => {
           Send Test Message
         </button>
 
-        <button
-          onClick={handleReconnect}
-          className="reconnect-button"
-        >
+        <button onClick={handleReconnect} className="reconnect-button">
           Reconnect
         </button>
       </div>
@@ -113,7 +115,8 @@ const ExtensionStatus = () => {
           border-radius: 8px;
           padding: 1.5rem;
           margin: 1rem 0;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-family:
+            -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         .extension-status h3 {
@@ -195,7 +198,8 @@ const ExtensionStatus = () => {
           margin-top: 1rem;
         }
 
-        .test-button, .reconnect-button {
+        .test-button,
+        .reconnect-button {
           padding: 0.5rem 1rem;
           border: none;
           border-radius: 4px;

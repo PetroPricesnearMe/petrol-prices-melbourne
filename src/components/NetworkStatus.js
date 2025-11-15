@@ -1,6 +1,6 @@
 /**
  * NetworkStatus Component
- * 
+ *
  * Displays network connection status to the user
  * Shows warnings when offline and notifications when reconnecting
  */
@@ -31,9 +31,7 @@ const NetworkStatus = () => {
         ) : (
           <>
             <span className="network-icon">✅</span>
-            <span className="network-message">
-              Back online! 
-            </span>
+            <span className="network-message">Back online!</span>
           </>
         )}
       </div>
@@ -42,4 +40,3 @@ const NetworkStatus = () => {
 };
 
 export default NetworkStatus;
-

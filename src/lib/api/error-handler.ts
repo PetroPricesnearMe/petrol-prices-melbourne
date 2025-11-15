@@ -66,7 +66,10 @@ interface ErrorResponse {
 /**
  * Centralized error handler for API routes
  */
-export function handleAPIError(error: unknown, requestId?: string): NextResponse<ErrorResponse> {
+export function handleAPIError(
+  error: unknown,
+  requestId?: string
+): NextResponse<ErrorResponse> {
   // Log error (in production, send to logging service)
   if (process.env.NODE_ENV === 'production') {
     // TODO: Send to logging service (Sentry, LogRocket, etc.)
@@ -120,12 +123,16 @@ export function handleAPIError(error: unknown, requestId?: string): NextResponse
   }
 
   // Handle generic errors
-  const message = error instanceof Error ? error.message : 'Internal server error';
-  
+  const message =
+    error instanceof Error ? error.message : 'Internal server error';
+
   return NextResponse.json(
     {
       success: false,
-      error: process.env.NODE_ENV === 'production' ? 'Internal server error' : message,
+      error:
+        process.env.NODE_ENV === 'production'
+          ? 'Internal server error'
+          : message,
       code: 'INTERNAL_ERROR',
       details: process.env.NODE_ENV === 'development' ? error : undefined,
       timestamp: new Date().toISOString(),
@@ -186,12 +193,12 @@ export function generateRequestId(): string {
 /**
  * Try-catch wrapper for async route handlers
  */
-export function withErrorHandler<T extends (...args: any[]) => Promise<NextResponse>>(
-  handler: T
-): T {
+export function withErrorHandler<
+  T extends (...args: any[]) => Promise<NextResponse>,
+>(handler: T): T {
   return (async (...args: Parameters<T>) => {
     const requestId = generateRequestId();
-    
+
     try {
       return await handler(...args);
     } catch (error) {
@@ -199,4 +206,3 @@ export function withErrorHandler<T extends (...args: any[]) => Promise<NextRespo
     }
   }) as T;
 }
-

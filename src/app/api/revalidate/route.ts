@@ -1,8 +1,8 @@
 /**
  * Revalidation API Route
- * 
+ *
  * POST /api/revalidate - Revalidate specific paths or tags
- * 
+ *
  * Body:
  * {
  *   "paths": ["/page1", "/page2"],
@@ -24,10 +24,7 @@ export async function POST(request: NextRequest) {
     const secret = process.env.REVALIDATION_SECRET;
 
     if (!secret || authHeader !== `Bearer ${secret}`) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
@@ -81,4 +78,3 @@ export async function GET() {
     { status: 405 }
   );
 }
-

@@ -4,7 +4,11 @@
 }
 
 .blog-header {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   color: white;
   padding: 4rem 0;
   text-align: center;
@@ -269,7 +273,11 @@
 }
 
 .cta-section {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
   color: white;
   text-align: center;
 }
@@ -394,4 +402,4 @@
   .blog-section li {
     font-size: 1rem;
   }
-} 
+}

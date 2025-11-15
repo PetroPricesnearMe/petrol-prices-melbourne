@@ -1,13 +1,13 @@
 /**
  * Dark Mode Utility
- * 
+ *
  * Provides utilities for managing dark mode state
  * Supports:
  * - System preference detection
  * - Manual theme toggle
  * - localStorage persistence
  * - CSS class application
- * 
+ *
  * @module darkMode
  */
 
@@ -21,10 +21,10 @@ const LIGHT_CLASS = 'light';
  */
 export function getTheme() {
   if (typeof window === 'undefined') return 'light';
-  
+
   const stored = localStorage.getItem(THEME_KEY);
   if (stored) return stored;
-  
+
   return 'system';
 }
 
@@ -34,8 +34,10 @@ export function getTheme() {
  */
 export function getSystemTheme() {
   if (typeof window === 'undefined') return 'light';
-  
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
 }
 
 /**
@@ -56,12 +58,12 @@ export function getActiveTheme() {
  */
 export function applyTheme(theme) {
   if (typeof window === 'undefined') return;
-  
+
   const root = document.documentElement;
-  
+
   // Remove both classes
   root.classList.remove(DARK_CLASS, LIGHT_CLASS);
-  
+
   // Add the appropriate class
   if (theme === 'dark') {
     root.classList.add(DARK_CLASS);
@@ -70,7 +72,7 @@ export function applyTheme(theme) {
     root.classList.add(LIGHT_CLASS);
     root.setAttribute('data-theme', 'light');
   }
-  
+
   // Update meta theme-color for mobile browsers
   updateThemeColor(theme);
 }
@@ -81,15 +83,15 @@ export function applyTheme(theme) {
  */
 function updateThemeColor(theme) {
   if (typeof window === 'undefined') return;
-  
+
   let metaThemeColor = document.querySelector('meta[name="theme-color"]');
-  
+
   if (!metaThemeColor) {
     metaThemeColor = document.createElement('meta');
     metaThemeColor.name = 'theme-color';
     document.head.appendChild(metaThemeColor);
   }
-  
+
   // Set theme color based on theme
   metaThemeColor.content = theme === 'dark' ? '#111827' : '#ffffff';
 }
@@ -100,17 +102,19 @@ function updateThemeColor(theme) {
  */
 export function setTheme(theme) {
   if (typeof window === 'undefined') return;
-  
+
   localStorage.setItem(THEME_KEY, theme);
-  
+
   // Apply the actual theme (resolve 'system' to light/dark)
   const activeTheme = theme === 'system' ? getSystemTheme() : theme;
   applyTheme(activeTheme);
-  
+
   // Dispatch custom event for listeners
-  window.dispatchEvent(new CustomEvent('themechange', { 
-    detail: { theme, activeTheme } 
-  }));
+  window.dispatchEvent(
+    new CustomEvent('themechange', {
+      detail: { theme, activeTheme },
+    })
+  );
 }
 
 /**
@@ -130,20 +134,20 @@ export function toggleTheme() {
  */
 export function initTheme() {
   if (typeof window === 'undefined') return;
-  
+
   const theme = getTheme();
   const activeTheme = theme === 'system' ? getSystemTheme() : theme;
   applyTheme(activeTheme);
-  
+
   // Listen for system theme changes
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  
+
   const handleChange = (e) => {
     if (getTheme() === 'system') {
       applyTheme(e.matches ? 'dark' : 'light');
     }
   };
-  
+
   // Modern browsers
   if (mediaQuery.addEventListener) {
     mediaQuery.addEventListener('change', handleChange);
@@ -152,7 +156,7 @@ export function initTheme() {
   else if (mediaQuery.addListener) {
     mediaQuery.addListener(handleChange);
   }
-  
+
   return () => {
     if (mediaQuery.removeEventListener) {
       mediaQuery.removeEventListener('change', handleChange);
@@ -169,24 +173,24 @@ export function initTheme() {
 export function useTheme() {
   const [theme, setThemeState] = React.useState(getTheme);
   const [activeTheme, setActiveTheme] = React.useState(getActiveTheme);
-  
+
   React.useEffect(() => {
     // Initialize theme
     initTheme();
-    
+
     // Listen for theme changes
     const handleThemeChange = (e) => {
       setThemeState(e.detail.theme);
       setActiveTheme(e.detail.activeTheme);
     };
-    
+
     window.addEventListener('themechange', handleThemeChange);
-    
+
     return () => {
       window.removeEventListener('themechange', handleThemeChange);
     };
   }, []);
-  
+
   return {
     theme,
     activeTheme,
@@ -228,4 +232,3 @@ export default {
   useTheme,
   THEME_INIT_SCRIPT,
 };
-

@@ -41,8 +41,14 @@ interface HandlerConfig {
 /**
  * Create a unified API handler with middleware support
  */
-export function createApiHandler(handlers: Partial<Record<HttpMethod, RouteHandler>>, config?: RouteConfig) {
-  return async (req: NextApiRequest, res: NextApiResponse<ApiResponse>): Promise<void> => {
+export function createApiHandler(
+  handlers: Partial<Record<HttpMethod, RouteHandler>>,
+  config?: RouteConfig
+) {
+  return async (
+    req: NextApiRequest,
+    res: NextApiResponse<ApiResponse>
+  ): Promise<void> => {
     const startTime = Date.now();
     const requestId = generateRequestId();
     const method = req.method as HttpMethod;
@@ -53,8 +59,14 @@ export function createApiHandler(handlers: Partial<Record<HttpMethod, RouteHandl
 
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', process.env.CORS_ORIGIN || '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+    res.setHeader(
+      'Access-Control-Allow-Origin',
+      process.env.CORS_ORIGIN || '*'
+    );
+    res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET,POST,PUT,PATCH,DELETE,OPTIONS'
+    );
     res.setHeader(
       'Access-Control-Allow-Headers',
       'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
@@ -115,7 +127,6 @@ export function createApiHandler(handlers: Partial<Record<HttpMethod, RouteHandl
       // Log response
       const duration = Date.now() - startTime;
       logger.apiResponse(method, req.url || '', res.statusCode, duration);
-
     } catch (error) {
       logger.apiError(method, req.url || '', error as Error);
       errorHandler(error as Error, req, res);

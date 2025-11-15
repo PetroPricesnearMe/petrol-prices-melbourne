@@ -11,25 +11,48 @@ import React, { useState, useEffect } from 'react';
  * @param {Array} props.stations - All available stations for filter options
  * @param {Object} props.activeFilters - Currently active filters
  */
-const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) => {
+const AdvancedFilters = ({
+  onFilterChange,
+  stations = [],
+  activeFilters = {},
+}) => {
   const [showFilters, setShowFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState(activeFilters.search || '');
-  const [selectedFuelType, setSelectedFuelType] = useState(activeFilters.fuelType || 'all');
-  const [selectedBrand, setSelectedBrand] = useState(activeFilters.brand || 'all');
-  const [priceRange, setPriceRange] = useState(activeFilters.priceRange || { min: '', max: '' });
+  const [selectedFuelType, setSelectedFuelType] = useState(
+    activeFilters.fuelType || 'all'
+  );
+  const [selectedBrand, setSelectedBrand] = useState(
+    activeFilters.brand || 'all'
+  );
+  const [priceRange, setPriceRange] = useState(
+    activeFilters.priceRange || { min: '', max: '' }
+  );
   const [sortBy, setSortBy] = useState(activeFilters.sortBy || 'name');
-  const [selectedRegion, setSelectedRegion] = useState(activeFilters.region || 'all');
+  const [selectedRegion, setSelectedRegion] = useState(
+    activeFilters.region || 'all'
+  );
 
   // Extract unique values from stations
-  const fuelTypes = ['all', ...new Set(
-    stations.flatMap(s => s.fuelPrices?.map(fp => fp.fuelType) || [])
-  )].filter(Boolean);
+  const fuelTypes = [
+    'all',
+    ...new Set(
+      stations.flatMap((s) => s.fuelPrices?.map((fp) => fp.fuelType) || [])
+    ),
+  ].filter(Boolean);
 
-  const brands = ['all', ...new Set(
-    stations.map(s => s.brand).filter(Boolean)
-  )];
+  const brands = [
+    'all',
+    ...new Set(stations.map((s) => s.brand).filter(Boolean)),
+  ];
 
-  const regions = ['all', 'Northern Suburbs', 'South Eastern Suburbs', 'Inner East Melbourne', 'Western Suburbs', 'CBD'];
+  const regions = [
+    'all',
+    'Northern Suburbs',
+    'South Eastern Suburbs',
+    'Inner East Melbourne',
+    'Western Suburbs',
+    'CBD',
+  ];
 
   // Update parent component when filters change
   useEffect(() => {
@@ -39,10 +62,18 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
       brand: selectedBrand,
       priceRange,
       sortBy,
-      region: selectedRegion
+      region: selectedRegion,
     };
     onFilterChange(filters);
-  }, [searchTerm, selectedFuelType, selectedBrand, priceRange, sortBy, selectedRegion, onFilterChange]);
+  }, [
+    searchTerm,
+    selectedFuelType,
+    selectedBrand,
+    priceRange,
+    sortBy,
+    selectedRegion,
+    onFilterChange,
+  ]);
 
   const handleClearFilters = () => {
     setSearchTerm('');
@@ -58,7 +89,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
     selectedFuelType !== 'all',
     selectedBrand !== 'all',
     priceRange.min || priceRange.max,
-    selectedRegion !== 'all'
+    selectedRegion !== 'all',
   ].filter(Boolean).length;
 
   return (
@@ -66,7 +97,9 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
       {/* Search Bar */}
       <div className="filter-search-container">
         <div className="search-input-wrapper">
-          <span className="search-icon" aria-hidden="true">🔍</span>
+          <span className="search-icon" aria-hidden="true">
+            🔍
+          </span>
           <input
             type="search"
             name="station-search"
@@ -93,10 +126,15 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
           aria-expanded={showFilters}
           aria-controls="filter-panel"
         >
-          <span className="filter-icon" aria-hidden="true">⚙️</span>
+          <span className="filter-icon" aria-hidden="true">
+            ⚙️
+          </span>
           Filters
           {activeFilterCount > 0 && (
-            <span className="filter-badge" aria-label={`${activeFilterCount} filters active`}>
+            <span
+              className="filter-badge"
+              aria-label={`${activeFilterCount} filters active`}
+            >
               {activeFilterCount}
             </span>
           )}
@@ -105,7 +143,12 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
 
       {/* Filter Panel */}
       {showFilters && (
-        <div id="filter-panel" className="filter-panel" role="region" aria-label="Filter options">
+        <div
+          id="filter-panel"
+          className="filter-panel"
+          role="region"
+          aria-label="Filter options"
+        >
           <div className="filter-grid">
             {/* Fuel Type Filter */}
             <div className="filter-group">
@@ -120,11 +163,13 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
                 onChange={(e) => setSelectedFuelType(e.target.value)}
               >
                 <option value="all">All Fuel Types</option>
-                {fuelTypes.filter(ft => ft !== 'all').map(type => (
-                  <option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </option>
-                ))}
+                {fuelTypes
+                  .filter((ft) => ft !== 'all')
+                  .map((type) => (
+                    <option key={type} value={type}>
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -141,11 +186,13 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
                 onChange={(e) => setSelectedBrand(e.target.value)}
               >
                 <option value="all">All Brands</option>
-                {brands.filter(b => b !== 'all').map(brand => (
-                  <option key={brand} value={brand}>
-                    {brand}
-                  </option>
-                ))}
+                {brands
+                  .filter((b) => b !== 'all')
+                  .map((brand) => (
+                    <option key={brand} value={brand}>
+                      {brand}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -161,7 +208,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
                 value={selectedRegion}
                 onChange={(e) => setSelectedRegion(e.target.value)}
               >
-                {regions.map(region => (
+                {regions.map((region) => (
                   <option key={region} value={region}>
                     {region === 'all' ? 'All Regions' : region}
                   </option>
@@ -191,9 +238,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
 
             {/* Price Range */}
             <div className="filter-group filter-group-wide">
-              <label className="filter-label">
-                💰 Price Range (per liter)
-              </label>
+              <label className="filter-label">💰 Price Range (per liter)</label>
               <div className="price-range-inputs">
                 <input
                   type="number"
@@ -202,7 +247,9 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
                   step="0.01"
                   min="0"
                   value={priceRange.min}
-                  onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
+                  onChange={(e) =>
+                    setPriceRange({ ...priceRange, min: e.target.value })
+                  }
                   aria-label="Minimum price"
                 />
                 <span className="price-separator">to</span>
@@ -213,7 +260,9 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
                   step="0.01"
                   min="0"
                   value={priceRange.max}
-                  onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
+                  onChange={(e) =>
+                    setPriceRange({ ...priceRange, max: e.target.value })
+                  }
                   aria-label="Maximum price"
                 />
               </div>
@@ -223,14 +272,14 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
           {/* Filter Actions */}
           <div className="filter-actions">
             <button
-              className="btn btn-secondary btn-sm"
+              className="btn-secondary btn-sm btn"
               onClick={handleClearFilters}
               disabled={activeFilterCount === 0}
             >
               Clear All Filters
             </button>
             <button
-              className="btn btn-ghost btn-sm"
+              className="btn-ghost btn-sm btn"
               onClick={() => setShowFilters(false)}
             >
               Close
@@ -245,31 +294,56 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
           {searchTerm && (
             <span className="filter-tag">
               Search: "{searchTerm}"
-              <button onClick={() => setSearchTerm('')} aria-label="Remove search filter">✕</button>
+              <button
+                onClick={() => setSearchTerm('')}
+                aria-label="Remove search filter"
+              >
+                ✕
+              </button>
             </span>
           )}
           {selectedFuelType !== 'all' && (
             <span className="filter-tag">
               Fuel: {selectedFuelType}
-              <button onClick={() => setSelectedFuelType('all')} aria-label="Remove fuel type filter">✕</button>
+              <button
+                onClick={() => setSelectedFuelType('all')}
+                aria-label="Remove fuel type filter"
+              >
+                ✕
+              </button>
             </span>
           )}
           {selectedBrand !== 'all' && (
             <span className="filter-tag">
               Brand: {selectedBrand}
-              <button onClick={() => setSelectedBrand('all')} aria-label="Remove brand filter">✕</button>
+              <button
+                onClick={() => setSelectedBrand('all')}
+                aria-label="Remove brand filter"
+              >
+                ✕
+              </button>
             </span>
           )}
           {selectedRegion !== 'all' && (
             <span className="filter-tag">
               Region: {selectedRegion}
-              <button onClick={() => setSelectedRegion('all')} aria-label="Remove region filter">✕</button>
+              <button
+                onClick={() => setSelectedRegion('all')}
+                aria-label="Remove region filter"
+              >
+                ✕
+              </button>
             </span>
           )}
           {(priceRange.min || priceRange.max) && (
             <span className="filter-tag">
               Price: ${priceRange.min || '0'} - ${priceRange.max || '∞'}
-              <button onClick={() => setPriceRange({ min: '', max: '' })} aria-label="Remove price filter">✕</button>
+              <button
+                onClick={() => setPriceRange({ min: '', max: '' })}
+                aria-label="Remove price filter"
+              >
+                ✕
+              </button>
             </span>
           )}
         </div>

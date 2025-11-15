@@ -258,10 +258,9 @@ const MapView = dynamic(() => import('@/components/MapView'), {
 ### Code Splitting
 
 ```typescript
-const AdminDashboard = dynamic(
-  () => import('@/components/admin/Dashboard'),
-  { ssr: false }
-);
+const AdminDashboard = dynamic(() => import('@/components/admin/Dashboard'), {
+  ssr: false,
+});
 ```
 
 ### Resource Hints
@@ -352,6 +351,7 @@ onLCP(reporter.report);
 ### Issue: Poor LCP Score
 
 **Solution:**
+
 ```typescript
 // 1. Add priority to hero image
 <Image src="/hero.jpg" priority />
@@ -366,6 +366,7 @@ onLCP(reporter.report);
 ### Issue: High CLS
 
 **Solution:**
+
 ```typescript
 // Always specify dimensions
 <Image width={800} height={600} />
@@ -379,6 +380,7 @@ onLCP(reporter.report);
 ### Issue: Missing Structured Data
 
 **Solution:**
+
 ```typescript
 import { StructuredData } from '@/components/StructuredData';
 import { getGasStationSchema } from '@/lib/seo/comprehensive-schemas';

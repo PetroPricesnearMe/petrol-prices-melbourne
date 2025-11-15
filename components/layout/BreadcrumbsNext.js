@@ -9,40 +9,44 @@ const DEFAULT_BREADCRUMBS = {
   '/': [{ label: 'Home', path: '/', icon: '🏠', isActive: true }],
   '/directory': [
     { label: 'Home', path: '/', icon: '🏠' },
-    { label: 'Station Directory', path: '/directory', icon: '🗺️', isActive: true }
+    {
+      label: 'Station Directory',
+      path: '/directory',
+      icon: '🗺️',
+      isActive: true,
+    },
   ],
   '/blog': [
     { label: 'Home', path: '/', icon: '🏠' },
-    { label: 'Blog', path: '/blog', icon: '📝', isActive: true }
+    { label: 'Blog', path: '/blog', icon: '📝', isActive: true },
   ],
   '/faq': [
     { label: 'Home', path: '/', icon: '🏠' },
-    { label: 'FAQ', path: '/faq', icon: '❓', isActive: true }
+    { label: 'FAQ', path: '/faq', icon: '❓', isActive: true },
   ],
   '/about': [
     { label: 'Home', path: '/', icon: '🏠' },
-    { label: 'About', path: '/about', icon: 'ℹ️', isActive: true }
+    { label: 'About', path: '/about', icon: 'ℹ️', isActive: true },
   ],
 };
 
 const BreadcrumbsNext = ({ customCrumbs }) => {
   const pathname = usePathname();
-  
+
   // Use custom breadcrumbs if provided, otherwise use defaults
-  const breadcrumbs = customCrumbs || DEFAULT_BREADCRUMBS[pathname] || [
-    { label: 'Home', path: '/', icon: '🏠' }
-  ];
+  const breadcrumbs = customCrumbs ||
+    DEFAULT_BREADCRUMBS[pathname] || [{ label: 'Home', path: '/', icon: '🏠' }];
 
   // Generate structured data for breadcrumbs
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((crumb, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": crumb.label,
-      "item": `https://petrolpricesnearme.com.au${crumb.path}`
-    }))
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.label,
+      item: `https://petrolpricesnearme.com.au${crumb.path}`,
+    })),
   };
 
   return (
@@ -55,20 +59,33 @@ const BreadcrumbsNext = ({ customCrumbs }) => {
         <div className="container">
           <ol className="breadcrumb-list">
             {breadcrumbs.map((crumb, index) => (
-              <li key={index} className={`breadcrumb-item ${crumb.isActive ? 'active' : ''}`}>
+              <li
+                key={index}
+                className={`breadcrumb-item ${crumb.isActive ? 'active' : ''}`}
+              >
                 {crumb.isActive ? (
                   <span aria-current="page">
-                    {crumb.icon && <span className="breadcrumb-icon" aria-hidden="true">{crumb.icon}</span>}
+                    {crumb.icon && (
+                      <span className="breadcrumb-icon" aria-hidden="true">
+                        {crumb.icon}
+                      </span>
+                    )}
                     {crumb.label}
                   </span>
                 ) : (
                   <Link href={crumb.path}>
-                    {crumb.icon && <span className="breadcrumb-icon" aria-hidden="true">{crumb.icon}</span>}
+                    {crumb.icon && (
+                      <span className="breadcrumb-icon" aria-hidden="true">
+                        {crumb.icon}
+                      </span>
+                    )}
                     {crumb.label}
                   </Link>
                 )}
                 {index < breadcrumbs.length - 1 && (
-                  <span className="breadcrumb-separator" aria-hidden="true">›</span>
+                  <span className="breadcrumb-separator" aria-hidden="true">
+                    ›
+                  </span>
                 )}
               </li>
             ))}
@@ -80,4 +97,3 @@ const BreadcrumbsNext = ({ customCrumbs }) => {
 };
 
 export default BreadcrumbsNext;
-

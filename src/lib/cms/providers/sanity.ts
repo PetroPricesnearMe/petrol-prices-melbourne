@@ -1,6 +1,6 @@
 /**
  * Sanity CMS Provider
- * 
+ *
  * Implementation of the CMS provider interface for Sanity.io
  */
 
@@ -381,4 +381,3 @@ export class SanityProvider implements ICMSProvider {
     return headers;
   }
 }
-

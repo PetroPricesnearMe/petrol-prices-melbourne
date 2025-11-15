@@ -73,7 +73,8 @@ export function AnimatedGrid({
   // Apply custom delays if provided
   if (staggerDelay || initialDelay) {
     const currentTransition =
-      typeof containerVariants.visible === 'object' && containerVariants.visible.transition
+      typeof containerVariants.visible === 'object' &&
+      containerVariants.visible.transition
         ? containerVariants.visible.transition
         : {};
 
@@ -135,7 +136,9 @@ export function AnimatedGridItem({
   testId?: string;
 }) {
   const shouldReduceMotion = useReducedMotion();
-  const variants = shouldReduceMotion ? getReducedMotionVariants(staggerItem) : staggerItem;
+  const variants = shouldReduceMotion
+    ? getReducedMotionVariants(staggerItem)
+    : staggerItem;
 
   return (
     <motion.div

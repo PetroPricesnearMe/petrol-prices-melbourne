@@ -16,11 +16,13 @@ Mobile (< 640px)      Tablet (≥ 640px)      Desktop (≥ 1024px)     XL (≥ 1
 ## 📏 Tailwind Classes Used
 
 ### Grid Container
+
 ```jsx
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
 ```
 
 **Breakdown:**
+
 - `grid` - Enables CSS Grid
 - `grid-cols-1` - 1 column on mobile (< 640px)
 - `sm:grid-cols-2` - 2 columns on small screens (≥ 640px)
@@ -30,21 +32,25 @@ Mobile (< 640px)      Tablet (≥ 640px)      Desktop (≥ 1024px)     XL (≥ 1
 - `auto-rows-fr` - Equal height rows using fractional units
 
 ### Grid Items (Cards)
+
 ```jsx
 <div className="h-full flex flex-col">
 ```
 
 **Breakdown:**
+
 - `h-full` - Fill the entire grid cell height
 - `flex` - Enable flexbox
 - `flex-col` - Stack content vertically
 
 ### Card Content Layout
+
 ```jsx
 <div className="flex-1 flex flex-col justify-between">
 ```
 
 **Breakdown:**
+
 - `flex-1` - Grow to fill available space
 - `flex flex-col` - Vertical flexbox layout
 - `justify-between` - Space content evenly
@@ -74,6 +80,7 @@ Mobile (< 640px)      Tablet (≥ 640px)      Desktop (≥ 1024px)     XL (≥ 1
 ### 2. Consistent Gap Spacing
 
 **Gap Size Reference:**
+
 - `gap-2` = 0.5rem (8px) - Extra small
 - `gap-4` = 1rem (16px) - Small
 - `gap-6` = 1.5rem (24px) - **Recommended**
@@ -85,34 +92,39 @@ Mobile (< 640px)      Tablet (≥ 640px)      Desktop (≥ 1024px)     XL (≥ 1
 Maintain consistent spacing using Tailwind spacing utilities:
 
 ```jsx
-<div className="space-y-4">     {/* 1rem vertical spacing */}
-  <div className="mb-2">...</div>    {/* 0.5rem bottom margin */}
-  <div className="mt-4">...</div>    {/* 1rem top margin */}
+<div className="space-y-4">
+  {' '}
+  {/* 1rem vertical spacing */}
+  <div className="mb-2">...</div> {/* 0.5rem bottom margin */}
+  <div className="mt-4">...</div> {/* 1rem top margin */}
 </div>
 ```
 
 ## 📐 Complete Card Example
 
 ```jsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-  {items.map(item => (
+<div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {items.map((item) => (
     <div key={item.id} className="h-full">
       {/* Card with equal height */}
-      <div className="bg-white rounded-lg shadow-md h-full flex flex-col overflow-hidden">
-
+      <div className="flex h-full flex-col overflow-hidden rounded-lg bg-white shadow-md">
         {/* Fixed height image section */}
         <div className="h-48 bg-gray-200">
-          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+          <img
+            src={item.image}
+            alt={item.title}
+            className="h-full w-full object-cover"
+          />
         </div>
 
         {/* Flexible content section */}
-        <div className="flex-1 flex flex-col p-6">
-          <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-          <p className="text-gray-600 flex-1">{item.description}</p>
+        <div className="flex flex-1 flex-col p-6">
+          <h3 className="mb-2 text-xl font-semibold">{item.title}</h3>
+          <p className="flex-1 text-gray-600">{item.description}</p>
 
           {/* Footer section */}
-          <div className="mt-4 pt-4 border-t">
-            <button className="w-full px-4 py-2 bg-blue-600 text-white rounded">
+          <div className="mt-4 border-t pt-4">
+            <button className="bg-blue-600 w-full rounded px-4 py-2 text-white">
               View Details
             </button>
           </div>
@@ -157,7 +169,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ### 1. Use Flexbox Inside Grid Items
 
 ```jsx
-<div className="h-full flex flex-col">
+<div className="flex h-full flex-col">
   <div>{/* Header */}</div>
   <div className="flex-1">{/* Flexible content */}</div>
   <div>{/* Footer */}</div>
@@ -168,7 +180,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 
 ```jsx
 <div className="aspect-video bg-gray-200">
-  <img src="..." className="w-full h-full object-cover" />
+  <img src="..." className="h-full w-full object-cover" />
 </div>
 ```
 
@@ -193,13 +205,13 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ### Pattern 1: Image + Content + Actions
 
 ```jsx
-<div className="h-full flex flex-col">
+<div className="flex h-full flex-col">
   <img src="..." className="h-48 object-cover" />
   <div className="flex-1 p-4">
     <h3>Title</h3>
     <p>Content</p>
   </div>
-  <div className="p-4 border-t">
+  <div className="border-t p-4">
     <button>Action</button>
   </div>
 </div>
@@ -208,7 +220,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ### Pattern 2: Equal Height Content Sections
 
 ```jsx
-<div className="h-full flex flex-col justify-between p-4">
+<div className="flex h-full flex-col justify-between p-4">
   <div>
     <h3>Title</h3>
     <p>Description</p>
@@ -222,7 +234,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ### Pattern 3: Grid with Different Column Counts
 
 ```jsx
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6">
+<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
   {/* Custom breakpoints for specific needs */}
 </div>
 ```
@@ -230,6 +242,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ## 📱 Responsive Behavior
 
 ### Mobile (< 640px)
+
 ```
 ┌──────────────┐
 │   Card 1     │
@@ -242,6 +255,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ```
 
 ### Tablet (640px - 1023px)
+
 ```
 ┌──────────┬──────────┐
 │  Card 1  │  Card 2  │
@@ -252,6 +266,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ```
 
 ### Desktop (1024px - 1279px)
+
 ```
 ┌──────┬──────┬──────┐
 │ C1   │ C2   │ C3   │
@@ -262,6 +277,7 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ```
 
 ### Large Desktop (≥ 1280px)
+
 ```
 ┌────┬────┬────┬────┐
 │ C1 │ C2 │ C3 │ C4 │
@@ -287,28 +303,32 @@ Maintain consistent spacing using Tailwind spacing utilities:
 ## 🐛 Troubleshooting
 
 ### Cards have different heights
+
 **Solution:** Add `auto-rows-fr` to grid and `h-full` to cards
 
 ### Content overflowing
+
 **Solution:** Add `overflow-hidden` to card container
 
 ### Gaps look wrong
+
 **Solution:** Use `gap-X` not `space-x-X` for grid
 
 ### Images distorted
+
 **Solution:** Use `object-cover` on images
 
 ### Footer not at bottom
+
 **Solution:** Use `flex flex-col` with `flex-1` on content
 
 ## 🎯 Summary
 
 **Perfect Grid Formula:**
+
 ```jsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-  <div className="h-full flex flex-col">
-    {/* Your card content */}
-  </div>
+<div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <div className="flex h-full flex-col">{/* Your card content */}</div>
 </div>
 ```
 

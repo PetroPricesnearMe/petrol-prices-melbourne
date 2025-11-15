@@ -1,6 +1,6 @@
 /**
  * Modern Hero Component
- * 
+ *
  * Features:
  * - Gradient background with animated orbs
  * - Parallax scroll effects
@@ -58,10 +58,10 @@ interface HeroProps {
 
 function AnimatedOrbs() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Primary Orb */}
       <motion.div
-        className="absolute top-20 -left-20 w-96 h-96 bg-gradient-to-r from-primary-400/30 to-secondary-400/30 rounded-full blur-3xl"
+        className="absolute -left-20 top-20 h-96 w-96 rounded-full bg-gradient-to-r from-primary-400/30 to-secondary-400/30 blur-3xl"
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -77,7 +77,7 @@ function AnimatedOrbs() {
 
       {/* Secondary Orb */}
       <motion.div
-        className="absolute bottom-20 -right-20 w-[500px] h-[500px] bg-gradient-to-l from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"
+        className="from-purple-400/20 to-pink-400/20 absolute -right-20 bottom-20 h-[500px] w-[500px] rounded-full bg-gradient-to-l blur-3xl"
         animate={{
           scale: [1, 1.3, 1],
           opacity: [0.2, 0.4, 0.2],
@@ -94,7 +94,7 @@ function AnimatedOrbs() {
 
       {/* Tertiary Orb */}
       <motion.div
-        className="absolute top-1/2 left-1/2 w-80 h-80 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl"
+        className="from-yellow-400/20 to-orange-400/20 absolute left-1/2 top-1/2 h-80 w-80 rounded-full bg-gradient-to-br blur-3xl"
         animate={{
           scale: [1, 1.1, 1],
           opacity: [0.25, 0.35, 0.25],
@@ -114,12 +114,12 @@ function AnimatedOrbs() {
 // FLOATING CARD COMPONENT
 // ============================================================================
 
-function FloatingCard({ 
-  children, 
+function FloatingCard({
+  children,
   delay = 0,
-  className 
-}: { 
-  children: React.ReactNode; 
+  className,
+}: {
+  children: React.ReactNode;
   delay?: number;
   className?: string;
 }) {
@@ -129,7 +129,7 @@ function FloatingCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.6 }}
       className={cn(
-        'bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl p-4 shadow-2xl border border-gray-200/50 dark:border-gray-700/50',
+        'rounded-2xl border border-gray-200/50 bg-white/90 p-4 shadow-2xl backdrop-blur-xl dark:border-gray-700/50 dark:bg-gray-800/90',
         className
       )}
     >
@@ -173,7 +173,7 @@ export function Hero({
     <section
       ref={containerRef}
       className={cn(
-        'relative min-h-screen flex items-center overflow-hidden',
+        'relative flex min-h-screen items-center overflow-hidden',
         'bg-gradient-to-br from-gray-50 via-white to-gray-100',
         'dark:from-gray-900 dark:via-gray-900 dark:to-gray-800',
         className
@@ -183,11 +183,11 @@ export function Hero({
       <AnimatedOrbs />
 
       {/* Content Container */}
-      <motion.div 
+      <motion.div
         style={{ y, opacity }}
-        className="relative z-10 container mx-auto px-4 py-20 md:py-32"
+        className="container relative z-10 mx-auto px-4 py-20 md:py-32"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Left Column - Content */}
           <div className="space-y-8">
             {/* Badge */}
@@ -196,7 +196,7 @@ export function Hero({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-lg border border-gray-200/50 dark:border-gray-700/50"
+                className="inline-flex items-center space-x-2 rounded-full border border-gray-200/50 bg-white/80 px-4 py-2 shadow-lg backdrop-blur-md dark:border-gray-700/50 dark:bg-gray-800/80"
               >
                 {badge.icon && (
                   <motion.span
@@ -218,15 +218,17 @@ export function Hero({
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-gray-900 dark:text-white"
+                className="text-5xl font-bold leading-tight text-gray-900 dark:text-white md:text-6xl lg:text-7xl"
               >
                 {title}{' '}
                 {titleHighlight && (
                   <motion.span
                     initial={{ backgroundPosition: '0% 50%' }}
-                    animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+                    animate={{
+                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                    }}
                     transition={{ duration: 5, repeat: Infinity }}
-                    className="bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 bg-clip-text text-transparent bg-[length:200%_auto]"
+                    className="bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 bg-[length:200%_auto] bg-clip-text text-transparent"
                   >
                     {titleHighlight}
                   </motion.span>
@@ -238,7 +240,7 @@ export function Hero({
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl"
+                className="max-w-2xl text-xl leading-relaxed text-gray-600 dark:text-gray-300 md:text-2xl"
               >
                 {subtitle}
               </motion.p>
@@ -249,12 +251,12 @@ export function Hero({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col gap-4 sm:flex-row"
             >
               {/* Primary CTA */}
               <Link
                 href={ctaPrimary.href}
-                className="group relative inline-flex items-center justify-center px-8 py-4 font-semibold text-white bg-gradient-to-r from-primary-600 to-primary-700 rounded-xl overflow-hidden transition-all hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/50"
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-8 py-4 font-semibold text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-primary-500/50"
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-primary-700 to-primary-800"
@@ -266,14 +268,19 @@ export function Hero({
                   {ctaPrimary.icon}
                   <span>{ctaPrimary.label}</span>
                   <motion.svg
-                    className="w-5 h-5"
+                    className="h-5 w-5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
                   </motion.svg>
                 </span>
               </Link>
@@ -282,7 +289,7 @@ export function Hero({
               {ctaSecondary && (
                 <Link
                   href={ctaSecondary.href}
-                  className="group inline-flex items-center justify-center px-8 py-4 font-semibold text-gray-900 dark:text-white bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all hover:scale-105"
+                  className="group inline-flex items-center justify-center rounded-xl border-2 border-gray-200 bg-white/80 px-8 py-4 font-semibold text-gray-900 backdrop-blur-md transition-all hover:scale-105 hover:border-primary-500 dark:border-gray-700 dark:bg-gray-800/80 dark:text-white dark:hover:border-primary-500"
                 >
                   <span className="flex items-center space-x-2">
                     {ctaSecondary.icon}
@@ -298,7 +305,7 @@ export function Hero({
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="flex flex-wrap gap-8 pt-8 border-t border-gray-200 dark:border-gray-700"
+                className="flex flex-wrap gap-8 border-t border-gray-200 pt-8 dark:border-gray-700"
               >
                 {stats.map((stat, index) => (
                   <div key={index} className="space-y-1">
@@ -306,7 +313,7 @@ export function Hero({
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.5 + index * 0.1, type: 'spring' }}
-                      className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
+                      className="text-3xl font-bold text-gray-900 dark:text-white md:text-4xl"
                     >
                       {stat.value}
                     </motion.div>
@@ -329,7 +336,7 @@ export function Hero({
             <div className="relative">
               {/* Main Visual Container */}
               <motion.div
-                className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl"
+                className="relative aspect-square overflow-hidden rounded-3xl shadow-2xl"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
@@ -344,10 +351,10 @@ export function Hero({
                   />
                 ) : (
                   // Gradient Placeholder
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500 via-secondary-500 to-purple-500">
+                  <div className="to-purple-500 absolute inset-0 bg-gradient-to-br from-primary-500 via-secondary-500">
                     <div className="absolute inset-0 opacity-30">
                       <motion.div
-                        className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/40 rounded-full blur-2xl"
+                        className="absolute left-1/4 top-1/4 h-32 w-32 rounded-full bg-white/40 blur-2xl"
                         animate={{
                           scale: [1, 1.2, 1],
                           x: [0, 20, 0],
@@ -356,7 +363,7 @@ export function Hero({
                         transition={{ duration: 4, repeat: Infinity }}
                       />
                       <motion.div
-                        className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-white/30 rounded-full blur-2xl"
+                        className="absolute bottom-1/4 right-1/4 h-40 w-40 rounded-full bg-white/30 blur-2xl"
                         animate={{
                           scale: [1, 1.3, 1],
                           x: [0, -20, 0],
@@ -372,10 +379,10 @@ export function Hero({
               {/* Floating Cards */}
               <FloatingCard
                 delay={0.8}
-                className="absolute -top-6 -left-6 w-48"
+                className="absolute -left-6 -top-6 w-48"
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                  <div className="bg-green-500 h-3 w-3 animate-pulse rounded-full" />
                   <div>
                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
                       Real-Time Data
@@ -392,7 +399,7 @@ export function Hero({
                 className="absolute -bottom-6 -right-6 w-48"
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
+                  <div className="bg-blue-500 h-3 w-3 animate-pulse rounded-full" />
                   <div>
                     <div className="text-sm font-semibold text-gray-900 dark:text-white">
                       250+ Stations
@@ -413,7 +420,7 @@ export function Hero({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 transform"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
@@ -421,8 +428,18 @@ export function Hero({
           className="flex flex-col items-center space-y-2 text-gray-600 dark:text-gray-400"
         >
           <span className="text-sm font-medium">Scroll to explore</span>
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"
+            />
           </svg>
         </motion.div>
       </motion.div>
@@ -436,23 +453,23 @@ export function Hero({
 
 /**
  * Usage:
- * 
+ *
  * <Hero
- *   badge={{ 
- *     text: 'Live Prices Available', 
- *     icon: <span className="text-green-500">●</span> 
+ *   badge={{
+ *     text: 'Live Prices Available',
+ *     icon: <span className="text-green-500">●</span>
  *   }}
  *   title="Find the"
  *   titleHighlight="Cheapest Petrol"
  *   subtitle="Compare real-time fuel prices from 250+ stations across Melbourne..."
- *   ctaPrimary={{ 
- *     label: 'Browse Stations', 
+ *   ctaPrimary={{
+ *     label: 'Browse Stations',
  *     href: '/directory',
  *     icon: <SearchIcon />
  *   }}
- *   ctaSecondary={{ 
- *     label: 'View Trends', 
- *     href: '/trends' 
+ *   ctaSecondary={{
+ *     label: 'View Trends',
+ *     href: '/trends'
  *   }}
  *   stats={[
  *     { value: '250+', label: 'Stations' },
@@ -461,4 +478,3 @@ export function Hero({
  *   ]}
  * />
  */
-

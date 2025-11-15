@@ -19,7 +19,8 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   const searchParams = useSearchParams();
   const [consentGiven, setConsentGiven] = useState<boolean | null>(null);
 
-  const GA_MEASUREMENT_ID = measurementId || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const GA_MEASUREMENT_ID =
+    measurementId || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   // Check if this is a bot (respect privacy)
   useEffect(() => {
@@ -40,8 +41,14 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
 
   // Track page views on route change
   useEffect(() => {
-    if (consentGiven && GA_MEASUREMENT_ID && typeof window.gtag !== 'undefined') {
-      const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+    if (
+      consentGiven &&
+      GA_MEASUREMENT_ID &&
+      typeof window.gtag !== 'undefined'
+    ) {
+      const url =
+        pathname +
+        (searchParams?.toString() ? `?${searchParams.toString()}` : '');
 
       window.gtag('config', GA_MEASUREMENT_ID, {
         page_path: url,
@@ -75,10 +82,14 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
               page_path: window.location.pathname,
               anonymize_ip: true,
               cookie_flags: 'SameSite=None;Secure',
-              ${consentGiven === null ? `
+              ${
+                consentGiven === null
+                  ? `
               'allow_google_signals': false,
               'allow_ad_personalization_signals': false,
-              ` : ''}
+              `
+                  : ''
+              }
             });
 
             // Set default consent mode

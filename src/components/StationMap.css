@@ -234,7 +234,6 @@
 }
 
 @keyframes markerBounce {
-
   0%,
   100% {
     transform: rotate(-45deg) translateY(0);
@@ -445,7 +444,6 @@
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-
   .user-marker-pulse,
   .marker-icon,
   .marker-popup,

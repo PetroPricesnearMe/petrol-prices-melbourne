@@ -16,7 +16,13 @@ import { useState, useRef, useEffect } from 'react';
 
 import { cn } from '@/utils/cn';
 
-export type SortOption = 'nearest' | 'price-low' | 'price-high' | 'top-rated' | 'name' | 'suburb';
+export type SortOption =
+  | 'nearest'
+  | 'price-low'
+  | 'price-high'
+  | 'top-rated'
+  | 'name'
+  | 'suburb';
 
 interface SortItem {
   value: SortOption;
@@ -85,7 +91,8 @@ export function SortDropdown({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const selectedOption = sortOptions.find((opt) => opt.value === value) || sortOptions[1];
+  const selectedOption =
+    sortOptions.find((opt) => opt.value === value) || sortOptions[1];
 
   // Sync with URL on mount
   useEffect(() => {
@@ -100,14 +107,18 @@ export function SortDropdown({
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      return () =>
+        document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isOpen]);
 
@@ -151,18 +162,18 @@ export function SortDropdown({
         onClick={toggleDropdown}
         disabled={disabled}
         className={cn(
-          'w-full flex items-center justify-between gap-3',
-          'px-4 py-3 md:py-2.5 rounded-lg',
+          'flex w-full items-center justify-between gap-3',
+          'rounded-lg px-4 py-3 md:py-2.5',
           'min-h-[44px]',
           'bg-white dark:bg-gray-800',
           'border border-gray-300 dark:border-gray-600',
           'shadow-sm hover:shadow-md',
           'transition-all duration-200',
-          'text-sm md:text-base font-medium',
+          'text-sm font-medium md:text-base',
           'text-gray-900 dark:text-white',
-          'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+          'focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500',
           'touch-manipulation active:scale-95',
-          disabled && 'opacity-50 cursor-not-allowed',
+          disabled && 'cursor-not-allowed opacity-50',
           !disabled && 'hover:border-primary-500 dark:hover:border-primary-400'
         )}
         aria-haspopup="listbox"
@@ -173,19 +184,26 @@ export function SortDropdown({
           <span className="text-lg" aria-hidden="true">
             {selectedOption.icon}
           </span>
-          <span className="text-gray-600 dark:text-gray-400 text-xs">Sort by:</span>
+          <span className="text-xs text-gray-600 dark:text-gray-400">
+            Sort by:
+          </span>
           <span>{selectedOption.label}</span>
         </div>
         <motion.svg
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="w-5 h-5 text-gray-400"
+          className="h-5 w-5 text-gray-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </motion.svg>
       </button>
 
@@ -198,7 +216,7 @@ export function SortDropdown({
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className={cn(
-              'absolute top-full left-0 right-0 mt-2 z-50',
+              'absolute left-0 right-0 top-full z-50 mt-2',
               'bg-white dark:bg-gray-800',
               'border border-gray-200 dark:border-gray-700',
               'rounded-lg shadow-lg',
@@ -218,14 +236,14 @@ export function SortDropdown({
                   transition={{ delay: index * 0.03 }}
                   onClick={() => handleSelect(option.value)}
                   className={cn(
-                    'w-full flex items-center gap-3 px-4 py-3.5 md:py-3',
+                    'flex w-full items-center gap-3 px-4 py-3.5 md:py-3',
                     'min-h-[44px]',
                     'text-left transition-colors duration-150',
                     'hover:bg-gray-50 dark:hover:bg-gray-700',
-                    'focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700',
-                    'touch-manipulation active:scale-98',
+                    'focus:bg-gray-50 focus:outline-none dark:focus:bg-gray-700',
+                    'active:scale-98 touch-manipulation',
                     isSelected && 'bg-primary-50 dark:bg-primary-900/20',
-                    'border-b border-gray-100 dark:border-gray-700 last:border-b-0'
+                    'border-b border-gray-100 last:border-b-0 dark:border-gray-700'
                   )}
                   role="option"
                   aria-selected={isSelected}
@@ -233,11 +251,11 @@ export function SortDropdown({
                   <span className="text-xl" aria-hidden="true">
                     {option.icon}
                   </span>
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span
                         className={cn(
-                          'font-medium text-sm',
+                          'text-sm font-medium',
                           isSelected
                             ? 'text-primary-700 dark:text-primary-400'
                             : 'text-gray-900 dark:text-white'
@@ -249,7 +267,7 @@ export function SortDropdown({
                         <motion.svg
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="w-4 h-4 text-primary-600 dark:text-primary-400"
+                          className="h-4 w-4 text-primary-600 dark:text-primary-400"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           aria-label="Selected"
@@ -263,7 +281,7 @@ export function SortDropdown({
                       )}
                     </div>
                     {option.description && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
                         {option.description}
                       </p>
                     )}

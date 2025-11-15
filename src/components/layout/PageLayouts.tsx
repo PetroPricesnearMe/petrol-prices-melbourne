@@ -6,7 +6,13 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { Container, Flex, ResponsiveGrid, GridItem, Section } from './ResponsiveGrid';
+import {
+  Container,
+  Flex,
+  ResponsiveGrid,
+  GridItem,
+  Section,
+} from './ResponsiveGrid';
 
 // ============================================================================
 // DIRECTORY/LISTING PAGE LAYOUT
@@ -24,7 +30,7 @@ interface DirectoryLayoutProps {
 /**
  * Directory Page Layout
  * Header + Filters Sidebar + Content Grid
- * 
+ *
  * @example
  * ```tsx
  * <DirectoryLayout
@@ -48,46 +54,43 @@ export function DirectoryLayout({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header Section */}
-      <Section spacing="lg" background="white" className="border-b border-gray-200 dark:border-gray-700">
+      <Section
+        spacing="lg"
+        background="white"
+        className="border-b border-gray-200 dark:border-gray-700"
+      >
         <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 text-gray-900 dark:text-white">
+          <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl lg:text-5xl xl:text-6xl">
             {title}
           </h1>
-          
+
           {description && (
-            <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6">
+            <p className="mx-auto mb-6 max-w-3xl text-lg text-gray-600 dark:text-gray-300 sm:text-xl">
               {description}
             </p>
           )}
 
           {/* Stats Bar */}
           {stats && stats.length > 0 && (
-            <Flex
-              justify="center"
-              gap="md"
-              wrap
-              className="mt-8"
-            >
+            <Flex justify="center" gap="md" wrap className="mt-8">
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-gray-100 dark:bg-gray-800 px-4 sm:px-6 py-3 rounded-lg min-w-[120px]"
+                  className="min-w-[120px] rounded-lg bg-gray-100 px-4 py-3 dark:bg-gray-800 sm:px-6"
                 >
-                  <div className="text-2xl sm:text-3xl font-bold text-primary-600 dark:text-primary-400">
+                  <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 sm:text-3xl">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    {stat.label}
+                  </div>
                 </div>
               ))}
             </Flex>
           )}
 
           {/* Actions */}
-          {actions && (
-            <div className="mt-6">
-              {actions}
-            </div>
-          )}
+          {actions && <div className="mt-6">{actions}</div>}
         </div>
       </Section>
 
@@ -103,9 +106,7 @@ export function DirectoryLayout({
           {/* Filters Sidebar (if provided) */}
           {filters && (
             <GridItem colSpan={{ default: 1, lg: 3 }}>
-              <div className="lg:sticky lg:top-4">
-                {filters}
-              </div>
+              <div className="lg:sticky lg:top-4">{filters}</div>
             </GridItem>
           )}
 
@@ -214,13 +215,13 @@ export function ContentLayout({
       <Section spacing="lg" background="gray">
         <Container size="md">
           <article className="prose prose-lg dark:prose-invert max-w-none">
-            <header className="not-prose text-center mb-8">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+            <header className="not-prose mb-8 text-center">
+              <h1 className="mb-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
                 {title}
               </h1>
-              
+
               {subtitle && (
-                <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
+                <p className="mb-6 text-xl text-gray-600 dark:text-gray-300">
                   {subtitle}
                 </p>
               )}
@@ -261,9 +262,7 @@ export function ContentLayout({
           {/* Sidebar */}
           {sidebar && (
             <GridItem colSpan={{ default: 1, lg: 4 }}>
-              <div className="lg:sticky lg:top-4 space-y-6">
-                {sidebar}
-              </div>
+              <div className="space-y-6 lg:sticky lg:top-4">{sidebar}</div>
             </GridItem>
           )}
         </ResponsiveGrid>
@@ -272,9 +271,7 @@ export function ContentLayout({
       {/* Related Content */}
       {related && (
         <Section spacing="xl" background="gray">
-          <Container size="xl">
-            {related}
-          </Container>
+          <Container size="xl">{related}</Container>
         </Section>
       )}
     </div>
@@ -323,7 +320,7 @@ export function DashboardLayout({
               }}
               className="hidden md:block"
             >
-              <div className="sticky top-0 h-screen overflow-y-auto bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
+              <div className="sticky top-0 h-screen overflow-y-auto border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 {sidebar}
               </div>
             </GridItem>
@@ -338,7 +335,7 @@ export function DashboardLayout({
             }}
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 lg:px-8 py-4">
+            <div className="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 py-4 dark:border-gray-700 dark:bg-gray-800 sm:px-6 lg:px-8">
               {header}
             </div>
 
@@ -369,7 +366,7 @@ export function DashboardLayout({
                       xl: 3,
                     }}
                   >
-                    <div className="xl:sticky xl:top-24 space-y-6">
+                    <div className="space-y-6 xl:sticky xl:top-24">
                       {quickActions}
                     </div>
                   </GridItem>
@@ -463,4 +460,3 @@ export default {
   DashboardLayout,
   SplitLayout,
 };
-

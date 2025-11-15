@@ -535,25 +535,25 @@ Spacing:
 ```
 1. User scrolls past hero and features
    └─► Map section comes into view
-   
+
 2. Section header fades in with title
    └─► User reads "Comprehensive Melbourne Coverage"
-   
+
 3. Map container scales in with glass effect
    └─► User sees colorful Melbourne regions
-   
+
 4. Legend items stagger in below map
    └─► User understands region color coding
-   
+
 5. Stats boxes scale in (250+, 5, 50+, 24/7)
    └─► User gains confidence in coverage
-   
+
 6. Region cards stagger in (3 columns)
    └─► User hovers over "Northern Suburbs"
-   
+
 7. Card lifts up with gradient overlay
    └─► User sees it's interactive
-   
+
 8. User clicks "View stations →"
    └─► Navigates to /regions/northern-suburbs
 ```
@@ -563,22 +563,22 @@ Spacing:
 ```
 1. User scrolls on phone (vertical swipe)
    └─► Map section appears
-   
+
 2. Title and description load (readable text)
    └─► User understands section purpose
-   
+
 3. Map displays full width (touch-friendly)
    └─► User can see all regions clearly
-   
+
 4. Stats in 2x2 grid (easy to scan)
    └─► User sees coverage numbers
-   
+
 5. Region cards stack vertically
    └─► User scrolls through all regions
-   
+
 6. User taps "Eastern Suburbs" card
    └─► Card background flashes (touch feedback)
-   
+
 7. Navigation begins
    └─► User sees region-specific stations
 ```
@@ -783,13 +783,13 @@ MelbourneMapSection
 
 ## 🎭 Interaction Matrix
 
-| Element | Hover | Click | Focus | Mobile Tap |
-|---------|-------|-------|-------|------------|
-| Map Container | Scale 1.05, Glow | - | - | - |
-| Region Card | Lift -8px, Overlay | Navigate | Ring | Flash |
-| CTA Button | Scale 1.05, Shadow | Navigate | Ring | Flash |
-| Legend Item | - | - | - | - |
-| Stats Box | - | - | - | - |
+| Element       | Hover              | Click    | Focus | Mobile Tap |
+| ------------- | ------------------ | -------- | ----- | ---------- |
+| Map Container | Scale 1.05, Glow   | -        | -     | -          |
+| Region Card   | Lift -8px, Overlay | Navigate | Ring  | Flash      |
+| CTA Button    | Scale 1.05, Shadow | Navigate | Ring  | Flash      |
+| Legend Item   | -                  | -        | -     | -          |
+| Stats Box     | -                  | -        | -     | -          |
 
 ---
 
@@ -832,21 +832,25 @@ MelbourneMapSection
 Your Melbourne map integration delivers:
 
 ✨ **Professional Design**
+
 - Glass morphism effects
 - Smooth gradient transitions
 - Modern, clean aesthetic
 
 ⚡ **Smooth Interactions**
+
 - 60fps animations
 - Instant hover feedback
 - Satisfying click responses
 
 📱 **Perfect Responsiveness**
+
 - Adapts to any screen
 - Touch-friendly on mobile
 - Optimal on all devices
 
 ♿ **Fully Accessible**
+
 - Keyboard navigable
 - Screen reader friendly
 - High contrast support
@@ -855,10 +859,9 @@ Your Melbourne map integration delivers:
 
 **Visual Prototype Complete!** 🎨
 
-*The integration looks amazing and performs beautifully on all devices.*
+_The integration looks amazing and performs beautifully on all devices._
 
 ---
 
-*Petrol Price Near Me - Melbourne*  
-*Professional Visual Design Documentation*
-
+_Petrol Price Near Me - Melbourne_  
+_Professional Visual Design Documentation_

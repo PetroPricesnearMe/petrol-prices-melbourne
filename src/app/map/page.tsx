@@ -22,8 +22,7 @@ import { MapViewClient } from './MapViewClient';
 
 export const metadata: Metadata = {
   title: `Melbourne Petrol Stations Map - ${metadataJson.totalStations}+ Locations | Interactive Map`,
-  description:
-    `Explore ${metadataJson.totalStations}+ petrol stations across Melbourne on our interactive map. Find the cheapest fuel prices near you with real-time data from BP, Shell, Caltex, and more.`,
+  description: `Explore ${metadataJson.totalStations}+ petrol stations across Melbourne on our interactive map. Find the cheapest fuel prices near you with real-time data from BP, Shell, Caltex, and more.`,
   keywords: [
     'petrol station map',
     'melbourne fuel map',
@@ -36,8 +35,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: `Melbourne Petrol Stations Map | ${metadataJson.totalStations}+ Locations`,
-    description:
-      `Interactive map showing ${metadataJson.totalStations}+ petrol stations across Melbourne with real-time fuel prices. Find the cheapest fuel near you.`,
+    description: `Interactive map showing ${metadataJson.totalStations}+ petrol stations across Melbourne with real-time fuel prices. Find the cheapest fuel near you.`,
     type: 'website',
   },
 };
@@ -47,7 +45,8 @@ export const revalidate = 86400;
 
 export default function MapPage() {
   // Generate structured data schemas
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const structuredDataSchemas = generateWebSiteSchema(baseUrl);
 
   return (
@@ -69,9 +68,9 @@ export default function MapPage() {
 
 function MapLoading() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <div className="border-blue-600 mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2"></div>
         <p className="text-gray-600">Loading interactive map...</p>
       </div>
     </div>

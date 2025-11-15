@@ -1,6 +1,6 @@
 /**
  * Header Component (Organism)
- * 
+ *
  * Application header with navigation and branding
  */
 
@@ -156,4 +156,3 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
-

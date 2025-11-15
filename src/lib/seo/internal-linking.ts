@@ -82,7 +82,10 @@ export const NAVIGATION_LINKS: InternalLink[] = [
  * Get related links for a page
  * Helps with internal linking and SEO
  */
-export function getRelatedLinks(currentPath: string, limit: number = 5): InternalLink[] {
+export function getRelatedLinks(
+  currentPath: string,
+  limit: number = 5
+): InternalLink[] {
   const relatedMap: Record<string, string[]> = {
     '/': ['/directory', '/fuel-price-trends', '/how-pricing-works'],
     '/directory': ['/fuel-price-trends', '/station-amenities', '/'],
@@ -96,9 +99,9 @@ export function getRelatedLinks(currentPath: string, limit: number = 5): Interna
 
   const relatedPaths = relatedMap[currentPath] || ['/'];
 
-  return NAVIGATION_LINKS
-    .filter(link => relatedPaths.includes(link.href))
-    .slice(0, limit);
+  return NAVIGATION_LINKS.filter((link) =>
+    relatedPaths.includes(link.href)
+  ).slice(0, limit);
 }
 
 /**
@@ -118,7 +121,7 @@ export function getBreadcrumbLinks(pathname: string): InternalLink[] {
   let currentPath = '';
   paths.forEach((segment) => {
     currentPath += `/${segment}`;
-    const link = NAVIGATION_LINKS.find(l => l.href === currentPath);
+    const link = NAVIGATION_LINKS.find((l) => l.href === currentPath);
 
     if (link) {
       breadcrumbs.push({
@@ -129,7 +132,7 @@ export function getBreadcrumbLinks(pathname: string): InternalLink[] {
       // Generate title from path segment
       const title = segment
         .replace(/-/g, ' ')
-        .replace(/\b\w/g, char => char.toUpperCase());
+        .replace(/\b\w/g, (char) => char.toUpperCase());
 
       breadcrumbs.push({
         href: currentPath,
@@ -150,32 +153,36 @@ export function getBreadcrumbLinks(pathname: string): InternalLink[] {
 /**
  * Generate contextual links based on content keywords
  */
-export function getContextualLinks(keywords: string[], limit: number = 3): InternalLink[] {
+export function getContextualLinks(
+  keywords: string[],
+  limit: number = 3
+): InternalLink[] {
   const keywordMap: Record<string, string[]> = {
-    'price': ['/fuel-price-trends', '/directory'],
-    'fuel': ['/directory', '/fuel-price-trends', '/how-pricing-works'],
-    'station': ['/directory', '/station-amenities'],
-    'save': ['/fuel-price-trends', '/how-pricing-works'],
-    'diesel': ['/directory', '/fuel-price-trends'],
-    'unleaded': ['/directory', '/fuel-price-trends'],
-    'premium': ['/directory', '/fuel-price-trends'],
-    'map': ['/directory', '/'],
-    'search': ['/directory', '/'],
-    'amenities': ['/station-amenities', '/directory'],
+    price: ['/fuel-price-trends', '/directory'],
+    fuel: ['/directory', '/fuel-price-trends', '/how-pricing-works'],
+    station: ['/directory', '/station-amenities'],
+    save: ['/fuel-price-trends', '/how-pricing-works'],
+    diesel: ['/directory', '/fuel-price-trends'],
+    unleaded: ['/directory', '/fuel-price-trends'],
+    premium: ['/directory', '/fuel-price-trends'],
+    map: ['/directory', '/'],
+    search: ['/directory', '/'],
+    amenities: ['/station-amenities', '/directory'],
   };
 
   const matchedPaths = new Set<string>();
 
-  keywords.forEach(keyword => {
+  keywords.forEach((keyword) => {
     const paths = keywordMap[keyword.toLowerCase()];
     if (paths) {
-      paths.forEach(path => matchedPaths.add(path));
+      paths.forEach((path) => matchedPaths.add(path));
     }
   });
 
-  return NAVIGATION_LINKS
-    .filter(link => matchedPaths.has(link.href))
-    .slice(0, limit);
+  return NAVIGATION_LINKS.filter((link) => matchedPaths.has(link.href)).slice(
+    0,
+    limit
+  );
 }
 
 // ============================================================================
@@ -209,12 +216,12 @@ export const FOOTER_LINKS = {
  * Shows most important links first
  */
 export function getMobileNavigationLinks(): InternalLink[] {
-  return NAVIGATION_LINKS
-    .filter(link => link.category === 'main')
-    .sort((a, b) => {
+  return NAVIGATION_LINKS.filter((link) => link.category === 'main').sort(
+    (a, b) => {
       const priorityOrder = { high: 0, medium: 1, low: 2 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
-    });
+    }
+  );
 }
 
 // ============================================================================
@@ -224,7 +231,10 @@ export function getMobileNavigationLinks(): InternalLink[] {
 /**
  * Generate anchor text for SEO-friendly internal links
  */
-export function generateAnchorText(targetPage: string, context?: string): string {
+export function generateAnchorText(
+  targetPage: string,
+  context?: string
+): string {
   const anchorMap: Record<string, string[]> = {
     '/directory': [
       'find petrol stations',
@@ -255,7 +265,7 @@ export function generateAnchorText(targetPage: string, context?: string): string
   // Use context to pick most relevant anchor text
   if (context) {
     const contextLower = context.toLowerCase();
-    const match = options.find(opt =>
+    const match = options.find((opt) =>
       contextLower.includes(opt.split(' ')[0])
     );
     if (match) return match;

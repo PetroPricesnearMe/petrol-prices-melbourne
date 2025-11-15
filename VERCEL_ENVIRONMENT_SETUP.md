@@ -12,15 +12,16 @@ Your Vercel environment variables use `VITE_` prefixes, but this is a **Create R
 
 Go to: **Vercel Dashboard → Project Settings → Environment Variables**
 
-| Variable Name | Value | Environment |
-|---------------|-------|-------------|
-| `REACT_APP_BASEROW_TOKEN` | `WXGOdiCeNmvdj5NszzAdvIug3InwQQXP` | All Environments |
-| `REACT_APP_BASEROW_API_URL` | `https://api.baserow.io/api` | All Environments |
+| Variable Name               | Value                                                             | Environment      |
+| --------------------------- | ----------------------------------------------------------------- | ---------------- |
+| `REACT_APP_BASEROW_TOKEN`   | `WXGOdiCeNmvdj5NszzAdvIug3InwQQXP`                                | All Environments |
+| `REACT_APP_BASEROW_API_URL` | `https://api.baserow.io/api`                                      | All Environments |
 | `REACT_APP_BASEROW_SSE_URL` | `https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse` | All Environments |
-| `REACT_APP_MAPBOX_TOKEN` | *(your Mapbox token)* | All Environments |
+| `REACT_APP_MAPBOX_TOKEN`    | _(your Mapbox token)_                                             | All Environments |
 
 ### **Remove These (Wrong Prefix):**
-- ❌ `VITE_BASEROW_API` 
+
+- ❌ `VITE_BASEROW_API`
 - ❌ `VITE_BASEROW_SSE_URL`
 - ❌ `VITE_BASEROW_API_TOKEN`
 - ❌ `MAKESWIFT_API_ORIGIN` (not used in this project)
@@ -30,6 +31,7 @@ Go to: **Vercel Dashboard → Project Settings → Environment Variables**
 ## 📝 **Why This Matters for SEO**
 
 **Without correct environment variables:**
+
 - ❌ No station data loads
 - ❌ Empty directory pages (bad for SEO)
 - ❌ No dynamic content (poor rankings)
@@ -37,6 +39,7 @@ Go to: **Vercel Dashboard → Project Settings → Environment Variables**
 - ❌ Poor user experience signals
 
 **With correct environment variables:**
+
 - ✅ 650+ stations indexed by Google
 - ✅ Rich content on every page
 - ✅ Low bounce rate
@@ -78,6 +81,7 @@ git push
 ### **3. Verify Variables Are Loaded**
 
 After deployment, check console in browser:
+
 ```javascript
 // This should NOT be undefined:
 console.log(process.env.REACT_APP_BASEROW_TOKEN);
@@ -88,6 +92,7 @@ console.log(process.env.REACT_APP_BASEROW_TOKEN);
 ## 🎯 **SEO Impact of Correct Configuration**
 
 ### **Before (Wrong Variables):**
+
 ```
 Homepage: No station count (generic content)
 Directory: No stations listed
@@ -97,6 +102,7 @@ Ranking: Poor (no valuable content)
 ```
 
 ### **After (Correct Variables):**
+
 ```
 Homepage: "250+ Petrol Stations" (actual data)
 Directory: 650+ stations with prices
@@ -112,6 +118,7 @@ Ranking: High (authoritative content)
 ### **Required for Production:**
 
 #### **1. Baserow API Token**
+
 ```
 Variable: REACT_APP_BASEROW_TOKEN
 Value: WXGOdiCeNmvdj5NszzAdvIug3InwQQXP
@@ -120,6 +127,7 @@ SEO Impact: HIGH - Required for all station data
 ```
 
 #### **2. Baserow API URL**
+
 ```
 Variable: REACT_APP_BASEROW_API_URL
 Value: https://api.baserow.io/api
@@ -128,6 +136,7 @@ SEO Impact: HIGH - Required for data fetching
 ```
 
 #### **3. Baserow SSE URL**
+
 ```
 Variable: REACT_APP_BASEROW_SSE_URL
 Value: https://api.baserow.io/mcp/ta1A1XNRrNHFLKV16tV3I0cSdkIzm9bE/sse
@@ -136,6 +145,7 @@ SEO Impact: MEDIUM - Improves user experience
 ```
 
 #### **4. Mapbox Token** (Optional but recommended)
+
 ```
 Variable: REACT_APP_MAPBOX_TOKEN
 Value: pk.eyJ1IjoicGV0cm9scHJpY2VzIiwiYSI6ImNtZW82a2ZkbzEzZzEycHB4bnN2a3d6MWYifQ.hOEEwKVHFhA2_IAxvj59SA
@@ -150,6 +160,7 @@ SEO Impact: MEDIUM - Enhanced user engagement
 After updating environment variables and redeploying:
 
 ### **Immediate Checks:**
+
 - [ ] Homepage shows actual station count (not "250+")
 - [ ] Directory page loads all 650+ stations
 - [ ] Regional pages show filtered stations
@@ -158,6 +169,7 @@ After updating environment variables and redeploying:
 - [ ] Map loads stations
 
 ### **SEO Validation:**
+
 - [ ] Google Search Console: No indexing errors
 - [ ] Rich Results Test: Structured data valid
 - [ ] PageSpeed Insights: Good performance scores
@@ -165,6 +177,7 @@ After updating environment variables and redeploying:
 - [ ] Check sitemap.xml loads correctly
 
 ### **Content Quality:**
+
 - [ ] Every page has unique, valuable content
 - [ ] Station listings are complete
 - [ ] No "No results" messages on main pages
@@ -178,6 +191,7 @@ After updating environment variables and redeploying:
 ### **Problem: Data still not loading after changing env vars**
 
 **Solution 1: Clear Build Cache**
+
 ```bash
 # In Vercel Dashboard:
 Settings → General → Clear Build Cache
@@ -185,10 +199,12 @@ Then redeploy
 ```
 
 **Solution 2: Check Environment Scope**
+
 - Ensure variables are set for "All Environments" or "Production"
 - Not just "Development" or "Preview"
 
 **Solution 3: Verify No Typos**
+
 - Variable names are CASE SENSITIVE
 - `REACT_APP_BASEROW_TOKEN` ≠ `REACT_APP_Baserow_Token`
 
@@ -206,21 +222,24 @@ REACT_APP_MAPBOX_TOKEN = pk.eyJ1IjoicGV0cm9scHJpY2VzIiwiYSI6ImNtZW82a2ZkbzEzZzEy
 ### **With Correct Configuration:**
 
 #### **Indexed Pages:**
+
 - 1 Homepage
 - 1 Main Directory
 - 6 Regional Directory Pages
 - 1 Blog Page
 - 1 FAQ Page
 - 3 Feature Pages
-= **13 pages** with unique, valuable content
+  = **13 pages** with unique, valuable content
 
 #### **Indexed Content:**
+
 - 650+ unique station listings
 - Each with name, address, prices
 - Structured data for each station
 - Geographic coverage (Melbourne-wide)
 
 #### **SEO Signals:**
+
 - **Content Quality:** HIGH (real data)
 - **User Engagement:** HIGH (interactive features)
 - **Page Authority:** HIGH (comprehensive info)
@@ -291,14 +310,14 @@ After deployment:
 
 ## ⚡ **SEO Performance Impact**
 
-| Metric | Wrong Env Vars | Correct Env Vars |
-|--------|----------------|------------------|
-| **Pages with Content** | 3 (static) | 13+ (dynamic) |
-| **Indexable Stations** | 0 | 650+ |
-| **Unique Content** | Low | High |
-| **User Engagement** | Low (no data) | High (full data) |
-| **Search Rankings** | Poor | Good→Excellent |
-| **Organic Traffic** | Minimal | Significant |
+| Metric                 | Wrong Env Vars | Correct Env Vars |
+| ---------------------- | -------------- | ---------------- |
+| **Pages with Content** | 3 (static)     | 13+ (dynamic)    |
+| **Indexable Stations** | 0              | 650+             |
+| **Unique Content**     | Low            | High             |
+| **User Engagement**    | Low (no data)  | High (full data) |
+| **Search Rankings**    | Poor           | Good→Excellent   |
+| **Organic Traffic**    | Minimal        | Significant      |
 
 ---
 
@@ -309,6 +328,7 @@ After deployment:
 Your current Vercel environment variables will prevent the site from loading station data, which **severely impacts SEO** by showing empty pages to Google.
 
 **Fix this immediately by:**
+
 1. Updating env vars in Vercel Dashboard
 2. Redeploying the application
 3. Verifying data loads correctly
@@ -318,4 +338,3 @@ Your current Vercel environment variables will prevent the site from loading sta
 **Last Updated:** October 13, 2025  
 **Status:** ⚠️ CRITICAL - Environment Variables Need Updating  
 **Impact:** HIGH - Affects all SEO efforts
-

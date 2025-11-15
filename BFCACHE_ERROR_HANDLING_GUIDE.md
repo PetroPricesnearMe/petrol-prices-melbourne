@@ -16,6 +16,7 @@ This guide provides a comprehensive solution to handle bfcache-related message c
 ## Files Created
 
 ### 1. `src/utils/extensionMessageHandler.js`
+
 - Core utility for handling Chrome extension message ports
 - Automatic reconnection with exponential backoff
 - Bfcache event detection and handling
@@ -23,12 +24,14 @@ This guide provides a comprehensive solution to handle bfcache-related message c
 - Error handling for `runtime.lastError`
 
 ### 2. `src/hooks/useExtensionMessage.js`
+
 - React hooks for easy integration
 - `useExtensionMessage` - Main hook for extension communication
 - `useExtensionMessageType` - Hook for specific message types
 - `useBfcacheHandler` - Hook for bfcache-specific events
 
 ### 3. `src/components/ExtensionErrorBoundary.js`
+
 - Error boundary component for extension errors
 - Special handling for bfcache errors
 - User-friendly error messages
@@ -42,18 +45,13 @@ This guide provides a comprehensive solution to handle bfcache-related message c
 import { useExtensionMessage } from '@/hooks/useExtensionMessage';
 
 function MyComponent() {
-  const {
-    isConnected,
-    sendMessage,
-    lastMessage,
-    lastError,
-    reconnect
-  } = useExtensionMessage();
+  const { isConnected, sendMessage, lastMessage, lastError, reconnect } =
+    useExtensionMessage();
 
   const handleSendData = () => {
     sendMessage({
       type: 'data',
-      payload: { key: 'value' }
+      payload: { key: 'value' },
     });
   };
 
@@ -82,7 +80,9 @@ function PriceMonitor() {
 
   return (
     <div>
-      <p>Price Monitor Status: {extension.isConnected ? 'Active' : 'Inactive'}</p>
+      <p>
+        Price Monitor Status: {extension.isConnected ? 'Active' : 'Inactive'}
+      </p>
     </div>
   );
 }
@@ -100,7 +100,7 @@ function App() {
     },
     onBfcacheRestore: (event) => {
       console.log('Page restored from bfcache:', event);
-    }
+    },
   });
 
   return (
@@ -129,26 +129,31 @@ function App() {
 ## Key Features
 
 ### 1. Automatic Error Handling
+
 - Detects `runtime.lastError` related to bfcache
 - Handles message channel closures gracefully
 - Provides user-friendly error messages
 
 ### 2. Reconnection Logic
+
 - Exponential backoff for reconnection attempts
 - Maximum retry limit to prevent infinite loops
 - Automatic reconnection on page visibility change
 
 ### 3. Message Queuing
+
 - Queues messages when disconnected
 - Processes queued messages on reconnection
 - Prevents message loss during disconnection
 
 ### 4. BFCache Detection
+
 - Listens for `pagehide` and `pageshow` events
 - Detects when pages enter/exit bfcache
 - Handles restoration from bfcache
 
 ### 5. React Integration
+
 - Custom hooks for easy use in React components
 - Error boundary for global error handling
 - TypeScript support (if using TypeScript)
@@ -156,6 +161,7 @@ function App() {
 ## Error Prevention
 
 ### 1. Check Connection Status
+
 ```javascript
 const { isConnected } = useExtensionMessage();
 
@@ -168,6 +174,7 @@ if (isConnected) {
 ```
 
 ### 2. Handle Errors Gracefully
+
 ```javascript
 const { lastError, reconnect } = useExtensionMessage();
 
@@ -181,6 +188,7 @@ useEffect(() => {
 ```
 
 ### 3. Listen for Disconnection
+
 ```javascript
 const { addListener } = useExtensionMessage();
 
@@ -198,18 +206,21 @@ useEffect(() => {
 ## Testing
 
 ### 1. Simulate BFCache
+
 - Navigate to your page
 - Open DevTools → Application → Storage
 - Click "Back" button to trigger bfcache
 - Check console for error handling
 
 ### 2. Test Reconnection
+
 - Disconnect extension manually
 - Verify error handling works
 - Check reconnection attempts
 - Verify message queuing
 
 ### 3. Test Error Boundary
+
 - Force an extension error
 - Verify error boundary catches it
 - Test retry and ignore buttons
@@ -250,6 +261,7 @@ useEffect(() => {
 ### Debug Mode
 
 Enable debug logging:
+
 ```javascript
 // In browser console
 localStorage.setItem('extension-debug', 'true');
@@ -269,6 +281,7 @@ localStorage.setItem('extension-debug', 'true');
 If you have existing extension code:
 
 1. **Replace Direct Chrome API Calls**:
+
    ```javascript
    // Old way
    chrome.runtime.sendMessage(data);
@@ -279,6 +292,7 @@ If you have existing extension code:
    ```
 
 2. **Add Error Handling**:
+
    ```javascript
    // Old way
    chrome.runtime.onMessage.addListener(callback);
@@ -299,6 +313,7 @@ If you have existing extension code:
 ## Support
 
 For issues or questions:
+
 1. Check browser console for error messages
 2. Verify extension permissions
 3. Test in incognito mode
