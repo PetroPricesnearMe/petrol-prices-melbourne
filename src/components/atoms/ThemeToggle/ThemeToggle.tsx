@@ -246,6 +246,9 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
     }
 
     // Button variant (default)
+    const ariaPressed = activeTheme === 'dark' ? 'true' : 'false';
+    const ariaLabel = `Switch to ${activeTheme === 'dark' ? 'light' : 'dark'} mode`;
+    
     return (
       <button
         type="button"
@@ -264,8 +267,8 @@ export const ThemeToggle = React.memo<ThemeToggleProps>(
           toggleVariants({ variant }),
           className
         )}
-        aria-label={`Switch to ${activeTheme === 'dark' ? 'light' : 'dark'} mode`}
-        aria-pressed={activeTheme === 'dark' ? 'true' : 'false'}
+        aria-label={ariaLabel}
+        aria-pressed={ariaPressed}
         {...props}
       >
         <AnimatePresence mode="wait" initial={false}>

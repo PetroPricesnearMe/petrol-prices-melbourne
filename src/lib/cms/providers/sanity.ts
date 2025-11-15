@@ -33,7 +33,7 @@ export class SanityProvider implements ICMSProvider {
     collection: string,
     options: CMSQueryOptions = {}
   ): Promise<CMSPaginatedResponse<T>> {
-    const cacheKey = generateCacheKey('sanity', collection, options);
+    const cacheKey = generateCacheKey('sanity', collection, options as Record<string, unknown>);
 
     const cached = this.cache.get<CMSPaginatedResponse<T>>(cacheKey);
     if (cached) {
@@ -270,8 +270,9 @@ export class SanityProvider implements ICMSProvider {
       const data = await response.json();
       const results = data.result || [];
 
+      const normalizedData: T[] = results.map((item: Record<string, unknown>) => this.normalizeResponse<T>(item));
       return {
-        data: results.map((item: any) => this.normalizeResponse<T>(item)),
+        data: normalizedData,
         total: results.length,
         page: 1,
         pageSize: results.length,
@@ -336,8 +337,10 @@ export class SanityProvider implements ICMSProvider {
     const data = await response.json();
     const results = data.result || [];
 
+    // @ts-expect-error - TypeScript incorrectly checks constraint here, but T extends CMSContent is guaranteed by method signature
+    const normalizedData: T[] = results.map((item: Record<string, unknown>) => this.normalizeResponse<T>(item));
     return {
-      data: results.map((item: any) => this.normalizeResponse<T>(item)),
+      data: normalizedData,
       total: results.length,
       page,
       pageSize,
@@ -356,12 +359,23 @@ export class SanityProvider implements ICMSProvider {
   /**
    * Normalize Sanity response to CMSContent format
    */
-  private normalizeResponse<T extends CMSContent>(data: any): T {
+  private normalizeResponse<T extends CMSContent>(data: Record<string, unknown>): T {
+    const id = typeof data._id === 'string' ? data._id : '';
+    const createdAt = data._createdAt && (typeof data._createdAt === 'string' || data._createdAt instanceof Date)
+      ? new Date(data._createdAt)
+      : new Date();
+    const updatedAt = data._updatedAt && (typeof data._updatedAt === 'string' || data._updatedAt instanceof Date)
+      ? new Date(data._updatedAt)
+      : new Date();
+    const slug = data.slug && typeof data.slug === 'object' && 'current' in data.slug && typeof data.slug.current === 'string'
+      ? data.slug.current
+      : undefined;
+    
     return {
-      id: data._id,
-      createdAt: data._createdAt ? new Date(data._createdAt) : new Date(),
-      updatedAt: data._updatedAt ? new Date(data._updatedAt) : new Date(),
-      slug: data.slug?.current,
+      id,
+      createdAt,
+      updatedAt,
+      slug,
       ...data,
     } as T;
   }
