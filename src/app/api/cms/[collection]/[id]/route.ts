@@ -6,10 +6,12 @@
  * DELETE /api/cms/[collection]/[id] - Delete item
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { getCMS } from '@/lib/cms';
 import { withFallback } from '@/lib/cms/error-handler';
-import { revalidateTag } from 'next/cache';
 
 interface RouteContext {
   params: Promise<{ collection: string; id: string }>;

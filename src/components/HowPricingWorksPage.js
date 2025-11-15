@@ -298,8 +298,8 @@ const HowPricingWorksPage = () => {
                 </p>
                 <p>
                   This is the largest single component of fuel pricing, making
-                  up approximately 25-30% of the total cost. It's a fixed cost
-                  that doesn't change with oil prices.
+                  up approximately 25-30% of the total cost. It&apos;s a fixed cost
+                  that doesn&apos;t change with oil prices.
                 </p>
               </div>
             </div>

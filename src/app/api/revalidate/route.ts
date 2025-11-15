@@ -10,8 +10,11 @@
  * }
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { revalidatePath, revalidateTag } from 'next/cache';
+
 import { getCMS } from '@/lib/cms';
 
 /**
@@ -34,7 +37,6 @@ export async function POST(request: NextRequest) {
     if (paths && Array.isArray(paths)) {
       for (const path of paths) {
         revalidatePath(path);
-        console.log(`Revalidated path: ${path}`);
       }
     }
 
@@ -42,7 +44,6 @@ export async function POST(request: NextRequest) {
     if (tags && Array.isArray(tags)) {
       for (const tag of tags) {
         revalidateTag(tag);
-        console.log(`Revalidated tag: ${tag}`);
       }
 
       // Also revalidate in CMS cache
@@ -59,7 +60,6 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Revalidation error:', error);
 
     return NextResponse.json(
       {

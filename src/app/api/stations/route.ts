@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { stationsCache, generateCacheKey } from '@/lib/api/cache';
 import { getStations, searchStations } from '@/lib/api/server-actions';
 import { validateFilters } from '@/lib/api/validation';
+import type { Station } from '@/types/station';
 
 // Enable edge runtime for faster response
 export const runtime = 'nodejs'; // Use 'edge' for even faster responses
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
     const cacheKey = generateCacheKey('stations-api', filters);
 
     // Try cache first
-    const cached = stationsCache.get<any>(cacheKey);
+    const cached = stationsCache.get<Station[]>(cacheKey);
     if (cached) {
       return NextResponse.json(
         {

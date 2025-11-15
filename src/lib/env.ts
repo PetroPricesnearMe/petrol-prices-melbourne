@@ -7,8 +7,9 @@
 
 /**
  * Get environment variable with type safety
+ * @internal - Currently unused but kept for potential future use
  */
-function getEnv(key: string, defaultValue?: string): string {
+export function _getEnv(key: string, defaultValue?: string): string {
   const value = process.env[key];
 
   if (value === undefined) {

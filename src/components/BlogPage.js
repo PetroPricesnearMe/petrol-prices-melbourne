@@ -182,7 +182,7 @@ const BlogPage = () => {
               <p>
                 Our <strong>interactive fuel price map Melbourne</strong> is the
                 most comprehensive tool for finding the cheapest petrol
-                stations. Here's how to get the most out of it:
+                stations. Here&apos;s how to get the most out of it:
               </p>
               <div className="feature-highlight">
                 <h3>🎯 Key Features:</h3>
@@ -280,7 +280,7 @@ const BlogPage = () => {
               <h2>Best Times to Buy Petrol in Melbourne</h2>
               <p>
                 Timing is everything when it comes to{' '}
-                <strong>melbourne petrol prices today</strong>. Here's when to
+                <strong>melbourne petrol prices today</strong>. Here&apos;s when to
                 fill up:
               </p>
               <div className="timing-tips">
@@ -374,7 +374,7 @@ const BlogPage = () => {
             >
               <h2>Start Saving on Fuel Today</h2>
               <p>
-                Don't overpay for petrol again. Use our{' '}
+                Don&apos;t overpay for petrol again. Use our{' '}
                 <strong>live fuel prices Melbourne</strong> tool to find the
                 cheapest stations near you.
               </p>

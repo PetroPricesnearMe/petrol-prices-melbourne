@@ -4,15 +4,15 @@
  * Implementation of the CMS provider interface for Sanity.io
  */
 
-import {
+import { getCMSCache, generateCacheKey } from '../cache';
+import { parseCMSError, retryWithBackoff, withTimeout } from '../error-handler';
+import type {
   CMSConfig,
   CMSContent,
   CMSPaginatedResponse,
   CMSQueryOptions,
   ICMSProvider,
 } from '../types';
-import { getCMSCache, generateCacheKey } from '../cache';
-import { parseCMSError, retryWithBackoff, withTimeout } from '../error-handler';
 
 export class SanityProvider implements ICMSProvider {
   private config: CMSConfig;
@@ -248,7 +248,7 @@ export class SanityProvider implements ICMSProvider {
   async search<T extends CMSContent>(
     collection: string,
     query: string,
-    options: CMSQueryOptions = {}
+    _options: CMSQueryOptions = {}
   ): Promise<CMSPaginatedResponse<T>> {
     try {
       // Sanity search using GROQ
@@ -282,7 +282,7 @@ export class SanityProvider implements ICMSProvider {
     }
   }
 
-  async revalidate(paths?: string[], tags?: string[]): Promise<void> {
+  async revalidate(_paths?: string[], tags?: string[]): Promise<void> {
     if (tags) {
       this.cache.invalidateByTags(tags);
     }

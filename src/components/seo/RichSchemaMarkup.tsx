@@ -44,25 +44,3 @@ export function MultipleSchemas({ schemas }: { schemas: object[] }) {
   );
 }
 
-/**
- * Validate schema before rendering (development only)
- */
-function validateSchema(schema: object): boolean {
-  if (process.env.NODE_ENV !== 'development') {
-    return true;
-  }
-
-  // Basic validation
-  const schemaObj = schema as any;
-  if (!schemaObj['@context']) {
-    console.warn('Schema missing @context');
-    return false;
-  }
-
-  if (!schemaObj['@type']) {
-    console.warn('Schema missing @type');
-    return false;
-  }
-
-  return true;
-}

@@ -20,8 +20,26 @@ const ViewToggle = dynamic(() => import('@/components/ViewToggle'), {
   ssr: false,
 });
 
+// Type definitions for demo stations
+interface DemoFuelPrice {
+  fuelType: string;
+  price: number;
+}
+
+interface DemoStation {
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  suburb: string;
+  latitude: number;
+  longitude: number;
+  brand: string;
+  fuelPrices: DemoFuelPrice[];
+}
+
 // Mock station data for demo
-const generateMockStations = () => {
+const generateMockStations = (): DemoStation[] => {
   const stations = [];
   const brands = [
     'Shell',
@@ -86,8 +104,8 @@ const generateMockStations = () => {
 export function MapDemoClient() {
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'map'>('map');
   const [isMapFullScreen, setIsMapFullScreen] = useState(false);
-  const [selectedStation, setSelectedStation] = useState<any>(null);
-  const [stations, setStations] = useState<any[]>([]);
+  const [selectedStation, setSelectedStation] = useState<DemoStation | null>(null);
+  const [stations, setStations] = useState<DemoStation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -98,9 +116,12 @@ export function MapDemoClient() {
     }, 500);
   }, []);
 
-  const handleStationClick = (station: Record<string, unknown>) => {
-    setSelectedStation(station);
-    console.log('Station clicked:', station);
+  const handleStationClick = (station: { id: string | number; name: string; address: string; city?: string; latitude: number; longitude: number; brand?: string; fuelPrices?: Array<{ fuelType: string; price: number }> }) => {
+    // Convert to DemoStation format if needed
+    const demoStation = stations.find(s => s.id === station.id);
+    if (demoStation) {
+      setSelectedStation(demoStation);
+    }
   };
 
   const handleFullScreenToggle = () => {
@@ -252,15 +273,17 @@ export function MapDemoClient() {
         {viewMode === 'grid' && (
           <div className={patterns.container()}>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {stations.slice(0, 12).map((station) => (
-                <div
-                  key={station.id}
-                  className="card card-hover cursor-pointer"
-                  onClick={() => {
-                    setSelectedStation(station);
-                    setViewMode('map');
-                  }}
-                >
+              {stations.slice(0, 12).map((station) => {
+                const handleCardClick = () => {
+                  setSelectedStation(station);
+                  setViewMode('map');
+                };
+
+                return (
+                  <div
+                    key={station.id}
+                    className="card card-hover"
+                  >
                   <div className="p-6">
                     <h3 className="mb-2 text-lg font-bold">{station.name}</h3>
                     <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">
@@ -270,7 +293,7 @@ export function MapDemoClient() {
                       <div className="space-y-2">
                         {station.fuelPrices
                           .slice(0, 3)
-                          .map((fp: Record<string, unknown>, idx: number) => (
+                          .map((fp: DemoFuelPrice, idx: number) => (
                             <div
                               key={idx}
                               className="flex justify-between text-sm"
@@ -285,12 +308,17 @@ export function MapDemoClient() {
                     )}
                   </div>
                   <div className="border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-                    <button className="btn-primary btn-sm btn w-full">
+                    <button 
+                      className="btn-primary btn-sm btn w-full"
+                      onClick={handleCardClick}
+                      aria-label={`View ${station.name} on map`}
+                    >
                       View on Map
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -299,15 +327,17 @@ export function MapDemoClient() {
         {viewMode === 'list' && (
           <div className={patterns.container()}>
             <div className="space-y-4">
-              {stations.slice(0, 12).map((station) => (
-                <div
-                  key={station.id}
-                  className="card card-hover cursor-pointer"
-                  onClick={() => {
-                    setSelectedStation(station);
-                    setViewMode('map');
-                  }}
-                >
+              {stations.slice(0, 12).map((station) => {
+                const handleCardClick = () => {
+                  setSelectedStation(station);
+                  setViewMode('map');
+                };
+
+                return (
+                  <div
+                    key={station.id}
+                    className="card card-hover"
+                  >
                   <div className="p-6">
                     <div className="flex flex-col gap-6 md:flex-row">
                       <div className="flex-1">
@@ -325,7 +355,7 @@ export function MapDemoClient() {
                         {station.fuelPrices && (
                           <div className="space-y-2">
                             {station.fuelPrices.map(
-                              (fp: Record<string, unknown>, idx: number) => (
+                              (fp: DemoFuelPrice, idx: number) => (
                                 <div
                                   key={idx}
                                   className="flex justify-between gap-8 text-sm"
@@ -341,14 +371,19 @@ export function MapDemoClient() {
                             )}
                           </div>
                         )}
-                        <button className="btn-primary btn-sm btn whitespace-nowrap">
+                        <button 
+                          className="btn-primary btn-sm btn whitespace-nowrap"
+                          onClick={handleCardClick}
+                          aria-label={`View ${station.name} on map`}
+                        >
                           View on Map
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

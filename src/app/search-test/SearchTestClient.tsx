@@ -6,8 +6,28 @@ import type { SearchCategory } from '@/components/molecules/AdvancedSearchBar';
 import { AdvancedSearchBar } from '@/components/molecules/AdvancedSearchBar';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
+// Type definitions for test stations
+interface TestFuelPrices {
+  unleaded: number;
+  diesel: number;
+  premium95: number;
+}
+
+interface TestStation {
+  id: number;
+  name: string;
+  brand: string;
+  address: string;
+  suburb: string;
+  city: string;
+  postcode: string;
+  latitude: number;
+  longitude: number;
+  fuelPrices: TestFuelPrices;
+}
+
 // Mock station data for testing
-const generateMockStations = () => {
+const generateMockStations = (): TestStation[] => {
   const brands = [
     'Shell',
     'BP',
@@ -62,11 +82,10 @@ const categories: SearchCategory[] = [
 ];
 
 export function SearchTestClient() {
-  const [stations, setStations] = useState<any[]>([]);
-  const [filteredStations, setFilteredStations] = useState<any[]>([]);
+  const [stations, setStations] = useState<TestStation[]>([]);
+  const [filteredStations, setFilteredStations] = useState<TestStation[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const mockData = generateMockStations();
@@ -74,17 +93,12 @@ export function SearchTestClient() {
     setFilteredStations(mockData);
   }, []);
 
-  const handleSearch = (query: string, results: unknown[]) => {
-    console.log('🔍 Search Query:', query);
-    console.log('📊 Results Count:', results.length);
-    console.log('📋 Results:', results.slice(0, 5));
-
+  const handleSearch = (query: string, results: TestStation[]) => {
     setSearchQuery(query);
     setFilteredStations(results);
   };
 
   const handleCategoryChange = (categoryId: string) => {
-    console.log('🏷️ Category Changed:', categoryId);
     setSelectedCategory(categoryId);
   };
 
@@ -107,7 +121,7 @@ export function SearchTestClient() {
   };
 
   // Custom result renderer
-  const renderResult = (station: Record<string, unknown>) => (
+  const renderResult = (station: TestStation) => (
     <div className="flex flex-col">
       <div className="font-semibold text-gray-900 dark:text-white">
         {station.name}
@@ -192,7 +206,7 @@ export function SearchTestClient() {
               <AdvancedSearchBar
                 data={stations}
                 searchKeys={getSearchKeys()}
-                placeholder="Try typing: Shell, Carlton, BP, or even typos like 'Carton'..."
+                placeholder="Try typing: Shell, Carlton, BP, or even typos like &apos;Carton&apos;..."
                 onSearch={handleSearch}
                 onCategoryChange={handleCategoryChange}
                 categories={categories}
@@ -201,7 +215,7 @@ export function SearchTestClient() {
                 debounceDelay={150}
                 enableRecentSearches={true}
                 renderResult={renderResult}
-                loading={loading}
+                loading={false}
               />
             </div>
 
@@ -238,9 +252,10 @@ export function SearchTestClient() {
               ) : (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {filteredStations.slice(0, 12).map((station) => (
-                    <div
+                    <article
                       key={station.id}
                       className="hover:border-blue-500 dark:hover:border-blue-400 rounded-lg border border-gray-200 p-4 transition-colors dark:border-gray-700"
+                      aria-label={`Station: ${station.name} in ${station.suburb}`}
                     >
                       <h3 className="mb-1 font-bold">{station.name}</h3>
                       <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
@@ -264,7 +279,7 @@ export function SearchTestClient() {
                           </span>
                         </div>
                       </div>
-                    </div>
+                    </article>
                   ))}
                 </div>
               )}

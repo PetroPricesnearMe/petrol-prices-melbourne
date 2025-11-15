@@ -4,7 +4,6 @@
  * Optimized for Google Rich Results
  */
 
-import type { Station, FuelPrice } from '@/types/station';
 
 interface LocalBusinessSchemaProps {
   station: Record<string, unknown>; // Using simplified station type
@@ -179,18 +178,20 @@ export function FuelPriceSchema({
 
   const offers = Object.entries(fuelPrices)
     .filter(([_, price]) => price !== null)
-    .map(([type, price]: [string, any]) => ({
+    .map(([type, price]: [string, unknown]) => {
+      const priceValue = typeof price === 'number' ? price : Number(price);
+      return {
       '@type': 'Offer',
       itemOffered: {
         '@type': 'Product',
         name: type.charAt(0).toUpperCase() + type.slice(1),
         category: 'Fuel',
       },
-      price: price,
+      price: priceValue,
       priceCurrency: 'AUD',
       priceSpecification: {
         '@type': 'PriceSpecification',
-        price: price / 100, // Convert cents to dollars
+        price: priceValue / 100, // Convert cents to dollars
         priceCurrency: 'AUD',
         unitText: 'Liter',
       },
@@ -200,7 +201,8 @@ export function FuelPriceSchema({
       },
       availability: 'https://schema.org/InStock',
       validFrom: station.lastUpdated || new Date().toISOString(),
-    }));
+    };
+    });
 
   const schema = {
     '@context': 'https://schema.org',

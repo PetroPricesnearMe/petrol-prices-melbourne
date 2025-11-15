@@ -1,18 +1,19 @@
+Search the codebase, especially ./src/lib/env.ts, for variables or functions that are declared but never used and which do not conform to the allowed unused variable naming regex /^_/u (for example, 'getEnv'). Remove these unused declarations or, if they should remain unused by design, rename them to start with an underscore (_) so they are permitted by the @typescript-eslint/no-unused-vars rule. Output a summary of all changes made and display the before/after for the main fix.
 /**
  * Airtable CMS Provider
  *
  * Implementation of the CMS provider interface for Airtable
  */
 
-import {
+import { getCMSCache, generateCacheKey } from '../cache';
+import { parseCMSError, retryWithBackoff, withTimeout } from '../error-handler';
+import type {
   CMSConfig,
   CMSContent,
   CMSPaginatedResponse,
   CMSQueryOptions,
   ICMSProvider,
 } from '../types';
-import { getCMSCache, generateCacheKey } from '../cache';
-import { parseCMSError, retryWithBackoff, withTimeout } from '../error-handler';
 
 interface AirtableRecord {
   id: string;

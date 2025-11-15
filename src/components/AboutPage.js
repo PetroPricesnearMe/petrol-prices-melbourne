@@ -201,9 +201,9 @@ const AboutPage = () => {
             possible.
           </p>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-            We're committed to transparency, accuracy, and helping Melbourne
+            We&apos;re committed to transparency, accuracy, and helping Melbourne
             drivers make informed decisions about where to fill up. Whether
-            you're commuting to work or planning a road trip, we're here to help
+            you&apos;re commuting to work or planning a road trip, we&apos;re here to help
             you save.
           </p>
         </section>

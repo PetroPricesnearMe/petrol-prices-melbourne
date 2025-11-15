@@ -15,7 +15,7 @@ import { Suspense } from 'react';
 
 import { StationList } from '@/components/api/StationList';
 import { StationListLoading } from '@/components/api/StationListLoading';
-import { getStations, getActiveProviderName } from '@/lib/api/data-providers';
+import { getStations, getActiveProviderName, type Station } from '@/lib/api/data-providers';
 
 // ============================================================================
 // Metadata
@@ -61,7 +61,7 @@ export const revalidate = 3600; // 1 hour
 export default async function APIExamplePage() {
   // Fetch data using Server Component
   // This runs on the server, with ISR caching
-  let stations = [];
+  let stations: Station[] = [];
   let error: Error | null = null;
   let providerName = 'none';
 
@@ -217,8 +217,8 @@ export default async function APIExamplePage() {
               stations={stations}
               isLoading={false}
               error={error}
-              onStationClick={(station) => {
-                console.log('Station clicked:', station);
+              onStationClick={() => {
+                // Handle station click
               }}
               columns={{
                 mobile: 1,

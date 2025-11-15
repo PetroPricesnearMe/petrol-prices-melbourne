@@ -4,7 +4,9 @@
  * GET /api/cms/[collection]/slug/[slug] - Fetch single item by slug
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { getCMS } from '@/lib/cms';
 import { withFallback } from '@/lib/cms/error-handler';
 

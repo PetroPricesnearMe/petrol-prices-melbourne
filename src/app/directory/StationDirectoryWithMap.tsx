@@ -12,7 +12,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 import {
   SortDropdown,
@@ -20,6 +20,7 @@ import {
   type SortOption,
 } from '@/components/molecules/SortDropdown';
 import { cn, patterns } from '@/styles/system/css-in-js';
+import type { StationAmenities } from '@/types/station';
 
 // Dynamically import map components to avoid SSR issues
 const InteractiveStationMap = dynamic(
@@ -57,7 +58,7 @@ interface Station {
   latitude: number | null;
   longitude: number | null;
   fuelPrices: FuelPrices;
-  amenities?: any;
+  amenities?: StationAmenities;
   lastUpdated: string;
   verified: boolean;
 }
@@ -106,7 +107,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [isMapFullScreen, setIsMapFullScreen] = useState(false);
-  const [selectedStation, setSelectedStation] = useState<any>(null);
+  const [selectedStation, setSelectedStation] = useState<Station | null>(null);
 
   // Filter and sort stations
   const filteredStations = useMemo(() => {
@@ -143,15 +144,17 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
 
       if (isPriceSorting || hasPriceFilter) {
         // Only show stations with selected fuel type when price sorting/filtering is active
-        result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+        const fuelTypeKey = filters.fuelType as keyof FuelPrices;
+        result = result.filter((s) => s.fuelPrices[fuelTypeKey] !== null);
       }
     }
 
     // Max price filter
     if (filters.priceMax && filters.fuelType !== 'all') {
       const maxPrice = parseFloat(filters.priceMax);
+      const fuelTypeKey = filters.fuelType as keyof FuelPrices;
       result = result.filter((s) => {
-        const price = s.fuelPrices[filters.fuelType];
+        const price = s.fuelPrices[fuelTypeKey];
         return price !== null && price <= maxPrice;
       });
     }
@@ -198,9 +201,25 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
     return result;
   }, [initialStations, filters]);
 
-  // Filter stations with valid coordinates for map
+  // Filter stations with valid coordinates for map and convert to map format
   const mapStations = useMemo(() => {
-    return filteredStations.filter((s) => s.latitude && s.longitude);
+    return filteredStations
+      .filter((s) => s.latitude && s.longitude)
+      .map((station) => ({
+        id: station.id,
+        name: station.name,
+        address: station.address,
+        city: station.suburb,
+        latitude: station.latitude!,
+        longitude: station.longitude!,
+        brand: station.brand,
+        fuelPrices: Object.entries(station.fuelPrices)
+          .filter(([, price]) => price !== null)
+          .map(([fuelType, price]) => ({
+            fuelType,
+            price: price as number,
+          })),
+      }));
   }, [filteredStations]);
 
   // Pagination
@@ -230,10 +249,25 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
     setCurrentPage(1);
   }, []);
 
-  const handleStationClick = useCallback((station: Record<string, unknown>) => {
-    setSelectedStation(station);
-    console.log('Station clicked:', station);
-  }, []);
+  const handleStationClick = useCallback(
+    (station: {
+      id: string | number;
+      name: string;
+      address: string;
+      city?: string;
+      latitude: number;
+      longitude: number;
+      brand?: string;
+      fuelPrices?: Array<{ fuelType: string; price: number }>;
+    }) => {
+      // Find the original station from filteredStations
+      const originalStation = filteredStations.find((s) => s.id === station.id);
+      if (originalStation) {
+        setSelectedStation(originalStation);
+      }
+    },
+    [filteredStations]
+  );
 
   const handleMapFullScreenToggle = useCallback(() => {
     setIsMapFullScreen((prev) => !prev);
@@ -420,9 +454,9 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
 
                   {/* Sort */}
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <span className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                       🔄 Sort By
-                    </label>
+                    </span>
                     <SortDropdown
                       value={filters.sortBy}
                       onChange={(value) => handleFilterChange('sortBy', value)}
@@ -499,7 +533,25 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
             <InteractiveStationMap
               stations={mapStations}
               onStationClick={handleStationClick}
-              selectedStation={selectedStation}
+              selectedStation={
+                selectedStation && selectedStation.latitude && selectedStation.longitude
+                  ? {
+                      id: selectedStation.id,
+                      name: selectedStation.name,
+                      address: selectedStation.address,
+                      city: selectedStation.suburb,
+                      latitude: selectedStation.latitude,
+                      longitude: selectedStation.longitude,
+                      brand: selectedStation.brand,
+                      fuelPrices: Object.entries(selectedStation.fuelPrices)
+                        .filter(([, price]) => price !== null)
+                        .map(([fuelType, price]) => ({
+                          fuelType,
+                          price: price as number,
+                        })),
+                    }
+                  : null
+              }
               height={isMapFullScreen ? '100vh' : 600}
               fullScreen={isMapFullScreen}
               onFullScreenToggle={handleMapFullScreenToggle}
@@ -680,7 +732,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
 
                     <div className="flex gap-2">
                       {[...Array(Math.min(totalPages, 7))].map((_, i) => {
-                        let page;
+                        let page: number;
                         if (totalPages <= 7) {
                           page = i + 1;
                         } else if (currentPage <= 4) {

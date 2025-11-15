@@ -4,15 +4,15 @@
  * Implementation of the CMS provider interface for Baserow
  */
 
-import {
+import { getCMSCache, generateCacheKey } from '../cache';
+import { parseCMSError, retryWithBackoff, withTimeout } from '../error-handler';
+import type {
   CMSConfig,
   CMSContent,
   CMSPaginatedResponse,
   CMSQueryOptions,
   ICMSProvider,
 } from '../types';
-import { getCMSCache, generateCacheKey } from '../cache';
-import { parseCMSError, retryWithBackoff, withTimeout } from '../error-handler';
 
 interface BaserowResponse<T> {
   count: number;

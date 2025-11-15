@@ -11,10 +11,12 @@
  * - CORS support
  */
 
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+
 import { getCMS } from '@/lib/cms';
-import { CMSQueryOptions } from '@/lib/cms/types';
 import { withFallback } from '@/lib/cms/error-handler';
+import type { CMSQueryOptions } from '@/lib/cms/types';
 
 interface RouteContext {
   params: Promise<{ collection: string }>;
