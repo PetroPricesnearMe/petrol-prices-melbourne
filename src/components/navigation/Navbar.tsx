@@ -242,28 +242,35 @@ export function Navbar({
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            type="button"
-            onClick={toggleMenu}
-            className={cn(
-              'lg:hidden',
-              'rounded-lg p-2',
-              'text-gray-700 dark:text-gray-300',
-              'hover:bg-gray-100 dark:hover:bg-gray-800',
-              'focus:outline-none focus:ring-4 focus:ring-primary-300',
-              'min-h-[44px] min-w-[44px]', // Touch target
-              'flex items-center justify-center'
-            )}
-            aria-expanded={isOpen ? 'true' : 'false'}
-            aria-controls="mobile-menu"
-            aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          >
-            {isOpen ? (
-              <X className="h-6 w-6" aria-hidden="true" />
-            ) : (
-              <Menu className="h-6 w-6" aria-hidden="true" />
-            )}
-          </button>
+          {(() => {
+            const ariaExpanded = isOpen ? 'true' : 'false';
+            const ariaLabel = isOpen ? 'Close menu' : 'Open menu';
+            
+            return (
+              <button
+                type="button"
+                onClick={toggleMenu}
+                className={cn(
+                  'lg:hidden',
+                  'rounded-lg p-2',
+                  'text-gray-700 dark:text-gray-300',
+                  'hover:bg-gray-100 dark:hover:bg-gray-800',
+                  'focus:outline-none focus:ring-4 focus:ring-primary-300',
+                  'min-h-[44px] min-w-[44px]', // Touch target
+                  'flex items-center justify-center'
+                )}
+                aria-expanded={ariaExpanded}
+                aria-controls="mobile-menu"
+                aria-label={ariaLabel}
+              >
+                {isOpen ? (
+                  <X className="h-6 w-6" aria-hidden="true" />
+                ) : (
+                  <Menu className="h-6 w-6" aria-hidden="true" />
+                )}
+              </button>
+            );
+          })()}
         </div>
 
         {/* Mobile Menu */}

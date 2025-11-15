@@ -121,6 +121,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
     >
       {options.map((option) => {
         const isActive = currentView === option.value;
+        const ariaChecked = isActive ? 'true' : 'false';
 
         return (
           <button
@@ -129,7 +130,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
             onClick={() => onViewChange(option.value)}
             onKeyDown={(e) => handleKeyDown(e, option.value)}
             role="radio"
-            aria-checked={isActive ? 'true' : 'false'}
+            aria-checked={ariaChecked}
             aria-label={option.ariaLabel}
             title={option.label}
             tabIndex={0}
@@ -174,6 +175,7 @@ export const ViewToggleCompact: React.FC<
         .filter((opt) => props.showGrid !== false || opt.value !== 'grid')
         .map((option) => {
           const isActive = props.currentView === option.value;
+          const ariaPressed = isActive ? 'true' : 'false';
 
           return (
             <button
@@ -181,7 +183,7 @@ export const ViewToggleCompact: React.FC<
               className={`view-toggle-compact__btn ${isActive ? 'active' : ''}`}
               onClick={() => props.onViewChange(option.value)}
               aria-label={option.ariaLabel}
-              aria-pressed={isActive ? 'true' : 'false'}
+              aria-pressed={ariaPressed}
               title={option.label}
             >
               <span aria-hidden="true">{option.icon}</span>
