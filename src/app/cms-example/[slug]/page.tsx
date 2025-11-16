@@ -13,13 +13,13 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
-import { getCMS } from '@/lib/cms';
+import { getCMS, type CMSContent } from '@/lib/cms';
 import { withFallback } from '@/lib/cms/error-handler';
 
 // Enable ISR
 export const revalidate = 3600;
 
-interface Station {
+interface Station extends CMSContent {
   id: string;
   name: string;
   slug: string;
@@ -28,8 +28,6 @@ interface Station {
   price?: number;
   brand?: string;
   amenities?: string[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 interface PageProps {
