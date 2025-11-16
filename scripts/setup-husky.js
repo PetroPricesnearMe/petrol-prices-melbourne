@@ -1,13 +1,45 @@
 #!/usr/bin/env node
 /**
  * Husky Setup Script
- * Ensures Git is in PATH before running husky install
- * This fixes "git command not found" errors on Windows
+ * Ensures Git is in PATH before running husky install.
+ *
+ * NOTE: This script is explicitly disabled in CI/Vercel environments
+ * to avoid failing `npm install` during automated builds. Git hooks
+ * are only needed for local development.
+ *
+ * If this script ever throws unexpectedly, it MUST NOT break installs
+ * in CI/Vercel – we always fail open and exit successfully there.
  */
 
 const { execSync } = require('child_process');
 const path = require('path');
 const os = require('os');
+const fs = require('fs');
+
+// Hard guard for CI/Vercel so `npm install` never fails because of Husky.
+// We treat any truthy CI/VERCEL flag or HUSKY=0 as "skip completely".
+if (
+  process.env.CI || // Any CI environment (CI=true/1/yes/etc.)
+  process.env.VERCEL || // Vercel sets VERCEL=1
+  process.env.VERCEL_ENV || // Explicit Vercel env
+  process.env.HUSKY === '0' // Explicitly disabled via env
+) {
+  console.log('⏭️  Skipping Husky setup in CI/Vercel (CI/VERCEL/HUSKY env detected)');
+  process.exit(0);
+}
+
+// If there is no .git directory, we are not in a Git working copy – skip hooks.
+try {
+  const gitDir = path.join(process.cwd(), '.git');
+  if (!fs.existsSync(gitDir)) {
+    console.log('⏭️  Skipping Husky setup because no `.git` directory was found.');
+    process.exit(0);
+  }
+} catch {
+  // If anything goes wrong detecting .git, fail open and continue without hooks.
+  console.log('⏭️  Skipping Husky setup due to unexpected error while checking `.git` directory.');
+  process.exit(0);
+}
 
 // Common Git installation paths
 const gitPaths = [

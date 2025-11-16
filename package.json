@@ -50,6 +50,7 @@
     "seo:check": "lighthouse http://localhost:3000 --only-categories=seo --view",
     "sitemap:generate": "node scripts/generate-sitemap.js",
     "clean": "rm -rf .next node_modules",
+    "//prepare:note": "Husky is disabled in CI/Vercel; `prepare` only runs Husky locally.",
     "prepare": "node scripts/setup-husky.js",
     "update:data": "node scripts/convert-stations.js",
     "verify:performance": "node scripts/verify-performance.js",
