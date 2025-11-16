@@ -7,10 +7,15 @@
 import React from 'react';
 
 import { cn } from '@/design-system/utils/styled';
-import type { BaseProps, ColorVariant, Size } from '@/types/index';
+import type {
+  BaseProps,
+  ColorVariant,
+  Size,
+  InteractiveProps,
+} from '@/types/index';
 import './Badge.css';
 
-export interface BadgeProps extends BaseProps {
+export interface BadgeProps extends BaseProps, InteractiveProps {
   /** Badge content */
   children: React.ReactNode;
   /** Color variant */

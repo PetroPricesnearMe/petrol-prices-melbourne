@@ -128,7 +128,7 @@ export function Image({
         className={cn(
           'transition-opacity duration-300',
           isLoaded ? 'opacity-100' : 'opacity-0',
-          props.className
+          className
         )}
       />
     </div>

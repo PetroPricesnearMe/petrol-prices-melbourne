@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 import { useScrollAnimation } from '@/components/motion/hooks/useScrollAnimation';
-import { cardEnter, cardHover } from '@/components/motion/variants';
+import { cardEnter } from '@/components/motion/variants';
 import { cn } from '@/lib/utils';
 
 export interface AnimatedCardProps {
@@ -136,8 +136,8 @@ export function AnimatedCard({
       variants={cardEnter}
       initial={enableScrollAnimation ? 'initial' : false}
       animate={enableScrollAnimation && isInView ? 'animate' : false}
-      whileHover={enableHover ? cardHover.hover : undefined}
-      whileTap={enableHover && onClick ? cardHover.tap : undefined}
+      whileHover={enableHover ? { scale: 1.02, y: -5 } : undefined}
+      whileTap={enableHover && onClick ? { scale: 0.98 } : undefined}
       transition={{ delay }}
       onClick={onClick}
     >

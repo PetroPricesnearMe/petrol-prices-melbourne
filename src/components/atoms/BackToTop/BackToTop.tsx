@@ -24,7 +24,7 @@ import { ArrowUp } from 'lucide-react';
 import React from 'react';
 
 import { cn } from '@/design-system/utils';
-import type { ComponentBaseProps } from '@/types';
+import type { ComponentBaseProps } from '@/types/index';
 
 /**
  * BackToTop Props

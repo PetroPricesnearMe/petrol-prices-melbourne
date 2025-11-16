@@ -15,7 +15,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useId } from 'react';
 import { createPortal } from 'react-dom';
 
 import { FocusTrap } from './FocusTrap';
@@ -48,7 +48,7 @@ export function Modal({
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   // Use React's useId hook for SSR-safe, stable IDs (prevents hydration mismatch)
-  const titleId = React.useId();
+  const titleId = useId();
 
   useEffect(() => {
     if (!isOpen) return;

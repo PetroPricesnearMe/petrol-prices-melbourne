@@ -27,6 +27,8 @@ export function CookieConsent() {
       }, 1000);
       return () => clearTimeout(timer);
     }
+
+    return undefined;
   }, []);
 
   const handleAccept = () => {

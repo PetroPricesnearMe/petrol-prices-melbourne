@@ -224,7 +224,9 @@ export default async function StationPage({ params }: StationPageProps) {
                   <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
                     Amenities
                   </h2>
-                  <AmenitiesGrid amenities={station.amenities} />
+                  <AmenitiesGrid
+                    amenities={station.amenities as unknown as Record<string, unknown>}
+                  />
                 </div>
               )}
 
@@ -234,7 +236,9 @@ export default async function StationPage({ params }: StationPageProps) {
                 <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
                   Operating Hours
                 </h2>
-                <OperatingHoursTable hours={station.operatingHours} />
+                <OperatingHoursTable
+                  hours={station.operatingHours as unknown as Record<string, unknown>}
+                />
               </div>
             )}
           </div>
@@ -793,19 +797,23 @@ function OperatingHoursTable({ hours }: { hours: Record<string, unknown> }) {
           </tr>
         </thead>
         <tbody>
-          {days.map((day) => (
-            <tr
-              key={day.key}
-              className="border-b border-gray-100 last:border-0 dark:border-gray-800"
-            >
-              <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                {day.label}
-              </td>
-              <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
-                {hours[day.key] || 'Closed'}
-              </td>
-            </tr>
-          ))}
+          {days.map((day) => {
+            const value = hours[day.key] as string | undefined;
+
+            return (
+              <tr
+                key={day.key}
+                className="border-b border-gray-100 last:border-0 dark:border-gray-800"
+              >
+                <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                  {day.label}
+                </td>
+                <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
+                  {value ?? 'Closed'}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

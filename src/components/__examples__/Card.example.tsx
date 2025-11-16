@@ -33,7 +33,8 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
 import { cn } from '@/design-system/utils';
-import type { ComponentBaseProps, ComponentWithChildren } from '@/types';
+import type { ComponentBaseProps } from '@/types/index';
+import type { ComponentWithChildren } from '@/types/index.enhanced';
 
 /**
  * Card variants
