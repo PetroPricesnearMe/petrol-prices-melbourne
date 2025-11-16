@@ -39,7 +39,13 @@ const mockStations = [
 export function RegionStationsClient({ region, regionSlug }: RegionProps) {
   const [sortBy, setSortBy] = useState('price-low');
 
-  const { data: stations = mockStations, isLoading } = useQuery({
+  const {
+    data: stations = mockStations,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ['stations', regionSlug],
     queryFn: async () => {
       // Replace with actual API call
@@ -131,6 +137,26 @@ export function RegionStationsClient({ region, regionSlug }: RegionProps) {
           {isLoading ? (
             <div className={patterns.flex.center + ' py-20'}>
               <LoadingSpinner size="lg" />
+            </div>
+          ) : isError ? (
+            <div className="py-20 text-center">
+              <div className="mb-4 text-6xl">⚠️</div>
+              <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                We could not load stations for this region
+              </h2>
+              <p className="mb-6 text-gray-600 dark:text-gray-400">
+                {error instanceof Error
+                  ? error.message
+                  : 'An unexpected error occurred. Please try again.'}
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <button onClick={() => refetch()} className="btn-primary btn">
+                  Try again
+                </button>
+                <Link href="/directory" className="btn-outline btn">
+                  Go to directory
+                </Link>
+              </div>
             </div>
           ) : (
             <div className={patterns.grid(3, 'lg')}>

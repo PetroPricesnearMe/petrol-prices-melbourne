@@ -20,7 +20,7 @@ interface RouteContext {
 /**
  * GET /api/cms/[collection]/[id]
  */
-export async function GET(request: NextRequest, context: RouteContext) {
+export async function GET(_request: NextRequest, context: RouteContext) {
   try {
     const { collection, id } = await context.params;
     const cms = getCMS();

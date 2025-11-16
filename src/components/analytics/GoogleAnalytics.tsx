@@ -110,12 +110,12 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
 // TypeScript declaration for gtag
 declare global {
   interface Window {
-    gtag: (
-      command: 'config' | 'event' | 'consent',
-      targetId: string,
+    gtag?: (
+      command: 'config' | 'event' | 'consent' | 'js' | 'set' | string,
+      targetId?: string | Date,
       config?: Record<string, any>
     ) => void;
-    dataLayer: unknown[];
+    dataLayer?: unknown[];
   }
 }
 

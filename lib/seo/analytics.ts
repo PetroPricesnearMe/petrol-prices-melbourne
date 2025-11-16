@@ -1,22 +1,4 @@
 /**
- * Analytics Integration
- * Google Analytics 4 and Search Console utilities
- */
-
-// gtag type declaration - compatible with GoogleAnalytics.tsx
-// Using same signature to avoid type conflicts
-declare global {
-  interface Window {
-    gtag?: (
-      command: 'config' | 'event' | 'consent' | 'js' | string,
-      targetId?: string | Date,
-      config?: Record<string, any>
-    ) => void;
-    dataLayer?: unknown[];
-  }
-}
-
-/**
  * Initialize Google Analytics
  */
 export const GA_MEASUREMENT_ID =
@@ -48,6 +30,10 @@ export function trackPageView(url: string, title?: string) {
     return;
   }
 
+  if (!window.gtag) {
+    return;
+  }
+
   window.gtag('config', GA_MEASUREMENT_ID, {
     page_path: url,
     page_title: title,
@@ -66,6 +52,10 @@ export interface GAEvent {
 
 export function trackEvent({ action, category, label, value }: GAEvent) {
   if (!GA_MEASUREMENT_ID || typeof window === 'undefined') {
+    return;
+  }
+
+  if (!window.gtag) {
     return;
   }
 
@@ -130,6 +120,10 @@ export function trackConversion(conversionId: string, value?: number) {
     return;
   }
 
+  if (!window.gtag) {
+    return;
+  }
+
   window.gtag('event', 'conversion', {
     send_to: conversionId,
     value: value,
@@ -167,6 +161,10 @@ export function trackError(error: string, fatal: boolean = false) {
     return;
   }
 
+  if (!window.gtag) {
+    return;
+  }
+
   window.gtag('event', 'exception', {
     description: error,
     fatal: fatal,
@@ -186,6 +184,10 @@ export function trackTiming(
     return;
   }
 
+  if (!window.gtag) {
+    return;
+  }
+
   window.gtag('event', 'timing_complete', {
     name: variable,
     value: value,
@@ -202,6 +204,10 @@ export function setUserId(userId: string) {
     return;
   }
 
+  if (!window.gtag) {
+    return;
+  }
+
   window.gtag('config', GA_MEASUREMENT_ID, {
     user_id: userId,
   });
@@ -212,6 +218,10 @@ export function setUserId(userId: string) {
  */
 export function setCustomDimension(name: string, value: string) {
   if (!GA_MEASUREMENT_ID || typeof window === 'undefined') {
+    return;
+  }
+
+  if (!window.gtag) {
     return;
   }
 
