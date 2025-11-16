@@ -40,8 +40,8 @@ interface Station {
   fuelPrices: FuelPrices;
   lastUpdated: string;
   verified: boolean;
-  latitude: number;
-  longitude: number;
+  latitude: number | null;
+  longitude: number | null;
 }
 
 interface Metadata {
@@ -119,7 +119,9 @@ export function MapViewClient({ initialStations, metadata }: Props) {
 
       if (isPriceSorting || hasPriceFilter) {
         // Only show stations with selected fuel type when price sorting/filtering is active
-        result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+        result = result.filter(
+          (s) => s.fuelPrices[filters.fuelType as keyof FuelPrices] !== null
+        );
       }
     }
 
@@ -127,7 +129,7 @@ export function MapViewClient({ initialStations, metadata }: Props) {
     if (filters.priceMax && filters.fuelType !== 'all') {
       const maxPrice = parseFloat(filters.priceMax);
       result = result.filter((s) => {
-        const price = s.fuelPrices[filters.fuelType];
+        const price = s.fuelPrices[filters.fuelType as keyof FuelPrices];
         return price !== null && price <= maxPrice;
       });
     }
@@ -144,8 +146,10 @@ export function MapViewClient({ initialStations, metadata }: Props) {
             const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
             return minPriceA - minPriceB;
           }
-          const priceA = a.fuelPrices[filters.fuelType] || Infinity;
-          const priceB = b.fuelPrices[filters.fuelType] || Infinity;
+          const priceA =
+            a.fuelPrices[filters.fuelType as keyof FuelPrices] || Infinity;
+          const priceB =
+            b.fuelPrices[filters.fuelType as keyof FuelPrices] || Infinity;
           return priceA - priceB;
         }
         case 'price-high': {
@@ -157,8 +161,10 @@ export function MapViewClient({ initialStations, metadata }: Props) {
             const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : 0;
             return minPriceB - minPriceA;
           }
-          const priceA = a.fuelPrices[filters.fuelType] || 0;
-          const priceB = b.fuelPrices[filters.fuelType] || 0;
+          const priceA =
+            a.fuelPrices[filters.fuelType as keyof FuelPrices] || 0;
+          const priceB =
+            b.fuelPrices[filters.fuelType as keyof FuelPrices] || 0;
           return priceB - priceA;
         }
         case 'suburb':
@@ -474,42 +480,52 @@ export function MapViewClient({ initialStations, metadata }: Props) {
           <div className="py-8">
             <div className={patterns.container()}>
               <div className={patterns.grid(4, 'md')}>
-                {filteredStations.map((station) => (
-                  <div
-                    key={station.id}
-                    className="card card-hover cursor-pointer"
-                    onClick={() => handleStationSelect(station)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        handleStationSelect(station);
-                      }
-                    }}
-                    aria-label={`Select station ${station.name} in ${station.suburb}`}
-                  >
-                    <div className="p-4">
-                      <h3 className="mb-2 font-bold text-gray-900 dark:text-white">
-                        {station.name}
-                      </h3>
-                      <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
-                        {station.brand} • {station.suburb}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {station.address}
-                      </p>
-                      {station.fuelPrices[filters.fuelType] && (
-                        <div className="mt-2">
-                          <span className="text-green-600 text-lg font-bold">
-                            {station.fuelPrices[filters.fuelType]?.toFixed(1)}
-                            ¢/L
-                          </span>
-                        </div>
-                      )}
+                {filteredStations.map((station) => {
+                  const selectedFuelType =
+                    filters.fuelType === 'all'
+                      ? null
+                      : (filters.fuelType as keyof FuelPrices);
+                  const selectedPrice =
+                    selectedFuelType !== null
+                      ? station.fuelPrices[selectedFuelType]
+                      : null;
+
+                  return (
+                    <div
+                      key={station.id}
+                      className="card card-hover cursor-pointer"
+                      onClick={() => handleStationSelect(station)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          handleStationSelect(station);
+                        }
+                      }}
+                      aria-label={`Select station ${station.name} in ${station.suburb}`}
+                    >
+                      <div className="p-4">
+                        <h3 className="mb-2 font-bold text-gray-900 dark:text-white">
+                          {station.name}
+                        </h3>
+                        <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
+                          {station.brand} • {station.suburb}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {station.address}
+                        </p>
+                        {selectedPrice !== null && (
+                          <div className="mt-2">
+                            <span className="text-green-600 text-lg font-bold">
+                              {selectedPrice.toFixed(1)}¢/L
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

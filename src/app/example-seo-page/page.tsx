@@ -51,11 +51,11 @@ export const revalidate = 3600; // Revalidate every hour
 // ============================================================================
 
 function generatePageSchemas() {
-  // Breadcrumb navigation
+  // Breadcrumb navigation (structured data)
   const breadcrumbs = [
-    { label: 'Home', href: '/' },
-    { label: 'Examples', href: '/examples' },
-    { label: 'SEO Page', href: '/example-seo-page' },
+    { name: 'Home', url: '/' },
+    { name: 'Examples', url: '/examples' },
+    { name: 'SEO Page', url: '/example-seo-page' },
   ];
 
   // FAQ data

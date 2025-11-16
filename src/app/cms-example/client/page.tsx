@@ -14,16 +14,13 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
 import { CMSList } from '@/components/cms/CMSList';
-import type { CMSPaginatedResponse } from '@/lib/cms/types';
+import type { CMSContent, CMSPaginatedResponse } from '@/lib/cms/types';
 
-interface Station {
-  id: string;
+interface Station extends CMSContent {
   name: string;
   address: string;
   price?: number;
   brand?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export default function CMSClientExamplePage() {

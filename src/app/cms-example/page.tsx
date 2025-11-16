@@ -14,6 +14,7 @@ import { CMSContent } from '@/components/cms/CMSContent';
 import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
 import { getCMS } from '@/lib/cms';
 import { withFallback } from '@/lib/cms/error-handler';
+import type { CMSContent as CMSContentType } from '@/lib/cms/types';
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600;
@@ -37,14 +38,11 @@ export async function generateMetadata(): Promise<Metadata> {
 /**
  * Station type (example)
  */
-interface Station {
-  id: string;
+interface Station extends CMSContentType {
   name: string;
   address: string;
   price?: number;
   brand?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 /**

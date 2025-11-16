@@ -94,7 +94,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 /**
  * DELETE /api/cms/[collection]/[id]
  */
-export async function DELETE(request: NextRequest, context: RouteContext) {
+export async function DELETE(_request: NextRequest, context: RouteContext) {
   try {
     const { collection, id } = await context.params;
 
