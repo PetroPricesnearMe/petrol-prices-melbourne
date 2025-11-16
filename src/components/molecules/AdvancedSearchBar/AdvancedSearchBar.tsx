@@ -354,7 +354,7 @@ export function AdvancedSearchBar<T = any>({
               <button
                 key={category.id}
                 type="button"
-                aria-pressed={isSelected ? 'true' : 'false'}
+                aria-pressed={isSelected}
                 aria-label={`Filter by ${category.label}`}
                 className={`category-btn ${isSelected ? 'active' : ''}`}
                 onClick={() => onCategoryChange?.(category.id)}
@@ -403,7 +403,7 @@ export function AdvancedSearchBar<T = any>({
             className="search-input"
             role="combobox"
             aria-autocomplete="list"
-            aria-expanded={showSuggestions ? 'true' : 'false'}
+            aria-expanded={showSuggestions}
             aria-controls="search-suggestions"
             aria-activedescendant={
               selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined
@@ -447,13 +447,7 @@ export function AdvancedSearchBar<T = any>({
         {/* Suggestions Dropdown */}
         {showSuggestions && (
           <FocusTrap active={false}>
-            <div
-              ref={suggestionsRef}
-              id="search-suggestions"
-              className="suggestions-dropdown"
-              role="listbox"
-              aria-label="Search suggestions"
-            >
+            <div className="suggestions-dropdown">
               {/* Recent Searches */}
               {showRecentInDropdown && (
                 <div className="suggestions-section">
@@ -468,51 +462,73 @@ export function AdvancedSearchBar<T = any>({
                       Clear
                     </button>
                   </div>
-                  {recentSearches.map((search, index) => {
+                </div>
+              )}
+
+              {/* Search Results Header */}
+              {query.trim() && suggestions.length > 0 && !showRecentInDropdown && (
+                <div className="suggestions-section">
+                  <div className="suggestions-header">
+                    <span>Suggestions ({suggestions.length})</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Listbox with all options */}
+              <div
+                ref={suggestionsRef}
+                id="search-suggestions"
+                role="listbox"
+                aria-label="Search suggestions"
+                aria-multiselectable="false"
+              >
+                {showRecentInDropdown &&
+                  recentSearches.map((search, index) => {
                     const itemIndex = suggestions.length + index;
                     const isSelected = selectedIndex === itemIndex;
                     return (
-                      <button
-                        type="button"
+                      <div
                         key={`recent-${index}`}
                         data-index={itemIndex}
                         className={`suggestion-item ${isSelected ? 'selected' : ''}`}
                         onClick={() => handleRecentSearchClick(search)}
                         role="option"
-                        aria-selected={isSelected ? 'true' : 'false'}
+                        aria-selected={isSelected}
                         tabIndex={-1}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleRecentSearchClick(search);
+                          }
+                        }}
                       >
                         <span className="suggestion-icon" aria-hidden="true">
                           🕐
                         </span>
                         <span className="suggestion-text">{search}</span>
-                      </button>
+                      </div>
                     );
                   })}
-                </div>
-              )}
 
-              {/* Search Results */}
-              {query.trim() && suggestions.length > 0 && (
-                <div className="suggestions-section">
-                  {!showRecentInDropdown && (
-                    <div className="suggestions-header">
-                      <span>Suggestions ({suggestions.length})</span>
-                    </div>
-                  )}
-                  {suggestions.map((result, index) => {
+                {query.trim() &&
+                  suggestions.map((result, index) => {
                     const isSelected = selectedIndex === index;
                     return (
-                      <button
-                        type="button"
+                      <div
                         key={`suggestion-${index}`}
                         id={`suggestion-${index}`}
                         data-index={index}
                         className={`suggestion-item ${isSelected ? 'selected' : ''}`}
                         onClick={() => handleSuggestionClick(result)}
                         role="option"
-                        aria-selected={isSelected ? 'true' : 'false'}
+                        aria-selected={isSelected}
                         tabIndex={-1}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleSuggestionClick(result);
+                          }
+                        }}
                       >
                         <span className="suggestion-icon" aria-hidden="true">
                           🔍
@@ -528,11 +544,10 @@ export function AdvancedSearchBar<T = any>({
                             {Math.round((1 - result.score) * 100)}%
                           </span>
                         )}
-                      </button>
+                      </div>
                     );
                   })}
-                </div>
-              )}
+              </div>
 
               {/* No Results */}
               {query.trim() && suggestions.length === 0 && !loading && (

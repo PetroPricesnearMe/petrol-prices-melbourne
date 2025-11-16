@@ -37,7 +37,10 @@ export function ShareButtons({
         });
       } catch (error) {
         // User cancelled or error occurred
-        console.log('Share cancelled', error);
+        // Silently handle share cancellation
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Share error:', error);
+        }
       }
     }
   };

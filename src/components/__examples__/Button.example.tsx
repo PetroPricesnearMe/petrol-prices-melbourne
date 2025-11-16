@@ -186,8 +186,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         disabled={isDisabled}
         className={cn(buttonVariants({ variant, size, fullWidth }), className)}
-        aria-busy={isLoading}
-        aria-disabled={isDisabled}
+        aria-busy={isLoading || undefined}
+        aria-disabled={isDisabled || undefined}
         {...props}
       >
         {/* Loading spinner */}

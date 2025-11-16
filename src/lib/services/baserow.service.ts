@@ -100,7 +100,9 @@ export const baserowService = {
         }
       }
 
-      console.log(`Fetched ${allStations.length} stations from Baserow`);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`Fetched ${allStations.length} stations from Baserow`);
+      }
       return allStations.map(mapBaserowStation);
     } catch (error) {
       console.error('Error fetching stations from Baserow:', error);

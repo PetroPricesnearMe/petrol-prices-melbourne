@@ -55,7 +55,9 @@ export function useWhyDidYouUpdate(name: string, props: Record<string, any>) {
       });
 
       if (Object.keys(changedProps).length > 0) {
-        console.log('[WhyDidYouUpdate]', name, changedProps);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[WhyDidYouUpdate]', name, changedProps);
+        }
       }
     }
 

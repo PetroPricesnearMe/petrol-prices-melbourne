@@ -98,7 +98,8 @@ export const footerConfig = {
     onSubmit: async (email: string) => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log('Newsletter subscription:', email);
+      // TODO: Integrate with newsletter API
+      // await newsletterService.subscribe(email);
     },
   },
 

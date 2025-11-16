@@ -216,7 +216,9 @@ export class CircuitBreaker {
       const now = Date.now();
       if (now - this.lastFailureTime >= this.resetTimeout) {
         this.state = 'half-open';
-        console.log('Circuit breaker entering half-open state');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Circuit breaker entering half-open state');
+        }
       } else {
         throw new Error('Circuit breaker is open');
       }

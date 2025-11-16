@@ -118,14 +118,16 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           className
         )}
         onClick={onClick}
-        role={onClick ? 'button' : undefined}
-        tabIndex={onClick ? 0 : undefined}
-        onKeyDown={(e) => {
-          if (onClick && (e.key === 'Enter' || e.key === ' ')) {
-            e.preventDefault();
-            onClick();
-          }
-        }}
+        {...(onClick && {
+          role: 'button',
+          tabIndex: 0,
+          onKeyDown: (e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onClick();
+            }
+          },
+        })}
         {...props}
       >
         {children}

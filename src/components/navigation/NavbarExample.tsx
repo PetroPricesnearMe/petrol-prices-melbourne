@@ -33,7 +33,9 @@ export function NavbarExample() {
       }
       links={links}
       showSearch
-      onSearchClick={() => console.log('Search clicked')}
+      onSearchClick={() => {
+        // Handle search click - navigate to search page or open search modal
+      }}
       cta={{
         text: 'Get Started',
         href: '/directory',

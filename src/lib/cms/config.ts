@@ -232,7 +232,9 @@ export function logConfig(): void {
     enableDebugLogging: config.enableDebugLogging,
   };
 
-  console.log('CMS Configuration:', JSON.stringify(safeConfig, null, 2));
+  if (process.env.NODE_ENV === 'development') {
+    console.log('CMS Configuration:', JSON.stringify(safeConfig, null, 2));
+  }
 }
 
 /**

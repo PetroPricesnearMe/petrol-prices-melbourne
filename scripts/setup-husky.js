@@ -8,9 +8,8 @@
  * are only needed for local development when a `.git` directory exists.
  */
 
-// Hard guard for CI/Vercel so `npm install` never fails because of Husky.
-// This includes multiple signals because different environments set different vars.
-// We also treat NODE_ENV=production as CI-like for safety on hosts that don't set CI/VERCEL.
+// CRITICAL: Hard guard for CI/Vercel at the VERY TOP before any requires
+// This must run before any module loading to prevent MODULE_NOT_FOUND errors
 const ciLikeEnv =
   !!process.env.CI ||
   !!process.env.VERCEL ||
@@ -21,7 +20,7 @@ const ciLikeEnv =
   process.env.HUSKY === '0';
 
 if (ciLikeEnv) {
-  console.log('⏭️  Skipping Husky setup in CI/Vercel (CI/VERCEL/HUSKY env detected)');
+  // Exit immediately without loading any modules
   process.exit(0);
 }
 

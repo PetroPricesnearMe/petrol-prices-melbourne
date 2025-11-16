@@ -38,7 +38,9 @@ export const swrConfig: SWRConfiguration = {
     // You can add error reporting here
   },
   onSuccess: (data, key) => {
-    console.log('SWR Success:', key, data);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('SWR Success:', key, data);
+    }
   },
   onLoadingSlow: (key) => {
     console.warn('SWR Loading Slow:', key);

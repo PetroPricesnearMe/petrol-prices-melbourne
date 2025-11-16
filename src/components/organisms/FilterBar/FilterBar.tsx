@@ -121,7 +121,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                         ? 'border-primary-500 bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
                         : 'border-gray-300 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300'
                     )}
-                    aria-pressed={activePanel === 'price' ? 'true' : 'false'}
+                    aria-pressed={activePanel === 'price'}
                     aria-label="Toggle price filter"
                   >
                     💰 Price
@@ -140,7 +140,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                         ? 'border-primary-500 bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
                         : 'border-gray-300 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300'
                     )}
-                    aria-pressed={activePanel === 'rating' ? 'true' : 'false'}
+                    aria-pressed={activePanel === 'rating'}
                     aria-label="Toggle rating filter"
                   >
                     ⭐ Rating

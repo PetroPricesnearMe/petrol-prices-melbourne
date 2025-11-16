@@ -123,8 +123,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             disabled={disabled}
             aria-label={ariaLabel}
             aria-describedby={describedBy}
-            aria-invalid={error}
-            aria-required={required}
+            aria-invalid={error || undefined}
+            aria-required={required || undefined}
             data-testid={testId}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}

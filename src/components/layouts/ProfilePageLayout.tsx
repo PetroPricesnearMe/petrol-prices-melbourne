@@ -519,7 +519,8 @@ export function ProfilePageLayout({
 }: ProfilePageLayoutProps) {
   const handleContactSubmit = async (data: ContactFormData) => {
     // Handle form submission - integrate with your backend
-    console.log('Contact form submitted:', data);
+    // TODO: Integrate with contact form API
+    // await contactService.submit(data);
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));

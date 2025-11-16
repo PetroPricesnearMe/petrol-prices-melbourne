@@ -111,18 +111,16 @@ export function AnimatedCard({
       <div
         className={baseClasses}
         onClick={onClick}
-        role={onClick ? 'button' : undefined}
-        tabIndex={onClick ? 0 : undefined}
-        onKeyDown={
-          onClick
-            ? (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  onClick();
-                }
-              }
-            : undefined
-        }
+        {...(onClick && {
+          role: 'button',
+          tabIndex: 0,
+          onKeyDown: (event: React.KeyboardEvent) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              onClick();
+            }
+          },
+        })}
       >
         {children}
       </div>
