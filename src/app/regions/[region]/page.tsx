@@ -40,12 +40,15 @@ const regions = {
   },
 };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { region: string };
-}): Promise<Metadata> {
-  const region = regions[params.region as keyof typeof regions];
+type RegionParams = {
+  params: Promise<{ region: string }>;
+};
+
+export async function generateMetadata(
+  { params }: RegionParams
+): Promise<Metadata> {
+  const { region: regionSlug } = await params;
+  const region = regions[regionSlug as keyof typeof regions];
 
   if (!region) {
     return {
@@ -79,12 +82,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function RegionPage({ params }: { params: { region: string } }) {
-  const region = regions[params.region as keyof typeof regions];
+export default async function RegionPage({ params }: RegionParams) {
+  const { region: regionSlug } = await params;
+  const region = regions[regionSlug as keyof typeof regions];
 
   if (!region) {
     notFound();
   }
 
-  return <RegionStationsClient region={region} regionSlug={params.region} />;
+  return <RegionStationsClient region={region} regionSlug={regionSlug} />;
 }

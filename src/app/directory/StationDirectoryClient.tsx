@@ -224,8 +224,9 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
       const hasPriceFilter = filters.priceMax !== '';
 
       if (isPriceSorting || hasPriceFilter) {
+        const fuelKey = filters.fuelType as keyof FuelPrices;
         // Only show stations with selected fuel type when price sorting/filtering is active
-        result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
+        result = result.filter((s) => s.fuelPrices[fuelKey] !== null);
       }
     }
 
@@ -233,7 +234,8 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
     if (filters.priceMax && filters.fuelType !== 'all') {
       const maxPrice = parseFloat(filters.priceMax);
       result = result.filter((s) => {
-        const price = s.fuelPrices[filters.fuelType];
+        const fuelKey = filters.fuelType as keyof FuelPrices;
+        const price = s.fuelPrices[fuelKey];
         return price !== null && price <= maxPrice;
       });
     }
@@ -282,12 +284,13 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
   // Handle advanced search
   const handleAdvancedSearch = useCallback(
-    (query: string, results: Station[]) => {
-      setSearchResults(results);
+    (query: string, data: unknown) => {
+      const stations = Array.isArray(data) ? (data as Station[]) : initialStations;
+      setSearchResults(stations);
       setFilters((prev) => ({ ...prev, search: query }));
       setCurrentPage(1);
     },
-    []
+    [initialStations]
   );
 
   // Pagination
@@ -738,7 +741,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                   <div className="flex gap-1 sm:gap-2">
                     {[...Array(Math.min(totalPages, 7))].map((_, i) => {
-                      let page;
+                      let page: number;
                       if (totalPages <= 7) {
                         page = i + 1;
                       } else if (currentPage <= 4) {
