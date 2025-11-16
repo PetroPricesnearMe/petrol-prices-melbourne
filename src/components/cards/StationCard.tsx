@@ -132,9 +132,12 @@ function getBrandClass(brand: string) {
 
 /**
  * Get price color based on value
+ *
+ * Accepts optional/unknown values to match fuel price typing and
+ * safely falls back when the value is not a valid number.
  */
-function getPriceColor(price: number | null): string {
-  if (price === null) return 'text-gray-400';
+function getPriceColor(price: number | null | undefined): string {
+  if (price == null) return 'text-gray-400';
   if (price < 200) return 'text-success-600 dark:text-success-400';
   if (price <= 210) return 'text-warning-600 dark:text-warning-400';
   return 'text-error-600 dark:text-error-400';
@@ -201,7 +204,15 @@ const FuelPriceDisplay = memo<FuelPriceDisplayProps>(
 
     return (
       <div className={cn('space-y-1.5 sm:space-y-2', className)}>
-        {Object.entries(fuelPrices).map(([type, price]) => {
+        {Object.entries(fuelPrices).map(([type, rawPrice]) => {
+          // Safely narrow to a numeric price; ignore non-numeric/empty values
+          const price =
+            typeof rawPrice === 'number'
+              ? rawPrice
+              : rawPrice && typeof (rawPrice as { value?: unknown }).value === 'number'
+                ? ((rawPrice as { value: number }).value as number)
+                : null;
+
           if (price === null) return null;
           const isSelected = type === selectedFuelType;
 
@@ -254,7 +265,6 @@ export const StationCard = memo<StationCardProps>(
     className,
     onCardClick,
   }) => {
-    const brandInfo = getBrandInfo(station.brand);
     const brandClass = getBrandClass(station.brand);
 
     const handleCardClick = () => {
@@ -264,7 +274,7 @@ export const StationCard = memo<StationCardProps>(
     };
 
     const cardContent = (
-      <article
+      <div
         className={cn(
           'overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm',
           'cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl',
@@ -274,6 +284,15 @@ export const StationCard = memo<StationCardProps>(
         itemScope
         itemType="https://schema.org/GasStation"
         onClick={handleCardClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleCardClick();
+          }
+        }}
+        aria-label={`View details for ${station.name} in ${station.suburb}`}
       >
         {/* Brand Header */}
         <BrandHeader
@@ -337,7 +356,7 @@ export const StationCard = memo<StationCardProps>(
             View Details →
           </Link>
         </div>
-      </article>
+      </div>
     );
 
     if (showTransition) {

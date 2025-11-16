@@ -3,7 +3,6 @@
  * Dynamic route: /stations/[id]
  */
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -273,7 +272,7 @@ function QuickInfoCard({
 /**
  * Fuel Price Summary Component
  */
-function FuelPriceSummary({ station }: { station: Station }) {
+function FuelPriceSummary({ station: _station }: { station: Station }) {
   // Mock fuel prices - replace with actual data
   const fuelPrices = [
     { type: 'Unleaded 91', price: '169.9', trend: 'up' },
@@ -356,7 +355,7 @@ function StationInfoSummary({ station }: { station: Station }) {
 function NearbyStationsSummary({ stations }: { stations: Station[] }) {
   return (
     <div className="space-y-2">
-      {stations.map((station, index) => (
+      {stations.map((station) => (
         <div
           key={station.id}
           className="flex items-center justify-between text-sm"

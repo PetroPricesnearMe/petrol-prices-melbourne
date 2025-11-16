@@ -21,12 +21,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { type ReactNode } from 'react';
 
-import {
-  fadeInUp,
-  scaleIn,
-  ANIMATION_DURATION,
-  ANIMATION_EASING,
-} from '@/utils/animations';
+import { fadeInUp, scaleIn } from '@/utils/animations';
 
 export interface EnhancedHeroSectionProps {
   /** Main heading text */

@@ -14,15 +14,11 @@
 
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { useMemo, type ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
-import {
-  staggerContainer,
-  staggerItem,
-  type Variants,
-} from '@/utils/animations';
+import { staggerContainer } from '@/utils/animations';
 import {
   buildGridClasses,
   type GapSize,
@@ -89,8 +85,6 @@ export function EnhancedCardGrid({
       },
     };
   }, [shouldReduceMotion, animate, staggerDelay]);
-
-  const itemVariants = shouldReduceMotion || !animate ? undefined : staggerItem;
 
   return (
     <motion.div

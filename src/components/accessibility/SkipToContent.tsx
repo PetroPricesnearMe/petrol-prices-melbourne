@@ -88,6 +88,7 @@ export function SkipToContent({
       className={`skip-to-content ${className}`}
       aria-label="Skip links"
       role="navigation"
+      data-visible={isVisible}
     >
       {links.map((link, index) => (
         <a

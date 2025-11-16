@@ -117,7 +117,7 @@ export default async function CMSExamplePage() {
             data={stations.data}
             isLoading={false}
             emptyMessage="No stations available"
-            renderItem={(station, index) => (
+            renderItem={(station) => (
               <StationCard key={station.id} station={station} />
             )}
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"

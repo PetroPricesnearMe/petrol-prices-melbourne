@@ -7,7 +7,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState, useCallback, useMemo } from 'react';
 
 import {
@@ -147,13 +146,6 @@ const getBrandClass = (brand: string) => {
   return brandClassMap[brand] || 'badge-secondary';
 };
 
-// Search category interface
-interface SearchCategory {
-  id: string;
-  label: string;
-  icon: string;
-}
-
 // Advanced Search Bar component (simplified for now)
 function AdvancedSearchBar({
   placeholder,
@@ -198,30 +190,6 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   const [showFilters, setShowFilters] = useState(false);
   const [searchResults, setSearchResults] =
     useState<Station[]>(initialStations);
-  const [selectedSearchCategory, setSelectedSearchCategory] = useState('all');
-
-  // Search categories for advanced search bar
-  const searchCategories: SearchCategory[] = [
-    { id: 'all', label: 'All', icon: '🔍' },
-    { id: 'name', label: 'Name', icon: '🏪' },
-    { id: 'brand', label: 'Brand', icon: '🏢' },
-    { id: 'suburb', label: 'Suburb', icon: '📍' },
-  ];
-
-  // Get search keys based on category
-  const getSearchKeys = useCallback(() => {
-    switch (selectedSearchCategory) {
-      case 'name':
-        return ['name'];
-      case 'brand':
-        return ['brand'];
-      case 'suburb':
-        return ['suburb'];
-      default:
-        return ['name', 'brand', 'suburb', 'address'];
-    }
-  }, [selectedSearchCategory]);
-
   // Filter and sort stations
   const filteredStations = useMemo(() => {
     let result = [...searchResults];
@@ -321,11 +289,6 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
     },
     []
   );
-
-  // Handle search category change
-  const handleSearchCategoryChange = useCallback((categoryId: string) => {
-    setSelectedSearchCategory(categoryId);
-  }, []);
 
   // Pagination
   const totalPages = Math.ceil(filteredStations.length / ITEMS_PER_PAGE);
@@ -534,9 +497,9 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                   {/* Sort */}
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <p className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                       🔄 Sort By
-                    </label>
+                    </p>
                     <SortDropdown
                       value={filters.sortBy}
                       onChange={(value) => handleFilterChange('sortBy', value)}
@@ -646,9 +609,9 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                             alt={`${brandInfo.name} logo`}
                             fill
                             className="object-contain"
-                            onError={(e) => {
+                            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                               // Fallback to default logo
-                              e.currentTarget.src =
+                              (e.currentTarget as HTMLImageElement).src =
                                 '/images/brands/default-logo.svg';
                             }}
                           />

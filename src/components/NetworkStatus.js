@@ -25,7 +25,7 @@ const NetworkStatus = () => {
           <>
             <span className="network-icon">📡</span>
             <span className="network-message">
-              You're offline. Some features may not work.
+              You&apos;re offline. Some features may not work.
             </span>
           </>
         ) : (

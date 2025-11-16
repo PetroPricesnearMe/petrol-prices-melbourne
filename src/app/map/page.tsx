@@ -13,7 +13,6 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { StructuredData } from '@/components/StructuredData';
-import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import metadataJson from '@/data/stations-metadata.json';
 import stationsData from '@/data/stations.json';
 import { generateWebSiteSchema } from '@/lib/schema';

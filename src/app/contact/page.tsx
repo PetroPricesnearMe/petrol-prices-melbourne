@@ -159,22 +159,22 @@ export default function ContactPage() {
                   Follow Us
                 </h3>
                 <div className="flex gap-3">
-                  <a
-                    href="#"
+                  <button
+                    type="button"
                     className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-900"
                     aria-label="Follow us on Twitter"
                   >
                     <span className="sr-only">Twitter</span>
                     <span aria-hidden="true">𝕏</span>
-                  </a>
-                  <a
-                    href="#"
+                  </button>
+                  <button
+                    type="button"
                     className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-900"
                     aria-label="Follow us on Facebook"
                   >
                     <span className="sr-only">Facebook</span>
                     <span aria-hidden="true">f</span>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

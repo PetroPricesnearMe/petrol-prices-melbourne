@@ -12,10 +12,9 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import Map, { Marker, Popup, Source, Layer } from 'react-map-gl/mapbox';
+import { useState, useRef, useCallback } from 'react';
+import Map, { Marker, Popup } from 'react-map-gl/mapbox';
 import type { MapRef } from 'react-map-gl/mapbox';
 
 import { cn } from '@/styles/system/css-in-js';
@@ -62,10 +61,6 @@ interface MapViewProps {
   defaultZoom?: number;
   defaultCenter?: [number, number];
 }
-
-// Cluster configuration
-const CLUSTER_RADIUS = 50;
-const CLUSTER_MAX_ZOOM = 14;
 
 // Brand colors for markers
 const getBrandColor = (brand: string): string => {
@@ -135,8 +130,6 @@ const StationPopup = ({
   station: Station;
   onClose: () => void;
 }) => {
-  const brandColor = getBrandColor(station.brand);
-
   const getPriceColor = (price: number | null): string => {
     if (price === null) return 'text-gray-400';
     if (price < 200) return 'text-green-600';
@@ -265,11 +258,11 @@ const StationPopup = ({
 
 export function MapView({
   stations,
-  selectedStation,
+  selectedStation: _selectedStation,
   onStationSelect,
   className,
   height = '500px',
-  showClustering = true,
+  showClustering: _showClustering = true,
   defaultZoom = 10,
   defaultCenter = [144.9631, -37.8136], // Melbourne coordinates
 }: MapViewProps) {

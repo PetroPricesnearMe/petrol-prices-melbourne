@@ -14,14 +14,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Mail,
-  Phone,
-  MapPin,
-} from 'lucide-react';
+import { Facebook, Twitter, Instagram, MapPin } from 'lucide-react';
 import { type ReactNode } from 'react';
 
 import { useMounted } from '@/hooks/useMounted';
@@ -189,7 +182,7 @@ export function EnhancedFooter({
           </motion.div>
 
           {/* Footer Sections */}
-          {sections.map((section, index) => (
+          {sections.map((section) => (
             <motion.div key={section.title} variants={itemVariants}>
               <h4 className="mb-4 font-semibold text-white">{section.title}</h4>
               <ul className="space-y-3">

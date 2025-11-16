@@ -96,10 +96,6 @@ export function AnimatedGrid({
     ? getReducedMotionVariants(containerVariants)
     : containerVariants;
 
-  const finalItemVariants = shouldReduceMotion
-    ? getReducedMotionVariants(staggerItem)
-    : staggerItem;
-
   return (
     <motion.div
       initial="hidden"

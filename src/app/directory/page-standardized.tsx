@@ -6,7 +6,6 @@
 
 import { Search, Filter, MapPin, Star } from 'lucide-react';
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 import {
   Container,
@@ -144,9 +143,9 @@ export default function DirectoryPageStandardized() {
                     <CardContent className="space-y-6">
                       {/* Fuel Type */}
                       <div>
-                        <label className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <p className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
                           Fuel Type
-                        </label>
+                        </p>
                         <div className="space-y-2">
                           {[
                             'Unleaded (ULP)',
@@ -174,9 +173,9 @@ export default function DirectoryPageStandardized() {
 
                       {/* Brand */}
                       <div>
-                        <label className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <p className="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
                           Brand
-                        </label>
+                        </p>
                         <div className="space-y-2">
                           {[
                             'Shell',
@@ -334,7 +333,7 @@ export default function DirectoryPageStandardized() {
 // STATION CARD COMPONENT
 // ============================================================================
 
-function StationCard({ id }: { id: number }) {
+function StationCard({ id: _id }: { id: number }) {
   return (
     <Card hoverable clickable className="h-full">
       <CardHeader>

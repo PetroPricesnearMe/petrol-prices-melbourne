@@ -176,7 +176,8 @@ export function OptimizedImage({
   const optimalQuality = quality ?? getOptimalQuality(usage);
 
   // Determine optimal sizes based on usage
-  const optimalSizes = sizes ?? getOptimalSizes(usage);
+  const optimalSizes =
+    sizes ?? getOptimalSizes(usage === 'background' ? 'hero' : usage);
 
   // Determine loading strategy
   const loadingStrategy = getImageLoadingStrategy(
@@ -294,6 +295,7 @@ export function OptimizedImage({
         quality={optimalQuality}
         priority={priority || loadingStrategy.priority}
         loading={finalLoading}
+        fetchPriority={finalFetchPriority}
         sizes={optimalSizes}
         placeholder="blur"
         blurDataURL={defaultBlurDataURL}

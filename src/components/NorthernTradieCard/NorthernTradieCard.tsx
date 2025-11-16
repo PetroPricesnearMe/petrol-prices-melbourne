@@ -206,6 +206,7 @@ const NorthernTradieCardBase = memo<NorthernTradieCardProps>(
 
     // Base card element
     const cardElement = (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         ref={cardRef}
         className={cn(
@@ -237,6 +238,7 @@ const NorthernTradieCardBase = memo<NorthernTradieCardProps>(
     // Wrap with animation if enabled
     if (animated) {
       return (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <motion.div
           ref={cardRef}
           initial="hidden"

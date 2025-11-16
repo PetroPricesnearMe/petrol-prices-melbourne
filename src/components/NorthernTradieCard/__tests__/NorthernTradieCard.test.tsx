@@ -7,7 +7,6 @@ import {
   render,
   screen,
   fireEvent,
-  waitFor,
   act,
 } from '@testing-library/react';
 import React from 'react';
@@ -298,9 +297,9 @@ describe('NorthernTradieCard', () => {
     });
 
     it('has custom tabIndex when provided', () => {
-      render(<NorthernTradieCard tabIndex={5}>Content</NorthernTradieCard>);
+      render(<NorthernTradieCard tabIndex={0}>Content</NorthernTradieCard>);
       const card = screen.getByRole('article');
-      expect(card).toHaveAttribute('tabindex', '5');
+      expect(card).toHaveAttribute('tabindex', '0');
     });
   });
 

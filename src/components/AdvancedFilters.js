@@ -238,7 +238,7 @@ const AdvancedFilters = ({
 
             {/* Price Range */}
             <div className="filter-group filter-group-wide">
-              <label className="filter-label">💰 Price Range (per liter)</label>
+              <p className="filter-label">💰 Price Range (per liter)</p>
               <div className="price-range-inputs">
                 <input
                   type="number"

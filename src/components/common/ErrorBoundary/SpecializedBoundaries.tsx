@@ -7,6 +7,7 @@
 
 import React from 'react';
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 
 import { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
 
@@ -140,7 +141,7 @@ interface ChartErrorFallbackProps {
   error: Error;
 }
 
-const ChartErrorFallback: React.FC<ChartErrorFallbackProps> = ({ error }) => (
+const ChartErrorFallback: React.FC<ChartErrorFallbackProps> = ({ error: _error }) => (
   <div className="chart-error-boundary" role="alert">
     <div className="bg-blue-50 border-blue-200 flex h-64 items-center justify-center rounded-lg border">
       <div className="p-6 text-center">
@@ -189,7 +190,7 @@ interface FormErrorFallbackProps {
 }
 
 const FormErrorFallback: React.FC<FormErrorFallbackProps> = ({
-  error,
+  error: _error,
   onReset,
 }) => (
   <div className="form-error-boundary" role="alert">
@@ -285,12 +286,12 @@ const PageErrorFallback: React.FC<PageErrorFallbackProps> = ({ error }) => (
         >
           Reload Page
         </button>
-        <a
+        <Link
           href="/"
           className="rounded-md bg-gray-200 px-6 py-3 text-gray-800 transition-colors hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
         >
           Go to Homepage
-        </a>
+        </Link>
       </div>
       {process.env.NODE_ENV === 'development' && (
         <details className="mt-8 text-left">

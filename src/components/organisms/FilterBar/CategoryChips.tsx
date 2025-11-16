@@ -131,6 +131,12 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
     lg: 'w-5 h-5',
   };
 
+  const variantClasses = {
+    default: '',
+    compact: 'rounded-md',
+    pill: 'rounded-full',
+  } as const;
+
   return (
     <div
       className={cn('category-chips', className)}
@@ -199,10 +205,11 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
                 onClick={() => handleToggle(category.id)}
                 disabled={disabled}
                 className={cn(
-                  'inline-flex items-center gap-1.5 rounded-lg font-medium transition-all',
+                  'inline-flex items-center gap-1.5 font-medium transition-all',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                   sizeClasses[size],
+                  variantClasses[variant],
                   {
                     // Selected state
                     'bg-primary-600 text-white shadow-md hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600':

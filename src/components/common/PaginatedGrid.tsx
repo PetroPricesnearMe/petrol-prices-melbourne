@@ -265,6 +265,7 @@ export function PaginatedGrid<T = any>({
           initial="initial"
           animate="animate"
           exit="exit"
+          tabIndex={keyboardNav ? 0 : -1}
         >
           {currentItems.map((item, index) => (
             <motion.div

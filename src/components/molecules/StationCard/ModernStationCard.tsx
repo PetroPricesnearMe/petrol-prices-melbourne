@@ -14,7 +14,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { LazyImage } from '@/components/atoms/LazyImage';
@@ -45,7 +44,7 @@ interface StationCardProps {
 }
 
 export function ModernStationCard({
-  id,
+  id: _id,
   name,
   brand,
   address,

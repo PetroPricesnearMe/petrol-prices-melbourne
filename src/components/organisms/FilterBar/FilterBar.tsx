@@ -66,7 +66,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   showPrice = true,
   className,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
   const [activePanel, setActivePanel] = useState<
     'categories' | 'price' | 'rating' | null
   >(null);
@@ -201,6 +200,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         </AnimatePresence>
       </div>
 
+      {/* styled-jsx block for filter bar scrollbar hiding */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         .hide-scrollbar {
           -ms-overflow-style: none;

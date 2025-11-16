@@ -16,7 +16,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-import { HamburgerIcon } from '@/components/ui/HamburgerIcon';
 import { cn } from '@/styles/system/css-in-js';
 
 import { MobileMenu } from './MobileMenu';

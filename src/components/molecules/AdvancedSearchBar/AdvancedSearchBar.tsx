@@ -290,8 +290,6 @@ export function AdvancedSearchBar<T = any>({
   // Highlight matching text
   const highlightMatch = (text: string, matches: unknown[] = []) => {
     if (!matches.length) return text;
-
-    const result = text;
     const indices: Array<[number, number]> = [];
 
     matches.forEach((match) => {
@@ -474,19 +472,21 @@ export function AdvancedSearchBar<T = any>({
                     const itemIndex = suggestions.length + index;
                     const isSelected = selectedIndex === itemIndex;
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={`recent-${index}`}
                         data-index={itemIndex}
                         className={`suggestion-item ${isSelected ? 'selected' : ''}`}
                         onClick={() => handleRecentSearchClick(search)}
                         role="option"
                         aria-selected={isSelected ? 'true' : 'false'}
+                        tabIndex={-1}
                       >
                         <span className="suggestion-icon" aria-hidden="true">
                           🕐
                         </span>
                         <span className="suggestion-text">{search}</span>
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
@@ -503,7 +503,8 @@ export function AdvancedSearchBar<T = any>({
                   {suggestions.map((result, index) => {
                     const isSelected = selectedIndex === index;
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={`suggestion-${index}`}
                         id={`suggestion-${index}`}
                         data-index={index}
@@ -511,6 +512,7 @@ export function AdvancedSearchBar<T = any>({
                         onClick={() => handleSuggestionClick(result)}
                         role="option"
                         aria-selected={isSelected ? 'true' : 'false'}
+                        tabIndex={-1}
                       >
                         <span className="suggestion-icon" aria-hidden="true">
                           🔍
@@ -526,7 +528,7 @@ export function AdvancedSearchBar<T = any>({
                             {Math.round((1 - result.score) * 100)}%
                           </span>
                         )}
-                      </div>
+                      </button>
                     );
                   })}
                 </div>

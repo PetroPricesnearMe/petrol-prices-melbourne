@@ -111,13 +111,15 @@ export function getOptimalQuality(
  * Get optimal image sizes based on usage
  */
 export function getOptimalSizes(
-  usage: 'hero' | 'thumbnail' | 'card' | 'icon' = 'card'
+  usage: 'hero' | 'thumbnail' | 'card' | 'icon' | 'background' = 'card'
 ): string {
   const sizesMap: Record<string, string> = {
     hero: '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px',
     card: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
     thumbnail: '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw',
     icon: '64px',
+    // Background images typically span full viewport width
+    background: '100vw',
   };
 
   return sizesMap[usage] || sizesMap.card;

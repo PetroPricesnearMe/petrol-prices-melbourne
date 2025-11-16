@@ -233,6 +233,8 @@ const Navbar = React.memo(() => {
         </div>
       </div>
 
+      {/* styled-jsx block for navbar animations */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         @keyframes slideInRight {
           from {

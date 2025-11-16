@@ -326,6 +326,14 @@ class ExtensionErrorBoundary extends Component {
             </div>
           </div>
 
+          {/* styled-jsx block for extension error boundary visuals */}
+          {/* eslint-disable-next-line react/no-unknown-property */}
+          <style jsx>{`
+            </div>
+          </div>
+
+          {/* styled-jsx block for extension error boundary visuals */}
+          {/* eslint-disable-next-line react/no-unknown-property */}
           <style jsx>{`
             .extension-error-boundary {
               position: fixed;

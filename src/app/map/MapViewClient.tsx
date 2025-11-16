@@ -400,10 +400,10 @@ export function MapViewClient({ initialStations, metadata }: Props) {
 
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {/* Sort */}
-                    <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        🔄 Sort By
-                      </label>
+                  <div>
+                    <p className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      🔄 Sort By
+                    </p>
                       <SortDropdown
                         value={filters.sortBy}
                         onChange={(value) =>
@@ -479,6 +479,15 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                     key={station.id}
                     className="card card-hover cursor-pointer"
                     onClick={() => handleStationSelect(station)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        handleStationSelect(station);
+                      }
+                    }}
+                    aria-label={`Select station ${station.name} in ${station.suburb}`}
                   >
                     <div className="p-4">
                       <h3 className="mb-2 font-bold text-gray-900 dark:text-white">

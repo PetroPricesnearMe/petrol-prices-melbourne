@@ -9,6 +9,7 @@
  */
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
@@ -121,12 +122,12 @@ export default async function StationPage({ params }: PageProps) {
         <nav className="mb-8 text-sm" aria-label="Breadcrumb">
           <ol className="flex items-center gap-2">
             <li>
-              <a
+              <Link
                 href="/cms-example"
                 className="text-blue-600 hover:text-blue-800"
               >
                 Stations
-              </a>
+              </Link>
             </li>
             <li aria-hidden="true">/</li>
             <li className="text-gray-600" aria-current="page">

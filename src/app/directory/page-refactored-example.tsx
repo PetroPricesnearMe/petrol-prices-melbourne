@@ -47,8 +47,13 @@ export default function DirectoryPageRefactored() {
 
         {/* Fuel Type */}
         <div className="mb-6">
-          <label className="mb-2 block text-sm font-medium">Fuel Type</label>
-          <select className="input w-full">
+          <label
+            htmlFor="directory-fuel-type"
+            className="mb-2 block text-sm font-medium"
+          >
+            Fuel Type
+          </label>
+          <select id="directory-fuel-type" className="input w-full">
             <option>All Types</option>
             <option>Unleaded (ULP)</option>
             <option>Premium 95</option>
@@ -60,7 +65,7 @@ export default function DirectoryPageRefactored() {
 
         {/* Brand */}
         <div className="mb-6">
-          <label className="mb-2 block text-sm font-medium">Brand</label>
+          <p className="mb-2 block text-sm font-medium">Brand</p>
           <div className="space-y-2">
             {['All Brands', 'Shell', 'BP', 'Caltex', '7-Eleven', 'United'].map(
               (brand) => (
@@ -78,8 +83,19 @@ export default function DirectoryPageRefactored() {
 
         {/* Price Range */}
         <div className="mb-6">
-          <label className="mb-2 block text-sm font-medium">Max Price</label>
-          <input type="range" min="150" max="250" className="w-full" />
+          <label
+            htmlFor="directory-max-price"
+            className="mb-2 block text-sm font-medium"
+          >
+            Max Price
+          </label>
+          <input
+            id="directory-max-price"
+            type="range"
+            min="150"
+            max="250"
+            className="w-full"
+          />
           <div className="mt-1 flex justify-between text-xs text-gray-500">
             <span>150¢</span>
             <span>250¢</span>
@@ -88,8 +104,13 @@ export default function DirectoryPageRefactored() {
 
         {/* Distance */}
         <div>
-          <label className="mb-2 block text-sm font-medium">Distance</label>
-          <select className="input w-full">
+          <label
+            htmlFor="directory-distance"
+            className="mb-2 block text-sm font-medium"
+          >
+            Distance
+          </label>
+          <select id="directory-distance" className="input w-full">
             <option>Any Distance</option>
             <option>Within 5km</option>
             <option>Within 10km</option>

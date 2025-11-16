@@ -1,43 +1,41 @@
 /**
  * Lazy Loading Utilities
- * 
+ *
  * Utilities for implementing lazy loading strategies:
  * - Component lazy loading
  * - Image lazy loading
  * - Route-based code splitting
  * - Dynamic imports with loading states
- * 
+ *
  * @module lib/performance/lazy-loading
  */
 
-import React, { ComponentType, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 /**
  * Dynamic import with loading state
  */
-export function createLazyComponent<T extends ComponentType<any>>(
-  importFn: () => Promise<{ default: T }>,
-  fallback?: React.ComponentType
-): React.LazyExoticComponent<T> {
+export function createLazyComponent(
+  importFn: () => Promise<{ default: React.ComponentType<any> }>
+): React.LazyExoticComponent<React.ComponentType<any>> {
   return lazy(importFn);
 }
 
 /**
  * Lazy load component with Suspense boundary
  */
-export function LazyComponent<T extends ComponentType<any>>({
-  importFn,
-  fallback,
-  ...props
-}: {
-  importFn: () => Promise<{ default: T }>;
-  fallback?: React.ReactNode;
-} & React.ComponentProps<T>): JSX.Element {
+export function LazyComponent(
+  props: {
+    importFn: () => Promise<{ default: React.ComponentType<any> }>;
+    fallback?: React.ReactNode;
+  } & Record<string, unknown>
+): React.ReactElement {
+  const { importFn, fallback, ...rest } = props;
   const LazyComp = lazy(importFn);
 
   return (
     <Suspense fallback={fallback || <div>Loading...</div>}>
-      <LazyComp {...props} />
+      <LazyComp {...(rest as any)} />
     </Suspense>
   );
 }
@@ -93,7 +91,7 @@ export function useLazyImage(
   const [shouldLoad, setShouldLoad] = React.useState(false);
   const imgRef = React.useRef<HTMLImageElement>(null);
 
-  const isIntersecting = useIntersectionObserver(imgRef, {
+  const isIntersecting = useIntersectionObserver(imgRef as React.RefObject<Element>, {
     rootMargin: '50px',
   });
 
@@ -178,7 +176,7 @@ export function useRoutePrefetching(routes: string[]): void {
     const handleMouseEnter = (event: Event) => {
       const target = event.target as HTMLElement;
       const link = target.closest('a');
-      
+
       if (link && link.href) {
         try {
           const url = new URL(link.href);
@@ -204,4 +202,5 @@ export function useRoutePrefetching(routes: string[]): void {
     };
   }, [routes]);
 }
+
 

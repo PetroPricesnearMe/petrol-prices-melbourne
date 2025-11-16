@@ -108,6 +108,8 @@ const ExtensionStatus = () => {
         </button>
       </div>
 
+      {/* styled-jsx block for extension status visuals */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
       <style jsx>{`
         .extension-status {
           background: #f8f9fa;

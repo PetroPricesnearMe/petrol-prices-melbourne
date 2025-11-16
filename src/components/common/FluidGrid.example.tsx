@@ -11,7 +11,12 @@ import { FluidGrid, GridItem, DefaultFluidGrid } from './FluidGrid';
 
 // Example 1: Basic usage with station cards
 export function StationCardsGridExample() {
-  const stations = [
+  const stations: Array<{
+    id: string | number;
+    name: string;
+    address: string;
+    price: number;
+  }> = [
     // ... your station data
   ];
 
@@ -55,7 +60,11 @@ export function CustomColumnsExample() {
       uniformHeights={true}
       animate={true}
     >
-      {/* Grid items */}
+      {[1, 2, 3, 4, 5].map((item) => (
+        <GridItem key={item}>
+          <div className="h-24 rounded-lg bg-gray-100" />
+        </GridItem>
+      ))}
     </FluidGrid>
   );
 }
@@ -64,14 +73,23 @@ export function CustomColumnsExample() {
 export function StaticGridExample() {
   return (
     <FluidGrid gap="sm" animate={false} uniformHeights={false}>
-      {/* Grid items without animation */}
+      {[1, 2, 3, 4].map((item) => (
+        <GridItem key={item}>
+          <div className="h-16 rounded-lg bg-gray-100" />
+        </GridItem>
+      ))}
     </FluidGrid>
   );
 }
 
 // Example 4: Combining with existing StationCard component
 export function StationCardsIntegrationExample() {
-  const stations = [
+  const stations: Array<{
+    id: string | number;
+    name: string;
+    address: string;
+    price: number;
+  }> = [
     // ... your station data
   ];
 
@@ -99,11 +117,15 @@ export function StationCardsIntegrationExample() {
 
 // Mock components for example
 const StationCard = ({
-  station,
+  station: _station,
   className,
-  ...props
+  ..._props
 }: {
   station: Record<string, unknown>;
   className?: string;
   [key: string]: unknown;
-}) => <div className={className}>{/* Card content */}</div>;
+}) => (
+  <div className={className} {..._props}>
+    {/* Card content */}
+  </div>
+);

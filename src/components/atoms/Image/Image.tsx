@@ -73,6 +73,7 @@ export function Image({
   quality,
   placeholder = 'blur',
   blurDataURL,
+  alt = '',
   ...props
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -112,6 +113,7 @@ export function Image({
       {/* Optimized Next.js Image */}
       <NextImage
         {...props}
+        alt={alt}
         priority={isPriority}
         quality={imageQuality}
         sizes={defaultSizes}
@@ -137,8 +139,10 @@ export function Image({
  * Hero image variant
  * Automatically configured for LCP optimization
  */
-export function HeroImage(props: Omit<OptimizedImageProps, 'isHero'>) {
-  return <Image {...props} isHero priority />;
+export function HeroImage(
+  props: Omit<OptimizedImageProps, 'isHero'> & { alt: string }
+) {
+  return <Image {...props} isHero priority alt={props.alt} />;
 }
 
 /**
@@ -147,7 +151,10 @@ export function HeroImage(props: Omit<OptimizedImageProps, 'isHero'>) {
 export function Avatar({
   size = 48,
   ...props
-}: Omit<OptimizedImageProps, 'width' | 'height'> & { size?: number }) {
+}: Omit<OptimizedImageProps, 'width' | 'height'> & {
+  size?: number;
+  alt: string;
+}) {
   return (
     <Image
       {...props}

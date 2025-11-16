@@ -143,6 +143,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       className={cn('lazy-image-container', getAspectRatioClass(), className)}
       data-loaded={isLoaded}
       data-error={hasError}
+      data-in-view={isInView}
     >
       <img
         ref={imgRef}
