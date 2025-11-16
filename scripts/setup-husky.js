@@ -8,15 +8,29 @@
  * are only needed for local development when a `.git` directory exists.
  */
 
-// Hard guard for CI/Vercel so `npm install` never fails because of Husky
+// Hard guard for CI/Vercel so `npm install` never fails because of Husky.
+// This includes multiple signals because different environments set different vars.
+// We also treat NODE_ENV=production as CI-like for safety on hosts that don't set CI/VERCEL.
 const ciLikeEnv =
   !!process.env.CI ||
   !!process.env.VERCEL ||
   !!process.env.VERCEL_ENV ||
+  process.env.NODE_ENV === 'production' ||
+  // Vercel's npm wrapper sets a user agent that includes "vercel"
+  (process.env.NPM_CONFIG_USER_AGENT || '').toLowerCase().includes('vercel') ||
   process.env.HUSKY === '0';
 
 if (ciLikeEnv) {
   console.log('⏭️  Skipping Husky setup in CI/Vercel (CI/VERCEL/HUSKY env detected)');
+  process.exit(0);
+}
+
+// If Husky itself isn't installed (e.g. production/CI install with devDependencies omitted),
+// exit gracefully so that `npm install` doesn't fail with MODULE_NOT_FOUND.
+try {
+  require.resolve('husky');
+} catch {
+  console.log('⏭️  Husky not installed (devDependencies omitted). Skipping Husky setup.');
   process.exit(0);
 }
 
