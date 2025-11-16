@@ -19,6 +19,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
+      "@/types": ["./src/types/index.ts"],
       "@/*": ["./*"],
       "@/components/*": ["./src/components/*"],
       "@/lib/*": ["./lib/*", "./src/lib/*"],
