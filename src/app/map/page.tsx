@@ -56,7 +56,7 @@ export default function MapPage() {
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <Suspense fallback={<MapLoading />}>
           <MapViewClient
-            initialStations={stationsData}
+            initialStations={stationsData as unknown as Parameters<typeof MapViewClient>[0]['initialStations']}
             metadata={metadataJson}
           />
         </Suspense>

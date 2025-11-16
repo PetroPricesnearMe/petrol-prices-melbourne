@@ -95,6 +95,8 @@ export interface Station extends StationWithLocation {
   stationName: string;
   locationDetails?: string;
   region?: string;
+  suburb?: string;
+  postcode?: string;
   amenities?: StationAmenities;
   operatingHours?: OperatingHours;
   phoneNumber?: string;

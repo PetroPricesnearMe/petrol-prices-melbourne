@@ -72,10 +72,12 @@ async function getSuburbUrls(): Promise<MetadataRoute.Sitemap> {
     try {
       const metadata = await import('@/data/stations-metadata.json');
       const metadataData = metadata.default || metadata;
-      
+
       if (metadataData?.stats?.bySuburb) {
-        const suburbs = Object.keys(metadataData.stats.bySuburb)
-          .sort((a, b) => (metadataData.stats.bySuburb[b] || 0) - (metadataData.stats.bySuburb[a] || 0))
+        const bySuburb = metadataData.stats.bySuburb as Record<string, number>;
+
+        const suburbs = Object.keys(bySuburb)
+          .sort((a, b) => (bySuburb[b] || 0) - (bySuburb[a] || 0))
           .slice(0, 200); // Top 200 suburbs
 
         return suburbs.map((suburb) => ({

@@ -40,8 +40,8 @@ interface Station {
   fuelPrices: FuelPrices;
   lastUpdated: string;
   verified: boolean;
-  latitude: number | null;
-  longitude: number | null;
+  latitude: number;
+  longitude: number;
 }
 
 interface Metadata {
