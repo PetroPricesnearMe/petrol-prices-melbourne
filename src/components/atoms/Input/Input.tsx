@@ -33,6 +33,10 @@ export interface InputProps
   endIcon?: React.ReactNode;
   /** Full width */
   fullWidth?: boolean;
+  /** Accessible label (forwarded to aria-label) */
+  ariaLabel?: string;
+  /** Accessible description id(s) (forwarded to aria-describedby) */
+  ariaDescribedBy?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(

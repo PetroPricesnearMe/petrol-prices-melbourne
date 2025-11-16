@@ -14,6 +14,7 @@ import { memo } from 'react';
 
 import { ScaleTransition } from '@/components/transitions/SmoothTransitions';
 import type { Station } from '@/types/station';
+import type { FuelPrices } from '@/types';
 import { cn } from '@/utils/cn';
 
 // ============================================================================
@@ -30,8 +31,8 @@ interface StationCardProps {
 }
 
 interface FuelPriceDisplayProps {
-  fuelPrices: Station['fuelPrices'];
-  selectedFuelType?: keyof Station['fuelPrices'];
+  fuelPrices: FuelPrices;
+  selectedFuelType?: keyof FuelPrices;
   className?: string;
 }
 

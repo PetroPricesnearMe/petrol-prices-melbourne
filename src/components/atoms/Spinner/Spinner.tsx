@@ -7,10 +7,15 @@
 import React from 'react';
 
 import { cn } from '@/design-system/utils/styled';
-import type { BaseProps, Size, ColorVariant } from '@/types/index';
+import type {
+  BaseProps,
+  Size,
+  ColorVariant,
+  InteractiveProps,
+} from '@/types/index';
 import './Spinner.css';
 
-export interface SpinnerProps extends BaseProps {
+export interface SpinnerProps extends BaseProps, InteractiveProps {
   /** Size of the spinner */
   size?: Size;
   /** Color variant */

@@ -25,7 +25,7 @@ import { Loader2, AlertCircle, RefreshCw, Home } from 'lucide-react';
 import React from 'react';
 
 import { cn } from '@/design-system/utils';
-import type { ComponentBaseProps } from '@/types';
+import type { ComponentBaseProps } from '@/types/index';
 
 /**
  * Loading spinner variants

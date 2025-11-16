@@ -47,14 +47,16 @@ export interface TextBaseProps extends BaseProps {
   lineClamp?: number;
   /** HTML element to render as */
   as?: TextElement;
+  /** Accessible label forwarded to aria-label */
+  ariaLabel?: string;
+  /** Accessible description ids forwarded to aria-describedby */
+  ariaDescribedBy?: string;
   /** Children */
   children: React.ReactNode;
 }
 
-export type TextProps<E extends TextElement = 'p'> = PolymorphicProps<
-  E,
-  TextBaseProps
->;
+export type TextProps<E extends TextElement = 'p'> = PolymorphicProps<E> &
+  TextBaseProps;
 
 export function Text<E extends TextElement = 'p'>({
   variant = 'body',
@@ -73,7 +75,7 @@ export function Text<E extends TextElement = 'p'>({
   children,
   ...restProps
 }: TextProps<E>) {
-  const Component = as || 'p';
+  const Component: React.ElementType = as || 'p';
 
   const classNames = cn(
     'text',
