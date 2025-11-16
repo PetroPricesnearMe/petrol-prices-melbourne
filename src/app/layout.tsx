@@ -138,15 +138,33 @@ export default function RootLayout({ children }: RootLayoutProps) {
             />
           </>
         )}
+<<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
+<<<<<<< Current (Your changes)
 
+<<<<<<< Current (Your changes)
+        {/* Note: Inter font is loaded via next/font (see Inter config above). */}
+        {/* We intentionally avoid preloading a local /fonts/inter-var.woff2 file */}
+        {/* because no such asset exists in /public/fonts, which caused 404s. */}
+=======
         {/* Preload critical resources */}
-        <link
-          rel="preload"
-          href="/fonts/inter-var.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+        {/*
+          NOTE: We intentionally avoid preloading a specific Inter font
+          file like `/fonts/inter-var.woff2` here.
+          
+          The `next/font/google` integration already handles optimal
+          font loading and generates hashed font assets under
+          `/_next/static/`. Referencing a hard-coded file path can lead
+          to 404s (e.g. `inter-var.woff2` missing) and noisy console
+          warnings, without improving performance.
+        */}
+>>>>>>> Incoming (Background Agent changes)
+=======
+>>>>>>> Incoming (Background Agent changes)
+=======
+>>>>>>> Incoming (Background Agent changes)
+=======
+>>>>>>> Incoming (Background Agent changes)
       </head>
 
       <body

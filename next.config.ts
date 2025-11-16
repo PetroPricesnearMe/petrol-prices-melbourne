@@ -73,11 +73,17 @@ const nextConfig: NextConfig = {
   experimental: {
     // Optimize imports for specific packages (tree-shaking)
     // Automatically optimizes imports to reduce bundle size
-    // Supported in Next.js 14+
+    // Supported in Next.js 14+.
+    //
+    // NOTE:
+    // We intentionally exclude `@headlessui/react` here because using
+    // `optimizePackageImports` for Headless UI can cause Webpack runtime
+    // issues in some setups (e.g. `TypeError: Cannot read properties of
+    // undefined (reading 'call')` in a `__barrel_optimize__` wrapper).
+    // The components are already tree‑shaken effectively by Next.js.
     optimizePackageImports: [
       'lucide-react',
       'framer-motion',
-      '@headlessui/react',
       '@heroicons/react',
       'date-fns',
       'lodash-es',
