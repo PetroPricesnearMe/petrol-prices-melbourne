@@ -8,11 +8,12 @@
  * - 404 handling
  */
 
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+
+import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
 import { getCMS } from '@/lib/cms';
 import { withFallback } from '@/lib/cms/error-handler';
-import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
 
 // Enable ISR
 export const revalidate = 3600;

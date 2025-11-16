@@ -3,10 +3,11 @@
  * Reusable logic encapsulated in hooks
  */
 
-import { useRef, useEffect, useMemo, useState } from 'react';
 import { useInView } from 'framer-motion';
-import type { WebVitalMetric, VitalType, AnimationConfig } from './types';
+import { useRef, useEffect, useMemo, useState } from 'react';
+
 import { VIEWPORT_CONFIG, VIEWPORT_CONFIG_HERO } from './constants';
+import type { WebVitalMetric, VitalType, AnimationConfig } from './types';
 
 // ============================================================================
 // Performance Monitoring Hook

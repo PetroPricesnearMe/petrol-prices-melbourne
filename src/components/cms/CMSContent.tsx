@@ -7,8 +7,10 @@
 
 'use client';
 
-import React, { ReactNode } from 'react';
-import { CMSContent as CMSContentType } from '@/lib/cms/types';
+import type { ReactNode } from 'react';
+import React from 'react';
+
+import type { CMSContent as CMSContentType } from '@/lib/cms/types';
 
 interface CMSContentProps<T extends CMSContentType> {
   data: T[] | null;

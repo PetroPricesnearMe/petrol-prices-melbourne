@@ -19,10 +19,10 @@
 
 'use client';
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, AlertCircle, RefreshCw, Home } from 'lucide-react';
+import React from 'react';
 
 import { cn } from '@/design-system/utils';
 import type { ComponentBaseProps } from '@/types';

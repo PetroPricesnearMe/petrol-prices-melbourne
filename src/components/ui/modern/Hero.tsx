@@ -17,6 +17,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
+
 import { cn } from '@/lib/utils';
 
 // ============================================================================

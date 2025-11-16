@@ -7,7 +7,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { CMSPaginatedResponse, CMSQueryOptions } from '@/lib/cms/types';
+
+import type { CMSPaginatedResponse, CMSQueryOptions } from '@/lib/cms/types';
 
 interface UseCMSOptions extends CMSQueryOptions {
   enabled?: boolean;

@@ -4,7 +4,7 @@
  * Centralized configuration with environment variable validation
  */
 
-import { CMSProvider } from './types';
+import type { CMSProvider } from './types';
 
 /**
  * CMS configuration schema

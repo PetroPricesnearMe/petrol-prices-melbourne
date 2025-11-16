@@ -6,8 +6,8 @@
 
 import React from 'react';
 
-import { useMounted } from '@/hooks/useMounted';
 import { cn } from '@/design-system/utils/styled';
+import { useMounted } from '@/hooks/useMounted';
 import type { BaseProps } from '@/types/index';
 
 import { Text } from '../../atoms/Text';

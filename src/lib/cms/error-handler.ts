@@ -8,7 +8,7 @@
  * - Error reporting
  */
 
-import { CMSError, CMSProvider } from './types';
+import type { CMSError, CMSProvider } from './types';
 
 /**
  * Create a structured CMS error

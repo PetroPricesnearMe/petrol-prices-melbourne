@@ -4,9 +4,9 @@
  * Features: Email, phone, contact form, social links
  */
 
+import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 
 import { Container, Section } from '@/components/layout/ResponsiveGrid';
 

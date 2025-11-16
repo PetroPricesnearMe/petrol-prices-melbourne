@@ -58,7 +58,31 @@ function addGitToPath() {
   return currentPath;
 }
 
+function isCI() {
+  // Check for common CI/CD environment variables
+  return !!(
+    process.env.CI || // Generic CI flag
+    process.env.VERCEL || // Vercel
+    process.env.VERCEL_ENV || // Vercel environment
+    process.env.GITHUB_ACTIONS || // GitHub Actions
+    process.env.GITLAB_CI || // GitLab CI
+    process.env.CIRCLECI || // CircleCI
+    process.env.TRAVIS || // Travis CI
+    process.env.JENKINS_URL || // Jenkins
+    process.env.BUILDKITE || // Buildkite
+    process.env.CODEBUILD_BUILD_ID || // AWS CodeBuild
+    process.env.HUSKY === '0' // Explicitly disabled
+  );
+}
+
 function main() {
+  // Skip Husky setup in CI/CD environments where Git hooks aren't needed
+  if (isCI()) {
+    console.log('⏭️  Skipping Husky setup in CI/CD environment');
+    console.log('   Git hooks are not needed in CI/CD pipelines');
+    return;
+  }
+
   console.log('🔧 Setting up Husky...');
 
   // Check if Git is available
@@ -79,25 +103,32 @@ function main() {
   }
 
   // Verify Git is now accessible
+  let gitAccessible = false;
   try {
     const gitVersion = execSync('git --version', { encoding: 'utf-8' }).trim();
     console.log(`✅ ${gitVersion}`);
+    gitAccessible = true;
   } catch (error) {
-    console.error('❌ Git is still not accessible. Please install Git or add it to your PATH.');
-    process.exit(1);
+    console.warn('⚠️  Git is not accessible. Skipping Husky installation.');
+    console.warn('   This is normal in CI/CD environments or when Git is not installed.');
+    console.warn('   Husky hooks will not be installed, but npm install will continue.');
+    return; // Exit gracefully instead of failing
   }
 
-  // Run husky install
-  try {
-    console.log('📦 Installing Husky hooks...');
-    execSync('npx husky install', { 
-      stdio: 'inherit',
-      env: { ...process.env, PATH: process.env.PATH }
-    });
-    console.log('✅ Husky setup complete!');
-  } catch (error) {
-    console.error('❌ Failed to install Husky hooks:', error.message);
-    process.exit(1);
+  // Only run husky install if Git is accessible
+  if (gitAccessible) {
+    try {
+      console.log('📦 Installing Husky hooks...');
+      execSync('npx husky install', { 
+        stdio: 'inherit',
+        env: { ...process.env, PATH: process.env.PATH }
+      });
+      console.log('✅ Husky setup complete!');
+    } catch (error) {
+      console.warn('⚠️  Failed to install Husky hooks:', error.message);
+      console.warn('   This is non-fatal. npm install will continue.');
+      // Don't exit with error code - allow npm install to continue
+    }
   }
 }
 
@@ -105,5 +136,5 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { findGitInPath, addGitToPath };
+module.exports = { findGitInPath, addGitToPath, isCI };
 

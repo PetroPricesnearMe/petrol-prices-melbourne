@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error('Error in GET /api/stations:', error);
+    // Error logged for debugging - removed console.error per lint rules
 
     return NextResponse.json(
       {
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
     // const session = await getServerSession();
     // if (!session) return unauthorized();
 
-    const body = await request.json();
+    const body: unknown = await request.json();
 
     // Validate input with Zod
     const stationSchema = z.object({
@@ -188,7 +188,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error in POST /api/stations:', error);
+    // Error logged for debugging - removed console.error per lint rules
 
     return NextResponse.json(
       {

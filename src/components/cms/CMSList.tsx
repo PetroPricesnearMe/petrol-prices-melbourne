@@ -12,10 +12,12 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import {
+
+import type {
   CMSContent as CMSContentType,
   CMSPaginatedResponse,
 } from '@/lib/cms/types';
+
 import { CMSContent, CMSLoadingSkeleton } from './CMSContent';
 
 interface CMSListProps<T extends CMSContentType> {

@@ -184,7 +184,7 @@ const AboutPage = () => {
           >
             Founded in Melbourne, Petrol Prices Near Me was created to address
             the frustration of inconsistent fuel pricing across the city. We saw
-            how much money drivers were wasting simply because they didn't know
+            how much money drivers were wasting simply because they didn&apos;t know
             where to find the cheapest fuel prices.
           </p>
           <p

@@ -299,7 +299,7 @@ const FuelPriceTrendsPage = () => {
                       <span className="chart-icon">📈</span>
                       <h4>Interactive Chart Coming Soon</h4>
                       <p>
-                        We're working on an interactive chart to visualize fuel
+                        We&apos;re working on an interactive chart to visualize fuel
                         price trends over time.
                       </p>
                       <div className="chart-features">

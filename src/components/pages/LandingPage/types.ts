@@ -3,8 +3,8 @@
  * Centralized type safety for better maintainability
  */
 
-import { ReactNode } from 'react';
-import { Variant } from 'framer-motion';
+import type { Variant } from 'framer-motion';
+import type { ReactNode } from 'react';
 
 // ============================================================================
 // Base Types

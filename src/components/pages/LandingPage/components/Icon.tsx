@@ -3,8 +3,8 @@
  * SVG icon wrapper with predefined paths
  */
 
-import type { IconProps } from '../types';
 import { ICON_PATHS } from '../constants';
+import type { IconProps } from '../types';
 
 /**
  * Icon Component

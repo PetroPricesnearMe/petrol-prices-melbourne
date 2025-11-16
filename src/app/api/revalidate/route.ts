@@ -10,10 +10,9 @@
  * }
  */
 
+import { revalidatePath, revalidateTag } from 'next/cache';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-
-import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { getCMS } from '@/lib/cms';
 
@@ -30,8 +29,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
-    const { paths, tags } = body;
+    const body: unknown = await request.json();
+    const { paths, tags } = body as { paths?: string[]; tags?: string[] };
 
     // Revalidate paths
     if (paths && Array.isArray(paths)) {

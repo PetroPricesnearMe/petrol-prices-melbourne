@@ -1,9 +1,10 @@
 # PowerShell version of pre-commit hook
 Write-Host "🔍 Running pre-commit checks..."
 
-# Run lint-staged
-npx lint-staged
+# Run lint-staged with --yes to auto-install if missing
+npx --yes lint-staged
 if ($LASTEXITCODE -ne 0) {
+    Write-Host "❌ Lint-staged failed. Fix errors and try again."
     exit 1
 }
 

@@ -22,10 +22,12 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+
 import { cn } from '@/lib/utils';
-import { useAnimatedSection } from './hooks';
+
 import { Section, SectionHeader } from './components';
 import { ANIMATION_CONFIGS } from './constants';
+import { useAnimatedSection } from './hooks';
 
 // ============================================================================
 // TYPES

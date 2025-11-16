@@ -16,14 +16,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { cn } from '@/lib/utils';
 
 // Hooks
-import {
-  usePerformanceMonitoring,
-  useAnimatedSection,
-  useStaggerAnimation,
-} from './hooks';
 
 // Components
 import {
@@ -38,6 +34,7 @@ import {
 } from './components';
 
 // Data & Constants
+import { ANIMATION_CONFIGS, TYPOGRAPHY, COLORS } from './constants';
 import {
   FEATURES,
   STATS,
@@ -49,7 +46,11 @@ import {
   FLOATING_CARDS,
   BRAND,
 } from './data';
-import { ANIMATION_CONFIGS, TYPOGRAPHY, COLORS } from './constants';
+import {
+  usePerformanceMonitoring,
+  useAnimatedSection,
+  useStaggerAnimation,
+} from './hooks';
 
 // Types
 import type { Feature, Stat } from './types';

@@ -6,6 +6,7 @@
 'use client';
 
 import { Home, MapPin, TrendingUp, Info, HelpCircle } from 'lucide-react';
+
 import { Navbar } from './Navbar';
 
 export function NavbarExample() {

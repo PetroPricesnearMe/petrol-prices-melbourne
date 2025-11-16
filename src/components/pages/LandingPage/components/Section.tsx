@@ -3,15 +3,18 @@
  * Container for page sections with consistent styling
  */
 
-import { forwardRef, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { forwardRef } from 'react';
+
 import { cn } from '@/lib/utils';
-import type { SectionProps, SectionHeaderProps } from '../types';
+
 import {
   CONTAINER_CLASSES,
   SECTION_PADDING,
   SECTION_BACKGROUNDS,
   TYPOGRAPHY,
 } from '../constants';
+import type { SectionProps, SectionHeaderProps } from '../types';
 
 /**
  * Section Component

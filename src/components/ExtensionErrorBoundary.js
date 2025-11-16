@@ -182,8 +182,8 @@ class ExtensionErrorBoundary extends Component {
               <h3>Extension Connection Issue</h3>
               <p>
                 The page was moved to the back/forward cache, which closed the
-                extension's message channel. This is a normal browser behavior
-                and doesn't affect the app's functionality.
+                extension&apos;s message channel. This is a normal browser behavior
+                and doesn&apos;t affect the app&apos;s functionality.
               </p>
 
               <div className="error-actions">

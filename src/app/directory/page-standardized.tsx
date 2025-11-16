@@ -4,10 +4,18 @@
  * Fully accessible with WCAG 2.1 AA compliance
  */
 
+import { Search, Filter, MapPin, Star } from 'lucide-react';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { Search, Filter, MapPin, Star } from 'lucide-react';
 
+import {
+  Container,
+  Section,
+  ResponsiveGrid,
+  GridItem,
+  Flex,
+} from '@/components/layout/ResponsiveGrid';
+import { StructuredData } from '@/components/StructuredData';
 import { Button } from '@/components/ui/primitives/Button';
 import {
   Card,
@@ -18,14 +26,6 @@ import {
   CardFooter,
 } from '@/components/ui/primitives/Card';
 import { Input } from '@/components/ui/primitives/Input';
-import {
-  Container,
-  Section,
-  ResponsiveGrid,
-  GridItem,
-  Flex,
-} from '@/components/layout/ResponsiveGrid';
-import { StructuredData } from '@/components/StructuredData';
 import metadataJson from '@/data/stations-metadata.json';
 import { generateWebSiteSchema } from '@/lib/schema';
 

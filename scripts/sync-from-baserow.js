@@ -10,7 +10,13 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 
-require('dotenv').config();
+// Load environment variables from .env file if dotenv is available
+try {
+  require('dotenv').config();
+} catch (error) {
+  // dotenv is optional - environment variables can be set directly
+  console.warn('⚠️  dotenv not found. Using environment variables directly.');
+}
 
 const BASEROW_API_URL = process.env.BASEROW_API_URL || 'https://api.baserow.io';
 const BASEROW_API_TOKEN = process.env.BASEROW_API_TOKEN;

@@ -6,8 +6,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Card } from './Card';
+
 import { cn } from '@/lib/utils';
+
+import { Card } from './Card';
 
 export interface CardSkeletonProps {
   /** Show image skeleton */

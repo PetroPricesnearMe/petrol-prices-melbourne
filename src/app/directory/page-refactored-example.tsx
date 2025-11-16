@@ -11,9 +11,9 @@ import { Suspense } from 'react';
 
 import { InfiniteScrollDirectory } from '@/components/directory/InfiniteScrollDirectory';
 import { DirectoryLayout } from '@/components/layout/PageLayouts';
-import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import { ResponsiveGrid, GridItem } from '@/components/layout/ResponsiveGrid';
 import { StructuredData } from '@/components/StructuredData';
+import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import metadataJson from '@/data/stations-metadata.json';
 import { generateWebSiteSchema } from '@/lib/schema';
 

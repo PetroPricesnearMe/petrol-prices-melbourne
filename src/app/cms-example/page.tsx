@@ -8,11 +8,12 @@
  * - Production-ready patterns
  */
 
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+
+import { CMSContent } from '@/components/cms/CMSContent';
+import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
 import { getCMS } from '@/lib/cms';
 import { withFallback } from '@/lib/cms/error-handler';
-import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
-import { CMSContent } from '@/components/cms/CMSContent';
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600;

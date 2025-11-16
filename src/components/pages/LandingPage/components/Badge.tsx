@@ -6,7 +6,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { cn } from '@/lib/utils';
+
 import type { BadgeProps } from '../types';
 
 /**

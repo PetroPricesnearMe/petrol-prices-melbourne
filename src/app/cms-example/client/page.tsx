@@ -11,9 +11,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { CMSPaginatedResponse } from '@/lib/cms/types';
+
 import { CMSErrorBoundary } from '@/components/cms/CMSErrorBoundary';
 import { CMSList } from '@/components/cms/CMSList';
+import type { CMSPaginatedResponse } from '@/lib/cms/types';
 
 interface Station {
   id: string;

@@ -5,10 +5,10 @@
  * Supports multiple CMS backends with a unified interface
  */
 
-import { CMSConfig, ICMSProvider } from './types';
+import { AirtableProvider } from './providers/airtable';
 import { BaserowProvider } from './providers/baserow';
 import { SanityProvider } from './providers/sanity';
-import { AirtableProvider } from './providers/airtable';
+import type { CMSConfig, ICMSProvider } from './types';
 
 // Re-export types for convenience
 export * from './types';
