@@ -27,6 +27,7 @@ CONTRIBUTING.md
 # Scripts
 scripts/
 !scripts/generate-sitemap.js
+!scripts/setup-husky.js
 
 # Development files
 .env.local
