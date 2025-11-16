@@ -183,9 +183,9 @@ export const SEO_SECTION_HEADINGS = {
 export const SEO_BRAND = {
   name: 'Petrol Price Near Me',
   shortName: 'PPNM',
-  tagline: 'Melbourne's Most Trusted Petrol Price Comparison Service',
+  tagline: "Melbourne's Most Trusted Petrol Price Comparison Service",
   description:
-    'Petrol Price Near Me is Melbourne's leading fuel price comparison platform, helping drivers find the cheapest petrol prices across Greater Melbourne since 2024. We provide real-time price data from 250+ stations including BP, Shell, Caltex, 7-Eleven, and independent petrol stations. Our free service has helped over 10,000 Melbourne drivers save money on fuel. Compare unleaded 91, premium 95/98, diesel, and LPG prices instantly – no registration required.',
+    "Petrol Price Near Me is Melbourne's leading fuel price comparison platform, helping drivers find the cheapest petrol prices across Greater Melbourne since 2024. We provide real-time price data from 250+ stations including BP, Shell, Caltex, 7-Eleven, and independent petrol stations. Our free service has helped over 10,000 Melbourne drivers save money on fuel. Compare unleaded 91, premium 95/98, diesel, and LPG prices instantly – no registration required.",
   // E-E-A-T (Expertise, Experience, Authority, Trustworthiness)
   expertise: 'Real-time fuel price data from official sources and verified station partners',
   experience: 'Serving 10,000+ Melbourne drivers monthly since 2024',
@@ -210,37 +210,37 @@ export const SEO_FAQ = [
   {
     question: 'How do I find the cheapest petrol prices near me in Melbourne?',
     answer:
-      'Use our free petrol price comparison tool to instantly compare real-time fuel prices from 250+ stations across Melbourne. Simply enter your suburb or enable location services to see the cheapest unleaded, diesel, and premium fuel prices near you. Our platform updates prices every 5 minutes from official sources including BP, Shell, Caltex, and 7-Eleven.',
+      "Use our free petrol price comparison tool to instantly compare real-time fuel prices from 250+ stations across Melbourne. Simply enter your suburb or enable location services to see the cheapest unleaded, diesel, and premium fuel prices near you. Our platform updates prices every 5 minutes from official sources including BP, Shell, Caltex, and 7-Eleven.",
     keywords: ['cheapest petrol near me', 'find fuel prices', 'melbourne petrol comparison'],
   },
   {
     question: 'How much can I save using a petrol price comparison tool?',
     answer:
-      'Melbourne drivers typically save between $5-20 per tank by comparing petrol prices before filling up. With fuel price differences of up to 20 cents per liter between stations, a typical 50-liter tank can save you $10 or more. Over a year, regular users save $200-500 on fuel costs by choosing the cheapest stations.',
+      "Melbourne drivers typically save between $5-20 per tank by comparing petrol prices before filling up. With fuel price differences of up to 20 cents per liter between stations, a typical 50-liter tank can save you $10 or more. Over a year, regular users save $200-500 on fuel costs by choosing the cheapest stations.",
     keywords: ['save money on petrol', 'fuel savings', 'petrol price difference'],
   },
   {
     question: 'Which petrol stations in Melbourne have the cheapest fuel prices?',
     answer:
-      'Fuel prices vary daily across Melbourne suburbs and brands. Independent stations often offer competitive prices, while major brands like BP, Shell, Caltex, and 7-Eleven run periodic price drops. Use our real-time comparison tool to find today's cheapest petrol prices in your area. Prices are updated every 5 minutes from verified sources.',
+      "Fuel prices vary daily across Melbourne suburbs and brands. Independent stations often offer competitive prices, while major brands like BP, Shell, Caltex, and 7-Eleven run periodic price drops. Use our real-time comparison tool to find today's cheapest petrol prices in your area. Prices are updated every 5 minutes from verified sources.",
     keywords: ['cheapest petrol stations melbourne', 'best fuel prices', 'melbourne petrol brands'],
   },
   {
     question: 'When is the best time to buy petrol in Melbourne?',
     answer:
-      'Melbourne follows a fuel price cycle of approximately 7-14 days. Prices typically drop on Tuesday or Wednesday and peak on weekends. Check our fuel price trends page to track the current cycle and fill up when prices are at the bottom of the cycle. This timing strategy can save you up to 20c per liter.',
+      "Melbourne follows a fuel price cycle of approximately 7-14 days. Prices typically drop on Tuesday or Wednesday and peak on weekends. Check our fuel price trends page to track the current cycle and fill up when prices are at the bottom of the cycle. This timing strategy can save you up to 20c per liter.",
     keywords: ['melbourne fuel price cycle', 'best time to buy petrol', 'petrol price trends'],
   },
   {
     question: 'Is this petrol price comparison service free?',
     answer:
-      'Yes! Petrol Price Near Me is 100% free to use with no registration required. We don't charge subscription fees, hidden costs, or require credit card details. Our mission is to help Melbourne drivers save money on fuel by providing transparent, real-time petrol price comparisons from 250+ stations across Greater Melbourne.',
+      "Yes! Petrol Price Near Me is 100% free to use with no registration required. We don't charge subscription fees, hidden costs, or require credit card details. Our mission is to help Melbourne drivers save money on fuel by providing transparent, real-time petrol price comparisons from 250+ stations across Greater Melbourne.",
     keywords: ['free petrol price comparison', 'no registration', 'free fuel finder'],
   },
   {
     question: 'How accurate are the petrol prices shown?',
     answer:
-      'Our petrol prices are sourced from official data feeds and verified station partners, updated every 5 minutes for maximum accuracy. We display the most recent reported prices from 250+ Melbourne petrol stations. While we strive for 100% accuracy, prices can change quickly. We recommend confirming prices at the pump, especially for older data points.',
+      "Our petrol prices are sourced from official data feeds and verified station partners, updated every 5 minutes for maximum accuracy. We display the most recent reported prices from 250+ Melbourne petrol stations. While we strive for 100% accuracy, prices can change quickly. We recommend confirming prices at the pump, especially for older data points.",
     keywords: ['accurate fuel prices', 'real-time petrol data', 'reliable price information'],
   },
 ];
@@ -335,7 +335,8 @@ export const SEO_SCHEMA_DATA = {
     bestRating: '5',
     worstRating: '1',
   },
-  description: 'Find and compare real-time petrol prices from 250+ stations across Melbourne. Save money on fuel with Australia's most trusted petrol price comparison service.',
+  description:
+    "Find and compare real-time petrol prices from 250+ stations across Melbourne. Save money on fuel with Australia's most trusted petrol price comparison service.",
   featureList: [
     'Real-time petrol price comparison',
     'Interactive fuel station map',

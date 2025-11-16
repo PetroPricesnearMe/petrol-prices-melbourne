@@ -8,13 +8,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { StructuredData } from '@/components/StructuredData';
 import metadataJson from '@/data/stations-metadata.json';
 import stationsData from '@/data/stations.json';
+import { generateDirectoryPageSchemas } from '@/lib/schema';
 import { cn, patterns } from '@/styles/system/css-in-js';
 // Import station types from the JSON data structure
 type StationData = (typeof stationsData)[number];
-import { StructuredData } from '@/components/StructuredData';
-import { generateDirectoryPageSchemas } from '@/lib/schema';
 
 interface Props {
   params: Promise<{ suburb: string }>;

@@ -160,6 +160,7 @@ export function Avatar({
       {...props}
       width={size}
       height={size}
+      alt={props.alt}
       className={cn('rounded-full', props.className)}
     />
   );

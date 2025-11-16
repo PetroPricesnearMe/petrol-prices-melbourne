@@ -5,9 +5,9 @@
  * @module components/common/ErrorBoundary/SpecializedBoundaries
  */
 
+import Link from 'next/link';
 import React from 'react';
 import type { ReactNode } from 'react';
-import Link from 'next/link';
 
 import { ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
 
