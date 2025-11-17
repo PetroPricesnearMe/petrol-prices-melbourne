@@ -42,6 +42,7 @@ export function trackWebVitals(metric: Metric) {
 
   // Log to console in development
   if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
     console.log(`[Web Vitals] ${name}:`, {
       value: Math.round(value * 100) / 100,
       delta: Math.round(delta * 100) / 100,

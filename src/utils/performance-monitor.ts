@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-import type { PerformanceMetric, RenderInfo } from '@/types/common';
+import type { PerformanceMetric } from '@/types/common';
 
 // ============================================================================
 // Performance Observer
@@ -59,16 +59,21 @@ class PerformanceMonitor {
     try {
       const layoutShiftObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          const layoutShift = entry as any;
-          this.recordMetric({
-            name: 'layout-shift',
-            value: layoutShift.value,
-            unit: 'count',
-            timestamp: Date.now(),
-            metadata: {
-              hadRecentInput: layoutShift.hadRecentInput,
-            },
-          });
+          const layoutShift = entry as PerformanceEntry & {
+            value?: number;
+            hadRecentInput?: boolean;
+          };
+          if (layoutShift.value !== undefined) {
+            this.recordMetric({
+              name: 'layout-shift',
+              value: layoutShift.value,
+              unit: 'count',
+              timestamp: Date.now(),
+              metadata: {
+                hadRecentInput: layoutShift.hadRecentInput,
+              },
+            });
+          }
         }
       });
       layoutShiftObserver.observe({ entryTypes: ['layout-shift'] });
@@ -95,6 +100,7 @@ class PerformanceMonitor {
 
     // Log in development
     if (process.env.NODE_ENV === 'development' && metric.value > 100) {
+      // eslint-disable-next-line no-console
       console.warn(`[Performance] ${metric.name}: ${metric.value}${metric.unit}`, metric.metadata);
     }
   }
@@ -271,6 +277,7 @@ export function trackComponentRender(
 
   // Warn about slow renders
   if (renderTime > 16.67 && process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
     console.warn(
       `[Performance] Slow render detected: ${componentName} took ${renderTime.toFixed(2)}ms`
     );
@@ -291,11 +298,11 @@ export function usePerformanceTracking(
   componentName: string,
   props?: Record<string, unknown>
 ): void {
-  if (typeof window === 'undefined') return;
-
   const renderStart = React.useRef(performance.now());
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const renderTime = performance.now() - renderStart.current;
     trackComponentRender(componentName, renderTime, props || {});
     renderStart.current = performance.now();
@@ -377,16 +384,26 @@ export function analyzeResourcePerformance(): {
 /**
  * Get memory usage (if available)
  */
+interface PerformanceMemory {
+  usedJSHeapSize: number;
+  totalJSHeapSize: number;
+  jsHeapSizeLimit: number;
+}
+
+interface PerformanceWithMemory extends Performance {
+  memory?: PerformanceMemory;
+}
+
 export function getMemoryUsage(): {
   usedJSHeapSize: number;
   totalJSHeapSize: number;
   jsHeapSizeLimit: number;
 } | null {
-  if (typeof performance === 'undefined' || !(performance as any).memory) {
+  if (typeof performance === 'undefined' || !(performance as PerformanceWithMemory).memory) {
     return null;
   }
 
-  const memory = (performance as any).memory;
+  const memory = (performance as PerformanceWithMemory).memory;
   return {
     usedJSHeapSize: memory.usedJSHeapSize,
     totalJSHeapSize: memory.totalJSHeapSize,
@@ -413,6 +430,7 @@ export function trackMemoryUsage(): void {
   });
 
   if (usagePercent > 90) {
+    // eslint-disable-next-line no-console
     console.warn('[Performance] High memory usage detected:', usagePercent.toFixed(2) + '%');
   }
 }

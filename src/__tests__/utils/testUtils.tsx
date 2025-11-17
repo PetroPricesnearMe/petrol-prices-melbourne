@@ -53,7 +53,7 @@ export const mockIntersectionObserver = () => {
     unobserve: () => null,
     disconnect: () => null,
   });
-  window.IntersectionObserver = mockIntersectionObserver as any;
+  window.IntersectionObserver = mockIntersectionObserver as unknown as typeof IntersectionObserver;
 };
 
 /**
@@ -66,7 +66,7 @@ export const mockResizeObserver = () => {
     unobserve: () => null,
     disconnect: () => null,
   });
-  window.ResizeObserver = mockResizeObserver as any;
+  window.ResizeObserver = mockResizeObserver as unknown as typeof ResizeObserver;
 };
 
 /**

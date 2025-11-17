@@ -13,7 +13,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { getAllStations } from '@/lib/data/stations';
-import type { Station } from '@/types/station';
+import type { Station } from '@/types/station.d';
 
 // ============================================================================
 // TYPES
@@ -21,7 +21,7 @@ import type { Station } from '@/types/station';
 
 export interface InfiniteStationsFilters {
   search?: string;
-  fuelType?: keyof Station['fuelPrices'];
+  fuelType?: keyof Station['fuelPrices'] | 'all';
   brand?: string;
   suburb?: string;
   sortBy?: 'price-low' | 'price-high' | 'name' | 'suburb';
@@ -109,18 +109,26 @@ export function useInfiniteStations(
       }
 
       // Fuel type filter (only show stations with selected fuel type)
-      if (filters.fuelType) {
+      if (filters.fuelType && filters.fuelType !== 'all') {
         filteredStations = filteredStations.filter(
-          (s) => s.fuelPrices?.[filters.fuelType!] !== null
+          (s) => s.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] !== null
         );
       }
 
       // Price filter
       if (filters.priceMax) {
-        filteredStations = filteredStations.filter((s) => {
-          const price = s.fuelPrices?.[filters.fuelType || 'unleaded'];
-          return price !== null && price <= filters.priceMax!;
-        });
+        // If fuelType is 'all', check if any fuel price is within the max price
+        if (filters.fuelType === 'all') {
+          filteredStations = filteredStations.filter((s) => {
+            const prices = Object.values(s.fuelPrices || {});
+            return prices.some((price) => price !== null && price <= filters.priceMax!);
+          });
+        } else {
+          filteredStations = filteredStations.filter((s) => {
+            const price = s.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']];
+            return price !== null && price <= filters.priceMax!;
+          });
+        }
       }
 
       // Sort
@@ -128,14 +136,32 @@ export function useInfiniteStations(
         filteredStations.sort((a, b) => {
           switch (filters.sortBy) {
             case 'price-low': {
-              const priceA = a.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
-              const priceB = b.fuelPrices?.[filters.fuelType || 'unleaded'] || Infinity;
-              return priceA - priceB;
+              // If fuelType is 'all', use the minimum price across all fuel types
+              if (filters.fuelType === 'all') {
+                const pricesA = Object.values(a.fuelPrices || {}).filter((p): p is number => p !== null);
+                const pricesB = Object.values(b.fuelPrices || {}).filter((p): p is number => p !== null);
+                const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : Infinity;
+                const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
+                return minPriceA - minPriceB;
+              } else {
+                const priceA = a.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || Infinity;
+                const priceB = b.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || Infinity;
+                return priceA - priceB;
+              }
             }
             case 'price-high': {
-              const priceA = a.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
-              const priceB = b.fuelPrices?.[filters.fuelType || 'unleaded'] || 0;
-              return priceB - priceA;
+              // If fuelType is 'all', use the maximum price across all fuel types
+              if (filters.fuelType === 'all') {
+                const pricesA = Object.values(a.fuelPrices || {}).filter((p): p is number => p !== null);
+                const pricesB = Object.values(b.fuelPrices || {}).filter((p): p is number => p !== null);
+                const maxPriceA = pricesA.length > 0 ? Math.max(...pricesA) : 0;
+                const maxPriceB = pricesB.length > 0 ? Math.max(...pricesB) : 0;
+                return maxPriceB - maxPriceA;
+              } else {
+                const priceA = a.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || 0;
+                const priceB = b.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || 0;
+                return priceB - priceA;
+              }
             }
             case 'suburb':
               return a.suburb?.localeCompare(b.suburb || '') || a.name.localeCompare(b.name);

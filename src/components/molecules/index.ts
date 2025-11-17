@@ -7,4 +7,5 @@
 export * from './Card';
 export * from './SearchBar';
 export * from './Alert';
+export * from './FilterSearchBar';
 

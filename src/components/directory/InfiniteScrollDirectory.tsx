@@ -9,24 +9,25 @@
 
 'use client';
 
-import { Suspense, useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 
-import { StationGrid } from '@/components/cards/StationCard';
 import { StationDetailsModal } from '@/components/modals/Modal';
 import { ViewToggle, DirectoryView, StationCardGrid, StationCardList } from '@/components/toggle/ViewToggle';
 import { LoadingSpinner, SkeletonGrid } from '@/components/transitions/SmoothTransitions';
 import { useAdvancedInfiniteStations } from '@/hooks/useInfiniteStations';
-import type { Station } from '@/types/station';
+import type { Station } from '@/types/station.d';
 import { cn } from '@/utils/cn';
 
 // ============================================================================
 // TYPES
 // ============================================================================
 
+type FuelTypeKey = 'unleaded' | 'diesel' | 'premium95' | 'premium98' | 'lpg';
+
 interface InfiniteScrollDirectoryProps {
   initialFilters?: {
     search?: string;
-    fuelType?: keyof Station['fuelPrices'];
+    fuelType?: FuelTypeKey | 'all';
     brand?: string;
     suburb?: string;
     sortBy?: 'price-low' | 'price-high' | 'name' | 'suburb';
@@ -69,7 +70,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
   const clearFilters = useCallback(() => {
     onFiltersChange({
       search: '',
-      fuelType: 'unleaded',
+      fuelType: 'all',
       brand: 'all',
       suburb: 'all',
       sortBy: 'price-low',
@@ -78,7 +79,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
   }, [onFiltersChange]);
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value && value !== 'all' && value !== 'unleaded' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
+    ([key, value]) => value && value !== 'all' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
   ).length;
 
   return (
@@ -89,7 +90,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
           <input
             type="search"
             placeholder="Search stations by name, brand, suburb, or address..."
-            value={filters.search || ''}
+            value={(filters.search as string) || ''}
             onChange={(e) => handleFilterChange('search', e.target.value)}
             className="input w-full"
             aria-label="Search stations"
@@ -100,11 +101,14 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
         <div className="flex gap-4 flex-wrap items-center justify-between">
           <div className="text-sm text-gray-600 dark:text-gray-400">
             {totalCount} station{totalCount !== 1 ? 's' : ''} found
-            {filters.search && (
-              <span className="ml-2">
-                for <strong>&quot;{filters.search}&quot;</strong>
-              </span>
-            )}
+            {(() => {
+              const searchValue = filters.search as string | undefined;
+              return searchValue ? (
+                <span className="ml-2">
+                  for <strong>&quot;{searchValue}&quot;</strong>
+                </span>
+              ) : null;
+            })()}
           </div>
 
           <div className="flex items-center space-x-4">
@@ -142,10 +146,11 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
                 </label>
                 <select
                   id="fuel-type"
-                  value={filters.fuelType || 'unleaded'}
+                  value={(filters.fuelType as string) || 'all'}
                   onChange={(e) => handleFilterChange('fuelType', e.target.value)}
                   className="input w-full"
                 >
+                  <option value="all">All Fuel Types</option>
                   <option value="unleaded">Unleaded 91</option>
                   <option value="diesel">Diesel</option>
                   <option value="premium95">Premium 95</option>
@@ -159,12 +164,12 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
                 <label htmlFor="brand" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   🏪 Brand
                 </label>
-                <select
-                  id="brand"
-                  value={filters.brand || 'all'}
-                  onChange={(e) => handleFilterChange('brand', e.target.value)}
-                  className="input w-full"
-                >
+                  <select
+                    id="brand"
+                    value={(filters.brand as string) || 'all'}
+                    onChange={(e) => handleFilterChange('brand', e.target.value)}
+                    className="input w-full"
+                  >
                   <option value="all">All Brands</option>
                   <option value="BP">BP</option>
                   <option value="Shell">Shell</option>
@@ -182,12 +187,12 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
                 <label htmlFor="suburb" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   📍 Suburb
                 </label>
-                <select
-                  id="suburb"
-                  value={filters.suburb || 'all'}
-                  onChange={(e) => handleFilterChange('suburb', e.target.value)}
-                  className="input w-full"
-                >
+                  <select
+                    id="suburb"
+                    value={(filters.suburb as string) || 'all'}
+                    onChange={(e) => handleFilterChange('suburb', e.target.value)}
+                    className="input w-full"
+                  >
                   <option value="all">All Suburbs</option>
                   <option value="Melbourne">Melbourne</option>
                   <option value="Richmond">Richmond</option>
@@ -209,12 +214,12 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
                 <label htmlFor="sort" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   🔄 Sort By
                 </label>
-                <select
-                  id="sort"
-                  value={filters.sortBy || 'price-low'}
-                  onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                  className="input w-full"
-                >
+                  <select
+                    id="sort"
+                    value={(filters.sortBy as string) || 'price-low'}
+                    onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+                    className="input w-full"
+                  >
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
                   <option value="name">Name: A to Z</option>
@@ -233,7 +238,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
                 type="number"
                 placeholder="e.g., 210"
                 step="0.1"
-                value={filters.priceMax || ''}
+                value={(filters.priceMax as number | undefined) || ''}
                 onChange={(e) => handleFilterChange('priceMax', e.target.value ? parseFloat(e.target.value) : undefined)}
                 className="input max-w-xs"
               />
@@ -262,7 +267,7 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
 /**
  * Loading states component
  */
-export function LoadingStates({ isInitialLoading, isLoadingMore, loadingProgress, className }: LoadingStatesProps) {
+export function LoadingStates({ isInitialLoading, isLoadingMore, loadingProgress: _loadingProgress, className }: LoadingStatesProps) {
   if (!isInitialLoading && !isLoadingMore) return null;
 
   return (
@@ -296,13 +301,20 @@ export function InfiniteScrollDirectory({
   className,
   onStationClick,
 }: InfiniteScrollDirectoryProps) {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    search: string;
+    fuelType: FuelTypeKey | 'all';
+    brand: string;
+    suburb: string;
+    sortBy: 'price-low' | 'price-high' | 'name' | 'suburb';
+    priceMax?: number;
+  }>({
     search: '',
-    fuelType: 'unleaded' as keyof Station['fuelPrices'],
+    fuelType: 'all',
     brand: 'all',
     suburb: 'all',
-    sortBy: 'price-low' as const,
-    priceMax: undefined as number | undefined,
+    sortBy: 'price-low',
+    priceMax: undefined,
     ...initialFilters,
   });
 
@@ -317,12 +329,12 @@ export function InfiniteScrollDirectory({
     error,
     hasNextPage,
     isFetchingNextPage,
-    fetchNextPage,
+    fetchNextPage: _fetchNextPage,
     refetch,
     totalCount,
     loadedPages,
-    isTransitioning,
-    transitionDirection,
+    isTransitioning: _isTransitioning,
+    transitionDirection: _transitionDirection,
     triggerRef,
   } = useAdvancedInfiniteStations(filters, {
     pageSize: 24,
@@ -332,7 +344,10 @@ export function InfiniteScrollDirectory({
   });
 
   const handleFiltersChange = useCallback((newFilters: Record<string, unknown>) => {
-    setFilters(newFilters);
+    setFilters((prev) => ({
+      ...prev,
+      ...newFilters,
+    }));
   }, []);
 
   const handleStationClick = useCallback((station: Station) => {
@@ -393,21 +408,22 @@ export function InfiniteScrollDirectory({
             <DirectoryView
               view={currentView}
               items={stations}
-              renderItem={(station, index) =>
-                currentView === 'grid' ? (
+              renderItem={(station: unknown) => {
+                const s = station as Station;
+                return currentView === 'grid' ? (
                   <StationCardGrid
-                    key={station.id}
-                    station={station}
-                    onCardClick={handleStationClick}
+                    key={s.id}
+                    station={s as any}
+                    onCardClick={handleStationClick as any}
                   />
                 ) : (
                   <StationCardList
-                    key={station.id}
-                    station={station}
-                    onCardClick={handleStationClick}
+                    key={s.id}
+                    station={s as any}
+                    onCardClick={handleStationClick as any}
                   />
-                )
-              }
+                );
+              }}
             />
           </Suspense>
         )}
@@ -425,7 +441,7 @@ export function InfiniteScrollDirectory({
             <button
               onClick={() => setFilters({
                 search: '',
-                fuelType: 'unleaded',
+                fuelType: 'all',
                 brand: 'all',
                 suburb: 'all',
                 sortBy: 'price-low',
@@ -466,11 +482,13 @@ export function InfiniteScrollDirectory({
       </div>
 
       {/* Station Details Modal */}
-      <StationDetailsModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        station={selectedStation}
-      />
+      {selectedStation && (
+        <StationDetailsModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          station={selectedStation as any}
+        />
+      )}
     </div>
   );
 }

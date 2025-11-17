@@ -18,19 +18,15 @@ export const initializeGA = () => {
 
     // Don't initialize if no measurement ID is provided
     if (!measurementId || measurementId === 'G-XXXXXXXXXX') {
-      if (process.env.NODE_ENV === 'development') {
-        console.log('ℹ️ Google Analytics: Measurement ID not configured (this is normal in development)');
-      }
+      // Measurement ID not configured (normal in development)
       return;
     }
 
     // Prevent double initialization
     if (window.gtag) {
-      console.log('📊 Google Analytics: Already initialized');
+      // Already initialized
       return;
     }
-
-    console.log('📊 Initializing Google Analytics 4:', measurementId);
 
   // Load gtag.js script
   const script = document.createElement('script');
@@ -69,10 +65,13 @@ export const initializeGA = () => {
     }
   });
 
-    console.log('✅ Google Analytics 4 initialized successfully');
+    // Google Analytics 4 initialized successfully
   } catch (error) {
     // Fail gracefully - analytics should never break functionality
-    console.warn('⚠️ Google Analytics initialization failed:', error);
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.warn('⚠️ Google Analytics initialization failed:', error);
+    }
   }
 };
 
