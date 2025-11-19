@@ -1,46 +1,64 @@
 /**
- * Enhanced Station Detail Page with Hero Image, Tabs, and Responsive Sections
+ * Station Detail Page
+ * 
  * Dynamic route: /stations/[id]
+ * 
+ * Features:
+ * - ISR (Incremental Static Regeneration) with 1-hour revalidation
+ * - SEO-optimized metadata with canonical URLs
+ * - Comprehensive station information display
+ * - Nearby stations recommendations
+ * 
+ * @module app/stations/[id]/page
  */
+
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import DirectoryLayout from '@/components/layouts/DirectoryLayout.server';
+import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { HeroSection } from '@/components/molecules/HeroSection';
 import { Tabs } from '@/components/molecules/Tabs';
 import { StructuredData } from '@/components/StructuredData';
-import { getStationById, getAllStationIds, getNearbyStations } from '@/lib/data/stations';
+import { getAllStationIds, getStationById, getNearbyStations } from '@/lib/data/stations';
 import { generateStationPageSchemas } from '@/lib/schema';
 import { generateStationCanonicalUrl } from '@/lib/seo/canonical';
+import { generateBaseMetadata } from '@/lib/seo/metadata';
 import { cn } from '@/lib/utils';
 import type { Station } from '@/types/station';
 
 interface StationPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-// Generate static params for ISR
+/**
+ * Generate static params for ISR
+ * Pre-generates the first 100 stations at build time
+ * Others will be generated on-demand
+ */
 export async function generateStaticParams() {
   const stationIds = await getAllStationIds();
-
-  // Generate params for the first 100 stations at build time
-  // Others will be generated on-demand
   return stationIds.slice(0, 100).map((id) => ({
     id: id.toString(),
   }));
 }
 
-// Enable ISR with 1 hour revalidation
+/**
+ * ISR Configuration
+ * Revalidate every hour to keep data fresh
+ */
 export const revalidate = 3600;
 
-// Generate dynamic metadata
+/**
+ * Generate dynamic metadata for SEO
+ */
 export async function generateMetadata({
   params,
 }: StationPageProps): Promise<Metadata> {
-  const station = await getStationById(params.id);
+  const { id } = await params;
+  const station = await getStationById(id);
 
   if (!station) {
     return {
@@ -50,74 +68,70 @@ export async function generateMetadata({
 
   const title = `${station.name} - Fuel Prices & Information`;
   const description = `Find real-time fuel prices and information for ${station.name} in ${station.suburb || 'Melbourne'}. ${station.address ? `Located at ${station.address}` : 'Compare prices and save on your next fill-up.'}`;
+  
+  const keywords = [
+    `${station.name} fuel prices`,
+    `${station.suburb} petrol station`,
+    station.brand || '',
+    'fuel prices near me',
+    'petrol prices Melbourne',
+    station.address || '',
+  ].filter(Boolean);
 
-  return {
+  const imageUrl = station.image 
+    ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}${station.image}`
+    : `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}/api/og/station/${station.id}`;
+
+  return generateBaseMetadata({
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      locale: 'en_AU',
-      url: `https://petrolpricenearme.com.au/stations/${params.id}`,
-      siteName: 'Petrol Price Near Me',
-      images: [
-        {
-          url: `/api/og/station/${params.id}`,
-          width: 1200,
-          height: 630,
-          alt: `${station.name} - Petrol Station`,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    alternates: {
-      canonical: generateStationCanonicalUrl(params.id),
-    },
-    keywords: [
-      `${station.name} fuel prices`,
-      `${station.suburb} petrol station`,
-      station.brand || '',
-      'fuel prices near me',
-      'petrol prices Melbourne',
-    ].filter(Boolean),
-  };
+    path: `stations/${id}`,
+    image: imageUrl,
+    keywords,
+  });
 }
 
+/**
+ * Station Detail Page Component
+ */
 export default async function StationPage({ params }: StationPageProps) {
-  const station = await getStationById(params.id);
+  const { id } = await params;
+  const station = await getStationById(id);
 
   if (!station) {
     notFound();
   }
 
-  // Get nearby stations for the map and recommendations
-  const nearbyStations = station.latitude && station.longitude
-    ? await getNearbyStations(station.latitude, station.longitude, 5)
-    : [];
+  // Get nearby stations for recommendations
+  const nearbyStations =
+    station.latitude && station.longitude
+      ? await getNearbyStations(station.latitude, station.longitude, 5)
+      : [];
 
   const breadcrumbs = [
+    { label: 'Home', href: '/' },
     { label: 'Directory', href: '/directory' },
-    { label: station.suburb || 'Melbourne', href: `/directory/${station.suburb?.toLowerCase().replace(/\s+/g, '-') || 'melbourne'}` },
-    { label: station.name, href: `/stations/${params.id}` },
+    {
+      label: station.suburb || 'Melbourne',
+      href: `/directory/${station.suburb?.toLowerCase().replace(/\s+/g, '-') || 'melbourne'}`,
+    },
+    { label: station.name, href: `/stations/${id}` },
   ];
 
-  // Generate hero image URL (placeholder for now)
-  const heroImageUrl = station.brand
-    ? `/images/stations/${station.brand.toLowerCase().replace(/\s+/g, '-')}-hero.jpg`
-    : '/images/stations/default-hero.jpg';
+  // Generate hero image URL
+  const heroImageUrl = station.image
+    ? station.image
+    : station.brand
+      ? `/images/stations/${station.brand.toLowerCase().replace(/\s+/g, '-')}-hero.jpg`
+      : '/images/stations/default-hero.jpg';
 
-  // Generate structured data schemas
+  // Generate structured data
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const structuredDataSchemas = generateStationPageSchemas(station, baseUrl);
 
   return (
     <>
-      {/* Structured Data */}
+      {/* Structured Data for SEO */}
       <StructuredData data={structuredDataSchemas} />
 
       <DirectoryLayout
@@ -125,109 +139,110 @@ export default async function StationPage({ params }: StationPageProps) {
         description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
         breadcrumbs={breadcrumbs}
         showSidebar={false}
-        canonicalUrl={generateStationCanonicalUrl(params.id)}
+        canonicalUrl={generateStationCanonicalUrl(id)}
+        headerVariant="hero"
       >
         <div className="space-y-8">
-        {/* Hero Section */}
-        <HeroSection
-          title={station.name}
-          subtitle={station.brand || 'Petrol Station'}
-          description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
-          imageUrl={heroImageUrl}
-          imageAlt={`${station.name} petrol station`}
-          height="lg"
-          contentPosition="left"
-        >
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href={`/directions?station=${params.id}`}
-              className="btn btn-primary btn-lg"
-            >
-              📍 Get Directions
-            </Link>
-            <button className="btn btn-outline btn-lg text-white border-white hover:bg-white hover:text-gray-900">
-              ⭐ Save Favorite
-            </button>
+          {/* Hero Section */}
+          <HeroSection
+            title={station.name}
+            subtitle={station.brand || 'Petrol Station'}
+            description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
+            imageUrl={heroImageUrl}
+            imageAlt={`${station.name} petrol station`}
+            height="lg"
+            contentPosition="left"
+          >
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href={`/directions?station=${id}`}
+                className="btn btn-primary btn-lg"
+              >
+                📍 Get Directions
+              </Link>
+              <button className="btn btn-outline btn-lg text-white border-white hover:bg-white hover:text-gray-900">
+                ⭐ Save Favorite
+              </button>
+            </div>
+          </HeroSection>
+
+          {/* Quick Info Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <QuickInfoCard
+              title="Current Prices"
+              icon="⛽"
+              content={<FuelPriceSummary station={station} />}
+            />
+            <QuickInfoCard
+              title="Station Info"
+              icon="🏪"
+              content={<StationInfoSummary station={station} />}
+            />
+            <QuickInfoCard
+              title="Nearby Stations"
+              icon="🗺️"
+              content={<NearbyStationsSummary stations={nearbyStations.slice(0, 3)} />}
+            />
           </div>
-        </HeroSection>
 
-        {/* Quick Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <QuickInfoCard
-            title="Current Prices"
-            icon="⛽"
-            content={<FuelPriceSummary station={station} />}
-          />
-          <QuickInfoCard
-            title="Station Info"
-            icon="🏪"
-            content={<StationInfoSummary station={station} />}
-          />
-          <QuickInfoCard
-            title="Nearby Stations"
-            icon="🗺️"
-            content={<NearbyStationsSummary stations={nearbyStations.slice(0, 3)} />}
-          />
+          {/* Main Content Tabs */}
+          <div className="card p-6">
+            <Tabs
+              tabs={[
+                {
+                  id: 'description',
+                  label: 'Description',
+                  icon: '📝',
+                  content: <DescriptionTab station={station} />,
+                },
+                {
+                  id: 'reviews',
+                  label: 'Reviews',
+                  icon: '⭐',
+                  content: <ReviewsTab station={station} />,
+                },
+                {
+                  id: 'map',
+                  label: 'Map & Location',
+                  icon: '🗺️',
+                  content: <MapTab station={station} nearbyStations={nearbyStations} />,
+                },
+                {
+                  id: 'prices',
+                  label: 'Fuel Prices',
+                  icon: '💰',
+                  content: <PricesTab station={station} />,
+                },
+              ]}
+              defaultActiveTab="description"
+              className="w-full"
+            />
+          </div>
+
+          {/* Additional Sections */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Amenities */}
+            {station.amenities && Object.values(station.amenities).some(Boolean) && (
+              <div className="card p-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                  Amenities
+                </h2>
+                <AmenitiesGrid amenities={station.amenities} />
+              </div>
+            )}
+
+            {/* Operating Hours */}
+            {station.operatingHours && (
+              <div className="card p-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                  Operating Hours
+                </h2>
+                <OperatingHoursTable hours={station.operatingHours} />
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* Main Content Tabs */}
-        <div className="card p-6">
-          <Tabs
-            tabs={[
-              {
-                id: 'description',
-                label: 'Description',
-                icon: '📝',
-                content: <DescriptionTab station={station} />,
-              },
-              {
-                id: 'reviews',
-                label: 'Reviews',
-                icon: '⭐',
-                content: <ReviewsTab station={station} />,
-              },
-              {
-                id: 'map',
-                label: 'Map & Location',
-                icon: '🗺️',
-                content: <MapTab station={station} nearbyStations={nearbyStations} />,
-              },
-              {
-                id: 'prices',
-                label: 'Fuel Prices',
-                icon: '💰',
-                content: <PricesTab station={station} />,
-              },
-            ]}
-            defaultActiveTab="description"
-            className="w-full"
-          />
-        </div>
-
-        {/* Additional Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Amenities */}
-          {station.amenities && Object.values(station.amenities).some(Boolean) && (
-            <div className="card p-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Amenities
-              </h2>
-              <AmenitiesGrid amenities={station.amenities} />
-            </div>
-          )}
-
-          {/* Operating Hours */}
-          {station.operatingHours && (
-            <div className="card p-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                Operating Hours
-              </h2>
-              <OperatingHoursTable hours={station.operatingHours} />
-            </div>
-          )}
-        </div>
-      </div>
-    </DirectoryLayout>
+      </DirectoryLayout>
     </>
   );
 }
@@ -238,7 +253,7 @@ export default async function StationPage({ params }: StationPageProps) {
 function QuickInfoCard({
   title,
   icon,
-  content
+  content,
 }: {
   title: string;
   icon: string;
@@ -339,7 +354,7 @@ function StationInfoSummary({ station }: { station: Station }) {
 function NearbyStationsSummary({ stations }: { stations: Station[] }) {
   return (
     <div className="space-y-2">
-      {stations.map((station, _index) => (
+      {stations.map((station) => (
         <div key={station.id} className="flex justify-between items-center text-sm">
           <span className="text-gray-600 dark:text-gray-400 truncate">
             {station.name}
@@ -371,9 +386,7 @@ function DescriptionTab({ station }: { station: Station }) {
         <div className="prose prose-gray dark:prose-invert max-w-none">
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
             {station.locationDetails ||
-              `${station.name} is a ${station.brand || 'petrol station'} located in ${station.suburb || 'Melbourne'}.
-              We provide quality fuel services and competitive prices to help you save on your fuel costs.`
-            }
+              `${station.name} is a ${station.brand || 'petrol station'} located in ${station.suburb || 'Melbourne'}. We provide quality fuel services and competitive prices to help you save on your fuel costs.`}
           </p>
         </div>
       </div>
@@ -493,7 +506,7 @@ function ReviewsTab({ station }: { station: Station }) {
       </div>
 
       <div className="space-y-4">
-        {reviews.map((review, _index) => (
+        {reviews.map((review) => (
           <div key={review.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -533,7 +546,7 @@ function ReviewsTab({ station }: { station: Station }) {
  */
 function MapTab({
   station,
-  nearbyStations
+  nearbyStations,
 }: {
   station: Station;
   nearbyStations: Station[];

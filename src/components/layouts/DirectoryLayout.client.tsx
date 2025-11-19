@@ -30,6 +30,8 @@ export interface DirectoryLayoutClientProps {
   showSidebar?: boolean;
   className?: string;
   containerVariant?: 'default' | 'wide' | 'full';
+  headerVariant?: 'default' | 'minimal' | 'hero';
+  showBreadcrumbs?: boolean;
 }
 
 export default function DirectoryLayoutClient({
@@ -43,6 +45,8 @@ export default function DirectoryLayoutClient({
   showSidebar = false,
   className,
   containerVariant = 'default',
+  headerVariant = 'default',
+  showBreadcrumbs = true,
 }: DirectoryLayoutClientProps) {
   const pathname = usePathname();
 
@@ -58,7 +62,7 @@ export default function DirectoryLayoutClient({
   return (
     <div className={cn('min-h-screen bg-gray-50 dark:bg-gray-900', className)}>
       {/* Breadcrumbs Navigation */}
-      {generatedBreadcrumbs.length > 0 && (
+      {showBreadcrumbs && generatedBreadcrumbs.length > 0 && (
         <nav
           aria-label="Breadcrumb"
           className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
@@ -100,18 +104,44 @@ export default function DirectoryLayoutClient({
 
       {/* Page Header */}
       {(title || description || filters || actions) && (
-        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <header
+          className={cn(
+            'bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700',
+            headerVariant === 'hero' && 'bg-gradient-to-r from-primary-600 to-primary-800 text-white',
+            headerVariant === 'minimal' && 'border-b-0'
+          )}
+        >
           <div className={containerClass}>
-            <div className="py-8">
+            <div
+              className={cn(
+                headerVariant === 'minimal' ? 'py-4' : 'py-8',
+                headerVariant === 'hero' && 'text-white'
+              )}
+            >
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div className="flex-1">
                   {title && (
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h1
+                      className={cn(
+                        'font-bold mb-2',
+                        headerVariant === 'minimal'
+                          ? 'text-2xl md:text-3xl text-gray-900 dark:text-white'
+                          : 'text-3xl md:text-4xl',
+                        headerVariant === 'hero' && 'text-white'
+                      )}
+                    >
                       {title}
                     </h1>
                   )}
                   {description && (
-                    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl">
+                    <p
+                      className={cn(
+                        'max-w-3xl',
+                        headerVariant === 'hero'
+                          ? 'text-lg text-white/90'
+                          : 'text-lg text-gray-600 dark:text-gray-400'
+                      )}
+                    >
                       {description}
                     </p>
                   )}
@@ -121,7 +151,14 @@ export default function DirectoryLayoutClient({
 
               {/* Filters Section */}
               {filters && (
-                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div
+                  className={cn(
+                    'mt-6 pt-6 border-t',
+                    headerVariant === 'hero'
+                      ? 'border-white/20'
+                      : 'border-gray-200 dark:border-gray-700'
+                  )}
+                >
                   {filters}
                 </div>
               )}

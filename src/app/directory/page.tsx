@@ -8,41 +8,22 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { InfiniteScrollDirectory } from '@/components/directory/InfiniteScrollDirectory';
-import DirectoryLayout from '@/components/layouts/DirectoryLayout.server';
+import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { StructuredData } from '@/components/StructuredData';
 import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import metadataJson from '@/data/stations-metadata.json';
 import { generateWebSiteSchema } from '@/lib/schema';
 import { generateDirectoryCanonicalUrl } from '@/lib/seo/canonical';
+import { generateDirectoryMetadata } from '@/lib/seo/metadata';
 
 
-export const metadata: Metadata = {
-  title: `Melbourne Petrol Stations Directory - ${metadataJson.totalStations}+ Stations | Find Cheapest Fuel`,
-  description:
-    `Browse our complete directory of ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ Melbourne suburbs. Compare live fuel prices from BP, Shell, Caltex, 7-Eleven, and more. Find the cheapest petrol near you.`,
-  keywords: [
-    'petrol station directory',
-    'melbourne petrol stations',
-    'fuel price directory',
-    'station listing',
-    'petrol finder',
-    'fuel comparison',
-    'BP stations',
-    'Shell stations',
-    'Caltex fuel prices',
-    '7-Eleven petrol',
-  ],
-  openGraph: {
-    title: `Melbourne Petrol Station Directory | ${metadataJson.totalStations}+ Stations`,
-    description:
-      `Complete directory of ${metadataJson.totalStations}+ petrol stations across Melbourne with real-time fuel prices. Find the cheapest fuel near you.`,
-    type: 'website',
-    url: generateDirectoryCanonicalUrl(),
-  },
-  alternates: {
-    canonical: generateDirectoryCanonicalUrl(),
-  },
-};
+export const metadata: Metadata = generateDirectoryMetadata({
+  title: `Melbourne Petrol Stations Directory - ${metadataJson.totalStations}+ Stations`,
+  description: `Browse our complete directory of ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ Melbourne suburbs. Compare live fuel prices from BP, Shell, Caltex, 7-Eleven, and more. Find the cheapest petrol near you.`,
+  path: 'directory',
+  totalStations: metadataJson.totalStations,
+  suburbs: metadataJson.suburbs.length,
+});
 
 // Enable ISR - Revalidate every 24 hours for fresh data while maintaining performance
 // 86400 seconds = 24 hours

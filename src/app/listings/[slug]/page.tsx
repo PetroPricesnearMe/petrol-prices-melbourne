@@ -1,46 +1,59 @@
 /**
- * Listing Detail Page with ISR
+ * Listing Detail Page (Slug-based)
+ * 
  * Dynamic route: /listings/[slug]
  * 
- * Uses slug-based routing for better SEO
- * Supports both ID-based and slug-based lookups
+ * Features:
+ * - ISR (Incremental Static Regeneration) with 1-hour revalidation
+ * - SEO-optimized metadata with canonical URLs
+ * - Slug-based routing for better SEO
+ * - Supports both ID-based and slug-based lookups
+ * 
+ * @module app/listings/[slug]/page
  */
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import DirectoryLayout from '@/components/layouts/DirectoryLayout.server';
+import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { StructuredData } from '@/components/StructuredData';
-import { getStationBySlug, getAllStationSlugs } from '@/lib/data/stations-slugs';
-import { generateListingCanonicalUrl } from '@/lib/seo/canonical';
+import { getAllStationSlugs, getStationBySlug } from '@/lib/data/stations-slugs';
 import { generateStationPageSchemas } from '@/lib/schema';
-import { generateStationSlugFromData } from '@/lib/utils/slugs';
+import { generateListingCanonicalUrl } from '@/lib/seo/canonical';
+import { generateBaseMetadata } from '@/lib/seo/metadata';
 
 interface ListingPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-// Generate static params for ISR
+/**
+ * Generate static params for ISR
+ * Pre-generates the first 200 listings at build time
+ * Others will be generated on-demand
+ */
 export async function generateStaticParams() {
   const slugs = await getAllStationSlugs();
-
-  // Generate params for the first 200 listings at build time
-  // Others will be generated on-demand
   return slugs.slice(0, 200).map((slug) => ({
     slug,
   }));
 }
 
-// Enable ISR with 1 hour revalidation
+/**
+ * ISR Configuration
+ * Revalidate every hour to keep data fresh
+ */
 export const revalidate = 3600;
 
-// Generate dynamic metadata
+/**
+ * Generate dynamic metadata for SEO
+ */
 export async function generateMetadata({
   params,
 }: ListingPageProps): Promise<Metadata> {
-  const station = await getStationBySlug(params.slug);
+  const { slug } = await params;
+  const station = await getStationBySlug(slug);
 
   if (!station) {
     return {
@@ -50,65 +63,57 @@ export async function generateMetadata({
 
   const title = `${station.name} - Fuel Prices & Information`;
   const description = `Find real-time fuel prices and information for ${station.name} in ${station.suburb || 'Melbourne'}. ${station.address ? `Located at ${station.address}` : 'Compare prices and save on your next fill-up.'}`;
-  const canonicalUrl = generateListingCanonicalUrl(params.slug);
+  
+  const keywords = [
+    `${station.name} fuel prices`,
+    `${station.suburb} petrol station`,
+    station.brand || '',
+    'fuel prices near me',
+    'petrol prices Melbourne',
+    station.address || '',
+  ].filter(Boolean);
 
-  return {
+  const imageUrl = station.image 
+    ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}${station.image}`
+    : `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}/api/og/station/${station.id}`;
+
+  return generateBaseMetadata({
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: 'website',
-      locale: 'en_AU',
-      url: canonicalUrl,
-      siteName: 'Petrol Price Near Me',
-      images: [
-        {
-          url: `/api/og/station/${station.id}`,
-          width: 1200,
-          height: 630,
-          alt: `${station.name} - Petrol Station`,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    keywords: [
-      `${station.name} fuel prices`,
-      `${station.suburb} petrol station`,
-      station.brand || '',
-      'fuel prices near me',
-      'petrol prices Melbourne',
-    ].filter(Boolean),
-  };
+    path: `listings/${slug}`,
+    image: imageUrl,
+    keywords,
+  });
 }
 
+/**
+ * Listing Detail Page Component
+ */
 export default async function ListingPage({ params }: ListingPageProps) {
-  const station = await getStationBySlug(params.slug);
+  const { slug } = await params;
+  const station = await getStationBySlug(slug);
 
   if (!station) {
     notFound();
   }
 
   const breadcrumbs = [
+    { label: 'Home', href: '/' },
     { label: 'Directory', href: '/directory' },
-    { label: station.suburb || 'Melbourne', href: `/directory/${station.suburb?.toLowerCase().replace(/\s+/g, '-') || 'melbourne'}` },
-    { label: station.name, href: `/listings/${params.slug}` },
+    {
+      label: station.suburb || 'Melbourne',
+      href: `/directory/${station.suburb?.toLowerCase().replace(/\s+/g, '-') || 'melbourne'}`,
+    },
+    { label: station.name, href: `/listings/${slug}` },
   ];
 
-  // Generate structured data schemas
+  // Generate structured data
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const structuredDataSchemas = generateStationPageSchemas(station, baseUrl);
 
   return (
     <>
-      {/* Structured Data */}
+      {/* Structured Data for SEO */}
       <StructuredData data={structuredDataSchemas} />
 
       <DirectoryLayout
@@ -116,10 +121,11 @@ export default async function ListingPage({ params }: ListingPageProps) {
         description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
         breadcrumbs={breadcrumbs}
         showSidebar={false}
-        canonicalUrl={generateListingCanonicalUrl(params.slug)}
+        canonicalUrl={generateListingCanonicalUrl(slug)}
+        headerVariant="hero"
       >
         <div className="space-y-8">
-          {/* Station Content */}
+          {/* Station Information Card */}
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
               Station Information
@@ -143,6 +149,17 @@ export default async function ListingPage({ params }: ListingPageProps) {
                   <span className="ml-2 font-medium">{station.suburb}</span>
                 </div>
               )}
+              {station.phoneNumber && (
+                <div>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Phone:</span>
+                  <a
+                    href={`tel:${station.phoneNumber}`}
+                    className="ml-2 font-medium text-primary-600 dark:text-primary-400 hover:underline"
+                  >
+                    {station.phoneNumber}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
 
@@ -153,18 +170,61 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 Fuel Prices
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {Object.entries(station.fuelPrices).map(([type, price]) => (
-                  price !== null && (
-                    <div key={type} className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                {Array.isArray(station.fuelPrices) ? (
+                  station.fuelPrices.map((price) => (
+                    <div
+                      key={price.id}
+                      className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                    >
                       <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                        {price.fuelType}
                       </div>
                       <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                        {price.toFixed(1)}¢/L
+                        {price.pricePerLiter?.toFixed(1)}¢/L
                       </div>
                     </div>
+                  ))
+                ) : (
+                  Object.entries(station.fuelPrices).map(([type, price]) =>
+                    price !== null && (
+                      <div
+                        key={type}
+                        className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                      >
+                        <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </div>
+                        <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                          {price.toFixed(1)}¢/L
+                        </div>
+                      </div>
+                    )
                   )
-                ))}
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Additional Information */}
+          {station.amenities && Object.values(station.amenities).some(Boolean) && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Amenities
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {Object.entries(station.amenities).map(([key, value]) =>
+                  value && (
+                    <div
+                      key={key}
+                      className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg"
+                    >
+                      <span className="text-lg">✓</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           )}
@@ -173,4 +233,3 @@ export default async function ListingPage({ params }: ListingPageProps) {
     </>
   );
 }
-

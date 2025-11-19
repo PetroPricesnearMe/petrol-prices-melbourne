@@ -12,7 +12,7 @@ interface StationListProps {
   selectedStation?: Station | null;
 }
 
-const fuelOrder: Array<{ key: keyof Station['fuelPrices']; label: string }> = [
+const fuelOrder: Array<{ key: string; label: string }> = [
   { key: 'unleaded', label: 'Unleaded' },
   { key: 'premium95', label: 'Premium 95' },
   { key: 'premium98', label: 'Premium 98' },
@@ -37,7 +37,7 @@ function formatDistance(distance?: number): string | null {
 
 export function StationList({
   stations,
-  userLocation,
+  userLocation: _userLocation,
   onStationClick,
   selectedStation,
 }: StationListProps) {
@@ -58,17 +58,29 @@ export function StationList({
   }
 
   return (
-    <div className="space-y-4" role="list" aria-label="Melbourne petrol stations">
+    // eslint-disable-next-line jsx-a11y/no-redundant-roles
+    <ul className="space-y-4" aria-label="Melbourne petrol stations">
       {stations.map((station, index) => {
         const distanceLabel = formatDistance(station.distance);
-        const bestPrice = Object.values(station.fuelPrices || {}).reduce<number | null>(
-          (best, value) => {
-            if (typeof value !== 'number') return best;
-            if (best === null || value < best) return value;
-            return best;
-          },
-          null
-        );
+        const fuelPrices = station.fuelPrices || {};
+        const bestPrice = Array.isArray(fuelPrices)
+          ? fuelPrices.reduce<number | null>(
+              (best, price) => {
+                const priceValue = price.pricePerLiter;
+                if (typeof priceValue !== 'number') return best;
+                if (best === null || priceValue < best) return priceValue;
+                return best;
+              },
+              null
+            )
+          : Object.values(fuelPrices).reduce<number | null>(
+              (best, value) => {
+                if (typeof value !== 'number') return best;
+                if (best === null || value < best) return value;
+                return best;
+              },
+              null
+            );
 
         return (
           <motion.li
@@ -137,16 +149,22 @@ export function StationList({
               </div>
 
               <div className="grid gap-3 rounded-2xl bg-gray-50/80 p-4 text-sm text-gray-700 dark:bg-gray-800/40 dark:text-gray-300 sm:grid-cols-2 lg:grid-cols-5">
-                {fuelOrder.map(({ key, label }) => (
-                  <div key={key} className="flex flex-col gap-1">
-                    <span className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400">
-                      {label}
-                    </span>
-                    <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                      {formatPrice(station.fuelPrices?.[key])}
-                    </span>
-                  </div>
-                ))}
+                {fuelOrder.map(({ key, label }) => {
+                  const fuelPrices = station.fuelPrices || {};
+                  const price = Array.isArray(fuelPrices)
+                    ? fuelPrices.find((p) => p.fuelType.toLowerCase().includes(key.toLowerCase()))?.pricePerLiter
+                    : (fuelPrices as Record<string, number | null>)[key];
+                  return (
+                    <div key={key} className="flex flex-col gap-1">
+                      <span className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                        {label}
+                      </span>
+                      <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {formatPrice(price)}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </button>
           </motion.li>
