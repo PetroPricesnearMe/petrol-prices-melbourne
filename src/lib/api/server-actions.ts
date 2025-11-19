@@ -16,6 +16,7 @@ import { revalidatePath, revalidateTag } from 'next/cache';
 import { cache } from 'react';
 
 import type { Station, FuelPrice, StationFilters } from '@/types/station';
+import { StationCategory } from '@/types/station';
 import logger from '@/utils/logger';
 
 import { validateStationId, validateFilters } from './validation';
@@ -169,15 +170,23 @@ export async function searchStations(filters: StationFilters): Promise<Station[]
     }
 
     if (filters.fuelType) {
-      filtered = filtered.filter(s => 
-        s.fuelPrices?.some(fp => fp.fuelType === filters.fuelType)
-      );
+      filtered = filtered.filter(s => {
+        if (!s.fuelPrices) return false;
+        if (Array.isArray(s.fuelPrices)) {
+          return s.fuelPrices.some((fp: FuelPrice) => fp.fuelType === filters.fuelType);
+        }
+        return false;
+      });
     }
 
     if (filters.maxPrice) {
-      filtered = filtered.filter(s =>
-        s.fuelPrices?.some(fp => fp.price <= filters.maxPrice!)
-      );
+      filtered = filtered.filter(s => {
+        if (!s.fuelPrices) return false;
+        if (Array.isArray(s.fuelPrices)) {
+          return s.fuelPrices.some((fp: FuelPrice) => (fp.pricePerLiter || 0) <= filters.maxPrice!);
+        }
+        return false;
+      });
     }
 
     if (filters.amenities) {
@@ -341,6 +350,12 @@ function transformBaserowToStations(data: Array<Record<string, unknown>>): Stati
 
 function transformBaserowToStation(data: Record<string, unknown>): Station | null {
   try {
+    const lat = data.Latitude ? parseFloat(String(data.Latitude)) : 0;
+    const lng = data.Longitude ? parseFloat(String(data.Longitude)) : 0;
+    const category = data.Category 
+      ? (String(data.Category) as StationCategory) 
+      : StationCategory.PETROL_STATION;
+    
     return {
       id: Number(data.id) || 0,
       name: (data['Station Name'] as string) || '',
@@ -350,9 +365,9 @@ function transformBaserowToStation(data: Record<string, unknown>): Station | nul
       city: (data.City as string) || '',
       postcode: (data['Postal Code'] as string) || '',
       region: (data.Region as string) || '',
-      latitude: data.Latitude ? parseFloat(String(data.Latitude)) || null : null,
-      longitude: data.Longitude ? parseFloat(String(data.Longitude)) || null : null,
-      category: (data.Category as string) || 'PETROL_STATION',
+      latitude: lat,
+      longitude: lng,
+      category,
       fuelPrices: [],
       amenities: {},
       lastUpdated: new Date().toISOString(),
@@ -364,13 +379,16 @@ function transformBaserowToStation(data: Record<string, unknown>): Station | nul
 }
 
 function transformBaserowToFuelPrices(data: Array<Record<string, unknown>>): FuelPrice[] {
-  return data.map(item => ({
-    id: Number(item.id) || 0,
-    stationId: Array.isArray(item['Petrol Station']) ? Number(item['Petrol Station'][0]) || 0 : 0,
-    fuelType: (item['Fuel Type'] as string) || '',
-    price: item['Price Per Liter'] ? parseFloat(String(item['Price Per Liter'])) || 0 : 0,
-    lastUpdated: (item['Last Updated'] as string) || new Date().toISOString(),
-  }));
+  return data.map(item => {
+    const pricePerLiter = item['Price Per Liter'] ? parseFloat(String(item['Price Per Liter'])) || 0 : 0;
+    return {
+      id: Number(item.id) || 0,
+      stationId: Array.isArray(item['Petrol Station']) ? Number(item['Petrol Station'][0]) || 0 : 0,
+      fuelType: (item['Fuel Type'] as string) || '',
+      pricePerLiter,
+      lastUpdated: (item['Last Updated'] as string) || new Date().toISOString(),
+    };
+  });
 }
 
 function transformStationToBaserow(station: Partial<Station>): Record<string, string | number | undefined> {
@@ -392,8 +410,19 @@ function sortStations(stations: Station[], sortBy: string): Station[] {
       return [...stations].sort((a, b) => a.name.localeCompare(b.name));
     case 'price-low':
       return [...stations].sort((a, b) => {
-        const aPrice = Math.min(...(a.fuelPrices?.map(fp => fp.price) || [Infinity]));
-        const bPrice = Math.min(...(b.fuelPrices?.map(fp => fp.price) || [Infinity]));
+        let aPrice = Infinity;
+        let bPrice = Infinity;
+        
+        if (a.fuelPrices && Array.isArray(a.fuelPrices)) {
+          const prices = a.fuelPrices.map((fp: FuelPrice) => fp.pricePerLiter || 0);
+          if (prices.length > 0) aPrice = Math.min(...prices);
+        }
+        
+        if (b.fuelPrices && Array.isArray(b.fuelPrices)) {
+          const prices = b.fuelPrices.map((fp: FuelPrice) => fp.pricePerLiter || 0);
+          if (prices.length > 0) bPrice = Math.min(...prices);
+        }
+        
         return aPrice - bPrice;
       });
     case 'suburb':

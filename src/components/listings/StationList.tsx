@@ -71,10 +71,9 @@ export function StationList({
         );
 
         return (
-          <motion.article
+          <motion.li
             key={station.id ?? `${station.name}-${index}`}
             id={station.id ? `station-${station.id}` : undefined}
-            role="listitem"
             layout
             initial={{ opacity: 0, translateY: 16 }}
             animate={{ opacity: 1, translateY: 0 }}
@@ -150,10 +149,10 @@ export function StationList({
                 ))}
               </div>
             </button>
-          </motion.article>
+          </motion.li>
         );
       })}
-    </div>
+    </ul>
   );
 }
 

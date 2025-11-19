@@ -3,18 +3,18 @@
  * Dynamic route: /stations/[id]
  */
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import DirectoryLayout from '@/components/layouts/DirectoryLayout';
+import DirectoryLayout from '@/components/layouts/DirectoryLayout.server';
 import { HeroSection } from '@/components/molecules/HeroSection';
 import { Tabs } from '@/components/molecules/Tabs';
 import { StructuredData } from '@/components/StructuredData';
 import { getStationById, getAllStationIds, getNearbyStations } from '@/lib/data/stations';
 import { generateStationPageSchemas } from '@/lib/schema';
+import { generateStationCanonicalUrl } from '@/lib/seo/canonical';
+import { cn } from '@/lib/utils';
 import type { Station } from '@/types/station';
-import { cn } from '@/utils/cn';
 
 interface StationPageProps {
   params: {
@@ -76,7 +76,7 @@ export async function generateMetadata({
       description,
     },
     alternates: {
-      canonical: `https://petrolpricenearme.com.au/stations/${params.id}`,
+      canonical: generateStationCanonicalUrl(params.id),
     },
     keywords: [
       `${station.name} fuel prices`,
@@ -125,6 +125,7 @@ export default async function StationPage({ params }: StationPageProps) {
         description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
         breadcrumbs={breadcrumbs}
         showSidebar={false}
+        canonicalUrl={generateStationCanonicalUrl(params.id)}
       >
         <div className="space-y-8">
         {/* Hero Section */}
@@ -259,7 +260,7 @@ function QuickInfoCard({
 /**
  * Fuel Price Summary Component
  */
-function FuelPriceSummary({ station }: { station: Station }) {
+function FuelPriceSummary({ station: _station }: { station: Station }) {
   // Mock fuel prices - replace with actual data
   const fuelPrices = [
     { type: 'Unleaded 91', price: '169.9', trend: 'up' },
@@ -338,7 +339,7 @@ function StationInfoSummary({ station }: { station: Station }) {
 function NearbyStationsSummary({ stations }: { stations: Station[] }) {
   return (
     <div className="space-y-2">
-      {stations.map((station, index) => (
+      {stations.map((station, _index) => (
         <div key={station.id} className="flex justify-between items-center text-sm">
           <span className="text-gray-600 dark:text-gray-400 truncate">
             {station.name}
@@ -492,7 +493,7 @@ function ReviewsTab({ station }: { station: Station }) {
       </div>
 
       <div className="space-y-4">
-        {reviews.map((review) => (
+        {reviews.map((review, _index) => (
           <div key={review.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -681,7 +682,7 @@ function PricesTab({ station }: { station: Station }) {
 /**
  * Amenities Grid Component
  */
-function AmenitiesGrid({ amenities }: { amenities: Record<string, unknown> }) {
+function AmenitiesGrid({ amenities }: { amenities: Station['amenities'] }) {
   const amenityItems = [
     { key: 'hasCarWash', label: 'Car Wash', icon: '🚿' },
     { key: 'hasShop', label: 'Convenience Store', icon: '🏪' },
@@ -696,20 +697,23 @@ function AmenitiesGrid({ amenities }: { amenities: Record<string, unknown> }) {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      {amenityItems.map((item) => (
-        <div
-          key={item.key}
-          className={cn(
-            'flex items-center gap-3 p-3 rounded-lg border transition-colors',
-            amenities[item.key]
-              ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200'
-              : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
-          )}
-        >
-          <span className="text-lg">{item.icon}</span>
-          <span className="text-sm font-medium">{item.label}</span>
-        </div>
-      ))}
+      {amenityItems.map((item) => {
+        const hasAmenity = amenities && (amenities as Record<string, unknown>)[item.key];
+        return (
+          <div
+            key={item.key}
+            className={cn(
+              'flex items-center gap-3 p-3 rounded-lg border transition-colors',
+              hasAmenity
+                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200'
+                : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
+            )}
+          >
+            <span className="text-lg">{item.icon}</span>
+            <span className="text-sm font-medium">{item.label}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -717,7 +721,7 @@ function AmenitiesGrid({ amenities }: { amenities: Record<string, unknown> }) {
 /**
  * Operating Hours Table Component
  */
-function OperatingHoursTable({ hours }: { hours: Record<string, unknown> }) {
+function OperatingHoursTable({ hours }: { hours: Station['operatingHours'] }) {
   const days = [
     { key: 'monday', label: 'Monday' },
     { key: 'tuesday', label: 'Tuesday' },
@@ -742,19 +746,22 @@ function OperatingHoursTable({ hours }: { hours: Record<string, unknown> }) {
           </tr>
         </thead>
         <tbody>
-          {days.map((day) => (
-            <tr
-              key={day.key}
-              className="border-b border-gray-100 dark:border-gray-800 last:border-0"
-            >
-              <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
-                {day.label}
-              </td>
-              <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
-                {hours[day.key] || 'Closed'}
-              </td>
-            </tr>
-          ))}
+          {days.map((day) => {
+            const hoursData = hours as Record<string, unknown> | undefined;
+            return (
+              <tr
+                key={day.key}
+                className="border-b border-gray-100 dark:border-gray-800 last:border-0"
+              >
+                <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
+                  {day.label}
+                </td>
+                <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
+                  {(hoursData?.[day.key] as string) || 'Closed'}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

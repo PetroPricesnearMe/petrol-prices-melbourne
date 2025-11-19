@@ -148,19 +148,6 @@ export function DirectoryView({
   renderItem,
   className,
 }: DirectoryViewProps) {
-  const containerVariants = {
-    grid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-      gap: '1.5rem',
-    },
-    list: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '1rem',
-    },
-  };
-
   const itemVariants = {
     grid: {
       opacity: 1,
@@ -183,8 +170,6 @@ export function DirectoryView({
   return (
     <motion.div
       className={cn('w-full', className)}
-      variants={containerVariants}
-      animate={view}
       transition={{
         duration: 0.4,
         ease: 'easeInOut',
@@ -206,9 +191,12 @@ export function DirectoryView({
             ease: 'easeInOut',
           }}
         >
-          {items.map((item, index) => (
+          {items.map((item: unknown, index: number) => {
+            const itemWithId = item as { id?: string | number };
+            const itemKey = itemWithId.id || index;
+            return (
             <motion.div
-              key={item.id || index}
+              key={itemKey}
               variants={itemVariants}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -222,7 +210,8 @@ export function DirectoryView({
             >
               {renderItem(item, index)}
             </motion.div>
-          ))}
+            );
+          })}
         </motion.div>
       </AnimatePresence>
     </motion.div>
@@ -236,11 +225,11 @@ export function DirectoryView({
 /**
  * Grid variant of station card
  */
-export function StationCardGrid({ station, onCardClick }: { station: Station; onCardClick?: (station: Station) => void }) {
+export function StationCardGrid({ station, onCardClickAction }: { station: Station; onCardClickAction?: (station: Station) => void }) {
   return (
     <motion.div
       className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all duration-300 h-full"
-      onClick={() => onCardClick?.(station)}
+      onClick={() => onCardClickAction?.(station)}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       layout
@@ -305,11 +294,11 @@ export function StationCardGrid({ station, onCardClick }: { station: Station; on
 /**
  * List variant of station card
  */
-export function StationCardList({ station, onCardClick }: { station: Station; onCardClick?: (station: Station) => void }) {
+export function StationCardList({ station, onCardClickAction }: { station: Station; onCardClickAction?: (station: Station) => void }) {
   return (
     <motion.div
       className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg cursor-pointer transition-all duration-300"
-      onClick={() => onCardClick?.(station)}
+      onClick={() => onCardClickAction?.(station)}
       whileHover={{ scale: 1.01 }}
       whileTap={{ scale: 0.99 }}
       layout

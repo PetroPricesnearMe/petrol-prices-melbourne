@@ -8,10 +8,12 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { InfiniteScrollDirectory } from '@/components/directory/InfiniteScrollDirectory';
+import DirectoryLayout from '@/components/layouts/DirectoryLayout.server';
 import { StructuredData } from '@/components/StructuredData';
 import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import metadataJson from '@/data/stations-metadata.json';
 import { generateWebSiteSchema } from '@/lib/schema';
+import { generateDirectoryCanonicalUrl } from '@/lib/seo/canonical';
 
 
 export const metadata: Metadata = {
@@ -35,6 +37,10 @@ export const metadata: Metadata = {
     description:
       `Complete directory of ${metadataJson.totalStations}+ petrol stations across Melbourne with real-time fuel prices. Find the cheapest fuel near you.`,
     type: 'website',
+    url: generateDirectoryCanonicalUrl(),
+  },
+  alternates: {
+    canonical: generateDirectoryCanonicalUrl(),
   },
 };
 
@@ -52,35 +58,29 @@ export default function DirectoryPage() {
       {/* Structured Data */}
       <StructuredData data={structuredDataSchemas} />
 
-      {/* Header */}
-      <header className="bg-gradient-primary text-white py-12 print-hidden">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4">
-              Melbourne Petrol Stations Directory
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 text-center max-w-2xl mx-auto mb-6">
-              Browse {metadataJson.totalStations}+ stations across {metadataJson.suburbs.length}+ suburbs with live fuel prices
-            </p>
-            <div className="flex gap-4 flex-wrap justify-center text-sm">
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-                <strong>{metadataJson.totalStations}</strong> Total Stations
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-                <strong>{metadataJson.suburbs.length}+</strong> Suburbs
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-                Average Price: <strong>{metadataJson.priceRange.unleaded.average}¢/L</strong>
-              </div>
+      <DirectoryLayout
+        title="Melbourne Petrol Stations Directory"
+        description={`Browse ${metadataJson.totalStations}+ stations across ${metadataJson.suburbs.length}+ suburbs with live fuel prices`}
+        canonicalUrl={generateDirectoryCanonicalUrl()}
+        actions={
+          <div className="flex gap-4 flex-wrap text-sm">
+            <div className="bg-primary-50 dark:bg-primary-900/20 px-4 py-2 rounded-lg">
+              <strong>{metadataJson.totalStations}</strong> Total Stations
+            </div>
+            <div className="bg-primary-50 dark:bg-primary-900/20 px-4 py-2 rounded-lg">
+              <strong>{metadataJson.suburbs.length}+</strong> Suburbs
+            </div>
+            <div className="bg-primary-50 dark:bg-primary-900/20 px-4 py-2 rounded-lg">
+              Average Price: <strong>{metadataJson.priceRange.unleaded.average}¢/L</strong>
             </div>
           </div>
-        </div>
-      </header>
-
-      {/* Infinite Scroll Directory */}
-      <Suspense fallback={<DirectoryLoading />}>
-        <InfiniteScrollDirectory />
-      </Suspense>
+        }
+      >
+        {/* Infinite Scroll Directory */}
+        <Suspense fallback={<DirectoryLoading />}>
+          <InfiniteScrollDirectory />
+        </Suspense>
+      </DirectoryLayout>
     </>
   );
 }
