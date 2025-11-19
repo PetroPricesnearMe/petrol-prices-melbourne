@@ -22,7 +22,6 @@ export const metadata: Metadata = generateDirectoryMetadata({
   description: `Browse our complete directory of ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ Melbourne suburbs. Compare live fuel prices from BP, Shell, Caltex, 7-Eleven, and more. Find the cheapest petrol near you.`,
   path: 'directory',
   totalStations: metadataJson.totalStations,
-  suburbs: metadataJson.suburbs.length,
 });
 
 // Enable ISR - Revalidate every 24 hours for fresh data while maintaining performance

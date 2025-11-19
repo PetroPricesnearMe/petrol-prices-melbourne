@@ -58,7 +58,6 @@ export function StationList({
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-redundant-roles
     <ul className="space-y-4" aria-label="Melbourne petrol stations">
       {stations.map((station, index) => {
         const distanceLabel = formatDistance(station.distance);

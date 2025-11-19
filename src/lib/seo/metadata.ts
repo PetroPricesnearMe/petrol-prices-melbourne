@@ -17,6 +17,16 @@ const SITE_NAME = 'Petrol Price Near Me';
 const DEFAULT_DESCRIPTION = 'Find the cheapest petrol prices near you with real-time updates from 250+ stations across Melbourne.';
 
 /**
+ * Site configuration for SEO
+ */
+export const SITE_CONFIG = {
+  name: SITE_NAME,
+  description: DEFAULT_DESCRIPTION,
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au',
+  locale: 'en_AU',
+};
+
+/**
  * Generate base metadata for any page
  */
 export function generateBaseMetadata({
