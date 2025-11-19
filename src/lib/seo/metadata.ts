@@ -3,7 +3,7 @@
  * 
  * Comprehensive utilities for generating SEO-optimized metadata
  * for all pages including listings, detail pages, and directory pages.
- * 
+ *
  * @module lib/seo/metadata
  */
 
