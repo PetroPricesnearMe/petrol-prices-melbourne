@@ -10,7 +10,6 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
 
 import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';

@@ -1,4 +1,7 @@
+import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
+
+import logger from '../utils/logger';
 // CSS imported in pages/_app.js
 
 /**
@@ -37,7 +40,7 @@ const StationMap = ({
           setUserLocation(location);
         },
         (error) => {
-          console.warn('Geolocation error:', error);
+          logger.warn('Geolocation error:', error);
         }
       );
     }
@@ -110,16 +113,19 @@ const StationMap = ({
     <div className="station-map-container" style={{ height }}>
       {/* Static Map Image */}
       <div className="map-static-view">
-        <img
-          src={buildMapUrl()}
-          alt="Petrol stations map"
-          className="static-map-image"
-          onLoad={() => setMapLoaded(true)}
-          onError={(e) => {
-            console.error('Map loading error');
-            e.target.style.display = 'none';
-          }}
-        />
+        <div className="relative w-full h-full">
+          <Image
+            src={buildMapUrl()}
+            alt="Petrol stations map"
+            fill
+            sizes="(max-width: 768px) 100vw, 800px"
+            className="static-map-image object-cover"
+            onLoad={() => setMapLoaded(true)}
+            onError={() => {
+              logger.error('Map loading error');
+            }}
+          />
+        </div>
       </div>
 
       {/* Station List Overlay */}
@@ -127,10 +133,12 @@ const StationMap = ({
         <h3>📍 Nearby Stations</h3>
         <div className="station-list-items">
           {validStations.slice(0, 10).map((station, index) => (
-            <div
+            <button
+              type="button"
               key={station.id || index}
               className={`station-list-item ${selectedStation?.id === station.id ? 'selected' : ''}`}
               onClick={() => handleMarkerClick(station)}
+              aria-pressed={selectedStation?.id === station.id}
             >
               <div
                 className="station-color-indicator"
@@ -140,7 +148,7 @@ const StationMap = ({
                 <strong>{station.name}</strong>
                 <small>{station.address}</small>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>

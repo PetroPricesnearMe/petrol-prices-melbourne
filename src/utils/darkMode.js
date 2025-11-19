@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Dark Mode Utility
  * 
@@ -217,7 +219,7 @@ export const THEME_INIT_SCRIPT = `
 })();
 `;
 
-export default {
+const darkMode = {
   getTheme,
   getSystemTheme,
   getActiveTheme,
@@ -228,4 +230,6 @@ export default {
   useTheme,
   THEME_INIT_SCRIPT,
 };
+
+export default darkMode;
 

@@ -6,6 +6,8 @@
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
+import logger from '@/utils/logger';
+
 // ============================================================================
 // ERROR TYPES
 // ============================================================================
@@ -15,7 +17,7 @@ export class APIError extends Error {
     message: string,
     public statusCode: number = 500,
     public code?: string,
-    public details?: any
+    public details?: unknown
   ) {
     super(message);
     this.name = 'APIError';
@@ -23,7 +25,7 @@ export class APIError extends Error {
 }
 
 export class ValidationError extends APIError {
-  constructor(message: string, details?: any) {
+  constructor(message: string, details?: unknown) {
     super(message, 400, 'VALIDATION_ERROR', details);
     this.name = 'ValidationError';
   }
@@ -58,7 +60,7 @@ interface ErrorResponse {
   success: false;
   error: string;
   code?: string;
-  details?: any;
+  details?: unknown;
   timestamp: string;
   requestId?: string;
 }
@@ -70,9 +72,9 @@ export function handleAPIError(error: unknown, requestId?: string): NextResponse
   // Log error (in production, send to logging service)
   if (process.env.NODE_ENV === 'production') {
     // TODO: Send to logging service (Sentry, LogRocket, etc.)
-    console.error('API Error:', error);
+    logger.error('API Error:', error);
   } else {
-    console.error('API Error:', error);
+    logger.error('API Error:', error);
   }
 
   // Handle Zod validation errors
@@ -186,7 +188,7 @@ export function generateRequestId(): string {
 /**
  * Try-catch wrapper for async route handlers
  */
-export function withErrorHandler<T extends (...args: any[]) => Promise<NextResponse>>(
+export function withErrorHandler<T extends (...args: unknown[]) => Promise<NextResponse>>(
   handler: T
 ): T {
   return (async (...args: Parameters<T>) => {

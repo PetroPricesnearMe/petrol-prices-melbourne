@@ -8,6 +8,8 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import logger from '../utils/logger';
+
 /**
  * Hook to get an AbortController that automatically aborts on unmount or route change
  * @returns {React.MutableRefObject<AbortController>} Ref to AbortController
@@ -20,12 +22,12 @@ export function useCancelOnUnmount() {
   useEffect(() => {
     // Create new controller on mount or route change
     if (previousLocation.current !== location.pathname) {
-      console.log(`🔄 Route changed from ${previousLocation.current} to ${location.pathname}`);
+      logger.info(`🔄 Route changed from ${previousLocation.current} to ${location.pathname}`);
       
       // Abort previous controller
       if (controllerRef.current) {
         controllerRef.current.abort();
-        console.log('❌ Aborted previous route\'s requests');
+        logger.info('❌ Aborted previous route\'s requests');
       }
       
       // Create new controller
@@ -36,7 +38,7 @@ export function useCancelOnUnmount() {
     // Cleanup on unmount
     return () => {
       if (controllerRef.current) {
-        console.log('🧹 Component unmounting, aborting requests...');
+        logger.info('🧹 Component unmounting, aborting requests...');
         controllerRef.current.abort();
       }
     };
@@ -61,7 +63,7 @@ export function useFetchWithCancel() {
       return response;
     } catch (error) {
       if (error.name === 'AbortError') {
-        console.log('🚫 Request cancelled:', url);
+        logger.info('🚫 Request cancelled:', url);
         throw new Error('Request cancelled');
       }
       throw error;
@@ -88,7 +90,7 @@ export function useMultipleAbortControllers(count = 1) {
     return () => {
       controllersRef.current.forEach((controller, index) => {
         if (controller) {
-          console.log(`🧹 Aborting request ${index + 1}/${count}...`);
+          logger.info(`🧹 Aborting request ${index + 1}/${count}...`);
           controller.abort();
         }
       });
@@ -115,29 +117,30 @@ export function useRequestTracker() {
   useEffect(() => {
     // Abort all requests on route change
     return () => {
-      console.log(`🧹 Route changing, aborting ${requestsRef.current.size} pending requests...`);
-      requestsRef.current.forEach((controller, name) => {
-        console.log(`  - Aborting: ${name}`);
+      const pendingRequests = requestsRef.current;
+      logger.info(`🧹 Route changing, aborting ${pendingRequests.size} pending requests...`);
+      pendingRequests.forEach((controller, name) => {
+        logger.info(`  - Aborting: ${name}`);
         controller.abort();
       });
-      requestsRef.current.clear();
+      pendingRequests.clear();
     };
   }, [location.pathname]);
 
   const addRequest = (name, controller) => {
-    console.log(`📝 Tracking request: ${name}`);
+    logger.info(`📝 Tracking request: ${name}`);
     requestsRef.current.set(name, controller);
   };
 
   const removeRequest = (name) => {
-    console.log(`✅ Request completed: ${name}`);
+    logger.info(`✅ Request completed: ${name}`);
     requestsRef.current.delete(name);
   };
 
   const abortAll = () => {
-    console.log(`❌ Manually aborting ${requestsRef.current.size} requests...`);
+    logger.info(`❌ Manually aborting ${requestsRef.current.size} requests...`);
     requestsRef.current.forEach((controller, name) => {
-      console.log(`  - Aborting: ${name}`);
+      logger.info(`  - Aborting: ${name}`);
       controller.abort();
     });
     requestsRef.current.clear();

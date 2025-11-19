@@ -11,7 +11,7 @@ interface CacheEntry<T> {
 }
 
 class MemoryCache {
-  private cache: Map<string, CacheEntry<any>>;
+  private cache: Map<string, CacheEntry<unknown>>;
   private maxSize: number;
 
   constructor(maxSize: number = 100) {
@@ -127,10 +127,10 @@ export const searchCache = new MemoryCache(200);
 /**
  * Generate cache key from parameters
  */
-export function generateCacheKey(prefix: string, params: Record<string, any>): string {
+export function generateCacheKey(prefix: string, params: Record<string, unknown>): string {
   const sortedParams = Object.keys(params)
     .sort()
-    .map(key => `${key}:${params[key]}`)
+    .map(key => `${key}:${JSON.stringify(params[key])}`)
     .join('|');
   
   return `${prefix}:${sortedParams}`;
@@ -139,7 +139,7 @@ export function generateCacheKey(prefix: string, params: Record<string, any>): s
 /**
  * Cached function wrapper
  */
-export function withCache<T extends (...args: any[]) => Promise<any>>(
+export function withCache<T extends (...args: unknown[]) => Promise<unknown>>(
   fn: T,
   options: {
     keyPrefix: string;

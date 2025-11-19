@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 
+import logger from '../utils/logger';
+
 /**
  * Custom hook for monitoring component performance and Core Web Vitals
  */
@@ -15,7 +17,7 @@ export const usePerformanceMonitor = (componentName) => {
       const now = Date.now();
       const mountDuration = now - mountTime.current;
 
-      console.log(`📊 Performance [${componentName}]:`, {
+      logger.info(`📊 Performance [${componentName}]:`, {
         mountTime: `${mountDuration}ms`,
         renderCount: renderCount.current,
         timestamp: new Date().toISOString()
@@ -28,7 +30,7 @@ export const usePerformanceMonitor = (componentName) => {
         // Observe LCP (Largest Contentful Paint)
         const lcpObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            console.log(`🎯 LCP [${componentName}]:`, entry.startTime);
+            logger.info(`🎯 LCP [${componentName}]:`, entry.startTime);
           }
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
@@ -37,7 +39,7 @@ export const usePerformanceMonitor = (componentName) => {
         const fidObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             const fid = entry.processingStart - entry.startTime;
-            console.log(`⚡ FID [${componentName}]:`, fid);
+            logger.info(`⚡ FID [${componentName}]:`, fid);
           }
         });
         fidObserver.observe({ type: 'first-input', buffered: true });
@@ -46,7 +48,7 @@ export const usePerformanceMonitor = (componentName) => {
         const clsObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             if (!entry.hadRecentInput) {
-              console.log(`📐 CLS [${componentName}]:`, entry.value);
+              logger.info(`📐 CLS [${componentName}]:`, entry.value);
             }
           }
         });
@@ -59,7 +61,7 @@ export const usePerformanceMonitor = (componentName) => {
         };
       } catch (e) {
         // Silently fail if not supported
-        console.debug('Performance monitoring not fully supported:', e);
+        logger.debug('Performance monitoring not fully supported:', e);
       }
     }
   }, [componentName]);
@@ -89,7 +91,7 @@ export const useExpensiveOperation = (operation, dependencies = [], componentNam
 
     // Warn about slow operations in development
     if (process.env.NODE_ENV === 'development' && duration > 16) {
-      console.warn(`⚠️ Slow operation in ${componentName}:`, {
+      logger.warn(`⚠️ Slow operation in ${componentName}:`, {
         duration: `${duration.toFixed(2)}ms`,
         executionCount: executionCount.current,
         threshold: '16ms (60fps)',
@@ -120,7 +122,7 @@ export const useMemoryMonitor = (componentName, interval = 10000) => {
       const total = Math.round(memory.totalJSHeapSize / 1024 / 1024);
       const limit = Math.round(memory.jsHeapSizeLimit / 1024 / 1024);
 
-      console.log(`🧠 Memory [${componentName}]:`, {
+      logger.info(`🧠 Memory [${componentName}]:`, {
         used: `${used}MB`,
         total: `${total}MB`,
         limit: `${limit}MB`,
@@ -129,7 +131,7 @@ export const useMemoryMonitor = (componentName, interval = 10000) => {
 
       // Warn if memory usage is high
       if (used / limit > 0.8) {
-        console.warn(`⚠️ High memory usage in ${componentName}: ${Math.round((used / limit) * 100)}%`);
+        logger.warn(`⚠️ High memory usage in ${componentName}: ${Math.round((used / limit) * 100)}%`);
       }
     };
 

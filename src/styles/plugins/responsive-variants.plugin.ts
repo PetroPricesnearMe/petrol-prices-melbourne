@@ -5,7 +5,7 @@
 
 import plugin from 'tailwindcss/plugin';
 
-export const responsiveVariantsPlugin = plugin(function ({ addVariant, addUtilities, theme }) {
+export const responsiveVariantsPlugin = plugin(function ({ addVariant, addUtilities }) {
   // ========================================
   // CUSTOM RESPONSIVE VARIANTS
   // ========================================

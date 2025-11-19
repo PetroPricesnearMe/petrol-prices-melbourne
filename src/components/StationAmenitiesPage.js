@@ -96,24 +96,6 @@ const StationAmenitiesPage = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setStations(mockStations);
 
-      // Count amenities
-      const amenityCounts = { ...amenitiesList.reduce((acc, amenity) => ({ ...acc, [amenity.key]: 0 }), {}) };
-      mockStations.forEach(station => {
-        station.amenities.forEach(amenity => {
-          if (amenityCounts[amenity] !== undefined) {
-            amenityCounts[amenity]++;
-          }
-        });
-      });
-
-      // Update amenities with counts (for display purposes)
-      const updatedAmenities = amenitiesList.map(amenity => ({
-        ...amenity,
-        count: amenityCounts[amenity.key] || 0
-      }));
-
-      // Log the updated amenities for debugging
-      console.log('Updated amenities with counts:', updatedAmenities);
       setLoading(false);
     };
 

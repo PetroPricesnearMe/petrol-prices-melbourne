@@ -10,6 +10,18 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+type PerformanceWithMemory = Performance & {
+  memory?: {
+    usedJSHeapSize: number;
+    jsHeapSizeLimit: number;
+    totalJSHeapSize: number;
+  };
+};
+
+type WindowWithGC = Window & {
+  gc?: () => void;
+};
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -81,7 +93,7 @@ export function usePerformanceOptimization(
    */
   const monitorMemoryUsage = useCallback(() => {
     if (typeof window !== 'undefined' && 'memory' in performance) {
-      const memory = (performance as any).memory;
+      const memory = (performance as PerformanceWithMemory).memory;
       const memoryUsage = memory ? memory.usedJSHeapSize / memory.jsHeapSizeLimit : 0;
       
       setMetrics(prev => ({
@@ -97,8 +109,9 @@ export function usePerformanceOptimization(
   const cleanupMemory = useCallback(() => {
     if (typeof window !== 'undefined') {
       // Force garbage collection if available
-      if ('gc' in window) {
-        (window as any).gc();
+      const windowWithGc = window as WindowWithGC;
+      if (typeof windowWithGc.gc === 'function') {
+        windowWithGc.gc();
       }
       
       // Clear any cached data
@@ -161,6 +174,7 @@ export function usePerformanceOptimization(
         }
       };
     }
+    return undefined;
   }, [metrics.itemCount, cleanupThreshold, cleanupMemory, enableMemoryManagement]);
 
   return {
@@ -325,14 +339,6 @@ export function useRenderOptimization() {
   const renderQueue = useRef<Array<() => void>>([]);
   const isProcessingQueue = useRef(false);
 
-  const queueRender = useCallback((renderFn: () => void) => {
-    renderQueue.current.push(renderFn);
-    
-    if (!isProcessingQueue.current) {
-      processRenderQueue();
-    }
-  }, []);
-
   const processRenderQueue = useCallback(() => {
     if (isProcessingQueue.current || renderQueue.current.length === 0) {
       return;
@@ -360,20 +366,17 @@ export function useRenderOptimization() {
     requestAnimationFrame(processNext);
   }, []);
 
+  const queueRender = useCallback((renderFn: () => void) => {
+    renderQueue.current.push(renderFn);
+    
+    if (!isProcessingQueue.current) {
+      processRenderQueue();
+    }
+  }, [processRenderQueue]);
+
   return {
     isRendering,
     queueRender,
   };
 }
 
-// ============================================================================
-// EXPORTS
-// ============================================================================
-
-export {
-  usePerformanceOptimization,
-  useOptimizedIntersectionObserver,
-  useDebouncedScroll,
-  useMemoryLeakPrevention,
-  useRenderOptimization,
-};

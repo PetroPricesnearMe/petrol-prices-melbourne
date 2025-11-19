@@ -1,6 +1,7 @@
 'use client';
 
 import { Menu, X, ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -46,7 +47,14 @@ const Navbar = ({ brand, items, cta, className }: NavbarProps) => {
               className="flex items-center gap-2 font-bold text-xl text-gray-900 dark:text-white"
             >
               {brand.logo && (
-                <img src={brand.logo} alt={brand.name} className="h-8 w-8" />
+                <Image
+                  src={brand.logo}
+                  alt={brand.name}
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 object-contain"
+                  priority={false}
+                />
               )}
               <span>{brand.name}</span>
             </Link>

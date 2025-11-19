@@ -167,7 +167,7 @@ export const useSetStationState = StationContext.useSetState;
 /**
  * Shallow equality comparison for objects
  */
-export function shallowEqual<T extends Record<string, any>>(a: T, b: T): boolean {
+export function shallowEqual<T extends Record<string, unknown>>(a: T, b: T): boolean {
   if (Object.is(a, b)) return true;
 
   if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {

@@ -2,19 +2,14 @@ import axios from 'axios';
 
 import type {
   BaserowPetrolStation,
-  BaserowFuelPrice,
   BaserowListResponse,
 } from '@/types/baserow';
-import {
-  FUEL_TYPE_OPTIONS,
-  PRICE_TREND_OPTIONS,
-} from '@/types/baserow';
-import type { PetrolStation, FuelPrice } from '@/types/index';
+import type { PetrolStation } from '@/types/index';
+import logger from '@/utils/logger';
 
 const BASEROW_API_URL = process.env.BASEROW_API_URL || 'https://api.baserow.io';
 const BASEROW_API_TOKEN = process.env.BASEROW_API_TOKEN || '';
 const PETROL_STATIONS_TABLE_ID = process.env.BASEROW_PETROL_STATIONS_TABLE_ID || '623329';
-const FUEL_PRICES_TABLE_ID = process.env.BASEROW_FUEL_PRICES_TABLE_ID || '623330';
 
 /**
  * Baserow API client
@@ -26,24 +21,6 @@ const baserowClient = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-/**
- * Convert Baserow fuel type option ID to FuelType enum
- */
-function convertFuelType(optionId: number): string {
-  const entries = Object.entries(FUEL_TYPE_OPTIONS);
-  const found = entries.find(([, id]) => id === optionId);
-  return found ? found[0].toLowerCase() : 'unknown';
-}
-
-/**
- * Convert Baserow price trend option ID to PriceTrend enum
- */
-function convertPriceTrend(optionId: number): string {
-  const entries = Object.entries(PRICE_TREND_OPTIONS);
-  const found = entries.find(([, id]) => id === optionId);
-  return found ? found[0].toLowerCase() : 'stable';
-}
 
 /**
  * Map Baserow station to application Station type
@@ -98,10 +75,10 @@ export const baserowService = {
         }
       }
 
-      console.log(`Fetched ${allStations.length} stations from Baserow`);
+      logger.info(`Fetched ${allStations.length} stations from Baserow`);
       return allStations.map(mapBaserowStation);
     } catch (error) {
-      console.error('Error fetching stations from Baserow:', error);
+      logger.error('Error fetching stations from Baserow:', error);
       throw error;
     }
   },
@@ -117,7 +94,7 @@ export const baserowService = {
 
       return mapBaserowStation(response.data);
     } catch (error) {
-      console.error('Error fetching station from Baserow:', error);
+      logger.error('Error fetching station from Baserow:', error);
       return null;
     }
   },
@@ -149,7 +126,7 @@ export const baserowService = {
 
       return mapBaserowStation(response.data);
     } catch (error) {
-      console.error('Error creating station in Baserow:', error);
+      logger.error('Error creating station in Baserow:', error);
       throw error;
     }
   },
@@ -185,7 +162,7 @@ export const baserowService = {
 
       return mapBaserowStation(response.data);
     } catch (error) {
-      console.error('Error updating station in Baserow:', error);
+      logger.error('Error updating station in Baserow:', error);
       throw error;
     }
   },
@@ -197,7 +174,7 @@ export const baserowService = {
     try {
       await baserowClient.delete(`/${PETROL_STATIONS_TABLE_ID}/${id}/`);
     } catch (error) {
-      console.error('Error deleting station from Baserow:', error);
+      logger.error('Error deleting station from Baserow:', error);
       throw error;
     }
   },

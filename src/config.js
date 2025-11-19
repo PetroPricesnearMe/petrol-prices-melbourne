@@ -1,3 +1,5 @@
+import logger from './utils/logger';
+
 // Frontend Configuration
 const config = {
   // Baserow API Configuration
@@ -80,7 +82,7 @@ export const baserowAPI = {
           const retryAfter = response.headers.get('Retry-After');
           const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.pow(2, attempt) * 1000;
           if (process.env.NODE_ENV === 'development') {
-            console.warn(`⚠️ Rate limited (429). Waiting ${waitTime / 1000}s before retry...`);
+            logger.warn(`⚠️ Rate limited (429). Waiting ${waitTime / 1000}s before retry...`);
           }
           await new Promise(resolve => setTimeout(resolve, waitTime));
           continue;
@@ -94,7 +96,7 @@ export const baserowAPI = {
         // Success or server error (which we should retry)
         if (response.ok) {
           if (process.env.NODE_ENV === 'development') {
-            console.log(`✅ Request successful after ${attempt + 1} attempt(s)`);
+            logger.info(`✅ Request successful after ${attempt + 1} attempt(s)`);
           }
           return response;
         }
@@ -108,16 +110,16 @@ export const baserowAPI = {
         // Don't retry on AbortError timeout after max retries
         if (process.env.NODE_ENV === 'development') {
           if (error.name === 'AbortError') {
-            console.warn(`⚠️ Request timeout on attempt ${attempt + 1}/${maxRetries}`);
+            logger.warn(`⚠️ Request timeout on attempt ${attempt + 1}/${maxRetries}`);
           } else {
-            console.warn(`⚠️ Request failed on attempt ${attempt + 1}/${maxRetries}: ${error.message}`);
+            logger.warn(`⚠️ Request failed on attempt ${attempt + 1}/${maxRetries}: ${error.message}`);
           }
         }
 
         // If this was the last attempt, throw the error
         if (attempt === maxRetries - 1) {
           if (process.env.NODE_ENV === 'development') {
-            console.error(`❌ Request failed after ${maxRetries} attempts`);
+            logger.error(`❌ Request failed after ${maxRetries} attempts`);
           }
           throw lastError;
         }
@@ -125,7 +127,7 @@ export const baserowAPI = {
         // Exponential backoff: 1s, 2s, 4s, 8s, etc.
         const backoffTime = Math.pow(2, attempt) * 1000;
         if (process.env.NODE_ENV === 'development') {
-          console.log(`⏳ Waiting ${backoffTime / 1000}s before retry...`);
+          logger.info(`⏳ Waiting ${backoffTime / 1000}s before retry...`);
         }
         await new Promise(resolve => setTimeout(resolve, backoffTime));
       }
@@ -139,13 +141,13 @@ export const baserowAPI = {
     // In production (no backend), use direct Baserow API
     if (!config.api.baseUrl || config.api.baseUrl === '/api') {
       if (process.env.NODE_ENV === 'development') {
-        console.log('🔄 Production mode: Using direct Baserow API...');
+        logger.info('🔄 Production mode: Using direct Baserow API...');
       }
       try {
         return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
       } catch (error) {
         if (process.env.NODE_ENV === 'development') {
-          console.error('❌ Direct API failed:', error.message);
+          logger.error('❌ Direct API failed:', error.message);
         }
         throw error;
       }
@@ -153,7 +155,7 @@ export const baserowAPI = {
 
     try {
       if (process.env.NODE_ENV === 'development') {
-        console.log(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
+        logger.info(`🔄 Fetching all stations from: ${config.api.baseUrl}/api/stations/all`);
       }
 
       // Use retry logic for backend API calls
@@ -171,24 +173,24 @@ export const baserowAPI = {
       }
 
       if (process.env.NODE_ENV === 'development') {
-        console.log(`✅ Successfully fetched ${data.data.length} stations from backend`);
+        logger.info(`✅ Successfully fetched ${data.data.length} stations from backend`);
       }
       return data.data;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('❌ Error fetching all stations:', error.message);
+        logger.error('❌ Error fetching all stations:', error.message);
       }
 
       // If backend is not available, try direct API call as fallback
       if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch') || error.name === 'AbortError') {
         if (process.env.NODE_ENV === 'development') {
-          console.log('🔄 Backend unavailable, trying direct Baserow API as fallback...');
+          logger.info('🔄 Backend unavailable, trying direct Baserow API as fallback...');
         }
         try {
           return await this.fetchAllStationsDirect(config.tables.petrolStations.id);
         } catch (directError) {
           if (process.env.NODE_ENV === 'development') {
-            console.error('❌ Direct API also failed:', directError.message);
+            logger.error('❌ Direct API also failed:', directError.message);
           }
           throw directError;
         }
@@ -202,7 +204,7 @@ export const baserowAPI = {
   async createStation(stationData) {
     try {
       if (process.env.NODE_ENV === 'development') {
-        console.log(`🔄 Creating new station: ${stationData.stationName}`);
+        logger.info(`🔄 Creating new station: ${stationData.stationName}`);
       }
 
       const response = await fetch(`${config.api.baseUrl}/api/stations`, {
@@ -225,12 +227,12 @@ export const baserowAPI = {
       }
 
       if (process.env.NODE_ENV === 'development') {
-        console.log(`✅ Successfully created station: ${stationData.stationName}`);
+        logger.info(`✅ Successfully created station: ${stationData.stationName}`);
       }
       return data.data;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('❌ Error creating station:', error.message);
+        logger.error('❌ Error creating station:', error.message);
       }
       throw error;
     }
@@ -240,7 +242,7 @@ export const baserowAPI = {
   async updateStation(stationId, updateData) {
     try {
       if (process.env.NODE_ENV === 'development') {
-        console.log(`🔄 Updating station ${stationId}`);
+        logger.info(`🔄 Updating station ${stationId}`);
       }
 
       const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
@@ -263,12 +265,12 @@ export const baserowAPI = {
       }
 
       if (process.env.NODE_ENV === 'development') {
-        console.log(`✅ Successfully updated station ${stationId}`);
+        logger.info(`✅ Successfully updated station ${stationId}`);
       }
       return data.data;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error(`❌ Error updating station ${stationId}:`, error.message);
+        logger.error(`❌ Error updating station ${stationId}:`, error.message);
       }
       throw error;
     }
@@ -278,7 +280,7 @@ export const baserowAPI = {
   async deleteStation(stationId) {
     try {
       if (process.env.NODE_ENV === 'development') {
-        console.log(`🔄 Deleting station ${stationId}`);
+        logger.info(`🔄 Deleting station ${stationId}`);
       }
 
       const response = await fetch(`${config.api.baseUrl}/api/stations/${stationId}`, {
@@ -300,12 +302,12 @@ export const baserowAPI = {
       }
 
       if (process.env.NODE_ENV === 'development') {
-        console.log(`✅ Successfully deleted station ${stationId}`);
+        logger.info(`✅ Successfully deleted station ${stationId}`);
       }
       return true;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error(`❌ Error deleting station ${stationId}:`, error.message);
+        logger.error(`❌ Error deleting station ${stationId}:`, error.message);
       }
       throw error;
     }
@@ -333,12 +335,12 @@ export const baserowAPI = {
       }
 
       if (process.env.NODE_ENV === 'development') {
-        console.log(`✅ Successfully fetched fields for table ${tableId}`);
+        logger.info(`✅ Successfully fetched fields for table ${tableId}`);
       }
       return data.data;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error(`❌ Error fetching table fields:`, error.message);
+        logger.error(`❌ Error fetching table fields:`, error.message);
       }
       throw error;
     }
@@ -352,7 +354,7 @@ export const baserowAPI = {
    */
   async fetchAllStationsDirect(tableId) {
     if (process.env.NODE_ENV === 'development') {
-      console.warn('⚠️ Using direct Baserow API access. Consider using backend proxy instead.');
+      logger.warn('⚠️ Using direct Baserow API access. Consider using backend proxy instead.');
     }
 
     let rows = [];
@@ -363,15 +365,15 @@ export const baserowAPI = {
       : `${config.baserow.apiUrl}/database/rows/table/${tableId}/?user_field_names=true&size=100`;
 
     if (process.env.NODE_ENV === 'development') {
-      console.log(`🔄 Fetching directly from Baserow API: ${nextUrl.replace(config.baserow.publicToken, 'PUBLIC_TOKEN')}`);
-      console.log(`📊 Database ID: ${config.baserow.databaseId}`);
-      console.log(`🔑 Using ${usePublicToken ? 'public token' : 'auth token'}: ${(usePublicToken ? config.baserow.publicToken : config.baserow.token).substring(0, 8)}...`);
+      logger.info(`🔄 Fetching directly from Baserow API: ${nextUrl.replace(config.baserow.publicToken, 'PUBLIC_TOKEN')}`);
+      logger.info(`📊 Database ID: ${config.baserow.databaseId}`);
+      logger.info(`🔑 Using ${usePublicToken ? 'public token' : 'auth token'}: ${(usePublicToken ? config.baserow.publicToken : config.baserow.token).substring(0, 8)}...`);
     }
 
     try {
       while (nextUrl) {
         if (process.env.NODE_ENV === 'development') {
-          console.log(`📡 Making request to: ${nextUrl.replace(config.baserow.publicToken, 'PUBLIC_TOKEN')}`);
+          logger.info(`📡 Making request to: ${nextUrl.replace(config.baserow.publicToken, 'PUBLIC_TOKEN')}`);
         }
 
         // Build headers - only add Authorization if using auth token
@@ -403,17 +405,17 @@ export const baserowAPI = {
         nextUrl = data.next ? (usePublicToken ? `${data.next}&public_token=${config.baserow.publicToken}` : data.next) : null;
 
         if (process.env.NODE_ENV === 'development') {
-          console.log(`📊 Progress: ${rows.length} stations fetched so far...`);
+          logger.info(`📊 Progress: ${rows.length} stations fetched so far...`);
         }
       }
 
       if (process.env.NODE_ENV === 'development') {
-        console.log(`✅ Successfully fetched ${rows.length} stations from Baserow`);
+        logger.info(`✅ Successfully fetched ${rows.length} stations from Baserow`);
       }
       return rows;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('❌ Error fetching stations from Baserow:', error.message);
+        logger.error('❌ Error fetching stations from Baserow:', error.message);
       }
       throw error;
     }
@@ -427,7 +429,7 @@ export const baserowAPI = {
       return data;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('Error testing connection:', error.message);
+        logger.error('Error testing connection:', error.message);
       }
       throw error;
     }

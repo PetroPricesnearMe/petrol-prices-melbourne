@@ -7,6 +7,8 @@
 
 import { useState, useEffect } from 'react';
 
+import logger from '../utils/logger';
+
 /**
  * Hook to monitor network connection status
  * @returns {{isOnline: boolean, wasOffline: boolean}}
@@ -20,7 +22,7 @@ export function useNetworkStatus() {
   useEffect(() => {
     // Handler for when connection is restored
     const handleOnline = () => {
-      console.log('🌐 Network connection restored');
+      logger.info('🌐 Network connection restored');
       setIsOnline(true);
       
       // Keep wasOffline true for a few seconds to show reconnection message
@@ -31,7 +33,7 @@ export function useNetworkStatus() {
 
     // Handler for when connection is lost
     const handleOffline = () => {
-      console.log('📡 Network connection lost');
+      logger.warn('📡 Network connection lost');
       setIsOnline(false);
       setWasOffline(true);
     };
@@ -79,14 +81,14 @@ export function useNetworkPing(interval = 30000) {
         if (mounted) {
           const newStatus = response.ok;
           if (newStatus !== isOnline) {
-            console.log(`🌐 Connectivity check: ${newStatus ? 'Online' : 'Offline'}`);
+            logger.info(`🌐 Connectivity check: ${newStatus ? 'Online' : 'Offline'}`);
           }
           setIsOnline(newStatus);
           setLastChecked(new Date());
         }
       } catch (error) {
         if (mounted) {
-          console.log('📡 Connectivity check failed:', error.message);
+          logger.warn('📡 Connectivity check failed:', error.message);
           setIsOnline(false);
           setLastChecked(new Date());
         }

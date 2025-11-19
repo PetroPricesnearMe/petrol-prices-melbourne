@@ -8,14 +8,21 @@
  * - Caching strategies
  */
 
+import logger from '@/utils/logger';
+
+import type BaserowClient from './client';
 import { BASEROW_TABLES } from './types';
 import type { PetrolStation, FuelPrice, FetchOptions } from './types';
 
+let cachedClient: BaserowClient | null = null;
+
 // Get client singleton
-function getClient() {
-  // Dynamic import to avoid build-time errors if env vars are missing
-  const { getBaserowClient } = require('./client');
-  return getBaserowClient();
+async function getClient() {
+  if (!cachedClient) {
+    const { getBaserowClient } = await import('./client');
+    cachedClient = getBaserowClient();
+  }
+  return cachedClient;
 }
 
 /**
@@ -28,7 +35,7 @@ export async function fetchPetrolStations(
   total: number;
 }> {
   try {
-    const client = getClient();
+    const client = await getClient();
     const results = await client.fetchTableRows<PetrolStation>(
       'database', // databaseId
       BASEROW_TABLES.PETROL_STATIONS,
@@ -40,7 +47,7 @@ export async function fetchPetrolStations(
       total: results.length,
     };
   } catch (error) {
-    console.error('Error fetching petrol stations:', error);
+    logger.error('Error fetching petrol stations:', error);
     return {
       stations: [],
       total: 0,
@@ -99,13 +106,13 @@ export async function fetchNearbyStations(
  */
 export async function fetchStationById(id: number): Promise<PetrolStation | null> {
   try {
-    const client = getClient();
+    const client = await getClient();
     return await client.fetchRowById<PetrolStation>(
       BASEROW_TABLES.PETROL_STATIONS,
       id
     );
   } catch (error) {
-    console.error('Error fetching station:', error);
+    logger.error('Error fetching station:', error);
     return null;
   }
 }
@@ -117,14 +124,14 @@ export async function fetchFuelPrices(
   options: FetchOptions = {}
 ): Promise<FuelPrice[]> {
   try {
-    const client = getClient();
+    const client = await getClient();
     return await client.fetchTableRows<FuelPrice>(
       'database',
       BASEROW_TABLES.FUEL_PRICES,
       options
     );
   } catch (error) {
-    console.error('Error fetching fuel prices:', error);
+    logger.error('Error fetching fuel prices:', error);
     return [];
   }
 }

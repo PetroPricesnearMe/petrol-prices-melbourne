@@ -14,6 +14,8 @@ interface ThemeToggleProps {
   variant?: 'icon' | 'full' | 'dropdown';
 }
 
+type ThemeOption = 'light' | 'dark' | 'system';
+
 export function ThemeToggle({
   className,
   showLabel = false,
@@ -55,7 +57,7 @@ export function ThemeToggle({
       <div className={cn('relative inline-block text-left', className)}>
         <select
           value={theme}
-          onChange={(e) => setTheme(e.target.value as any)}
+          onChange={(e) => setTheme(e.target.value as ThemeOption)}
           className="btn btn-sm btn-outline cursor-pointer"
           aria-label="Select theme"
         >

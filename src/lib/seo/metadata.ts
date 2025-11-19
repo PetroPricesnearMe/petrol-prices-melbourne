@@ -274,10 +274,10 @@ export function generatePageMetadata(options: PageMetadataOptions): Metadata {
 
     alternates: {
       canonical: canonical || undefined,
-      languages: alternateLocales?.reduce((acc, alt) => {
-        acc[alt.locale as any] = alt.url;
+      languages: alternateLocales?.reduce<Record<string, string>>((acc, alt) => {
+        acc[alt.locale] = alt.url;
         return acc;
-      }, {} as Record<string, string>),
+      }, {}),
     },
 
     openGraph: {

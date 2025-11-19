@@ -95,10 +95,14 @@ export interface Station extends StationWithLocation {
   stationName: string;
   locationDetails?: string;
   region?: string;
+  suburb?: string;
+  postcode?: string;
   amenities?: StationAmenities;
   operatingHours?: OperatingHours;
   phoneNumber?: string;
   website?: string;
+  image?: string;
+  fuelPrices?: FuelPrice[] | Record<string, number | null>;
   rating?: number;
   reviewCount?: number;
   lastUpdated?: string | Date;
@@ -120,6 +124,7 @@ export interface FuelPrice {
   id: ID;
   fuelType: FuelTypeValue;
   pricePerLiter: number;
+  price?: number;
   currency?: string;
   lastUpdated: string | Date;
   priceTrend?: PriceTrend;
@@ -148,6 +153,9 @@ export interface StationFilters {
   isOpen24Hours?: boolean;
   region?: string;
   city?: string;
+  suburb?: string;
+  sortBy?: string;
+  amenities?: (keyof StationAmenities)[];
 }
 
 /** Station sort options */

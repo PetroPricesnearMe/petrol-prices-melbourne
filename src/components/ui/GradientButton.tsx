@@ -22,7 +22,7 @@ interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   loading?: boolean;
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const gradientVariants = {
@@ -119,18 +119,22 @@ GradientButton.displayName = 'GradientButton';
 export const PrimaryGradientButton = forwardRef<HTMLButtonElement, Omit<GradientButtonProps, 'variant'>>(
   (props, ref) => <GradientButton ref={ref} variant="primary" {...props} />
 );
+PrimaryGradientButton.displayName = 'PrimaryGradientButton';
 
 export const SuccessGradientButton = forwardRef<HTMLButtonElement, Omit<GradientButtonProps, 'variant'>>(
   (props, ref) => <GradientButton ref={ref} variant="success" {...props} />
 );
+SuccessGradientButton.displayName = 'SuccessGradientButton';
 
 export const WarningGradientButton = forwardRef<HTMLButtonElement, Omit<GradientButtonProps, 'variant'>>(
   (props, ref) => <GradientButton ref={ref} variant="warning" {...props} />
 );
+WarningGradientButton.displayName = 'WarningGradientButton';
 
 export const ErrorGradientButton = forwardRef<HTMLButtonElement, Omit<GradientButtonProps, 'variant'>>(
   (props, ref) => <GradientButton ref={ref} variant="error" {...props} />
 );
+ErrorGradientButton.displayName = 'ErrorGradientButton';
 
 // Icon button variant
 export const GradientIconButton = forwardRef<HTMLButtonElement, Omit<GradientButtonProps, 'children'>>(
@@ -142,6 +146,7 @@ export const GradientIconButton = forwardRef<HTMLButtonElement, Omit<GradientBut
     />
   )
 );
+GradientIconButton.displayName = 'GradientIconButton';
 
 // Button group component
 interface GradientButtonGroupProps {

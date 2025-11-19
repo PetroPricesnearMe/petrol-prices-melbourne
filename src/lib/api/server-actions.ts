@@ -15,8 +15,8 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { cache } from 'react';
 
-import { baserowService } from '@/services/BaserowService';
 import type { Station, FuelPrice, StationFilters } from '@/types/station';
+import logger from '@/utils/logger';
 
 import { validateStationId, validateFilters } from './validation';
 
@@ -49,7 +49,7 @@ export const getStations = cache(async (): Promise<Station[]> => {
     const data = await response.json();
     return transformBaserowToStations(data.results);
   } catch (error) {
-    console.error('Error fetching stations:', error);
+    logger.error('Error fetching stations:', error);
     // Return empty array instead of throwing in production
     if (process.env.NODE_ENV === 'production') {
       return [];
@@ -297,7 +297,7 @@ export async function createStation(data: Omit<Station, 'id'>): Promise<{ succes
 
     return { success: true, id: result.id };
   } catch (error) {
-    console.error('Error creating station:', error);
+    logger.error('Error creating station:', error);
     return { success: false, error: String(error) };
   }
 }
@@ -326,7 +326,7 @@ export async function deleteStation(id: number): Promise<{ success: boolean; err
 
     return { success: true };
   } catch (error) {
-    console.error('Error deleting station:', error);
+    logger.error('Error deleting station:', error);
     return { success: false, error: String(error) };
   }
 }
@@ -335,45 +335,45 @@ export async function deleteStation(id: number): Promise<{ success: boolean; err
 // HELPER FUNCTIONS
 // ============================================================================
 
-function transformBaserowToStations(data: any[]): Station[] {
+function transformBaserowToStations(data: Array<Record<string, unknown>>): Station[] {
   return data.map(transformBaserowToStation).filter(Boolean) as Station[];
 }
 
-function transformBaserowToStation(data: any): Station | null {
+function transformBaserowToStation(data: Record<string, unknown>): Station | null {
   try {
     return {
-      id: data.id,
-      name: data['Station Name'] || '',
-      brand: data.brand?.[0] || '',
-      address: data.Address || '',
-      suburb: data.City || '',
-      city: data.City || '',
-      postcode: data['Postal Code'] || '',
-      region: data.Region || '',
-      latitude: parseFloat(data.Latitude) || null,
-      longitude: parseFloat(data.Longitude) || null,
-      category: data.Category || 'PETROL_STATION',
+      id: Number(data.id) || 0,
+      name: (data['Station Name'] as string) || '',
+      brand: Array.isArray(data.brand) ? (data.brand[0] as string) || '' : '',
+      address: (data.Address as string) || '',
+      suburb: (data.City as string) || '',
+      city: (data.City as string) || '',
+      postcode: (data['Postal Code'] as string) || '',
+      region: (data.Region as string) || '',
+      latitude: data.Latitude ? parseFloat(String(data.Latitude)) || null : null,
+      longitude: data.Longitude ? parseFloat(String(data.Longitude)) || null : null,
+      category: (data.Category as string) || 'PETROL_STATION',
       fuelPrices: [],
       amenities: {},
       lastUpdated: new Date().toISOString(),
     };
   } catch (error) {
-    console.error('Error transforming Baserow data:', error);
+    logger.error('Error transforming Baserow data:', error);
     return null;
   }
 }
 
-function transformBaserowToFuelPrices(data: any[]): FuelPrice[] {
+function transformBaserowToFuelPrices(data: Array<Record<string, unknown>>): FuelPrice[] {
   return data.map(item => ({
-    id: item.id,
-    stationId: item['Petrol Station']?.[0] || 0,
-    fuelType: item['Fuel Type'] || '',
-    price: parseFloat(item['Price Per Liter']) || 0,
-    lastUpdated: item['Last Updated'] || new Date().toISOString(),
+    id: Number(item.id) || 0,
+    stationId: Array.isArray(item['Petrol Station']) ? Number(item['Petrol Station'][0]) || 0 : 0,
+    fuelType: (item['Fuel Type'] as string) || '',
+    price: item['Price Per Liter'] ? parseFloat(String(item['Price Per Liter'])) || 0 : 0,
+    lastUpdated: (item['Last Updated'] as string) || new Date().toISOString(),
   }));
 }
 
-function transformStationToBaserow(station: Partial<Station>): any {
+function transformStationToBaserow(station: Partial<Station>): Record<string, string | number | undefined> {
   return {
     'Station Name': station.name,
     'Address': station.address,

@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -6,7 +7,6 @@ import App from './App';
 import { initializeGA } from './utils/googleAnalytics';
 
 import './utils/keyboardNavigation';
-import { Analytics } from '@vercel/analytics/react';
 
 // Initialize Google Analytics on app load
 // Deferred to not block initial render

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 import dataSourceManager from '../services/DataSourceManager';
 import { trackSearch, trackFilter } from '../utils/analytics';
+import logger from '../utils/logger';
 
 /**
  * Station Cards Component - Fully Responsive with Tailwind CSS
@@ -89,7 +90,7 @@ const StationCards = () => {
       const text = await response.text();
       return parseCSV(text);
     } catch (error) {
-      console.log('CSV not available, using Baserow API');
+      logger.warn('CSV not available, using Baserow API');
       return null;
     }
   }, [parseCSV]);
@@ -111,7 +112,7 @@ const StationCards = () => {
         const data = await dataSourceManager.fetchStations();
         setStations(data);
       } catch (error) {
-        console.error('Error loading stations:', error);
+        logger.error('Error loading stations:', error);
       } finally {
         setLoading(false);
       }
@@ -387,15 +388,15 @@ const StationCards = () => {
                       {station.brand || 'Independent'}
                     </div>
                     <div className="w-16 h-10 sm:w-20 sm:h-12 relative flex items-center justify-end">
-                      <img
-                        src={getBrandLogo(station.brand)}
-                        alt={`${station.brand || 'Station'} logo`}
-                        className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-110"
-                        onError={(e) => {
-                          e.target.src = '/images/brands/default-logo.svg';
-                        }}
-                        loading="lazy"
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={getBrandLogo(station.brand)}
+                          alt={`${station.brand || 'Station'} logo`}
+                          fill
+                          sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
+                          className="object-contain transition-transform duration-300 group-hover:scale-110"
+                        />
+                      </div>
                     </div>
                   </header>
 

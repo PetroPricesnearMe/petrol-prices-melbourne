@@ -5,6 +5,8 @@
  * navigation links, contact info, and social media
  */
 
+import logger from '@/utils/logger';
+
 export const footerConfig = {
   sections: [
     {
@@ -97,7 +99,7 @@ export const footerConfig = {
     onSubmit: async (email: string) => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Newsletter subscription:', email);
+      logger.info('Newsletter subscription:', email);
     },
   },
 

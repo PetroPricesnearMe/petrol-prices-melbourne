@@ -6,9 +6,10 @@
  * const { connected, updates } = useMCPUpdates('price.updated');
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 import mcpService from '../services/MCPService';
+import logger from '../utils/logger';
 
 /**
  * Subscribe to MCP real-time updates
@@ -22,11 +23,14 @@ export function useMCPUpdates(events, onUpdate) {
   const [error, setError] = useState(null);
 
   // Convert single event to array
-  const eventArray = Array.isArray(events) ? events : [events];
+  const eventList = useMemo(() => {
+    const list = Array.isArray(events) ? events : [events];
+    return list.filter(Boolean);
+  }, [events]);
 
   // Handle update
   const handleUpdate = useCallback((data) => {
-    console.log('🔔 [useMCPUpdates] Received update:', data);
+    logger.info('🔔 [useMCPUpdates] Received update:', data);
     setLatestUpdate(data);
     setError(null);
     
@@ -38,18 +42,18 @@ export function useMCPUpdates(events, onUpdate) {
   // Handle connection status changes
   useEffect(() => {
     const handleConnect = () => {
-      console.log('✅ [useMCPUpdates] Connected');
+      logger.info('✅ [useMCPUpdates] Connected');
       setConnected(true);
       setError(null);
     };
 
     const handleDisconnect = () => {
-      console.log('⚠️ [useMCPUpdates] Disconnected');
+      logger.warn('⚠️ [useMCPUpdates] Disconnected');
       setConnected(false);
     };
 
     const handleMaxAttempts = () => {
-      console.error('❌ [useMCPUpdates] Max reconnection attempts reached');
+      logger.error('❌ [useMCPUpdates] Max reconnection attempts reached');
       setConnected(false);
       setError('Failed to connect to real-time updates');
     };
@@ -69,8 +73,8 @@ export function useMCPUpdates(events, onUpdate) {
 
   // Subscribe to specified events
   useEffect(() => {
-    const unsubscribers = eventArray.map(event => {
-      console.log(`📡 [useMCPUpdates] Subscribing to '${event}'`);
+    const unsubscribers = eventList.map(event => {
+      logger.info(`📡 [useMCPUpdates] Subscribing to '${event}'`);
       return mcpService.on(event, handleUpdate);
     });
 
@@ -78,7 +82,7 @@ export function useMCPUpdates(events, onUpdate) {
     return () => {
       unsubscribers.forEach(unsub => unsub());
     };
-  }, [eventArray.join(','), handleUpdate]);
+  }, [eventList, handleUpdate]);
 
   return {
     connected,

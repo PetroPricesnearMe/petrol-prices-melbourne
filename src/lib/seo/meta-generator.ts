@@ -9,7 +9,6 @@ import type { Metadata } from 'next';
 import type { Station } from '@/types/station';
 
 const DEFAULT_SITE_NAME = 'Petrol Price Near Me';
-const DEFAULT_DESCRIPTION = 'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations.';
 const DEFAULT_IMAGE = '/images/og-image.jpg';
 
 // ============================================================================

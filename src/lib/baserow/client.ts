@@ -9,6 +9,8 @@
  * - Retry logic
  */
 
+import logger from '@/utils/logger';
+
 interface BaserowConfig {
   apiToken: string;
   baseUrl: string;
@@ -134,7 +136,7 @@ class BaserowClient {
 
       return data;
     } catch (error) {
-      console.error('Baserow fetch error:', error);
+      logger.error('Baserow fetch error:', error);
       return null;
     }
   }
@@ -142,7 +144,7 @@ class BaserowClient {
   /**
    * Create a new row
    */
-  async createRow<T extends Record<string, any>>(
+  async createRow<T extends Record<string, unknown>>(
     tableId: string,
     data: T
   ): Promise<BaserowRow> {
@@ -167,7 +169,7 @@ class BaserowClient {
   /**
    * Update a row
    */
-  async updateRow<T extends Record<string, any>>(
+  async updateRow<T extends Record<string, unknown>>(
     tableId: string,
     rowId: number,
     data: Partial<T>

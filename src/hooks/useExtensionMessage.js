@@ -6,6 +6,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 import extensionMessageHandler from '../utils/extensionMessageHandler';
+import logger from '../utils/logger';
 
 /**
  * Hook for handling Chrome extension messages with bfcache support
@@ -27,8 +28,6 @@ export const useExtensionMessage = (options = {}) => {
   const [lastError, setLastError] = useState(null);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const [queuedMessages, setQueuedMessages] = useState(0);
-
-  const messageHandlerRef = useRef(null);
   const listenersRef = useRef(new Set());
 
   // Update connection status
@@ -49,20 +48,20 @@ export const useExtensionMessage = (options = {}) => {
   const handleDisconnection = useCallback((data) => {
     setIsConnected(false);
     if (data.reason === 'bfcache') {
-      console.log('[useExtensionMessage] Disconnected due to bfcache');
+      logger.info('[useExtensionMessage] Disconnected due to bfcache');
     }
   }, []);
 
   // Handle errors
   const handleError = useCallback((data) => {
     setLastError(data.error);
-    console.error('[useExtensionMessage] Error:', data.error);
+    logger.error('[useExtensionMessage] Error:', data.error);
   }, []);
 
   // Handle max reconnection attempts reached
   const handleMaxReconnectAttempts = useCallback(() => {
     setLastError('Max reconnection attempts reached');
-    console.warn('[useExtensionMessage] Max reconnection attempts reached');
+    logger.warn('[useExtensionMessage] Max reconnection attempts reached');
   }, []);
 
   // Send message to extension
@@ -94,11 +93,12 @@ export const useExtensionMessage = (options = {}) => {
 
   // Cleanup listeners on unmount
   useEffect(() => {
+    const listenersSet = listenersRef.current;
     return () => {
-      listenersRef.current.forEach(({ event, callback }) => {
+      listenersSet.forEach(({ event, callback }) => {
         extensionMessageHandler.removeEventListener(event, callback);
       });
-      listenersRef.current.clear();
+      listenersSet.clear();
     };
   }, []);
 
@@ -122,7 +122,8 @@ export const useExtensionMessage = (options = {}) => {
     updateConnectionStatus();
 
     // Set up periodic status updates
-    const statusInterval = setInterval(updateConnectionStatus, 1000);
+    const intervalDelay = Math.max(250, reconnectDelay);
+    const statusInterval = setInterval(updateConnectionStatus, intervalDelay);
 
     return () => {
       // Remove listeners
@@ -134,7 +135,14 @@ export const useExtensionMessage = (options = {}) => {
       // Clear interval
       clearInterval(statusInterval);
     };
-  }, [autoConnect, handleMessage, handleDisconnection, handleError, handleMaxReconnectAttempts, updateConnectionStatus]);
+  }, [autoConnect, handleMessage, handleDisconnection, handleError, handleMaxReconnectAttempts, reconnectDelay, updateConnectionStatus]);
+
+  useEffect(() => {
+    if (reconnectAttempts < maxReconnectAttempts) {
+      return;
+    }
+    setLastError('Max reconnection attempts reached');
+  }, [reconnectAttempts, maxReconnectAttempts]);
 
   return {
     // State

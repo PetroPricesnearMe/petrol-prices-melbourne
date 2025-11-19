@@ -4,7 +4,10 @@
  * Custom hooks for performance monitoring and optimization
  */
 
-import { useEffect, useRef, useCallback, useMemo } from 'react';
+import type { RefCallback } from 'react';
+import { useEffect, useRef, useCallback, useMemo, useState } from 'react';
+
+import logger from '@/utils/logger';
 
 /**
  * Hook to measure component render time
@@ -21,7 +24,7 @@ export function useRenderTime(componentName: string, enabled = process.env.NODE_
     const renderTime = endTime - startTime.current;
 
     if (renderTime > 16) { // More than one frame (60fps)
-      console.warn(
+      logger.warn(
         `[Performance] ${componentName} render #${renderCount.current} took ${renderTime.toFixed(2)}ms`
       );
     }
@@ -33,8 +36,8 @@ export function useRenderTime(componentName: string, enabled = process.env.NODE_
 /**
  * Hook to detect expensive renders
  */
-export function useWhyDidYouUpdate(name: string, props: Record<string, any>) {
-  const previousProps = useRef<Record<string, any>>();
+export function useWhyDidYouUpdate(name: string, props: Record<string, unknown>) {
+  const previousProps = useRef<Record<string, unknown> | undefined>(undefined);
 
   useEffect(() => {
     if (previousProps.current) {
@@ -51,7 +54,7 @@ export function useWhyDidYouUpdate(name: string, props: Record<string, any>) {
       });
 
       if (Object.keys(changedProps).length > 0) {
-        console.log('[WhyDidYouUpdate]', name, changedProps);
+        logger.info('[WhyDidYouUpdate]', name, changedProps);
       }
     }
 
@@ -63,7 +66,7 @@ export function useWhyDidYouUpdate(name: string, props: Record<string, any>) {
  * Debounced callback hook
  */
 export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = React.useState<T>(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -82,7 +85,7 @@ export function useDebounce<T>(value: T, delay: number): T {
  * Throttled callback hook
  */
 export function useThrottle<T>(value: T, limit: number): T {
-  const [throttledValue, setThrottledValue] = React.useState<T>(value);
+  const [throttledValue, setThrottledValue] = useState<T>(value);
   const lastRan = useRef(Date.now());
 
   useEffect(() => {
@@ -106,9 +109,9 @@ export function useThrottle<T>(value: T, limit: number): T {
  */
 export function useIntersectionObserver(
   options: IntersectionObserverInit = {}
-): [React.RefCallback<Element>, boolean] {
-  const [isIntersecting, setIsIntersecting] = React.useState(false);
-  const [node, setNode] = React.useState<Element | null>(null);
+): [RefCallback<Element>, boolean] {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [node, setNode] = useState<Element | null>(null);
 
   const observer = useMemo(
     () =>
@@ -117,7 +120,7 @@ export function useIntersectionObserver(
             setIsIntersecting(entry.isIntersecting);
           }, options)
         : null,
-    [options.threshold, options.root, options.rootMargin]
+    [options]
   );
 
   useEffect(() => {
@@ -141,7 +144,7 @@ export function useIntersectionObserver(
  * Previous value hook
  */
 export function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
+  const ref = useRef<T | undefined>(undefined);
 
   useEffect(() => {
     ref.current = value;
@@ -153,27 +156,28 @@ export function usePrevious<T>(value: T): T | undefined {
 /**
  * RAF (RequestAnimationFrame) hook for smooth animations
  */
-export function useAnimationFrame(callback: (deltaTime: number) => void, deps: React.DependencyList = []) {
-  const requestRef = useRef<number>();
-  const previousTimeRef = useRef<number>();
-
-  const animate = useCallback((time: number) => {
-    if (previousTimeRef.current !== undefined) {
-      const deltaTime = time - previousTimeRef.current;
-      callback(deltaTime);
-    }
-    previousTimeRef.current = time;
-    requestRef.current = requestAnimationFrame(animate);
-  }, deps);
+export function useAnimationFrame(callback: (deltaTime: number) => void) {
+  const requestRef = useRef<number | undefined>(undefined);
+  const previousTimeRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
+    const animate = (time: number) => {
+      if (previousTimeRef.current !== undefined) {
+        const deltaTime = time - previousTimeRef.current;
+        callback(deltaTime);
+      }
+      previousTimeRef.current = time;
+      requestRef.current = requestAnimationFrame(animate);
+    };
+
     requestRef.current = requestAnimationFrame(animate);
     return () => {
       if (requestRef.current) {
         cancelAnimationFrame(requestRef.current);
       }
+      previousTimeRef.current = undefined;
     };
-  }, [animate]);
+  }, [callback]);
 }
 
 /**
@@ -192,5 +196,3 @@ export function useIsMounted(): () => boolean {
   return useCallback(() => isMountedRef.current, []);
 }
 
-// Re-export React for convenience
-import React from 'react';

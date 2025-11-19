@@ -6,7 +6,7 @@
 
 import type { ColorVariant, Size } from '@/types/index';
 
-import { colors, spacing, shadows, borderRadius } from '../tokens';
+import { colors, spacing } from '../tokens';
 
 /**
  * Get color by variant
@@ -42,6 +42,7 @@ export const getSizeSpacing = (size: Size): string => {
     md: 3,
     lg: 4,
     xl: 6,
+    '2xl': 8,
   };
 
   return spacing[sizeMap[size]];

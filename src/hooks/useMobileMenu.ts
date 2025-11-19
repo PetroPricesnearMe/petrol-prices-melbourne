@@ -91,10 +91,12 @@ export function useMobileMenu(options: UseMobileMenuOptions = {}) {
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
+    if (!isOpen) {
+      return undefined;
     }
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, closeMenu]);
 
   // Handle route changes
@@ -112,7 +114,7 @@ export function useMobileMenu(options: UseMobileMenuOptions = {}) {
   }, [closeMenu]);
 
   // Handle swipe gestures (for mobile)
-  const handleSwipe = useCallback((direction: 'left' | 'right', threshold = 100) => {
+  const handleSwipe = useCallback((direction: 'left' | 'right') => {
     if (direction === 'left' && isOpen) {
       closeMenu();
     }

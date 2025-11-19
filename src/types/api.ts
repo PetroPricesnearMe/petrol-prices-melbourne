@@ -8,7 +8,7 @@
  */
 
 import type { QueryParams } from './filter';
-import type { Listing, ListingMetadata, PaginatedListings } from './listing';
+import type { Listing, ListingMetadata } from './listing';
 
 // ============================================================================
 // Generic API Response Types

@@ -3,7 +3,7 @@
  * Accessible loading indicator with reduced motion support
  */
 
-import { cn, animations, a11y } from '@/styles/system/css-in-js';
+import { cn, a11y } from '@/styles/system/css-in-js';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
