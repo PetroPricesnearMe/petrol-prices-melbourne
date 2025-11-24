@@ -80,12 +80,27 @@ export default async function FuelBrandsPage() {
               API, providing you with comprehensive, accurate information about
               all registered fuel stations in Victoria.
             </p>
-            <ul className="list-inside list-disc space-y-2 text-primary-50">
+            <ul className="mb-6 list-inside list-disc space-y-2 text-primary-50">
               <li>Complete coverage of all major and independent brands</li>
               <li>Official government data updated daily</li>
               <li>Accurate brand classifications and information</li>
               <li>Transparent pricing across all brands</li>
             </ul>
+            {/* Required Attribution Notice */}
+            <div className="mt-4 border-t border-white/20 pt-4">
+              <p className="text-sm text-primary-50">
+                © State of Victoria accessed via the{' '}
+                <a
+                  href="https://www.service.vic.gov.au/find-services/business/fuel-retailers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-white"
+                  aria-label="Service Victoria Platform (opens in new tab)"
+                >
+                  Victorian Government Service Victoria Platform
+                </a>
+              </p>
+            </div>
           </div>
 
           {/* Major Brands */}

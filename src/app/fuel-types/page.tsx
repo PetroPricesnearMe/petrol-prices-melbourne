@@ -87,12 +87,27 @@ export default async function FuelTypesPage() {
               Data API, ensuring you have access to accurate, up-to-date
               information about all available fuel types in Victoria.
             </p>
-            <ul className="list-inside list-disc space-y-2 text-primary-50">
+            <ul className="mb-6 list-inside list-disc space-y-2 text-primary-50">
               <li>Complete list of all 11 supported fuel types</li>
               <li>Official fuel type codes and names</li>
               <li>Price comparisons across all fuel types</li>
               <li>Information about alternative and eco-friendly fuels</li>
             </ul>
+            {/* Required Attribution Notice */}
+            <div className="mt-4 border-t border-white/20 pt-4">
+              <p className="text-sm text-primary-50">
+                © State of Victoria accessed via the{' '}
+                <a
+                  href="https://www.service.vic.gov.au/find-services/business/fuel-retailers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-white"
+                  aria-label="Service Victoria Platform (opens in new tab)"
+                >
+                  Victorian Government Service Victoria Platform
+                </a>
+              </p>
+            </div>
           </div>
 
           {/* Fuel Types Grid */}

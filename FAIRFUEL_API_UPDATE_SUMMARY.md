@@ -187,11 +187,48 @@ This document summarizes the updates made to integrate additional FairFuel Open 
    - Add JSON-LD schema for fuel types
    - Enhance existing station structured data
 
+## Service Victoria API Terms and Compliance
+
+This application complies with the Service Victoria Platform Terms and Acceptable Use Policy. Key compliance measures:
+
+### Required Attribution
+
+The following notice is displayed on all pages using Service Victoria data:
+
+```
+© State of Victoria accessed via the Victorian Government Service Victoria Platform
+```
+
+This notice appears in:
+- Footer of all pages
+- Fuel brands page (`/fuel-brands`)
+- Fuel types page (`/fuel-types`)
+- Any other pages displaying Service Victoria data
+
+### Rate Limiting Compliance
+
+- **API Rate Limit**: 10 requests per 60 seconds
+- **Implementation**: 
+  - Caching (24 hours for brands/types, 15 minutes for prices)
+  - Request throttling
+  - Error handling for rate limit exceeded scenarios
+
+### License
+
+All APIs are licensed under the **Creative Commons Attribution 4.0 International Licence** (CC BY 4.0).
+
+### Full Terms Documentation
+
+For complete terms and conditions, see:
+- [Service Victoria API Terms Documentation](./docs/SERVICE_VICTORIA_API_TERMS.md)
+
 ## References
 
 - [Fair Fuel Open Data API Documentation](./src/data/FairFuelOpenDataAPI.pdf)
+- [Service Victoria API Terms](./docs/SERVICE_VICTORIA_API_TERMS.md)
 - Service Victoria: https://www.service.vic.gov.au/
 - API Base URL: `https://api.fuel.service.vic.gov.au/open-data/v1`
+- Creative Commons Attribution 4.0: https://creativecommons.org/licenses/by/4.0/deed.en
 
 ## Environment Variables
 

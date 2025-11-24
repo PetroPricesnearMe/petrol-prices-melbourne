@@ -230,14 +230,31 @@ export function EnhancedFooter({
           variants={itemVariants}
           className="border-t border-white/10 pt-8"
         >
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-center text-sm text-gray-400 md:text-left">
-              {copyright ||
-                `© ${currentYear} ${companyName}. All rights reserved.`}
-            </p>
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <MapPin className="h-4 w-4" aria-hidden="true" />
-              <span>Melbourne, Australia</span>
+          <div className="flex flex-col gap-4">
+            {/* Service Victoria Attribution */}
+            <div className="text-center text-xs text-gray-500">
+              <p>
+                © State of Victoria accessed via the{' '}
+                <a
+                  href="https://www.service.vic.gov.au/find-services/business/fuel-retailers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-gray-400"
+                  aria-label="Service Victoria Platform (opens in new tab)"
+                >
+                  Victorian Government Service Victoria Platform
+                </a>
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+              <p className="text-center text-sm text-gray-400 md:text-left">
+                {copyright ||
+                  `© ${currentYear} ${companyName}. All rights reserved.`}
+              </p>
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <MapPin className="h-4 w-4" aria-hidden="true" />
+                <span>Melbourne, Australia</span>
+              </div>
             </div>
           </div>
         </motion.div>

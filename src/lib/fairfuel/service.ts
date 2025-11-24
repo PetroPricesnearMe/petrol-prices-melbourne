@@ -2,6 +2,7 @@
 
 import { randomUUID } from 'crypto';
 
+import { checkRateLimit, RateLimitError } from './rate-limiter';
 import { safeReadBody, transformPriceDetailToStation } from './utils';
 
 import { config } from '@/config/environment';
@@ -63,6 +64,17 @@ export async function getLiveStationsFromFairFuel(options?: {
 }
 
 async function fetchFairFuelPriceDetails(): Promise<FairFuelPriceResponse> {
+  // Check rate limit before making request
+  if (consumerId) {
+    const rateLimit = checkRateLimit(consumerId);
+    if (!rateLimit.allowed) {
+      const resetSeconds = Math.ceil(rateLimit.resetTime / 1000);
+      const message = `[FairFuel] Rate limit exceeded. Please try again in ${resetSeconds} seconds.`;
+      logger.warn(message);
+      throw new RateLimitError(rateLimit.resetTime, message);
+    }
+  }
+
   const transactionId = randomUUID();
   const controller = new AbortController();
   const timeout = Math.max(requestTimeoutMs, MIN_TIMEOUT);
@@ -172,6 +184,17 @@ export async function getFuelTypesFromFairFuel(options?: {
 }
 
 async function fetchFairFuelBrands(): Promise<FairFuelBrandsResponse> {
+  // Check rate limit before making request
+  if (consumerId) {
+    const rateLimit = checkRateLimit(consumerId);
+    if (!rateLimit.allowed) {
+      const resetSeconds = Math.ceil(rateLimit.resetTime / 1000);
+      const message = `[FairFuel] Rate limit exceeded. Please try again in ${resetSeconds} seconds.`;
+      logger.warn(message);
+      throw new RateLimitError(rateLimit.resetTime, message);
+    }
+  }
+
   const transactionId = randomUUID();
   const controller = new AbortController();
   const timeout = Math.max(requestTimeoutMs, MIN_TIMEOUT);
@@ -215,6 +238,17 @@ async function fetchFairFuelBrands(): Promise<FairFuelBrandsResponse> {
 }
 
 async function fetchFairFuelFuelTypes(): Promise<FairFuelFuelTypesResponse> {
+  // Check rate limit before making request
+  if (consumerId) {
+    const rateLimit = checkRateLimit(consumerId);
+    if (!rateLimit.allowed) {
+      const resetSeconds = Math.ceil(rateLimit.resetTime / 1000);
+      const message = `[FairFuel] Rate limit exceeded. Please try again in ${resetSeconds} seconds.`;
+      logger.warn(message);
+      throw new RateLimitError(rateLimit.resetTime, message);
+    }
+  }
+
   const transactionId = randomUUID();
   const controller = new AbortController();
   const timeout = Math.max(requestTimeoutMs, MIN_TIMEOUT);

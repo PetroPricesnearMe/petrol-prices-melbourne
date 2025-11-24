@@ -395,6 +395,19 @@ YANDEX_VERIFICATION=your_yandex_code
 BING_VERIFICATION=your_bing_code
 
 # Fair Fuel Open Data API (Service Victoria)
+
+## Service Victoria API Terms Compliance
+
+This application complies with the Service Victoria Platform Terms and Acceptable Use Policy. For complete terms and conditions, see:
+
+- **[Service Victoria API Terms Documentation](./docs/SERVICE_VICTORIA_API_TERMS.md)**
+
+### Key Compliance Measures
+
+- **Required Attribution**: "© State of Victoria accessed via the Victorian Government Service Victoria Platform" is displayed on all pages using Service Victoria data
+- **Rate Limiting**: Implements rate limiting (10 requests per 60 seconds) with caching to minimize API calls
+- **License**: All APIs are licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)
+- **Privacy**: Complies with Privacy and Data Protection Act 2014 (Vic) and Privacy Act 1988 (Cth)
 FAIRFUEL_API_BASE_URL=https://api.fuel.service.vic.gov.au/open-data/v1
 FAIRFUEL_CONSUMER_ID=972955e644e7df65c1cde7aabd2ba64a
 FAIRFUEL_USER_AGENT=petrol-price-near-me/2.0.0
