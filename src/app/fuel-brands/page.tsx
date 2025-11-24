@@ -6,6 +6,10 @@ import {
   isFairFuelConfigured,
 } from '@/lib/fairfuel/service';
 
+// Force dynamic rendering since we're fetching from API
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
 export const metadata: Metadata = {
   title:
     'All Fuel Brands in Melbourne | Compare Prices by Brand | Petrol Price Near Me',

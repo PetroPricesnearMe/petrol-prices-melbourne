@@ -18,7 +18,11 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, MapPin, TrendingDown, Search } from 'lucide-react';
 import Link from 'next/link';
 
-import { fadeIn } from '@/utils/animations';
+import {
+  ANIMATION_DURATION,
+  ANIMATION_EASING,
+  fadeIn,
+} from '@/utils/animations';
 
 export interface HeroProps {
   /** Custom heading text */
