@@ -14,7 +14,10 @@ import type { StationFilters } from '@/types/station';
 /**
  * Station ID validation schema
  */
-export const stationIdSchema = z.number().int().positive();
+export const stationIdSchema = z.union([
+  z.number().int().positive(),
+  z.string().min(1).max(100),
+]);
 
 /**
  * Coordinates validation schema
@@ -71,14 +74,24 @@ export const fuelPriceUpdateSchema = z.object({
 // VALIDATION FUNCTIONS
 // ============================================================================
 
-export function validateStationId(id: number | string): { success: boolean; data?: number; error?: string } {
+export function validateStationId(
+  id: number | string
+): { success: boolean; data?: number | string; error?: string } {
   try {
-    const parsed = typeof id === 'string' ? parseInt(id, 10) : id;
-    const result = stationIdSchema.parse(parsed);
+    const normalized =
+      typeof id === 'number'
+        ? id
+        : /^\d+$/.test(id)
+          ? Number(id)
+          : id;
+    const result = stationIdSchema.parse(normalized);
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { success: false, error: error.errors[0]?.message || 'Invalid station ID' };
+      return {
+        success: false,
+        error: error.errors[0]?.message || 'Invalid station ID',
+      };
     }
     return { success: false, error: 'Invalid station ID' };
   }

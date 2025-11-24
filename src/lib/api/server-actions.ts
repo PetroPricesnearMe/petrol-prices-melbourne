@@ -15,11 +15,32 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { cache } from 'react';
 
+import { validateStationId, validateFilters } from './validation';
+import {
+  calculateDistance,
+  flattenStationFuelPrices,
+  sortStations,
+  transformBaserowToFuelPrices,
+  transformBaserowToStation,
+  transformBaserowToStations,
+  transformStationToBaserow,
+} from './server-action-utils';
+
+import { getLiveStationsFromFairFuel, isFairFuelConfigured } from '@/lib/fairfuel/service';
 import type { Station, FuelPrice, StationFilters } from '@/types/station';
-import { StationCategory } from '@/types/station';
 import logger from '@/utils/logger';
 
-import { validateStationId, validateFilters } from './validation';
+const BASEROW_API_URL = process.env.BASEROW_API_URL || 'https://api.baserow.io';
+const BASEROW_STATIONS_TABLE_ID =
+  process.env.BASEROW_STATIONS_TABLE_ID || '623329';
+const BASEROW_PRICES_TABLE_ID =
+  process.env.BASEROW_PRICES_TABLE_ID || '623330';
+const BASEROW_API_TOKEN = process.env.BASEROW_API_TOKEN || '';
+const BASEROW_BASE_ENDPOINT = `${BASEROW_API_URL}/api/database/rows/table`;
+const BASEROW_HEADERS = {
+  Authorization: `Token ${BASEROW_API_TOKEN}`,
+  'Content-Type': 'application/json',
+};
 
 // ============================================================================
 // CACHED DATA FETCHERS (React Cache + Next.js Cache)
@@ -31,71 +52,57 @@ import { validateStationId, validateFilters } from './validation';
  * Uses Next.js cache tags for revalidation
  */
 export const getStations = cache(async (): Promise<Station[]> => {
-  try {
-    const response = await fetch(`${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/`, {
-      headers: {
-        'Authorization': `Token ${process.env.BASEROW_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      next: {
-        revalidate: 3600, // Cache for 1 hour
-        tags: ['stations'], // Tag for targeted revalidation
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch stations: ${response.statusText}`);
+  if (await isFairFuelConfigured()) {
+    try {
+      return await getLiveStationsFromFairFuel();
+    } catch (error) {
+      logger.error(
+        'FairFuel integration failed while fetching stations, falling back to Baserow:',
+        error
+      );
     }
-
-    const data = await response.json();
-    return transformBaserowToStations(data.results);
-  } catch (error) {
-    logger.error('Error fetching stations:', error);
-    // Return empty array instead of throwing in production
-    if (process.env.NODE_ENV === 'production') {
-      return [];
-    }
-    throw error;
   }
+
+  return fetchStationsFromBaserow();
 });
 
 /**
  * Get single station by ID with caching
  */
-export const getStationById = cache(async (id: number): Promise<Station | null> => {
-  // Validate input
-  const validationResult = validateStationId(id);
-  if (!validationResult.success) {
-    throw new Error(validationResult.error);
-  }
+export const getStationById = cache(
+  async (id: number | string): Promise<Station | null> => {
+    const stringId = id?.toString();
 
-  try {
-    const response = await fetch(`${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/${id}/`, {
-      headers: {
-        'Authorization': `Token ${process.env.BASEROW_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      next: {
-        revalidate: 1800, // Cache for 30 minutes
-        tags: ['stations', `station-${id}`],
-      },
-    });
+    if (await isFairFuelConfigured()) {
+      try {
+        const stations = await getLiveStationsFromFairFuel();
+        const station = stations.find(
+          (entry) => entry.id?.toString() === stringId
+        );
+        if (station) {
+          return station;
+        }
+      } catch (error) {
+        logger.error(
+          `FairFuel integration failed while fetching station ${stringId}, falling back to Baserow:`,
+          error
+        );
+      }
+    }
 
-    if (response.status === 404) {
+    const validationResult = validateStationId(id);
+    if (!validationResult.success) {
+      throw new Error(validationResult.error);
+    }
+
+    if (typeof validationResult.data === 'string') {
+      // Non-numeric IDs are not stored in Baserow.
       return null;
     }
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch station ${id}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return transformBaserowToStation(data);
-  } catch (error) {
-    console.error(`Error fetching station ${id}:`, error);
-    return null;
+    return fetchStationByIdFromBaserow(validationResult.data);
   }
-});
+);
 
 /**
  * Get stations by suburb with caching
@@ -116,28 +123,19 @@ export const getStationsBySuburb = cache(async (suburb: string): Promise<Station
  * Get fuel prices with caching
  */
 export const getFuelPrices = cache(async (): Promise<FuelPrice[]> => {
-  try {
-    const response = await fetch(`${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_PRICES_TABLE_ID}/`, {
-      headers: {
-        'Authorization': `Token ${process.env.BASEROW_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      next: {
-        revalidate: 300, // Cache for 5 minutes (prices change frequently)
-        tags: ['fuel-prices'],
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch fuel prices: ${response.statusText}`);
+  if (await isFairFuelConfigured()) {
+    try {
+      const stations = await getLiveStationsFromFairFuel();
+      return flattenStationFuelPrices(stations);
+    } catch (error) {
+      logger.error(
+        'FairFuel integration failed while fetching fuel prices, falling back to Baserow:',
+        error
+      );
     }
-
-    const data = await response.json();
-    return transformBaserowToFuelPrices(data.results);
-  } catch (error) {
-    console.error('Error fetching fuel prices:', error);
-    return [];
   }
+
+  return fetchFuelPricesFromBaserow();
 });
 
 /**
@@ -344,103 +342,89 @@ export async function deleteStation(id: number): Promise<{ success: boolean; err
 // HELPER FUNCTIONS
 // ============================================================================
 
-function transformBaserowToStations(data: Array<Record<string, unknown>>): Station[] {
-  return data.map(transformBaserowToStation).filter(Boolean) as Station[];
+async function fetchStationsFromBaserow(): Promise<Station[]> {
+  try {
+    const response = await fetch(
+      `${BASEROW_BASE_ENDPOINT}/${BASEROW_STATIONS_TABLE_ID}/?size=200`,
+      {
+        headers: BASEROW_HEADERS,
+        next: {
+          revalidate: 3600,
+          tags: ['stations'],
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch stations: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return transformBaserowToStations(data.results);
+  } catch (error) {
+    logger.error('Error fetching stations from Baserow:', error);
+    if (process.env.NODE_ENV === 'production') {
+      return [];
+    }
+    throw error;
+  }
 }
 
-function transformBaserowToStation(data: Record<string, unknown>): Station | null {
+async function fetchStationByIdFromBaserow(
+  id: number
+): Promise<Station | null> {
   try {
-    const lat = data.Latitude ? parseFloat(String(data.Latitude)) : 0;
-    const lng = data.Longitude ? parseFloat(String(data.Longitude)) : 0;
-    const category = data.Category 
-      ? (String(data.Category) as StationCategory) 
-      : StationCategory.PETROL_STATION;
-    
-    return {
-      id: Number(data.id) || 0,
-      name: (data['Station Name'] as string) || '',
-      brand: Array.isArray(data.brand) ? (data.brand[0] as string) || '' : '',
-      address: (data.Address as string) || '',
-      suburb: (data.City as string) || '',
-      city: (data.City as string) || '',
-      postcode: (data['Postal Code'] as string) || '',
-      region: (data.Region as string) || '',
-      latitude: lat,
-      longitude: lng,
-      category,
-      fuelPrices: [],
-      amenities: {},
-      lastUpdated: new Date().toISOString(),
-    };
+    const response = await fetch(
+      `${BASEROW_BASE_ENDPOINT}/${BASEROW_STATIONS_TABLE_ID}/${id}/`,
+      {
+        headers: BASEROW_HEADERS,
+        next: {
+          revalidate: 1800,
+          tags: ['stations', `station-${id}`],
+        },
+      }
+    );
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch station ${id}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return transformBaserowToStation(data);
   } catch (error) {
-    logger.error('Error transforming Baserow data:', error);
+    logger.error(`Error fetching station ${id} from Baserow:`, error);
     return null;
   }
 }
 
-function transformBaserowToFuelPrices(data: Array<Record<string, unknown>>): FuelPrice[] {
-  return data.map(item => {
-    const pricePerLiter = item['Price Per Liter'] ? parseFloat(String(item['Price Per Liter'])) || 0 : 0;
-    return {
-      id: Number(item.id) || 0,
-      stationId: Array.isArray(item['Petrol Station']) ? Number(item['Petrol Station'][0]) || 0 : 0,
-      fuelType: (item['Fuel Type'] as string) || '',
-      pricePerLiter,
-      lastUpdated: (item['Last Updated'] as string) || new Date().toISOString(),
-    };
-  });
-}
+async function fetchFuelPricesFromBaserow(): Promise<FuelPrice[]> {
+  try {
+    const response = await fetch(
+      `${BASEROW_BASE_ENDPOINT}/${BASEROW_PRICES_TABLE_ID}/?size=200`,
+      {
+        headers: BASEROW_HEADERS,
+        next: {
+          revalidate: 300,
+          tags: ['fuel-prices'],
+        },
+      }
+    );
 
-function transformStationToBaserow(station: Partial<Station>): Record<string, string | number | undefined> {
-  return {
-    'Station Name': station.name,
-    'Address': station.address,
-    'City': station.suburb || station.city,
-    'Region': station.region,
-    'Postal Code': station.postcode,
-    'Latitude': station.latitude?.toString(),
-    'Longitude': station.longitude?.toString(),
-    'Category': station.category,
-  };
-}
+    if (!response.ok) {
+      throw new Error(`Failed to fetch fuel prices: ${response.statusText}`);
+    }
 
-function sortStations(stations: Station[], sortBy: string): Station[] {
-  switch (sortBy) {
-    case 'name':
-      return [...stations].sort((a, b) => a.name.localeCompare(b.name));
-    case 'price-low':
-      return [...stations].sort((a, b) => {
-        let aPrice = Infinity;
-        let bPrice = Infinity;
-        
-        if (a.fuelPrices && Array.isArray(a.fuelPrices)) {
-          const prices = a.fuelPrices.map((fp: FuelPrice) => fp.pricePerLiter || 0);
-          if (prices.length > 0) aPrice = Math.min(...prices);
-        }
-        
-        if (b.fuelPrices && Array.isArray(b.fuelPrices)) {
-          const prices = b.fuelPrices.map((fp: FuelPrice) => fp.pricePerLiter || 0);
-          if (prices.length > 0) bPrice = Math.min(...prices);
-        }
-        
-        return aPrice - bPrice;
-      });
-    case 'suburb':
-      return [...stations].sort((a, b) => (a.suburb || '').localeCompare(b.suburb || ''));
-    default:
-      return stations;
+    const data = await response.json();
+    return transformBaserowToFuelPrices(data.results);
+  } catch (error) {
+    logger.error('Error fetching fuel prices from Baserow:', error);
+    return [];
   }
 }
 
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371; // Earth's radius in km
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = 
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
+ 
 

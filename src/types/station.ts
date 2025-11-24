@@ -122,13 +122,17 @@ export enum PriceTrend {
 /** Fuel price information */
 export interface FuelPrice {
   id: ID;
-  fuelType: FuelTypeValue;
+  fuelType: FuelTypeValue | string;
+  code?: string;
+  stationId?: ID;
   pricePerLiter: number;
   price?: number;
+  rawPrice?: number;
   currency?: string;
   lastUpdated: string | Date;
   priceTrend?: PriceTrend;
   priceSource?: string;
+  isAvailable?: boolean;
 }
 
 /** Station with fuel prices */

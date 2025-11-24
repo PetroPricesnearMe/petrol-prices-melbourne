@@ -385,6 +385,13 @@ NEXT_PUBLIC_GA_ID=your_ga_id
 # Optional
 YANDEX_VERIFICATION=your_yandex_code
 BING_VERIFICATION=your_bing_code
+
+# Fair Fuel Open Data API (Service Victoria)
+FAIRFUEL_API_BASE_URL=https://api.fuel.service.vic.gov.au/open-data/v1
+FAIRFUEL_CONSUMER_ID=942cef0f967ab0e29f16fcc53a3b7337
+FAIRFUEL_USER_AGENT=petrol-price-near-me/2.0.0
+FAIRFUEL_CACHE_TTL_MS=900000
+FAIRFUEL_REQUEST_TIMEOUT_MS=15000
 ```
 
 ## 🚢 Deployment

@@ -165,6 +165,15 @@ export {
   sortListings,
 } from './listing';
 
+// Fair Fuel Open Data API types
+export type {
+  FairFuelFuelTypeCode,
+  FairFuelPriceDetail,
+  FairFuelPriceItem,
+  FairFuelPriceResponse,
+  FairFuelStation,
+} from './fairfuel';
+
 // Filter types - Shared filter and sort option types
 export type {
   SortOption,

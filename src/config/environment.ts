@@ -22,6 +22,14 @@ interface EnvironmentConfig {
     stationsTableId: string;
     pricesTableId: string;
   };
+  fairFuel: {
+    enabled: boolean;
+    baseUrl: string;
+    consumerId?: string;
+    userAgent: string;
+    cacheTtlMs: number;
+    requestTimeoutMs: number;
+  };
   features: {
     analytics: boolean;
     pwa: boolean;
@@ -77,6 +85,21 @@ export const config: EnvironmentConfig = {
     databaseId: process.env.BASEROW_DATABASE_ID || '',
     stationsTableId: process.env.BASEROW_STATIONS_TABLE_ID || '623329',
     pricesTableId: process.env.BASEROW_PRICES_TABLE_ID || '623330',
+  },
+
+  fairFuel: {
+    enabled: Boolean(process.env.FAIRFUEL_CONSUMER_ID),
+    baseUrl:
+      process.env.FAIRFUEL_API_BASE_URL ||
+      'https://api.fuel.service.vic.gov.au/open-data/v1',
+    consumerId: process.env.FAIRFUEL_CONSUMER_ID,
+    userAgent:
+      process.env.FAIRFUEL_USER_AGENT || 'petrol-price-near-me/2.0.0',
+    cacheTtlMs: parseInt(process.env.FAIRFUEL_CACHE_TTL_MS || '900000', 10),
+    requestTimeoutMs: parseInt(
+      process.env.FAIRFUEL_REQUEST_TIMEOUT_MS || '15000',
+      10
+    ),
   },
 
   features: {
