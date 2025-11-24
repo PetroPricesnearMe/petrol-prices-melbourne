@@ -136,3 +136,4 @@ function mapFuelTypeCode(code: string | undefined) {
   }
 }
 
+
