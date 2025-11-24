@@ -1,16 +1,17 @@
 /**
  * SearchBar Component (Molecule)
- * 
+ *
  * Search input with integrated clear button and loading state
  */
 
 import React, { useState, useCallback } from 'react';
 
+import { Button } from '../../atoms/Button';
+import { Input } from '../../atoms/Input';
+
 import { cn } from '@/design-system/utils/styled';
 import type { BaseProps } from '@/types/index';
 
-import { Button } from '../../atoms/Button';
-import { Input } from '../../atoms/Input';
 import './SearchBar.css';
 
 export interface SearchBarProps extends BaseProps {
@@ -133,7 +134,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         fullWidth
         ariaLabel="Search"
       />
-      
+
       {showButton && (
         <Button
           type="submit"

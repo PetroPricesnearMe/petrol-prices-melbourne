@@ -4,25 +4,34 @@ import React from 'react';
 
 // On server, export plain HTML elements
 // On client, these will be replaced with motion components
-export const MotionDiv = React.forwardRef((props, ref) => {
+export const MotionDiv = React.forwardRef(function MotionDiv(props, ref) {
   return React.createElement('div', { ...props, ref });
 });
+MotionDiv.displayName = 'MotionDiv';
 
-export const MotionH1 = React.forwardRef((props, ref) => {
+export const MotionH1 = React.forwardRef(function MotionH1(props, ref) {
   return React.createElement('h1', { ...props, ref });
 });
+MotionH1.displayName = 'MotionH1';
 
-export const MotionP = React.forwardRef((props, ref) => {
+export const MotionP = React.forwardRef(function MotionP(props, ref) {
   return React.createElement('p', { ...props, ref });
 });
+MotionP.displayName = 'MotionP';
 
-export const MotionSection = React.forwardRef((props, ref) => {
-  return React.createElement('section', { ...props, ref });
-});
+export const MotionSection = React.forwardRef(
+  function MotionSection(props, ref) {
+    return React.createElement('section', { ...props, ref });
+  }
+);
+MotionSection.displayName = 'MotionSection';
 
-export const MotionArticle = React.forwardRef((props, ref) => {
-  return React.createElement('article', { ...props, ref });
-});
+export const MotionArticle = React.forwardRef(
+  function MotionArticle(props, ref) {
+    return React.createElement('article', { ...props, ref });
+  }
+);
+MotionArticle.displayName = 'MotionArticle';
 
 // Common animation variants to reduce duplication
 export const containerVariants = {
@@ -31,9 +40,9 @@ export const containerVariants = {
     opacity: 1,
     transition: {
       duration: 0.6,
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 export const itemVariants = {
@@ -41,8 +50,8 @@ export const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6 }
-  }
+    transition: { duration: 0.6 },
+  },
 };
 
 export const fadeInUp = {
@@ -50,6 +59,6 @@ export const fadeInUp = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: "easeOut" }
-  }
+    transition: { duration: 0.8, ease: 'easeOut' },
+  },
 };

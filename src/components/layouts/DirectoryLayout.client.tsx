@@ -1,6 +1,6 @@
 /**
  * DirectoryLayout Client Component
- * 
+ *
  * Client-side interactive parts of DirectoryLayout
  * Used by DirectoryLayout.server.tsx
  */
@@ -11,8 +11,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 
-import { patterns } from '@/styles/system/css-in-js';
 import { cn } from '@/lib/utils';
+import { patterns } from '@/styles/system/css-in-js';
 
 export interface Breadcrumb {
   label: string;
@@ -65,14 +65,14 @@ export default function DirectoryLayoutClient({
       {showBreadcrumbs && generatedBreadcrumbs.length > 0 && (
         <nav
           aria-label="Breadcrumb"
-          className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+          className="border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
         >
           <div className={containerClass}>
             <ol className="flex items-center space-x-2 py-3 text-sm">
               <li>
                 <Link
                   href="/"
-                  className="text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors"
+                  className="text-gray-500 transition-colors hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
                 >
                   Home
                 </Link>
@@ -90,7 +90,7 @@ export default function DirectoryLayoutClient({
                   ) : (
                     <Link
                       href={crumb.href}
-                      className="text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors"
+                      className="text-gray-500 transition-colors hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
                     >
                       {crumb.label}
                     </Link>
@@ -106,8 +106,9 @@ export default function DirectoryLayoutClient({
       {(title || description || filters || actions) && (
         <header
           className={cn(
-            'bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700',
-            headerVariant === 'hero' && 'bg-gradient-to-r from-primary-600 to-primary-800 text-white',
+            'border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800',
+            headerVariant === 'hero' &&
+              'bg-gradient-to-r from-primary-600 to-primary-800 text-white',
             headerVariant === 'minimal' && 'border-b-0'
           )}
         >
@@ -118,14 +119,14 @@ export default function DirectoryLayoutClient({
                 headerVariant === 'hero' && 'text-white'
               )}
             >
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex-1">
                   {title && (
                     <h1
                       className={cn(
-                        'font-bold mb-2',
+                        'mb-2 font-bold',
                         headerVariant === 'minimal'
-                          ? 'text-2xl md:text-3xl text-gray-900 dark:text-white'
+                          ? 'text-2xl text-gray-900 dark:text-white md:text-3xl'
                           : 'text-3xl md:text-4xl',
                         headerVariant === 'hero' && 'text-white'
                       )}
@@ -146,14 +147,16 @@ export default function DirectoryLayoutClient({
                     </p>
                   )}
                 </div>
-                {actions && <div className="flex items-center gap-3">{actions}</div>}
+                {actions && (
+                  <div className="flex items-center gap-3">{actions}</div>
+                )}
               </div>
 
               {/* Filters Section */}
               {filters && (
                 <div
                   className={cn(
-                    'mt-6 pt-6 border-t',
+                    'mt-6 border-t pt-6',
                     headerVariant === 'hero'
                       ? 'border-white/20'
                       : 'border-gray-200 dark:border-gray-700'
@@ -171,14 +174,14 @@ export default function DirectoryLayoutClient({
       <main className={cn('py-8', showSidebar && 'lg:py-12')}>
         <div className={containerClass}>
           {showSidebar ? (
-            <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex flex-col gap-8 lg:flex-row">
               {/* Sidebar */}
-              <aside className="lg:w-64 xl:w-80 flex-shrink-0">
+              <aside className="flex-shrink-0 lg:w-64 xl:w-80">
                 <div className="sticky top-4 space-y-6">{sidebar}</div>
               </aside>
 
               {/* Main Content */}
-              <div className="flex-1 min-w-0">{children}</div>
+              <div className="min-w-0 flex-1">{children}</div>
             </div>
           ) : (
             children
@@ -235,7 +238,7 @@ export function DirectoryFilterPanel({
   return (
     <div
       className={cn(
-        'bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6',
+        'rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800',
         className
       )}
     >
@@ -257,7 +260,7 @@ export function DirectoryStatsBar({
   return (
     <div
       className={cn(
-        'bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4',
+        'rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800',
         className
       )}
     >
@@ -276,4 +279,3 @@ export function DirectoryStatsBar({
     </div>
   );
 }
-

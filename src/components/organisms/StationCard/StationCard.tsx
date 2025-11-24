@@ -1,19 +1,19 @@
 /**
  * StationCard Component (Organism)
- * 
+ *
  * Domain-specific card for displaying petrol station information
  */
 
 import React from 'react';
 
-import { cn } from '@/design-system/utils/styled';
-import type { PetrolStation } from '@/types/index';
-import type { BaseProps } from '@/types/index';
-
 import { Badge } from '../../atoms/Badge';
 import { Button } from '../../atoms/Button';
 import { Text } from '../../atoms/Text';
 import { Card, CardBody, CardFooter } from '../../molecules/Card';
+
+import { cn } from '@/design-system/utils/styled';
+import type { BaseProps } from '@/types/index';
+import type { PetrolStation } from '@/types/index';
 
 import './StationCard.css';
 
@@ -52,9 +52,10 @@ export const StationCard: React.FC<StationCardProps> = ({
   } = station;
 
   // Find cheapest fuel price
-  const cheapestPrice = fuelPrices.length > 0
-    ? Math.min(...fuelPrices.map(fp => fp.price))
-    : null;
+  const cheapestPrice =
+    fuelPrices.length > 0
+      ? Math.min(...fuelPrices.map((fp) => fp.price))
+      : null;
 
   const classNames = cn(
     'station-card',
@@ -80,7 +81,11 @@ export const StationCard: React.FC<StationCardProps> = ({
               {name}
             </Text>
             {brand && (
-              <Text variant="bodySmall" color="secondary" className="station-card__brand">
+              <Text
+                variant="bodySmall"
+                color="secondary"
+                className="station-card__brand"
+              >
                 {brand}
               </Text>
             )}
@@ -98,11 +103,7 @@ export const StationCard: React.FC<StationCardProps> = ({
         {/* Status badges */}
         <div className="station-card__badges">
           {isOpen !== undefined && (
-            <Badge
-              variant={isOpen ? 'success' : 'error'}
-              size="xs"
-              dot
-            >
+            <Badge variant={isOpen ? 'success' : 'error'} size="xs" dot>
               {isOpen ? 'Open' : 'Closed'}
             </Badge>
           )}
@@ -114,8 +115,13 @@ export const StationCard: React.FC<StationCardProps> = ({
         </div>
 
         {/* Address */}
-        <Text variant="bodySmall" color="secondary" className="station-card__address">
-          {address.formatted || `${address.street}, ${address.city}, ${address.region}`}
+        <Text
+          variant="bodySmall"
+          color="secondary"
+          className="station-card__address"
+        >
+          {address.formatted ||
+            `${address.street}, ${address.city}, ${address.region}`}
         </Text>
 
         {/* Fuel Prices */}
@@ -159,12 +165,36 @@ export const StationCard: React.FC<StationCardProps> = ({
         {/* Amenities */}
         {!compact && amenities && (
           <div className="station-card__amenities">
-            {amenities.hasCarWash && <span className="station-card__amenity" title="Car Wash">🚿</span>}
-            {amenities.hasShop && <span className="station-card__amenity" title="Shop">🏪</span>}
-            {amenities.hasRestrooms && <span className="station-card__amenity" title="Restrooms">🚻</span>}
-            {amenities.hasEVCharging && <span className="station-card__amenity" title="EV Charging">⚡</span>}
-            {amenities.has24Hours && <span className="station-card__amenity" title="24 Hours">🕐</span>}
-            {amenities.hasCafe && <span className="station-card__amenity" title="Café">☕</span>}
+            {amenities.hasCarWash && (
+              <span className="station-card__amenity" title="Car Wash">
+                🚿
+              </span>
+            )}
+            {amenities.hasShop && (
+              <span className="station-card__amenity" title="Shop">
+                🏪
+              </span>
+            )}
+            {amenities.hasRestrooms && (
+              <span className="station-card__amenity" title="Restrooms">
+                🚻
+              </span>
+            )}
+            {amenities.hasEVCharging && (
+              <span className="station-card__amenity" title="EV Charging">
+                ⚡
+              </span>
+            )}
+            {amenities.has24Hours && (
+              <span className="station-card__amenity" title="24 Hours">
+                🕐
+              </span>
+            )}
+            {amenities.hasCafe && (
+              <span className="station-card__amenity" title="Café">
+                ☕
+              </span>
+            )}
           </div>
         )}
       </CardBody>
@@ -203,4 +233,3 @@ export const StationCard: React.FC<StationCardProps> = ({
     </Card>
   );
 };
-

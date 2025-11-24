@@ -4,14 +4,17 @@
  * Helper functions for applying design tokens
  */
 
-import type { ColorVariant, Size } from '@/types/index';
-
 import { colors, spacing } from '../tokens';
+
+import type { ColorVariant, Size } from '@/types/index';
 
 /**
  * Get color by variant
  */
-export const getVariantColor = (variant: ColorVariant, shade: number = 500): string => {
+export const getVariantColor = (
+  variant: ColorVariant,
+  shade: number = 500
+): string => {
   const colorMap: Record<ColorVariant, keyof typeof colors> = {
     primary: 'primary',
     secondary: 'secondary',
@@ -51,7 +54,11 @@ export const getSizeSpacing = (size: Size): string => {
 /**
  * Generate responsive class names
  */
-export const responsive = (base: string, breakpoint?: string, value?: string): string => {
+export const responsive = (
+  base: string,
+  breakpoint?: string,
+  value?: string
+): string => {
   if (!breakpoint || !value) return base;
   return `${breakpoint}:${base}-${value}`;
 };
@@ -59,14 +66,18 @@ export const responsive = (base: string, breakpoint?: string, value?: string): s
 /**
  * Combine class names conditionally
  */
-export const cn = (...classes: (string | boolean | undefined | null | number | bigint)[]): string => {
+export const cn = (
+  ...classes: (string | boolean | undefined | null | number | bigint)[]
+): string => {
   return classes.filter((c) => typeof c === 'string' && c.length > 0).join(' ');
 };
 
 /**
  * Generate focus styles for accessibility
  */
-export const focusRing = (color: string = colors.primary[500]): React.CSSProperties => ({
+export const focusRing = (
+  color: string = colors.primary[500]
+): React.CSSProperties => ({
   outline: `2px solid ${color}`,
   outlineOffset: '2px',
 });

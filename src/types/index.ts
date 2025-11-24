@@ -56,11 +56,7 @@ export {
 } from './common';
 
 // Station types
-export {
-  FuelType,
-  StationCategory,
-  PriceTrend,
-} from './station';
+export { FuelType, StationCategory, PriceTrend } from './station';
 
 export type {
   FuelTypeKey,
@@ -167,7 +163,11 @@ export {
 
 // Fair Fuel Open Data API types
 export type {
+  FairFuelBrand,
+  FairFuelBrandsResponse,
+  FairFuelFuelType,
   FairFuelFuelTypeCode,
+  FairFuelFuelTypesResponse,
   FairFuelPriceDetail,
   FairFuelPriceItem,
   FairFuelPriceResponse,

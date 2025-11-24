@@ -1,6 +1,6 @@
 /**
  * Melbourne Fuel Station Listing Page
- * 
+ *
  * Fully responsive, SEO-optimized fuel station listing page for Melbourne, Victoria
  * Displays nearest petrol stations, current fuel prices, station services, and all
  * information relevant to helping users quickly compare prices and navigate to stations.
@@ -10,9 +10,10 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { MelbourneListingClient } from './MelbourneListingClient';
-import { generateMelbourneListingMetadata } from '@/lib/seo/melbourne-listing';
+
 import { getMelbourneStations } from '@/lib/data/melbourne-stations';
 import { generateMelbourneSchema } from '@/lib/schema/melbourne-listing';
+import { generateMelbourneListingMetadata } from '@/lib/seo/melbourne-listing';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Revalidate every hour
@@ -46,5 +47,3 @@ export default async function MelbourneListingPage() {
     </>
   );
 }
-
-

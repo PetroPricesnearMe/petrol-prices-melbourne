@@ -1,6 +1,6 @@
 /**
  * SEO Metadata Utilities
- * 
+ *
  * Comprehensive utilities for generating SEO-optimized metadata
  * for all pages including listings, detail pages, and directory pages.
  *
@@ -9,12 +9,13 @@
 
 import type { Metadata } from 'next';
 
-import type { Station } from '@/types/station';
-
 import { generateCanonicalUrl, getBaseUrl } from './canonical';
 
+import type { Station } from '@/types/station';
+
 const SITE_NAME = 'Petrol Price Near Me';
-const DEFAULT_DESCRIPTION = 'Find the cheapest petrol prices near you with real-time updates from 250+ stations across Melbourne.';
+const DEFAULT_DESCRIPTION =
+  'Find the cheapest petrol prices near you with real-time updates from 250+ stations across Melbourne.';
 
 /**
  * Site configuration for SEO
@@ -45,7 +46,9 @@ export function generateBaseMetadata({
   noindex?: boolean;
 }): Metadata {
   const canonicalUrl = generateCanonicalUrl(path);
-  const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+  const fullTitle = title.includes(SITE_NAME)
+    ? title
+    : `${title} | ${SITE_NAME}`;
   const imageUrl = image || `${getBaseUrl()}/images/og-default.jpg`;
 
   return {
@@ -100,7 +103,7 @@ export function generateStationMetadata(
 ): Metadata {
   const title = `${station.name} - Fuel Prices & Information`;
   const description = `Find real-time fuel prices and information for ${station.name} in ${station.suburb || 'Melbourne'}. ${station.address ? `Located at ${station.address}` : 'Compare prices and save on your next fill-up.'}`;
-  
+
   const keywords = [
     `${station.name} fuel prices`,
     `${station.suburb} petrol station`,
@@ -110,7 +113,7 @@ export function generateStationMetadata(
     station.address || '',
   ].filter(Boolean);
 
-  const imageUrl = station.image 
+  const imageUrl = station.image
     ? `${getBaseUrl()}${station.image}`
     : `${getBaseUrl()}/api/og/station/${station.id}`;
 

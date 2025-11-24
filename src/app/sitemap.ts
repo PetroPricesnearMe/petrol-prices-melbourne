@@ -7,7 +7,8 @@
 
 import type { MetadataRoute } from 'next';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+const baseUrl =
+  process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
 
 /**
  * Fetch dynamic station routes
@@ -100,6 +101,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/fuel-brands`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/fuel-types`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/chat`,

@@ -1,31 +1,26 @@
 /**
  * Melbourne Listing Client Component
- * 
+ *
  * Client-side component for the Melbourne fuel station listing page
  * Handles interactivity, map, reviews, and user interactions
  */
 
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import { MapPin, Navigation, List, Map as MapIcon } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 
-import { StationListingHeader } from '@/components/listings/StationListingHeader';
-import { StationList } from '@/components/listings/StationList';
-import { StationMap } from '@/components/listings/StationMap';
 import { StationFilters } from '@/components/listings/StationFilters';
+import { StationList } from '@/components/listings/StationList';
+import { StationListingHeader } from '@/components/listings/StationListingHeader';
+import { StationMap } from '@/components/listings/StationMap';
 import type { Station } from '@/types/station';
-import { cn } from '@/utils/cn';
-
-// Lazy load heavy components
-const StationReviews = dynamic(
-  () => import('@/components/listings/StationReviews').then(mod => ({ default: mod.StationReviews })),
-  { ssr: false, loading: () => <div className="animate-pulse h-64 bg-gray-200 dark:bg-gray-700 rounded-lg" /> }
-);
 
 const SocialShareButtons = dynamic(
-  () => import('@/components/listings/SocialShareButtons').then(mod => ({ default: mod.SocialShareButtons })),
+  () =>
+    import('@/components/listings/SocialShareButtons').then((mod) => ({
+      default: mod.SocialShareButtons,
+    })),
   { ssr: false }
 );
 
@@ -35,14 +30,24 @@ interface MelbourneListingClientProps {
 
 type ViewMode = 'list' | 'map';
 
-export function MelbourneListingClient({ stations: initialStations }: MelbourneListingClientProps) {
+export function MelbourneListingClient({
+  stations: initialStations,
+}: MelbourneListingClientProps) {
   const [stations, setStations] = useState<Station[]>(initialStations);
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
   const [filters, setFilters] = useState({
     search: '',
-    fuelType: 'all' as 'all' | 'unleaded' | 'diesel' | 'premium95' | 'premium98',
+    fuelType: 'all' as
+      | 'all'
+      | 'unleaded'
+      | 'diesel'
+      | 'premium95'
+      | 'premium98',
     brand: 'all' as string,
     suburb: 'all' as string,
     sortBy: 'nearest' as 'nearest' | 'price-low' | 'price-high' | 'name',
@@ -111,7 +116,9 @@ export function MelbourneListingClient({ stations: initialStations }: MelbourneL
 
     // Apply suburb filter
     if (filters.suburb !== 'all') {
-      filtered = filtered.filter((station) => station.suburb === filters.suburb);
+      filtered = filtered.filter(
+        (station) => station.suburb === filters.suburb
+      );
     }
 
     // Calculate distances if user location is available
@@ -134,7 +141,11 @@ export function MelbourneListingClient({ stations: initialStations }: MelbourneL
     filtered.sort((a, b) => {
       switch (filters.sortBy) {
         case 'nearest':
-          if (userLocation && a.distance !== undefined && b.distance !== undefined) {
+          if (
+            userLocation &&
+            a.distance !== undefined &&
+            b.distance !== undefined
+          ) {
             return a.distance - b.distance;
           }
           return 0;
@@ -156,16 +167,19 @@ export function MelbourneListingClient({ stations: initialStations }: MelbourneL
     setStations(filtered);
   }, [initialStations, filters, userLocation]);
 
-  const handleStationClick = useCallback((station: Station) => {
-    setSelectedStation(station);
-    if (viewMode === 'list') {
-      // Scroll to station details
-      const element = document.getElementById(`station-${station.id}`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const handleStationClick = useCallback(
+    (station: Station) => {
+      setSelectedStation(station);
+      if (viewMode === 'list') {
+        // Scroll to station details
+        const element = document.getElementById(`station-${station.id}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
-    }
-  }, [viewMode]);
+    },
+    [viewMode]
+  );
 
   const toggleViewMode = useCallback(() => {
     setViewMode((prev) => (prev === 'list' ? 'map' : 'list'));
@@ -181,9 +195,13 @@ export function MelbourneListingClient({ stations: initialStations }: MelbourneL
       />
 
       {/* Filters */}
-      <div className="sticky top-0 z-20 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="sticky top-0 z-20 border-b border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <div className="container mx-auto px-4 py-4">
-          <StationFilters filters={filters} onFiltersChange={setFilters} stations={initialStations} />
+          <StationFilters
+            filters={filters}
+            onFiltersChange={setFilters}
+            stations={initialStations}
+          />
         </div>
       </div>
 
@@ -219,14 +237,22 @@ export function MelbourneListingClient({ stations: initialStations }: MelbourneL
 }
 
 // Helper functions
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+function calculateDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
   const R = 6371; // Earth's radius in kilometers
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
 
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
@@ -255,5 +281,3 @@ function getMaxPrice(station: Station): number | null {
   ].filter((p): p is number => p !== null);
   return prices.length > 0 ? Math.max(...prices) : null;
 }
-
-

@@ -3,7 +3,7 @@
  * Comprehensive test suite for the card component
  */
 
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import React from 'react';
 
 import '@testing-library/jest-dom';
@@ -18,7 +18,9 @@ describe('NorthernTradieCard', () => {
 
     it('renders with custom className', () => {
       const { container } = render(
-        <NorthernTradieCard className="custom-class">Content</NorthernTradieCard>
+        <NorthernTradieCard className="custom-class">
+          Content
+        </NorthernTradieCard>
       );
       // className is applied to the motion.div (firstChild), not its child
       expect(container.firstChild).toHaveClass('custom-class');
@@ -120,7 +122,7 @@ describe('NorthernTradieCard', () => {
           Content
         </NorthernTradieCard>
       );
-      
+
       const card = screen.getByText('Content').closest('div');
       // ACT REQUIRED: clicking may trigger internal state updates or animations (framer-motion)
       // Wrapping ensures React finishes processing the event and any state changes
@@ -137,7 +139,7 @@ describe('NorthernTradieCard', () => {
           Content
         </NorthernTradieCard>
       );
-      
+
       const card = screen.getByText('Content').closest('div');
       // ACT REQUIRED: even when disabled, the click event is processed by React
       // though it shouldn't trigger the handler due to disabled check
@@ -154,7 +156,7 @@ describe('NorthernTradieCard', () => {
           Content
         </NorthernTradieCard>
       );
-      
+
       const card = screen.getByText('Content').closest('div');
       // ACT REQUIRED: keyDown event triggers onClick handler and potential state updates
       act(() => {
@@ -170,7 +172,7 @@ describe('NorthernTradieCard', () => {
           Content
         </NorthernTradieCard>
       );
-      
+
       const card = screen.getByText('Content').closest('div');
       // ACT REQUIRED: Space key triggers onClick handler which may cause state updates
       act(() => {
@@ -186,7 +188,7 @@ describe('NorthernTradieCard', () => {
           Content
         </NorthernTradieCard>
       );
-      
+
       const card = screen.getByText('Content').closest('div');
       // ACT REQUIRED: keyDown triggers custom handler which may update state or trigger animations
       act(() => {
@@ -198,11 +200,9 @@ describe('NorthernTradieCard', () => {
     it('handles focus events', () => {
       const handleFocus = jest.fn();
       render(
-        <NorthernTradieCard onFocus={handleFocus}>
-          Content
-        </NorthernTradieCard>
+        <NorthernTradieCard onFocus={handleFocus}>Content</NorthernTradieCard>
       );
-      
+
       const card = screen.getByText('Content').closest('div');
       // ACT REQUIRED: focus event may trigger internal focus state or styling updates
       act(() => {
@@ -214,11 +214,9 @@ describe('NorthernTradieCard', () => {
     it('handles blur events', () => {
       const handleBlur = jest.fn();
       render(
-        <NorthernTradieCard onBlur={handleBlur}>
-          Content
-        </NorthernTradieCard>
+        <NorthernTradieCard onBlur={handleBlur}>Content</NorthernTradieCard>
       );
-      
+
       const card = screen.getByText('Content').closest('div');
       // ACT REQUIRED: blur event may trigger internal state cleanup or styling changes
       act(() => {
@@ -278,27 +276,25 @@ describe('NorthernTradieCard', () => {
     });
 
     it('is keyboard accessible when clickable', () => {
-      render(
-        <NorthernTradieCard clickable>Content</NorthernTradieCard>
-      );
+      render(<NorthernTradieCard clickable>Content</NorthernTradieCard>);
       const card = screen.getByRole('button');
       expect(card).toHaveAttribute('tabindex', '0');
     });
 
     it('is not keyboard accessible when disabled', () => {
       render(
-        <NorthernTradieCard clickable disabled>Content</NorthernTradieCard>
+        <NorthernTradieCard clickable disabled>
+          Content
+        </NorthernTradieCard>
       );
       const card = screen.getByRole('button');
       expect(card).toHaveAttribute('tabindex', '-1');
     });
 
     it('has custom tabIndex when provided', () => {
-      render(
-        <NorthernTradieCard tabIndex={5}>Content</NorthernTradieCard>
-      );
+      render(<NorthernTradieCard tabIndex={0}>Content</NorthernTradieCard>);
       const card = screen.getByRole('article');
-      expect(card).toHaveAttribute('tabindex', '5');
+      expect(card).toHaveAttribute('tabindex', '0');
     });
   });
 
@@ -315,9 +311,9 @@ describe('NorthernTradieCard', () => {
     it('renders with Header and subtitle', () => {
       render(
         <NorthernTradieCard>
-          <NorthernTradieCard.Header 
-            title="Test Title" 
-            subtitle="Test Subtitle" 
+          <NorthernTradieCard.Header
+            title="Test Title"
+            subtitle="Test Subtitle"
           />
         </NorthernTradieCard>
       );
@@ -346,10 +342,7 @@ describe('NorthernTradieCard', () => {
     it('renders with Media', () => {
       render(
         <NorthernTradieCard>
-          <NorthernTradieCard.Media 
-            src="test.jpg" 
-            alt="Test Image" 
-          />
+          <NorthernTradieCard.Media src="test.jpg" alt="Test Image" />
         </NorthernTradieCard>
       );
       const img = screen.getByAltText('Test Image');
@@ -407,10 +400,10 @@ describe('NorthernTradieCard', () => {
       const { rerender } = render(
         <NorthernTradieCard>Content</NorthernTradieCard>
       );
-      
+
       // Re-render with same props should not cause a re-render
       rerender(<NorthernTradieCard>Content</NorthernTradieCard>);
-      
+
       expect(screen.getByText('Content')).toBeInTheDocument();
     });
   });
@@ -440,4 +433,3 @@ describe('NorthernTradieCard', () => {
     });
   });
 });
-

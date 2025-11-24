@@ -1,16 +1,17 @@
 /**
  * MainLayout Template
- * 
+ *
  * Standard page layout with header, content, and footer
  */
 
 import React from 'react';
 
+import { Footer, type FooterProps } from '../../organisms/Footer';
+import { Header, type HeaderProps } from '../../organisms/Header';
+
 import { cn } from '@/design-system/utils/styled';
 import type { BaseProps, WithChildren } from '@/types/index';
 
-import { Footer, type FooterProps } from '../../organisms/Footer';
-import { Header, type HeaderProps } from '../../organisms/Header';
 import './MainLayout.css';
 
 export interface MainLayoutProps extends BaseProps, WithChildren {
@@ -45,13 +46,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <div className={classNames} style={style} data-testid={testId}>
       {header && <Header {...header} />}
-      
+
       <main className={contentClassNames} id="main-content">
         {children}
       </main>
-      
+
       {footer && <Footer {...footer} />}
     </div>
   );
 };
-

@@ -1,8 +1,8 @@
 'use client';
 
+import { Search, SlidersHorizontal } from 'lucide-react';
 import { useMemo } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { Search, SlidersHorizontal } from 'lucide-react';
 
 import type { Station } from '@/types/station';
 
@@ -38,7 +38,11 @@ const sortOptions: Array<{ value: SortOption; label: string }> = [
   { value: 'name', label: 'Name A–Z' },
 ];
 
-export function StationFilters({ filters, onFiltersChange, stations }: StationFiltersProps) {
+export function StationFilters({
+  filters,
+  onFiltersChange,
+  stations,
+}: StationFiltersProps) {
   const { brands, suburbs } = useMemo(() => {
     const uniqueBrands = new Set<string>();
     const uniqueSuburbs = new Set<string>();
@@ -67,14 +71,21 @@ export function StationFilters({ filters, onFiltersChange, stations }: StationFi
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* Search */}
         <label className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Search</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Search
+          </span>
           <div className="relative flex items-center">
-            <Search className="pointer-events-none absolute left-3 h-4 w-4 text-gray-400" aria-hidden="true" />
+            <Search
+              className="pointer-events-none absolute left-3 h-4 w-4 text-gray-400"
+              aria-hidden="true"
+            />
             <input
               type="search"
               name="station-search"
               value={filters.search}
-              onChange={(event) => updateFilters({ search: event.target.value })}
+              onChange={(event) =>
+                updateFilters({ search: event.target.value })
+              }
               placeholder="Search by name, suburb, or brand"
               className="w-full rounded-2xl border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-primary-400 dark:focus:ring-primary-900"
             />
@@ -83,11 +94,15 @@ export function StationFilters({ filters, onFiltersChange, stations }: StationFi
 
         {/* Fuel type */}
         <label className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Fuel type</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Fuel type
+          </span>
           <select
             className="w-full rounded-2xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-primary-400 dark:focus:ring-primary-900"
             value={filters.fuelType}
-            onChange={(event) => updateFilters({ fuelType: event.target.value as FuelFilter })}
+            onChange={(event) =>
+              updateFilters({ fuelType: event.target.value as FuelFilter })
+            }
           >
             {fuelOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -99,7 +114,9 @@ export function StationFilters({ filters, onFiltersChange, stations }: StationFi
 
         {/* Brand */}
         <label className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Brand</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Brand
+          </span>
           <select
             className="w-full rounded-2xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-primary-400 dark:focus:ring-primary-900"
             value={filters.brand}
@@ -116,7 +133,9 @@ export function StationFilters({ filters, onFiltersChange, stations }: StationFi
 
         {/* Suburb */}
         <label className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Suburb</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Suburb
+          </span>
           <select
             className="w-full rounded-2xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-primary-400 dark:focus:ring-primary-900"
             value={filters.suburb}
@@ -136,7 +155,8 @@ export function StationFilters({ filters, onFiltersChange, stations }: StationFi
         <div className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
           <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
           <span>
-            Showing {stations.length} station{stations.length === 1 ? '' : 's'} across {suburbs.length} suburbs
+            Showing {stations.length} station{stations.length === 1 ? '' : 's'}{' '}
+            across {suburbs.length} suburbs
           </span>
         </div>
 
@@ -145,7 +165,9 @@ export function StationFilters({ filters, onFiltersChange, stations }: StationFi
           <select
             className="rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-primary-400 dark:focus:ring-primary-900"
             value={filters.sortBy}
-            onChange={(event) => updateFilters({ sortBy: event.target.value as SortOption })}
+            onChange={(event) =>
+              updateFilters({ sortBy: event.target.value as SortOption })
+            }
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -160,4 +182,3 @@ export function StationFilters({ filters, onFiltersChange, stations }: StationFi
 }
 
 export default StationFilters;
-

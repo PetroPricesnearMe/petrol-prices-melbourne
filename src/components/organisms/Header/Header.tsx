@@ -1,16 +1,17 @@
 /**
  * Header Component (Organism)
- * 
+ *
  * Application header with navigation and branding
  */
 
+import Link from 'next/link';
 import React, { useState } from 'react';
+
+import { Text } from '../../atoms/Text';
 
 import { cn } from '@/design-system/utils/styled';
 import type { BaseProps } from '@/types/index';
 
-import { Button } from '../../atoms/Button';
-import { Text } from '../../atoms/Text';
 import './Header.css';
 
 export interface HeaderProps extends BaseProps {
@@ -58,12 +59,12 @@ export const Header: React.FC<HeaderProps> = ({
     <header className={classNames} style={style} data-testid={testId}>
       <div className="header__container">
         {/* Logo/Brand */}
-        <a href="/" className="header__brand">
+        <Link href="/" className="header__brand">
           {logo && <span className="header__logo">{logo}</span>}
           <Text as="span" variant="h6" className="header__logo-text">
             {logoText}
           </Text>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         {navItems.length > 0 && (
@@ -156,4 +157,3 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
-

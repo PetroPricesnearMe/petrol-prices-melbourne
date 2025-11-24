@@ -1,16 +1,17 @@
 /**
  * Footer Component (Organism)
- * 
+ *
  * Application footer with links and information
  */
 
 import React from 'react';
 
-import { useMounted } from '@/hooks/useMounted';
+import { Text } from '../../atoms/Text';
+
 import { cn } from '@/design-system/utils/styled';
+import { useMounted } from '@/hooks/useMounted';
 import type { BaseProps } from '@/types/index';
 
-import { Text } from '../../atoms/Text';
 import './Footer.css';
 
 export interface FooterLink {
@@ -126,7 +127,11 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom section */}
         <div className="footer__bottom">
           {copyright && (
-            <Text variant="bodySmall" color="secondary" className="footer__copyright">
+            <Text
+              variant="bodySmall"
+              color="secondary"
+              className="footer__copyright"
+            >
               {copyright.replace('{year}', currentYear.toString())}
             </Text>
           )}
@@ -138,4 +143,3 @@ export const Footer: React.FC<FooterProps> = ({
     </footer>
   );
 };
-

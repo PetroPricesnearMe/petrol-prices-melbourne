@@ -1,7 +1,14 @@
 'use client';
 
+import {
+  Check,
+  Copy,
+  Facebook,
+  Link as LinkIcon,
+  Share2,
+  Twitter,
+} from 'lucide-react';
 import { useCallback, useState } from 'react';
-import { Check, Copy, Facebook, Link as LinkIcon, Share2, Twitter } from 'lucide-react';
 
 interface SocialShareButtonsProps {
   url: string;
@@ -34,7 +41,11 @@ const sharePlatforms = [
   },
 ];
 
-export function SocialShareButtons({ url, title, description }: SocialShareButtonsProps) {
+export function SocialShareButtons({
+  url,
+  title,
+  description,
+}: SocialShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
   const shareNative = useCallback(async () => {
@@ -52,7 +63,10 @@ export function SocialShareButtons({ url, title, description }: SocialShareButto
   }, [url, title, description]);
 
   const handleShare = useCallback(
-    async (platformId: string, buildUrl: (shareUrl: string, shareTitle: string) => string) => {
+    async (
+      platformId: string,
+      buildUrl: (shareUrl: string, shareTitle: string) => string
+    ) => {
       if (platformId === 'copy') {
         await navigator.clipboard.writeText(url);
         setCopied(true);
@@ -111,4 +125,3 @@ export function SocialShareButtons({ url, title, description }: SocialShareButto
 }
 
 export default SocialShareButtons;
-

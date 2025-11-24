@@ -1,16 +1,17 @@
 /**
  * Alert Component (Molecule)
- * 
+ *
  * Feedback message with icon and optional actions
  */
 
 import React from 'react';
 
+import { Button } from '../../atoms/Button';
+import { Text } from '../../atoms/Text';
+
 import { cn } from '@/design-system/utils/styled';
 import type { BaseProps, WithChildren, ColorVariant } from '@/types/index';
 
-import { Button } from '../../atoms/Button';
-import { Text } from '../../atoms/Text';
 import './Alert.css';
 
 export interface AlertProps extends BaseProps, WithChildren {
@@ -106,7 +107,12 @@ export const Alert: React.FC<AlertProps> = ({
 
       <div className="alert__content">
         {title && (
-          <Text as="div" variant="label" weight="semibold" className="alert__title">
+          <Text
+            as="div"
+            variant="label"
+            weight="semibold"
+            className="alert__title"
+          >
             {title}
           </Text>
         )}
@@ -147,4 +153,3 @@ export const Alert: React.FC<AlertProps> = ({
     </div>
   );
 };
-

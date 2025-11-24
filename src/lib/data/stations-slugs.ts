@@ -1,11 +1,15 @@
 /**
  * Station Slug Utilities
- * 
+ *
  * Functions for working with station slugs and IDs
  */
 
-import { generateStationSlugFromData, extractIdFromSlug } from '@/lib/utils/slugs';
 import { getAllStations, getStationById } from './stations';
+
+import {
+  generateStationSlugFromData,
+  extractIdFromSlug,
+} from '@/lib/utils/slugs';
 import type { Station } from '@/types/station';
 
 /**
@@ -39,4 +43,3 @@ export async function getAllStationSlugs(): Promise<string[]> {
 export function getStationIdFromSlug(slug: string): string | null {
   return extractIdFromSlug(slug);
 }
-

@@ -1,7 +1,7 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { Map, MapPin } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import type { ComponentType } from 'react';
 
 import type { Station } from '@/types/station';
@@ -20,11 +20,15 @@ const LegacyStationMap = dynamic(() => import('../StationMap'), {
       <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10">
         <Map className="h-6 w-6 animate-pulse" aria-hidden="true" />
       </div>
-      <p className="text-base font-medium text-gray-700 dark:text-gray-300">Loading interactive map...</p>
-      <p className="text-sm text-gray-500 dark:text-gray-400">Visualising all Melbourne petrol stations</p>
+      <p className="text-base font-medium text-gray-700 dark:text-gray-300">
+        Loading interactive map...
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        Visualising all Melbourne petrol stations
+      </p>
     </div>
   ),
-}) as ComponentType<any>;
+}) as ComponentType<Record<string, unknown>>;
 
 export function StationMap({
   stations,
@@ -33,7 +37,9 @@ export function StationMap({
   onStationSelect,
 }: StationMapProps) {
   const stationsWithCoordinates = stations.filter(
-    (station) => typeof station.latitude === 'number' && typeof station.longitude === 'number'
+    (station) =>
+      typeof station.latitude === 'number' &&
+      typeof station.longitude === 'number'
   );
 
   if (stationsWithCoordinates.length === 0) {
@@ -42,9 +48,12 @@ export function StationMap({
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10">
           <MapPin className="h-6 w-6" aria-hidden="true" />
         </div>
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Map coming soon</h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+          Map coming soon
+        </h3>
         <p className="mt-3 text-base text-gray-600 dark:text-gray-400">
-          Location data is being updated for these stations. Try the list view to explore available prices.
+          Location data is being updated for these stations. Try the list view
+          to explore available prices.
         </p>
       </div>
     );
@@ -64,4 +73,3 @@ export function StationMap({
 }
 
 export default StationMap;
-

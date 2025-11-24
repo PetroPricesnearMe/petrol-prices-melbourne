@@ -1,17 +1,18 @@
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 
 /**
  * Navbar Component - Fully Responsive with Tailwind CSS
  * Mobile-first navigation with hamburger menu and smooth transitions
  * Touch-friendly interactions and accessibility compliant
- * 
+ *
  * @component
  */
 const Navbar = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
   // Handle scroll effects
   useEffect(() => {
@@ -26,7 +27,7 @@ const Navbar = React.memo(() => {
   // Close mobile menu when route changes
   useEffect(() => {
     setIsOpen(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -40,14 +41,17 @@ const Navbar = React.memo(() => {
     };
   }, [isOpen]);
 
-  const isActive = useCallback((path) => {
-    return location.pathname === path;
-  }, [location.pathname]);
-  
+  const isActive = useCallback(
+    (path) => {
+      return pathname === path;
+    },
+    [pathname]
+  );
+
   const handleToggle = useCallback(() => {
-    setIsOpen(prev => !prev);
+    setIsOpen((prev) => !prev);
   }, []);
-  
+
   const handleLinkClick = useCallback(() => {
     setIsOpen(false);
   }, []);
@@ -66,52 +70,55 @@ const Navbar = React.memo(() => {
   ];
 
   return (
-    <nav 
+    <nav
       className={`
         sticky top-0 z-50 w-full
-        bg-white/95 backdrop-blur-xl
         border-b border-gray-200
+        bg-white/95 backdrop-blur-xl
         transition-all duration-300
         ${scrolled ? 'shadow-medium py-3' : 'shadow-soft py-4'}
       `}
-      role="navigation" 
+      role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo - Responsive */}
-          <Link 
-            to="/" 
-            className="flex items-center space-x-2 group transition-transform duration-300 hover:scale-105 min-h-[44px]" 
+          <Link
+            href="/"
+            className="group flex min-h-[44px] items-center space-x-2 transition-transform duration-300 hover:scale-105"
             aria-label="Home - Melbourne Fuel"
           >
-            <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl shadow-md group-hover:shadow-lg transition-shadow duration-300">
-              <span className="text-lg sm:text-xl" role="img" aria-label="Fuel">⛽</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 shadow-md transition-shadow duration-300 group-hover:shadow-lg sm:h-10 sm:w-10">
+              <span className="text-lg sm:text-xl" role="img" aria-label="Fuel">
+                ⛽
+              </span>
             </div>
-            <span className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent tracking-tight">
+            <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-xl font-extrabold tracking-tight text-transparent sm:text-2xl">
               Melbourne Fuel
             </span>
           </Link>
 
           {/* Desktop Navigation - Hidden on Mobile */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden items-center space-x-1 lg:flex">
             {navLinks.map(({ path, label }) => (
               <Link
                 key={path}
-                to={path}
+                href={path}
                 className={`
-                  relative px-4 py-2 text-sm font-semibold rounded-lg
+                  relative rounded-lg px-4 py-2 text-sm font-semibold
                   transition-all duration-300 hover:-translate-y-0.5
-                  ${isActive(path)
-                    ? 'text-primary-600 bg-primary-50'
-                    : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50/50'
+                  ${
+                    isActive(path)
+                      ? 'bg-primary-50 text-primary-600'
+                      : 'text-gray-700 hover:bg-primary-50/50 hover:text-primary-600'
                   }
                 `}
                 aria-current={isActive(path) ? 'page' : undefined}
               >
                 {label}
                 {isActive(path) && (
-                  <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-5 h-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full" />
+                  <span className="absolute bottom-1 left-1/2 h-0.5 w-5 -translate-x-1/2 transform rounded-full bg-gradient-to-r from-primary-500 to-secondary-500" />
                 )}
               </Link>
             ))}
@@ -120,27 +127,27 @@ const Navbar = React.memo(() => {
           {/* Mobile Menu Button - Touch-Friendly */}
           <button
             onClick={handleToggle}
-            className="lg:hidden relative flex flex-col items-center justify-center w-11 h-11 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-300 active:scale-95 touch-manipulation"
+            className="relative flex h-11 w-11 touch-manipulation flex-col items-center justify-center rounded-xl bg-gray-100 transition-all duration-300 hover:bg-gray-200 active:scale-95 lg:hidden"
             aria-label="Toggle navigation menu"
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
           >
             <span
               className={`
-                block w-6 h-0.5 bg-gray-900 rounded-full transition-all duration-300
-                ${isOpen ? 'rotate-45 translate-y-2' : 'translate-y-0'}
+                block h-0.5 w-6 rounded-full bg-gray-900 transition-all duration-300
+                ${isOpen ? 'translate-y-2 rotate-45' : 'translate-y-0'}
               `}
             />
             <span
               className={`
-                block w-6 h-0.5 bg-gray-900 rounded-full transition-all duration-300 my-1.5
+                my-1.5 block h-0.5 w-6 rounded-full bg-gray-900 transition-all duration-300
                 ${isOpen ? 'opacity-0' : 'opacity-100'}
               `}
             />
             <span
               className={`
-                block w-6 h-0.5 bg-gray-900 rounded-full transition-all duration-300
-                ${isOpen ? '-rotate-45 -translate-y-2' : 'translate-y-0'}
+                block h-0.5 w-6 rounded-full bg-gray-900 transition-all duration-300
+                ${isOpen ? '-translate-y-2 -rotate-45' : 'translate-y-0'}
               `}
             />
           </button>
@@ -150,9 +157,9 @@ const Navbar = React.memo(() => {
       {/* Mobile Menu Overlay */}
       <div
         className={`
-          lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40
-          transition-opacity duration-300
-          ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+          fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity
+          duration-300 lg:hidden
+          ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}
         `}
         onClick={handleToggle}
         aria-hidden="true"
@@ -162,27 +169,29 @@ const Navbar = React.memo(() => {
       <div
         id="mobile-menu"
         className={`
-          lg:hidden fixed top-0 right-0 bottom-0 w-[280px] sm:w-[320px] z-50
-          bg-white shadow-strong overflow-y-auto
-          transition-transform duration-300 ease-out
+          shadow-strong ease-out fixed bottom-0 right-0 top-0 z-50 w-[280px]
+          overflow-y-auto bg-white transition-transform
+          duration-300 sm:w-[320px] lg:hidden
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
       >
         {/* Mobile Menu Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-primary-500 to-secondary-500 p-6 shadow-md z-10">
+        <div className="sticky top-0 z-10 bg-gradient-to-r from-primary-500 to-secondary-500 p-6 shadow-md">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl">
-                <span className="text-xl" role="img" aria-label="Fuel">⛽</span>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                <span className="text-xl" role="img" aria-label="Fuel">
+                  ⛽
+                </span>
               </div>
               <span className="text-lg font-bold text-white">Menu</span>
             </div>
             <button
               onClick={handleToggle}
-              className="flex items-center justify-center w-10 h-10 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl transition-all duration-300 active:scale-95 touch-manipulation"
+              className="flex h-10 w-10 touch-manipulation items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/30 active:scale-95"
               aria-label="Close menu"
             >
-              <span className="text-white text-2xl font-light">×</span>
+              <span className="text-2xl font-light text-white">×</span>
             </button>
           </div>
         </div>
@@ -192,39 +201,40 @@ const Navbar = React.memo(() => {
           {navLinks.map(({ path, label }, index) => (
             <Link
               key={path}
-              to={path}
+              href={path}
               onClick={handleLinkClick}
               className={`
-                flex items-center justify-between px-6 py-4 text-base font-semibold
-                transition-all duration-300 border-l-4 min-h-[56px]
-                ${isActive(path)
-                  ? 'text-primary-600 bg-primary-50 border-primary-500'
-                  : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50 border-transparent hover:border-gray-300'
+                flex min-h-[56px] items-center justify-between border-l-4 px-6 py-4
+                text-base font-semibold transition-all duration-300
+                ${
+                  isActive(path)
+                    ? 'border-primary-500 bg-primary-50 text-primary-600'
+                    : 'border-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50 hover:text-primary-600'
                 }
               `}
               style={{
                 animationDelay: `${index * 50}ms`,
-                animation: isOpen ? 'slideInRight 0.3s ease-out' : 'none'
+                animation: isOpen ? 'slideInRight 0.3s ease-out' : 'none',
               }}
               aria-current={isActive(path) ? 'page' : undefined}
             >
               <span>{label}</span>
               {isActive(path) && (
-                <span className="flex items-center justify-center w-2 h-2 bg-primary-500 rounded-full" />
+                <span className="flex h-2 w-2 items-center justify-center rounded-full bg-primary-500" />
               )}
             </Link>
           ))}
         </div>
 
         {/* Mobile Menu Footer */}
-        <div className="sticky bottom-0 bg-gradient-to-t from-gray-50 to-transparent p-6 mt-auto">
-          <p className="text-xs text-gray-600 text-center leading-relaxed">
+        <div className="sticky bottom-0 mt-auto bg-gradient-to-t from-gray-50 to-transparent p-6">
+          <p className="text-center text-xs leading-relaxed text-gray-600">
             Melbourne&apos;s premier fuel price comparison service
           </p>
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes slideInRight {
           from {
             opacity: 0;

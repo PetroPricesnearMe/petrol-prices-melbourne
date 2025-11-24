@@ -8,11 +8,11 @@
  * - Caching strategies
  */
 
-import logger from '@/utils/logger';
-
 import type BaserowClient from './client';
 import { BASEROW_TABLES } from './types';
 import type { PetrolStation, FuelPrice, FetchOptions } from './types';
+
+import logger from '@/utils/logger';
 
 let cachedClient: BaserowClient | null = null;
 
@@ -28,9 +28,7 @@ async function getClient() {
 /**
  * Fetch all petrol stations with optional filters
  */
-export async function fetchPetrolStations(
-  options: FetchOptions = {}
-): Promise<{
+export async function fetchPetrolStations(options: FetchOptions = {}): Promise<{
   stations: PetrolStation[];
   total: number;
 }> {
@@ -58,7 +56,9 @@ export async function fetchPetrolStations(
 /**
  * Fetch petrol stations by region
  */
-export async function fetchStationsByRegion(region: string): Promise<PetrolStation[]> {
+export async function fetchStationsByRegion(
+  region: string
+): Promise<PetrolStation[]> {
   const { stations } = await fetchPetrolStations({
     filters: [
       {
@@ -86,25 +86,39 @@ export async function fetchNearbyStations(
 
   const { stations } = await fetchPetrolStations();
 
-  return stations.filter((station) => {
-    const distance = calculateDistance(
-      latitude,
-      longitude,
-      station.Latitude,
-      station.Longitude
-    );
-    return distance <= radiusKm;
-  }).sort((a, b) => {
-    const distA = calculateDistance(latitude, longitude, a.Latitude, a.Longitude);
-    const distB = calculateDistance(latitude, longitude, b.Latitude, b.Longitude);
-    return distA - distB;
-  });
+  return stations
+    .filter((station) => {
+      const distance = calculateDistance(
+        latitude,
+        longitude,
+        station.Latitude,
+        station.Longitude
+      );
+      return distance <= radiusKm;
+    })
+    .sort((a, b) => {
+      const distA = calculateDistance(
+        latitude,
+        longitude,
+        a.Latitude,
+        a.Longitude
+      );
+      const distB = calculateDistance(
+        latitude,
+        longitude,
+        b.Latitude,
+        b.Longitude
+      );
+      return distA - distB;
+    });
 }
 
 /**
  * Fetch a single station by ID
  */
-export async function fetchStationById(id: number): Promise<PetrolStation | null> {
+export async function fetchStationById(
+  id: number
+): Promise<PetrolStation | null> {
   try {
     const client = await getClient();
     return await client.fetchRowById<PetrolStation>(

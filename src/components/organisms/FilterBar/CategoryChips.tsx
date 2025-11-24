@@ -52,11 +52,11 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
   showCounts = true,
   multiSelect = true,
   className,
-  variant = 'default',
   size = 'md',
 }) => {
   const [selectedIds, setSelectedIds] = useState<string[]>(selectedCategories);
-  const [filteredCategories, setFilteredCategories] = useState<Category[]>(categories);
+  const [filteredCategories, setFilteredCategories] =
+    useState<Category[]>(categories);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -78,7 +78,9 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
   const handleToggle = useCallback(
     (categoryId: string) => {
       if (!multiSelect) {
-        const newSelection = selectedIds.includes(categoryId) ? [] : [categoryId];
+        const newSelection = selectedIds.includes(categoryId)
+          ? []
+          : [categoryId];
         setSelectedIds(newSelection);
         onSelectionChange?.(newSelection);
         return;
@@ -103,7 +105,7 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
         return newSelection;
       });
     },
-    [multiSelect, maxSelections, onSelectionChange]
+    [multiSelect, maxSelections, onSelectionChange, selectedIds]
   );
 
   const handleClearAll = useCallback(() => {
@@ -127,13 +129,19 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
   };
 
   return (
-    <div className={cn('category-chips', className)} role="group" aria-label="Category filters">
+    <div
+      className={cn('category-chips', className)}
+      role="group"
+      aria-label="Category filters"
+    >
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Categories</h3>
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+            Categories
+          </h3>
           {hasSelection && (
-            <span className="px-2 py-0.5 text-xs font-medium bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-full">
+            <span className="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700 dark:bg-primary-900 dark:text-primary-300">
               {selectedCount}
             </span>
           )}
@@ -141,7 +149,7 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
         {hasSelection && (
           <button
             onClick={handleClearAll}
-            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+            className="text-xs text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             aria-label="Clear all selections"
           >
             Clear all
@@ -158,9 +166,9 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={cn(
-              'w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg',
-              'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100',
-              'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+              'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-600',
+              'bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100',
+              'focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500',
               'placeholder:text-gray-400 dark:placeholder:text-gray-500'
             )}
             aria-label="Search categories"
@@ -173,7 +181,10 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
         <AnimatePresence mode="popLayout">
           {filteredCategories.map((category) => {
             const isSelected = selectedIds.includes(category.id);
-            const disabled = !isSelected && maxSelections && selectedIds.length >= maxSelections;
+            const disabled =
+              !isSelected &&
+              maxSelections &&
+              selectedIds.length >= maxSelections;
 
             return (
               <motion.button
@@ -187,14 +198,14 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
                 className={cn(
                   'inline-flex items-center gap-1.5 rounded-lg font-medium transition-all',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-                  'disabled:opacity-50 disabled:cursor-not-allowed',
+                  'disabled:cursor-not-allowed disabled:opacity-50',
                   sizeClasses[size],
                   {
                     // Selected state
                     'bg-primary-600 text-white shadow-md hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600':
                       isSelected,
                     // Unselected state
-                    'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400':
+                    'border border-gray-300 bg-white text-gray-700 hover:border-primary-500 hover:text-primary-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:text-primary-400':
                       !isSelected,
                     // Disabled state
                     'border-gray-200 dark:border-gray-700': disabled,
@@ -205,13 +216,16 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
                 type="button"
               >
                 {category.icon && (
-                  <span className={cn('flex-shrink-0', iconSizeClasses[size])} aria-hidden="true">
+                  <span
+                    className={cn('flex-shrink-0', iconSizeClasses[size])}
+                    aria-hidden="true"
+                  >
                     {category.icon}
                   </span>
                 )}
                 <span>{category.label}</span>
                 {showCounts && category.count !== undefined && (
-                  <span className="px-1.5 py-0.5 text-xs font-semibold rounded-full bg-black/10 dark:bg-white/10">
+                  <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-xs font-semibold dark:bg-white/10">
                     {category.count}
                   </span>
                 )}
@@ -219,13 +233,18 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({
                   <motion.svg
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="w-4 h-4"
+                    className="h-4 w-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     aria-hidden="true"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
                   </motion.svg>
                 )}
               </motion.button>

@@ -1,6 +1,6 @@
 /**
  * FilterSearchBar Component
- * 
+ *
  * A comprehensive filter and search bar component with:
  * - Debounced search input
  * - Filter dropdowns (Fuel Type, Distance, Rating)
@@ -10,18 +10,15 @@
  * - Glassmorphism styling
  * - Full accessibility support
  * - Responsive design
- * 
+ *
  * @module components/molecules/FilterSearchBar
  */
 
 'use client';
 
+import { motion } from 'framer-motion';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion } from 'framer-motion';
-
-import { useDebounce } from '@/hooks/usePerformance';
-import { cn } from '@/utils/cn';
 
 import { FilterDropdown } from './FilterDropdown';
 import type {
@@ -31,6 +28,9 @@ import type {
   DistanceOption,
   RatingOption,
 } from './FilterSearchBar.types';
+
+import { useDebounce } from '@/hooks/usePerformance';
+import { cn } from '@/utils/cn';
 
 // Default filter options
 const DEFAULT_FUEL_TYPE_OPTIONS = [
@@ -96,7 +96,8 @@ export function FilterSearchBar({
       return {
         search: searchParams.get('search') || initialSearch,
         fuelType: (searchParams.get('fuelType') as FuelType) || initialFuelType,
-        distance: (searchParams.get('distance') as DistanceOption) || initialDistance,
+        distance:
+          (searchParams.get('distance') as DistanceOption) || initialDistance,
         rating: (searchParams.get('rating') as RatingOption) || initialRating,
       };
     }
@@ -157,7 +158,9 @@ export function FilterSearchBar({
       }
 
       // Update URL without page reload
-      const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+      const newUrl = params.toString()
+        ? `${pathname}?${params.toString()}`
+        : pathname;
       router.push(newUrl, { scroll: false });
     },
     [syncWithUrl, searchParams, pathname, router]
@@ -197,7 +200,14 @@ export function FilterSearchBar({
     if (syncWithUrl) {
       router.push(pathname, { scroll: false });
     }
-  }, [updateUrlParams, onFiltersChange, onSearchChange, syncWithUrl, pathname, router]);
+  }, [
+    updateUrlParams,
+    onFiltersChange,
+    onSearchChange,
+    syncWithUrl,
+    pathname,
+    router,
+  ]);
 
   // Notify parent of debounced search changes
   useEffect(() => {
@@ -208,7 +218,13 @@ export function FilterSearchBar({
     onSearchChange?.(debouncedSearch);
     updateUrlParams(state);
     onFiltersChange?.(state);
-  }, [debouncedSearch, state, onSearchChange, updateUrlParams, onFiltersChange]);
+  }, [
+    debouncedSearch,
+    state,
+    onSearchChange,
+    updateUrlParams,
+    onFiltersChange,
+  ]);
 
   // Sync with URL params on mount/change
   useEffect(() => {
@@ -216,7 +232,8 @@ export function FilterSearchBar({
 
     const urlSearch = searchParams.get('search') || '';
     const urlFuelType = (searchParams.get('fuelType') as FuelType) || 'all';
-    const urlDistance = (searchParams.get('distance') as DistanceOption) || 'all';
+    const urlDistance =
+      (searchParams.get('distance') as DistanceOption) || 'all';
     const urlRating = (searchParams.get('rating') as RatingOption) || 'all';
 
     // Only update if URL params differ from current state
@@ -238,6 +255,7 @@ export function FilterSearchBar({
         onSearchChange?.(urlSearch);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, syncWithUrl]); // Only depend on searchParams to avoid loops
 
   return (
@@ -247,7 +265,7 @@ export function FilterSearchBar({
       transition={{ duration: 0.3 }}
       className={cn(
         'sticky top-0 z-40 w-full',
-        'bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl',
+        'bg-white/80 backdrop-blur-xl dark:bg-gray-900/80',
         'border-b border-white/20 dark:border-gray-700/50',
         'shadow-lg',
         className
@@ -255,14 +273,14 @@ export function FilterSearchBar({
       role="search"
       aria-label="Filter and search controls"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
-        <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 md:py-5 lg:px-8">
+        <div className="flex flex-col gap-3 md:gap-4 lg:flex-row">
           {/* Search Input */}
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 md:pl-4 flex items-center pointer-events-none">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 md:pl-4">
                 <svg
-                  className="w-5 h-5 text-gray-400"
+                  className="h-5 w-5 text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -283,9 +301,9 @@ export function FilterSearchBar({
                 placeholder={searchPlaceholder}
                 disabled={disabled}
                 className={cn(
-                  'w-full pl-10 md:pl-12 pr-4 py-3 md:py-3.5',
+                  'w-full py-3 pl-10 pr-4 md:py-3.5 md:pl-12',
                   'min-h-[44px]',
-                  'bg-white/90 dark:bg-gray-800/90 backdrop-blur-md',
+                  'bg-white/90 backdrop-blur-md dark:bg-gray-800/90',
                   'border border-white/20 dark:border-gray-600/50',
                   'rounded-lg',
                   'text-sm md:text-base',
@@ -293,8 +311,8 @@ export function FilterSearchBar({
                   'placeholder-gray-400 dark:placeholder-gray-500',
                   'shadow-sm hover:shadow-md',
                   'transition-all duration-200',
-                  'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:border-transparent',
-                  'disabled:opacity-50 disabled:cursor-not-allowed',
+                  'focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
+                  'disabled:cursor-not-allowed disabled:opacity-50',
                   'touch-manipulation'
                 )}
                 aria-label="Search input"
@@ -303,12 +321,16 @@ export function FilterSearchBar({
               {state.search && (
                 <button
                   type="button"
-                  onClick={() => handleSearchChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)}
-                  className="absolute inset-y-0 right-0 pr-3 md:pr-4 flex items-center"
+                  onClick={() =>
+                    handleSearchChange({
+                      target: { value: '' },
+                    } as React.ChangeEvent<HTMLInputElement>)
+                  }
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 md:pr-4"
                   aria-label="Clear search"
                 >
                   <svg
-                    className="w-5 h-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -329,7 +351,7 @@ export function FilterSearchBar({
           </div>
 
           {/* Filter Dropdowns */}
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 flex-shrink-0">
+          <div className="flex flex-shrink-0 flex-col gap-3 sm:flex-row md:gap-4">
             {/* Fuel Type Dropdown */}
             <div className="w-full sm:w-auto sm:min-w-[180px]">
               <FilterDropdown
@@ -375,27 +397,29 @@ export function FilterSearchBar({
                 type="button"
                 onClick={handleReset}
                 disabled={disabled || !hasActiveFilters}
-                whileHover={!disabled && hasActiveFilters ? { scale: 1.02 } : {}}
+                whileHover={
+                  !disabled && hasActiveFilters ? { scale: 1.02 } : {}
+                }
                 whileTap={!disabled && hasActiveFilters ? { scale: 0.98 } : {}}
                 className={cn(
-                  'px-4 md:px-6 py-3 md:py-3.5',
+                  'px-4 py-3 md:px-6 md:py-3.5',
                   'min-h-[44px]',
                   'rounded-lg',
-                  'text-sm md:text-base font-medium',
+                  'text-sm font-medium md:text-base',
                   'transition-all duration-200',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
                   'touch-manipulation',
                   hasActiveFilters
-                    ? 'bg-primary-600 hover:bg-primary-700 text-white shadow-md hover:shadow-lg'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed',
-                  disabled && 'opacity-50 cursor-not-allowed'
+                    ? 'bg-primary-600 text-white shadow-md hover:bg-primary-700 hover:shadow-lg'
+                    : 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500',
+                  disabled && 'cursor-not-allowed opacity-50'
                 )}
                 aria-label="Reset all filters"
                 aria-disabled={!hasActiveFilters || disabled}
               >
                 <span className="flex items-center justify-center gap-2">
                   <svg
-                    className="w-4 h-4 md:w-5 md:h-5"
+                    className="h-4 w-4 md:h-5 md:w-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -421,28 +445,37 @@ export function FilterSearchBar({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/20 dark:border-gray-700/50"
+            className="mt-3 border-t border-white/20 pt-3 dark:border-gray-700/50 md:mt-4 md:pt-4"
           >
-            <div className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 dark:text-gray-400 md:text-sm">
               <span className="font-medium">Active filters:</span>
               {state.search && (
-                <span className="px-2 py-1 bg-primary-100/50 dark:bg-primary-900/30 rounded-md">
+                <span className="rounded-md bg-primary-100/50 px-2 py-1 dark:bg-primary-900/30">
                   Search: &quot;{state.search}&quot;
                 </span>
               )}
               {state.fuelType !== 'all' && (
-                <span className="px-2 py-1 bg-primary-100/50 dark:bg-primary-900/30 rounded-md">
-                  {fuelTypeOptions.find((opt) => opt.value === state.fuelType)?.label}
+                <span className="rounded-md bg-primary-100/50 px-2 py-1 dark:bg-primary-900/30">
+                  {
+                    fuelTypeOptions.find((opt) => opt.value === state.fuelType)
+                      ?.label
+                  }
                 </span>
               )}
               {state.distance !== 'all' && (
-                <span className="px-2 py-1 bg-primary-100/50 dark:bg-primary-900/30 rounded-md">
-                  {distanceOptions.find((opt) => opt.value === state.distance)?.label}
+                <span className="rounded-md bg-primary-100/50 px-2 py-1 dark:bg-primary-900/30">
+                  {
+                    distanceOptions.find((opt) => opt.value === state.distance)
+                      ?.label
+                  }
                 </span>
               )}
               {state.rating !== 'all' && (
-                <span className="px-2 py-1 bg-primary-100/50 dark:bg-primary-900/30 rounded-md">
-                  {ratingOptions.find((opt) => opt.value === state.rating)?.label}
+                <span className="rounded-md bg-primary-100/50 px-2 py-1 dark:bg-primary-900/30">
+                  {
+                    ratingOptions.find((opt) => opt.value === state.rating)
+                      ?.label
+                  }
                 </span>
               )}
             </div>
@@ -454,4 +487,3 @@ export function FilterSearchBar({
 }
 
 export default FilterSearchBar;
-

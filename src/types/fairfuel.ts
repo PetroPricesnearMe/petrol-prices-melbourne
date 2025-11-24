@@ -45,3 +45,27 @@ export interface FairFuelPriceItem {
   updatedAt: string;
 }
 
+/**
+ * Brand information from FairFuel API
+ */
+export interface FairFuelBrand {
+  id: string;
+  name: string;
+  type: 'major' | 'independent';
+}
+
+export interface FairFuelBrandsResponse {
+  brands: FairFuelBrand[];
+}
+
+/**
+ * Fuel Type information from FairFuel API
+ */
+export interface FairFuelFuelType {
+  id: FairFuelFuelTypeCode;
+  name: string;
+}
+
+export interface FairFuelFuelTypesResponse {
+  fuelTypes: FairFuelFuelType[];
+}

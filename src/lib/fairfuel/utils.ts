@@ -1,5 +1,10 @@
-import { FuelType, StationCategory, type FuelPrice, type Station } from '@/types/station';
 import type { FairFuelPriceDetail, FairFuelPriceItem } from '@/types/fairfuel';
+import {
+  FuelType,
+  StationCategory,
+  type FuelPrice,
+  type Station,
+} from '@/types/station';
 
 export async function safeReadBody(response: Response): Promise<string | null> {
   try {
@@ -10,7 +15,9 @@ export async function safeReadBody(response: Response): Promise<string | null> {
   }
 }
 
-export function transformPriceDetailToStation(detail: FairFuelPriceDetail): Station | null {
+export function transformPriceDetailToStation(
+  detail: FairFuelPriceDetail
+): Station | null {
   if (!detail?.fuelStation) {
     return null;
   }
@@ -40,7 +47,10 @@ export function transformPriceDetailToStation(detail: FairFuelPriceDetail): Stat
   };
 }
 
-function normalizeCoordinates(location?: { latitude: number | null; longitude: number | null }) {
+function normalizeCoordinates(location?: {
+  latitude: number | null;
+  longitude: number | null;
+}) {
   return {
     latitude: typeof location?.latitude === 'number' ? location.latitude : 0,
     longitude: typeof location?.longitude === 'number' ? location.longitude : 0,
@@ -57,7 +67,10 @@ function parseAustralianAddress(address?: string) {
     };
   }
 
-  const parts = address.split(',').map((part) => part.trim()).filter(Boolean);
+  const parts = address
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean);
   const street = parts.shift();
   const remainder = parts.join(', ').trim();
   const match =
@@ -81,7 +94,10 @@ function parseAustralianAddress(address?: string) {
   };
 }
 
-function convertFuelPrices(stationId: string, items: FairFuelPriceItem[] = []): FuelPrice[] {
+function convertFuelPrices(
+  stationId: string,
+  items: FairFuelPriceItem[] = []
+): FuelPrice[] {
   return items
     .filter((item) => typeof item?.price === 'number')
     .map((item) => {
@@ -135,5 +151,3 @@ function mapFuelTypeCode(code: string | undefined) {
       return code;
   }
 }
-
-

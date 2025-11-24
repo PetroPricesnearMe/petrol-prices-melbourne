@@ -33,8 +33,6 @@ export {
 } from './structured-data';
 
 // Additional helper functions for complete page schemas
-import type { Station, FuelPrice } from '@/types/station';
-
 import {
   getOrganizationSchema,
   getWebSiteSchema,
@@ -44,6 +42,8 @@ import {
   getArticleSchema,
   getItemListSchema,
 } from './structured-data';
+
+import type { Station, FuelPrice } from '@/types/station';
 
 /**
  * Generate all schemas for station detail page
@@ -64,14 +64,20 @@ export function generateStationPageSchemas(station: Station) {
 /**
  * Generate all schemas for directory page
  */
-export function generateDirectoryPageSchemas(stations: Station[], suburb?: string) {
+export function generateDirectoryPageSchemas(
+  stations: Station[],
+  suburb?: string
+) {
   const breadcrumbs = [
     { name: 'Home', url: '/' },
     { name: 'Directory', url: '/directory' },
   ];
 
   if (suburb) {
-    breadcrumbs.push({ name: suburb, url: `/directory/${suburb.toLowerCase()}` });
+    breadcrumbs.push({
+      name: suburb,
+      url: `/directory/${suburb.toLowerCase()}`,
+    });
   }
 
   return [
@@ -86,16 +92,15 @@ export function generateDirectoryPageSchemas(stations: Station[], suburb?: strin
  * Generate all schemas for home page
  */
 export function generateHomePageSchemas() {
-  return [
-    getOrganizationSchema(),
-    getWebSiteSchema(),
-  ];
+  return [getOrganizationSchema(), getWebSiteSchema()];
 }
 
 /**
  * Generate all schemas for FAQ page
  */
-export function generateFAQPageSchemas(faqs: Array<{ question: string; answer: string }>) {
+export function generateFAQPageSchemas(
+  faqs: Array<{ question: string; answer: string }>
+) {
   return [
     getOrganizationSchema(),
     getWebSiteSchema(),

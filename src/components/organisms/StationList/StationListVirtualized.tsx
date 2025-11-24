@@ -4,12 +4,12 @@
  * Efficiently renders large lists of stations using virtualization
  */
 
-import React, { memo, useCallback, useMemo } from 'react';
-
-import type { PetrolStation } from '@/types/index';
+import React, { memo, useCallback } from 'react';
 
 import { VirtualList } from '../../common/VirtualList';
 import { StationCardOptimized } from '../StationCard/StationCard.optimized';
+
+import type { PetrolStation } from '@/types/index';
 
 export interface StationListVirtualizedProps {
   /** Array of stations */
@@ -32,7 +32,9 @@ export interface StationListVirtualizedProps {
   emptyMessage?: React.ReactNode;
 }
 
-const StationListVirtualizedComponent: React.FC<StationListVirtualizedProps> = ({
+const StationListVirtualizedComponent: React.FC<
+  StationListVirtualizedProps
+> = ({
   stations,
   height,
   itemHeight = 200,
@@ -45,7 +47,7 @@ const StationListVirtualizedComponent: React.FC<StationListVirtualizedProps> = (
 }) => {
   // Memoize render function
   const renderStation = useCallback(
-    (station: PetrolStation, index: number) => (
+    (station: PetrolStation) => (
       <StationCardOptimized
         station={station}
         onClick={onStationClick}
@@ -58,10 +60,7 @@ const StationListVirtualizedComponent: React.FC<StationListVirtualizedProps> = (
   );
 
   // Memoize key extractor
-  const getItemKey = useCallback(
-    (station: PetrolStation, index: number) => station.id,
-    []
-  );
+  const getItemKey = useCallback((station: PetrolStation) => station.id, []);
 
   return (
     <VirtualList

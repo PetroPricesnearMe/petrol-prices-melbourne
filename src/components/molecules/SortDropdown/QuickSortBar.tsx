@@ -6,9 +6,9 @@
 
 'use client';
 
-import { cn } from '@/utils/cn';
-
 import { SortDropdown, type SortOption } from './SortDropdown';
+
+import { cn } from '@/utils/cn';
 
 interface QuickSortBarProps {
   sortValue: SortOption;
@@ -32,8 +32,8 @@ export function QuickSortBar({
   return (
     <div
       className={cn(
-        'flex items-center justify-between gap-4 flex-wrap',
-        'p-4 bg-white dark:bg-gray-800',
+        'flex flex-wrap items-center justify-between gap-4',
+        'bg-white p-4 dark:bg-gray-800',
         'border border-gray-200 dark:border-gray-700',
         'rounded-lg shadow-sm',
         className
@@ -58,7 +58,7 @@ export function QuickSortBar({
       </div>
 
       {/* Sort Dropdown */}
-      <div className="w-full sm:w-auto min-w-[240px]">
+      <div className="w-full min-w-[240px] sm:w-auto">
         <SortDropdown
           value={sortValue}
           onChange={onSortChange}

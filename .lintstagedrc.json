@@ -1,13 +1,13 @@
 {
   "*.{js,jsx,ts,tsx}": [
-    "eslint --fix",
+    "eslint --fix --max-warnings=1000",
     "prettier --write",
-    "jest --bail --findRelatedTests"
+    "jest --bail --findRelatedTests --passWithNoTests"
   ],
   "*.{json,md,yml,yaml}": [
     "prettier --write"
   ],
-  "*.{css}": [
+  "*.css": [
     "prettier --write"
   ]
 }

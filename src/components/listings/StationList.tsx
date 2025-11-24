@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { Fuel, MapPin, Navigation, Star } from 'lucide-react';
-import type { Station } from '@/types/station';
+
 import { cn } from '@/lib/utils';
+import type { Station } from '@/types/station';
 
 interface StationListProps {
   stations: Station[];
@@ -43,7 +44,7 @@ export function StationList({
 }: StationListProps) {
   if (!stations || stations.length === 0) {
     return (
-      <div className="rounded-3xl border border-dashed border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900/40 px-6 py-12 text-center shadow-sm">
+      <div className="rounded-3xl border border-dashed border-gray-300 bg-white px-6 py-12 text-center shadow-sm dark:border-gray-700 dark:bg-gray-900/40">
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10">
           <Fuel className="h-6 w-6" aria-hidden="true" />
         </div>
@@ -51,7 +52,8 @@ export function StationList({
           No stations match your filters
         </h3>
         <p className="mt-3 text-base text-gray-600 dark:text-gray-400">
-          Try adjusting your search, brand, or fuel type filters to discover more stations in Melbourne.
+          Try adjusting your search, brand, or fuel type filters to discover
+          more stations in Melbourne.
         </p>
       </div>
     );
@@ -63,23 +65,17 @@ export function StationList({
         const distanceLabel = formatDistance(station.distance);
         const fuelPrices = station.fuelPrices || {};
         const bestPrice = Array.isArray(fuelPrices)
-          ? fuelPrices.reduce<number | null>(
-              (best, price) => {
-                const priceValue = price.pricePerLiter;
-                if (typeof priceValue !== 'number') return best;
-                if (best === null || priceValue < best) return priceValue;
-                return best;
-              },
-              null
-            )
-          : Object.values(fuelPrices).reduce<number | null>(
-              (best, value) => {
-                if (typeof value !== 'number') return best;
-                if (best === null || value < best) return value;
-                return best;
-              },
-              null
-            );
+          ? fuelPrices.reduce<number | null>((best, price) => {
+              const priceValue = price.pricePerLiter;
+              if (typeof priceValue !== 'number') return best;
+              if (best === null || priceValue < best) return priceValue;
+              return best;
+            }, null)
+          : Object.values(fuelPrices).reduce<number | null>((best, value) => {
+              if (typeof value !== 'number') return best;
+              if (best === null || value < best) return value;
+              return best;
+            }, null);
 
         return (
           <motion.li
@@ -115,7 +111,10 @@ export function StationList({
                     </span>
                     {distanceLabel && (
                       <>
-                        <span className="h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600" aria-hidden="true" />
+                        <span
+                          className="h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600"
+                          aria-hidden="true"
+                        />
                         <span className="inline-flex items-center gap-1.5">
                           <Navigation className="h-4 w-4" aria-hidden="true" />
                           {distanceLabel} away
@@ -124,20 +123,27 @@ export function StationList({
                     )}
                     {typeof station.rating === 'number' && (
                       <>
-                        <span className="h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600" aria-hidden="true" />
+                        <span
+                          className="h-1 w-1 rounded-full bg-gray-300 dark:bg-gray-600"
+                          aria-hidden="true"
+                        />
                         <span className="inline-flex items-center gap-1.5">
-                          <Star className="h-4 w-4 text-amber-400" aria-hidden="true" />
-                          {station.rating.toFixed(1)} ({station.reviewCount ?? 0} reviews)
+                          <Star
+                            className="text-amber-400 h-4 w-4"
+                            aria-hidden="true"
+                          />
+                          {station.rating.toFixed(1)} (
+                          {station.reviewCount ?? 0} reviews)
                         </span>
                       </>
                     )}
                   </div>
                 </div>
 
-                <div className="inline-flex items-center gap-3 rounded-2xl bg-success-50 px-4 py-2 text-success-700 dark:bg-success-900/20 dark:text-success-300">
+                <div className="dark:bg-success-900/20 dark:text-success-300 inline-flex items-center gap-3 rounded-2xl bg-success-50 px-4 py-2 text-success-700">
                   <Fuel className="h-5 w-5" aria-hidden="true" />
                   <div className="text-right">
-                    <p className="text-xs uppercase tracking-wider text-success-500 dark:text-success-400">
+                    <p className="dark:text-success-400 text-xs uppercase tracking-wider text-success-500">
                       From
                     </p>
                     <p className="text-2xl font-bold">
@@ -151,7 +157,9 @@ export function StationList({
                 {fuelOrder.map(({ key, label }) => {
                   const fuelPrices = station.fuelPrices || {};
                   const price = Array.isArray(fuelPrices)
-                    ? fuelPrices.find((p) => p.fuelType.toLowerCase().includes(key.toLowerCase()))?.pricePerLiter
+                    ? fuelPrices.find((p) =>
+                        p.fuelType.toLowerCase().includes(key.toLowerCase())
+                      )?.pricePerLiter
                     : (fuelPrices as Record<string, number | null>)[key];
                   return (
                     <div key={key} className="flex flex-col gap-1">
@@ -174,4 +182,3 @@ export function StationList({
 }
 
 export default StationList;
-

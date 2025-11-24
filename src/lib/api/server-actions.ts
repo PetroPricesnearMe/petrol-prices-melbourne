@@ -1,7 +1,7 @@
 /**
  * Next.js 15 Server Actions
  * Modern server-side data fetching with automatic caching and revalidation
- * 
+ *
  * Benefits:
  * - Type-safe server functions
  * - Automatic deduplication
@@ -15,7 +15,6 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { cache } from 'react';
 
-import { validateStationId, validateFilters } from './validation';
 import {
   calculateDistance,
   flattenStationFuelPrices,
@@ -25,16 +24,19 @@ import {
   transformBaserowToStations,
   transformStationToBaserow,
 } from './server-action-utils';
+import { validateStationId, validateFilters } from './validation';
 
-import { getLiveStationsFromFairFuel, isFairFuelConfigured } from '@/lib/fairfuel/service';
+import {
+  getLiveStationsFromFairFuel,
+  isFairFuelConfigured,
+} from '@/lib/fairfuel/service';
 import type { Station, FuelPrice, StationFilters } from '@/types/station';
 import logger from '@/utils/logger';
 
 const BASEROW_API_URL = process.env.BASEROW_API_URL || 'https://api.baserow.io';
 const BASEROW_STATIONS_TABLE_ID =
   process.env.BASEROW_STATIONS_TABLE_ID || '623329';
-const BASEROW_PRICES_TABLE_ID =
-  process.env.BASEROW_PRICES_TABLE_ID || '623330';
+const BASEROW_PRICES_TABLE_ID = process.env.BASEROW_PRICES_TABLE_ID || '623330';
 const BASEROW_API_TOKEN = process.env.BASEROW_API_TOKEN || '';
 const BASEROW_BASE_ENDPOINT = `${BASEROW_API_URL}/api/database/rows/table`;
 const BASEROW_HEADERS = {
@@ -107,17 +109,19 @@ export const getStationById = cache(
 /**
  * Get stations by suburb with caching
  */
-export const getStationsBySuburb = cache(async (suburb: string): Promise<Station[]> => {
-  try {
-    const allStations = await getStations();
-    return allStations.filter(
-      station => station.suburb?.toLowerCase() === suburb.toLowerCase()
-    );
-  } catch (error) {
-    console.error(`Error fetching stations for suburb ${suburb}:`, error);
-    return [];
+export const getStationsBySuburb = cache(
+  async (suburb: string): Promise<Station[]> => {
+    try {
+      const allStations = await getStations();
+      return allStations.filter(
+        (station) => station.suburb?.toLowerCase() === suburb.toLowerCase()
+      );
+    } catch (error) {
+      console.error(`Error fetching stations for suburb ${suburb}:`, error);
+      return [];
+    }
   }
-});
+);
 
 /**
  * Get fuel prices with caching
@@ -142,7 +146,9 @@ export const getFuelPrices = cache(async (): Promise<FuelPrice[]> => {
  * Search stations with filters
  * Server Action for form submissions
  */
-export async function searchStations(filters: StationFilters): Promise<Station[]> {
+export async function searchStations(
+  filters: StationFilters
+): Promise<Station[]> {
   // Validate filters
   const validationResult = validateFilters(filters);
   if (!validationResult.success) {
@@ -151,45 +157,49 @@ export async function searchStations(filters: StationFilters): Promise<Station[]
 
   try {
     const allStations = await getStations();
-    
+
     let filtered = allStations;
 
     // Apply filters
     if (filters.suburb) {
-      filtered = filtered.filter(s => 
+      filtered = filtered.filter((s) =>
         s.suburb?.toLowerCase().includes(filters.suburb!.toLowerCase())
       );
     }
 
     if (filters.brand) {
-      filtered = filtered.filter(s => 
-        s.brand?.toLowerCase() === filters.brand!.toLowerCase()
+      filtered = filtered.filter(
+        (s) => s.brand?.toLowerCase() === filters.brand!.toLowerCase()
       );
     }
 
     if (filters.fuelType) {
-      filtered = filtered.filter(s => {
+      filtered = filtered.filter((s) => {
         if (!s.fuelPrices) return false;
         if (Array.isArray(s.fuelPrices)) {
-          return s.fuelPrices.some((fp: FuelPrice) => fp.fuelType === filters.fuelType);
+          return s.fuelPrices.some(
+            (fp: FuelPrice) => fp.fuelType === filters.fuelType
+          );
         }
         return false;
       });
     }
 
     if (filters.maxPrice) {
-      filtered = filtered.filter(s => {
+      filtered = filtered.filter((s) => {
         if (!s.fuelPrices) return false;
         if (Array.isArray(s.fuelPrices)) {
-          return s.fuelPrices.some((fp: FuelPrice) => (fp.pricePerLiter || 0) <= filters.maxPrice!);
+          return s.fuelPrices.some(
+            (fp: FuelPrice) => (fp.pricePerLiter || 0) <= filters.maxPrice!
+          );
         }
         return false;
       });
     }
 
     if (filters.amenities) {
-      filtered = filtered.filter(s =>
-        filters.amenities!.every(amenity => s.amenities?.[amenity])
+      filtered = filtered.filter((s) =>
+        filters.amenities!.every((amenity) => s.amenities?.[amenity])
       );
     }
 
@@ -216,15 +226,15 @@ export async function getNearbyStations(
 ): Promise<Station[]> {
   try {
     const allStations = await getStations();
-    
+
     // Filter out stations with invalid coordinates FIRST
     // Don't default null to (0,0) as that's in the Atlantic Ocean!
     const validStations = allStations.filter(
-      station => station.latitude !== null && station.longitude !== null
+      (station) => station.latitude !== null && station.longitude !== null
     );
-    
+
     return validStations
-      .map(station => ({
+      .map((station) => ({
         ...station,
         distance: calculateDistance(
           latitude,
@@ -233,7 +243,7 @@ export async function getNearbyStations(
           station.longitude!
         ),
       }))
-      .filter(station => station.distance <= radiusKm)
+      .filter((station) => station.distance <= radiusKm)
       .sort((a, b) => a.distance - b.distance);
   } catch (error) {
     console.error('Error finding nearby stations:', error);
@@ -249,16 +259,22 @@ export async function getNearbyStations(
  * Update station data
  * Server Action with revalidation
  */
-export async function updateStation(id: number, data: Partial<Station>): Promise<{ success: boolean; error?: string }> {
+export async function updateStation(
+  id: number,
+  data: Partial<Station>
+): Promise<{ success: boolean; error?: string }> {
   try {
-    const response = await fetch(`${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/${id}/`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Token ${process.env.BASEROW_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(transformStationToBaserow(data)),
-    });
+    const response = await fetch(
+      `${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/${id}/`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Token ${process.env.BASEROW_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transformStationToBaserow(data)),
+      }
+    );
 
     if (!response.ok) {
       return { success: false, error: response.statusText };
@@ -281,16 +297,21 @@ export async function updateStation(id: number, data: Partial<Station>): Promise
  * Create new station
  * Server Action with revalidation
  */
-export async function createStation(data: Omit<Station, 'id'>): Promise<{ success: boolean; id?: number; error?: string }> {
+export async function createStation(
+  data: Omit<Station, 'id'>
+): Promise<{ success: boolean; id?: number; error?: string }> {
   try {
-    const response = await fetch(`${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${process.env.BASEROW_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(transformStationToBaserow(data)),
-    });
+    const response = await fetch(
+      `${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${process.env.BASEROW_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transformStationToBaserow(data)),
+      }
+    );
 
     if (!response.ok) {
       return { success: false, error: response.statusText };
@@ -313,14 +334,19 @@ export async function createStation(data: Omit<Station, 'id'>): Promise<{ succes
  * Delete station
  * Server Action with revalidation
  */
-export async function deleteStation(id: number): Promise<{ success: boolean; error?: string }> {
+export async function deleteStation(
+  id: number
+): Promise<{ success: boolean; error?: string }> {
   try {
-    const response = await fetch(`${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/${id}/`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Token ${process.env.BASEROW_API_TOKEN}`,
-      },
-    });
+    const response = await fetch(
+      `${process.env.BASEROW_API_URL}/api/database/rows/table/${process.env.BASEROW_STATIONS_TABLE_ID}/${id}/`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Token ${process.env.BASEROW_API_TOKEN}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       return { success: false, error: response.statusText };
@@ -425,6 +451,3 @@ async function fetchFuelPricesFromBaserow(): Promise<FuelPrice[]> {
     return [];
   }
 }
-
- 
-
