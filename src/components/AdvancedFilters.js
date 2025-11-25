@@ -244,7 +244,7 @@ const AdvancedFilters = ({ onFilterChange, stations = [], activeFilters = {} }) 
         <div className="active-filters-tags">
           {searchTerm && (
             <span className="filter-tag">
-              Search: "{searchTerm}"
+              Search: &quot;{searchTerm}&quot;
               <button onClick={() => setSearchTerm('')} aria-label="Remove search filter">✕</button>
             </span>
           )}

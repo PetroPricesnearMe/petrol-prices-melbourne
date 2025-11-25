@@ -1,10 +1,16 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
+import { StructuredData } from '@/components/StructuredData';
 import {
   getFuelBrandsFromFairFuel,
   isFairFuelConfigured,
 } from '@/lib/fairfuel/service';
+import {
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+} from '@/lib/seo/schema-generator';
 
 // Force dynamic rendering since we're fetching from API
 export const dynamic = 'force-dynamic';
@@ -14,7 +20,7 @@ export const metadata: Metadata = {
   title:
     'All Fuel Brands in Melbourne | Compare Prices by Brand | Petrol Price Near Me',
   description:
-    'Compare fuel prices across all major and independent brands in Melbourne. Find the best prices for BP, Shell, Caltex, Ampol, 7-Eleven, United, Liberty, Metro, Costco and more.',
+    'Compare fuel prices across all major and independent brands in Melbourne. Find the best prices for BP, Shell, Caltex, Ampol, 7-Eleven, United, Liberty, Metro, Costco and more. Save money by comparing prices across different fuel brands.',
   keywords: [
     'fuel brands melbourne',
     'BP petrol prices',
@@ -25,12 +31,27 @@ export const metadata: Metadata = {
     'independent fuel stations',
     'major fuel brands',
     'compare fuel brands',
+    'cheapest fuel brand melbourne',
+    'fuel brand comparison',
+    'best fuel brand prices',
+    'melbourne fuel stations by brand',
   ],
   openGraph: {
     title: 'All Fuel Brands in Melbourne | Compare Prices by Brand',
     description:
-      'Compare fuel prices across all major and independent brands in Melbourne.',
+      'Compare fuel prices across all major and independent brands in Melbourne. Find the cheapest fuel by brand and save money on every fill-up.',
     type: 'website',
+    images: [
+      {
+        url: '/images/fuel-brands-og.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Melbourne Fuel Brands Comparison',
+      },
+    ],
+  },
+  alternates: {
+    canonical: '/fuel-brands',
   },
 };
 
@@ -54,21 +75,63 @@ export default async function FuelBrandsPage() {
   const majorBrands = brands.filter((b) => b.type === 'major');
   const independentBrands = brands.filter((b) => b.type === 'independent');
 
+  // Generate structured data
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const schemas = [
+    generateOrganizationSchema(baseUrl),
+    generateWebSiteSchema(baseUrl),
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-6xl">
-          {/* Header */}
-          <div className="mb-12 text-center">
-            <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
-              All Fuel Brands in Melbourne
-            </h1>
-            <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-400">
-              Compare fuel prices across all major and independent fuel brands.
-              Find the best deals from your preferred brand or discover new
-              options.
-            </p>
-          </div>
+    <>
+      <StructuredData data={schemas} />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-12">
+          <div className="mx-auto max-w-6xl">
+            {/* Header */}
+            <div className="mb-12 text-center">
+              <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
+                All Fuel Brands in Melbourne
+              </h1>
+              <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-400">
+                Compare fuel prices across all major and independent fuel brands.
+                Find the best deals from your preferred brand or discover new
+                options.
+              </p>
+            </div>
+
+            {/* Internal Linking - Related Resources */}
+            <div className="mb-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 p-6">
+              <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
+                Related Resources
+              </h2>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/fuel-types"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Fuel Types Guide
+                </Link>
+                <Link
+                  href="/blog"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Fuel Saving Tips
+                </Link>
+                <Link
+                  href="/directory"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Browse All Stations
+                </Link>
+                <Link
+                  href="/how-pricing-works"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → How Fuel Pricing Works
+                </Link>
+              </div>
+            </div>
 
           {/* API Benefits Section */}
           <div className="mb-12 rounded-2xl bg-gradient-to-r from-primary-500 to-secondary-500 p-8 text-white">
@@ -114,20 +177,47 @@ export default async function FuelBrandsPage() {
                   <Link
                     key={brand.id}
                     href={`/directory?brand=${encodeURIComponent(brand.name)}`}
-                    className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:border-primary-500 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
+                    className="group rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:border-primary-500 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
                   >
                     <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                        {brand.name}
-                      </h3>
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
+                          <Image
+                            src={`/images/brands/${brand.name.toLowerCase().replace(/\s+/g, '-')}.png`}
+                            alt={`${brand.name} logo`}
+                            fill
+                            className="object-contain p-2"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                          {brand.name}
+                        </h3>
+                      </div>
                       <span className="rounded-full bg-primary-100 px-3 py-1 text-sm font-semibold text-primary-700 dark:bg-primary-900 dark:text-primary-300">
                         Major
                       </span>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Compare prices at all {brand.name} stations across
-                      Melbourne
+                    <p className="mb-4 text-gray-600 dark:text-gray-400">
+                      Compare prices at all{' '}
+                      <strong className="text-gray-900 dark:text-white">
+                        {brand.name}
+                      </strong>{' '}
+                      stations across Melbourne. Find the cheapest{' '}
+                      <Link
+                        href="/fuel-types"
+                        className="text-primary-600 hover:underline dark:text-primary-400"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        fuel types
+                      </Link>{' '}
+                      at {brand.name} locations.
                     </p>
+                    <div className="text-sm text-primary-600 group-hover:underline dark:text-primary-400">
+                      View {brand.name} Stations →
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -145,19 +235,47 @@ export default async function FuelBrandsPage() {
                   <Link
                     key={brand.id}
                     href={`/directory?brand=${encodeURIComponent(brand.name)}`}
-                    className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:border-secondary-500 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
+                    className="group rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:border-secondary-500 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
                   >
                     <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                        {brand.name}
-                      </h3>
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
+                          <Image
+                            src={`/images/brands/${brand.name.toLowerCase().replace(/\s+/g, '-')}.png`}
+                            alt={`${brand.name} logo`}
+                            fill
+                            className="object-contain p-2"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                          {brand.name}
+                        </h3>
+                      </div>
                       <span className="rounded-full bg-secondary-100 px-3 py-1 text-sm font-semibold text-secondary-700 dark:bg-secondary-900 dark:text-secondary-300">
                         Independent
                       </span>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Find competitive prices at {brand.name} stations
+                    <p className="mb-4 text-gray-600 dark:text-gray-400">
+                      Find competitive prices at{' '}
+                      <strong className="text-gray-900 dark:text-white">
+                        {brand.name}
+                      </strong>{' '}
+                      stations. Independent brands often offer{' '}
+                      <Link
+                        href="/blog"
+                        className="text-primary-600 hover:underline dark:text-primary-400"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        better value
+                      </Link>{' '}
+                      compared to major chains.
                     </p>
+                    <div className="text-sm text-secondary-600 group-hover:underline dark:text-secondary-400">
+                      View {brand.name} Stations →
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -186,17 +304,32 @@ export default async function FuelBrandsPage() {
             </h2>
             <p className="mb-6 text-gray-600 dark:text-gray-400">
               Start comparing prices across all brands and save money on every
-              fill-up.
+              fill-up. Use our{' '}
+              <Link
+                href="/directory"
+                className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+              >
+                station directory
+              </Link>{' '}
+              to find the cheapest fuel near you.
             </p>
-            <Link
-              href="/directory"
-              className="inline-block rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:from-primary-700 hover:to-secondary-700 hover:shadow-xl"
-            >
-              Compare Prices Now
-            </Link>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                href="/directory"
+                className="inline-block rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:from-primary-700 hover:to-secondary-700 hover:shadow-xl"
+              >
+                Compare Prices Now
+              </Link>
+              <Link
+                href="/blog"
+                className="inline-block rounded-lg border-2 border-primary-600 px-8 py-4 font-semibold text-primary-600 transition-all duration-300 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-primary-900/20"
+              >
+                Read Fuel Saving Tips
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

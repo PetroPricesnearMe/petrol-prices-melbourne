@@ -33,7 +33,7 @@ const HowPricingWorksPage = () => {
           <div className="intro-card">
             <h3>Fuel Pricing in Australia</h3>
             <p>
-              Australia's fuel pricing system is influenced by a complex interplay of global oil markets,
+              Australia&apos;s fuel pricing system is influenced by a complex interplay of global oil markets,
               local competition, government policies, and regional factors. Understanding these dynamics
               can help you make informed decisions about when and where to fill up.
             </p>
@@ -91,7 +91,7 @@ const HowPricingWorksPage = () => {
               </div>
               <p>
                 Federal excise duty (currently ~42¢ per liter) plus GST (10%) and state levies.
-                These are fixed costs that don't change with oil prices, making up approximately
+                These are fixed costs that don&apos;t change with oil prices, making up approximately
                 40% of the total fuel cost.
               </p>
             </div>
@@ -157,7 +157,7 @@ const HowPricingWorksPage = () => {
       content: (
         <div className="content-section">
           <div className="cycle-explanation">
-            <h3>Australia's Weekly Price Cycle</h3>
+            <h3>Australia&apos;s Weekly Price Cycle</h3>
             <p>
               Unlike many countries, Australia has a predictable weekly price cycle where
               prices rise and fall in a regular pattern. This cycle varies by city and
@@ -271,7 +271,7 @@ const HowPricingWorksPage = () => {
                 <p><strong>Indexation:</strong> Adjusted twice yearly with CPI</p>
                 <p>
                   This is the largest single component of fuel pricing, making up approximately
-                  25-30% of the total cost. It's a fixed cost that doesn't change with oil prices.
+                  25-30% of the total cost. It&apos;s a fixed cost that doesn&apos;t change with oil prices.
                 </p>
               </div>
             </div>

@@ -14,6 +14,14 @@ import { Inter } from 'next/font/google';
 import Script from 'next/script';
 
 import { Providers } from './providers';
+
+import { StructuredData } from '@/components/StructuredData';
+import {
+  generateOrganizationSchema,
+  generatePlatformLocalBusinessSchema,
+  generateWebSiteSchema,
+} from '@/lib/seo/schema-generator';
+
 import '../styles/globals.css';
 
 const inter = Inter({
@@ -92,6 +100,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Generate Organization and WebSite schemas for all pages
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const schemas = [
+    generateOrganizationSchema(baseUrl),
+    generateWebSiteSchema(baseUrl),
+    generatePlatformLocalBusinessSchema(baseUrl),
+  ];
+
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
@@ -107,6 +123,9 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`antialiased ${inter.className}`} suppressHydrationWarning>
+        {/* Structured Data - Organization and WebSite schemas */}
+        <StructuredData data={schemas} />
+
         {/* Critical CSS loaded inline above the fold */}
 
         {/* Main content */}

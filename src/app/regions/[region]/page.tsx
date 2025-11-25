@@ -4,9 +4,18 @@
  */
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { RegionStationsClient } from './RegionStationsClient';
+
+import { StructuredData } from '@/components/StructuredData';
+import {
+  generateDirectoryListSchema,
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+} from '@/lib/seo/schema-generator';
+
 
 const regions = {
   'north-melbourne': {
@@ -50,17 +59,32 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${region.name} Petrol Stations | Live Fuel Prices`,
-    description: region.description,
+    title: `${region.name} Petrol Stations | Live Fuel Prices | Petrol Price Near Me`,
+    description: `${region.description} Compare real-time fuel prices across all stations in ${region.name}. Find the cheapest petrol near you.`,
     keywords: [
       `${region.name} petrol prices`,
       `fuel prices ${region.name}`,
       `${region.name} stations`,
       'melbourne fuel',
+      `${region.name} fuel comparison`,
+      `cheapest fuel ${region.name}`,
+      `${region.name} petrol stations directory`,
     ],
     openGraph: {
-      title: `${region.name} Petrol Stations`,
-      description: region.description,
+      title: `${region.name} Petrol Stations | Live Fuel Prices`,
+      description: `${region.description} Compare real-time fuel prices and find the cheapest stations.`,
+      type: 'website',
+      images: [
+        {
+          url: '/images/regions-og.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${region.name} Petrol Stations`,
+        },
+      ],
+    },
+    alternates: {
+      canonical: `/regions/${params.region}`,
     },
   };
 }
@@ -86,5 +110,54 @@ export default function RegionPage({
     notFound();
   }
 
-  return <RegionStationsClient region={region} regionSlug={params.region} />;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  // Note: In production, fetch actual stations count
+  const stationCount = 0; // This would come from API
+  const schemas = [
+    generateOrganizationSchema(baseUrl),
+    generateWebSiteSchema(baseUrl),
+  ];
+
+  // Add ItemList schema if we have stations
+  // if (stationCount > 0) {
+  //   schemas.push(generateDirectoryListSchema(baseUrl, [], `${region.name} Petrol Stations`));
+  // }
+
+  return (
+    <>
+      <StructuredData data={schemas} />
+      <div className="mb-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 p-6">
+        <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
+          Related Resources
+        </h2>
+        <div className="flex flex-wrap gap-4">
+          <Link
+            href="/directory"
+            className="text-blue-600 hover:underline dark:text-blue-400"
+          >
+            → Browse All Stations
+          </Link>
+          <Link
+            href="/fuel-brands"
+            className="text-blue-600 hover:underline dark:text-blue-400"
+          >
+            → Compare Fuel Brands
+          </Link>
+          <Link
+            href="/fuel-types"
+            className="text-blue-600 hover:underline dark:text-blue-400"
+          >
+            → Fuel Types Guide
+          </Link>
+          <Link
+            href="/blog"
+            className="text-blue-600 hover:underline dark:text-blue-400"
+          >
+            → Fuel Saving Tips
+          </Link>
+        </div>
+      </div>
+      <RegionStationsClient region={region} regionSlug={params.region} />
+    </>
+  );
 }

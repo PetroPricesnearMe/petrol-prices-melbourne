@@ -75,6 +75,69 @@ export function generateWebsiteSchema(baseUrl: string) {
 }
 
 /**
+ * LocalBusiness schema - Global business entity for the platform
+ */
+export function generatePlatformLocalBusinessSchema(baseUrl: string) {
+  const openingHours = [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+      ],
+      opens: '00:00',
+      closes: '23:59',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday', 'Sunday'],
+      opens: '00:00',
+      closes: '23:59',
+    },
+  ];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${baseUrl}/#localbusiness`,
+    name: 'Petrol Price Near Me',
+    description:
+      'Melbourne-based petrol price intelligence platform providing live fuel prices, station directories, and savings guides.',
+    url: baseUrl,
+    telephone: '+61 3 7020 1234',
+    email: 'hello@petrolpricenearme.com.au',
+    image: `${baseUrl}/images/og-image.jpg`,
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '120 Collins Street',
+      addressLocality: 'Melbourne',
+      addressRegion: 'VIC',
+      postalCode: '3000',
+      addressCountry: 'AU',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: -37.8136,
+      longitude: 144.9631,
+    },
+    areaServed: {
+      '@type': 'City',
+      name: 'Melbourne',
+    },
+    sameAs: [
+      'https://www.facebook.com/petrolpricenearme',
+      'https://twitter.com/ppnmelbourne',
+      'https://www.instagram.com/petrolpricenearme',
+    ],
+    openingHoursSpecification: openingHours,
+  };
+}
+
+/**
  * BreadcrumbList schema - For navigation
  */
 export function generateBreadcrumbSchema(

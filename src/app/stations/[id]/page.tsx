@@ -135,6 +135,53 @@ export default async function StationPage({ params }: StationPageProps) {
       {/* Structured Data for SEO */}
       <StructuredData data={structuredDataSchemas} />
 
+      {/* Internal Linking Section */}
+      <div className="container mx-auto px-4 py-6">
+        <div className="mx-auto max-w-6xl">
+          <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 p-6">
+            <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
+              Related Resources
+            </h2>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/directory"
+                className="text-blue-600 hover:underline dark:text-blue-400"
+              >
+                → Browse All Stations
+              </Link>
+              {station.brand && (
+                <Link
+                  href={`/directory?brand=${encodeURIComponent(station.brand)}`}
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → More {station.brand} Stations
+                </Link>
+              )}
+              {station.suburb && (
+                <Link
+                  href={`/directory/${station.suburb.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Stations in {station.suburb}
+                </Link>
+              )}
+              <Link
+                href="/fuel-brands"
+                className="text-blue-600 hover:underline dark:text-blue-400"
+              >
+                → Compare Fuel Brands
+              </Link>
+              <Link
+                href="/blog"
+                className="text-blue-600 hover:underline dark:text-blue-400"
+              >
+                → Fuel Saving Tips
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <DirectoryLayout
         title={station.name}
         description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}

@@ -1,10 +1,16 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
+import { StructuredData } from '@/components/StructuredData';
 import {
   getFuelTypesFromFairFuel,
   isFairFuelConfigured,
 } from '@/lib/fairfuel/service';
+import {
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+} from '@/lib/seo/schema-generator';
 
 // Force dynamic rendering since we're fetching from API
 export const dynamic = 'force-dynamic';
@@ -14,7 +20,7 @@ export const metadata: Metadata = {
   title:
     'All Fuel Types Explained | Unleaded, Diesel, Premium & More | Melbourne',
   description:
-    'Complete guide to all fuel types available in Melbourne: Unleaded 91, Premium 95/98, Diesel, E10, E85, LPG, and alternative fuels. Learn about each fuel type and find the best prices.',
+    'Complete guide to all fuel types available in Melbourne: Unleaded 91, Premium 95/98, Diesel, E10, E85, LPG, and alternative fuels. Learn about each fuel type, their benefits, and find the best prices across Melbourne stations.',
   keywords: [
     'fuel types melbourne',
     'unleaded 91',
@@ -26,12 +32,27 @@ export const metadata: Metadata = {
     'LPG gas',
     'alternative fuels',
     'fuel types explained',
+    'which fuel type to use',
+    'fuel octane rating',
+    'melbourne fuel guide',
+    'fuel type comparison',
   ],
   openGraph: {
     title: 'All Fuel Types Explained | Complete Guide to Melbourne Fuel Types',
     description:
-      'Complete guide to all fuel types available in Melbourne with price comparisons.',
+      'Complete guide to all fuel types available in Melbourne with price comparisons. Learn which fuel is right for your vehicle.',
     type: 'website',
+    images: [
+      {
+        url: '/images/fuel-types-og.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Melbourne Fuel Types Guide',
+      },
+    ],
+  },
+  alternates: {
+    canonical: '/fuel-types',
   },
 };
 
@@ -62,20 +83,62 @@ export default async function FuelTypesPage() {
     }
   }
 
+  // Generate structured data
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const schemas = [
+    generateOrganizationSchema(baseUrl),
+    generateWebSiteSchema(baseUrl),
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-6xl">
-          {/* Header */}
-          <div className="mb-12 text-center">
-            <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
-              Complete Guide to Fuel Types
-            </h1>
-            <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-400">
-              Learn about all fuel types available in Melbourne. Find the right
-              fuel for your vehicle and compare prices across all types.
-            </p>
-          </div>
+    <>
+      <StructuredData data={schemas} />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-12">
+          <div className="mx-auto max-w-6xl">
+            {/* Header */}
+            <div className="mb-12 text-center">
+              <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white md:text-5xl">
+                Complete Guide to Fuel Types
+              </h1>
+              <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-400">
+                Learn about all fuel types available in Melbourne. Find the right
+                fuel for your vehicle and compare prices across all types.
+              </p>
+            </div>
+
+            {/* Internal Linking - Related Resources */}
+            <div className="mb-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 p-6">
+              <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
+                Related Resources
+              </h2>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/fuel-brands"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Compare Fuel Brands
+                </Link>
+                <Link
+                  href="/blog"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Fuel Type Guide
+                </Link>
+                <Link
+                  href="/directory"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Find Stations by Fuel Type
+                </Link>
+                <Link
+                  href="/how-pricing-works"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  → Understanding Fuel Prices
+                </Link>
+              </div>
+            </div>
 
           {/* API Benefits Section */}
           <div className="mb-12 rounded-2xl bg-gradient-to-r from-primary-500 to-secondary-500 p-8 text-white">
@@ -116,12 +179,25 @@ export default async function FuelTypesPage() {
               {fuelTypes.map((fuelType) => (
                 <div
                   key={fuelType.id}
-                  className="rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
+                  className="group rounded-xl border border-gray-200 bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
                 >
                   <div className="mb-4 flex items-center justify-between">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {fuelType.name}
-                    </h3>
+                    <div className="flex items-center gap-3">
+                      <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
+                        <Image
+                          src={`/images/fuel-types/${fuelType.id.toLowerCase()}.png`}
+                          alt={`${fuelType.name} icon`}
+                          fill
+                          className="object-contain p-2"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        {fuelType.name}
+                      </h3>
+                    </div>
                     <span className="rounded-full bg-primary-100 px-3 py-1 font-mono text-sm font-semibold text-primary-700 dark:bg-primary-900 dark:text-primary-300">
                       {fuelType.id}
                     </span>
@@ -132,9 +208,9 @@ export default async function FuelTypesPage() {
                   </p>
                   <Link
                     href={`/directory?fuelType=${encodeURIComponent(fuelType.id)}`}
-                    className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                    className="inline-flex items-center font-semibold text-primary-600 hover:underline dark:text-primary-400"
                   >
-                    Find Prices →
+                    Find {fuelType.name} Prices →
                   </Link>
                 </div>
               ))}
@@ -192,17 +268,39 @@ export default async function FuelTypesPage() {
             </h2>
             <p className="mb-6 text-gray-600 dark:text-gray-400">
               Find the best prices for your preferred fuel type across all
-              Melbourne stations.
+              Melbourne stations. Use our{' '}
+              <Link
+                href="/directory"
+                className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+              >
+                station directory
+              </Link>{' '}
+              to filter by fuel type and{' '}
+              <Link
+                href="/fuel-brands"
+                className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+              >
+                brand
+              </Link>
+              .
             </p>
-            <Link
-              href="/directory"
-              className="inline-block rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:from-primary-700 hover:to-secondary-700 hover:shadow-xl"
-            >
-              Compare Prices Now
-            </Link>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                href="/directory"
+                className="inline-block rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:from-primary-700 hover:to-secondary-700 hover:shadow-xl"
+              >
+                Compare Prices Now
+              </Link>
+              <Link
+                href="/blog"
+                className="inline-block rounded-lg border-2 border-primary-600 px-8 py-4 font-semibold text-primary-600 transition-all duration-300 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-primary-900/20"
+              >
+                Learn More About Fuel Types
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

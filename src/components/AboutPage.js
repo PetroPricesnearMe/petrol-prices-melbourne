@@ -125,7 +125,7 @@ const AboutPage = () => {
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>Our Story</h2>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
             Founded in Melbourne, Petrol Prices Near Me was created to address the frustration of inconsistent fuel pricing across the city.
-            We saw how much money drivers were wasting simply because they didn't know where to find the cheapest fuel prices.
+            We saw how much money drivers were wasting simply because they didn&apos;t know where to find the cheapest fuel prices.
           </p>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '1rem' }}>
             Today, we monitor over 250 petrol stations across Melbourne, providing real-time price updates that help thousands of drivers
@@ -133,8 +133,8 @@ const AboutPage = () => {
             easy as possible.
           </p>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-            We're committed to transparency, accuracy, and helping Melbourne drivers make informed decisions about where to fill up.
-            Whether you're commuting to work or planning a road trip, we're here to help you save.
+            We&apos;re committed to transparency, accuracy, and helping Melbourne drivers make informed decisions about where to fill up.
+            Whether you&apos;re commuting to work or planning a road trip, we&apos;re here to help you save.
           </p>
         </section>
       </div>

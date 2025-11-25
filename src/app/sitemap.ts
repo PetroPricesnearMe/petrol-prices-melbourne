@@ -262,7 +262,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.4,
     },
-  ];
+  ].filter((route) => {
+    // Filter out any routes with localhost
+    if (route.url.includes('localhost')) {
+      console.warn(`Warning: Excluding route ${route.url} - contains localhost`);
+      return false;
+    }
+    return true;
+  });
 
   // Fetch dynamic routes
   const [stationUrls, directoryUrls, regionUrls, brandUrls] = await Promise.all([
@@ -272,12 +279,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getFuelBrandUrls(),
   ]);
 
-  // Combine all routes
-  return [
+  // Combine all routes and filter out any localhost URLs
+  const allRoutes = [
     ...staticRoutes,
     ...directoryUrls,
     ...regionUrls,
     ...brandUrls,
     ...stationUrls,
   ];
+
+  // Final validation - remove any localhost URLs that might have slipped through
+  return allRoutes.filter((route) => {
+    if (route.url.includes('localhost')) {
+      console.warn(`Warning: Final filter removing route ${route.url} - contains localhost`);
+      return false;
+    }
+    return true;
+  });
 }
