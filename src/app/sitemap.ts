@@ -12,24 +12,23 @@ const baseUrl =
 
 /**
  * Fetch dynamic station routes
- * In production, this should fetch from your database
+ * Fetches actual stations from the data layer
  */
 async function getStationUrls(): Promise<MetadataRoute.Sitemap> {
   try {
-    // TODO: Fetch actual stations from API
-    // const stations = await fetch(`${baseUrl}/api/stations`).then(r => r.json());
+    const { getAllStations } = await import('@/lib/data/stations');
+    const stations = await getAllStations();
 
-    // For now, return empty array
-    // Replace with actual station IDs when API is ready
-    return [];
-
-    // Example implementation:
-    // return stations.map((station: any) => ({
-    //   url: `${baseUrl}/stations/${station.id}`,
-    //   lastModified: station.lastUpdated || new Date(),
-    //   changeFrequency: 'daily' as const,
-    //   priority: 0.7,
-    // }));
+    return stations
+      .filter((station) => station.id) // Only include stations with IDs
+      .map((station) => ({
+        url: `${baseUrl}/stations/${station.id}`,
+        lastModified: station.lastUpdated 
+          ? new Date(station.lastUpdated) 
+          : new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 0.8, // High priority for individual station pages
+      }));
   } catch (error) {
     console.error('Error fetching station URLs for sitemap:', error);
     return [];
@@ -37,14 +36,85 @@ async function getStationUrls(): Promise<MetadataRoute.Sitemap> {
 }
 
 /**
- * Get blog post URLs
+ * Get directory/suburb URLs
  */
-async function getBlogUrls(): Promise<MetadataRoute.Sitemap> {
+async function getDirectoryUrls(): Promise<MetadataRoute.Sitemap> {
   try {
-    // TODO: Fetch actual blog posts when implemented
-    return [];
+    const { getAllStations } = await import('@/lib/data/stations');
+    const stations = await getAllStations();
+
+    // Get unique suburbs
+    const suburbs = new Set<string>();
+    stations.forEach((station) => {
+      if (station.suburb) {
+        const suburbSlug = station.suburb.toLowerCase().replace(/\s+/g, '-');
+        suburbs.add(suburbSlug);
+      }
+    });
+
+    return Array.from(suburbs).map((suburb) => ({
+      url: `${baseUrl}/directory/${suburb}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.85, // High priority for directory pages
+    }));
   } catch (error) {
-    console.error('Error fetching blog URLs for sitemap:', error);
+    console.error('Error fetching directory URLs for sitemap:', error);
+    return [];
+  }
+}
+
+/**
+ * Get region URLs
+ */
+async function getRegionUrls(): Promise<MetadataRoute.Sitemap> {
+  const regions = [
+    'north-melbourne',
+    'south-melbourne',
+    'east-melbourne',
+    'west-melbourne',
+    'cbd',
+    'inner-east',
+    'inner-west',
+    'outer-east',
+    'outer-west',
+    'north-east',
+    'south-east',
+  ];
+
+  return regions.map((region) => ({
+    url: `${baseUrl}/regions/${region}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: 0.85,
+  }));
+}
+
+/**
+ * Get fuel brand URLs
+ */
+async function getFuelBrandUrls(): Promise<MetadataRoute.Sitemap> {
+  try {
+    const { getAllStations } = await import('@/lib/data/stations');
+    const stations = await getAllStations();
+
+    // Get unique brands
+    const brands = new Set<string>();
+    stations.forEach((station) => {
+      if (station.brand) {
+        const brandSlug = station.brand.toLowerCase().replace(/\s+/g, '-');
+        brands.add(brandSlug);
+      }
+    });
+
+    return Array.from(brands).map((brand) => ({
+      url: `${baseUrl}/fuel-brands/${brand}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.75,
+    }));
+  } catch (error) {
+    console.error('Error fetching fuel brand URLs for sitemap:', error);
     return [];
   }
 }
@@ -123,11 +193,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Fetch dynamic routes
-  const [stationUrls, blogUrls] = await Promise.all([
+  const [stationUrls, directoryUrls, regionUrls, brandUrls] = await Promise.all([
     getStationUrls(),
-    getBlogUrls(),
+    getDirectoryUrls(),
+    getRegionUrls(),
+    getFuelBrandUrls(),
   ]);
 
   // Combine all routes
-  return [...staticRoutes, ...stationUrls, ...blogUrls];
+  return [
+    ...staticRoutes,
+    ...directoryUrls,
+    ...regionUrls,
+    ...brandUrls,
+    ...stationUrls,
+  ];
 }

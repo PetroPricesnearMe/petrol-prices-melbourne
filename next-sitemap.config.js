@@ -15,16 +15,27 @@ module.exports = {
   priority: 0.7,
   outDir: './public',
 
-  // Exclude patterns - admin, API, and dynamic filter/search pages
+  // Exclude patterns - admin, API, static assets, and non-indexable pages
   exclude: [
-    '/api/*',
-    '/_next/*',
-    '/admin/*',
+    '/api/*',           // API routes
+    '/_next/*',         // Next.js internal files
+    '/admin/*',         // Admin pages
+    '/auth/*',          // Authentication pages
+    '/private/*',       // Private pages
     '/server-sitemap.xml',
     '/server-sitemap-index.xml',
-    '/hero-example',
-    '/map-demo',
-    '/*?*', // Exclude all URLs with query parameters
+    '/hero-example',    // Demo pages
+    '/map-demo',        // Demo pages
+    '/test/*',          // Test pages
+    '/debug/*',         // Debug pages
+    '/*.json',          // JSON files
+    '/*.xml',           // XML files (except sitemap)
+    '/favicon.ico',     // Favicon
+    '/robots.txt',      // Robots.txt (handled separately)
+    '/*?*',             // Exclude all URLs with query parameters (filters, search, pagination)
+    '/404',             // Error pages
+    '/500',
+    '/_error',
   ],
 
   // Robots.txt configuration
@@ -141,48 +152,31 @@ module.exports = {
     };
   },
 
-  // Additional paths to include
+  // Additional paths to include (static region paths)
+  // Note: Dynamic station/suburb/brand pages are handled by src/app/sitemap.ts
   additionalPaths: async (config) => {
     const result = [];
 
-    // Add region paths
+    // Add region paths (static known regions)
     const regions = [
       'north-melbourne',
       'south-melbourne',
       'east-melbourne',
       'west-melbourne',
       'cbd',
+      'inner-east',
+      'inner-west',
+      'outer-east',
+      'outer-west',
+      'north-east',
+      'south-east',
     ];
 
     for (const region of regions) {
-      result.push(
-        await config.transform(config, `/regions/${region}`)
-      );
-    }
-
-    // Add popular suburb paths (top suburbs for SEO)
-    const popularSuburbs = [
-      'melbourne',
-      'brunswick',
-      'preston',
-      'coburg',
-      'richmond',
-      'fitzroy',
-      'broadmeadows',
-      'werribee',
-      'dandenong',
-      'frankston',
-      'box-hill',
-      'ringwood',
-      'sunbury',
-      'craigieburn',
-      'pakenham',
-    ];
-
-    for (const suburb of popularSuburbs) {
-      result.push(
-        await config.transform(config, `/directory/${suburb}`)
-      );
+      const transformed = await config.transform(config, `/regions/${region}`);
+      if (transformed) {
+        result.push(transformed);
+      }
     }
 
     return result.filter(Boolean); // Filter out null values
