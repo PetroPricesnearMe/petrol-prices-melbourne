@@ -13,6 +13,7 @@ import { StructuredData } from '@/components/StructuredData';
 import {
   generateDirectoryListSchema,
   generateOrganizationSchema,
+  generatePlatformLocalBusinessSchema,
   generateWebSiteSchema,
 } from '@/lib/seo/schema-generator';
 
@@ -111,17 +112,12 @@ export default function RegionPage({
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
-  // Note: In production, fetch actual stations count
-  const stationCount = 0; // This would come from API
   const schemas = [
     generateOrganizationSchema(baseUrl),
     generateWebSiteSchema(baseUrl),
+    generatePlatformLocalBusinessSchema(baseUrl),
+    generateDirectoryListSchema(baseUrl, [], `${region.name} Petrol Stations`),
   ];
-
-  // Add ItemList schema if we have stations
-  // if (stationCount > 0) {
-  //   schemas.push(generateDirectoryListSchema(baseUrl, [], `${region.name} Petrol Stations`));
-  // }
 
   return (
     <>

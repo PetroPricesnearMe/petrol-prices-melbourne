@@ -9,9 +9,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { StructuredData } from '@/components/StructuredData';
-import { generateArticleSchema } from '@/lib/seo/schema-generator';
 import {
+  generateArticleSchema,
   generateOrganizationSchema,
+  generatePlatformLocalBusinessSchema,
   generateWebSiteSchema,
 } from '@/lib/seo/schema-generator';
 
@@ -442,6 +443,100 @@ Use our interactive [/regions](/regions/north-melbourne) pages for storytelling 
 A repeatable regional strategy turns Melbourne's price volatility into an advantage. Combine our regional dashboards, station directory filters, and loyalty stacking tips to keep your costs predictable all year.
     `,
   },
+  'fleet-fuel-optimization-playbook': {
+    title: 'Fleet Fuel Optimization Playbook for Melbourne Businesses',
+    description:
+      'Create a repeatable workflow for commercial fleets. Learn how to combine telematics, Fair Fuel data, and driver coaching to trim diesel and premium petrol costs.',
+    author: 'Petrol Price Near Me Team',
+    publishDate: '2024-06-14',
+    modifiedDate: '2024-10-20',
+    image: '/images/blog/fleet-fuel-optimization.jpg',
+    category: 'Operations',
+    readTime: '9 min read',
+    content: `
+# Fleet Fuel Optimization Playbook for Melbourne Businesses
+
+Fuel is often a top-three operating expense for Melbourne delivery services, tradie vans, and rideshare collectives. Use this playbook to give every litre a job: collect clean data, plan routes with context, coach driving habits, and measure savings month over month.
+
+## Step 1: Audit the Data You Already Own
+
+- Export telematics or odometer logs for the last quarter and tag each fill with a station name.
+- Compare those stops inside the [/directory](/directory) to trace missed low-price options nearby.
+- Capture which fuels your fleet requires (DSL, PDSL, P98, LPG) with the [/fuel-types](/fuel-types) guide.
+
+## Step 2: Build a Price-Aware Route Plan
+
+Create a shortlist of high-throughput stations that balance price, pump speed, and access for vans:
+
+1. Filter the [/station-amenities](/station-amenities) page for high-flow diesel, large bays, and air pumps.
+2. Overlay the results with regional trends from [/blog/regional-fuel-price-strategy](/blog/regional-fuel-price-strategy).
+3. Pin two stations for every main corridor so drivers always have a backup.
+
+## Step 3: Coach Drivers on Behaviour
+
+Small improvements in driver behaviour compound quickly:
+
+- Encourage smooth acceleration plus tyre checks using the [/blog/fuel-saving-tips](/blog/fuel-saving-tips) article.
+- Promote loyalty program scans with guidance from [/blog/maximize-fuel-rewards-programs](/blog/maximize-fuel-rewards-programs) to unlock extra cents per litre.
+- Share a weekly digest that highlights the lowest diesel price from the directory.
+
+## Step 4: Automate Compliance
+
+- Set reminders in your fleet management tool that nudge drivers to refuel on Tuesday or Wednesday (the cheapest days per [/blog/fuel-price-cycles](/blog/fuel-price-cycles)).
+- Use shared spreadsheets or budgeting apps to log receipts alongside odometer readings.
+- Re-run the audit monthly and celebrate the litres saved to keep momentum high.
+
+## Conclusion
+
+When every depot, route, and driver follows the same fuel playbook, commercial operators consistently save 8–15% on fuel outlay. Combine the structured data above with our live [/directory](/directory) filters to keep your next refuel decision effortless.
+    `,
+  },
+  'road-trip-fuel-strategy': {
+    title: 'Melbourne Road Trip Fuel Strategy: Cut Costs on Weekend Drives',
+    description:
+      'Plan getaways with the right mix of fuel types, loyalty rewards, and amenity-rich stops across Victoria. Includes printable checklists and timing tips.',
+    author: 'Petrol Price Near Me Team',
+    publishDate: '2024-07-22',
+    modifiedDate: '2024-10-20',
+    image: '/images/blog/road-trip-fuel-strategy.jpg',
+    category: 'Guides',
+    readTime: '8 min read',
+    content: `
+# Melbourne Road Trip Fuel Strategy: Cut Costs on Weekend Drives
+
+Spontaneous getaways are more enjoyable when your fuel plan is rock solid. This strategy keeps costs predictable while ensuring every stop has the amenities you need for passengers, kids, or pets.
+
+## Map Your Route with Price Intelligence
+
+1. Start with the [/directory](/directory) and filter by suburb waypoints you will cross.
+2. Tap each region page such as [/regions/west-melbourne](/regions/west-melbourne) to spot where prices trend lower.
+3. Save at least three stations (start, midpoint, backup) inside your navigation app.
+
+## Time the Fill-Ups
+
+- Aim to fill on Tuesday or Wednesday morning before you leave, following the [/blog/fuel-price-cycles](/blog/fuel-price-cycles) timing guide.
+- If you must top up mid-trip, use the brand insights on [/fuel-brands](/fuel-brands) to pick affordable chains along regional highways.
+- Stack loyalty dockets and app lock-ins outlined in [/blog/maximize-fuel-rewards-programs](/blog/maximize-fuel-rewards-programs).
+
+## Amenity Checklist
+
+Look for stations that keep everyone comfortable:
+
+- Restrooms, shaded parking, and food options via [/station-amenities](/station-amenities).
+- EV chargers or LPG alongside petrol if you are travelling with mixed drivetrains.
+- 24 hour access in case detours push you late into the evening.
+
+## Prepare for Emergencies
+
+- Keep tyre pressure gauges, basic tools, and a list of roadside assistance numbers in the glove box.
+- Bookmark the [/blog/fuel-saving-tips](/blog/fuel-saving-tips) article so each driver remembers the techniques that stretch range.
+- Carry a printed checklist that includes stations around your destination for the return leg.
+
+## Conclusion
+
+With a clear route plan, locked-in pricing, and a comfort-first amenity list, your next Victorian road trip stays fun, safe, and affordable. Share this playbook with your travel group and keep the [/directory](/directory) handy for last-minute adjustments on the road.
+    `,
+  },
 };
 
 type BlogPost = typeof blogPosts[keyof typeof blogPosts];
@@ -524,6 +619,7 @@ export default function BlogPostPage({
   const schemas = [
     generateOrganizationSchema(baseUrl),
     generateWebSiteSchema(baseUrl),
+    generatePlatformLocalBusinessSchema(baseUrl),
     articleSchema,
   ];
 

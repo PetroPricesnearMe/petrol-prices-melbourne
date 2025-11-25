@@ -11,6 +11,7 @@ import { StationAmenitiesClient } from './StationAmenitiesClient';
 import { StructuredData } from '@/components/StructuredData';
 import {
   generateOrganizationSchema,
+  generatePlatformLocalBusinessSchema,
   generateWebSiteSchema,
 } from '@/lib/seo/schema-generator';
 
@@ -54,6 +55,7 @@ export default function StationAmenitiesPage() {
   const schemas = [
     generateOrganizationSchema(baseUrl),
     generateWebSiteSchema(baseUrl),
+    generatePlatformLocalBusinessSchema(baseUrl),
   ];
 
   return (
@@ -107,6 +109,66 @@ export default function StationAmenitiesPage() {
 
             {/* Client Component */}
             <StationAmenitiesClient />
+
+            {/* Amenity Playbooks */}
+            <section className="mt-12 rounded-2xl bg-white p-8 shadow-lg dark:bg-gray-800">
+              <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+                Amenity Playbooks
+              </h2>
+              <p className="mb-6 text-lg text-gray-600 dark:text-gray-400">
+                Match service priorities with the best parts of Melbourne. These quick briefs combine
+                live price data, blog research, and amenity filters so you can plan errands, weekend
+                drives, or fleet stops with confidence.
+              </p>
+              <div className="grid gap-6 md:grid-cols-2">
+                {[
+                  {
+                    title: 'Road Trip Comfort',
+                    description:
+                      'Filter for 24 hour sites with restrooms, air pumps, and fresh food before long drives.',
+                    href: '/blog/road-trip-fuel-strategy',
+                    cta: 'Plan weekend drive →',
+                  },
+                  {
+                    title: 'Fleet Efficiency',
+                    description:
+                      'Locate diesel, premium amenities, and high-flow pumps, then track them in the directory.',
+                    href: '/blog/fleet-fuel-optimization-playbook',
+                    cta: 'Build fleet list →',
+                  },
+                  {
+                    title: 'EV Transition',
+                    description:
+                      'Blend petrol plus EV charging stops so plug-in hybrid owners stay flexible across suburbs.',
+                    href: '/fuel-types',
+                    cta: 'View fuel mix →',
+                  },
+                  {
+                    title: 'Rewards Hotspots',
+                    description:
+                      'Use loyalty-friendly stations with attached supermarkets to stack cents off per litre.',
+                    href: '/blog/maximize-fuel-rewards-programs',
+                    cta: 'Stack rewards →',
+                  },
+                ].map((playbook) => (
+                  <div
+                    key={playbook.title}
+                    className="rounded-xl border border-gray-200 p-6 shadow-sm transition hover:border-primary-500 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                  >
+                    <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                      {playbook.title}
+                    </h3>
+                    <p className="mb-4 text-gray-600 dark:text-gray-400">{playbook.description}</p>
+                    <Link
+                      href={playbook.href}
+                      className="text-sm font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                    >
+                      {playbook.cta}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </section>
 
             {/* CTA Section */}
             <div className="mt-12 rounded-2xl bg-white p-8 text-center shadow-lg dark:bg-gray-800">

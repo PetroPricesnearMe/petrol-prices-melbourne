@@ -9,6 +9,7 @@ import {
 } from '@/lib/fairfuel/service';
 import {
   generateOrganizationSchema,
+  generatePlatformLocalBusinessSchema,
   generateWebSiteSchema,
 } from '@/lib/seo/schema-generator';
 
@@ -80,6 +81,7 @@ export default async function FuelBrandsPage() {
   const schemas = [
     generateOrganizationSchema(baseUrl),
     generateWebSiteSchema(baseUrl),
+    generatePlatformLocalBusinessSchema(baseUrl),
   ];
 
   return (
@@ -165,6 +167,102 @@ export default async function FuelBrandsPage() {
               </p>
             </div>
           </div>
+
+          {/* Brand Insights Section */}
+          <section className="mb-12 rounded-2xl bg-white p-8 shadow-lg dark:bg-gray-800">
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div>
+                <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+                  Melbourne Brand Insights
+                </h2>
+                <p className="mb-4 text-lg text-gray-600 dark:text-gray-400">
+                  Use this quick reference to understand how major and independent brands perform
+                  across pricing, loyalty rewards, and premium amenities. Each insight links to a
+                  deeper resource so you can move from research to action in a single session.
+                </p>
+                <ul className="list-disc space-y-2 pl-5 text-gray-600 dark:text-gray-400">
+                  <li>
+                    Track brand-specific loyalty wins with the{' '}
+                    <Link
+                      href="/blog/maximize-fuel-rewards-programs"
+                      className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                    >
+                      rewards stacking guide
+                    </Link>
+                    .
+                  </li>
+                  <li>
+                    Compare supply hotspots in the{' '}
+                    <Link
+                      href="/blog/regional-fuel-price-strategy"
+                      className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                    >
+                      regional pricing playbook
+                    </Link>
+                    .
+                  </li>
+                  <li>
+                    Filter for restrooms, EV chargers, or 24 hour service inside the{' '}
+                    <Link
+                      href="/station-amenities"
+                      className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                    >
+                      amenity finder
+                    </Link>
+                    .
+                  </li>
+                </ul>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                {[
+                  {
+                    title: 'Price Leaders',
+                    description:
+                      'Spot brands that undercut the market in West and North corridors for weekday fills.',
+                    href: '/blog/regional-fuel-price-strategy',
+                    cta: 'View regional map →',
+                  },
+                  {
+                    title: 'Rewards Boosters',
+                    description:
+                      'Layer Flybuys, Everyday Rewards, and 7-Eleven lock-ins to shave up to 12¢ per litre.',
+                    href: '/blog/maximize-fuel-rewards-programs',
+                    cta: 'Build rewards stack →',
+                  },
+                  {
+                    title: 'Premium Amenities',
+                    description:
+                      'Locate stations with EV chargers, air pumps, or full convenience hubs before long trips.',
+                    href: '/station-amenities',
+                    cta: 'Filter amenities →',
+                  },
+                  {
+                    title: 'Fuel Mix Diversity',
+                    description:
+                      'Check which brands consistently stock P98, premium diesel, and E85 in your suburb.',
+                    href: '/fuel-types',
+                    cta: 'Review fuel mix →',
+                  },
+                ].map((insight) => (
+                  <div
+                    key={insight.title}
+                    className="rounded-xl border border-gray-200 p-5 text-gray-900 shadow-sm transition hover:border-primary-500 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+                  >
+                    <h3 className="mb-2 text-xl font-semibold">{insight.title}</h3>
+                    <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                      {insight.description}
+                    </p>
+                    <Link
+                      href={insight.href}
+                      className="text-sm font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                    >
+                      {insight.cta}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
 
           {/* Major Brands */}
           {hasData && majorBrands.length > 0 && (

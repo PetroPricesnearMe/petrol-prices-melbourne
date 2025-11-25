@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { StructuredData } from '@/components/StructuredData';
 import {
   generateOrganizationSchema,
+  generatePlatformLocalBusinessSchema,
   generateWebSiteSchema,
 } from '@/lib/seo/schema-generator';
 import { cn, patterns } from '@/styles/system/css-in-js';
@@ -97,6 +98,26 @@ const blogPosts = [
     readTime: '7 min read',
     publishDate: '2024-05-02',
   },
+  {
+    slug: 'fleet-fuel-optimization-playbook',
+    title: 'Fleet Fuel Optimization Playbook for Melbourne Businesses',
+    description:
+      'Create a repeatable workflow for commercial fleets. Learn how to combine telematics, Fair Fuel data, and driver coaching to trim diesel and premium petrol costs.',
+    image: '/images/blog/fleet-fuel-optimization.jpg',
+    category: 'Operations',
+    readTime: '9 min read',
+    publishDate: '2024-06-14',
+  },
+  {
+    slug: 'road-trip-fuel-strategy',
+    title: 'Melbourne Road Trip Fuel Strategy: Cut Costs on Weekend Drives',
+    description:
+      'Plan getaways with the right mix of fuel types, loyalty rewards, and amenity-rich stops across Victoria. Includes printable checklists and timing tips.',
+    image: '/images/blog/road-trip-fuel-strategy.jpg',
+    category: 'Guides',
+    readTime: '8 min read',
+    publishDate: '2024-07-22',
+  },
 ];
 
 export default function BlogPage() {
@@ -104,6 +125,7 @@ export default function BlogPage() {
   const schemas = [
     generateOrganizationSchema(baseUrl),
     generateWebSiteSchema(baseUrl),
+    generatePlatformLocalBusinessSchema(baseUrl),
   ];
 
   return (
@@ -233,6 +255,84 @@ export default function BlogPage() {
                 </Link>
               </div>
             </div>
+
+            {/* Strategic Guide Paths */}
+            <section className="mb-12 rounded-2xl bg-white p-8 shadow-lg dark:bg-gray-800">
+              <div className="mb-6">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+                  Choose a Guide Path
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Follow curated paths that connect category pages, map tools, and deep-dive articles
+                  so each visitor can move from idea to action without leaving this hub.
+                </p>
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                {[
+                  {
+                    title: 'Fleet Efficiency Blueprint',
+                    summary:
+                      'Combine diesel insights with amenity filters to keep every commercial stop productive.',
+                    links: [
+                      { href: '/blog/fleet-fuel-optimization-playbook', label: 'Fleet Playbook' },
+                      { href: '/station-amenities', label: 'Amenity Filters' },
+                      { href: '/directory', label: 'Live Directory' },
+                    ],
+                  },
+                  {
+                    title: 'Weekend Road Trip Stack',
+                    summary:
+                      'Pair the road trip strategy with brand comparisons to lock in low-cost scenic drives.',
+                    links: [
+                      { href: '/blog/road-trip-fuel-strategy', label: 'Road Trip Strategy' },
+                      { href: '/fuel-brands', label: 'Compare Brands' },
+                      { href: '/blog/fuel-price-cycles', label: 'Timing Guide' },
+                    ],
+                  },
+                  {
+                    title: 'Eco-Friendly Fuel Path',
+                    summary:
+                      'Map alternative fuel availability and stack rewards so greener decisions stay affordable.',
+                    links: [
+                      { href: '/fuel-types', label: 'Fuel Types Guide' },
+                      { href: '/blog/fuel-saving-tips', label: 'Savings Tips' },
+                      { href: '/blog/maximize-fuel-rewards-programs', label: 'Rewards Guide' },
+                    ],
+                  },
+                  {
+                    title: 'Regional Price Tracker',
+                    summary:
+                      'Study suburb trends, then subscribe to strategy posts that explain upcoming price pressure.',
+                    links: [
+                      { href: '/blog/regional-fuel-price-strategy', label: 'Regional Strategy' },
+                      { href: '/regions/north-melbourne', label: 'Sample Region' },
+                      { href: '/blog/complete-guide-to-fuel-types', label: 'Fuel Basics' },
+                    ],
+                  },
+                ].map((path) => (
+                  <div
+                    key={path.title}
+                    className="rounded-xl border border-gray-200 p-6 shadow-sm transition hover:border-primary-500 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                  >
+                    <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                      {path.title}
+                    </h3>
+                    <p className="mb-4 text-gray-600 dark:text-gray-400">{path.summary}</p>
+                    <div className="flex flex-wrap gap-3">
+                      {path.links.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="text-sm font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
         </section>
 

@@ -9,6 +9,7 @@ import {
 } from '@/lib/fairfuel/service';
 import {
   generateOrganizationSchema,
+  generatePlatformLocalBusinessSchema,
   generateWebSiteSchema,
 } from '@/lib/seo/schema-generator';
 
@@ -88,6 +89,7 @@ export default async function FuelTypesPage() {
   const schemas = [
     generateOrganizationSchema(baseUrl),
     generateWebSiteSchema(baseUrl),
+    generatePlatformLocalBusinessSchema(baseUrl),
   ];
 
   return (
@@ -172,6 +174,100 @@ export default async function FuelTypesPage() {
               </p>
             </div>
           </div>
+
+              {/* Fuel Planning Framework */}
+              <div className="mb-12 rounded-2xl bg-white p-8 shadow-lg dark:bg-gray-800">
+                <div className="grid gap-8 lg:grid-cols-2">
+                  <div>
+                    <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+                      Fuel Planning Framework
+                    </h2>
+                    <p className="mb-4 text-lg text-gray-600 dark:text-gray-400">
+                      Pair live Fair Fuel pricing with driving goals to keep every refill intentional.
+                      Start with the right octane, layer in timing insight, then save your favorite
+                      stations for quick reference on the go.
+                    </p>
+                    <ol className="list-decimal space-y-3 pl-6 text-gray-700 dark:text-gray-300">
+                      <li>
+                        Review the{' '}
+                        <Link
+                          href="/blog/complete-guide-to-fuel-types"
+                          className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                        >
+                          complete fuel guide
+                        </Link>{' '}
+                        to match octane and additives with your vehicle.
+                      </li>
+                      <li>
+                        Time fill-ups with the{' '}
+                        <Link
+                          href="/blog/fuel-price-cycles"
+                          className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                        >
+                          weekly price cycle breakdown
+                        </Link>{' '}
+                        for predictable savings.
+                      </li>
+                      <li>
+                        Save shortlists inside the{' '}
+                        <Link
+                          href="/directory"
+                          className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                        >
+                          station directory
+                        </Link>{' '}
+                        so you always have a low-price backup nearby.
+                      </li>
+                    </ol>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {[
+                      {
+                        title: 'Commuter Mix',
+                        description:
+                          'Blend U91 for city driving with occasional P95 top ups before long freeway days.',
+                        href: '/blog/fuel-saving-tips',
+                      },
+                      {
+                        title: 'Family Travel',
+                        description:
+                          'Plan school holiday trips with stations that stock LPG plus premium unleaded.',
+                        href: '/station-amenities',
+                      },
+                      {
+                        title: 'Performance Build',
+                        description:
+                          'Track P98 and premium diesel trends so tuned vehicles never run low on supply.',
+                        href: '/blog/complete-guide-to-fuel-types',
+                      },
+                      {
+                        title: 'Sustainability Path',
+                        description:
+                          'Compare E10, E85, and biodiesel availability before committing to greener fuels.',
+                        href: '/blog/fuel-saving-tips',
+                      },
+                    ].map((plan) => (
+                      <div
+                        key={plan.title}
+                        className="rounded-xl border border-gray-200 p-5 shadow-sm transition hover:border-primary-500 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                      >
+                        <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+                          {plan.title}
+                        </h3>
+                        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                          {plan.description}
+                        </p>
+                        <Link
+                          href={plan.href}
+                          className="text-sm font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                        >
+                          Learn more →
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
           {/* Fuel Types Grid */}
           {hasData && (
