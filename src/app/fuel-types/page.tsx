@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Fragment } from 'react';
 
 import { StructuredData } from '@/components/StructuredData';
 import {
@@ -10,7 +11,7 @@ import {
 import {
   generateOrganizationSchema,
   generatePlatformLocalBusinessSchema,
-  generateWebSiteSchema,
+  generateWebsiteSchema,
 } from '@/lib/seo/schema-generator';
 
 // Force dynamic rendering since we're fetching from API
@@ -88,12 +89,12 @@ export default async function FuelTypesPage() {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const schemas = [
     generateOrganizationSchema(baseUrl),
-    generateWebSiteSchema(baseUrl),
+    generateWebsiteSchema(baseUrl),
     generatePlatformLocalBusinessSchema(baseUrl),
   ];
 
   return (
-    <>
+    <Fragment>
       <StructuredData data={schemas} />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-12">
@@ -397,6 +398,7 @@ export default async function FuelTypesPage() {
           </div>
         </div>
       </div>
-    </>
+      </div>
+    </Fragment>
   );
 }

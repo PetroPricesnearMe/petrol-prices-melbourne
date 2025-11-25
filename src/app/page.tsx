@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { PerformanceOptimizedLandingPage } from '@/components/pages/PerformanceOptimizedLandingPage';
 import { StructuredData } from '@/components/StructuredData';
-import { generateWebSiteSchema } from '@/lib/schema';
+import { generateWebsiteSchema } from '@/lib/seo/schema-generator';
 
 export const metadata: Metadata = {
   title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L | Melbourne Fuel Finder',
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
-  const structuredDataSchemas = generateWebSiteSchema(baseUrl);
+  const structuredDataSchemas = generateWebsiteSchema(baseUrl);
 
   return (
     <>

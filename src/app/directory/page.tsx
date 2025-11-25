@@ -12,7 +12,7 @@ import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { StructuredData } from '@/components/StructuredData';
 import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import metadataJson from '@/data/stations-metadata.json';
-import { generateWebSiteSchema } from '@/lib/schema';
+import { generateWebsiteSchema } from '@/lib/seo/schema-generator';
 import { generateDirectoryCanonicalUrl } from '@/lib/seo/canonical';
 import { generateDirectoryMetadata } from '@/lib/seo/metadata';
 
@@ -31,7 +31,7 @@ export const revalidate = 86400;
 export default function DirectoryPage() {
   // Generate structured data schemas
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
-  const structuredDataSchemas = generateWebSiteSchema(baseUrl);
+  const structuredDataSchemas = generateWebsiteSchema(baseUrl);
 
   return (
     <>

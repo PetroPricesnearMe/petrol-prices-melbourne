@@ -12,7 +12,7 @@ import { StructuredData } from '@/components/StructuredData';
 import {
   generateOrganizationSchema,
   generatePlatformLocalBusinessSchema,
-  generateWebSiteSchema,
+  generateWebsiteSchema,
 } from '@/lib/seo/schema-generator';
 
 
@@ -54,7 +54,7 @@ export default function StationAmenitiesPage() {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const schemas = [
     generateOrganizationSchema(baseUrl),
-    generateWebSiteSchema(baseUrl),
+    generateWebsiteSchema(baseUrl),
     generatePlatformLocalBusinessSchema(baseUrl),
   ];
 

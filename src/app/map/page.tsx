@@ -17,7 +17,7 @@ import { MapViewClient } from './MapViewClient';
 import { StructuredData } from '@/components/StructuredData';
 import metadataJson from '@/data/stations-metadata.json';
 import stationsData from '@/data/stations.json';
-import { generateWebSiteSchema } from '@/lib/schema';
+import { generateWebsiteSchema } from '@/lib/seo/schema-generator';
 
 export const metadata: Metadata = {
   title: `Melbourne Petrol Stations Map - ${metadataJson.totalStations}+ Locations | Interactive Map`,
@@ -46,7 +46,7 @@ export default function MapPage() {
   // Generate structured data schemas
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
-  const structuredDataSchemas = generateWebSiteSchema(baseUrl);
+  const structuredDataSchemas = generateWebsiteSchema(baseUrl);
 
   return (
     <>

@@ -13,7 +13,7 @@ import {
   generateArticleSchema,
   generateOrganizationSchema,
   generatePlatformLocalBusinessSchema,
-  generateWebSiteSchema,
+  generateWebsiteSchema,
 } from '@/lib/seo/schema-generator';
 
 // Blog posts data - In production, this would come from a CMS or database
@@ -370,7 +370,7 @@ Loyalty schemes can shave serious dollars off your monthly fuel budget when you 
 
 ## Step 3: Target High-Value Stations
 
-- Filter the [station directory](/directory) by `brand`, `fuelType`, and `amenities` to find locations that honour your vouchers.
+- Filter the [station directory](/directory) by \`brand\`, \`fuelType\`, and \`amenities\` to find locations that honour your vouchers.
 - Favourite at least three stations per travel corridor so you always have a discounted option nearby.
 - Watch regional differences with our [/regions/north-melbourne](/regions/north-melbourne) and related pages to learn where brands compete hardest.
 
@@ -618,7 +618,7 @@ export default function BlogPostPage({
 
   const schemas = [
     generateOrganizationSchema(baseUrl),
-    generateWebSiteSchema(baseUrl),
+    generateWebsiteSchema(baseUrl),
     generatePlatformLocalBusinessSchema(baseUrl),
     articleSchema,
   ];
