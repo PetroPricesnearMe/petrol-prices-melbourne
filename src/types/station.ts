@@ -102,6 +102,7 @@ export interface Station extends StationWithLocation {
   phoneNumber?: string;
   website?: string;
   image?: string;
+  logoUrl?: string; // Brand/station logo URL for map markers
   fuelPrices?: FuelPrice[] | Record<string, number | null>;
   rating?: number;
   reviewCount?: number;

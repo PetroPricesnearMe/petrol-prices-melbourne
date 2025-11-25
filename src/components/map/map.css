@@ -1,0 +1,127 @@
+/**
+ * MapLibre Map Styles
+ * Additional styles for map components
+ */
+
+/* Map container */
+.maplibregl-map {
+  font-family: inherit;
+}
+
+/* Station markers */
+.station-marker {
+  transition: transform 0.2s ease;
+}
+
+.station-marker:hover {
+  transform: scale(1.15);
+  z-index: 1000;
+}
+
+.station-marker-content {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.station-marker-content:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Cluster markers */
+.cluster-marker {
+  transition: transform 0.2s ease;
+}
+
+.cluster-marker:hover {
+  transform: scale(1.1);
+}
+
+/* Popup styles */
+.maplibregl-popup-content {
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.maplibregl-popup-close-button {
+  padding: 8px;
+  font-size: 18px;
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.maplibregl-popup-close-button:hover {
+  color: #374151;
+}
+
+/* Navigation controls */
+.maplibregl-ctrl-group {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.maplibregl-ctrl button {
+  border-radius: 0;
+}
+
+.maplibregl-ctrl button:hover {
+  background-color: #f3f4f6;
+}
+
+/* Attribution */
+.maplibregl-ctrl-attrib {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .maplibregl-popup-content {
+    background-color: #1f2937;
+    color: #f9fafb;
+  }
+
+  .maplibregl-ctrl-attrib {
+    background-color: rgba(31, 41, 55, 0.9);
+    color: #d1d5db;
+  }
+
+  .maplibregl-ctrl button {
+    background-color: #374151;
+    color: #f9fafb;
+  }
+
+  .maplibregl-ctrl button:hover {
+    background-color: #4b5563;
+  }
+}
+
+/* Loading state */
+.map-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .maplibregl-popup-content {
+    max-width: 280px;
+  }
+
+  .station-marker {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cluster-marker {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+}
+
