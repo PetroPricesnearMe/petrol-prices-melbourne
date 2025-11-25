@@ -10,6 +10,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 
 import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
@@ -226,18 +227,29 @@ export function DirectoryView({
  * Grid variant of station card
  */
 export function StationCardGrid({ station, onCardClickAction }: { station: Station; onCardClickAction?: (station: Station) => void }) {
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on the button
+    if ((e.target as HTMLElement).closest('a')) {
+      return;
+    }
+    if (onCardClickAction) {
+      onCardClickAction(station);
+    }
+  };
+
   return (
-    <motion.div
-      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all duration-300 h-full"
-      onClick={() => onCardClickAction?.(station)}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      layout
-    >
+    <Link href={`/stations/${station.id}`} className="block h-full">
+      <motion.div
+        className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all duration-300 h-full"
+        onClick={handleCardClick}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        layout
+      >
       {/* Brand Header */}
-      <div className="h-20 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
-        <span className="text-2xl font-bold text-gray-600 dark:text-gray-300">
-          {station.brand?.charAt(0) || 'S'}
+      <div className="h-20 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center px-4">
+        <span className="text-lg font-bold text-gray-600 dark:text-gray-300 text-center truncate w-full">
+          {station.brand || 'Station'}
         </span>
       </div>
 
@@ -283,11 +295,12 @@ export function StationCardGrid({ station, onCardClickAction }: { station: Stati
 
       {/* Footer */}
       <div className="p-6 border-t border-gray-200 dark:border-gray-700">
-        <button className="btn btn-primary w-full btn-sm">
+        <div className="btn btn-primary w-full btn-sm pointer-events-none">
           View Details →
-        </button>
+        </div>
       </div>
     </motion.div>
+    </Link>
   );
 }
 
@@ -295,19 +308,30 @@ export function StationCardGrid({ station, onCardClickAction }: { station: Stati
  * List variant of station card
  */
 export function StationCardList({ station, onCardClickAction }: { station: Station; onCardClickAction?: (station: Station) => void }) {
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on the button
+    if ((e.target as HTMLElement).closest('a')) {
+      return;
+    }
+    if (onCardClickAction) {
+      onCardClickAction(station);
+    }
+  };
+
   return (
-    <motion.div
-      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg cursor-pointer transition-all duration-300"
-      onClick={() => onCardClickAction?.(station)}
-      whileHover={{ scale: 1.01 }}
-      whileTap={{ scale: 0.99 }}
-      layout
-    >
+    <Link href={`/stations/${station.id}`} className="block">
+      <motion.div
+        className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg cursor-pointer transition-all duration-300"
+        onClick={handleCardClick}
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.99 }}
+        layout
+      >
       <div className="flex">
         {/* Brand Section */}
-        <div className="w-20 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center flex-shrink-0">
-          <span className="text-xl font-bold text-gray-600 dark:text-gray-300">
-            {station.brand?.charAt(0) || 'S'}
+        <div className="w-32 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center flex-shrink-0 px-2">
+          <span className="text-sm font-bold text-gray-600 dark:text-gray-300 text-center truncate w-full">
+            {station.brand || 'Station'}
           </span>
         </div>
 
@@ -356,12 +380,13 @@ export function StationCardList({ station, onCardClickAction }: { station: Stati
 
         {/* Action Button */}
         <div className="w-24 flex items-center justify-center flex-shrink-0">
-          <button className="btn btn-primary btn-sm">
+          <div className="btn btn-primary btn-sm pointer-events-none">
             View
-          </button>
+          </div>
         </div>
       </div>
     </motion.div>
+    </Link>
   );
 }
 

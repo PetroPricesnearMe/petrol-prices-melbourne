@@ -351,9 +351,8 @@ export function InfiniteScrollDirectory({
   }, []);
 
   const handleStationClick = useCallback((station: Station) => {
-    setSelectedStation(station);
-    setIsModalOpen(true);
-
+    // Navigation is now handled by Link components in the cards
+    // This callback can be used for analytics or other side effects
     if (onStationClick) {
       onStationClick(station);
     }
@@ -414,13 +413,13 @@ export function InfiniteScrollDirectory({
                   <StationCardGrid
                     key={s.id}
                     station={s as any}
-                    onCardClick={handleStationClick as any}
+                    onCardClickAction={handleStationClick as any}
                   />
                 ) : (
                   <StationCardList
                     key={s.id}
                     station={s as any}
-                    onCardClick={handleStationClick as any}
+                    onCardClickAction={handleStationClick as any}
                   />
                 );
               }}

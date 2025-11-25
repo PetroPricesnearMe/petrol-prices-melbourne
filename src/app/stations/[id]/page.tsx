@@ -15,6 +15,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import React from 'react';
 
 import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { HeroSection } from '@/components/molecules/HeroSection';

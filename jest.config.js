@@ -18,6 +18,7 @@ module.exports = {
     '^@/types/(.*)$': '<rootDir>/src/types/$1',
     '^@/design-system/(.*)$': '<rootDir>/src/design-system/$1',
     '^@/context/(.*)$': '<rootDir>/src/context/$1',
+    '^sharp$': '<rootDir>/__mocks__/sharp.js',
     '\\.(css|less|scss|sass)$': '<rootDir>/__mocks__/fileMock.js',
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
