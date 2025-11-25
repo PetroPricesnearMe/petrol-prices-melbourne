@@ -12,9 +12,9 @@ import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { StructuredData } from '@/components/StructuredData';
 import { LoadingCard } from '@/components/ui/LoadingSpinner';
 import metadataJson from '@/data/stations-metadata.json';
-import { generateWebsiteSchema } from '@/lib/seo/schema-generator';
 import { generateDirectoryCanonicalUrl } from '@/lib/seo/canonical';
 import { generateDirectoryMetadata } from '@/lib/seo/metadata';
+import { generateWebsiteSchema } from '@/lib/seo/schema-generator';
 
 
 export const metadata: Metadata = generateDirectoryMetadata({

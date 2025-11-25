@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/blog/blog-og.jpg',
+        url: '/images/fuel-nozzles.jpg', // Fallback to existing image
         width: 1200,
         height: 630,
         alt: 'Petrol Price Near Me Blog',
@@ -53,7 +53,7 @@ const blogPosts = [
     title: 'Complete Guide to Fuel Types: Which One Should You Use?',
     description:
       'Learn about all fuel types available in Melbourne including Unleaded 91, Premium 95/98, Diesel, E10, E85, and LPG. Discover which fuel is right for your vehicle.',
-    image: '/images/blog/fuel-types-guide.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Guides',
     readTime: '8 min read',
     publishDate: '2024-01-15',
@@ -63,7 +63,7 @@ const blogPosts = [
     title: 'Understanding Melbourne Fuel Price Cycles: When to Fill Up',
     description:
       'Learn about Melbourne fuel price cycles and discover the best days and times to fill up your tank. Save up to 20 cents per litre.',
-    image: '/images/blog/price-cycles.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Tips',
     readTime: '6 min read',
     publishDate: '2024-02-10',
@@ -73,7 +73,7 @@ const blogPosts = [
     title: '10 Proven Fuel Saving Tips That Actually Work',
     description:
       'Discover 10 proven fuel saving tips that can help you reduce your fuel consumption and save money. From driving techniques to vehicle maintenance.',
-    image: '/images/blog/fuel-saving-tips.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Tips',
     readTime: '10 min read',
     publishDate: '2024-03-05',
@@ -83,7 +83,7 @@ const blogPosts = [
     title: 'How to Maximize Fuel Rewards Programs in Melbourne',
     description:
       'Compare loyalty programs from major fuel brands, learn how to stack supermarket offers, and discover practical tactics that cut 15¢+ per litre from every fill-up.',
-    image: '/images/blog/fuel-rewards.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Guides',
     readTime: '9 min read',
     publishDate: '2024-04-18',
@@ -93,7 +93,7 @@ const blogPosts = [
     title: 'Regional Fuel Price Strategy: Save Across Melbourne Suburbs',
     description:
       'See how petrol prices shift between north, south, east, west, and CBD regions. Build a suburb-by-suburb playbook that keeps your fuel budget predictable.',
-    image: '/images/blog/regional-fuel-price-strategy.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Strategy',
     readTime: '7 min read',
     publishDate: '2024-05-02',
@@ -103,7 +103,7 @@ const blogPosts = [
     title: 'Fleet Fuel Optimization Playbook for Melbourne Businesses',
     description:
       'Create a repeatable workflow for commercial fleets. Learn how to combine telematics, Fair Fuel data, and driver coaching to trim diesel and premium petrol costs.',
-    image: '/images/blog/fleet-fuel-optimization.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Operations',
     readTime: '9 min read',
     publishDate: '2024-06-14',
@@ -113,7 +113,7 @@ const blogPosts = [
     title: 'Melbourne Road Trip Fuel Strategy: Cut Costs on Weekend Drives',
     description:
       'Plan getaways with the right mix of fuel types, loyalty rewards, and amenity-rich stops across Victoria. Includes printable checklists and timing tips.',
-    image: '/images/blog/road-trip-fuel-strategy.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Guides',
     readTime: '8 min read',
     publishDate: '2024-07-22',

@@ -119,12 +119,34 @@ export default async function StationPage({ params }: StationPageProps) {
     { label: station.name, href: `/stations/${id}` },
   ];
 
-  // Generate hero image URL
-  const heroImageUrl = station.image
-    ? station.image
-    : station.brand
-      ? `/images/stations/${station.brand.toLowerCase().replace(/\s+/g, '-')}-hero.jpg`
-      : '/images/stations/default-hero.jpg';
+  // Generate hero image URL with fallback
+  const getHeroImageUrl = () => {
+    if (station.image) {
+      return station.image;
+    }
+    
+    // Try brand-specific image with various naming conventions
+    if (station.brand) {
+      const brandSlug = station.brand.toLowerCase().replace(/\s+/g, '-');
+      const brandVariations = [
+        `/images/stations/${brandSlug}-hero.jpg`,
+        `/images/stations/${brandSlug}.jpg`,
+        `/images/stations/${brandSlug.replace('-', '')}.jpg`,
+        // Handle 7-eleven specifically
+        brandSlug.includes('7') || brandSlug.includes('eleven') 
+          ? '/images/stations/seven-eleven.jpg'
+          : null,
+      ].filter(Boolean);
+      
+      // Return first variation (will use fallback if none exist)
+      return brandVariations[0] || '/images/fuel-nozzles.jpg';
+    }
+    
+    // Default fallback to existing image
+    return '/images/fuel-nozzles.jpg';
+  };
+  
+  const heroImageUrl = getHeroImageUrl();
 
   // Generate structured data
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';

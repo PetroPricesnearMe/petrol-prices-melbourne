@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 31536000, // 1 year
     dangerouslyAllowSVG: false,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Handle missing images gracefully
+    unoptimized: false,
+    remotePatterns: [],
   },
 
   // Experimental features for better performance

@@ -25,7 +25,7 @@ const blogPosts = {
     author: 'Petrol Price Near Me Team',
     publishDate: '2024-01-15',
     modifiedDate: '2024-10-20',
-    image: '/images/blog/fuel-types-guide.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Guides',
     readTime: '8 min read',
     content: `
@@ -147,7 +147,7 @@ Use our [station directory](/directory) to compare prices across all fuel types 
     author: 'Petrol Price Near Me Team',
     publishDate: '2024-02-10',
     modifiedDate: '2024-10-20',
-    image: '/images/blog/price-cycles.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Tips',
     readTime: '6 min read',
     content: `
@@ -237,7 +237,7 @@ Start saving today by checking our [station directory](/directory) for the best 
     author: 'Petrol Price Near Me Team',
     publishDate: '2024-03-05',
     modifiedDate: '2024-10-20',
-    image: '/images/blog/fuel-saving-tips.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Tips',
     readTime: '10 min read',
     content: `
@@ -345,7 +345,7 @@ For the best fuel prices in Melbourne, check our [station directory](/directory)
     author: 'Petrol Price Near Me Team',
     publishDate: '2024-04-18',
     modifiedDate: '2024-10-20',
-    image: '/images/blog/fuel-rewards.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Guides',
     readTime: '9 min read',
     content: `
@@ -397,7 +397,7 @@ Fuel rewards only work when they become a habit. Keep the programs visible on yo
     author: 'Petrol Price Near Me Team',
     publishDate: '2024-05-02',
     modifiedDate: '2024-10-20',
-    image: '/images/blog/regional-fuel-price-strategy.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Strategy',
     readTime: '7 min read',
     content: `
@@ -450,7 +450,7 @@ A repeatable regional strategy turns Melbourne's price volatility into an advant
     author: 'Petrol Price Near Me Team',
     publishDate: '2024-06-14',
     modifiedDate: '2024-10-20',
-    image: '/images/blog/fleet-fuel-optimization.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Operations',
     readTime: '9 min read',
     content: `
@@ -498,7 +498,7 @@ When every depot, route, and driver follows the same fuel playbook, commercial o
     author: 'Petrol Price Near Me Team',
     publishDate: '2024-07-22',
     modifiedDate: '2024-10-20',
-    image: '/images/blog/road-trip-fuel-strategy.jpg',
+    image: '/images/fuel-nozzles.jpg', // Fallback to existing image
     category: 'Guides',
     readTime: '8 min read',
     content: `
