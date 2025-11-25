@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import type { Station } from '@/types/station';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+
 import type { Coordinates } from '@/types/common';
+import type { Station } from '@/types/station';
 
 // MapLibre CSS - must be imported
 import 'maplibre-gl/dist/maplibre-gl.css';

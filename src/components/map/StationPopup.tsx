@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import type { Station } from '@/types/station';
+
 import { getCheapestPrice, formatPrice } from '@/lib/map/marker-utils';
+import type { Station } from '@/types/station';
 
 interface StationPopupProps {
   station: Station;

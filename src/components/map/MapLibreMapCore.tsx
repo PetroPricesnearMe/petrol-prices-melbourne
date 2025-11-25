@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import maplibregl, { type Map, type Marker, type Popup } from 'maplibre-gl';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Supercluster from 'supercluster';
-import type { Station } from '@/types/station';
-import type { Coordinates } from '@/types/common';
+
 import { getBrandColor, getBrandInitial, getMarkerIconUrl } from '@/lib/map/marker-utils';
+import type { Coordinates } from '@/types/common';
+import type { Station } from '@/types/station';
 
 // MapLibre CSS
 import 'maplibre-gl/dist/maplibre-gl.css';
