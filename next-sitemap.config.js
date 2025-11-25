@@ -6,8 +6,24 @@
  */
 
 /** @type {import('next-sitemap').IConfig} */
+// Always use production URL - never localhost
+const getSiteUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+  
+  // Reject localhost URLs
+  if (envUrl && envUrl.includes('localhost')) {
+    console.warn('Warning: NEXT_PUBLIC_APP_URL contains localhost, using production URL instead');
+    return 'https://petrolpricesnearme.com.au';
+  }
+  
+  // Use environment variable if set and valid, otherwise use production URL
+  return envUrl && !envUrl.includes('localhost') 
+    ? envUrl 
+    : 'https://petrolpricesnearme.com.au';
+};
+
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au',
+  siteUrl: getSiteUrl(),
   generateRobotsTxt: true,
   generateIndexSitemap: true,
   sitemapSize: 7000,
@@ -87,7 +103,7 @@ module.exports = {
       },
     ],
     additionalSitemaps: [
-      `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}/server-sitemap.xml`,
+      `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricesnearme.com.au'}/server-sitemap.xml`,
     ],
   },
 

@@ -49,8 +49,8 @@ User-agent: CCBot
 Disallow: /
 
 # Host
-Host: https://petrolpricenearme.com.au
+Host: https://petrolpricesnearme.com.au
 
 # Sitemaps
-Sitemap: https://petrolpricenearme.com.au/sitemap.xml
-Sitemap: https://petrolpricenearme.com.au/server-sitemap.xml
+Sitemap: https://petrolpricesnearme.com.au/sitemap.xml
+Sitemap: https://petrolpricesnearme.com.au/server-sitemap.xml
