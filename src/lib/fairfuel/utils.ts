@@ -15,7 +15,7 @@ export async function safeReadBody(response: Response): Promise<string | null> {
   }
 }
 
-export function transformPriceDetailToStation(
+export function transformPripmceDetailToStation(
   detail: FairFuelPriceDetail
 ): Station | null {
   if (!detail?.fuelStation) {
