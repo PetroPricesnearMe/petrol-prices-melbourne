@@ -21,7 +21,7 @@ const DEFAULT_IMAGE = '/images/og-image.jpg';
 export function generateHomeMetadata(baseUrl: string): Metadata {
   return {
     title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L | Melbourne Fuel Finder',
-    description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
+    description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time updates. Find cheapest fuel near you! Free to use.',
     keywords: [
       'petrol prices near me',
       'cheap fuel melbourne',

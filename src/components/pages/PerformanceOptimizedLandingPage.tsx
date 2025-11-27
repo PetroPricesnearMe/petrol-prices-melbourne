@@ -47,7 +47,10 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
-        console.warn('FID:', entry.processingStart - entry.startTime);
+        const fidEntry = entry as any;
+        if (fidEntry.processingStart !== undefined) {
+          console.warn('FID:', fidEntry.processingStart - fidEntry.startTime);
+        }
       });
     }).observe({ entryTypes: ['first-input'] });
 
@@ -55,8 +58,9 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
-        if (!entry.hadRecentInput) {
-          console.warn('CLS:', entry.value);
+        const clsEntry = entry as any;
+        if (clsEntry.hadRecentInput === false && clsEntry.value !== undefined) {
+          console.warn('CLS:', clsEntry.value);
         }
       });
     }).observe({ entryTypes: ['layout-shift'] });
@@ -109,18 +113,19 @@ function OptimizedHeroSection() {
               </motion.div>
 
               {/* Main Heading - Critical for LCP */}
-              <motion.h1
-                className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.3 }}
-              >
-                Find the{' '}
-                <span className="from-yellow-400 to-orange-500 bg-gradient-to-r bg-clip-text text-transparent">
-                  Cheapest
-                </span>{' '}
-                Petrol Prices
-              </motion.h1>
+              <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
+                <motion.span
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                >
+                  Find the{' '}
+                  <span className="from-yellow-400 to-orange-500 bg-gradient-to-r bg-clip-text text-transparent">
+                    Cheapest Petrol Prices
+                  </span>{' '}
+                  in Melbourne
+                </motion.span>
+              </h1>
 
               {/* Subtitle */}
               <motion.p
@@ -378,6 +383,161 @@ function OptimizedHeroSection() {
 }
 
 // ============================================================================
+// SEO CONTENT SECTION - Text Content for Search Engines
+// ============================================================================
+
+function OptimizedSEOContentSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  return (
+    <section
+      ref={ref}
+      className="bg-white py-16 dark:bg-gray-50"
+      itemScope
+      itemType="https://schema.org/WebPage"
+    >
+      <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-4xl">
+          <motion.article
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            itemScope
+            itemType="https://schema.org/Article"
+          >
+            <h2 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-900 md:text-4xl">
+              Compare Petrol Prices Across Melbourne and Save Money
+            </h2>
+            
+            <div className="prose prose-lg max-w-none text-gray-700 dark:text-gray-800">
+              <p className="mb-4 text-lg leading-relaxed">
+                Looking for the cheapest petrol prices near me? Our Melbourne fuel finder helps you save up to 20c/L on every fill-up by comparing real-time fuel prices from over{' '}
+                <Link
+                  href="/directory"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  250 petrol stations
+                </Link>{' '}
+                across Melbourne. Whether you&apos;re searching for unleaded, diesel, premium, or E10 fuel, our comprehensive platform provides live price updates to help you find the best deals.
+              </p>
+
+              <h3 className="mb-4 mt-8 text-2xl font-bold text-gray-900 dark:text-gray-900">
+                Official Service Victoria Data
+              </h3>
+              <p className="mb-4 text-lg leading-relaxed">
+                As Melbourne&apos;s premier fuel price comparison service, we aggregate official data from{' '}
+                <a
+                  href="https://www.service.vic.gov.au/services/fuel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  Service Victoria&apos;s Fair Fuel Open Data API
+                </a>
+                , ensuring you have access to accurate, up-to-date information from all registered Victorian fuel stations. Our platform covers major brands including{' '}
+                <Link
+                  href="/fuel-brands"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  BP, Shell, Caltex, Ampol, 7-Eleven
+                </Link>
+                , and independent stations throughout the greater Melbourne area.
+              </p>
+
+              <h3 className="mb-4 mt-8 text-2xl font-bold text-gray-900 dark:text-gray-900">
+                Search and Compare Fuel Prices
+              </h3>
+              <p className="mb-4 text-lg leading-relaxed">
+                Save money on fuel with our easy-to-use fuel finder that lets you search by suburb, brand, or fuel type. Our{' '}
+                <Link
+                  href="/map"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  interactive map view
+                </Link>{' '}
+                shows you exactly where the cheapest petrol stations are located, while our{' '}
+                <Link
+                  href="/directory"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  detailed listings
+                </Link>{' '}
+                provide comprehensive information including current prices, station amenities, opening hours, and directions. With prices updated every 24 hours, you&apos;ll always have the latest information to make informed decisions about where to fill up.
+              </p>
+
+              <h3 className="mb-4 mt-8 text-2xl font-bold text-gray-900 dark:text-gray-900">
+                Track Price Trends and Save More
+              </h3>
+              <p className="mb-4 text-lg leading-relaxed">
+                Finding cheap petrol in Melbourne has never been easier. Our fuel price comparison tool allows you to filter stations by location, compare prices across different fuel types, and{' '}
+                <Link
+                  href="/fuel-price-trends"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  track price trends
+                </Link>{' '}
+                over time. Whether you&apos;re commuting to work, planning a road trip, or just need to fill up your tank, our service helps you save money on every purchase.
+              </p>
+
+              <h3 className="mb-4 mt-8 text-2xl font-bold text-gray-900 dark:text-gray-900">
+                Free to Use - No Registration Required
+              </h3>
+              <p className="mb-4 text-lg leading-relaxed">
+                Our free-to-use platform requires no registration, making it quick and easy to find the cheapest fuel prices near you. Simply{' '}
+                <Link
+                  href="/directory"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  browse our directory
+                </Link>{' '}
+                of Melbourne petrol stations, use our search functionality to find stations in your area, or{' '}
+                <Link
+                  href="/map"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+                >
+                  explore our interactive map
+                </Link>{' '}
+                to discover nearby options. With comprehensive coverage of over 50 suburbs and real-time price monitoring, we&apos;re your trusted partner for finding the best fuel deals in Melbourne.
+              </p>
+
+              <div className="mt-8 rounded-lg bg-blue-50 p-6 dark:bg-blue-900/20">
+                <h4 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
+                  Start Saving Today
+                </h4>
+                <p className="mb-4 text-gray-700 dark:text-gray-300">
+                  By comparing prices before you fill up, you can save up to 20 cents per liter. That&apos;s a savings of $10-15 on a typical 50-liter tank! Use our platform regularly to maximize your fuel savings.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <Link
+                    href="/directory"
+                    className="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-primary-700"
+                  >
+                    Browse All Stations →
+                  </Link>
+                  <Link
+                    href="/how-pricing-works"
+                    className="inline-flex items-center rounded-lg border border-primary-600 px-4 py-2 font-semibold text-primary-600 transition-colors hover:bg-primary-50 dark:text-primary-400 dark:hover:bg-primary-900/20"
+                  >
+                    Learn How Pricing Works →
+                  </Link>
+                  <Link
+                    href="/faq"
+                    className="inline-flex items-center rounded-lg border border-primary-600 px-4 py-2 font-semibold text-primary-600 transition-colors hover:bg-primary-50 dark:text-primary-400 dark:hover:bg-primary-900/20"
+                  >
+                    View FAQ →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================================
 // OPTIMIZED FEATURES SECTION
 // ============================================================================
 
@@ -385,18 +545,55 @@ function OptimizedFeaturesSection() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
-  const features = [
+  const features: Array<{
+    icon: string;
+    title: string;
+    description: React.ReactNode;
+  }> = [
     {
       icon: '⛽',
       title: 'Official Service Victoria Data',
-      description:
-        'Powered by Fair Fuel Open Data API - official government data with 24-hour updates from all registered Victorian fuel stations.',
+      description: (
+        <>
+          Powered by Fair Fuel Open Data API - official government data with
+          24-hour updates from all registered Victorian fuel stations. Data
+          sourced from the official{' '}
+          <a
+            href="https://www.service.vic.gov.au/services/fuel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+          >
+            Service Victoria
+          </a>{' '}
+          platform and{' '}
+          <a
+            href="https://www.fairfuel.vic.gov.au/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+          >
+            Fair Fuel Victoria
+          </a>
+          .
+        </>
+      ),
     },
     {
       icon: '🏢',
       title: 'All Major Brands',
-      description:
-        'Compare prices across all major and independent fuel brands including BP, Shell, Caltex, Ampol, 7-Eleven, and more.',
+      description: (
+        <>
+          Compare prices across all major and independent fuel brands. Browse{' '}
+          <Link
+            href="/fuel-brands"
+            className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+          >
+            BP, Shell, Caltex, Ampol, 7-Eleven
+          </Link>
+          , and more to find the best prices for your preferred brand.
+        </>
+      ),
     },
     {
       icon: '⛽',
@@ -407,14 +604,36 @@ function OptimizedFeaturesSection() {
     {
       icon: '🔍',
       title: 'Smart Search',
-      description:
-        'Find stations by location, brand, amenities, and more with our advanced filtering system.',
+      description: (
+        <>
+          Find stations by location, brand, amenities, and more with our advanced
+          filtering system. Use our{' '}
+          <Link
+            href="/directory"
+            className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+          >
+            search and filter tools
+          </Link>{' '}
+          to quickly locate the perfect station for your needs.
+        </>
+      ),
     },
     {
       icon: '🗺️',
       title: 'Interactive Maps',
-      description:
-        'Explore stations on interactive maps with clustering and custom markers for easy navigation.',
+      description: (
+        <>
+          Explore stations on{' '}
+          <Link
+            href="/map"
+            className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+          >
+            interactive maps
+          </Link>{' '}
+          with clustering and custom markers for easy navigation. Find nearby
+          stations and compare prices at a glance.
+        </>
+      ),
     },
     {
       icon: '📱',
@@ -431,8 +650,18 @@ function OptimizedFeaturesSection() {
     {
       icon: '📊',
       title: 'Price Trends',
-      description:
-        'Track historical price data and trends to find the best times to fill up.',
+      description: (
+        <>
+          Track historical price data and trends with our{' '}
+          <Link
+            href="/fuel-price-trends"
+            className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+          >
+            price analytics
+          </Link>{' '}
+          to find the best times to fill up and maximize your savings.
+        </>
+      ),
     },
   ];
 
@@ -451,7 +680,29 @@ function OptimizedFeaturesSection() {
             </h2>
             <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-400">
               Our comprehensive platform provides all the tools you need to find
-              the cheapest petrol prices and save money on every fill-up.
+              the cheapest petrol prices and save money on every fill-up. Explore
+              our{' '}
+              <Link
+                href="/directory"
+                className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+              >
+                station directory
+              </Link>
+              ,{' '}
+              <Link
+                href="/map"
+                className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+              >
+                interactive maps
+              </Link>
+              , and{' '}
+              <Link
+                href="/fuel-price-trends"
+                className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
+              >
+                price trends
+              </Link>{' '}
+              to maximize your savings.
             </p>
           </motion.div>
 
@@ -787,6 +1038,9 @@ export function PerformanceOptimizedLandingPage({
     <div className={cn('min-h-screen', className)}>
       {/* Hero Section - Critical above the fold */}
       <OptimizedHeroSection />
+
+      {/* SEO Content Section - Text Content for Search Engines */}
+      <OptimizedSEOContentSection />
 
       {/* Features Section */}
       <OptimizedFeaturesSection />

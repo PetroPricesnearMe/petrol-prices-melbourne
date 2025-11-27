@@ -24,7 +24,7 @@ export const SITE_CONFIG = {
   name: 'Petrol Price Near Me',
   shortName: 'PPNM',
   title: 'Find Cheapest Petrol Prices Near Me | Real-Time Fuel Prices Australia',
-  description: 'Compare live petrol prices from 250+ stations across Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
+  description: 'Compare live petrol prices from 250+ stations across Melbourne. Save up to 20c/L with real-time updates. Find cheapest fuel near you! Free to use.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://petrolpricenearme.com.au',
   domain: 'petrolpricenearme.com.au',
   locale: 'en_AU',

@@ -5,9 +5,9 @@ import { StructuredData } from '@/components/StructuredData';
 import { generateWebsiteSchema } from '@/lib/seo/schema-generator';
 
 export const metadata: Metadata = {
-  title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L | Melbourne Fuel Finder',
+  title: 'Cheapest Petrol Prices in Melbourne | Save Up to 20c/L',
   description:
-    'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Find the cheapest unleaded, diesel & premium near you today! Free to use, no registration required.',
+    'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations and save up to 20c/L on every fill-up. Free to use, no registration required.',
   keywords: [
     'petrol prices near me',
     'cheap fuel melbourne',
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     'melbourne fuel app',
   ],
   openGraph: {
-    title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L',
-    description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Free to use!',
+    title: 'Cheapest Petrol Prices in Melbourne | Save Up to 20c/L',
+    description: 'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations and save up to 20c/L on every fill-up. Free to use, no registration required.',
     type: 'website',
     locale: 'en_AU',
     url: 'https://petrolpricenearme.com.au',
@@ -48,12 +48,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Find Cheapest Petrol Prices Near Me | Save Up to 20c/L',
-    description: 'Compare live petrol prices from 250+ stations in Melbourne. Save up to 20c/L with real-time fuel price updates. Free to use!',
+    title: 'Cheapest Petrol Prices in Melbourne | Save Up to 20c/L',
+    description: 'Find the cheapest petrol prices near you in Melbourne. Compare real-time fuel prices from 250+ stations and save up to 20c/L on every fill-up. Free to use, no registration required.',
     images: ['/images/twitter-landing-page.jpg'],
   },
   alternates: {
-    canonical: 'https://petrolpricenearme.com.au',
+    canonical: '/',
   },
   robots: {
     index: true,
