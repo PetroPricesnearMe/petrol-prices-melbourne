@@ -18,6 +18,7 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
+    "install": "node scripts/install-dependencies.js",
     "dev": "next dev",
     "build": "next build",
     "postbuild": "next-sitemap",

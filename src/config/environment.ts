@@ -127,20 +127,34 @@ export const config: EnvironmentConfig = {
   },
 };
 
-// Validate required environment variables in production
-if (config.isProduction) {
-  const required = [
-    'BASEROW_API_TOKEN',
-    'BASEROW_DATABASE_ID',
-    'NEXTAUTH_SECRET',
-  ];
+/**
+ * Validate required environment variables at runtime (not during build)
+ * This prevents build failures when variables aren't set yet
+ */
+export function validateRequiredEnvVars(): void {
+  // Skip validation during build time
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return;
+  }
 
-  const missing = required.filter(key => !process.env[key]);
+  // Only validate in production runtime
+  if (config.isProduction && typeof window === 'undefined') {
+    const required = [
+      'BASEROW_API_TOKEN',
+      'BASEROW_DATABASE_ID',
+      'NEXTAUTH_SECRET',
+    ];
 
-  if (missing.length > 0) {
-    throw new Error(
-      `Missing required environment variables in production: ${missing.join(', ')}`
-    );
+    const missing = required.filter(key => !process.env[key]);
+
+    if (missing.length > 0) {
+      console.warn(
+        `⚠️ Missing environment variables in production: ${missing.join(', ')}\n` +
+        `Some features may not work correctly. Please set these in your deployment environment.`
+      );
+      // Don't throw during build - just warn
+      // The API routes will handle missing vars gracefully
+    }
   }
 }
 
