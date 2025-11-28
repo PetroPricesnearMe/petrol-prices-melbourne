@@ -19,7 +19,10 @@ const nextConfig: NextConfig = {
     // Handle missing images gracefully
     unoptimized: false,
     remotePatterns: [],
-    // Note: Image quality is now set per-image using the quality prop on Image component
+    // Image quality levels - required for Next.js 16+
+    // These are the allowed quality values that can be used in Image components
+    qualities: [75, 80, 85, 90, 95, 100],
+    // Note: Image quality is set per-image using the quality prop on Image component
     // Default is 75, can be overridden per image: <Image quality={85} ... />
   },
 
@@ -74,6 +77,15 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*.css',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'text/css; charset=utf-8',
           },
         ],
       },

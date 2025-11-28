@@ -8,6 +8,9 @@
  */
 
 import type { ID, Coordinates } from './common';
+import { formatPriceCents } from '@/lib/utils/price';
+import { formatDistance as formatDistanceUtil } from '@/lib/utils/distance';
+import { getBrandColor as getBrandColorUtil } from '@/lib/utils/colors';
 
 // ============================================================================
 // Fuel Price Types
@@ -263,8 +266,8 @@ export function hasFuelPrices(listing: Listing): boolean {
 /** Get available fuel types for a listing */
 export function getAvailableFuelTypes(listing: Listing): FuelTypeKey[] {
   return Object.entries(listing.fuelPrices)
-    .filter(([_, price]) => price !== null && price > 0)
-    .map(([type, _]) => type as FuelTypeKey);
+    .filter(([, price]) => price !== null && price > 0)
+    .map(([type]) => type as FuelTypeKey);
 }
 
 /** Get cheapest fuel price from a listing */
@@ -293,8 +296,6 @@ export function getListingCoordinates(listing: Listing): Coordinates | null {
  * @deprecated Use formatPriceCents from '@/lib/utils/price' instead
  */
 export function formatListingPrice(price: number | null): string {
-  // Dynamic import to avoid circular dependencies
-  const { formatPriceCents } = require('@/lib/utils/price');
   return formatPriceCents(price);
 }
 
@@ -303,8 +304,6 @@ export function formatListingPrice(price: number | null): string {
  * @deprecated Use formatDistance from '@/lib/utils/distance' instead
  */
 export function formatDistance(distance: number | undefined): string {
-  // Dynamic import to avoid circular dependencies
-  const { formatDistance: formatDistanceUtil } = require('@/lib/utils/distance');
   return formatDistanceUtil(distance);
 }
 
@@ -313,8 +312,6 @@ export function formatDistance(distance: number | undefined): string {
  * @deprecated Use getBrandColor from '@/lib/utils/colors' instead
  */
 export function getBrandColor(brand: string): string {
-  // Dynamic import to avoid circular dependencies
-  const { getBrandColor: getBrandColorUtil } = require('@/lib/utils/colors');
   return getBrandColorUtil(brand);
 }
 

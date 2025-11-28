@@ -6,12 +6,14 @@
  */
 
 import type { Coordinates, Location, ID } from './common';
+import { formatPrice as formatPriceUtil } from '@/lib/utils/price';
 
 // ============================================================================
 // Fuel Types
 // ============================================================================
 
 /** Available fuel types */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 export enum FuelType {
   UNLEADED = 'Unleaded',
   PREMIUM_UNLEADED = 'Premium Unleaded',
@@ -21,6 +23,7 @@ export enum FuelType {
   E10 = 'E10',
   E85 = 'E85',
 }
+/* eslint-enable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 /** Fuel type keys */
 export type FuelTypeKey = keyof typeof FuelType;
@@ -47,11 +50,13 @@ export type StationBrand =
   | string;
 
 /** Station category */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 export enum StationCategory {
   PETROL_STATION = 'petrol-stations',
   TRUCK_STOP = 'truck-stop',
   SERVICE_STATION = 'service-station',
 }
+/* eslint-enable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 /** Station amenities */
 export interface StationAmenities {
@@ -114,11 +119,13 @@ export interface Station extends StationWithLocation {
 // ============================================================================
 
 /** Price trend indicator */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 export enum PriceTrend {
   INCREASING = 'Increasing',
   STABLE = 'Stable',
   DECREASING = 'Decreasing',
 }
+/* eslint-enable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 /** Fuel price information */
 export interface FuelPrice {
@@ -164,6 +171,7 @@ export interface StationFilters {
 }
 
 /** Station sort options */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 export enum StationSortBy {
   DISTANCE = 'distance',
   PRICE_LOW_TO_HIGH = 'price_asc',
@@ -172,6 +180,7 @@ export enum StationSortBy {
   RATING = 'rating',
   LAST_UPDATED = 'lastUpdated',
 }
+/* eslint-enable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 /** Station search params */
 export interface StationSearchParams {
@@ -316,8 +325,6 @@ export const getFuelTypeDisplayName = (fuelType: FuelTypeValue): string => {
  * @deprecated Use formatPrice from '@/lib/utils/price' instead
  */
 export const formatPrice = (price: number, currency = 'AUD'): string => {
-  // Dynamic import to avoid circular dependencies
-  const { formatPrice: formatPriceUtil } = require('@/lib/utils/price');
   return formatPriceUtil(price, currency, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 };
 

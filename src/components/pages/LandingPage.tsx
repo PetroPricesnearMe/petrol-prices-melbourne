@@ -225,11 +225,16 @@ function HeroSection({ className }: HeroSectionProps) {
                   transition={{ duration: 0.3 }}
                 >
                   <Image
-                    src="/images/hero-petrol-station.jpg"
+                    src="/images/fuel-nozzles.jpg"
                     alt="Petrol Station"
                     fill
                     className="object-cover"
                     priority
+                    quality={85}
+                    onError={(e) => {
+                      // Hide image on error, let gradient background show through
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </motion.div>

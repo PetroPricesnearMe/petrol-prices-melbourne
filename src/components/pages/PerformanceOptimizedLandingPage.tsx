@@ -9,6 +9,7 @@
 
 'use client';
 
+import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -48,6 +49,7 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const fidEntry = entry as any;
         if (fidEntry.processingStart !== undefined) {
           console.warn('FID:', fidEntry.processingStart - fidEntry.startTime);
@@ -59,6 +61,7 @@ function usePerformanceMonitoring() {
     new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const clsEntry = entry as any;
         if (clsEntry.hadRecentInput === false && clsEntry.value !== undefined) {
           console.warn('CLS:', clsEntry.value);
@@ -399,14 +402,19 @@ function OptimizedHeroSection() {
                   </div>
 
                   {/* Hero Image - Optimized with WebP/AVIF via Next.js Image, priority loading for LCP */}
+                  {/* Fallback to gradient background if image is missing */}
                   <Image
-                    src="/images/hero-petrol-station.jpg"
+                    src="/images/fuel-nozzles.jpg"
                     alt="Modern petrol station with fuel pumps showing competitive prices"
                     fill
                     className="object-cover"
                     priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     quality={85}
+                    onError={(e) => {
+                      // Hide image on error, let gradient background show through
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </motion.div>

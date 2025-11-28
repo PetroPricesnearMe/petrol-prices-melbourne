@@ -9,10 +9,9 @@
 
 'use client';
 
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -70,11 +69,12 @@ const staggerContainer = {
   }
 };
 
-const scaleIn = {
-  initial: { opacity: 0, scale: 0.8 },
-  animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.5 }
-};
+// Animation variant for scale-in effect (currently unused but available for future use)
+// const scaleIn = {
+//   initial: { opacity: 0, scale: 0.8 },
+//   animate: { opacity: 1, scale: 1 },
+//   transition: { duration: 0.5 }
+// };
 
 // ============================================================================
 // HERO SECTION COMPONENT
@@ -227,11 +227,16 @@ function HeroSection() {
                   transition={{ duration: 0.3 }}
                 >
                   <Image
-                    src="/images/hero-petrol-station.jpg"
+                    src="/images/fuel-nozzles.jpg"
                     alt="Petrol Station"
                     fill
                     className="object-cover"
                     priority
+                    quality={85}
+                    onError={(e) => {
+                      // Hide image on error, let gradient background show through
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </motion.div>
