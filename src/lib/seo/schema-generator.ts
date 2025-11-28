@@ -164,7 +164,10 @@ export function generateBreadcrumbSchema(
  * GasStation schema - Individual station page
  */
 export function generateStationSchema(baseUrl: string, station: Station): object {
-  const lowestPrice = getLowestFuelPrice(station.fuelPrices || []);
+  const fuelPrices = station.fuelPrices || [];
+  const lowestPrice = Array.isArray(fuelPrices)
+    ? getLowestFuelPrice(fuelPrices)
+    : getLowestFuelPriceFromRecord(fuelPrices);
   
   return {
     '@context': 'https://schema.org',
@@ -172,7 +175,7 @@ export function generateStationSchema(baseUrl: string, station: Station): object
     '@id': `${baseUrl}/stations/${station.id}`,
     name: station.name,
     brand: station.brand,
-    telephone: station.phone || undefined,
+    telephone: station.phoneNumber || undefined,
     url: `${baseUrl}/stations/${station.id}`,
     address: {
       '@type': 'PostalAddress',
@@ -191,7 +194,10 @@ export function generateStationSchema(baseUrl: string, station: Station): object
     priceRange: lowestPrice ? `$${lowestPrice.toFixed(2)}` : undefined,
     openingHours: station.operatingHours ? formatOpeningHours(station.operatingHours) : undefined,
     amenityFeature: station.amenities ? Object.keys(station.amenities)
-      .filter(key => station.amenities[key])
+      .filter(key => {
+        const value = station.amenities?.[key as keyof typeof station.amenities];
+        return value === true;
+      })
       .map(amenity => ({
         '@type': 'LocationFeatureSpecification',
         name: amenity,
@@ -219,7 +225,7 @@ export function generateLocalBusinessSchema(baseUrl: string, station: Station): 
     name: station.name,
     description: `${station.brand} petrol station in ${station.suburb || station.city}. Find the latest fuel prices and station information.`,
     url: `${baseUrl}/stations/${station.id}`,
-    telephone: station.phone,
+    telephone: station.phoneNumber || undefined,
     image: station.image || `${baseUrl}/images/stations/${station.brand?.toLowerCase()}.jpg`,
     address: {
       '@type': 'PostalAddress',
@@ -253,7 +259,7 @@ export function generateFuelPriceSchema(baseUrl: string, station: Station, fuelP
       name: fuelPrice.fuelType,
       category: 'Automotive Fuel',
     },
-    price: fuelPrice.price.toFixed(2),
+    price: fuelPrice.price ? fuelPrice.price.toFixed(2) : undefined,
     priceCurrency: 'AUD',
     priceValidUntil: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     seller: {
@@ -360,7 +366,13 @@ export function generateArticleSchema(
 
 function getLowestFuelPrice(prices: FuelPrice[]): number | null {
   if (!prices || prices.length === 0) return null;
-  return Math.min(...prices.map(p => p.price));
+  const validPrices = prices.filter(p => p.price !== undefined && p.price !== null).map(p => p.price!);
+  return validPrices.length > 0 ? Math.min(...validPrices) : null;
+}
+
+function getLowestFuelPriceFromRecord(prices: Record<string, number | null>): number | null {
+  const validPrices = Object.values(prices).filter((p): p is number => p !== null && p > 0);
+  return validPrices.length > 0 ? Math.min(...validPrices) : null;
 }
 
 function formatOpeningHours(hours: any): string[] | undefined {

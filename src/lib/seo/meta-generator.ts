@@ -6,7 +6,7 @@
 
 import type { Metadata } from 'next';
 
-import type { Station } from '@/types/station';
+import type { Station, FuelPrice } from '@/types/station';
 
 const DEFAULT_SITE_NAME = 'Petrol Price Near Me';
 const DEFAULT_IMAGE = '/images/og-image.jpg';
@@ -162,7 +162,10 @@ export function generateStationMetadata(
   baseUrl: string,
   station: Station
 ): Metadata {
-  const lowestPrice = getLowestFuelPrice(station.fuelPrices || []);
+  const fuelPrices = station.fuelPrices || [];
+  const lowestPrice = Array.isArray(fuelPrices) 
+    ? getLowestFuelPrice(fuelPrices)
+    : getLowestFuelPriceFromRecord(fuelPrices);
   const priceText = lowestPrice ? `from ${lowestPrice.toFixed(1)}¢/L` : '';
   
   const title = `${station.name} - Fuel Prices ${priceText} | ${station.suburb || station.city}`;
@@ -182,7 +185,7 @@ export function generateStationMetadata(
       'petrol near me',
     ],
     openGraph: {
-      type: 'place',
+      type: 'website',
       locale: 'en_AU',
       url: `${baseUrl}/stations/${station.id}`,
       siteName: DEFAULT_SITE_NAME,
@@ -212,7 +215,7 @@ export function generateStationMetadata(
     },
     other: {
       'geo.position': `${station.latitude};${station.longitude}`,
-      'geo.placename': station.suburb || station.city,
+      'geo.placename': (station.suburb || station.city || 'Melbourne'),
       'geo.region': 'AU-VIC',
       'ICBM': `${station.latitude}, ${station.longitude}`,
     },
@@ -314,7 +317,12 @@ export function generateMapMetadata(baseUrl: string): Metadata {
 
 function getLowestFuelPrice(prices: FuelPrice[]): number | null {
   if (!prices || prices.length === 0) return null;
-  const validPrices = prices.filter(p => p.price > 0).map(p => p.price);
+  const validPrices = prices.filter(p => p.price && p.price > 0).map(p => p.price!);
+  return validPrices.length > 0 ? Math.min(...validPrices) : null;
+}
+
+function getLowestFuelPriceFromRecord(prices: Record<string, number | null>): number | null {
+  const validPrices = Object.values(prices).filter((p): p is number => p !== null && p > 0);
   return validPrices.length > 0 ? Math.min(...validPrices) : null;
 }
 

@@ -28,7 +28,6 @@ export {
 
 // Animation System
 export {
-  animations,
   animationStyles,
   easings,
   durations,
@@ -57,6 +56,6 @@ export const styling = {
   styleUtils,
   animations: animationClasses,
   a11y,
-};
+} as const;
 
 export default styling;

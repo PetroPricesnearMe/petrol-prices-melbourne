@@ -301,17 +301,3 @@ export function calculateLinkPriority(
   return score;
 }
 
-// ============================================================================
-// Export
-// ============================================================================
-
-export {
-  NAVIGATION_LINKS,
-  FOOTER_LINKS,
-  getRelatedLinks,
-  getBreadcrumbLinks,
-  getContextualLinks,
-  getMobileNavigationLinks,
-  generateAnchorText,
-  calculateLinkPriority,
-};
