@@ -153,7 +153,7 @@ export default async function SuburbDirectoryPage({ params }: Props) {
       {/* Stations Grid */}
       <section className="py-12">
         <div className={patterns.container()}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {sortedStations.map((station, index) => {
               // Safety check for station data
               if (!station || !station.id) return null;
@@ -161,7 +161,7 @@ export default async function SuburbDirectoryPage({ params }: Props) {
               return (
               <article
                 key={station.id}
-                className="card card-hover"
+                className="card card-hover h-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:shadow-primary-500/10 dark:hover:shadow-primary-500/20 hover:-translate-y-2 transition-all duration-300 ease-out"
                 itemScope
                 itemType="https://schema.org/GasStation"
               >
@@ -179,26 +179,27 @@ export default async function SuburbDirectoryPage({ params }: Props) {
                 </div>
 
                 {/* Content */}
-                <div className="p-6 space-y-4">
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <p>📍 {station.address || 'Address not available'}</p>
-                    <p className="mt-1">{station.suburb || 'Suburb not available'} {station.postcode || 'Postcode not available'}</p>
+                <div className="p-6 space-y-4 flex-1 flex flex-col">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                    <p className="line-clamp-1">📍 {station.address || 'Address not available'}</p>
+                    <p className="text-gray-500 dark:text-gray-500">{station.suburb || 'Suburb not available'} {station.postcode || 'Postcode not available'}</p>
                   </div>
 
                   {/* Fuel Prices */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  <div className="mt-auto">
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                       Current Prices
                     </h3>
                     <div className="space-y-2">
                       {station.fuelPrices && Object.entries(station.fuelPrices).map(([type, price]) => {
                         if (price === null || price === undefined) return null;
+                        const priceColorClass = getPriceColor(price);
                         return (
-                          <div key={type} className="flex justify-between items-center">
-                            <span className="text-gray-600 dark:text-gray-400 capitalize text-sm">
+                          <div key={type} className="flex justify-between items-center py-1.5 px-2 rounded-md bg-gray-50 dark:bg-gray-900/50 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <span className="text-gray-600 dark:text-gray-400 capitalize text-sm font-medium">
                               {type === 'premium95' ? 'Premium 95' : type === 'premium98' ? 'Premium 98' : type}
                             </span>
-                            <span className={cn('text-lg font-bold', getPriceColor(price))}>
+                            <span className={cn('text-sm font-bold transition-transform duration-200 hover:scale-105', priceColorClass)}>
                               {price.toFixed(1)}¢
                             </span>
                           </div>

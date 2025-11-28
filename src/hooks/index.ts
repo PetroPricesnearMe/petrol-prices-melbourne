@@ -6,3 +6,4 @@
 
 export * from './usePerformance';
 export * from './useVirtualization';
+export * from './useViewMode';

@@ -18,6 +18,9 @@ class DataSourceManager {
     this.isLoading = false;
     this.lastFetchTime = null;
     this.cacheTimeout = 5 * 60 * 1000; // 5 minutes cache
+    this.debounceTimers = new Map(); // Track debounce timers
+    this.pendingRequests = new Map(); // Track pending requests for deduplication
+    this.rateLimitInfo = null; // Track rate limit information
   }
 
   /**
@@ -45,6 +48,38 @@ class DataSourceManager {
     console.log('🗑️ Clearing data cache');
     this.dataCache.clear();
     this.lastFetchTime = null;
+    
+    // Clear debounce timers
+    if (this.debounceTimers) {
+      for (const timer of this.debounceTimers.values()) {
+        clearTimeout(timer);
+      }
+      this.debounceTimers.clear();
+    }
+    
+    // Clear pending requests
+    if (this.pendingRequests) {
+      this.pendingRequests.clear();
+    }
+  }
+
+  /**
+   * Extract retry-after time from error message
+   * @private
+   */
+  _extractRetryAfter(message) {
+    const match = message.match(/(\d+)\s*seconds?/i);
+    return match ? parseInt(match[1], 10) * 1000 : 60000; // Default 60 seconds
+  }
+
+  /**
+   * Fetch from Airtable (placeholder for implementation)
+   * @private
+   */
+  async _fetchFromAirtable() {
+    // This would use the enhanced fetcher when Airtable is implemented
+    // For now, throw error as before
+    throw new Error('Airtable integration not implemented');
   }
 
   /**
@@ -166,10 +201,12 @@ class DataSourceManager {
 
   /**
    * Fetch stations from the active data source
+   * Enhanced with debouncing, better caching, and request deduplication
    * @param {boolean} forceRefresh - Force refresh even if cache is valid
+   * @param {number} debounceMs - Debounce delay in milliseconds (default: 0)
    * @returns {Promise<Array>} Array of transformed station data
    */
-  async fetchStations(forceRefresh = false) {
+  async fetchStations(forceRefresh = false, debounceMs = 0) {
     const cacheKey = `stations_${this.activeSource}`;
 
     // Return cached data if valid and not forcing refresh
@@ -178,7 +215,7 @@ class DataSourceManager {
       return this.dataCache.get(cacheKey);
     }
 
-    // Prevent multiple simultaneous requests
+    // Prevent multiple simultaneous requests (request deduplication)
     if (this.isLoading) {
       console.log('⏳ Data fetch already in progress, waiting...');
       return new Promise((resolve, reject) => {
@@ -203,6 +240,44 @@ class DataSourceManager {
       });
     }
 
+    // Apply debouncing if specified
+    if (debounceMs > 0) {
+      return new Promise((resolve, reject) => {
+        const debounceKey = `debounce_${cacheKey}`;
+        const existingTimer = this.debounceTimers?.get(debounceKey);
+        
+        if (existingTimer) {
+          clearTimeout(existingTimer);
+        }
+
+        if (!this.debounceTimers) {
+          this.debounceTimers = new Map();
+        }
+
+        const timer = setTimeout(async () => {
+          this.debounceTimers.delete(debounceKey);
+          try {
+            const result = await this._executeFetch(forceRefresh, cacheKey);
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        }, debounceMs);
+
+        this.debounceTimers.set(debounceKey, timer);
+      });
+    }
+
+    // Execute the actual fetch
+    return this._executeFetch(forceRefresh, cacheKey);
+  }
+
+  /**
+   * Internal method to execute the fetch
+   * Separated for debouncing support
+   * @private
+   */
+  async _executeFetch(forceRefresh, cacheKey) {
     try {
       this.isLoading = true;
       console.log(`🚀 Fetching stations from ${this.activeSource}...`);
@@ -229,6 +304,22 @@ class DataSourceManager {
           try {
             rawStations = await baserowAPI.fetchAllStations();
           } catch (error) {
+            // Handle rate limit errors gracefully
+            if (error.message && error.message.includes('rate limit')) {
+              this.rateLimitInfo = {
+                message: error.message,
+                retryAfter: this._extractRetryAfter(error.message),
+                timestamp: Date.now(),
+              };
+              console.warn('⚠️ Rate limit hit, will retry after delay');
+              
+              // Return cached data if available
+              if (this.dataCache.has(cacheKey)) {
+                console.log('📦 Returning cached data due to rate limit');
+                return this.dataCache.get(cacheKey);
+              }
+            }
+            
             console.warn('⚠️ Baserow API failed, falling back to mock data:', error.message);
             console.log('🔄 Switching to mock data source due to API issues');
             this.setActiveSource('mock');
@@ -236,8 +327,26 @@ class DataSourceManager {
           }
           break;
         case 'airtable':
-          // Airtable integration would go here
-          throw new Error('Airtable integration not implemented');
+          // Airtable integration with enhanced fetching
+          try {
+            rawStations = await this._fetchFromAirtable();
+          } catch (error) {
+            // Handle rate limit gracefully
+            if (error.message && error.message.includes('rate limit')) {
+              this.rateLimitInfo = {
+                message: error.message,
+                retryAfter: this._extractRetryAfter(error.message),
+                timestamp: Date.now(),
+              };
+              
+              if (this.dataCache.has(cacheKey)) {
+                console.log('📦 Returning cached data due to rate limit');
+                return this.dataCache.get(cacheKey);
+              }
+            }
+            throw error;
+          }
+          break;
         case 'mock':
           rawStations = this.getMockStations();
           break;
@@ -376,7 +485,10 @@ class DataSourceManager {
       cacheValid: this.isCacheValid(),
       cacheSize: this.dataCache.size,
       availableSources: ['local', 'baserow', 'airtable', 'mock'],
-      lastError: this.lastError
+      lastError: this.lastError,
+      rateLimitInfo: this.rateLimitInfo,
+      pendingRequests: this.pendingRequests?.size || 0,
+      debounceTimers: this.debounceTimers?.size || 0,
     };
   }
 

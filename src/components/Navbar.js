@@ -197,19 +197,19 @@ const Navbar = React.memo(() => {
         </div>
 
         {/* Mobile Menu Links - Touch-Friendly */}
-        <div className="py-4">
+        <div className="py-6">
           {navLinks.map(({ path, label }, index) => (
             <Link
               key={path}
               href={path}
               onClick={handleLinkClick}
               className={`
-                flex min-h-[56px] items-center justify-between border-l-4 px-6 py-4
-                text-base font-semibold transition-all duration-300
+                flex min-h-[56px] items-center justify-between border-l-4 px-6 py-5
+                text-base font-semibold transition-all duration-300 touch-manipulation active:bg-gray-100
                 ${
                   isActive(path)
                     ? 'border-primary-500 bg-primary-50 text-primary-600'
-                    : 'border-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50 hover:text-primary-600'
+                    : 'border-transparent text-gray-700 hover:border-gray-300 hover:bg-gray-50 hover:text-primary-600 active:bg-gray-100'
                 }
               `}
               style={{
@@ -220,7 +220,7 @@ const Navbar = React.memo(() => {
             >
               <span>{label}</span>
               {isActive(path) && (
-                <span className="flex h-2 w-2 items-center justify-center rounded-full bg-primary-500" />
+                <span className="flex h-2.5 w-2.5 items-center justify-center rounded-full bg-primary-500 shadow-sm" />
               )}
             </Link>
           ))}

@@ -5,10 +5,13 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // Image optimization
+  // Image optimization with enhanced compression
   images: {
+    // Prefer AVIF (best compression), fallback to WebP
     formats: ['image/avif', 'image/webp'],
+    // Optimized device sizes for responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    // Optimized image sizes for different use cases
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // 1 year
     dangerouslyAllowSVG: false,
@@ -16,11 +19,34 @@ const nextConfig: NextConfig = {
     // Handle missing images gracefully
     unoptimized: false,
     remotePatterns: [],
+    // Enhanced image quality settings (balance quality vs size)
+    // 85 provides good quality while reducing file size vs default 75
+    quality: 85,
   },
 
   // Experimental features for better performance
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
+    // Optimize package imports for better tree-shaking
+    optimizePackageImports: [
+      'lucide-react',
+      'framer-motion',
+      '@heroicons/react',
+      '@headlessui/react',
+      'date-fns',
+      'axios',
+      'fuse.js',
+      'zod',
+    ],
+    // Enable SWC minification for smaller bundles
+    swcMinify: true,
+  },
+
+  // SWC compiler options for better optimization
+  compiler: {
+    // Remove console.log in production
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
   },
 
   // Headers for caching and performance
@@ -84,6 +110,19 @@ const nextConfig: NextConfig = {
   // Production optimizations
   ...(process.env.NODE_ENV === 'production' && {
     productionBrowserSourceMaps: false,
+    // Enable output file tracing for better tree-shaking and smaller deployments
+    outputFileTracing: true,
+    // Exclude unnecessary files from output to reduce bundle size
+    outputFileTracingExcludes: {
+      '*': [
+        'node_modules/@swc/core-linux-x64-gnu',
+        'node_modules/@swc/core-linux-x64-musl',
+        'node_modules/@esbuild/linux-x64',
+        'node_modules/webpack',
+        'node_modules/.cache',
+        'node_modules/.bin',
+      ],
+    },
   }),
 
   // TypeScript and ESLint - Warn but don't block builds
@@ -95,49 +134,118 @@ const nextConfig: NextConfig = {
   },
 
   // Webpack optimizations
-  webpack: (config, { isServer }) => {
-    // Optimize bundle size
+  webpack: (config, { isServer, dev }) => {
+    // Optimize bundle size for client-side
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
+        // Enable tree-shaking
+        usedExports: true,
+        sideEffects: false,
+        // Improved code splitting strategy
         splitChunks: {
           chunks: 'all',
+          minSize: 20000, // Minimum chunk size (20KB)
+          maxSize: 244000, // Maximum chunk size (244KB) - helps with HTTP/2
+          minChunks: 1,
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
           cacheGroups: {
             default: false,
             vendors: false,
-            // Vendor chunks
+            // Framework chunks (React, Next.js)
+            framework: {
+              name: 'framework',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/](react|react-dom|scheduler|next)[\\/]/,
+              priority: 40,
+              enforce: true,
+            },
+            // Map libraries (large, separate chunk)
+            maps: {
+              name: 'maps',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/](mapbox-gl|maplibre-gl|leaflet|react-leaflet|react-map-gl|pmtiles)[\\/]/,
+              priority: 35,
+              enforce: true,
+            },
+            // UI libraries
+            ui: {
+              name: 'ui',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/](@headlessui|@heroicons|lucide-react)[\\/]/,
+              priority: 30,
+              reuseExistingChunk: true,
+            },
+            // Animation libraries
+            animation: {
+              name: 'animation',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+              priority: 30,
+              reuseExistingChunk: true,
+            },
+            // Data fetching libraries
+            data: {
+              name: 'data',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/](@tanstack|swr|axios|node-fetch)[\\/]/,
+              priority: 25,
+              reuseExistingChunk: true,
+            },
+            // Utility libraries
+            utils: {
+              name: 'utils',
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/](date-fns|fuse\.js|clsx|tailwind-merge|zod)[\\/]/,
+              priority: 20,
+              reuseExistingChunk: true,
+            },
+            // Vendor chunks (everything else from node_modules)
             vendor: {
               name: 'vendor',
               chunks: 'all',
-              test: /node_modules/,
-              priority: 20,
+              test: /[\\/]node_modules[\\/]/,
+              priority: 10,
+              minChunks: 2,
+              reuseExistingChunk: true,
             },
-            // Common chunks
+            // Common chunks (shared code)
             common: {
               name: 'common',
               minChunks: 2,
               chunks: 'all',
-              priority: 10,
+              priority: 5,
               reuseExistingChunk: true,
               enforce: true,
             },
-            // Framer Motion
-            framerMotion: {
-              name: 'framer-motion',
-              test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-              chunks: 'all',
-              priority: 30,
-            },
-            // Lucide Icons
-            lucide: {
-              name: 'lucide',
-              test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
-              chunks: 'all',
-              priority: 30,
-            },
           },
         },
+        // Enable module concatenation for better tree-shaking
+        concatenateModules: !dev,
+        // Minimize bundle size
+        minimize: !dev,
       };
+
+      // Resolve configuration for better tree-shaking
+      config.resolve = {
+        ...config.resolve,
+        // Prefer ES modules for better tree-shaking
+        mainFields: ['module', 'main'],
+      };
+    }
+
+    // Server-side optimizations
+    if (isServer) {
+      // Exclude large client-only libraries from server bundle
+      config.externals = config.externals || [];
+      if (Array.isArray(config.externals)) {
+        config.externals.push({
+          'mapbox-gl': 'commonjs mapbox-gl',
+          'maplibre-gl': 'commonjs maplibre-gl',
+          'leaflet': 'commonjs leaflet',
+        });
+      }
     }
 
     return config;

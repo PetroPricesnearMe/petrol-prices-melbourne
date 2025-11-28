@@ -5,13 +5,14 @@
  * Features:
  * - Keyboard navigation
  * - ARIA labels
- * - Smooth animations
- * - Touch-friendly
+ * - Smooth animations with enhanced spring physics
+ * - Touch-friendly (44px+ touch targets)
  * - Responsive design
+ * - State persistence support
  */
 
-import { motion } from 'framer-motion';
-import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 import './ViewToggle.css';
 
 export type ViewMode = 'list' | 'grid' | 'map';
@@ -67,6 +68,28 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
   const options = showGrid
     ? viewOptions
     : viewOptions.filter(opt => opt.value !== 'grid');
+  
+  const announcementRef = useRef<HTMLDivElement>(null);
+  const previousViewRef = useRef<ViewMode>(currentView);
+
+  // Enhanced spring animation configuration for smoother transitions
+  const springConfig = {
+    type: 'spring' as const,
+    stiffness: 600,
+    damping: 35,
+    mass: 0.8,
+  };
+
+  // Announce view changes to screen readers
+  useEffect(() => {
+    if (previousViewRef.current !== currentView && announcementRef.current) {
+      const option = options.find(opt => opt.value === currentView);
+      if (option) {
+        announcementRef.current.textContent = `Switched to ${option.label.toLowerCase()} view`;
+      }
+    }
+    previousViewRef.current = currentView;
+  }, [currentView, options]);
 
   const handleKeyDown = (e: React.KeyboardEvent, view: ViewMode) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -92,6 +115,12 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
     }
   };
 
+  const handleClick = (view: ViewMode) => {
+    if (view !== currentView) {
+      onViewChange(view);
+    }
+  };
+
   const containerClass = `
     view-toggle
     view-toggle--${size}
@@ -100,51 +129,71 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({
   `.trim();
 
   return (
-    <div
-      className={containerClass}
-      role="radiogroup"
-      aria-label="View mode selection"
-    >
-      {options.map((option) => {
-        const isActive = currentView === option.value;
+    <>
+      {/* Screen reader announcements */}
+      <div
+        ref={announcementRef}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      />
+      
+      <div
+        className={containerClass}
+        role="radiogroup"
+        aria-label="View mode selection"
+      >
+        {options.map((option) => {
+          const isActive = currentView === option.value;
 
-        return (
-          <button
-            key={option.value}
-            className={`view-toggle__btn ${isActive ? 'active' : ''}`}
-            onClick={() => onViewChange(option.value)}
-            onKeyDown={(e) => handleKeyDown(e, option.value)}
-            role="radio"
-            aria-checked={isActive ? 'true' : 'false'}
-            aria-label={option.ariaLabel}
-            title={option.label}
-            tabIndex={0}
-          >
-            {/* Background highlight */}
-            {isActive && (
-              <motion.div
-                className="view-toggle__bg"
-                layoutId="viewToggleBg"
-                initial={false}
-                transition={{
-                  type: 'spring',
-                  stiffness: 500,
-                  damping: 30,
+          return (
+            <motion.button
+              key={option.value}
+              className={`view-toggle__btn ${isActive ? 'active' : ''}`}
+              onClick={() => handleClick(option.value)}
+              onKeyDown={(e) => handleKeyDown(e, option.value)}
+              role="radio"
+              aria-checked={isActive ? 'true' : 'false'}
+              aria-label={option.ariaLabel}
+              title={option.label}
+              tabIndex={isActive ? 0 : -1}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={springConfig}
+              initial={false}
+            >
+              {/* Background highlight with smooth animation */}
+              <AnimatePresence mode="wait">
+                {isActive && (
+                  <motion.div
+                    className="view-toggle__bg"
+                    layoutId="viewToggleBg"
+                    initial={false}
+                    transition={springConfig}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                  />
+                )}
+              </AnimatePresence>
+
+              {/* Icon and Label with smooth transitions */}
+              <motion.span 
+                className="view-toggle__content"
+                animate={{
+                  scale: isActive ? 1 : 0.95,
                 }}
-              />
-            )}
-
-            {/* Icon and Label */}
-            <span className="view-toggle__content">
-              <span className="view-toggle__icon" aria-hidden="true">
-                {option.icon}
-              </span>
-              <span className="view-toggle__label">{option.label}</span>
-            </span>
-          </button>
-        );
-      })}
-    </div>
+                transition={springConfig}
+              >
+                <span className="view-toggle__icon" aria-hidden="true">
+                  {option.icon}
+                </span>
+                <span className="view-toggle__label">{option.label}</span>
+              </motion.span>
+            </motion.button>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

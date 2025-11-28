@@ -34,6 +34,9 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
+  /* Enhanced mobile touch targets - minimum 44x44px */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .view-toggle__btn:focus {
@@ -49,20 +52,23 @@
   transform: scale(0.95);
 }
 
-/* Button Sizes */
+/* Button Sizes - Enhanced for mobile */
 .view-toggle--sm .view-toggle__btn {
-  padding: 6px 12px;
-  min-height: 36px;
+  padding: 8px 12px;
+  min-height: 44px; /* Increased from 36px for better mobile touch */
+  min-width: 44px;
 }
 
 .view-toggle--md .view-toggle__btn {
-  padding: 8px 16px;
-  min-height: 44px;
+  padding: 10px 16px;
+  min-height: 48px; /* Increased from 44px for better mobile touch */
+  min-width: 48px;
 }
 
 .view-toggle--lg .view-toggle__btn {
-  padding: 10px 20px;
+  padding: 12px 20px;
   min-height: 52px;
+  min-width: 52px;
 }
 
 /* Active Background */
@@ -179,15 +185,20 @@
   outline-offset: 2px;
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive - Enhanced touch targets */
 @media (max-width: 640px) {
   .view-toggle {
     width: 100%;
     justify-content: space-between;
+    gap: 8px; /* Increased gap for better spacing on mobile */
   }
 
   .view-toggle__btn {
     flex: 1;
+    /* Ensure minimum touch target size on mobile */
+    min-width: 48px;
+    min-height: 48px;
+    padding: 10px 12px;
   }
 
   .view-toggle__label {
@@ -197,13 +208,14 @@
   .view-toggle--sm .view-toggle__btn,
   .view-toggle--md .view-toggle__btn,
   .view-toggle--lg .view-toggle__btn {
-    padding: 8px;
-    min-height: 44px;
+    padding: 10px 12px;
+    min-height: 48px; /* Increased for better mobile touch */
+    min-width: 48px;
   }
 
   .view-toggle-compact__btn {
-    width: 40px;
-    height: 40px;
+    width: 48px; /* Increased from 40px for better touch */
+    height: 48px;
     font-size: 18px;
   }
 }
@@ -273,6 +285,25 @@
   .view-toggle-compact__btn:hover {
     transform: none;
   }
+  
+  /* Disable framer-motion animations when reduced motion is preferred */
+  .view-toggle__btn * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* Print */

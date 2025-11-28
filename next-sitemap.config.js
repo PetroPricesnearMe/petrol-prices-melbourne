@@ -125,9 +125,33 @@ module.exports = {
       changefreq = 'hourly';
     }
 
+    // Map page - high priority
+    else if (path === '/map') {
+      priority = 0.85;
+      changefreq = 'hourly';
+    }
+
+    // Fuel type pages - high priority
+    else if (path === '/fuel-types' || path.startsWith('/fuel-types/')) {
+      priority = path === '/fuel-types' ? 0.7 : 0.75;
+      changefreq = 'daily';
+    }
+
+    // Fuel brand pages - high priority
+    else if (path === '/fuel-brands' || path.startsWith('/fuel-brands/')) {
+      priority = path === '/fuel-brands' ? 0.7 : 0.75;
+      changefreq = 'weekly';
+    }
+
     // Region pages - high priority
     else if (path.startsWith('/regions/')) {
       priority = 0.85;
+      changefreq = 'daily';
+    }
+
+    // Station detail pages - high priority
+    else if (path.startsWith('/stations/')) {
+      priority = 0.8;
       changefreq = 'daily';
     }
 
@@ -168,7 +192,7 @@ module.exports = {
     };
   },
 
-  // Additional paths to include (static region paths)
+  // Additional paths to include (static region paths and fuel type pages)
   // Note: Dynamic station/suburb/brand pages are handled by src/app/sitemap.ts
   additionalPaths: async (config) => {
     const result = [];
@@ -193,6 +217,30 @@ module.exports = {
       if (transformed) {
         result.push(transformed);
       }
+    }
+
+    // Add fuel type pages
+    const fuelTypes = [
+      'unleaded',
+      'premium',
+      'diesel',
+      'e10',
+      'e85',
+      'lpg',
+      'premium-diesel',
+    ];
+
+    for (const fuelType of fuelTypes) {
+      const transformed = await config.transform(config, `/fuel-types/${fuelType}`);
+      if (transformed) {
+        result.push(transformed);
+      }
+    }
+
+    // Add map page
+    const mapTransformed = await config.transform(config, '/map');
+    if (mapTransformed) {
+      result.push(mapTransformed);
     }
 
     return result.filter(Boolean); // Filter out null values

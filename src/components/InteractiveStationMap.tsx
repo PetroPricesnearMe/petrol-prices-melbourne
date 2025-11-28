@@ -11,8 +11,8 @@
  */
 
 import L from 'leaflet';
-import React, { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
+import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap, useMapEvents } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 import 'leaflet/dist/leaflet.css';
@@ -62,12 +62,13 @@ interface InteractiveStationMapProps {
 
 /**
  * Map controller component for handling map updates
+ * Memoized to prevent unnecessary re-renders
  */
 const MapController: React.FC<{
   center: [number, number];
   zoom: number;
   selectedStation?: Station | null;
-}> = ({ center, zoom, selectedStation }) => {
+}> = memo(({ center, zoom, selectedStation }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -79,7 +80,48 @@ const MapController: React.FC<{
   }, [selectedStation, map]);
 
   return null;
-};
+});
+
+MapController.displayName = 'MapController';
+
+/**
+ * Map resize handler component
+ * Handles window resize events to fix mobile resizing issues
+ */
+const MapResizeHandler: React.FC = memo(() => {
+  const map = useMap();
+
+  useEffect(() => {
+    // Handle initial resize
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+
+    // Handle window resize events
+    const handleResize = () => {
+      map.invalidateSize();
+    };
+
+    // Handle orientation change on mobile
+    const handleOrientationChange = () => {
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 200);
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleOrientationChange);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleOrientationChange);
+    };
+  }, [map]);
+
+  return null;
+});
+
+MapResizeHandler.displayName = 'MapResizeHandler';
 
 /**
  * Get marker color based on average fuel price
@@ -98,6 +140,7 @@ const getMarkerColor = (station: Station): string => {
 
 /**
  * Create custom marker icon based on price
+ * Memoized icon creation to prevent unnecessary re-renders
  */
 const createCustomIcon = (station: Station, isSelected: boolean = false): L.DivIcon => {
   const color = getMarkerColor(station);
@@ -135,6 +178,75 @@ const createCustomIcon = (station: Station, isSelected: boolean = false): L.DivI
 };
 
 /**
+ * Memoized station marker component to prevent unnecessary re-renders
+ */
+const StationMarker: React.FC<{
+  station: Station;
+  isSelected: boolean;
+  onClick: (station: Station) => void;
+}> = memo(({ station, isSelected, onClick }) => {
+  const icon = useMemo(
+    () => createCustomIcon(station, isSelected),
+    [station, isSelected]
+  );
+
+  const handleClick = useCallback(() => {
+    onClick(station);
+  }, [onClick, station]);
+
+  return (
+    <Marker
+      position={[station.latitude, station.longitude]}
+      icon={icon}
+      eventHandlers={{
+        click: handleClick,
+      }}
+    >
+      <Popup>
+        <div className="station-popup">
+          <h3 className="popup-title">{station.name}</h3>
+          {station.brand && (
+            <p className="popup-brand">{station.brand}</p>
+          )}
+          <p className="popup-address">
+            📍 {station.address}
+            {station.city && <>, {station.city}</>}
+          </p>
+
+          {station.fuelPrices && station.fuelPrices.length > 0 && (
+            <div className="popup-prices">
+              <strong>💰 Current Prices:</strong>
+              <ul>
+                {station.fuelPrices.slice(0, 3).map((fp, idx) => (
+                  <li key={idx}>
+                    <span>{fp.fuelType}</span>
+                    <span className="price">${fp.price.toFixed(2)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <button
+            className="popup-directions-btn"
+            onClick={() => {
+              window.open(
+                `https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`,
+                '_blank'
+              );
+            }}
+          >
+            🧭 Get Directions
+          </button>
+        </div>
+      </Popup>
+    </Marker>
+  );
+});
+
+StationMarker.displayName = 'StationMarker';
+
+/**
  * Interactive Station Map Component
  */
 export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
@@ -150,58 +262,134 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
   className = '',
 }) => {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
   const [mapCenter, setMapCenter] = useState<[number, number]>(initialCenter || [-37.8136, 144.9631]);
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
+  const [isMapReady, setIsMapReady] = useState(false);
   const mapRef = useRef<L.Map | null>(null);
+  const locationWatchId = useRef<number | null>(null);
 
   // Focus trap for fullscreen mode
   const mapContainerRef = useFocusTrap(fullScreen, onFullScreenToggle);
 
-  // Get user's current location
-  useEffect(() => {
-    if (showUserLocation && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location: [number, number] = [
-            position.coords.latitude,
-            position.coords.longitude,
-          ];
-          setUserLocation(location);
-        },
-        (error) => {
-          console.warn('Geolocation error:', error);
-        }
-      );
+  // Get user's current location with safe fallback
+  const getCurrentLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation is not supported by your browser');
+      return;
     }
-  }, [showUserLocation]);
 
-  // Calculate map center from stations
+    setIsLocating(true);
+    setLocationError(null);
+
+    const options: PositionOptions = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000, // Cache for 1 minute
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location: [number, number] = [
+          position.coords.latitude,
+          position.coords.longitude,
+        ];
+        setUserLocation(location);
+        setLocationError(null);
+        setIsLocating(false);
+      },
+      (error) => {
+        setIsLocating(false);
+        let errorMessage = 'Unable to get your location';
+        
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Location access denied. Please enable location permissions in your browser settings.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information unavailable.';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Location request timed out. Please try again.';
+            break;
+        }
+        
+        setLocationError(errorMessage);
+        console.warn('Geolocation error:', error);
+      },
+      options
+    );
+  }, []);
+
+  // Initial location fetch
   useEffect(() => {
+    if (showUserLocation) {
+      getCurrentLocation();
+    }
+  }, [showUserLocation, getCurrentLocation]);
+
+  // Cleanup location watcher
+  useEffect(() => {
+    return () => {
+      if (locationWatchId.current !== null && navigator.geolocation) {
+        navigator.geolocation.clearWatch(locationWatchId.current);
+      }
+    };
+  }, []);
+
+  // Calculate map center from stations (memoized)
+  const calculatedCenter = useMemo(() => {
     if (!initialCenter && stations.length > 0) {
       const validStations = stations.filter(s => s.latitude && s.longitude);
       if (validStations.length > 0) {
         const avgLat = validStations.reduce((sum, s) => sum + s.latitude, 0) / validStations.length;
         const avgLng = validStations.reduce((sum, s) => sum + s.longitude, 0) / validStations.length;
-        setMapCenter([avgLat, avgLng]);
+        return [avgLat, avgLng] as [number, number];
       }
     }
+    return initialCenter || [-37.8136, 144.9631];
   }, [stations, initialCenter]);
 
-  const handleMarkerClick = (station: Station) => {
+  useEffect(() => {
+    setMapCenter(calculatedCenter);
+  }, [calculatedCenter]);
+
+  // Memoize valid stations to prevent unnecessary re-renders
+  const validStations = useMemo(
+    () => stations.filter(s => s.latitude && s.longitude),
+    [stations]
+  );
+
+  const handleMarkerClick = useCallback((station: Station) => {
     if (onStationClick) {
       onStationClick(station);
     }
-  };
+  }, [onStationClick]);
 
-  const handleRecenter = () => {
-    if (mapRef.current && userLocation) {
-      mapRef.current.flyTo(userLocation, 13, {
-        duration: 1.5,
-      });
+  const handleRecenter = useCallback(() => {
+    if (mapRef.current) {
+      if (userLocation) {
+        mapRef.current.flyTo(userLocation, 13, {
+          duration: 1.5,
+        });
+      } else {
+        // Fallback: try to get location again
+        getCurrentLocation();
+      }
     }
-  };
+  }, [userLocation, getCurrentLocation]);
 
-  const validStations = stations.filter(s => s.latitude && s.longitude);
+  // Handle map ready state
+  const handleMapReady = useCallback(() => {
+    setIsMapReady(true);
+    // Trigger initial resize after map is ready
+    if (mapRef.current) {
+      setTimeout(() => {
+        mapRef.current?.invalidateSize();
+      }, 100);
+    }
+  }, []);
 
   const mapContainerClass = `
     interactive-station-map
@@ -224,7 +412,13 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
         scrollWheelZoom={true}
         style={{ height: '100%', width: '100%' }}
         className="leaflet-map-container"
-        ref={mapRef as any}
+        ref={(mapInstance) => {
+          if (mapInstance) {
+            mapRef.current = mapInstance;
+            handleMapReady();
+          }
+        }}
+        whenReady={handleMapReady}
       >
         {/* OpenStreetMap Tiles */}
         <TileLayer
@@ -232,6 +426,9 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
         />
+
+        {/* Map Resize Handler - Fixes mobile resizing issues */}
+        <MapResizeHandler />
 
         {/* Map Controller */}
         <MapController center={mapCenter} zoom={currentZoom} selectedStation={selectedStation} />
@@ -263,13 +460,16 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
           </>
         )}
 
-        {/* Station Markers with Clustering */}
+        {/* Station Markers with Clustering - Optimized */}
         <MarkerClusterGroup
-          chunkedLoading
+          chunkedLoading={true}
+          chunkDelay={100}
           maxClusterRadius={50}
           spiderfyOnMaxZoom={true}
           showCoverageOnHover={true}
           zoomToBoundsOnClick={true}
+          removeOutsideVisibleBounds={true}
+          animate={true}
           iconCreateFunction={(cluster) => {
             const count = cluster.getChildCount();
             let size = 'small';
@@ -284,69 +484,36 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
           }}
         >
           {validStations.map((station) => (
-            <Marker
+            <StationMarker
               key={station.id}
-              position={[station.latitude, station.longitude]}
-              icon={createCustomIcon(station, selectedStation?.id === station.id)}
-              eventHandlers={{
-                click: () => handleMarkerClick(station),
-              }}
-            >
-              <Popup>
-                <div className="station-popup">
-                  <h3 className="popup-title">{station.name}</h3>
-                  {station.brand && (
-                    <p className="popup-brand">{station.brand}</p>
-                  )}
-                  <p className="popup-address">
-                    📍 {station.address}
-                    {station.city && <>, {station.city}</>}
-                  </p>
-
-                  {station.fuelPrices && station.fuelPrices.length > 0 && (
-                    <div className="popup-prices">
-                      <strong>💰 Current Prices:</strong>
-                      <ul>
-                        {station.fuelPrices.slice(0, 3).map((fp, idx) => (
-                          <li key={idx}>
-                            <span>{fp.fuelType}</span>
-                            <span className="price">${fp.price.toFixed(2)}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <button
-                    className="popup-directions-btn"
-                    onClick={() => {
-                      window.open(
-                        `https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`,
-                        '_blank'
-                      );
-                    }}
-                  >
-                    🧭 Get Directions
-                  </button>
-                </div>
-              </Popup>
-            </Marker>
+              station={station}
+              isSelected={selectedStation?.id === station.id}
+              onClick={handleMarkerClick}
+            />
           ))}
         </MarkerClusterGroup>
       </MapContainer>
 
       {/* Map Controls */}
       <div className="map-controls">
-        {/* Recenter Button */}
-        {userLocation && (
-          <button
-            className="map-control-btn recenter-btn"
-            onClick={handleRecenter}
-            aria-label="Recenter map to your location"
-            title="Recenter to your location"
-          >
+        {/* Current Location Button with Safe Fallback */}
+        <button
+          className={`map-control-btn location-btn ${isLocating ? 'locating' : ''} ${userLocation ? 'has-location' : ''}`}
+          onClick={handleRecenter}
+          disabled={isLocating}
+          aria-label={userLocation ? 'Recenter map to your location' : 'Get your current location'}
+          title={userLocation ? 'Recenter to your location' : 'Get your current location'}
+        >
+          {isLocating ? (
+            <span className="location-spinner">⟳</span>
+          ) : (
             <span>📍</span>
-          </button>
+          )}
+        </button>
+        {locationError && (
+          <div className="location-error-tooltip" role="alert">
+            {locationError}
+          </div>
         )}
 
         {/* Fullscreen Toggle */}

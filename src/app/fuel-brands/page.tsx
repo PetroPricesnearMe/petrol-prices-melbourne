@@ -286,6 +286,9 @@ export default async function FuelBrandsPage() {
                             alt={`${brand.name} logo`}
                             fill
                             className="object-contain p-2"
+                            loading="lazy"
+                            sizes="48px"
+                            quality={85}
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
                             }}
@@ -344,6 +347,9 @@ export default async function FuelBrandsPage() {
                             alt={`${brand.name} logo`}
                             fill
                             className="object-contain p-2"
+                            loading="lazy"
+                            sizes="48px"
+                            quality={85}
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
                             }}

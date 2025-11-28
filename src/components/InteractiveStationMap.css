@@ -252,6 +252,73 @@
   transform: scale(0.95);
 }
 
+.map-control-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.location-btn.locating .location-spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+.location-btn.has-location {
+  background: #3B82F6;
+  color: white;
+  border-color: #2563EB;
+}
+
+.location-btn.has-location:hover {
+  background: #2563EB;
+}
+
+.location-error-tooltip {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: #EF4444;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  max-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  animation: slideDown 0.3s ease-out;
+}
+
+.location-error-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 16px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #EF4444;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .fullscreen .map-controls {
   top: 24px;
   right: 24px;

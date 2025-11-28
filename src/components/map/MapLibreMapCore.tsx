@@ -199,27 +199,34 @@ export default function MapLibreMapCore({
       const markerId = String(station.id);
       if (markersRef.current.has(markerId)) return;
 
-      // Create marker element
+      // Create marker element with consistent sizing
       const el = document.createElement('div');
       el.className = 'station-marker';
       el.style.cursor = 'pointer';
-      el.style.width = '32px';
-      el.style.height = '32px';
+      el.style.width = '36px';
+      el.style.height = '36px';
       el.style.position = 'relative';
+      // Improve mobile tap accuracy with larger touch target
+      el.style.minWidth = '44px';
+      el.style.minHeight = '44px';
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
 
-      // Create marker icon with logo or brand initial
+      // Create marker icon with logo or brand initial - consistent 36px size
       const markerContent = document.createElement('div');
       markerContent.className = 'station-marker-content';
-      markerContent.style.width = '100%';
-      markerContent.style.height = '100%';
+      markerContent.style.width = '36px';
+      markerContent.style.height = '36px';
       markerContent.style.borderRadius = '50%';
-      markerContent.style.border = '2px solid white';
+      markerContent.style.border = '3px solid white';
       markerContent.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
       markerContent.style.display = 'flex';
       markerContent.style.alignItems = 'center';
       markerContent.style.justifyContent = 'center';
       markerContent.style.backgroundColor = getBrandColor(station.brand);
-      markerContent.style.transition = 'transform 0.2s';
+      markerContent.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+      markerContent.style.flexShrink = '0';
 
       // Add logo if available, otherwise use brand initial
       const iconUrl = getMarkerIconUrl(station);
@@ -236,24 +243,37 @@ export default function MapLibreMapCore({
           markerContent.textContent = getBrandInitial(station);
           markerContent.style.color = 'white';
           markerContent.style.fontWeight = 'bold';
-          markerContent.style.fontSize = '14px';
+          markerContent.style.fontSize = '16px';
+          markerContent.style.lineHeight = '1';
         };
         markerContent.appendChild(img);
       } else {
         markerContent.textContent = getBrandInitial(station);
         markerContent.style.color = 'white';
         markerContent.style.fontWeight = 'bold';
-        markerContent.style.fontSize = '14px';
+        markerContent.style.fontSize = '16px';
+        markerContent.style.lineHeight = '1';
       }
 
-      // Hover effect
+      // Hover effect with smooth animation
       markerContent.addEventListener('mouseenter', () => {
-        markerContent.style.transform = 'scale(1.2)';
+        markerContent.style.transform = 'scale(1.15)';
+        markerContent.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
         setHoveredStation(station);
       });
       markerContent.addEventListener('mouseleave', () => {
         markerContent.style.transform = 'scale(1)';
+        markerContent.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
         setHoveredStation(null);
+      });
+      
+      // Touch events for mobile
+      markerContent.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+        markerContent.style.transform = 'scale(1.1)';
+      });
+      markerContent.addEventListener('touchend', () => {
+        markerContent.style.transform = 'scale(1)';
       });
 
       el.appendChild(markerContent);
@@ -288,8 +308,11 @@ export default function MapLibreMapCore({
     const el = document.createElement('div');
     el.className = 'cluster-marker';
     el.style.cursor = 'pointer';
-    el.style.width = '40px';
-    el.style.height = '40px';
+    // Consistent cluster size - 44px for better mobile tap accuracy
+    el.style.width = '44px';
+    el.style.height = '44px';
+    el.style.minWidth = '44px';
+    el.style.minHeight = '44px';
     el.style.borderRadius = '50%';
     el.style.backgroundColor = '#3b82f6';
     el.style.border = '3px solid white';
@@ -299,8 +322,19 @@ export default function MapLibreMapCore({
     el.style.justifyContent = 'center';
     el.style.color = 'white';
     el.style.fontWeight = 'bold';
-    el.style.fontSize = '14px';
+    el.style.fontSize = pointCount > 99 ? '12px' : '14px';
+    el.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
     el.textContent = pointCount.toString();
+    
+    // Hover effect for clusters
+    el.addEventListener('mouseenter', () => {
+      el.style.transform = 'scale(1.1)';
+      el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'scale(1)';
+      el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+    });
 
     const marker = new maplibregl.Marker({
       element: el,
@@ -351,28 +385,75 @@ export default function MapLibreMapCore({
         closeOnClick: false,
         anchor: 'bottom',
         offset: [0, -10],
+        className: 'station-popup-container',
       })
         .setLngLat([station.longitude, station.latitude])
         .setHTML(createPopupHTML(station))
         .addTo(mapRef.current!);
+      
+      // Add animation class for popup
+      const popupElement = popup.getElement();
+      if (popupElement) {
+        popupElement.classList.add('popup-enter');
+        // Trigger animation
+        setTimeout(() => {
+          popupElement.classList.add('popup-enter-active');
+        }, 10);
+      }
 
       popupRef.current = popup;
 
       popup.on('close', () => {
-        setSelectedPopupStation(null);
+        // Add exit animation
+        const popupElement = popup.getElement();
+        if (popupElement) {
+          popupElement.classList.remove('popup-enter-active');
+          popupElement.classList.add('popup-exit');
+          setTimeout(() => {
+            setSelectedPopupStation(null);
+          }, 200);
+        } else {
+          setSelectedPopupStation(null);
+        }
       });
     },
     [onStationSelect]
   );
 
 
-  // Create popup HTML
+  // Create popup HTML with fuel price previews
   const createPopupHTML = (station: Station): string => {
-    const cheapestPrice = station.fuelPrices
-      ? Object.values(station.fuelPrices)
-          .filter((p): p is number => typeof p === 'number' && p > 0)
-          .sort((a, b) => a - b)[0]
+    const fuelPrices = station.fuelPrices || {};
+    const priceEntries = Object.entries(fuelPrices)
+      .filter(([_, price]) => typeof price === 'number' && price > 0)
+      .sort(([_, a], [__, b]) => (a as number) - (b as number))
+      .slice(0, 4); // Show up to 4 fuel types
+
+    const cheapestPrice = priceEntries.length > 0 
+      ? (priceEntries[0][1] as number)
       : null;
+
+    // Format fuel type names
+    const formatFuelType = (type: string): string => {
+      const fuelNames: Record<string, string> = {
+        'unleaded': 'Unleaded',
+        'premium': 'Premium',
+        'diesel': 'Diesel',
+        'e10': 'E10',
+        'lpg': 'LPG',
+        '98': 'Premium 98',
+        '95': 'Premium 95',
+        '91': 'Unleaded 91',
+      };
+      return fuelNames[type.toLowerCase()] || type.charAt(0).toUpperCase() + type.slice(1);
+    };
+
+    // Get price color
+    const getPriceColor = (price: number): string => {
+      if (price < 200) return '#059669'; // green
+      if (price <= 210) return '#d97706'; // yellow
+      return '#dc2626'; // red
+    };
 
     return `
       <div class="station-popup" style="min-width: 280px; max-width: 320px;">
@@ -382,7 +463,7 @@ export default function MapLibreMapCore({
               <h3 style="font-weight: 700; font-size: 18px; color: #111827; margin: 0 0 4px 0;">${station.name}</h3>
               <p style="font-size: 14px; color: #6b7280; margin: 0;">${station.brand || 'Station'}</p>
             </div>
-            <button class="popup-close" style="background: none; border: none; color: #9ca3af; cursor: pointer; padding: 4px; line-height: 1;">
+            <button class="popup-close" style="background: none; border: none; color: #9ca3af; cursor: pointer; padding: 8px; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">
               <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -392,7 +473,7 @@ export default function MapLibreMapCore({
         ${station.address || station.suburb ? `
         <div style="padding: 16px; border-bottom: 1px solid #e5e7eb;">
           <div style="display: flex; align-items: start; gap: 8px;">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9ca3af; margin-top: 2px;">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9ca3af; margin-top: 2px; flex-shrink: 0;">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
@@ -403,19 +484,42 @@ export default function MapLibreMapCore({
           </div>
         </div>
         ` : ''}
-        ${cheapestPrice ? `
+        ${priceEntries.length > 0 ? `
         <div style="padding: 16px; border-bottom: 1px solid #e5e7eb;">
-          <h4 style="font-weight: 600; font-size: 14px; color: #111827; margin: 0 0 12px 0;">Current Prices</h4>
-          <div style="font-size: 16px; font-weight: 700; color: #059669;">
+          <h4 style="font-weight: 600; font-size: 14px; color: #111827; margin: 0 0 12px 0;">Fuel Prices</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            ${priceEntries.map(([type, price]) => {
+              const priceNum = price as number;
+              const isCheapest = priceNum === cheapestPrice;
+              return `
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px; background: ${isCheapest ? '#f0fdf4' : '#f9fafb'}; border-radius: 6px; border: ${isCheapest ? '1px solid #86efac' : '1px solid transparent'};">
+                <span style="font-size: 13px; font-weight: 500; color: #374151;">${formatFuelType(type)}</span>
+                <span style="font-size: 15px; font-weight: 700; color: ${getPriceColor(priceNum)};">
+                  ${priceNum.toFixed(1)}¢/L
+                </span>
+              </div>
+            `;
+            }).join('')}
+          </div>
+          ${priceEntries.length > 4 ? `
+          <p style="font-size: 12px; color: #6b7280; margin: 8px 0 0 0; text-align: center;">
+            +${Object.keys(fuelPrices).length - 4} more fuel types
+          </p>
+          ` : ''}
+        </div>
+        ` : cheapestPrice ? `
+        <div style="padding: 16px; border-bottom: 1px solid #e5e7eb;">
+          <h4 style="font-weight: 600; font-size: 14px; color: #111827; margin: 0 0 12px 0;">Current Price</h4>
+          <div style="font-size: 18px; font-weight: 700; color: ${getPriceColor(cheapestPrice)};">
             From ${cheapestPrice.toFixed(1)}¢/L
           </div>
         </div>
         ` : ''}
         <div style="padding: 16px; display: flex; gap: 8px;">
-          <a href="/stations/${station.id}" style="flex: 1; background: #3b82f6; color: white; text-align: center; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px; transition: background 0.2s;">
+          <a href="/stations/${station.id}" style="flex: 1; background: #3b82f6; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">
             View Details
           </a>
-          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${station.latitude},${station.longitude}`)}" target="_blank" rel="noopener noreferrer" style="flex: 1; background: #6b7280; color: white; text-align: center; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px; transition: background 0.2s;">
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${station.latitude},${station.longitude}`)}" target="_blank" rel="noopener noreferrer" style="flex: 1; background: #6b7280; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">
             Directions
           </a>
         </div>

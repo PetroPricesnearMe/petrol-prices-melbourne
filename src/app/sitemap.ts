@@ -185,6 +185,43 @@ async function getFuelBrandUrls(): Promise<MetadataRoute.Sitemap> {
   }
 }
 
+/**
+ * Get fuel type URLs
+ * Includes individual fuel type pages (unleaded, diesel, premium, e10, etc.)
+ */
+async function getFuelTypeUrls(): Promise<MetadataRoute.Sitemap> {
+  try {
+    // Standard fuel types available in Melbourne
+    const fuelTypes = [
+      { slug: 'unleaded', name: 'Unleaded 91', priority: 0.8 },
+      { slug: 'premium', name: 'Premium 95/98', priority: 0.75 },
+      { slug: 'diesel', name: 'Diesel', priority: 0.8 },
+      { slug: 'e10', name: 'E10 Ethanol', priority: 0.7 },
+      { slug: 'e85', name: 'E85 Flex Fuel', priority: 0.65 },
+      { slug: 'lpg', name: 'LPG', priority: 0.7 },
+      { slug: 'premium-diesel', name: 'Premium Diesel', priority: 0.7 },
+    ];
+
+    return fuelTypes.map((fuelType) => {
+      const url = `${baseUrl}/fuel-types/${fuelType.slug}`;
+      // Validate URL doesn't contain localhost
+      if (url.includes('localhost')) {
+        console.warn(`Warning: Skipping fuel type ${fuelType.slug} - URL contains localhost`);
+        return null;
+      }
+      return {
+        url,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: fuelType.priority,
+      };
+    }).filter((entry): entry is MetadataRoute.Sitemap[0] => entry !== null);
+  } catch (error) {
+    console.error('Error generating fuel type URLs for sitemap:', error);
+    return [];
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const currentDate = new Date();
 
@@ -257,6 +294,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/map`,
+      lastModified: currentDate,
+      changeFrequency: 'hourly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
       url: `${baseUrl}/chat`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
@@ -272,11 +321,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   // Fetch dynamic routes
-  const [stationUrls, directoryUrls, regionUrls, brandUrls] = await Promise.all([
+  const [stationUrls, directoryUrls, regionUrls, brandUrls, fuelTypeUrls] = await Promise.all([
     getStationUrls(),
     getDirectoryUrls(),
     getRegionUrls(),
     getFuelBrandUrls(),
+    getFuelTypeUrls(),
   ]);
 
   // Combine all routes and filter out any localhost URLs
@@ -285,6 +335,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...directoryUrls,
     ...regionUrls,
     ...brandUrls,
+    ...fuelTypeUrls,
     ...stationUrls,
   ];
 

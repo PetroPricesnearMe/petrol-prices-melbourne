@@ -170,20 +170,39 @@ export async function fetchPricesForStation(
 }
 
 /**
- * Search stations by name or address
+ * Search stations by name or address with caching
  */
 export async function searchStations(query: string): Promise<PetrolStation[]> {
+  // Use cache for search results
+  const { searchCache, generateCacheKey } = await import('@/lib/api/cache');
+  const cacheKey = generateCacheKey('search_stations', { query: query.toLowerCase().trim() });
+  
+  const cached = searchCache.get<PetrolStation[]>(cacheKey);
+  if (cached) {
+    logger.debug(`Search cache hit for: ${query}`);
+    return cached;
+  }
+
   const { stations } = await fetchPetrolStations();
 
-  const lowerQuery = query.toLowerCase();
+  const lowerQuery = query.toLowerCase().trim();
+  
+  if (!lowerQuery) {
+    return [];
+  }
 
-  return stations.filter((station) => {
+  const results = stations.filter((station) => {
     return (
       station.Station_Name?.toLowerCase().includes(lowerQuery) ||
       station.Address?.toLowerCase().includes(lowerQuery) ||
       station.City?.toLowerCase().includes(lowerQuery)
     );
   });
+
+  // Cache search results for 15 minutes
+  searchCache.set(cacheKey, results, 15 * 60 * 1000);
+  
+  return results;
 }
 
 /**

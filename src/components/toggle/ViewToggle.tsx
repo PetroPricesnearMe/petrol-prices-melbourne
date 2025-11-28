@@ -177,13 +177,13 @@ export function DirectoryView({
       }}
     >
       <AnimatePresence mode="wait">
-        <motion.div
-          key={view}
-          className={cn(
-            view === 'grid'
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-              : 'flex flex-col space-y-4'
-          )}
+          <motion.div
+            key={view}
+            className={cn(
+              view === 'grid'
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8'
+                : 'flex flex-col space-y-4'
+            )}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
@@ -199,13 +199,13 @@ export function DirectoryView({
             <motion.div
               key={itemKey}
               variants={itemVariants}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{
-                duration: 0.3,
-                delay: index * 0.05,
-                ease: 'easeOut',
+                duration: 0.4,
+                delay: index * 0.03,
+                ease: [0.4, 0, 0.2, 1],
               }}
               layout
             >
@@ -238,52 +238,65 @@ export function StationCardGrid({ station, onCardClickAction }: { station: Stati
   };
 
   return (
-    <Link href={`/stations/${station.id}`} className="block h-full">
+    <Link href={`/stations/${station.id}`} className="block h-full group">
       <motion.div
-        className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all duration-300 h-full"
+        className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:shadow-primary-500/10 dark:hover:shadow-primary-500/20 hover:-translate-y-2 cursor-pointer transition-all duration-300 ease-out h-full flex flex-col"
         onClick={handleCardClick}
-        whileHover={{ scale: 1.02 }}
+        whileHover={{ 
+          scale: 1.02,
+          y: -8,
+        }}
         whileTap={{ scale: 0.98 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.4,
+          ease: [0.4, 0, 0.2, 1],
+        }}
         layout
       >
       {/* Brand Header */}
-      <div className="h-20 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center px-4">
-        <span className="text-lg font-bold text-gray-600 dark:text-gray-300 text-center truncate w-full">
+      <div className="h-24 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center px-4 transition-colors duration-300 group-hover:from-primary-50 group-hover:to-primary-100 dark:group-hover:from-primary-900/30 dark:group-hover:to-primary-800/30">
+        <span className="text-lg font-bold text-gray-700 dark:text-gray-200 text-center truncate w-full transition-colors duration-300 group-hover:text-primary-700 dark:group-hover:text-primary-300">
           {station.brand || 'Station'}
         </span>
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-4">
-        <div>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+      <div className="p-6 space-y-4 flex-1 flex flex-col">
+        <div className="flex-1">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 min-h-[3.5rem]">
             {station.name}
           </h3>
-          <span className="badge badge-primary text-sm">
+          <span className="inline-block badge badge-primary text-sm mb-3">
             {station.brand}
           </span>
         </div>
 
-        <div className="text-sm text-gray-600 dark:text-gray-400">
-          <p>📍 {station.address}</p>
-          <p className="mt-1">{station.suburb} {station.postcode}</p>
+        <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+          <p className="line-clamp-1">📍 {station.address}</p>
+          <p className="text-gray-500 dark:text-gray-500">{station.suburb} {station.postcode}</p>
         </div>
 
         {/* Fuel Prices */}
-        <div>
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+        <div className="mt-auto">
+          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
             Current Prices
           </h4>
-          <div className="space-y-1">
+          <div className="space-y-2">
             {station.fuelPrices && Object.entries(station.fuelPrices).slice(0, 3).map(([type, price]) => {
               if (price === null) return null;
-              const priceColor = price < 200 ? 'text-success-600' : price <= 210 ? 'text-warning-600' : 'text-error-600';
+              const priceColor = price < 200 
+                ? 'text-success-600 dark:text-success-400' 
+                : price <= 210 
+                ? 'text-warning-600 dark:text-warning-400' 
+                : 'text-error-600 dark:text-error-400';
               return (
-                <div key={type} className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400 capitalize text-sm">
+                <div key={type} className="flex justify-between items-center py-1.5 px-2 rounded-md bg-gray-50 dark:bg-gray-900/50 transition-colors duration-200 group-hover:bg-gray-100 dark:group-hover:bg-gray-800">
+                  <span className="text-gray-600 dark:text-gray-400 capitalize text-sm font-medium">
                     {type === 'premium95' ? 'Premium 95' : type === 'premium98' ? 'Premium 98' : type}
                   </span>
-                  <span className={cn('text-sm font-bold', priceColor)}>
+                  <span className={cn('text-sm font-bold transition-transform duration-200 group-hover:scale-105', priceColor)}>
                     {price.toFixed(1)}¢
                   </span>
                 </div>
@@ -294,8 +307,8 @@ export function StationCardGrid({ station, onCardClickAction }: { station: Stati
       </div>
 
       {/* Footer */}
-      <div className="p-6 border-t border-gray-200 dark:border-gray-700">
-        <div className="btn btn-primary w-full btn-sm pointer-events-none">
+      <div className="p-6 pt-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50 transition-colors duration-300 group-hover:bg-primary-50/50 dark:group-hover:bg-primary-900/20">
+        <div className="btn btn-primary w-full btn-sm pointer-events-none transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary-500/30">
           View Details →
         </div>
       </div>

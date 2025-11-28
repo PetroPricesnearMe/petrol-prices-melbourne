@@ -395,18 +395,20 @@ const StationCards = () => {
                           fill
                           sizes="(max-width: 640px) 64px, (max-width: 1024px) 80px, 96px"
                           className="object-contain transition-transform duration-300 group-hover:scale-110"
+                          loading="lazy"
+                          quality={85}
                         />
                       </div>
                     </div>
                   </header>
 
                   {/* Card Content */}
-                  <div className="flex-1 flex flex-col p-5 sm:p-6 space-y-4">
-                    <div className="space-y-2">
+                  <div className="flex-1 flex flex-col p-5 sm:p-6 space-y-5 sm:space-y-4">
+                    <div className="space-y-2.5 sm:space-y-2">
                       <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-primary-600 transition-colors">
                         {station.name}
                       </h3>
-                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed line-clamp-2">
+                      <p className="text-sm sm:text-xs text-gray-600 leading-relaxed line-clamp-2">
                         {station.address && `${station.address}, `}
                         {station.city && `${station.city} `}
                         {station.postalCode && station.postalCode}
@@ -414,46 +416,46 @@ const StationCards = () => {
                     </div>
 
                     {/* Fuel Prices - Touch-Friendly */}
-                    <div className="grid grid-cols-2 gap-3 sm:gap-4 flex-1">
+                    <div className="grid grid-cols-2 gap-4 sm:gap-4 flex-1">
                       {/* Unleaded Price */}
-                      <div className="relative flex flex-col items-center justify-center p-3 sm:p-4 bg-gradient-to-br from-green-50 to-white border-2 border-green-200 rounded-2xl transition-all duration-300 hover:border-green-400 hover:shadow-md hover:-translate-y-1 min-h-[100px] touch-manipulation">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-green-500 to-green-600 text-white text-xs font-bold rounded-lg shadow-sm">
+                      <div className="relative flex flex-col items-center justify-center p-4 sm:p-4 bg-gradient-to-br from-green-50 to-white border-2 border-green-200 rounded-2xl transition-all duration-300 hover:border-green-400 hover:shadow-md hover:-translate-y-1 active:scale-[0.98] min-h-[120px] sm:min-h-[100px] touch-manipulation">
+                        <div className="flex items-center gap-2 mb-2.5 sm:mb-2">
+                          <span className="flex items-center justify-center w-7 h-7 sm:w-6 sm:h-6 bg-gradient-to-br from-green-500 to-green-600 text-white text-xs sm:text-xs font-bold rounded-lg shadow-sm">
                             U
                           </span>
-                          <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                          <span className="text-xs sm:text-xs font-semibold text-gray-700 uppercase tracking-wide">
                             Unleaded
                           </span>
                         </div>
-                        <div className="text-xl sm:text-2xl font-bold text-green-600">
+                        <div className="text-2xl sm:text-2xl font-bold text-green-600">
                           {unleadedPrice && unleadedPrice.price ? formatPrice(unleadedPrice.price) : 'N/A'}
                         </div>
                       </div>
 
                       {/* Diesel Price */}
-                      <div className="relative flex flex-col items-center justify-center p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 rounded-2xl transition-all duration-300 hover:border-blue-400 hover:shadow-md hover:-translate-y-1 min-h-[100px] touch-manipulation">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="flex items-center justify-center w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs font-bold rounded-lg shadow-sm">
+                      <div className="relative flex flex-col items-center justify-center p-4 sm:p-4 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 rounded-2xl transition-all duration-300 hover:border-blue-400 hover:shadow-md hover:-translate-y-1 active:scale-[0.98] min-h-[120px] sm:min-h-[100px] touch-manipulation">
+                        <div className="flex items-center gap-2 mb-2.5 sm:mb-2">
+                          <span className="flex items-center justify-center w-7 h-7 sm:w-6 sm:h-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xs sm:text-xs font-bold rounded-lg shadow-sm">
                             D
                           </span>
-                          <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                          <span className="text-xs sm:text-xs font-semibold text-gray-700 uppercase tracking-wide">
                             Diesel
                           </span>
                         </div>
-                        <div className="text-xl sm:text-2xl font-bold text-blue-600">
+                        <div className="text-2xl sm:text-2xl font-bold text-blue-600">
                           {dieselPrice && dieselPrice.price ? formatPrice(dieselPrice.price) : 'N/A'}
                         </div>
                       </div>
                     </div>
 
                     {/* Card Actions - Touch-Friendly Buttons */}
-                    <div className="grid grid-cols-2 gap-3 pt-4 border-t border-gray-100">
+                    <div className="grid grid-cols-2 gap-4 sm:gap-3 pt-5 sm:pt-4 border-t border-gray-100">
                       {station.latitude && station.longitude ? (
                         <a
                           href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[44px] touch-manipulation active:scale-95"
+                          className="flex items-center justify-center gap-2 px-4 sm:px-4 py-4 sm:py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm sm:text-sm font-bold rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[48px] sm:min-h-[44px] touch-manipulation active:scale-95"
                         >
                           <span aria-hidden="true">🧭</span>
                           <span>Directions</span>
@@ -461,13 +463,13 @@ const StationCards = () => {
                       ) : (
                         <button 
                           disabled 
-                          className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-300 text-gray-500 text-sm font-bold rounded-xl cursor-not-allowed min-h-[44px]"
+                          className="flex items-center justify-center gap-2 px-4 sm:px-4 py-4 sm:py-3 bg-gray-300 text-gray-500 text-sm sm:text-sm font-bold rounded-xl cursor-not-allowed min-h-[48px] sm:min-h-[44px]"
                         >
                           <span aria-hidden="true">📍</span>
                           <span>No Location</span>
                         </button>
                       )}
-                      <button className="flex items-center justify-center gap-2 px-4 py-3 bg-white text-primary-600 text-sm font-bold rounded-xl border-2 border-primary-500 hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[44px] touch-manipulation active:scale-95">
+                      <button className="flex items-center justify-center gap-2 px-4 sm:px-4 py-4 sm:py-3 bg-white text-primary-600 text-sm sm:text-sm font-bold rounded-xl border-2 border-primary-500 hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[48px] sm:min-h-[44px] touch-manipulation active:scale-95">
                         <span aria-hidden="true">ℹ️</span>
                         <span>More Info</span>
                       </button>

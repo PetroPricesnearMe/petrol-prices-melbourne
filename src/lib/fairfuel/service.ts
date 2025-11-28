@@ -107,7 +107,18 @@ async function fetchFairFuelPriceDetails(): Promise<FairFuelPriceResponse> {
     if (error instanceof DOMException && error.name === 'AbortError') {
       const message = `[FairFuel] Request timed out after ${timeout}ms`;
       logger.error(message);
-      throw new Error(message);
+      // Create a more user-friendly error
+      const timeoutError = new Error('Request timeout - The server took too long to respond. Please try again.');
+      timeoutError.name = 'TimeoutError';
+      throw timeoutError;
+    }
+
+    // Check for network errors
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      const networkError = new Error('Network error - Unable to connect to the server. Please check your internet connection.');
+      networkError.name = 'NetworkError';
+      logger.error('[FairFuel] Network error', error);
+      throw networkError;
     }
 
     logger.error('[FairFuel] Failed to fetch prices', error);

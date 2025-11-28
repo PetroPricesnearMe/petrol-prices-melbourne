@@ -196,23 +196,103 @@ export function generateRegionMetadata(
 
 /**
  * Generate metadata for suburb page
+ * Enhanced SEO-optimized metadata for suburb fuel price landing pages
  */
 export function generateSuburbMetadata(
   suburb: string,
-  stationCount: number
+  stationCount: number,
+  averagePrice?: number,
+  lowestPrice?: number
 ): Metadata {
-  const title = `${suburb} Petrol Stations - Fuel Prices`;
-  const description = `Find ${stationCount}+ petrol stations in ${suburb} with real-time fuel prices. Compare prices and find the cheapest fuel near you.`;
+  const suburbFormatted = suburb
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+  
+  const suburbSlug = suburb.toLowerCase().replace(/\s+/g, '-');
+  const priceText = averagePrice
+    ? `Average ${averagePrice.toFixed(1)}¢/L`
+    : lowestPrice
+    ? `From ${lowestPrice.toFixed(1)}¢/L`
+    : 'Real-Time Prices';
 
-  return generateBaseMetadata({
+  // SEO-optimized title with suburb name and key terms
+  const title = `${suburbFormatted} Fuel Prices - Petrol Stations & Live Prices | Melbourne`;
+  
+  // Enhanced description with price information and value proposition
+  const description = `Find the cheapest petrol prices in ${suburbFormatted}, Melbourne. Compare real-time fuel prices from ${stationCount} petrol stations. ${priceText}. Save up to 20c/L on unleaded, diesel, and premium fuel. Updated every 24 hours.`;
+
+  // Comprehensive keyword targeting
+  const keywords = [
+    `${suburbFormatted} fuel prices`,
+    `${suburbFormatted} petrol prices`,
+    `petrol stations ${suburbFormatted}`,
+    `cheap fuel ${suburbFormatted}`,
+    `${suburbFormatted} melbourne petrol`,
+    `fuel prices ${suburbFormatted} vic`,
+    `unleaded prices ${suburbFormatted}`,
+    `diesel prices ${suburbFormatted}`,
+    `premium fuel ${suburbFormatted}`,
+    `petrol near me ${suburbFormatted}`,
+    `${suburbFormatted} fuel finder`,
+    `best petrol prices ${suburbFormatted}`,
+    `live fuel prices ${suburbFormatted}`,
+    `fuel price comparison ${suburbFormatted}`,
+    `${suburbFormatted} service station`,
+  ];
+
+  const path = `suburbs/${suburbSlug}`;
+  const baseUrl = getBaseUrl();
+  const canonicalUrl = generateCanonicalUrl(path);
+  const imageUrl = `${baseUrl}/images/og/suburb-${suburbSlug}.jpg`;
+
+  return {
     title,
     description,
-    path: `directory/${suburb.toLowerCase().replace(/\s+/g, '-')}`,
-    keywords: [
-      `${suburb} petrol stations`,
-      `${suburb} fuel prices`,
-      'petrol stations',
-      'fuel prices',
-    ],
-  });
+    keywords,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      type: 'website',
+      locale: 'en_AU',
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      title,
+      description,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `Petrol Stations and Fuel Prices in ${suburbFormatted}, Melbourne`,
+          type: 'image/jpeg',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
+      creator: '@ppnmelbourne',
+      site: '@ppnmelbourne',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    other: {
+      'geo.region': 'AU-VIC',
+      'geo.placename': suburbFormatted,
+      'geo.position': 'latitude;longitude', // Should be populated with actual coordinates
+    },
+  };
 }

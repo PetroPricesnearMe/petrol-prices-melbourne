@@ -10,9 +10,10 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getAllStations } from '@/lib/data/stations';
+import { debounceAsync } from '@/lib/utils/debounce';
 import type { Station } from '@/types/station.d';
 
 // ============================================================================
@@ -67,6 +68,22 @@ export function useInfiniteStations(
   } = options;
 
   const [loadedPages, setLoadedPages] = useState(0);
+  const [debouncedSearch, setDebouncedSearch] = useState(filters.search);
+
+  // Debounce search filter to avoid excessive filtering on rapid input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(filters.search);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [filters.search]);
+
+  // Use debounced search in filters
+  const effectiveFilters = useMemo(
+    () => ({ ...filters, search: debouncedSearch }),
+    [filters, debouncedSearch]
+  );
 
   // Fetch stations with infinite query
   const {
@@ -79,16 +96,17 @@ export function useInfiniteStations(
     fetchNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: ['stations', 'infinite', filters],
+    queryKey: ['stations', 'infinite', effectiveFilters],
     queryFn: async ({ pageParam = 0 }) => {
+      const allStations = await getAllStations();
       const allStations = await getAllStations();
       
       // Apply filters
       let filteredStations = [...allStations];
       
-      // Search filter
-      if (filters.search) {
-        const search = filters.search.toLowerCase();
+      // Search filter (using debounced value)
+      if (effectiveFilters.search) {
+        const search = effectiveFilters.search.toLowerCase();
         filteredStations = filteredStations.filter(
           (s) =>
             s.name?.toLowerCase().includes(search) ||
@@ -99,67 +117,67 @@ export function useInfiniteStations(
       }
 
       // Brand filter
-      if (filters.brand && filters.brand !== 'all') {
-        filteredStations = filteredStations.filter((s) => s.brand === filters.brand);
+      if (effectiveFilters.brand && effectiveFilters.brand !== 'all') {
+        filteredStations = filteredStations.filter((s) => s.brand === effectiveFilters.brand);
       }
 
       // Suburb filter
-      if (filters.suburb && filters.suburb !== 'all') {
-        filteredStations = filteredStations.filter((s) => s.suburb === filters.suburb);
+      if (effectiveFilters.suburb && effectiveFilters.suburb !== 'all') {
+        filteredStations = filteredStations.filter((s) => s.suburb === effectiveFilters.suburb);
       }
 
       // Fuel type filter (only show stations with selected fuel type)
-      if (filters.fuelType && filters.fuelType !== 'all') {
+      if (effectiveFilters.fuelType && effectiveFilters.fuelType !== 'all') {
         filteredStations = filteredStations.filter(
-          (s) => s.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] !== null
+          (s) => s.fuelPrices?.[effectiveFilters.fuelType as keyof Station['fuelPrices']] !== null
         );
       }
 
       // Price filter
-      if (filters.priceMax) {
+      if (effectiveFilters.priceMax) {
         // If fuelType is 'all', check if any fuel price is within the max price
-        if (filters.fuelType === 'all') {
+        if (effectiveFilters.fuelType === 'all') {
           filteredStations = filteredStations.filter((s) => {
             const prices = Object.values(s.fuelPrices || {});
-            return prices.some((price) => price !== null && price <= filters.priceMax!);
+            return prices.some((price) => price !== null && price <= effectiveFilters.priceMax!);
           });
         } else {
           filteredStations = filteredStations.filter((s) => {
-            const price = s.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']];
-            return price !== null && price <= filters.priceMax!;
+            const price = s.fuelPrices?.[effectiveFilters.fuelType as keyof Station['fuelPrices']];
+            return price !== null && price <= effectiveFilters.priceMax!;
           });
         }
       }
 
       // Sort
-      if (filters.sortBy) {
+      if (effectiveFilters.sortBy) {
         filteredStations.sort((a, b) => {
-          switch (filters.sortBy) {
+          switch (effectiveFilters.sortBy) {
             case 'price-low': {
               // If fuelType is 'all', use the minimum price across all fuel types
-              if (filters.fuelType === 'all') {
+              if (effectiveFilters.fuelType === 'all') {
                 const pricesA = Object.values(a.fuelPrices || {}).filter((p): p is number => p !== null);
                 const pricesB = Object.values(b.fuelPrices || {}).filter((p): p is number => p !== null);
                 const minPriceA = pricesA.length > 0 ? Math.min(...pricesA) : Infinity;
                 const minPriceB = pricesB.length > 0 ? Math.min(...pricesB) : Infinity;
                 return minPriceA - minPriceB;
               } else {
-                const priceA = a.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || Infinity;
-                const priceB = b.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || Infinity;
+                const priceA = a.fuelPrices?.[effectiveFilters.fuelType as keyof Station['fuelPrices']] || Infinity;
+                const priceB = b.fuelPrices?.[effectiveFilters.fuelType as keyof Station['fuelPrices']] || Infinity;
                 return priceA - priceB;
               }
             }
             case 'price-high': {
               // If fuelType is 'all', use the maximum price across all fuel types
-              if (filters.fuelType === 'all') {
+              if (effectiveFilters.fuelType === 'all') {
                 const pricesA = Object.values(a.fuelPrices || {}).filter((p): p is number => p !== null);
                 const pricesB = Object.values(b.fuelPrices || {}).filter((p): p is number => p !== null);
                 const maxPriceA = pricesA.length > 0 ? Math.max(...pricesA) : 0;
                 const maxPriceB = pricesB.length > 0 ? Math.max(...pricesB) : 0;
                 return maxPriceB - maxPriceA;
               } else {
-                const priceA = a.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || 0;
-                const priceB = b.fuelPrices?.[filters.fuelType as keyof Station['fuelPrices']] || 0;
+                const priceA = a.fuelPrices?.[effectiveFilters.fuelType as keyof Station['fuelPrices']] || 0;
+                const priceB = b.fuelPrices?.[effectiveFilters.fuelType as keyof Station['fuelPrices']] || 0;
                 return priceB - priceA;
               }
             }

@@ -3,6 +3,16 @@
   "version": "2.0.0",
   "description": "Enterprise-level petrol station finder with real-time fuel prices",
   "private": true,
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "*.sass",
+    "*.less",
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.less"
+  ],
   "engines": {
     "node": "22.x",
     "npm": ">=10.0.0"

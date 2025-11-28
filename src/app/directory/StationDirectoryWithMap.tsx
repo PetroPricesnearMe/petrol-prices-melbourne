@@ -12,9 +12,10 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
+import { useViewMode } from '@/hooks/useViewMode';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
 // Dynamically import map components to avoid SSR issues
@@ -81,8 +82,6 @@ interface SearchFilters {
   priceMax: string;
 }
 
-type ViewMode = 'list' | 'grid' | 'map';
-
 const ITEMS_PER_PAGE = 24;
 
 export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
@@ -96,7 +95,14 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  
+  // Use persistent view mode hook with URL sync
+  const [viewMode, setViewMode] = useViewMode({
+    defaultView: 'grid',
+    syncWithUrl: true,
+    urlParam: 'view',
+  });
+  
   const [isMapFullScreen, setIsMapFullScreen] = useState(false);
   const [selectedStation, setSelectedStation] = useState<any>(null);
 

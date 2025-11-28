@@ -8,31 +8,60 @@
   font-family: inherit;
 }
 
-/* Station markers */
+/* Station markers - consistent sizing */
 .station-marker {
   transition: transform 0.2s ease;
+  width: 36px;
+  height: 36px;
+  /* Improve mobile tap accuracy */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .station-marker:hover {
-  transform: scale(1.15);
+  transform: scale(1.1);
   z-index: 1000;
 }
 
 .station-marker-content {
+  width: 36px;
+  height: 36px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
 }
 
 .station-marker-content:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Cluster markers */
+/* Mobile touch improvements */
+@media (max-width: 640px) {
+  .station-marker {
+    min-width: 48px;
+    min-height: 48px;
+  }
+  
+  .station-marker-content {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Cluster markers - consistent sizing */
 .cluster-marker {
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .cluster-marker:hover {
   transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Popup styles */
@@ -40,17 +69,58 @@
   padding: 0;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
 .maplibregl-popup-close-button {
   padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
   font-size: 18px;
   color: #9ca3af;
-  transition: color 0.2s;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
 }
 
 .maplibregl-popup-close-button:hover {
   color: #374151;
+  background: #f3f4f6;
+}
+
+/* Popup animations */
+.station-popup-container {
+  animation: popupFadeIn 0.2s ease-out;
+}
+
+.station-popup-container.popup-enter {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}
+
+.station-popup-container.popup-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.station-popup-container.popup-exit {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+  transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Navigation controls */
@@ -110,18 +180,34 @@
 /* Responsive adjustments */
 @media (max-width: 640px) {
   .maplibregl-popup-content {
-    max-width: 280px;
+    max-width: calc(100vw - 32px);
+    min-width: 280px;
   }
 
   .station-marker {
-    width: 28px;
-    height: 28px;
+    width: 40px;
+    height: 40px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .station-marker-content {
+    width: 40px;
+    height: 40px;
   }
 
   .cluster-marker {
-    width: 36px;
-    height: 36px;
-    font-size: 12px;
+    width: 44px;
+    height: 44px;
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 13px;
+  }
+  
+  /* Improve popup button tap targets on mobile */
+  .station-popup a,
+  .station-popup button {
+    min-height: 48px;
   }
 }
 
