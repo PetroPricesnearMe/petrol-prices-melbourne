@@ -35,6 +35,7 @@ export default [
             "**/scripts/",
             "**/*.md",
             "!**/README.md",
+            "lib/**", // Ignore legacy lib/ directory outside src/
         ],
     },
     ...compat.extends("next/core-web-vitals"),
