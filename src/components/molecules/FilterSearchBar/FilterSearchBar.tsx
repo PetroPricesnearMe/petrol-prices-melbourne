@@ -18,9 +18,10 @@
 
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
 import { FilterDropdown } from './FilterDropdown';
+import { SuburbAutoSuggest } from '../SuburbAutoSuggest/SuburbAutoSuggest';
 import type {
   FilterSearchBarProps,
   FilterSearchBarState,
@@ -109,6 +110,10 @@ export function FilterSearchBar({
     };
   });
 
+  // Suburb auto-suggest state
+  const [showSuburbSuggestions, setShowSuburbSuggestions] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   // Debounced search value
   const debouncedSearch = useDebounce(state.search, debounceDelay);
 
@@ -171,6 +176,18 @@ export function FilterSearchBar({
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
       setState((prev) => ({ ...prev, search: newValue }));
+      // Show suggestions when user types
+      setShowSuburbSuggestions(newValue.length > 0);
+    },
+    []
+  );
+
+  // Handle suburb selection from auto-suggest
+  const handleSuburbSelect = useCallback(
+    (suburb: string) => {
+      setState((prev) => ({ ...prev, search: suburb }));
+      setShowSuburbSuggestions(false);
+      searchInputRef.current?.blur();
     },
     []
   );
@@ -275,7 +292,7 @@ export function FilterSearchBar({
     >
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 md:py-5 lg:px-8">
         <div className="flex flex-col gap-3 md:gap-4 lg:flex-row">
-          {/* Search Input */}
+          {/* Search Input with Suburb Auto-Suggest */}
           <div className="min-w-0 flex-1">
             <div className="relative">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 md:pl-4">
@@ -295,9 +312,19 @@ export function FilterSearchBar({
                 </svg>
               </div>
               <input
+                ref={searchInputRef}
                 type="search"
                 value={state.search}
                 onChange={handleSearchChange}
+                onFocus={() => setShowSuburbSuggestions(state.search.length > 0 || true)}
+                onBlur={(e) => {
+                  // Delay hiding to allow click on suggestion
+                  setTimeout(() => {
+                    if (!e.currentTarget.contains(document.activeElement)) {
+                      setShowSuburbSuggestions(false);
+                    }
+                  }, 200);
+                }}
                 placeholder={searchPlaceholder}
                 disabled={disabled}
                 className={cn(
@@ -317,15 +344,19 @@ export function FilterSearchBar({
                 )}
                 aria-label="Search input"
                 aria-describedby="search-description"
+                aria-autocomplete="list"
+                aria-expanded={showSuburbSuggestions}
+                aria-controls="suburb-suggestions"
               />
               {state.search && (
                 <button
                   type="button"
-                  onClick={() =>
+                  onClick={() => {
                     handleSearchChange({
                       target: { value: '' },
-                    } as React.ChangeEvent<HTMLInputElement>)
-                  }
+                    } as React.ChangeEvent<HTMLInputElement>);
+                    setShowSuburbSuggestions(false);
+                  }}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 md:pr-4"
                   aria-label="Clear search"
                 >
@@ -344,9 +375,22 @@ export function FilterSearchBar({
                   </svg>
                 </button>
               )}
+
+              {/* Suburb Auto-Suggest Dropdown */}
+              {showSuburbSuggestions && (
+                <SuburbAutoSuggest
+                  query={state.search}
+                  onSelect={handleSuburbSelect}
+                  onClose={() => setShowSuburbSuggestions(false)}
+                  maxResults={8}
+                  minChars={2}
+                  showPopular={true}
+                  className="top-full mt-1"
+                />
+              )}
             </div>
             <p id="search-description" className="sr-only">
-              Search for stations and locations. Results update as you type.
+              Search for stations and locations. Type a suburb name for suggestions. Results update as you type.
             </p>
           </div>
 

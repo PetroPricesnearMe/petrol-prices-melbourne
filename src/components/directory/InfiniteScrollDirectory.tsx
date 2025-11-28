@@ -85,16 +85,39 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
   return (
     <div className={cn('bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm', className)}>
       <div className="container mx-auto px-4 py-6 space-y-4">
-        {/* Search Bar */}
-        <div className="mb-4">
-          <input
-            type="search"
-            placeholder="Search stations by name, brand, suburb, or address..."
-            value={(filters.search as string) || ''}
-            onChange={(e) => handleFilterChange('search', e.target.value)}
-            className="input w-full"
-            aria-label="Search stations"
-          />
+        {/* Search Bar with Suburb Auto-Suggest */}
+        <div className="mb-4 relative">
+          <div className="relative">
+            <input
+              type="search"
+              placeholder="Search stations by name, brand, suburb, or address..."
+              value={(filters.search as string) || ''}
+              onChange={(e) => handleFilterChange('search', e.target.value)}
+              onFocus={(e) => {
+                // Show suggestions on focus
+                const input = e.currentTarget;
+                if (input.value.length >= 2 || input.value.length === 0) {
+                  // Will be handled by SuburbAutoSuggest component
+                }
+              }}
+              className="input w-full pr-10"
+              aria-label="Search stations"
+              aria-autocomplete="list"
+            />
+            {/* Suburb Auto-Suggest */}
+            {(filters.search as string)?.length >= 2 || (filters.search as string)?.length === 0 ? (
+              <SuburbAutoSuggest
+                query={(filters.search as string) || ''}
+                onSelect={(suburb) => {
+                  handleFilterChange('search', suburb);
+                }}
+                maxResults={6}
+                minChars={2}
+                showPopular={true}
+                className="top-full mt-1"
+              />
+            ) : null}
+          </div>
         </div>
 
         {/* Filter Toggle */}

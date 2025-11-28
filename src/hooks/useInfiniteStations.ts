@@ -99,7 +99,6 @@ export function useInfiniteStations(
     queryKey: ['stations', 'infinite', effectiveFilters],
     queryFn: async ({ pageParam = 0 }) => {
       const allStations = await getAllStations();
-      const allStations = await getAllStations();
       
       // Apply filters
       let filteredStations = [...allStations];
