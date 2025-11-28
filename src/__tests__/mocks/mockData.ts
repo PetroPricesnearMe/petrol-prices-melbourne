@@ -5,7 +5,7 @@
  */
 
 import type { PetrolStation, FuelPrice} from '@/types/index';
-import { FuelType, PriceTrend } from '@/types/index';
+import { FuelType, PriceTrend, StationCategory } from '@/types/index';
 
 export const mockFuelPrices: FuelPrice[] = [
   {
@@ -37,6 +37,7 @@ export const mockFuelPrices: FuelPrice[] = [
 export const mockStations: PetrolStation[] = [
   {
     id: 1,
+    name: 'Shell Melbourne CBD',
     stationName: 'Shell Melbourne CBD',
     address: '123 Collins St',
     city: 'Melbourne',
@@ -45,14 +46,15 @@ export const mockStations: PetrolStation[] = [
     country: 'Australia',
     latitude: -37.8136,
     longitude: 144.9631,
-    brand: ['Shell'],
-    category: 'petrol-station',
+    brand: 'Shell',
+    category: StationCategory.PETROL_STATION,
     locationDetails: 'Corner of Collins and Swanston',
     fuelPrices: [mockFuelPrices[0], mockFuelPrices[2]],
     distance: 0.5,
   },
   {
     id: 2,
+    name: 'BP Southbank',
     stationName: 'BP Southbank',
     address: '456 Southbank Blvd',
     city: 'Melbourne',
@@ -61,13 +63,14 @@ export const mockStations: PetrolStation[] = [
     country: 'Australia',
     latitude: -37.8226,
     longitude: 144.9670,
-    brand: ['BP'],
-    category: 'petrol-station',
+    brand: 'BP',
+    category: StationCategory.PETROL_STATION,
     fuelPrices: [mockFuelPrices[0], mockFuelPrices[1]],
     distance: 1.2,
   },
   {
     id: 3,
+    name: '7-Eleven Richmond',
     stationName: '7-Eleven Richmond',
     address: '789 Bridge Rd',
     city: 'Richmond',
@@ -76,8 +79,8 @@ export const mockStations: PetrolStation[] = [
     country: 'Australia',
     latitude: -37.8197,
     longitude: 145.0015,
-    brand: ['7-Eleven'],
-    category: 'petrol-station',
+    brand: '7-Eleven',
+    category: StationCategory.PETROL_STATION,
     fuelPrices: mockFuelPrices,
     distance: 2.8,
   },

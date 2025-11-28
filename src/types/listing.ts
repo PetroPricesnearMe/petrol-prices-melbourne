@@ -288,32 +288,34 @@ export function getListingCoordinates(listing: Listing): Coordinates | null {
 // Utility Functions
 // ============================================================================
 
-/** Format price for display */
+/**
+ * Format price for display
+ * @deprecated Use formatPriceCents from '@/lib/utils/price' instead
+ */
 export function formatListingPrice(price: number | null): string {
-  if (price === null) return 'N/A';
-  return `${price.toFixed(1)}¢`;
+  // Dynamic import to avoid circular dependencies
+  const { formatPriceCents } = require('@/lib/utils/price');
+  return formatPriceCents(price);
 }
 
-/** Format distance for display */
+/**
+ * Format distance for display
+ * @deprecated Use formatDistance from '@/lib/utils/distance' instead
+ */
 export function formatDistance(distance: number | undefined): string {
-  if (!distance) return '';
-  if (distance < 1) return `${(distance * 1000).toFixed(0)}m`;
-  return `${distance.toFixed(1)}km`;
+  // Dynamic import to avoid circular dependencies
+  const { formatDistance: formatDistanceUtil } = require('@/lib/utils/distance');
+  return formatDistanceUtil(distance);
 }
 
-/** Get brand color/theme */
+/**
+ * Get brand color/theme
+ * @deprecated Use getBrandColor from '@/lib/utils/colors' instead
+ */
 export function getBrandColor(brand: string): string {
-  const brandColors: Record<string, string> = {
-    'BP': '#00A651',
-    'Shell': '#FBCE07',
-    'Caltex': '#E30613',
-    '7-Eleven': '#007B33',
-    'Coles Express': '#E2001A',
-    'United': '#0066CC',
-    'Ampol': '#005BBB',
-    'Metro': '#FF6600',
-  };
-  return brandColors[brand] || '#6B7280';
+  // Dynamic import to avoid circular dependencies
+  const { getBrandColor: getBrandColorUtil } = require('@/lib/utils/colors');
+  return getBrandColorUtil(brand);
 }
 
 /** Sort listings by criteria */

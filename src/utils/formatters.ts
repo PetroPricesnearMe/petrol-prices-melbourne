@@ -1,32 +1,16 @@
 /**
  * Format a price value to currency string
- * @param price - Price in cents or decimal
- * @param currency - Currency code (default: AUD)
- * @returns Formatted price string
+ * @deprecated Use formatPrice from '@/lib/utils/price' instead
+ * Re-exported for backward compatibility
  */
-export function formatPrice(
-  price: number,
-  currency: string = 'AUD'
-): string {
-  return new Intl.NumberFormat('en-AU', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(price);
-}
+export { formatPrice } from '@/lib/utils/price';
 
 /**
  * Format distance to human-readable string
- * @param distance - Distance in kilometers
- * @returns Formatted distance string
+ * @deprecated Use formatDistance from '@/lib/utils/distance' instead
+ * Re-exported for backward compatibility
  */
-export function formatDistance(distance: number): string {
-  if (distance < 1) {
-    return `${Math.round(distance * 1000)}m`;
-  }
-  return `${distance.toFixed(1)}km`;
-}
+export { formatDistance } from '@/lib/utils/distance';
 
 /**
  * Format a date to relative time string (e.g., "2 hours ago")

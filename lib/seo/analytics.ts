@@ -3,17 +3,26 @@
  * Google Analytics 4 and Search Console utilities
  */
 
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
-  }
-}
-
 /**
  * Initialize Google Analytics
  */
 export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+
+// Type-safe gtag function - using any[] for maximum compatibility with gtag API
+type GtagFunction = (...args: any[]) => void;
+
+function getGtag(): GtagFunction | undefined {
+  if (typeof window === 'undefined') return undefined;
+  return (window as { gtag?: GtagFunction }).gtag;
+}
+
+function getDataLayer(): any[] {
+  if (typeof window === 'undefined') return [];
+  if (!(window as { dataLayer?: any[] }).dataLayer) {
+    (window as { dataLayer: any[] }).dataLayer = [];
+  }
+  return (window as { dataLayer: any[] }).dataLayer;
+}
 
 export function initGA() {
   if (!GA_MEASUREMENT_ID || typeof window === 'undefined') {
@@ -21,16 +30,23 @@ export function initGA() {
   }
 
   // Initialize dataLayer
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments);
-  };
-
-  window.gtag('js', new Date());
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    page_path: window.location.pathname,
-    send_page_view: true,
-  });
+  const dataLayer = getDataLayer();
+  
+  // Initialize gtag if not present
+  if (!getGtag()) {
+    (window as { gtag: GtagFunction }).gtag = function gtag(...args: any[]) {
+      dataLayer.push(args);
+    };
+  }
+  
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, {
+      page_path: window.location.pathname,
+      send_page_view: true,
+    });
+  }
 }
 
 /**
@@ -41,10 +57,13 @@ export function trackPageView(url: string, title?: string) {
     return;
   }
 
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    page_path: url,
-    page_title: title,
-  });
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('config', GA_MEASUREMENT_ID, {
+      page_path: url,
+      page_title: title,
+    });
+  }
 }
 
 /**
@@ -62,11 +81,14 @@ export function trackEvent({ action, category, label, value }: GAEvent) {
     return;
   }
 
-  window.gtag('event', action, {
-    event_category: category,
-    event_label: label,
-    value: value,
-  });
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('event', action, {
+      event_category: category,
+      event_label: label,
+      value: value,
+    });
+  }
 }
 
 /**
@@ -123,11 +145,14 @@ export function trackConversion(conversionId: string, value?: number) {
     return;
   }
 
-  window.gtag('event', 'conversion', {
-    send_to: conversionId,
-    value: value,
-    currency: 'AUD',
-  });
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('event', 'conversion', {
+      send_to: conversionId,
+      value: value,
+      currency: 'AUD',
+    });
+  }
 }
 
 /**
@@ -160,10 +185,13 @@ export function trackError(error: string, fatal: boolean = false) {
     return;
   }
 
-  window.gtag('event', 'exception', {
-    description: error,
-    fatal: fatal,
-  });
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('event', 'exception', {
+      description: error,
+      fatal: fatal,
+    });
+  }
 }
 
 /**
@@ -174,12 +202,15 @@ export function trackTiming(category: string, variable: string, value: number, l
     return;
   }
 
-  window.gtag('event', 'timing_complete', {
-    name: variable,
-    value: value,
-    event_category: category,
-    event_label: label,
-  });
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('event', 'timing_complete', {
+      name: variable,
+      value: value,
+      event_category: category,
+      event_label: label,
+    });
+  }
 }
 
 /**
@@ -190,9 +221,12 @@ export function setUserId(userId: string) {
     return;
   }
 
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    user_id: userId,
-  });
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('config', GA_MEASUREMENT_ID, {
+      user_id: userId,
+    });
+  }
 }
 
 /**
@@ -203,9 +237,12 @@ export function setCustomDimension(name: string, value: string) {
     return;
   }
 
-  window.gtag('set', 'user_properties', {
-    [name]: value,
-  });
+  const gtag = getGtag();
+  if (gtag) {
+    gtag('set', 'user_properties', {
+      [name]: value,
+    });
+  }
 }
 
 export default {

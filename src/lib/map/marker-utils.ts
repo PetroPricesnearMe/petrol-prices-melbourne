@@ -2,27 +2,17 @@
  * Marker utility functions for map markers
  */
 
+import { getBrandColor as getBrandColorUtil } from '@/lib/utils/colors';
+import { formatPriceCentsPerLiter } from '@/lib/utils/price';
+import { getPriceColorClass } from '@/lib/utils/price';
 import type { Station } from '@/types/station';
 
 /**
  * Get brand color for marker styling
+ * @deprecated Use getBrandColor from '@/lib/utils/colors' instead
  */
 export function getBrandColor(brand?: string): string {
-  const brandColors: Record<string, string> = {
-    BP: '#00A651',
-    Shell: '#FFD700',
-    Caltex: '#FF6B35',
-    '7-Eleven': '#FF6900',
-    'Coles Express': '#E31837',
-    Woolworths: '#1B5E20',
-    United: '#1976D2',
-    Puma: '#E91E63',
-    Liberty: '#6B46C1',
-    Metro: '#059669',
-    Independent: '#6B7280',
-  };
-
-  return brandColors[brand || ''] || '#6B7280';
+  return getBrandColorUtil(brand);
 }
 
 /**
@@ -41,10 +31,10 @@ export function getBrandInitial(station: Station): string {
 
 /**
  * Format price for display
+ * @deprecated Use formatPriceCentsPerLiter from '@/lib/utils/price' instead
  */
 export function formatPrice(price: number | null | undefined): string {
-  if (price === null || price === undefined || price === 0) return 'N/A';
-  return `${price.toFixed(1)}¢/L`;
+  return formatPriceCentsPerLiter(price);
 }
 
 /**
@@ -62,11 +52,9 @@ export function getCheapestPrice(station: Station): number | null {
 
 /**
  * Get price color class based on price
+ * @deprecated Use getPriceColorClass from '@/lib/utils/price' instead
  */
 export function getPriceColor(price: number | null): string {
-  if (price === null) return 'text-gray-400';
-  if (price < 200) return 'text-green-600';
-  if (price <= 210) return 'text-yellow-600';
-  return 'text-red-600';
+  return getPriceColorClass(price);
 }
 

@@ -5,7 +5,8 @@
 
 import type { MetadataRoute } from 'next';
 
-import { BASE_URL } from './metadata';
+// Use environment variable or default
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
 
 export interface SitemapEntry {
   url: string;

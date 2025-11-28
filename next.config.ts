@@ -136,8 +136,8 @@ const nextConfig: NextConfig = {
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
-        // Enable tree-shaking
-        usedExports: true,
+        // Tree-shaking is handled automatically by Next.js/SWC
+        // Removed usedExports as it conflicts with Next.js cache settings
         sideEffects: false,
         // Improved code splitting strategy
         splitChunks: {

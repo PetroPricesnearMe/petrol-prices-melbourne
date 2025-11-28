@@ -233,11 +233,12 @@ const StationCards = () => {
     return BRAND_IMAGES.default;
   };
 
-  // Format price
-  const formatPrice = (price) => {
-    if (!price || price === 0) return 'N/A';
-    return `$${price.toFixed(2)}`;
-  };
+  // Format price using centralized utility
+  // Note: Using require() here because this is a .js file and we want to avoid
+  // potential circular dependency issues. The formatPriceDecimal function formats
+  // prices as currency with 2 decimal places (e.g., $1.50)
+  const { formatPriceDecimal } = require('@/lib/utils/price');
+  const formatPrice = (price) => formatPriceDecimal(price, 2);
 
   if (loading) {
     return (

@@ -412,7 +412,7 @@ function NearbySuburbs({ nearbySuburbs, currentSuburb }: NearbySuburbsProps) {
           </svg>
         </Link>
       </div>
-    </section>
+    </nav>
   );
 }
 

@@ -9,9 +9,10 @@
 
 'use client';
 
-import { Suspense, useCallback, useState } from 'react';
+import { Suspense, useCallback, useState, useRef } from 'react';
 
 import { StationDetailsModal } from '@/components/modals/Modal';
+import { SuburbAutoSuggest } from '@/components/molecules/SuburbAutoSuggest';
 import { ViewToggle, DirectoryView, StationCardGrid, StationCardList } from '@/components/toggle/ViewToggle';
 import { LoadingSpinner, SkeletonGrid } from '@/components/transitions/SmoothTransitions';
 import { useAdvancedInfiniteStations } from '@/hooks/useInfiniteStations';
@@ -62,6 +63,8 @@ interface LoadingStatesProps {
  */
 export function FilterBar({ filters, onFiltersChange, totalCount, currentView, onViewChange, className }: FilterBarProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showSuburbSuggestions, setShowSuburbSuggestions] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleFilterChange = useCallback((key: string, value: unknown) => {
     onFiltersChange({ ...filters, [key]: value });
@@ -89,34 +92,44 @@ export function FilterBar({ filters, onFiltersChange, totalCount, currentView, o
         <div className="mb-4 relative">
           <div className="relative">
             <input
+              ref={searchInputRef}
               type="search"
               placeholder="Search stations by name, brand, suburb, or address..."
               value={(filters.search as string) || ''}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-              onFocus={(e) => {
-                // Show suggestions on focus
-                const input = e.currentTarget;
-                if (input.value.length >= 2 || input.value.length === 0) {
-                  // Will be handled by SuburbAutoSuggest component
-                }
+              onChange={(e) => {
+                handleFilterChange('search', e.target.value);
+                setShowSuburbSuggestions(e.target.value.length >= 2 || e.target.value.length === 0);
+              }}
+              onFocus={() => setShowSuburbSuggestions(true)}
+              onBlur={(e) => {
+                // Delay hiding to allow click on suggestion
+                setTimeout(() => {
+                  if (!e.currentTarget.contains(document.activeElement)) {
+                    setShowSuburbSuggestions(false);
+                  }
+                }, 200);
               }}
               className="input w-full pr-10"
               aria-label="Search stations"
               aria-autocomplete="list"
+              aria-expanded={showSuburbSuggestions}
             />
             {/* Suburb Auto-Suggest */}
-            {(filters.search as string)?.length >= 2 || (filters.search as string)?.length === 0 ? (
+            {showSuburbSuggestions && (
               <SuburbAutoSuggest
                 query={(filters.search as string) || ''}
                 onSelect={(suburb) => {
                   handleFilterChange('search', suburb);
+                  setShowSuburbSuggestions(false);
+                  searchInputRef.current?.blur();
                 }}
+                onClose={() => setShowSuburbSuggestions(false)}
                 maxResults={6}
                 minChars={2}
                 showPopular={true}
                 className="top-full mt-1"
               />
-            ) : null}
+            )}
           </div>
         </div>
 

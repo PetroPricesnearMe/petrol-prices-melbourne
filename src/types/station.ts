@@ -311,14 +311,14 @@ export const getFuelTypeDisplayName = (fuelType: FuelTypeValue): string => {
   return fuelType;
 };
 
-/** Format price */
+/**
+ * Format price
+ * @deprecated Use formatPrice from '@/lib/utils/price' instead
+ */
 export const formatPrice = (price: number, currency = 'AUD'): string => {
-  return new Intl.NumberFormat('en-AU', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  }).format(price);
+  // Dynamic import to avoid circular dependencies
+  const { formatPrice: formatPriceUtil } = require('@/lib/utils/price');
+  return formatPriceUtil(price, currency, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 };
 
 /** Calculate distance between coordinates */

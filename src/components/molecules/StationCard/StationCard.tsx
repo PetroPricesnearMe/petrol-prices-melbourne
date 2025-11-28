@@ -4,13 +4,31 @@
 import { Badge } from '@/components/atoms/Badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
 import type { PetrolStation } from '@/types/index';
-import { formatDistance, formatPrice } from '@/utils/formatters';
+import { formatDistance } from '@/lib/utils/distance';
+import { formatPriceCentsPerLiter } from '@/lib/utils/price';
 
 export interface StationCardProps {
   station: PetrolStation;
   onClick?: () => void;
 }
 
+/**
+ * Station Card Component
+ * 
+ * A compact card component displaying essential station information for use in grids and lists.
+ * 
+ * Current behavior:
+ * - Calculates cheapest price by finding minimum across all fuelPrices array items
+ * - Displays distance badge in header if distance data is available
+ * - Shows station name as card title with responsive text sizing (base on mobile, lg on desktop)
+ * - Address and city are displayed together in a single line
+ * - Cheapest price is prominently displayed in a success-colored box with "From" label
+ * - Brand badges are rendered as a flex wrap container, allowing multiple brands per station
+ * - Card has hover effect and touch-manipulation CSS for better mobile interaction
+ * - Entire card is clickable via onClick handler
+ * - Uses responsive spacing (space-y-3 on mobile, space-y-2 on desktop)
+ * - Price box has minimum height on mobile (56px) for consistent touch targets
+ */
 export function StationCard({ station, onClick }: StationCardProps) {
   const cheapestPrice = station.fuelPrices
     ? Math.min(...station.fuelPrices.map((fp) => fp.pricePerLiter))
@@ -41,7 +59,7 @@ export function StationCard({ station, onClick }: StationCardProps) {
                 From
               </span>
               <span className="text-xl sm:text-lg font-bold text-success-700 dark:text-success-400">
-                {formatPrice(cheapestPrice)}
+                {formatPriceCentsPerLiter(cheapestPrice)}
               </span>
             </div>
           )}

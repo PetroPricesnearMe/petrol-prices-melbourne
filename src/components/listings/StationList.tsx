@@ -13,6 +13,25 @@ interface StationListProps {
   selectedStation?: Station | null;
 }
 
+/**
+ * Station List Component
+ * 
+ * Displays a scrollable list of petrol stations with detailed information including
+ * prices, distance, ratings, and fuel type availability.
+ * 
+ * Current behavior:
+ * - Renders an empty state message when no stations match filters
+ * - Each station card shows: name, brand, address, distance badge, rating (if available),
+ *   cheapest price prominently displayed, and a grid of all available fuel types with prices
+ * - Uses Framer Motion for staggered entrance animations (fade + slide up) with 30ms delay per item
+ * - Handles both array-based and object-based fuel price data structures
+ * - Calculates best price by finding minimum across all fuel types
+ * - Distance is conditionally displayed only when available
+ * - Selected station is highlighted with a ring border
+ * - Cards are fully clickable and trigger onStationClick callback
+ * - Responsive grid layout for fuel prices (2 cols on sm, 5 cols on lg)
+ * - Supports dark mode with appropriate color variants
+ */
 const fuelOrder: Array<{ key: string; label: string }> = [
   { key: 'unleaded', label: 'Unleaded' },
   { key: 'premium95', label: 'Premium 95' },
@@ -21,20 +40,8 @@ const fuelOrder: Array<{ key: string; label: string }> = [
   { key: 'lpg', label: 'LPG' },
 ];
 
-function formatPrice(value?: number | null): string {
-  if (typeof value !== 'number') {
-    return '—';
-  }
-  return `${value.toFixed(1)}¢/L`;
-}
-
-function formatDistance(distance?: number): string | null {
-  if (typeof distance !== 'number') return null;
-  if (distance < 1) {
-    return `${(distance * 1000).toFixed(0)} m`;
-  }
-  return `${distance.toFixed(1)} km`;
-}
+import { formatDistance } from '@/lib/utils/distance';
+import { formatPriceCentsPerLiter } from '@/lib/utils/price';
 
 export function StationList({
   stations,
@@ -147,7 +154,7 @@ export function StationList({
                       From
                     </p>
                     <p className="text-2xl font-bold">
-                      {bestPrice !== null ? formatPrice(bestPrice) : 'N/A'}
+                      {bestPrice !== null ? formatPriceCentsPerLiter(bestPrice) : 'N/A'}
                     </p>
                   </div>
                 </div>
@@ -167,7 +174,7 @@ export function StationList({
                         {label}
                       </span>
                       <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                        {formatPrice(price)}
+                        {formatPriceCentsPerLiter(price)}
                       </span>
                     </div>
                   );

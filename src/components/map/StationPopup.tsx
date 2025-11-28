@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 
-import { getCheapestPrice, formatPrice } from '@/lib/map/marker-utils';
+import { formatPriceCentsPerLiter } from '@/lib/utils/price';
+import { getCheapestPrice } from '@/lib/map/marker-utils';
 import type { Station } from '@/types/station';
 
 interface StationPopupProps {
@@ -12,6 +13,17 @@ interface StationPopupProps {
 
 /**
  * Station popup component for map markers
+ * 
+ * Displays a detailed popup when a user clicks on a station marker on the map.
+ * Shows station name, brand, address, cheapest fuel price, and action buttons.
+ * 
+ * Current behavior:
+ * - Automatically calculates and displays the cheapest price from all available fuel types
+ * - Conditionally renders address section only if address or suburb data exists
+ * - Provides "View Details" link to station detail page and "Directions" link to Google Maps
+ * - Shows last updated timestamp if available, formatted in Australian date format
+ * - Includes close button that calls onClose callback when clicked
+ * - Uses fixed width constraints (min 280px, max 320px) for consistent sizing
  */
 export function StationPopup({ station, onClose }: StationPopupProps) {
   const cheapestPrice = getCheapestPrice(station);
@@ -88,7 +100,7 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
             Current Prices
           </h4>
           <div className="text-lg font-bold text-green-600">
-            From {formatPrice(cheapestPrice)}
+            From {formatPriceCentsPerLiter(cheapestPrice)}
           </div>
         </div>
       )}

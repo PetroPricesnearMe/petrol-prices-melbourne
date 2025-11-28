@@ -4,7 +4,8 @@ import maplibregl, { type Map, type Marker, type Popup } from 'maplibre-gl';
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Supercluster from 'supercluster';
 
-import { getBrandColor, getBrandInitial, getMarkerIconUrl } from '@/lib/map/marker-utils';
+import { getBrandColor } from '@/lib/utils/colors';
+import { getBrandInitial, getMarkerIconUrl } from '@/lib/map/marker-utils';
 import type { Coordinates } from '@/types/common';
 import type { Station } from '@/types/station';
 
@@ -33,6 +34,25 @@ const CLUSTER_MIN_ZOOM = 0;
 
 /**
  * Core MapLibre map component with Protomaps tiles and clustering
+ * 
+ * A full-featured map component using MapLibre GL JS for rendering interactive maps
+ * with station markers, clustering, and popups.
+ * 
+ * Current behavior:
+ * - Initializes map with OpenStreetMap raster tiles (fallback from Protomaps vector tiles)
+ * - Uses Supercluster library for marker clustering when enableClustering is true
+ * - Creates individual markers for each station with brand-colored circular icons
+ * - Markers show station logo if available, otherwise display brand initial
+ * - Markers have hover effects (scale + shadow) and touch feedback for mobile
+ * - Clicking a marker centers map on station, shows popup with station details
+ * - Cluster markers show point count and zoom in when clicked
+ * - Popups are created as HTML strings with station info, prices, and action buttons
+ * - Map updates markers based on current viewport bounds and zoom level
+ * - Selected station is automatically centered and highlighted
+ * - Includes navigation controls and optional geolocate control
+ * - Hover tooltip shows station name above map
+ * - Station count badge displayed in bottom-right corner
+ * - All markers are cleaned up on unmount to prevent memory leaks
  */
 export default function MapLibreMapCore({
   stations,
