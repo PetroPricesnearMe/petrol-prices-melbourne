@@ -11,7 +11,7 @@
  * @module lib/api/enhanced-fetcher
  */
 
-import { stationsCache, pricesCache, searchCache, generateCacheKey } from './cache';
+import { stationsCache, searchCache, generateCacheKey } from './cache';
 import { RateLimitError } from './error-handler';
 
 // ============================================================================
@@ -367,7 +367,7 @@ export function cancelRequest(cacheKey: string): void {
  * Clear all pending requests
  */
 export function clearAllPendingRequests(): void {
-  for (const [key, request] of pendingRequests.entries()) {
+  for (const [_key, request] of pendingRequests.entries()) {
     request.abortController?.abort();
   }
   pendingRequests.clear();

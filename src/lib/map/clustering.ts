@@ -76,8 +76,9 @@ export function stationsToFeatures(stations: Station[]): ClusterPoint[] {
 
 /**
  * Create a Supercluster instance
+ * Note: Features are loaded separately using cluster.load(features)
  */
-export function createCluster(features: ClusterPoint[]): Supercluster {
+export function createCluster(_features: ClusterPoint[]): Supercluster {
   return new Supercluster({
     radius: CLUSTER_CONFIG.radius,
     maxZoom: CLUSTER_CONFIG.maxZoom,
@@ -113,7 +114,7 @@ export function getClusterExpansionZoom(
 export function getClusterPoints(
   cluster: Supercluster,
   clusterId: number,
-  zoom: number
+  _zoom: number
 ): StationFeature[] {
   return cluster.getLeaves(clusterId, Infinity) as StationFeature[];
 }

@@ -19,9 +19,8 @@ const nextConfig: NextConfig = {
     // Handle missing images gracefully
     unoptimized: false,
     remotePatterns: [],
-    // Enhanced image quality settings (balance quality vs size)
-    // 85 provides good quality while reducing file size vs default 75
-    quality: 85,
+    // Note: Image quality is now set per-image using the quality prop on Image component
+    // Default is 75, can be overridden per image: <Image quality={85} ... />
   },
 
   // Experimental features for better performance
@@ -37,8 +36,7 @@ const nextConfig: NextConfig = {
       'fuse.js',
       'zod',
     ],
-    // Enable SWC minification for smaller bundles
-    swcMinify: true,
+    // Note: SWC minification is now default in Next.js 13+, no need to specify
   },
 
   // SWC compiler options for better optimization
@@ -110,8 +108,7 @@ const nextConfig: NextConfig = {
   // Production optimizations
   ...(process.env.NODE_ENV === 'production' && {
     productionBrowserSourceMaps: false,
-    // Enable output file tracing for better tree-shaking and smaller deployments
-    outputFileTracing: true,
+    // Note: outputFileTracing is now default in Next.js 13+, no need to specify
     // Exclude unnecessary files from output to reduce bundle size
     outputFileTracingExcludes: {
       '*': [

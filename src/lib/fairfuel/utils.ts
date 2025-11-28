@@ -227,7 +227,7 @@ function normalizeSuburbName(suburb: string): string {
   // Handle "Mc", "Mac", "O'", etc.
   return suburb
     .split(' ')
-    .map((word, index) => {
+    .map((word) => {
       const lower = word.toLowerCase();
       
       // Handle special prefixes

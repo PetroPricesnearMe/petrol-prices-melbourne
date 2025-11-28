@@ -190,16 +190,71 @@ function OptimizedHeroSection() {
                 </li>
               </motion.ul>
 
-              {/* CTA Buttons - Critical for conversion */}
+              {/* Location Detection CTA - Primary, Large, Mobile-Optimized */}
               <motion.div
-                className="mb-8 flex flex-col gap-4 sm:flex-row"
+                className="mb-6"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
                 <Link
+                  href="/map?useLocation=true"
+                  className="group relative inline-flex w-full transform items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 px-6 py-5 text-lg font-extrabold text-gray-900 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-yellow-400/50 sm:w-auto sm:px-10 sm:py-6 sm:text-xl"
+                  aria-label="Find cheapest petrol stations near your current location"
+                >
+                  <svg
+                    className="h-6 w-6 flex-shrink-0 sm:h-7 sm:w-7"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
+                    <span>Find Stations Near Me</span>
+                    <span className="text-xs font-semibold opacity-90 sm:text-sm">
+                      Tap to see cheapest petrol near you
+                    </span>
+                  </span>
+                  <svg
+                    className="ml-1 h-5 w-5 flex-shrink-0 transition-transform group-hover:translate-x-1 sm:h-6 sm:w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </Link>
+              </motion.div>
+
+              {/* Secondary CTA Buttons */}
+              <motion.div
+                className="mb-8 flex flex-col gap-4 sm:flex-row"
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <Link
                   href="/directory"
-                  className="inline-flex transform items-center justify-center rounded-xl bg-white px-8 py-4 font-semibold text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/90 focus:outline-none focus:ring-4 focus:ring-white/20"
+                  className="inline-flex transform items-center justify-center rounded-xl bg-white px-6 py-3.5 font-semibold text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/90 focus:outline-none focus:ring-4 focus:ring-white/20 sm:px-8 sm:py-4"
                   aria-label="Browse all petrol stations to find cheapest prices"
                 >
                   <svg
@@ -220,7 +275,7 @@ function OptimizedHeroSection() {
                 </Link>
                 <Link
                   href="/fuel-price-trends"
-                  className="inline-flex transform items-center justify-center rounded-xl border border-white/20 bg-white/10 px-8 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-white/20"
+                  className="inline-flex transform items-center justify-center rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-white/20 sm:px-8 sm:py-4"
                   aria-label="View fuel price trends and analytics"
                 >
                   <svg
