@@ -66,13 +66,16 @@ function usePerformanceMonitoring() {
         entries.forEach((entry) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const clsEntry = entry as any;
-          if (clsEntry.hadRecentInput === false && clsEntry.value !== undefined) {
+          if (
+            clsEntry.hadRecentInput === false &&
+            clsEntry.value !== undefined
+          ) {
             // eslint-disable-next-line no-console
             console.info('CLS:', clsEntry.value);
           }
         });
       }).observe({ entryTypes: ['layout-shift'] });
-    } catch (_error) {
+    } catch {
       // PerformanceObserver not supported, silently fail
     }
   }
@@ -143,7 +146,8 @@ function OptimizedHeroSection() {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Find the cheapest petrol prices in Melbourne with real-time updates from 250+ stations. Save up to 20c/L on every fill-up.
+                Find the cheapest petrol prices in Melbourne with real-time
+                updates from 250+ stations. Save up to 20c/L on every fill-up.
               </motion.p>
 
               {/* Benefits List - 3 key benefits */}
@@ -155,7 +159,7 @@ function OptimizedHeroSection() {
               >
                 <li className="flex items-center gap-3 text-base sm:text-lg">
                   <svg
-                    className="h-5 w-5 flex-shrink-0 text-green-400"
+                    className="text-green-400 h-5 w-5 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     aria-hidden="true"
@@ -166,11 +170,14 @@ function OptimizedHeroSection() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span><strong className="text-white">Live Prices</strong> - Updated every 24 hours from official Service Victoria data</span>
+                  <span>
+                    <strong className="text-white">Live Prices</strong> -
+                    Updated every 24 hours from official Service Victoria data
+                  </span>
                 </li>
                 <li className="flex items-center gap-3 text-base sm:text-lg">
                   <svg
-                    className="h-5 w-5 flex-shrink-0 text-green-400"
+                    className="text-green-400 h-5 w-5 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     aria-hidden="true"
@@ -181,11 +188,14 @@ function OptimizedHeroSection() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span><strong className="text-white">Closest Stations</strong> - Find nearby petrol stations with interactive maps</span>
+                  <span>
+                    <strong className="text-white">Closest Stations</strong> -
+                    Find nearby petrol stations with interactive maps
+                  </span>
                 </li>
                 <li className="flex items-center gap-3 text-base sm:text-lg">
                   <svg
-                    className="h-5 w-5 flex-shrink-0 text-green-400"
+                    className="text-green-400 h-5 w-5 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     aria-hidden="true"
@@ -196,7 +206,10 @@ function OptimizedHeroSection() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span><strong className="text-white">Melbourne Focused</strong> - Comprehensive coverage of all Melbourne suburbs</span>
+                  <span>
+                    <strong className="text-white">Melbourne Focused</strong> -
+                    Comprehensive coverage of all Melbourne suburbs
+                  </span>
                 </li>
               </motion.ul>
 
@@ -209,7 +222,7 @@ function OptimizedHeroSection() {
               >
                 <Link
                   href="/map?useLocation=true"
-                  className="group relative inline-flex w-full transform items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-500 px-6 py-5 text-lg font-extrabold text-gray-900 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-yellow-400/50 sm:w-auto sm:px-10 sm:py-6 sm:text-xl"
+                  className="from-yellow-400 to-orange-500 focus:ring-yellow-400/50 group relative inline-flex w-full transform items-center justify-center gap-3 rounded-2xl bg-gradient-to-r px-6 py-5 text-lg font-extrabold text-gray-900 shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-4 sm:w-auto sm:px-10 sm:py-6 sm:text-xl"
                   aria-label="Find cheapest petrol stations near your current location"
                 >
                   <svg
@@ -326,7 +339,9 @@ function OptimizedHeroSection() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-sm font-medium sm:text-base">Free to use</span>
+                  <span className="text-sm font-medium sm:text-base">
+                    Free to use
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <svg
@@ -358,7 +373,9 @@ function OptimizedHeroSection() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-sm font-medium sm:text-base">No registration required</span>
+                  <span className="text-sm font-medium sm:text-base">
+                    No registration required
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <svg
@@ -373,7 +390,9 @@ function OptimizedHeroSection() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-sm font-medium sm:text-base">Real-time updates</span>
+                  <span className="text-sm font-medium sm:text-base">
+                    Real-time updates
+                  </span>
                 </div>
               </motion.div>
             </motion.div>
@@ -529,10 +548,12 @@ function OptimizedSEOContentSection() {
             <h2 className="mb-8 text-3xl font-extrabold text-gray-900 dark:text-gray-900 sm:text-4xl md:text-5xl md:leading-tight">
               Find Cheapest Petrol Prices Near Me in Melbourne
             </h2>
-            
+
             <div className="prose prose-lg max-w-none text-gray-800 dark:text-gray-700">
               <p className="mb-6 text-base leading-relaxed sm:text-lg sm:leading-relaxed">
-                Looking for the cheapest petrol prices near me? Our Melbourne fuel finder helps you save up to 20c/L on every fill-up by comparing real-time fuel prices from over{' '}
+                Looking for the cheapest petrol prices near me? Our Melbourne
+                fuel finder helps you save up to 20c/L on every fill-up by
+                comparing real-time fuel prices from over{' '}
                 <Link
                   href="/directory"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -567,7 +588,8 @@ function OptimizedSEOContentSection() {
                 >
                   E10 fuel
                 </Link>
-                , our comprehensive platform provides live price updates to help you find the best deals. Search by popular suburbs like{' '}
+                , our comprehensive platform provides live price updates to help
+                you find the best deals. Search by popular suburbs like{' '}
                 <Link
                   href="/directory?suburb=richmond"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -616,7 +638,8 @@ function OptimizedSEOContentSection() {
                 Live Petrol Prices Melbourne: Official Service Victoria Data
               </h3>
               <p className="mb-6 text-base leading-relaxed sm:text-lg sm:leading-relaxed">
-                As Melbourne&apos;s premier fuel price comparison service, we aggregate official data from{' '}
+                As Melbourne&apos;s premier fuel price comparison service, we
+                aggregate official data from{' '}
                 <a
                   href="https://www.service.vic.gov.au/services/fuel"
                   target="_blank"
@@ -625,21 +648,25 @@ function OptimizedSEOContentSection() {
                 >
                   Service Victoria&apos;s Fair Fuel Open Data API
                 </a>
-                , ensuring you have access to accurate, up-to-date information from all registered Victorian fuel stations. Our platform covers major brands including{' '}
+                , ensuring you have access to accurate, up-to-date information
+                from all registered Victorian fuel stations. Our platform covers
+                major brands including{' '}
                 <Link
                   href="/fuel-brands"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
                 >
                   BP, Shell, Caltex, Ampol, 7-Eleven
                 </Link>
-                , and independent stations throughout the greater Melbourne area.
+                , and independent stations throughout the greater Melbourne
+                area.
               </p>
 
               <h3 className="mb-5 mt-10 text-xl font-extrabold text-gray-900 dark:text-gray-900 sm:text-2xl">
                 Compare Melbourne Fuel Prices by Suburb, Brand, and Fuel Type
               </h3>
               <p className="mb-6 text-base leading-relaxed sm:text-lg sm:leading-relaxed">
-                Save money on fuel with our easy-to-use fuel finder that lets you search by suburb, brand, or fuel type. Compare{' '}
+                Save money on fuel with our easy-to-use fuel finder that lets
+                you search by suburb, brand, or fuel type. Compare{' '}
                 <Link
                   href="/directory?fuel=unleaded"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -659,8 +686,8 @@ function OptimizedSEOContentSection() {
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
                 >
                   premium fuel prices
-                </Link>
-                {' '}across Melbourne suburbs including{' '}
+                </Link>{' '}
+                across Melbourne suburbs including{' '}
                 <Link
                   href="/directory?suburb=richmond"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -695,49 +722,60 @@ function OptimizedSEOContentSection() {
                 >
                   interactive map view
                 </Link>{' '}
-                shows you exactly where the cheapest petrol stations are located, while our{' '}
+                shows you exactly where the cheapest petrol stations are
+                located, while our{' '}
                 <Link
                   href="/directory"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
                 >
                   detailed listings
                 </Link>{' '}
-                provide comprehensive information including current prices, station amenities, opening hours, and directions. With prices updated every 24 hours, you&apos;ll always have the latest information to make informed decisions about where to fill up.
+                provide comprehensive information including current prices,
+                station amenities, opening hours, and directions. With prices
+                updated every 24 hours, you&apos;ll always have the latest
+                information to make informed decisions about where to fill up.
               </p>
 
               <h3 className="mb-5 mt-10 text-xl font-extrabold text-gray-900 dark:text-gray-900 sm:text-2xl">
                 Track Petrol Price Trends Across Melbourne
               </h3>
               <p className="mb-6 text-base leading-relaxed sm:text-lg sm:leading-relaxed">
-                Finding cheap petrol in Melbourne has never been easier. Our fuel price comparison tool allows you to filter stations by location, compare prices across different fuel types, and{' '}
+                Finding cheap petrol in Melbourne has never been easier. Our
+                fuel price comparison tool allows you to filter stations by
+                location, compare prices across different fuel types, and{' '}
                 <Link
                   href="/fuel-price-trends"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
                 >
                   track price trends
                 </Link>{' '}
-                over time. Whether you&apos;re commuting to work, planning a road trip, or just need to fill up your tank, our service helps you save money on every purchase.
+                over time. Whether you&apos;re commuting to work, planning a
+                road trip, or just need to fill up your tank, our service helps
+                you save money on every purchase.
               </p>
 
               <h3 className="mb-5 mt-10 text-xl font-extrabold text-gray-900 dark:text-gray-900 sm:text-2xl">
                 Free to Use - No Registration Required
               </h3>
               <p className="mb-6 text-base leading-relaxed sm:text-lg sm:leading-relaxed">
-                Our free-to-use platform requires no registration, making it quick and easy to find the cheapest fuel prices near you. Simply{' '}
+                Our free-to-use platform requires no registration, making it
+                quick and easy to find the cheapest fuel prices near you. Simply{' '}
                 <Link
                   href="/directory"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
                 >
                   browse our directory
                 </Link>{' '}
-                of Melbourne petrol stations, use our search functionality to find stations in your area, or{' '}
+                of Melbourne petrol stations, use our search functionality to
+                find stations in your area, or{' '}
                 <Link
                   href="/map"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
                 >
                   explore our interactive map
                 </Link>{' '}
-                to discover nearby options. With comprehensive coverage of over 50 suburbs including{' '}
+                to discover nearby options. With comprehensive coverage of over
+                50 suburbs including{' '}
                 <Link
                   href="/directory?suburb=cbd"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -779,15 +817,19 @@ function OptimizedSEOContentSection() {
                 >
                   Prahran
                 </Link>
-                . With real-time price monitoring, we&apos;re your trusted partner for finding the best fuel deals in Melbourne.
+                . With real-time price monitoring, we&apos;re your trusted
+                partner for finding the best fuel deals in Melbourne.
               </p>
 
-              <div className="mt-8 rounded-lg bg-blue-50 p-6 dark:bg-blue-900/20">
+              <div className="bg-blue-50 dark:bg-blue-900/20 mt-8 rounded-lg p-6">
                 <h4 className="mb-4 text-lg font-extrabold text-gray-900 dark:text-white sm:text-xl">
                   Start Saving Today
                 </h4>
                 <p className="mb-5 text-base text-gray-800 dark:text-gray-200 sm:text-lg">
-                  By comparing prices before you fill up, you can save up to 20 cents per liter. That&apos;s a savings of $10-15 on a typical 50-liter tank! Use our platform regularly to maximize your fuel savings.
+                  By comparing prices before you fill up, you can save up to 20
+                  cents per liter. That&apos;s a savings of $10-15 on a typical
+                  50-liter tank! Use our platform regularly to maximize your
+                  fuel savings.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Link
@@ -887,8 +929,8 @@ function OptimizedFeaturesSection() {
       title: 'Smart Search',
       description: (
         <>
-          Find stations by location, brand, amenities, and more with our advanced
-          filtering system. Use our{' '}
+          Find stations by location, brand, amenities, and more with our
+          advanced filtering system. Use our{' '}
           <Link
             href="/directory"
             className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -961,8 +1003,8 @@ function OptimizedFeaturesSection() {
             </h2>
             <p className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-700 dark:text-gray-300 sm:text-xl sm:leading-relaxed">
               Our comprehensive platform provides all the tools you need to find
-              the cheapest petrol prices and save money on every fill-up. Explore
-              our{' '}
+              the cheapest petrol prices and save money on every fill-up.
+              Explore our{' '}
               <Link
                 href="/directory"
                 className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -1056,7 +1098,8 @@ function CredibilitySection() {
               Transparent & Trustworthy
             </h2>
             <p className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-700 dark:text-gray-300 sm:text-xl sm:leading-relaxed">
-              We believe in transparency. Here&apos;s how we protect your privacy, source our data, and keep prices up to date.
+              We believe in transparency. Here&apos;s how we protect your
+              privacy, source our data, and keep prices up to date.
             </p>
           </motion.div>
 
@@ -1068,9 +1111,9 @@ function CredibilitySection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30">
+              <div className="bg-blue-100 dark:bg-blue-900/30 mb-6 flex h-16 w-16 items-center justify-center rounded-xl">
                 <svg
-                  className="h-8 w-8 text-blue-600 dark:text-blue-400"
+                  className="text-blue-600 dark:text-blue-400 h-8 w-8"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1088,7 +1131,9 @@ function CredibilitySection() {
                 Privacy First
               </h3>
               <p className="mb-4 text-base leading-relaxed text-gray-700 dark:text-gray-300">
-                We don&apos;t require registration or collect personal information. Your searches and location data stay on your device. We use{' '}
+                We don&apos;t require registration or collect personal
+                information. Your searches and location data stay on your
+                device. We use{' '}
                 <Link
                   href="/privacy"
                   className="font-semibold text-primary-600 hover:underline dark:text-primary-400"
@@ -1100,7 +1145,7 @@ function CredibilitySection() {
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1114,7 +1159,7 @@ function CredibilitySection() {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1128,7 +1173,7 @@ function CredibilitySection() {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1156,9 +1201,9 @@ function CredibilitySection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-green-100 dark:bg-green-900/30">
+              <div className="bg-green-100 dark:bg-green-900/30 mb-6 flex h-16 w-16 items-center justify-center rounded-xl">
                 <svg
-                  className="h-8 w-8 text-green-600 dark:text-green-400"
+                  className="text-green-600 dark:text-green-400 h-8 w-8"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1185,12 +1230,14 @@ function CredibilitySection() {
                 >
                   Service Victoria&apos;s Fair Fuel Open Data API
                 </a>
-                . This is the same official government data used by fuel stations across Victoria. We don&apos;t modify or estimate prices.
+                . This is the same official government data used by fuel
+                stations across Victoria. We don&apos;t modify or estimate
+                prices.
               </p>
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1204,7 +1251,7 @@ function CredibilitySection() {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1218,7 +1265,7 @@ function CredibilitySection() {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1248,9 +1295,9 @@ function CredibilitySection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/30">
+              <div className="bg-purple-100 dark:bg-purple-900/30 mb-6 flex h-16 w-16 items-center justify-center rounded-xl">
                 <svg
-                  className="h-8 w-8 text-purple-600 dark:text-purple-400"
+                  className="text-purple-600 dark:text-purple-400 h-8 w-8"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1268,12 +1315,15 @@ function CredibilitySection() {
                 How Prices Are Updated
               </h3>
               <p className="mb-4 text-base leading-relaxed text-gray-700 dark:text-gray-300">
-                Fuel stations report prices to Service Victoria daily. We fetch this data every 24 hours to ensure you see the most current prices available. Prices are updated overnight, so morning checks show the latest information.
+                Fuel stations report prices to Service Victoria daily. We fetch
+                this data every 24 hours to ensure you see the most current
+                prices available. Prices are updated overnight, so morning
+                checks show the latest information.
               </p>
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1287,7 +1337,7 @@ function CredibilitySection() {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1301,7 +1351,7 @@ function CredibilitySection() {
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600 dark:text-green-400"
+                    className="text-green-600 dark:text-green-400 mt-0.5 h-4 w-4 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1390,7 +1440,9 @@ function OptimizedStatsSection() {
                 <div className="mb-1 text-base font-bold text-white/95 sm:text-lg">
                   {stat.label}
                 </div>
-                <div className="text-sm text-white/80 sm:text-base">{stat.description}</div>
+                <div className="text-sm text-white/80 sm:text-base">
+                  {stat.description}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -1426,7 +1478,7 @@ function OptimizedCTASection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="mb-6 text-3xl font-extrabold text-white sm:text-4xl md:text-5xl lg:text-6xl md:leading-tight">
+            <h2 className="mb-6 text-3xl font-extrabold text-white sm:text-4xl md:text-5xl md:leading-tight lg:text-6xl">
               Ready to Start Saving?
             </h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-white/95 sm:text-xl sm:leading-relaxed">

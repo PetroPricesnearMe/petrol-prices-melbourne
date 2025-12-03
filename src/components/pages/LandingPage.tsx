@@ -11,6 +11,7 @@
 
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { Suspense } from 'react';
 import Link from 'next/link';
 
@@ -18,13 +19,15 @@ import { cn } from '@/lib/utils';
 
 // Lazy load the map for optimal performance
 const HeroMap = dynamic(
-  () => import('@/components/map/HeroMap').then(mod => mod.HeroMap),
+  () => import('@/components/map/HeroMap').then((mod) => mod.HeroMap),
   {
     loading: () => (
-      <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
+      <div className="from-blue-50 to-blue-100 flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br dark:from-gray-800 dark:to-gray-900">
         <div className="text-center">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
-          <p className="text-gray-700 dark:text-gray-300 font-medium">Loading Map...</p>
+          <div className="border-blue-600 mx-auto mb-3 h-12 w-12 animate-spin rounded-full border-4 border-t-transparent" />
+          <p className="font-medium text-gray-700 dark:text-gray-300">
+            Loading Map...
+          </p>
         </div>
       </div>
     ),
@@ -83,10 +86,12 @@ function HeroMapWrapper() {
   return (
     <Suspense
       fallback={
-        <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
+        <div className="from-blue-50 to-blue-100 flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br dark:from-gray-800 dark:to-gray-900">
           <div className="text-center">
-            <div className="w-12 h-12 mx-auto mb-3 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
-            <p className="text-gray-700 dark:text-gray-300 font-medium">Loading Interactive Map...</p>
+            <div className="border-blue-600 mx-auto mb-3 h-12 w-12 animate-spin rounded-full border-4 border-t-transparent" />
+            <p className="font-medium text-gray-700 dark:text-gray-300">
+              Loading Interactive Map...
+            </p>
           </div>
         </div>
       }
@@ -105,7 +110,12 @@ function HeroMapWrapper() {
  */
 function HeroSection({ className }: HeroSectionProps) {
   return (
-    <section className={cn('relative min-h-screen flex items-center overflow-hidden', className)}>
+    <section
+      className={cn(
+        'relative flex min-h-screen items-center overflow-hidden',
+        className
+      )}
+    >
       {/* Gradient Background Layers */}
       <div className="absolute inset-0">
         {/* Base gradient */}
@@ -117,7 +127,7 @@ function HeroSection({ className }: HeroSectionProps) {
 
         {/* Animated gradient orbs */}
         <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full blur-3xl"
+          className="from-yellow-400/20 to-orange-500/20 absolute left-20 top-20 h-72 w-72 rounded-full bg-gradient-to-r blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.6, 0.3],
@@ -129,7 +139,7 @@ function HeroSection({ className }: HeroSectionProps) {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/20 to-purple-500/20 rounded-full blur-3xl"
+          className="from-pink-400/20 to-purple-500/20 absolute bottom-20 right-20 h-96 w-96 rounded-full bg-gradient-to-r blur-3xl"
           animate={{
             scale: [1.2, 1, 1.2],
             opacity: [0.4, 0.2, 0.4],
@@ -141,7 +151,7 @@ function HeroSection({ className }: HeroSectionProps) {
           }}
         />
         <motion.div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 rounded-full blur-3xl"
+          className="from-cyan-400/20 to-blue-500/20 absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 transform rounded-full bg-gradient-to-r blur-3xl"
           animate={{
             scale: [1, 1.3, 1],
             opacity: [0.2, 0.5, 0.2],
@@ -155,10 +165,9 @@ function HeroSection({ className }: HeroSectionProps) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-20">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
+      <div className="container relative z-10 mx-auto px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             {/* Left Column - Text Content */}
             <motion.div
               className="text-white"
@@ -168,24 +177,24 @@ function HeroSection({ className }: HeroSectionProps) {
             >
               {/* Badge */}
               <motion.div
-                className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6"
+                className="mb-6 inline-flex items-center rounded-full bg-white/10 px-4 py-2 text-sm font-medium backdrop-blur-sm"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse" />
+                <span className="bg-green-400 mr-2 h-2 w-2 animate-pulse rounded-full" />
                 Live Fuel Prices Available
               </motion.div>
 
               {/* Main Heading */}
               <motion.h1
-                className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+                className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
                 Find the{' '}
-                <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                <span className="from-yellow-400 to-orange-500 bg-gradient-to-r bg-clip-text text-transparent">
                   Cheapest
                 </span>{' '}
                 Petrol Prices
@@ -193,37 +202,58 @@ function HeroSection({ className }: HeroSectionProps) {
 
               {/* Subtitle */}
               <motion.p
-                className="text-xl md:text-2xl text-white/90 mb-8 leading-relaxed"
+                className="mb-8 text-xl leading-relaxed text-white/90 md:text-2xl"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Compare real-time fuel prices from 250+ stations across Melbourne.
-                Save money on every fill-up with live unleaded, diesel, and premium prices.
+                Compare real-time fuel prices from 250+ stations across
+                Melbourne. Save money on every fill-up with live unleaded,
+                diesel, and premium prices.
               </motion.p>
 
               {/* CTA Buttons */}
               <motion.div
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="mb-8 flex flex-col gap-4 sm:flex-row"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
                 <Link
                   href="/directory"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="inline-flex transform items-center justify-center rounded-xl bg-white px-8 py-4 font-semibold text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/90"
                 >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <svg
+                    className="mr-2 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
                   </svg>
                   Browse All Stations
                 </Link>
                 <Link
                   href="/fuel-price-trends"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/20"
+                  className="inline-flex transform items-center justify-center rounded-xl border border-white/20 bg-white/10 px-8 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/20"
                 >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  <svg
+                    className="mr-2 h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
                   </svg>
                   View Price Trends
                 </Link>
@@ -237,16 +267,22 @@ function HeroSection({ className }: HeroSectionProps) {
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">250+</div>
-                  <div className="text-white/80 text-sm">Petrol Stations</div>
+                  <div className="mb-1 text-2xl font-bold text-white md:text-3xl">
+                    250+
+                  </div>
+                  <div className="text-sm text-white/80">Petrol Stations</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">50+</div>
-                  <div className="text-white/80 text-sm">Melbourne Suburbs</div>
+                  <div className="mb-1 text-2xl font-bold text-white md:text-3xl">
+                    50+
+                  </div>
+                  <div className="text-sm text-white/80">Melbourne Suburbs</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">24/7</div>
-                  <div className="text-white/80 text-sm">Live Updates</div>
+                  <div className="mb-1 text-2xl font-bold text-white md:text-3xl">
+                    24/7
+                  </div>
+                  <div className="text-sm text-white/80">Live Updates</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -261,7 +297,7 @@ function HeroSection({ className }: HeroSectionProps) {
               {/* Interactive Map */}
               <div className="relative">
                 <motion.div
-                  className="relative w-full h-96 lg:h-[500px]"
+                  className="relative h-96 w-full lg:h-[500px]"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -271,28 +307,40 @@ function HeroSection({ className }: HeroSectionProps) {
 
                 {/* Floating Info Cards */}
                 <motion.div
-                  className="absolute -top-4 -left-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg z-10"
+                  className="absolute -left-4 -top-4 z-10 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur-sm"
                   animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                    <div className="bg-green-500 h-3 w-3 animate-pulse rounded-full" />
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">Live Map</div>
+                      <div className="text-sm font-semibold text-gray-900">
+                        Live Map
+                      </div>
                       <div className="text-xs text-gray-600">250+ Stations</div>
                     </div>
                   </div>
                 </motion.div>
 
                 <motion.div
-                  className="absolute -bottom-4 -right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg z-10"
+                  className="absolute -bottom-4 -right-4 z-10 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur-sm"
                   animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
+                    <div className="bg-blue-500 h-3 w-3 animate-pulse rounded-full" />
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">Real-Time Prices</div>
+                      <div className="text-sm font-semibold text-gray-900">
+                        Real-Time Prices
+                      </div>
                       <div className="text-xs text-gray-600">Updated Daily</div>
                     </div>
                   </div>
@@ -305,12 +353,22 @@ function HeroSection({ className }: HeroSectionProps) {
 
       {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 transform text-white/60"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          />
         </svg>
       </motion.div>
     </section>
@@ -324,29 +382,34 @@ function HeroSection({ className }: HeroSectionProps) {
 /**
  * Feature card component with animations
  */
-function FeatureCard({ icon, title, description, delay = 0 }: FeatureCardProps) {
+function FeatureCard({
+  icon,
+  title,
+  description,
+  delay = 0,
+}: FeatureCardProps) {
   return (
     <motion.div
-      className="group relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+      className="group relative rounded-2xl border border-gray-200 bg-white p-8 shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
       whileHover={{ y: -5 }}
     >
       {/* Gradient Background on Hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-secondary-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500/5 to-secondary-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
       <div className="relative z-10">
         {/* Icon */}
-        <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 transition-transform duration-300 group-hover:scale-110">
           <span className="text-2xl">{icon}</span>
         </div>
 
         {/* Content */}
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <h3 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           {title}
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+        <p className="leading-relaxed text-gray-600 dark:text-gray-400">
           {description}
         </p>
       </div>
@@ -365,59 +428,78 @@ function DirectoryHighlights() {
   const highlights: DirectoryHighlightProps[] = [
     {
       title: 'Real-Time Price Updates',
-      description: 'Get the latest fuel prices updated every few minutes from stations across Melbourne.',
+      description:
+        'Get the latest fuel prices updated every few minutes from stations across Melbourne.',
       image: '/images/features/real-time-prices.jpg',
       stats: { count: 250, label: 'Stations' },
-      features: ['Live Price Updates', 'Multiple Fuel Types', 'Price Alerts', 'Historical Data'],
+      features: [
+        'Live Price Updates',
+        'Multiple Fuel Types',
+        'Price Alerts',
+        'Historical Data',
+      ],
       ctaText: 'View Live Prices',
       ctaLink: '/directory',
     },
     {
       title: 'Smart Search & Filters',
-      description: 'Find the perfect station with advanced filters for location, brand, amenities, and more.',
+      description:
+        'Find the perfect station with advanced filters for location, brand, amenities, and more.',
       image: '/images/features/smart-search.jpg',
       stats: { count: 50, label: 'Suburbs' },
-      features: ['Location-Based Search', 'Brand Filtering', 'Amenity Search', 'Distance Sorting'],
+      features: [
+        'Location-Based Search',
+        'Brand Filtering',
+        'Amenity Search',
+        'Distance Sorting',
+      ],
       ctaText: 'Start Searching',
       ctaLink: '/directory',
     },
     {
       title: 'Interactive Maps',
-      description: 'Explore stations on interactive maps with clustering and custom markers for easy navigation.',
+      description:
+        'Explore stations on interactive maps with clustering and custom markers for easy navigation.',
       image: '/images/features/interactive-maps.jpg',
       stats: { count: 24, label: 'Hours' },
-      features: ['Interactive Maps', 'Station Clustering', 'Route Planning', 'Street View'],
+      features: [
+        'Interactive Maps',
+        'Station Clustering',
+        'Route Planning',
+        'Street View',
+      ],
       ctaText: 'Explore Maps',
       ctaLink: '/map',
     },
   ];
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900">
+    <section className="bg-gray-50 py-20 dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="mx-auto max-w-6xl">
           {/* Section Header */}
           <motion.div
-            className="text-center mb-16"
+            className="mb-16 text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+            <h2 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
               Why Choose Our Platform?
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Discover the features that make finding cheap petrol prices easier than ever before.
+            <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-400">
+              Discover the features that make finding cheap petrol prices easier
+              than ever before.
             </p>
           </motion.div>
 
           {/* Highlights Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {highlights.map((highlight, index) => (
               <motion.div
                 key={index}
-                className="group relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-800"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
@@ -430,12 +512,12 @@ function DirectoryHighlights() {
                     src={highlight.image}
                     alt={highlight.title}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
                   {/* Stats Badge */}
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                  <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 backdrop-blur-sm">
                     <span className="text-sm font-bold text-gray-900">
                       {highlight.stats.count}+ {highlight.stats.label}
                     </span>
@@ -444,18 +526,21 @@ function DirectoryHighlights() {
 
                 {/* Content */}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                  <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">
                     {highlight.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="mb-4 text-gray-600 dark:text-gray-400">
                     {highlight.description}
                   </p>
 
                   {/* Features */}
-                  <div className="space-y-2 mb-6">
+                  <div className="mb-6 space-y-2">
                     {highlight.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full" />
+                      <div
+                        key={featureIndex}
+                        className="flex items-center space-x-2"
+                      >
+                        <div className="h-2 w-2 rounded-full bg-primary-500" />
                         <span className="text-sm text-gray-600 dark:text-gray-400">
                           {feature}
                         </span>
@@ -466,11 +551,21 @@ function DirectoryHighlights() {
                   {/* CTA Button */}
                   <Link
                     href={highlight.ctaLink}
-                    className="inline-flex items-center justify-center w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors duration-200"
+                    className="inline-flex w-full items-center justify-center rounded-lg bg-primary-600 px-4 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-700"
                   >
                     {highlight.ctaText}
-                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="ml-2 h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </Link>
                 </div>
@@ -492,28 +587,29 @@ function DirectoryHighlights() {
  */
 function StatsSection({ stats }: StatsSectionProps) {
   return (
-    <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-600 relative overflow-hidden">
+    <section className="relative overflow-hidden bg-gradient-to-r from-primary-600 to-secondary-600 py-20">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10 bg-pattern-dots" />
+      <div className="bg-pattern-dots absolute inset-0 opacity-10" />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto">
+      <div className="container relative z-10 mx-auto px-4">
+        <div className="mx-auto max-w-4xl">
           <motion.div
-            className="text-center mb-16"
+            className="mb-16 text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">
               Trusted by Thousands of Drivers
             </h2>
             <p className="text-xl text-white/90">
-              Join the community of smart drivers who save money on fuel every day.
+              Join the community of smart drivers who save money on fuel every
+              day.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -524,7 +620,7 @@ function StatsSection({ stats }: StatsSectionProps) {
                 viewport={{ once: true }}
               >
                 <motion.div
-                  className="text-3xl md:text-4xl font-bold text-white mb-2"
+                  className="mb-2 text-3xl font-bold text-white md:text-4xl"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
@@ -532,12 +628,10 @@ function StatsSection({ stats }: StatsSectionProps) {
                 >
                   {stat.value}
                 </motion.div>
-                <div className="text-white/90 font-semibold mb-1">
+                <div className="mb-1 font-semibold text-white/90">
                   {stat.label}
                 </div>
-                <div className="text-white/70 text-sm">
-                  {stat.description}
-                </div>
+                <div className="text-sm text-white/70">{stat.description}</div>
               </motion.div>
             ))}
           </div>
@@ -556,11 +650,11 @@ function StatsSection({ stats }: StatsSectionProps) {
  */
 function CTASection() {
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 via-primary-900 to-secondary-900 relative overflow-hidden">
+    <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-secondary-900 py-20">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <motion.div
-          className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-yellow-400/10 to-orange-500/10 rounded-full blur-3xl"
+          className="from-yellow-400/10 to-orange-500/10 absolute left-20 top-20 h-96 w-96 rounded-full bg-gradient-to-r blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.6, 0.3],
@@ -572,7 +666,7 @@ function CTASection() {
           }}
         />
         <motion.div
-          className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-pink-400/10 to-purple-500/10 rounded-full blur-3xl"
+          className="from-pink-400/10 to-purple-500/10 absolute bottom-20 right-20 h-80 w-80 rounded-full bg-gradient-to-r blur-3xl"
           animate={{
             scale: [1.2, 1, 1.2],
             opacity: [0.4, 0.2, 0.4],
@@ -585,35 +679,45 @@ function CTASection() {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="container relative z-10 mx-auto px-4">
+        <div className="mx-auto max-w-4xl text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl lg:text-5xl">
               Ready to Start Saving?
             </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            <p className="mx-auto mb-8 max-w-2xl text-xl text-white/90">
               Join thousands of drivers who are already saving money on fuel.
               Find the cheapest petrol prices near you in just a few clicks.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link
                 href="/directory"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="inline-flex transform items-center justify-center rounded-xl bg-white px-8 py-4 font-semibold text-primary-600 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-white/90"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <svg
+                  className="mr-2 h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
                 Find Stations Now
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/20"
+                className="inline-flex transform items-center justify-center rounded-xl border border-white/20 bg-white/10 px-8 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:bg-white/20"
               >
                 Learn More
               </Link>
@@ -644,25 +748,29 @@ export function LandingPage({ className }: LandingPageProps) {
     {
       icon: '⛽',
       title: 'Live Price Updates',
-      description: 'Get real-time fuel prices updated every few minutes from stations across Melbourne.',
+      description:
+        'Get real-time fuel prices updated every few minutes from stations across Melbourne.',
       delay: 0,
     },
     {
       icon: '🔍',
       title: 'Smart Search',
-      description: 'Find stations by location, brand, amenities, and more with our advanced filtering system.',
+      description:
+        'Find stations by location, brand, amenities, and more with our advanced filtering system.',
       delay: 0.1,
     },
     {
       icon: '🗺️',
       title: 'Interactive Maps',
-      description: 'Explore stations on interactive maps with clustering and custom markers for easy navigation.',
+      description:
+        'Explore stations on interactive maps with clustering and custom markers for easy navigation.',
       delay: 0.2,
     },
     {
       icon: '📱',
       title: 'Mobile Optimized',
-      description: 'Access our platform from any device with our fully responsive and mobile-optimized design.',
+      description:
+        'Access our platform from any device with our fully responsive and mobile-optimized design.',
       delay: 0.3,
     },
   ];
@@ -673,25 +781,26 @@ export function LandingPage({ className }: LandingPageProps) {
       <HeroSection />
 
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-800">
+      <section className="bg-white py-20 dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="mx-auto max-w-6xl">
             <motion.div
-              className="text-center mb-16"
+              className="mb-16 text-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+              <h2 className="mb-6 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
                 Everything You Need to Save on Fuel
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                Our comprehensive platform provides all the tools you need to find the cheapest petrol prices and save money on every fill-up.
+              <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-400">
+                Our comprehensive platform provides all the tools you need to
+                find the cheapest petrol prices and save money on every fill-up.
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
               {features.map((feature, index) => (
                 <FeatureCard
                   key={index}
@@ -722,5 +831,17 @@ export function LandingPage({ className }: LandingPageProps) {
 // EXPORTS
 // ============================================================================
 
-export { LandingPage, HeroSection, DirectoryHighlights, StatsSection, CTASection };
-export type { LandingPageProps, HeroSectionProps, DirectoryHighlightProps, FeatureCardProps, StatsSectionProps };
+export {
+  LandingPage,
+  HeroSection,
+  DirectoryHighlights,
+  StatsSection,
+  CTASection,
+};
+export type {
+  LandingPageProps,
+  HeroSectionProps,
+  DirectoryHighlightProps,
+  FeatureCardProps,
+  StatsSectionProps,
+};

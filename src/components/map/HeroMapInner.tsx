@@ -1,6 +1,6 @@
 /**
  * Hero Map Inner Component
- * 
+ *
  * The actual Leaflet map implementation
  * Separated for code splitting and lazy loading
  */
@@ -38,17 +38,17 @@ interface HeroMapInnerProps {
   onError?: () => void;
 }
 
-// Brand colors for consistent styling
-const BRAND_COLORS: Record<string, string> = {
-  'BP': '#00A651',
-  'Shell': '#FFD700',
-  'Caltex': '#FF6B35',
-  '7-Eleven': '#FF6900',
-  'Coles Express': '#E31837',
-  'Woolworths': '#1B5E20',
-  'United': '#1976D2',
-  'Puma': '#E91E63',
-};
+// Brand colors for consistent styling (reserved for future use)
+// const BRAND_COLORS: Record<string, string> = {
+//   'BP': '#00A651',
+//   'Shell': '#FFD700',
+//   'Caltex': '#FF6B35',
+//   '7-Eleven': '#FF6900',
+//   'Coles Express': '#E31837',
+//   'Woolworths': '#1B5E20',
+//   'United': '#1976D2',
+//   'Puma': '#E91E63',
+// };
 
 /**
  * Get brand color or default
@@ -111,114 +111,147 @@ function createCustomMarkerIcon(station: Station): L.DivIcon {
 /**
  * Station Marker Component
  */
-const StationMarker = memo(({ 
-  station, 
-  onClick 
-}: { 
-  station: Station;
-  onClick: (station: Station) => void;
-}) => {
-  const icon = useMemo(() => createCustomMarkerIcon(station), [station]);
-  
-  const handleClick = useCallback(() => {
-    onClick(station);
-  }, [onClick, station]);
+const StationMarker = memo(
+  ({
+    station,
+    onClick,
+  }: {
+    station: Station;
+    onClick: (station: Station) => void;
+  }) => {
+    const icon = useMemo(() => createCustomMarkerIcon(station), [station]);
 
-  // Format fuel prices
-  const fuelPrices = station.fuelPrices || {};
-  const hasAnyPrice = Object.values(fuelPrices).some(price => price != null);
+    const handleClick = useCallback(() => {
+      onClick(station);
+    }, [onClick, station]);
 
-  return (
-    <Marker
-      position={[station.latitude!, station.longitude!]}
-      icon={icon}
-      eventHandlers={{ click: handleClick }}
-    >
-      <Popup className="custom-station-popup" maxWidth={300}>
-        <div className="p-2">
-          {/* Station Header */}
-          <div className="mb-3">
-            <h3 className="text-lg font-bold text-gray-900 mb-1">
-              {station.name}
-            </h3>
-            {station.brand && (
-              <p className="text-sm font-medium" style={{ color: getBrandColor(station.brand) }}>
-                {station.brand}
-              </p>
-            )}
-          </div>
+    // Format fuel prices
+    const fuelPrices = station.fuelPrices || {};
+    const hasAnyPrice = Object.values(fuelPrices).some(
+      (price) => price != null
+    );
 
-          {/* Address */}
-          <div className="mb-3 text-sm text-gray-600">
-            <div className="flex items-start gap-2">
-              <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <div>
-                <p>{station.address}</p>
-                <p>{station.suburb} {station.postcode}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Fuel Prices */}
-          {hasAnyPrice && (
+    return (
+      <Marker
+        position={[station.latitude!, station.longitude!]}
+        icon={icon}
+        eventHandlers={{ click: handleClick }}
+      >
+        <Popup className="custom-station-popup" maxWidth={300}>
+          <div className="p-2">
+            {/* Station Header */}
             <div className="mb-3">
-              <h4 className="text-sm font-semibold text-gray-900 mb-2">
-                Current Prices
-              </h4>
-              <div className="space-y-1">
-                {fuelPrices.unleaded != null && (
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">Unleaded</span>
-                    <span className="font-bold" style={{ color: getPriceColor(fuelPrices.unleaded) }}>
-                      {fuelPrices.unleaded.toFixed(1)}¢
-                    </span>
-                  </div>
-                )}
-                {fuelPrices.diesel != null && (
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">Diesel</span>
-                    <span className="font-bold" style={{ color: getPriceColor(fuelPrices.diesel) }}>
-                      {fuelPrices.diesel.toFixed(1)}¢
-                    </span>
-                  </div>
-                )}
-                {fuelPrices.premium95 != null && (
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-600">Premium 95</span>
-                    <span className="font-bold" style={{ color: getPriceColor(fuelPrices.premium95) }}>
-                      {fuelPrices.premium95.toFixed(1)}¢
-                    </span>
-                  </div>
-                )}
+              <h3 className="mb-1 text-lg font-bold text-gray-900">
+                {station.name}
+              </h3>
+              {station.brand && (
+                <p
+                  className="text-sm font-medium"
+                  style={{ color: getBrandColor(station.brand) }}
+                >
+                  {station.brand}
+                </p>
+              )}
+            </div>
+
+            {/* Address */}
+            <div className="mb-3 text-sm text-gray-600">
+              <div className="flex items-start gap-2">
+                <svg
+                  className="mt-0.5 h-4 w-4 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <div>
+                  <p>{station.address}</p>
+                  <p>
+                    {station.suburb} {station.postcode}
+                  </p>
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Actions */}
-          <div className="flex gap-2">
-            <Link
-              href={`/stations/${station.id}`}
-              className="flex-1 text-center bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-            >
-              View Details
-            </Link>
-            <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 text-center bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
-            >
-              Directions
-            </a>
+            {/* Fuel Prices */}
+            {hasAnyPrice && (
+              <div className="mb-3">
+                <h4 className="mb-2 text-sm font-semibold text-gray-900">
+                  Current Prices
+                </h4>
+                <div className="space-y-1">
+                  {fuelPrices.unleaded != null && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Unleaded</span>
+                      <span
+                        className="font-bold"
+                        style={{ color: getPriceColor(fuelPrices.unleaded) }}
+                      >
+                        {fuelPrices.unleaded.toFixed(1)}¢
+                      </span>
+                    </div>
+                  )}
+                  {fuelPrices.diesel != null && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Diesel</span>
+                      <span
+                        className="font-bold"
+                        style={{ color: getPriceColor(fuelPrices.diesel) }}
+                      >
+                        {fuelPrices.diesel.toFixed(1)}¢
+                      </span>
+                    </div>
+                  )}
+                  {fuelPrices.premium95 != null && (
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Premium 95</span>
+                      <span
+                        className="font-bold"
+                        style={{ color: getPriceColor(fuelPrices.premium95) }}
+                      >
+                        {fuelPrices.premium95.toFixed(1)}¢
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex gap-2">
+              <Link
+                href={`/stations/${station.id}`}
+                className="bg-blue-600 hover:bg-blue-700 flex-1 rounded-lg px-3 py-2 text-center text-sm font-medium text-white transition-colors"
+              >
+                View Details
+              </Link>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 rounded-lg bg-gray-600 px-3 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-gray-700"
+              >
+                Directions
+              </a>
+            </div>
           </div>
-        </div>
-      </Popup>
-    </Marker>
-  );
-});
+        </Popup>
+      </Marker>
+    );
+  }
+);
 
 StationMarker.displayName = 'StationMarker';
 
@@ -240,37 +273,43 @@ function MapResizeHandler() {
 /**
  * Hero Map Inner Component
  */
-export function HeroMapInner({ 
-  stations, 
+export function HeroMapInner({
+  stations,
   onStationClick,
-  onError 
+  onError,
 }: HeroMapInnerProps) {
-
   // Melbourne center coordinates
   const center: [number, number] = useMemo(() => {
     if (stations.length > 0) {
-      const validStations = stations.filter(s => s.latitude && s.longitude);
+      const validStations = stations.filter((s) => s.latitude && s.longitude);
       if (validStations.length > 0) {
-        const avgLat = validStations.reduce((sum, s) => sum + s.latitude!, 0) / validStations.length;
-        const avgLng = validStations.reduce((sum, s) => sum + s.longitude!, 0) / validStations.length;
+        const avgLat =
+          validStations.reduce((sum, s) => sum + s.latitude!, 0) /
+          validStations.length;
+        const avgLng =
+          validStations.reduce((sum, s) => sum + s.longitude!, 0) /
+          validStations.length;
         return [avgLat, avgLng];
       }
     }
     return [-37.8136, 144.9631]; // Melbourne default
   }, [stations]);
 
-  const handleStationClick = useCallback((station: Station) => {
-    onStationClick?.(station);
-  }, [onStationClick]);
+  const handleStationClick = useCallback(
+    (station: Station) => {
+      onStationClick?.(station);
+    },
+    [onStationClick]
+  );
 
   try {
     return (
-      <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl">
+      <div className="relative h-full w-full overflow-hidden rounded-2xl shadow-2xl">
         <MapContainer
           center={center}
           zoom={11}
           scrollWheelZoom={true}
-          className="w-full h-full"
+          className="h-full w-full"
           style={{ zIndex: 1 }}
         >
           {/* OpenStreetMap tiles - free and fast */}
@@ -294,7 +333,7 @@ export function HeroMapInner({
               const count = cluster.getChildCount();
               let size = 'small';
               let color = '#3B82F6';
-              
+
               if (count > 50) {
                 size = 'large';
                 color = '#EF4444';
@@ -339,28 +378,28 @@ export function HeroMapInner({
         </MapContainer>
 
         {/* Overlay controls */}
-        <div className="absolute top-4 right-4 z-[1000] bg-white rounded-lg shadow-lg p-2">
+        <div className="absolute right-4 top-4 z-[1000] rounded-lg bg-white p-2 shadow-lg">
           <div className="text-sm font-medium text-gray-700">
             {stations.length} Stations
           </div>
         </div>
 
         {/* Price legend */}
-        <div className="absolute bottom-4 left-4 z-[1000] bg-white rounded-lg shadow-lg p-3">
-          <div className="text-xs font-semibold text-gray-900 mb-2">
+        <div className="absolute bottom-4 left-4 z-[1000] rounded-lg bg-white p-3 shadow-lg">
+          <div className="mb-2 text-xs font-semibold text-gray-900">
             Price Range
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-xs">
-              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <div className="bg-green-500 h-3 w-3 rounded-full" />
               <span className="text-gray-600">&lt; 180¢</span>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <div className="bg-yellow-500 h-3 w-3 rounded-full" />
               <span className="text-gray-600">180-200¢</span>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
+              <div className="bg-red-500 h-3 w-3 rounded-full" />
               <span className="text-gray-600">&gt; 200¢</span>
             </div>
           </div>
@@ -375,4 +414,3 @@ export function HeroMapInner({
 }
 
 export default HeroMapInner;
-
