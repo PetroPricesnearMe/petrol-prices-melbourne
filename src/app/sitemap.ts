@@ -10,16 +10,18 @@ import type { MetadataRoute } from 'next';
 // Always use production URL - never localhost
 const getBaseUrl = (): string => {
   const envUrl = process.env.NEXT_PUBLIC_APP_URL;
-  
+
   // Reject localhost URLs in production
   if (envUrl && envUrl.includes('localhost')) {
-    console.warn('Warning: NEXT_PUBLIC_APP_URL contains localhost, using production URL instead');
+    console.warn(
+      'Warning: NEXT_PUBLIC_APP_URL contains localhost, using production URL instead'
+    );
     return 'https://petrolpricesnearme.com.au';
   }
-  
+
   // Use environment variable if set and valid, otherwise use production URL
-  return envUrl && !envUrl.includes('localhost') 
-    ? envUrl 
+  return envUrl && !envUrl.includes('localhost')
+    ? envUrl
     : 'https://petrolpricesnearme.com.au';
 };
 
@@ -44,13 +46,15 @@ async function getStationUrls(): Promise<MetadataRoute.Sitemap> {
         const url = `${baseUrl}/stations/${station.id}`;
         // Validate URL doesn't contain localhost
         if (url.includes('localhost')) {
-          console.warn(`Warning: Skipping station ${station.id} - URL contains localhost`);
+          console.warn(
+            `Warning: Skipping station ${station.id} - URL contains localhost`
+          );
           return null;
         }
         return {
           url,
-          lastModified: station.lastUpdated 
-            ? new Date(station.lastUpdated) 
+          lastModified: station.lastUpdated
+            ? new Date(station.lastUpdated)
             : new Date(),
           changeFrequency: 'daily' as const,
           priority: 0.8, // High priority for individual station pages
@@ -89,7 +93,9 @@ async function getDirectoryUrls(): Promise<MetadataRoute.Sitemap> {
         const url = `${baseUrl}/directory/${suburb}`;
         // Validate URL doesn't contain localhost
         if (url.includes('localhost')) {
-          console.warn(`Warning: Skipping suburb ${suburb} - URL contains localhost`);
+          console.warn(
+            `Warning: Skipping suburb ${suburb} - URL contains localhost`
+          );
           return null;
         }
         return {
@@ -129,7 +135,9 @@ async function getRegionUrls(): Promise<MetadataRoute.Sitemap> {
       const url = `${baseUrl}/regions/${region}`;
       // Validate URL doesn't contain localhost
       if (url.includes('localhost')) {
-        console.warn(`Warning: Skipping region ${region} - URL contains localhost`);
+        console.warn(
+          `Warning: Skipping region ${region} - URL contains localhost`
+        );
         return null;
       }
       return {
@@ -168,7 +176,9 @@ async function getFuelBrandUrls(): Promise<MetadataRoute.Sitemap> {
         const url = `${baseUrl}/fuel-brands/${brand}`;
         // Validate URL doesn't contain localhost
         if (url.includes('localhost')) {
-          console.warn(`Warning: Skipping brand ${brand} - URL contains localhost`);
+          console.warn(
+            `Warning: Skipping brand ${brand} - URL contains localhost`
+          );
           return null;
         }
         return {
@@ -202,22 +212,146 @@ async function getFuelTypeUrls(): Promise<MetadataRoute.Sitemap> {
       { slug: 'premium-diesel', name: 'Premium Diesel', priority: 0.7 },
     ];
 
-    return fuelTypes.map((fuelType) => {
-      const url = `${baseUrl}/fuel-types/${fuelType.slug}`;
-      // Validate URL doesn't contain localhost
-      if (url.includes('localhost')) {
-        console.warn(`Warning: Skipping fuel type ${fuelType.slug} - URL contains localhost`);
-        return null;
-      }
-      return {
-        url,
-        lastModified: new Date(),
-        changeFrequency: 'daily' as const,
-        priority: fuelType.priority,
-      };
-    }).filter((entry): entry is MetadataRoute.Sitemap[0] => entry !== null);
+    return fuelTypes
+      .map((fuelType) => {
+        const url = `${baseUrl}/fuel-types/${fuelType.slug}`;
+        // Validate URL doesn't contain localhost
+        if (url.includes('localhost')) {
+          console.warn(
+            `Warning: Skipping fuel type ${fuelType.slug} - URL contains localhost`
+          );
+          return null;
+        }
+        return {
+          url,
+          lastModified: new Date(),
+          changeFrequency: 'daily' as const,
+          priority: fuelType.priority,
+        };
+      })
+      .filter((entry): entry is MetadataRoute.Sitemap[0] => entry !== null);
   } catch (error) {
     console.error('Error generating fuel type URLs for sitemap:', error);
+    return [];
+  }
+}
+
+/**
+ * Get suburb + fuel type URLs
+ * Generates URLs like /melbourne/coburg/unleaded, /melbourne/epping/diesel
+ */
+async function getSuburbFuelTypeUrls(): Promise<MetadataRoute.Sitemap> {
+  try {
+    const { getAllStations } = await import('@/lib/data/stations');
+    const stations = await getAllStations();
+
+    const FUEL_TYPES = ['unleaded', 'diesel', 'premium', 'e10'];
+    const suburbMap = new Map<string, number>();
+
+    // Get unique suburbs
+    stations.forEach((station) => {
+      if (station.suburb) {
+        const suburbSlug = station.suburb.toLowerCase().replace(/\s+/g, '-');
+        suburbMap.set(suburbSlug, (suburbMap.get(suburbSlug) || 0) + 1);
+      }
+    });
+
+    const urls: MetadataRoute.Sitemap = [];
+
+    // Generate suburb x fuel type combinations (limit to top 50 suburbs)
+    const topSuburbs = Array.from(suburbMap.keys()).slice(0, 50);
+    for (const suburb of topSuburbs) {
+      for (const fuelType of FUEL_TYPES) {
+        const url = `${baseUrl}/melbourne/${suburb}/${fuelType}`;
+        if (!url.includes('localhost')) {
+          urls.push({
+            url,
+            lastModified: new Date(),
+            changeFrequency: 'daily' as const,
+            priority: 0.85,
+          });
+        }
+      }
+    }
+
+    return urls;
+  } catch (error) {
+    console.error('Error fetching suburb fuel type URLs for sitemap:', error);
+    return [];
+  }
+}
+
+/**
+ * Get brand + suburb URLs
+ * Generates URLs like /servo/caltex-coburg, /servo/bp-epping
+ */
+async function getBrandSuburbUrls(): Promise<MetadataRoute.Sitemap> {
+  try {
+    const { getAllStations } = await import('@/lib/data/stations');
+    const stations = await getAllStations();
+
+    const combinations = new Set<string>();
+
+    stations.forEach((station) => {
+      if (station.brand && station.suburb) {
+        const brandSlug = station.brand.toLowerCase().replace(/\s+/g, '-');
+        const suburbSlug = station.suburb.toLowerCase().replace(/\s+/g, '-');
+        combinations.add(`${brandSlug}-${suburbSlug}`);
+      }
+    });
+
+    // Limit to top 100 brand-suburb combinations
+    return Array.from(combinations)
+      .slice(0, 100)
+      .map((slug) => {
+        const url = `${baseUrl}/servo/${slug}`;
+        return {
+          url,
+          lastModified: new Date(),
+          changeFrequency: 'daily' as const,
+          priority: 0.8,
+        };
+      })
+      .filter((entry) => !entry.url.includes('localhost'));
+  } catch (error) {
+    console.error('Error fetching brand suburb URLs for sitemap:', error);
+    return [];
+  }
+}
+
+/**
+ * Get "today's prices" suburb URLs
+ * Generates URLs like /suburb/fuel-prices-coburg-today
+ */
+async function getSuburbTodayUrls(): Promise<MetadataRoute.Sitemap> {
+  try {
+    const { getAllStations } = await import('@/lib/data/stations');
+    const stations = await getAllStations();
+
+    const suburbMap = new Map<string, number>();
+
+    stations.forEach((station) => {
+      if (station.suburb) {
+        const suburbSlug = station.suburb.toLowerCase().replace(/\s+/g, '-');
+        suburbMap.set(suburbSlug, (suburbMap.get(suburbSlug) || 0) + 1);
+      }
+    });
+
+    // Limit to top 75 suburbs for "today" pages
+    return Array.from(suburbMap.keys())
+      .slice(0, 75)
+      .map((suburb) => {
+        const url = `${baseUrl}/suburb/fuel-prices-${suburb}-today`;
+        return {
+          url,
+          lastModified: new Date(),
+          changeFrequency: 'hourly' as const,
+          priority: 0.9,
+        };
+      })
+      .filter((entry) => !entry.url.includes('localhost'));
+  } catch (error) {
+    console.error('Error fetching suburb today URLs for sitemap:', error);
     return [];
   }
 }
@@ -227,7 +361,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Validate baseUrl is not localhost
   if (baseUrl.includes('localhost')) {
-    console.error('Error: baseUrl contains localhost. Sitemap generation aborted.');
+    console.error(
+      'Error: baseUrl contains localhost. Sitemap generation aborted.'
+    );
     return [];
   }
 
@@ -314,19 +450,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ].filter((route) => {
     // Filter out any routes with localhost
     if (route.url.includes('localhost')) {
-      console.warn(`Warning: Excluding route ${route.url} - contains localhost`);
+      console.warn(
+        `Warning: Excluding route ${route.url} - contains localhost`
+      );
       return false;
     }
     return true;
   });
 
   // Fetch dynamic routes
-  const [stationUrls, directoryUrls, regionUrls, brandUrls, fuelTypeUrls] = await Promise.all([
+  const [
+    stationUrls,
+    directoryUrls,
+    regionUrls,
+    brandUrls,
+    fuelTypeUrls,
+    suburbFuelTypeUrls,
+    brandSuburbUrls,
+    suburbTodayUrls,
+  ] = await Promise.all([
     getStationUrls(),
     getDirectoryUrls(),
     getRegionUrls(),
     getFuelBrandUrls(),
     getFuelTypeUrls(),
+    getSuburbFuelTypeUrls(),
+    getBrandSuburbUrls(),
+    getSuburbTodayUrls(),
   ]);
 
   // Combine all routes and filter out any localhost URLs
@@ -336,13 +486,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...regionUrls,
     ...brandUrls,
     ...fuelTypeUrls,
+    ...suburbFuelTypeUrls,
+    ...brandSuburbUrls,
+    ...suburbTodayUrls,
     ...stationUrls,
   ];
 
   // Final validation - remove any localhost URLs that might have slipped through
   return allRoutes.filter((route) => {
     if (route.url.includes('localhost')) {
-      console.warn(`Warning: Final filter removing route ${route.url} - contains localhost`);
+      console.warn(
+        `Warning: Final filter removing route ${route.url} - contains localhost`
+      );
       return false;
     }
     return true;
