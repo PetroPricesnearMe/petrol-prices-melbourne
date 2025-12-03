@@ -70,7 +70,7 @@ export function AccessibleForm({
       return 'Please enter a valid email address';
     }
 
-    if (field.type === 'tel' && value && !/^[\d\s\-\+\(\)]+$/.test(value)) {
+    if (field.type === 'tel' && value && !/^[\d\s\-+()]+$/.test(value)) {
       return 'Please enter a valid phone number';
     }
 

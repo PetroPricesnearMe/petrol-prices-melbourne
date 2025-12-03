@@ -89,7 +89,7 @@ const StationCards = () => {
 
       const text = await response.text();
       return parseCSV(text);
-    } catch (error) {
+    } catch (_error) {
       logger.warn('CSV not available, using Baserow API');
       return null;
     }

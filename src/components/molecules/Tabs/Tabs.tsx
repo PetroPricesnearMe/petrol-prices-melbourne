@@ -51,7 +51,7 @@ export const Tabs: React.FC<TabsProps> = ({
 
   const handleKeyDown = (event: React.KeyboardEvent, tabId: string, index: number) => {
     switch (event.key) {
-      case 'ArrowLeft':
+      case 'ArrowLeft': {
         event.preventDefault();
         const prevIndex = index > 0 ? index - 1 : tabs.length - 1;
         const prevTab = tabs[prevIndex];
@@ -60,7 +60,8 @@ export const Tabs: React.FC<TabsProps> = ({
           tabRefs.current[prevIndex]?.focus();
         }
         break;
-      case 'ArrowRight':
+      }
+      case 'ArrowRight': {
         event.preventDefault();
         const nextIndex = index < tabs.length - 1 ? index + 1 : 0;
         const nextTab = tabs[nextIndex];
@@ -69,7 +70,8 @@ export const Tabs: React.FC<TabsProps> = ({
           tabRefs.current[nextIndex]?.focus();
         }
         break;
-      case 'Home':
+      }
+      case 'Home': {
         event.preventDefault();
         const firstTab = tabs[0];
         if (!firstTab.disabled) {
@@ -77,7 +79,8 @@ export const Tabs: React.FC<TabsProps> = ({
           tabRefs.current[0]?.focus();
         }
         break;
-      case 'End':
+      }
+      case 'End': {
         event.preventDefault();
         const lastTab = tabs[tabs.length - 1];
         if (!lastTab.disabled) {
@@ -85,6 +88,7 @@ export const Tabs: React.FC<TabsProps> = ({
           tabRefs.current[tabs.length - 1]?.focus();
         }
         break;
+      }
     }
   };
 

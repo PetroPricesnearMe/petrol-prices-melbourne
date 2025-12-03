@@ -9,7 +9,7 @@
 
 'use client';
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { FetchErrorDisplay } from './FetchErrorDisplay';
 import { useFetchWithRetry, type UseFetchWithRetryReturn } from '@/hooks/useFetchWithRetry';

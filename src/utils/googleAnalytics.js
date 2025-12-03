@@ -69,7 +69,7 @@ export const initializeGA = () => {
   } catch (error) {
     // Fail gracefully - analytics should never break functionality
     if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
+       
       console.warn('⚠️ Google Analytics initialization failed:', error);
     }
   }

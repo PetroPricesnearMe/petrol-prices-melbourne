@@ -82,7 +82,7 @@ export const CardMedia = memo<CardMediaProps>(({
         )}
         onError={() => setImageError(true)}
         // Progressive enhancement: lazy loading for modern browsers
-        // eslint-disable-next-line react/no-unknown-property
+         
         loading="lazy"
       />
     </div>

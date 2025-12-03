@@ -149,14 +149,16 @@ export function MelbourneListingClient({
             return a.distance - b.distance;
           }
           return 0;
-        case 'price-low':
+        case 'price-low': {
           const minPriceA = getMinPrice(a);
           const minPriceB = getMinPrice(b);
           return (minPriceA || Infinity) - (minPriceB || Infinity);
-        case 'price-high':
+        }
+        case 'price-high': {
           const maxPriceA = getMaxPrice(a);
           const maxPriceB = getMaxPrice(b);
           return (maxPriceB || 0) - (maxPriceA || 0);
+        }
         case 'name':
           return a.name.localeCompare(b.name);
         default:

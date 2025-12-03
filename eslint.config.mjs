@@ -1,7 +1,6 @@
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
+import tseslint from "typescript-eslint";
 import react from "eslint-plugin-react";
 import jsxA11Y from "eslint-plugin-jsx-a11y";
-import tsParser from "@typescript-eslint/parser";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
@@ -15,7 +14,7 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-export default [
+export default tseslint.config(
     js.configs.recommended,
     {
         ignores: [
@@ -39,15 +38,44 @@ export default [
         ],
     },
     ...compat.extends("next/core-web-vitals"),
+    // JavaScript and JSX files
     {
-        files: ["**/*.{js,jsx,ts,tsx}"],
+        files: ["**/*.{js,jsx}"],
         plugins: {
-            "@typescript-eslint": typescriptEslint,
             react,
             "jsx-a11y": jsxA11Y,
         },
         languageOptions: {
-            parser: tsParser,
+            ecmaVersion: "latest",
+            sourceType: "module",
+            parserOptions: {
+                ecmaFeatures: {
+                    jsx: true,
+                },
+            },
+        },
+        settings: {
+            react: {
+                version: "detect",
+            },
+        },
+        rules: {
+            "react/react-in-jsx-scope": "off",
+            "react/prop-types": "off",
+            "no-console": ["warn", {
+                allow: ["warn", "error"],
+            }],
+        },
+    },
+    // TypeScript and TSX files with type checking
+    {
+        files: ["**/*.{ts,tsx}"],
+        extends: [...tseslint.configs.recommended],
+        plugins: {
+            react,
+            "jsx-a11y": jsxA11Y,
+        },
+        languageOptions: {
             ecmaVersion: "latest",
             sourceType: "module",
             parserOptions: {
@@ -79,4 +107,4 @@ export default [
             }],
         },
     },
-];
+);

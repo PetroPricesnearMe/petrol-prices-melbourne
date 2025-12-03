@@ -13,7 +13,7 @@ export default function RealTimePriceMonitor({ showUpdates = true }) {
   const maxUpdates = 5;
 
   // Subscribe to real-time price updates
-  const { connected, latestUpdate, error } = useFuelPriceUpdates((update) => {
+  const { connected, error } = useFuelPriceUpdates((update) => {
     console.log('💰 [Price Monitor] New price update:', update);
     
     // Add to recent updates
@@ -69,7 +69,7 @@ export default function RealTimePriceMonitor({ showUpdates = true }) {
         <div className="monitor-updates">
           <h4>Recent Price Updates</h4>
           <ul className="updates-list">
-            {recentUpdates.map((update, index) => (
+            {recentUpdates.map((update) => (
               <li key={`${update.rowId}-${update.timestamp}`} className="update-item">
                 <span className="update-badge">NEW</span>
                 <span className="update-time">

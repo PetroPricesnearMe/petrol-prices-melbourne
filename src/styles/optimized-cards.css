@@ -1,0 +1,413 @@
+/**
+ * Optimized Station Cards Styling
+ *
+ * SEO-optimized, performance-enhanced styles for directory cards
+ *
+ * Features:
+ * - Symmetric layouts
+ * - Smooth transitions
+ * - Dark mode support
+ * - Print-friendly styles
+ * - Accessibility enhancements
+ */
+
+/* ============================================================================
+ * BRAND LOGO OPTIMIZATION
+ * ============================================================================ */
+
+.brand-logo-optimized {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  will-change: transform;
+}
+
+.brand-logo-optimized:hover {
+  transform: scale(1.1);
+}
+
+/* ============================================================================
+ * CARD CONTAINER STYLES
+ * ============================================================================ */
+
+/* Ensure cards maintain aspect ratio */
+.station-card-optimized {
+  aspect-ratio: 3 / 4;
+  min-height: 400px;
+  max-height: 600px;
+}
+
+/* Symmetric grid alignment */
+.station-grid-symmetric {
+  display: grid;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+.station-grid-symmetric > * {
+  height: 100%;
+}
+
+/* ============================================================================
+ * BADGE STYLES
+ * ============================================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+}
+
+.badge-sm {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.688rem;
+}
+
+.badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Badge animations */
+@keyframes badge-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.badge-animated {
+  animation: badge-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ============================================================================
+ * BRAND HEADER STYLES
+ * ============================================================================ */
+
+.brand-shell {
+  --brand-primary: #fbce07;
+  --brand-secondary: #dd1d21;
+}
+
+.brand-bp {
+  --brand-primary: #00a850;
+  --brand-secondary: #00a850;
+}
+
+.brand-caltex {
+  --brand-primary: #ed1c24;
+  --brand-secondary: #003da5;
+}
+
+.brand-seven-eleven {
+  --brand-primary: #ff6201;
+  --brand-secondary: #008848;
+}
+
+.brand-mobil {
+  --brand-primary: #ee3124;
+  --brand-secondary: #003087;
+}
+
+.brand-coles {
+  --brand-primary: #e31e26;
+  --brand-secondary: #e31e26;
+}
+
+.brand-united {
+  --brand-primary: #0066b3;
+  --brand-secondary: #0066b3;
+}
+
+.brand-liberty {
+  --brand-primary: #003087;
+  --brand-secondary: #e31e26;
+}
+
+.brand-apco {
+  --brand-primary: #e31e26;
+  --brand-secondary: #1a1a1a;
+}
+
+/* ============================================================================
+ * FUEL PRICE DISPLAY
+ * ============================================================================ */
+
+.fuel-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  transition: background-color 0.2s ease;
+}
+
+.fuel-price-row:hover {
+  background-color: var(--hover-bg, #f9fafb);
+}
+
+.fuel-price-row:last-child {
+  border-bottom: none;
+}
+
+/* Price color indicators */
+.price-low {
+  color: #10b981;
+}
+
+.price-medium {
+  color: #f59e0b;
+}
+
+.price-high {
+  color: #ef4444;
+}
+
+/* ============================================================================
+ * RESPONSIVE GRID SYSTEM
+ * ============================================================================ */
+
+/* Symmetric grid with equal heights */
+.grid-symmetric {
+  display: grid;
+  grid-auto-rows: 1fr;
+}
+
+/* Mobile: Single column */
+@media (max-width: 639px) {
+  .station-grid-responsive {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .station-card-optimized {
+    min-height: 350px;
+  }
+}
+
+/* Tablet: Two columns */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .station-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .station-card-optimized {
+    min-height: 380px;
+  }
+}
+
+/* Desktop: Three columns */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .station-grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .station-card-optimized {
+    min-height: 420px;
+  }
+}
+
+/* Large desktop: Four columns */
+@media (min-width: 1280px) {
+  .station-grid-responsive {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .station-card-optimized {
+    min-height: 450px;
+  }
+}
+
+/* ============================================================================
+ * CARD TRANSITIONS & ANIMATIONS
+ * ============================================================================ */
+
+.card-hover-effect {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.card-hover-effect:active {
+  transform: translateY(-2px);
+}
+
+/* ============================================================================
+ * ACCESSIBILITY ENHANCEMENTS
+ * ============================================================================ */
+
+/* Focus visible states */
+.station-card-optimized:focus-visible {
+  outline: 3px solid var(--focus-color, #3b82f6);
+  outline-offset: 2px;
+}
+
+.badge:focus-visible {
+  outline: 2px solid var(--focus-color, #3b82f6);
+  outline-offset: 1px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .station-card-optimized {
+    border: 2px solid currentColor;
+  }
+
+  .badge {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .card-hover-effect,
+  .badge,
+  .brand-logo-optimized {
+    transition: none;
+    animation: none;
+  }
+
+  .card-hover-effect:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================================
+ * DARK MODE STYLES
+ * ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .fuel-price-row:hover {
+    background-color: rgba(55, 65, 81, 0.5);
+  }
+
+  .station-card-optimized {
+    border-color: rgba(55, 65, 81, 0.8);
+  }
+
+  .badge {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ============================================================================
+ * PRINT STYLES
+ * ============================================================================ */
+
+@media print {
+  .station-card-optimized {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .card-hover-effect:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .badge {
+    border: 1px solid #000;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+ * PERFORMANCE OPTIMIZATIONS
+ * ============================================================================ */
+
+/* GPU acceleration for smooth transitions */
+.card-hover-effect,
+.brand-logo-optimized {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Contain layout shifts */
+.station-card-optimized {
+  contain: layout style paint;
+}
+
+/* Optimize rendering */
+.station-grid-symmetric {
+  contain: layout;
+}
+
+/* ============================================================================
+ * LOADING STATES
+ * ============================================================================ */
+
+.skeleton-card {
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 0%,
+    #e5e7eb 50%,
+    #f3f4f6 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ============================================================================
+ * UTILITY CLASSES
+ * ============================================================================ */
+
+.print-avoid-break {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* ============================================================================
+ * RESPONSIVE TEXT SCALING
+ * ============================================================================ */
+
+@media (max-width: 639px) {
+  .badge {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .badge {
+    font-size: 0.813rem;
+    padding: 0.313rem 0.875rem;
+  }
+}
+

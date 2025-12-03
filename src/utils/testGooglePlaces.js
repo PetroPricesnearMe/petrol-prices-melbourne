@@ -62,7 +62,7 @@ export const testGooglePlacesAPI = async () => {
     return true;
 
   } catch (error) {
-    /* eslint-disable-next-line no-console */
+     
     console.error('❌ Google Places API test failed:', error);
     return false;
   }

@@ -222,14 +222,16 @@ const DirectoryPageNew = () => {
         switch (filters.sortBy) {
           case 'name':
             return a.name.localeCompare(b.name);
-          case 'price-low':
+          case 'price-low': {
             const avgPriceA = a.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (a.fuelPrices?.length || 1) || Infinity;
             const avgPriceB = b.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (b.fuelPrices?.length || 1) || Infinity;
             return avgPriceA - avgPriceB;
-          case 'price-high':
+          }
+          case 'price-high': {
             const avgPriceA2 = a.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (a.fuelPrices?.length || 1) || 0;
             const avgPriceB2 = b.fuelPrices?.reduce((sum, fp) => sum + fp.price, 0) / (b.fuelPrices?.length || 1) || 0;
             return avgPriceB2 - avgPriceA2;
+          }
           default:
             return 0;
         }

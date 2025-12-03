@@ -57,7 +57,7 @@ const RegionSelector = () => {
                   <Link
                     to={`/directory?region=${region.id}`}
                     className="modern-region-link"
-                    onClick={(e) => {
+                    onClick={() => {
                       console.log('🔗 Region link clicked:', region.id);
                       console.log('📍 Navigation URL:', `/directory?region=${region.id}`);
                       // Don't prevent default - let React Router handle navigation

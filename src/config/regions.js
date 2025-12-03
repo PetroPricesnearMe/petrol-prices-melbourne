@@ -153,7 +153,7 @@ export const getRegionCounts = (stations) => {
     // Safety check - ensure region exists
     if (region && region.id) {
       const regionKey = region.id.toUpperCase();
-      if (counts.hasOwnProperty(regionKey)) {
+      if (Object.prototype.hasOwnProperty.call(counts, regionKey)) {
         counts[regionKey]++;
       }
     }

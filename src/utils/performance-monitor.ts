@@ -100,7 +100,7 @@ class PerformanceMonitor {
 
     // Log in development
     if (process.env.NODE_ENV === 'development' && metric.value > 100) {
-      // eslint-disable-next-line no-console
+       
       console.warn(`[Performance] ${metric.name}: ${metric.value}${metric.unit}`, metric.metadata);
     }
   }
@@ -277,7 +277,7 @@ export function trackComponentRender(
 
   // Warn about slow renders
   if (renderTime > 16.67 && process.env.NODE_ENV === 'development') {
-    // eslint-disable-next-line no-console
+     
     console.warn(
       `[Performance] Slow render detected: ${componentName} took ${renderTime.toFixed(2)}ms`
     );
@@ -430,7 +430,7 @@ export function trackMemoryUsage(): void {
   });
 
   if (usagePercent > 90) {
-    // eslint-disable-next-line no-console
+     
     console.warn('[Performance] High memory usage detected:', usagePercent.toFixed(2) + '%');
   }
 }

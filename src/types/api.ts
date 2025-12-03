@@ -215,7 +215,7 @@ export interface GetListingRequest {
 }
 
 /** Get single listing response */
-export interface GetListingResponse extends APIResponse<Listing> {}
+export type GetListingResponse = APIResponse<Listing>;
 
 /** Search listings request */
 export interface SearchListingsRequest {

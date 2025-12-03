@@ -6,6 +6,8 @@
  * that may be closed when pages are moved into bfcache.
  */
 
+/* global chrome */
+
 class ExtensionMessageHandler {
   constructor() {
     this.port = null;

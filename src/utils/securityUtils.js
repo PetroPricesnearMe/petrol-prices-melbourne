@@ -5,12 +5,12 @@
 // Input sanitization patterns
 const PATTERNS = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  phone: /^[\+]?[\d\s\-\(\)]+$/,
+  phone: /^[+]?[\d\s\-()]+$/,
   postcode: /^[0-9]{4}$/,
   coordinates: /^-?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)$/,
   alphanumeric: /^[a-zA-Z0-9\s\-_]+$/,
   searchQuery: /^[a-zA-Z0-9\s\-_.,&'()]+$/,
-  url: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/
+  url: /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/
 };
 
 /**
@@ -22,7 +22,7 @@ export const sanitizeString = (input, maxLength = 255) => {
   return input
     .trim()
     .slice(0, maxLength)
-    .replace(/[<>\"']/g, (match) => {
+    .replace(/[<>"']/g, (match) => {
       const htmlEntities = {
         '<': '&lt;',
         '>': '&gt;',

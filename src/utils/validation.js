@@ -142,7 +142,7 @@ export function validateAPIResponse(response) {
   }
 
   // Check for success field
-  if (response.hasOwnProperty('success') && !response.success) {
+  if (Object.prototype.hasOwnProperty.call(response, 'success') && !response.success) {
     errors.push(`API returned success=false: ${response.error || 'Unknown error'}`);
   }
 

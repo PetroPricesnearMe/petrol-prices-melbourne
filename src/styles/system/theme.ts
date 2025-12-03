@@ -308,7 +308,7 @@ export function getServerTheme(): string {
  * Usage: Add <ThemeScript /> to your _document.tsx or layout.tsx
  */
 export function ThemeScript(): ReactElement {
-  // eslint-disable-next-line react/no-danger
+   
   return createElement('script', {
     dangerouslySetInnerHTML: {
       __html: getServerTheme(),

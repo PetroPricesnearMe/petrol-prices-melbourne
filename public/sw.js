@@ -3,6 +3,8 @@
  * Implements caching strategies for optimal performance
  */
 
+/* global self, caches, clients */
+
 const CACHE_NAME = 'ppnm-cache-v1';
 const RUNTIME_CACHE = 'ppnm-runtime-v1';
 

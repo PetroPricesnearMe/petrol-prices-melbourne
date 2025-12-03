@@ -539,8 +539,6 @@ With a clear route plan, locked-in pricing, and a comfort-first amenity list, yo
   },
 };
 
-type BlogPost = typeof blogPosts[keyof typeof blogPosts];
-
 export async function generateStaticParams() {
   return Object.keys(blogPosts).map((slug) => ({
     slug,
@@ -559,8 +557,6 @@ export async function generateMetadata({
       title: 'Post Not Found',
     };
   }
-
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
 
   return {
     title: `${post.title} | Petrol Price Near Me Blog`,

@@ -3,6 +3,8 @@
  * Sharp is used by Next.js for image optimization but isn't needed in tests
  */
 
+/* global jest */
+
 module.exports = jest.fn(() => ({
   resize: jest.fn().mockReturnThis(),
   jpeg: jest.fn().mockReturnThis(),

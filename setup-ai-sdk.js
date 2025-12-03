@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-/* eslint-disable import/first */
+ 
 
 import { execSync } from "child_process";
 import fs from "fs";

@@ -7,7 +7,7 @@
  */
 
 import metadataJson from '@/data/stations-metadata.json';
-import stationsData from '@/data/stations.json';
+import type stationsData from '@/data/stations.json';
 
 type StationData = typeof stationsData[number];
 
