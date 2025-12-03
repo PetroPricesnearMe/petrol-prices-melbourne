@@ -36,38 +36,45 @@ interface PerformanceOptimizedLandingPageProps {
 // ============================================================================
 
 function usePerformanceMonitoring() {
-  // Monitor Core Web Vitals
-  if (typeof window !== 'undefined') {
-    // LCP (Largest Contentful Paint)
-    new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      const lastEntry = entries[entries.length - 1];
-      console.warn('LCP:', lastEntry.startTime);
-    }).observe({ entryTypes: ['largest-contentful-paint'] });
+  // Monitor Core Web Vitals in development only
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    try {
+      // LCP (Largest Contentful Paint)
+      new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        // eslint-disable-next-line no-console
+        console.info('LCP:', lastEntry.startTime);
+      }).observe({ entryTypes: ['largest-contentful-paint'] });
 
-    // FID (First Input Delay)
-    new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      entries.forEach((entry) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const fidEntry = entry as any;
-        if (fidEntry.processingStart !== undefined) {
-          console.warn('FID:', fidEntry.processingStart - fidEntry.startTime);
-        }
-      });
-    }).observe({ entryTypes: ['first-input'] });
+      // FID (First Input Delay)
+      new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        entries.forEach((entry) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const fidEntry = entry as any;
+          if (fidEntry.processingStart !== undefined) {
+            // eslint-disable-next-line no-console
+            console.info('FID:', fidEntry.processingStart - fidEntry.startTime);
+          }
+        });
+      }).observe({ entryTypes: ['first-input'] });
 
-    // CLS (Cumulative Layout Shift)
-    new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      entries.forEach((entry) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const clsEntry = entry as any;
-        if (clsEntry.hadRecentInput === false && clsEntry.value !== undefined) {
-          console.warn('CLS:', clsEntry.value);
-        }
-      });
-    }).observe({ entryTypes: ['layout-shift'] });
+      // CLS (Cumulative Layout Shift)
+      new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        entries.forEach((entry) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const clsEntry = entry as any;
+          if (clsEntry.hadRecentInput === false && clsEntry.value !== undefined) {
+            // eslint-disable-next-line no-console
+            console.info('CLS:', clsEntry.value);
+          }
+        });
+      }).observe({ entryTypes: ['layout-shift'] });
+    } catch (_error) {
+      // PerformanceObserver not supported, silently fail
+    }
   }
 }
 

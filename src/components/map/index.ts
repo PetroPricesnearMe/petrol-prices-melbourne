@@ -1,21 +1,11 @@
 /**
- * Map Components - Re-export all map-related components
+ * Map Components
  * 
- * This index file provides a clean import path for all map components.
- * 
- * @example
- * import { MapLibreMap, StationPopup } from '@/components/map';
+ * Barrel export for map-related components
  */
 
-// Main map components
-export { MapLibreMap, default as MapLibreMapDefault } from './MapLibreMap';
-export { MapLibreMapCore } from './MapLibreMapCore';
-export { StationPopup } from './StationPopup';
+export { HeroMap } from './HeroMap';
+export { HeroMapInner } from './HeroMapInner';
 
-// Example/development components
-export { default as MapLibreMapExample } from './MapLibreMap.example';
-
-// Type exports (if available)
-export type { default as MapLibreMapProps } from './MapLibreMap';
-export type { default as StationPopupProps } from './StationPopup';
-
+// Re-export MapView for compatibility
+export { MapView } from '../molecules/MapView/MapView';

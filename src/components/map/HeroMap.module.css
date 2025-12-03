@@ -1,0 +1,70 @@
+/**
+ * Hero Map Styles
+ * Optimized for performance and SEO
+ */
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Map container */
+.mapContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Custom popup styles */
+:global(.leaflet-popup-content-wrapper) {
+  border-radius: 0.75rem;
+  padding: 0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+:global(.leaflet-popup-content) {
+  margin: 0;
+  max-width: 300px;
+}
+
+:global(.leaflet-popup-tip) {
+  background: white;
+}
+
+/* Custom cluster styles */
+:global(.custom-cluster-icon) {
+  background: transparent !important;
+  border: none !important;
+}
+
+:global(.custom-marker-icon) {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  :global(.leaflet-popup-content) {
+    max-width: 250px;
+  }
+}
+

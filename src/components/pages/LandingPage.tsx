@@ -10,10 +10,27 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
+
+// Lazy load the map for optimal performance
+const HeroMap = dynamic(
+  () => import('@/components/map/HeroMap').then(mod => mod.HeroMap),
+  {
+    loading: () => (
+      <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
+          <p className="text-gray-700 dark:text-gray-300 font-medium">Loading Map...</p>
+        </div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
 
 // ============================================================================
 // TYPES
@@ -53,6 +70,30 @@ interface StatsSectionProps {
     label: string;
     description: string;
   }>;
+}
+
+// ============================================================================
+// HERO MAP WRAPPER COMPONENT
+// ============================================================================
+
+/**
+ * Wrapper component for the hero map with error boundary
+ */
+function HeroMapWrapper() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full border-4 border-blue-600 border-t-transparent animate-spin" />
+            <p className="text-gray-700 dark:text-gray-300 font-medium">Loading Interactive Map...</p>
+          </div>
+        </div>
+      }
+    >
+      <HeroMap height="100%" className="w-full" />
+    </Suspense>
+  );
 }
 
 // ============================================================================
@@ -210,60 +251,49 @@ function HeroSection({ className }: HeroSectionProps) {
               </motion.div>
             </motion.div>
 
-            {/* Right Column - Visual Elements */}
+            {/* Right Column - Interactive Map */}
             <motion.div
               className="relative"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              {/* Main Image */}
+              {/* Interactive Map */}
               <div className="relative">
                 <motion.div
-                  className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl"
+                  className="relative w-full h-96 lg:h-[500px]"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Image
-                    src="/images/fuel-nozzles.jpg"
-                    alt="Petrol Station"
-                    fill
-                    className="object-cover"
-                    priority
-                    quality={85}
-                    onError={(e) => {
-                      // Hide image on error, let gradient background show through
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  {/* Dynamic import for better performance */}
+                  <HeroMapWrapper />
                 </motion.div>
 
-                {/* Floating Cards */}
+                {/* Floating Info Cards */}
                 <motion.div
-                  className="absolute -top-4 -left-4 bg-white rounded-xl p-4 shadow-lg"
+                  className="absolute -top-4 -left-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg z-10"
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-green-500 rounded-full" />
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">BP Collins St</div>
-                      <div className="text-xs text-gray-600">Unleaded: 189.9¢</div>
+                      <div className="text-sm font-semibold text-gray-900">Live Map</div>
+                      <div className="text-xs text-gray-600">250+ Stations</div>
                     </div>
                   </div>
                 </motion.div>
 
                 <motion.div
-                  className="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-lg"
+                  className="absolute -bottom-4 -right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg z-10"
                   animate={{ y: [0, 10, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full" />
+                    <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
                     <div>
-                      <div className="text-sm font-semibold text-gray-900">Shell Richmond</div>
-                      <div className="text-xs text-gray-600">Diesel: 195.2¢</div>
+                      <div className="text-sm font-semibold text-gray-900">Real-Time Prices</div>
+                      <div className="text-xs text-gray-600">Updated Daily</div>
                     </div>
                   </div>
                 </motion.div>
