@@ -305,8 +305,6 @@ export default function DirectoryExamplePage() {
                 return counts[station.id] || 0;
               }}
               onCardClick={(station) => {
-                // eslint-disable-next-line no-console
-                console.log('Clicked station:', station.name);
                 alert(`You clicked: ${station.name}`);
               }}
             />
@@ -320,8 +318,6 @@ export default function DirectoryExamplePage() {
               getVerified={() => true}
               getCheapestInArea={(station) => station.id === '1'}
               onCardClick={(station) => {
-                // eslint-disable-next-line no-console
-                console.log('Featured station clicked:', station.name);
                 alert(`Featured Station: ${station.name}`);
               }}
             />
@@ -334,8 +330,6 @@ export default function DirectoryExamplePage() {
               maxBadges={2}
               getVerified={(station) => station.id === '1'}
               onCardClick={(station) => {
-                // eslint-disable-next-line no-console
-                console.log('Compact view clicked:', station.name);
                 alert(`Station: ${station.name}`);
               }}
             />
