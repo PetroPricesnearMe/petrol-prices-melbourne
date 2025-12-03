@@ -1,0 +1,352 @@
+<testsuites id="" name="" tests="12" failures="12" skipped="0" errors="0" time="5.746412000000004">
+<testsuite name="example.spec.ts" timestamp="2025-12-03T06:08:45.943Z" hostname="chromium" tests="12" failures="12" skipped="0" time="0.101" errors="0">
+<testcase name="Homepage › should load successfully" classname="example.spec.ts" time="0.008">
+<failure message="example.spec.ts:4:7 should load successfully" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:4:7 › Homepage › should load successfully ───────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Homepage-should-load-successfully-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Homepage-should-load-successfully-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Homepage-should-load-successfully-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage › should be accessible" classname="example.spec.ts" time="0.008">
+<failure message="example.spec.ts:14:7 should be accessible" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:14:7 › Homepage › should be accessible ──────────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Homepage-should-be-accessible-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Homepage-should-be-accessible-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Homepage-should-be-accessible-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Homepage › should search for stations" classname="example.spec.ts" time="0.007">
+<failure message="example.spec.ts:26:7 should search for stations" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:26:7 › Homepage › should search for stations ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Homepage-should-search-for-stations-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Homepage-should-search-for-stations-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Homepage-should-search-for-stations-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Station List › should display station cards" classname="example.spec.ts" time="0.011">
+<failure message="example.spec.ts:49:7 should display station cards" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:49:7 › Station List › should display station cards ──────────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Station-List-should-display-station-cards-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Station-List-should-display-station-cards-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Station-List-should-display-station-cards-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Station List › should filter stations" classname="example.spec.ts" time="0.009">
+<failure message="example.spec.ts:60:7 should filter stations" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:60:7 › Station List › should filter stations ────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Station-List-should-filter-stations-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Station-List-should-filter-stations-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Station-List-should-filter-stations-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance › should load within performance budget" classname="example.spec.ts" time="0.009">
+<failure message="example.spec.ts:83:7 should load within performance budget" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:83:7 › Performance › should load within performance budget ──────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Performance-should-load-within-performance-budget-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Performance-should-load-within-performance-budget-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Performance-should-load-within-performance-budget-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance › should have good Core Web Vitals" classname="example.spec.ts" time="0.011">
+<failure message="example.spec.ts:92:7 should have good Core Web Vitals" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:92:7 › Performance › should have good Core Web Vitals ───────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Performance-should-have-good-Core-Web-Vitals-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Performance-should-have-good-Core-Web-Vitals-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Performance-should-have-good-Core-Web-Vitals-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility › should have proper heading hierarchy" classname="example.spec.ts" time="0.008">
+<failure message="example.spec.ts:114:7 should have proper heading hierarchy" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:114:7 › Accessibility › should have proper heading hierarchy ────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Accessibility-should-have-proper-heading-hierarchy-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Accessibility-should-have-proper-heading-hierarchy-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Accessibility-should-have-proper-heading-hierarchy-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility › should support keyboard navigation" classname="example.spec.ts" time="0.008">
+<failure message="example.spec.ts:121:7 should support keyboard navigation" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:121:7 › Accessibility › should support keyboard navigation ──────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Accessibility-should-support-keyboard-navigation-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Accessibility-should-support-keyboard-navigation-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Accessibility-should-support-keyboard-navigation-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Accessibility › should have alt text for images" classname="example.spec.ts" time="0.007">
+<failure message="example.spec.ts:133:7 should have alt text for images" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:133:7 › Accessibility › should have alt text for images ─────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Accessibility-should-have-alt-text-for-images-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Accessibility-should-have-alt-text-for-images-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Accessibility-should-have-alt-text-for-images-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Mobile › should display mobile menu" classname="example.spec.ts" time="0.008">
+<failure message="example.spec.ts:150:7 should display mobile menu" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:150:7 › Mobile › should display mobile menu ─────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Mobile-should-display-mobile-menu-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Mobile-should-display-mobile-menu-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Mobile-should-display-mobile-menu-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Mobile › should be touch-friendly" classname="example.spec.ts" time="0.007">
+<failure message="example.spec.ts:164:7 should be touch-friendly" type="FAILURE">
+<![CDATA[  [chromium] › example.spec.ts:164:7 › Mobile › should be touch-friendly ───────────────────────────
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\thedon\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe
+    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright Test or Playwright was just installed or updated. ║
+    ║ Please run the following command to download new browsers:              ║
+    ║                                                                         ║
+    ║     npx playwright install                                              ║
+    ║                                                                         ║
+    ║ <3 Playwright Team                                                      ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\example-Mobile-should-be-touch-friendly-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\example-Mobile-should-be-touch-friendly-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|example-Mobile-should-be-touch-friendly-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

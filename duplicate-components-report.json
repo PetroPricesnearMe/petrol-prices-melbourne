@@ -1,0 +1,308 @@
+{
+  "timestamp": "2025-12-03T06:07:37.572Z",
+  "totalComponents": 415,
+  "similarNameGroups": 26,
+  "duplicateLogicPairs": 1,
+  "similarNames": [
+    {
+      "baseName": "page",
+      "count": 24,
+      "components": [
+        "src\\app\\about\\page.tsx",
+        "src\\app\\blog\\page.tsx",
+        "src\\app\\blog\\[slug]\\page.tsx",
+        "src\\app\\detailed-listing-demo\\page.tsx",
+        "src\\app\\directory\\page.tsx",
+        "src\\app\\directory\\[suburb]\\page.tsx",
+        "src\\app\\directory-example\\page.tsx",
+        "src\\app\\example-seo-page\\page.tsx",
+        "src\\app\\faq\\page.tsx",
+        "src\\app\\fluid-layout-demo\\page.tsx",
+        "src\\app\\fuel-brands\\page.tsx",
+        "src\\app\\fuel-price-trends\\page.tsx",
+        "src\\app\\fuel-types\\page.tsx",
+        "src\\app\\hero-example\\page.tsx",
+        "src\\app\\how-pricing-works\\page.tsx",
+        "src\\app\\listings\\[listing]\\page.tsx",
+        "src\\app\\map\\page.tsx",
+        "src\\app\\map-demo\\page.tsx",
+        "src\\app\\melbourne\\page.tsx",
+        "src\\app\\page.tsx",
+        "src\\app\\regions\\[region]\\page.tsx",
+        "src\\app\\search-test\\page.tsx",
+        "src\\app\\station-amenities\\page.tsx",
+        "src\\app\\stations\\[id]\\page.tsx"
+      ]
+    },
+    {
+      "baseName": "route",
+      "count": 7,
+      "components": [
+        "src\\app\\api\\auth\\[...nextauth]\\route.ts",
+        "src\\app\\api\\fuel\\brands\\route.ts",
+        "src\\app\\api\\fuel\\types\\route.ts",
+        "src\\app\\api\\health\\route.ts",
+        "src\\app\\api\\stations\\nearby\\route.ts",
+        "src\\app\\api\\stations\\route.ts",
+        "src\\app\\api\\stations\\[id]\\route.ts"
+      ]
+    },
+    {
+      "baseName": "index",
+      "count": 54,
+      "components": [
+        "src\\components\\accessibility\\index.ts",
+        "src\\components\\analytics\\index.ts",
+        "src\\components\\atoms\\AnimatedCard\\index.ts",
+        "src\\components\\atoms\\Badge\\index.ts",
+        "src\\components\\atoms\\Button\\index.ts",
+        "src\\components\\atoms\\Card\\index.ts",
+        "src\\components\\atoms\\Image\\index.ts",
+        "src\\components\\atoms\\index.ts",
+        "src\\components\\atoms\\Input\\index.ts",
+        "src\\components\\atoms\\LazyImage\\index.ts",
+        "src\\components\\atoms\\Skeleton\\index.ts",
+        "src\\components\\atoms\\Spinner\\index.ts",
+        "src\\components\\atoms\\Text\\index.ts",
+        "src\\components\\common\\ErrorBoundary\\index.ts",
+        "src\\components\\common\\index.ts",
+        "src\\components\\common\\LazyLoad\\index.ts",
+        "src\\components\\common\\VirtualList\\index.ts",
+        "src\\components\\index.ts",
+        "src\\components\\layouts\\index.ts",
+        "src\\components\\listings\\index.ts",
+        "src\\components\\map\\index.ts",
+        "src\\components\\molecules\\AdvancedSearchBar\\index.ts",
+        "src\\components\\molecules\\Alert\\index.ts",
+        "src\\components\\molecules\\Card\\index.ts",
+        "src\\components\\molecules\\FilterSearchBar\\index.ts",
+        "src\\components\\molecules\\HeroSection\\index.ts",
+        "src\\components\\molecules\\index.ts",
+        "src\\components\\molecules\\SearchBar\\index.ts",
+        "src\\components\\molecules\\SortDropdown\\index.ts",
+        "src\\components\\molecules\\StationCard\\index.ts",
+        "src\\components\\molecules\\SuburbAutoSuggest\\index.ts",
+        "src\\components\\molecules\\Tabs\\index.ts",
+        "src\\components\\NorthernTradieCard\\index.ts",
+        "src\\components\\organisms\\FeaturesSection\\index.ts",
+        "src\\components\\organisms\\FilterBar\\index.ts",
+        "src\\components\\organisms\\FilterSidebar\\index.ts",
+        "src\\components\\organisms\\Footer\\index.ts",
+        "src\\components\\organisms\\Header\\index.ts",
+        "src\\components\\organisms\\Hero\\index.ts",
+        "src\\components\\organisms\\index.ts",
+        "src\\components\\organisms\\SearchSection\\index.ts",
+        "src\\components\\organisms\\StationCard\\index.ts",
+        "src\\components\\organisms\\StationList\\index.ts",
+        "src\\components\\pages\\index.ts",
+        "src\\components\\seo\\index.ts",
+        "src\\components\\templates\\index.ts",
+        "src\\components\\templates\\MainLayout\\index.ts",
+        "src\\data\\index.ts",
+        "src\\design-system\\tokens\\index.ts",
+        "src\\hooks\\index.ts",
+        "src\\index.js",
+        "src\\lib\\api\\index.ts",
+        "src\\styles\\index.ts",
+        "src\\types\\index.ts"
+      ]
+    },
+    {
+      "baseName": "modal",
+      "count": 2,
+      "components": [
+        "src\\components\\accessibility\\Modal.tsx",
+        "src\\components\\modals\\Modal.tsx"
+      ]
+    },
+    {
+      "baseName": "googleanalytics",
+      "count": 2,
+      "components": [
+        "src\\components\\analytics\\GoogleAnalytics.tsx",
+        "src\\utils\\googleAnalytics.js"
+      ]
+    },
+    {
+      "baseName": "animatedcard",
+      "count": 2,
+      "components": [
+        "src\\components\\atoms\\AnimatedCard\\AnimatedCard.tsx",
+        "src\\components\\common\\AnimatedCard.tsx"
+      ]
+    },
+    {
+      "baseName": "button",
+      "count": 2,
+      "components": [
+        "src\\components\\atoms\\Button\\Button.tsx",
+        "src\\components\\ui\\button.tsx"
+      ]
+    },
+    {
+      "baseName": "card",
+      "count": 3,
+      "components": [
+        "src\\components\\atoms\\Card\\Card.tsx",
+        "src\\components\\molecules\\Card\\Card.tsx",
+        "src\\components\\ui\\card.tsx"
+      ]
+    },
+    {
+      "baseName": "input",
+      "count": 2,
+      "components": [
+        "src\\components\\atoms\\Input\\Input.tsx",
+        "src\\components\\ui\\input.tsx"
+      ]
+    },
+    {
+      "baseName": "stationcard",
+      "count": 3,
+      "components": [
+        "src\\components\\cards\\StationCard.tsx",
+        "src\\components\\molecules\\StationCard\\StationCard.tsx",
+        "src\\components\\organisms\\StationCard\\StationCard.tsx"
+      ]
+    },
+    {
+      "baseName": "errorboundary",
+      "count": 2,
+      "components": [
+        "src\\components\\common\\ErrorBoundary\\ErrorBoundary.tsx",
+        "src\\components\\ErrorBoundary.js"
+      ]
+    },
+    {
+      "baseName": "lazyload",
+      "count": 2,
+      "components": [
+        "src\\components\\common\\LazyLoad\\LazyLoad.tsx",
+        "src\\utils\\lazyLoad.ts"
+      ]
+    },
+    {
+      "baseName": "footer",
+      "count": 2,
+      "components": [
+        "src\\components\\layout\\Footer.tsx",
+        "src\\components\\organisms\\Footer\\Footer.tsx"
+      ]
+    },
+    {
+      "baseName": "stationmap",
+      "count": 2,
+      "components": [
+        "src\\components\\listings\\StationMap.tsx",
+        "src\\components\\StationMap.js"
+      ]
+    },
+    {
+      "baseName": "loadingspinner",
+      "count": 2,
+      "components": [
+        "src\\components\\LoadingSpinner.js",
+        "src\\components\\ui\\LoadingSpinner.tsx"
+      ]
+    },
+    {
+      "baseName": "herosection",
+      "count": 2,
+      "components": [
+        "src\\components\\molecules\\HeroSection\\HeroSection.tsx",
+        "src\\components\\ui\\HeroSection.tsx"
+      ]
+    },
+    {
+      "baseName": "navbar",
+      "count": 3,
+      "components": [
+        "src\\components\\Navbar.js",
+        "src\\components\\navigation\\Navbar.tsx",
+        "src\\components\\ui\\navbar.tsx"
+      ]
+    },
+    {
+      "baseName": "types",
+      "count": 2,
+      "components": [
+        "src\\components\\NorthernTradieCard\\types.ts",
+        "src\\lib\\baserow\\types.ts"
+      ]
+    },
+    {
+      "baseName": "utils",
+      "count": 4,
+      "components": [
+        "src\\components\\NorthernTradieCard\\utils.ts",
+        "src\\lib\\fairfuel\\utils.ts",
+        "src\\lib\\seo\\utils.ts",
+        "src\\lib\\utils.ts"
+      ]
+    },
+    {
+      "baseName": "themetoggle",
+      "count": 2,
+      "components": [
+        "src\\components\\ThemeToggle.js",
+        "src\\components\\ui\\ThemeToggle.tsx"
+      ]
+    },
+    {
+      "baseName": "viewtoggle",
+      "count": 2,
+      "components": [
+        "src\\components\\toggle\\ViewToggle.tsx",
+        "src\\components\\ViewToggle.tsx"
+      ]
+    },
+    {
+      "baseName": "animations",
+      "count": 3,
+      "components": [
+        "src\\design-system\\tokens\\animations.ts",
+        "src\\styles\\system\\animations.ts",
+        "src\\utils\\animations.ts"
+      ]
+    },
+    {
+      "baseName": "colors",
+      "count": 2,
+      "components": [
+        "src\\design-system\\tokens\\colors.ts",
+        "src\\lib\\utils\\colors.ts"
+      ]
+    },
+    {
+      "baseName": "client",
+      "count": 2,
+      "components": [
+        "src\\lib\\api\\client.ts",
+        "src\\lib\\baserow\\client.ts"
+      ]
+    },
+    {
+      "baseName": "validation",
+      "count": 2,
+      "components": [
+        "src\\lib\\api\\validation.ts",
+        "src\\utils\\validation.js"
+      ]
+    },
+    {
+      "baseName": "melbourne-listing",
+      "count": 2,
+      "components": [
+        "src\\lib\\schema\\melbourne-listing.ts",
+        "src\\lib\\seo\\melbourne-listing.ts"
+      ]
+    }
+  ],
+  "duplicateLogic": [
+    {
+      "similarity": "100.0%",
+      "file1": "src\\components\\molecules\\StationCard\\index.ts",
+      "file2": "src\\components\\organisms\\StationCard\\index.ts"
+    }
+  ]
+}
