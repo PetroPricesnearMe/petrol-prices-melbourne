@@ -47,7 +47,7 @@ const EXAMPLE_STATIONS: Station[] = [
       hasCafe: true,
       isOpen24Hours: true,
     },
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: '2024-12-03T00:00:00.000Z',
   },
   {
     id: '2',
@@ -75,7 +75,7 @@ const EXAMPLE_STATIONS: Station[] = [
       hasATM: false,
       isOpen24Hours: false,
     },
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: '2024-12-03T00:00:00.000Z',
   },
   {
     id: '3',
@@ -101,7 +101,7 @@ const EXAMPLE_STATIONS: Station[] = [
       hasRestroom: true,
       isOpen24Hours: true,
     },
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: '2024-12-03T00:00:00.000Z',
   },
   {
     id: '4',
@@ -128,7 +128,7 @@ const EXAMPLE_STATIONS: Station[] = [
       hasRestroom: true,
       hasATM: true,
     },
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: '2024-12-03T00:00:00.000Z',
   },
 ];
 
