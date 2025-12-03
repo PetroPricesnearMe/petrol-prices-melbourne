@@ -17,16 +17,19 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 
-// Lazy load the map for optimal performance
+// Lazy load the MapLibre GL map for maximum performance
 const HeroMap = dynamic(
-  () => import('@/components/map/HeroMap').then((mod) => mod.HeroMap),
+  () => import('@/components/map/HeroMapLibre').then((mod) => mod.HeroMapLibre),
   {
     loading: () => (
       <div className="from-blue-50 to-blue-100 flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br dark:from-gray-800 dark:to-gray-900">
         <div className="text-center">
           <div className="border-blue-600 mx-auto mb-3 h-12 w-12 animate-spin rounded-full border-4 border-t-transparent" />
           <p className="font-medium text-gray-700 dark:text-gray-300">
-            Loading Map...
+            Loading Vector Map...
+          </p>
+          <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            GPU-accelerated for maximum speed
           </p>
         </div>
       </div>
