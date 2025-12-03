@@ -8,10 +8,11 @@ class ErrorBoundary extends React.Component {
       hasError: false,
       error: null,
       errorInfo: null,
-      retryCount: 0
+      retryCount: 0,
     };
   }
 
+  // eslint-disable-next-line no-unused-vars
   static getDerivedStateFromError(_error) {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
@@ -23,7 +24,7 @@ class ErrorBoundary extends React.Component {
 
     this.setState({
       error: error,
-      errorInfo: errorInfo
+      errorInfo: errorInfo,
     });
 
     // TODO: Log to error reporting service (Sentry, LogRocket, etc.)
@@ -31,11 +32,11 @@ class ErrorBoundary extends React.Component {
   }
 
   handleRetry = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       hasError: false,
       error: null,
       errorInfo: null,
-      retryCount: prevState.retryCount + 1
+      retryCount: prevState.retryCount + 1,
     }));
   };
 
@@ -47,7 +48,8 @@ class ErrorBoundary extends React.Component {
             <div className="error-icon">⚠️</div>
             <h1>Oops! Something went wrong</h1>
             <p className="error-message">
-              We encountered an unexpected error. Don&apos;t worry, we&apos;re working to fix it!
+              We encountered an unexpected error. Don&apos;t worry, we&apos;re
+              working to fix it!
             </p>
 
             <div className="error-actions">
@@ -56,12 +58,14 @@ class ErrorBoundary extends React.Component {
                 onClick={this.handleRetry}
                 disabled={this.state.retryCount >= 3}
               >
-                {this.state.retryCount >= 3 ? 'Please refresh page' : 'Try Again'}
+                {this.state.retryCount >= 3
+                  ? 'Please refresh page'
+                  : 'Try Again'}
               </button>
 
               <button
                 className="home-button"
-                onClick={() => window.location.href = '/'}
+                onClick={() => (window.location.href = '/')}
               >
                 Go to Homepage
               </button>
@@ -72,7 +76,8 @@ class ErrorBoundary extends React.Component {
               <pre className="error-stack">
                 {this.state.error && this.state.error.toString()}
                 <br />
-                {this.state.errorInfo?.componentStack || 'No component stack available'}
+                {this.state.errorInfo?.componentStack ||
+                  'No component stack available'}
               </pre>
             </details>
 

@@ -9,7 +9,11 @@
 'use client';
 
 import { useState } from 'react';
-import { StationCardGrid, FeaturedStationGrid, CompactStationGrid } from '@/components/cards/StationCardGrid';
+import {
+  StationCardGrid,
+  FeaturedStationGrid,
+  CompactStationGrid,
+} from '@/components/cards/StationCardGrid';
 import type { Station } from '@/types/station';
 
 // Example station data
@@ -29,10 +33,10 @@ const EXAMPLE_STATIONS: Station[] = [
     rating: 4.8,
     reviewCount: 245,
     fuelPrices: {
-      'unleaded': 189.9,
-      'premium95': 209.9,
-      'premium98': 219.9,
-      'diesel': 185.9,
+      unleaded: 189.9,
+      premium95: 209.9,
+      premium98: 219.9,
+      diesel: 185.9,
     },
     amenities: {
       hasCarWash: true,
@@ -60,9 +64,9 @@ const EXAMPLE_STATIONS: Station[] = [
     rating: 4.5,
     reviewCount: 187,
     fuelPrices: {
-      'unleaded': 191.9,
-      'premium95': 211.9,
-      'diesel': 187.9,
+      unleaded: 191.9,
+      premium95: 211.9,
+      diesel: 187.9,
     },
     amenities: {
       hasCarWash: true,
@@ -88,9 +92,9 @@ const EXAMPLE_STATIONS: Station[] = [
     rating: 4.2,
     reviewCount: 156,
     fuelPrices: {
-      'unleaded': 187.9,
-      'premium95': 207.9,
-      'diesel': 183.9,
+      unleaded: 187.9,
+      premium95: 207.9,
+      diesel: 183.9,
     },
     amenities: {
       hasShop: true,
@@ -114,9 +118,9 @@ const EXAMPLE_STATIONS: Station[] = [
     rating: 4.6,
     reviewCount: 203,
     fuelPrices: {
-      'unleaded': 188.9,
-      'premium95': 208.9,
-      'diesel': 184.9,
+      unleaded: 188.9,
+      premium95: 208.9,
+      diesel: 184.9,
     },
     amenities: {
       hasCarWash: true,
@@ -132,62 +136,65 @@ const EXAMPLE_STATIONS: Station[] = [
  * Example Directory Page
  */
 export default function DirectoryExamplePage() {
-  const [viewMode, setViewMode] = useState<'standard' | 'featured' | 'compact'>('standard');
+  const [viewMode, setViewMode] = useState<'standard' | 'featured' | 'compact'>(
+    'standard'
+  );
   const [showTransitions, setShowTransitions] = useState(true);
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
-      <div className="max-w-7xl mx-auto">
+    <main className="min-h-screen bg-gray-50 px-4 py-8 dark:bg-gray-900">
+      <div className="mx-auto max-w-7xl">
         {/* Header */}
         <header className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white">
             Optimized Station Directory
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-            Featuring SEO-optimized cards with badges, certifications, and performance enhancements
+          <p className="mb-6 text-lg text-gray-600 dark:text-gray-400">
+            Featuring SEO-optimized cards with badges, certifications, and
+            performance enhancements
           </p>
 
           {/* View Mode Controls */}
-          <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex flex-wrap items-center gap-4">
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode('standard')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`rounded-lg px-4 py-2 font-medium transition-colors ${
                   viewMode === 'standard'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                    : 'bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-300'
                 }`}
               >
                 Standard Grid
               </button>
               <button
                 onClick={() => setViewMode('featured')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`rounded-lg px-4 py-2 font-medium transition-colors ${
                   viewMode === 'featured'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                    : 'bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-300'
                 }`}
               >
                 Featured Grid
               </button>
               <button
                 onClick={() => setViewMode('compact')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`rounded-lg px-4 py-2 font-medium transition-colors ${
                   viewMode === 'compact'
                     ? 'bg-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                    : 'bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-300'
                 }`}
               >
                 Compact Grid
               </button>
             </div>
 
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex cursor-pointer items-center gap-2">
               <input
                 type="checkbox"
                 checked={showTransitions}
                 onChange={(e) => setShowTransitions(e.target.checked)}
-                className="w-4 h-4"
+                className="h-4 w-4"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
                 Show Animations
@@ -197,11 +204,11 @@ export default function DirectoryExamplePage() {
         </header>
 
         {/* Features List */}
-        <section className="bg-white dark:bg-gray-800 rounded-xl p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        <section className="mb-8 rounded-xl bg-white p-6 dark:bg-gray-800">
+          <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
             ✨ Card Features
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div className="flex items-start gap-3">
               <span className="text-2xl">🖼️</span>
               <div>
@@ -273,7 +280,7 @@ export default function DirectoryExamplePage() {
 
         {/* Station Cards Grid */}
         <section>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
             Petrol Stations Directory
           </h2>
 
@@ -284,7 +291,9 @@ export default function DirectoryExamplePage() {
               gap="lg"
               showTransitions={showTransitions}
               maxBadges={3}
-              getVerified={(station) => station.id === '1' || station.id === '4'}
+              getVerified={(station) =>
+                station.id === '1' || station.id === '4'
+              }
               getCheapestInArea={(station) => station.id === '3'}
               getViewCount={(station) => {
                 const counts: Record<string, number> = {
@@ -296,6 +305,7 @@ export default function DirectoryExamplePage() {
                 return counts[station.id] || 0;
               }}
               onCardClick={(station) => {
+                // eslint-disable-next-line no-console
                 console.log('Clicked station:', station.name);
                 alert(`You clicked: ${station.name}`);
               }}
@@ -307,9 +317,10 @@ export default function DirectoryExamplePage() {
               stations={EXAMPLE_STATIONS.slice(0, 2)}
               showTransitions={showTransitions}
               maxBadges={4}
-              getVerified={(station) => true}
+              getVerified={() => true}
               getCheapestInArea={(station) => station.id === '1'}
               onCardClick={(station) => {
+                // eslint-disable-next-line no-console
                 console.log('Featured station clicked:', station.name);
                 alert(`Featured Station: ${station.name}`);
               }}
@@ -323,6 +334,7 @@ export default function DirectoryExamplePage() {
               maxBadges={2}
               getVerified={(station) => station.id === '1'}
               onCardClick={(station) => {
+                // eslint-disable-next-line no-console
                 console.log('Compact view clicked:', station.name);
                 alert(`Station: ${station.name}`);
               }}
@@ -333,7 +345,8 @@ export default function DirectoryExamplePage() {
         {/* Footer Info */}
         <footer className="mt-12 text-center text-sm text-gray-600 dark:text-gray-400">
           <p>
-            This example demonstrates all features of the optimized station card system.
+            This example demonstrates all features of the optimized station card
+            system.
           </p>
           <p className="mt-2">
             See{' '}
@@ -342,12 +355,11 @@ export default function DirectoryExamplePage() {
               className="text-blue-600 dark:text-blue-400 hover:underline"
             >
               OPTIMIZED_DIRECTORY_CARDS_GUIDE.md
-            </a>
-            {' '}for complete documentation.
+            </a>{' '}
+            for complete documentation.
           </p>
         </footer>
       </div>
     </main>
   );
 }
-

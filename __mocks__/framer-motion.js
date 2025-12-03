@@ -3,6 +3,8 @@
  * Simplifies animations in test environment
  */
 
+/* global jest */
+
 const React = require('react');
 
 const mockMotion = {
@@ -11,33 +13,41 @@ const mockMotion = {
     {
       get: (_, prop) => {
         // Return a mock component for any motion element (motion.div, motion.button, etc.)
-        const MotionComponent = React.forwardRef(({ children, ...props }, ref) => {
-          // Remove framer-motion specific props
-          const {
-            initial: _initial,
-            animate: _animate,
-            exit: _exit,
-            variants: _variants,
-            transition: _transition,
-            whileHover: _whileHover,
-            whileTap: _whileTap,
-            whileFocus: _whileFocus,
-            whileDrag: _whileDrag,
-            drag: _drag,
-            dragConstraints: _dragConstraints,
-            dragElastic: _dragElastic,
-            dragMomentum: _dragMomentum,
-            onDragStart: _onDragStart,
-            onDrag: _onDrag,
-            onDragEnd: _onDragEnd,
-            layout: _layout,
-            layoutId: _layoutId,
-            ...domProps
-          } = props;
+        const MotionComponent = React.forwardRef(
+          ({ children, ...props }, ref) => {
+            // Remove framer-motion specific props by filtering them out
+            const framerMotionProps = [
+              'initial',
+              'animate',
+              'exit',
+              'variants',
+              'transition',
+              'whileHover',
+              'whileTap',
+              'whileFocus',
+              'whileDrag',
+              'drag',
+              'dragConstraints',
+              'dragElastic',
+              'dragMomentum',
+              'onDragStart',
+              'onDrag',
+              'onDragEnd',
+              'layout',
+              'layoutId',
+            ];
 
-          // Render as regular HTML element
-          return React.createElement(prop, { ...domProps, ref }, children);
-        });
+            const domProps = Object.keys(props).reduce((acc, key) => {
+              if (!framerMotionProps.includes(key)) {
+                acc[key] = props[key];
+              }
+              return acc;
+            }, {});
+
+            // Render as regular HTML element
+            return React.createElement(prop, { ...domProps, ref }, children);
+          }
+        );
         MotionComponent.displayName = `Motion${String(prop).charAt(0).toUpperCase() + String(prop).slice(1)}`;
         return MotionComponent;
       },
@@ -86,4 +96,3 @@ const mockMotion = {
 };
 
 module.exports = mockMotion;
-

@@ -1,6 +1,6 @@
 /**
  * Google Analytics 4 Integration
- * 
+ *
  * Handles initialization and configuration of Google Analytics 4
  * with proper environment variable support and enhanced tracking
  */
@@ -12,7 +12,7 @@
 export const initializeGA = () => {
   // Only initialize on client side
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
-  
+
   try {
     const measurementId = process.env.REACT_APP_GA_MEASUREMENT_ID;
 
@@ -28,48 +28,47 @@ export const initializeGA = () => {
       return;
     }
 
-  // Load gtag.js script
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-  document.head.appendChild(script);
+    // Load gtag.js script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+    document.head.appendChild(script);
 
-  // Initialize dataLayer and gtag function
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    window.dataLayer.push(arguments);
-  }
-  window.gtag = gtag;
-
-  // Configure GA4
-  gtag('js', new Date());
-  gtag('config', measurementId, {
-    page_title: document.title,
-    page_location: window.location.href,
-    page_path: window.location.pathname,
-    send_page_view: true,
-    // Custom dimensions for fuel price tracking
-    custom_map: {
-      dimension1: 'fuel_type',
-      dimension2: 'station_brand',
-      dimension3: 'region',
-      dimension4: 'price_range'
-    },
-    // Enhanced measurement features
-    enhanced_measurement: {
-      scrolls: true,
-      outbound_clicks: true,
-      site_search: true,
-      video_engagement: false,
-      file_downloads: true
+    // Initialize dataLayer and gtag function
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
     }
-  });
+    window.gtag = gtag;
+
+    // Configure GA4
+    gtag('js', new Date());
+    gtag('config', measurementId, {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      send_page_view: true,
+      // Custom dimensions for fuel price tracking
+      custom_map: {
+        dimension1: 'fuel_type',
+        dimension2: 'station_brand',
+        dimension3: 'region',
+        dimension4: 'price_range',
+      },
+      // Enhanced measurement features
+      enhanced_measurement: {
+        scrolls: true,
+        outbound_clicks: true,
+        site_search: true,
+        video_engagement: false,
+        file_downloads: true,
+      },
+    });
 
     // Google Analytics 4 initialized successfully
   } catch (error) {
     // Fail gracefully - analytics should never break functionality
     if (process.env.NODE_ENV === 'development') {
-       
       console.warn('⚠️ Google Analytics initialization failed:', error);
     }
   }
@@ -82,7 +81,7 @@ export const initializeGA = () => {
  */
 export const trackPageView = (path, title) => {
   if (typeof window === 'undefined') return;
-  
+
   try {
     if (!window.gtag) return;
 
@@ -90,7 +89,7 @@ export const trackPageView = (path, title) => {
       page_title: title,
       page_location: window.location.href,
       page_path: path,
-      send_to: process.env.REACT_APP_GA_MEASUREMENT_ID
+      send_to: process.env.REACT_APP_GA_MEASUREMENT_ID,
     });
   } catch (error) {
     // Fail silently - analytics should never break functionality
@@ -107,13 +106,13 @@ export const trackPageView = (path, title) => {
  */
 export const trackGAEvent = (eventName, eventParams = {}) => {
   if (typeof window === 'undefined') return;
-  
+
   try {
     if (!window.gtag) return;
 
     window.gtag('event', eventName, {
       ...eventParams,
-      send_to: process.env.REACT_APP_GA_MEASUREMENT_ID
+      send_to: process.env.REACT_APP_GA_MEASUREMENT_ID,
     });
   } catch (error) {
     // Fail silently - analytics should never break functionality
@@ -134,9 +133,9 @@ export const trackFuelSearch = (fuelType, location) => {
       fuel_type: fuelType,
       search_location: location,
       event_category: 'Search',
-      event_label: `${fuelType} in ${location}`
+      event_label: `${fuelType} in ${location}`,
     });
-  } catch (error) {
+  } catch {
     // Fail silently
   }
 };
@@ -152,9 +151,10 @@ export const trackStationInteraction = (stationName, action) => {
       station_name: stationName,
       interaction_type: action,
       event_category: 'Engagement',
-      event_label: stationName
+      event_label: stationName,
     });
-  } catch (error) {
+    // eslint-disable-next-line no-unused-vars
+  } catch (_error) {
     // Fail silently
   }
 };
@@ -170,9 +170,10 @@ export const trackPriceComparison = (fuelType, stationCount) => {
       fuel_type: fuelType,
       station_count: stationCount,
       event_category: 'Comparison',
-      value: stationCount
+      value: stationCount,
     });
-  } catch (error) {
+    // eslint-disable-next-line no-unused-vars
+  } catch (_error) {
     // Fail silently
   }
 };
@@ -187,9 +188,10 @@ export const trackFilterUsage = (filterType, filterValue) => {
     trackGAEvent('filter_applied', {
       filter_type: filterType,
       filter_value: filterValue,
-      event_category: 'Filter'
+      event_category: 'Filter',
     });
-  } catch (error) {
+    // eslint-disable-next-line no-unused-vars
+  } catch (_error) {
     // Fail silently
   }
 };
@@ -205,9 +207,10 @@ export const trackConversion = (conversionType, stationName) => {
       conversion_type: conversionType,
       station_name: stationName,
       event_category: 'Conversion',
-      value: 1
+      value: 1,
     });
-  } catch (error) {
+    // eslint-disable-next-line no-unused-vars
+  } catch (_error) {
     // Fail silently
   }
 };
@@ -218,12 +221,13 @@ export const trackConversion = (conversionType, stationName) => {
  */
 export const setUserProperties = (properties) => {
   if (typeof window === 'undefined') return;
-  
+
   try {
     if (!window.gtag) return;
 
     window.gtag('set', 'user_properties', properties);
-  } catch (error) {
+    // eslint-disable-next-line no-unused-vars
+  } catch (_error) {
     // Fail silently
   }
 };
@@ -237,8 +241,7 @@ const googleAnalytics = {
   trackPriceComparison,
   trackFilterUsage,
   trackConversion,
-  setUserProperties
+  setUserProperties,
 };
 
 export default googleAnalytics;
-

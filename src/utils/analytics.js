@@ -2,7 +2,7 @@
  * Analytics Tracking Utilities
  * Track user interactions, searches, and conversions for UX insights
  * Integrates with Google Analytics 4 and custom analytics endpoints
- * 
+ *
  * @module analytics
  */
 
@@ -62,7 +62,7 @@ class AnalyticsStore {
         if (document.visibilityState === 'hidden') {
           this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
             duration: Date.now() - this.sessionStartTime,
-            reason: 'visibility_hidden'
+            reason: 'visibility_hidden',
           });
         }
       });
@@ -71,7 +71,7 @@ class AnalyticsStore {
       window.addEventListener('pagehide', () => {
         this.trackEvent(ANALYTICS_EVENTS.SESSION_END, {
           duration: Date.now() - this.sessionStartTime,
-          reason: 'page_hide'
+          reason: 'page_hide',
         });
       });
     }
@@ -88,8 +88,9 @@ class AnalyticsStore {
    * Load analytics data from localStorage
    */
   loadFromStorage() {
-    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
-    
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined')
+      return;
+
     try {
       const stored = localStorage.getItem('ppnm_analytics');
       if (stored) {
@@ -105,12 +106,13 @@ class AnalyticsStore {
    * Save analytics data to localStorage
    */
   saveToStorage() {
-    if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
-    
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined')
+      return;
+
     try {
       const data = {
         events: this.events.slice(-1000), // Keep last 1000 events
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
       };
       localStorage.setItem('ppnm_analytics', JSON.stringify(data));
     } catch (error) {
@@ -125,7 +127,7 @@ class AnalyticsStore {
    */
   trackEvent(eventType, eventData = {}) {
     if (typeof window === 'undefined') return;
-    
+
     try {
       const event = {
         id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -160,18 +162,22 @@ class AnalyticsStore {
    */
   sendToExternalAnalytics(event) {
     if (typeof window === 'undefined') return;
-    
+
     // Wrap all analytics in try-catch to ensure they never block user interactions
     try {
       // Google Analytics 4 - Enhanced Event Tracking
       // Use the dedicated GA helper function for better tracking
       trackGAEvent(event.type, {
         event_category: this.getCategoryFromEventType(event.type),
-        event_label: event.data.query || event.data.stationId || event.data.filterType || 'unknown',
+        event_label:
+          event.data.query ||
+          event.data.stationId ||
+          event.data.filterType ||
+          'unknown',
         value: event.data.value || 0,
         session_id: this.sessionId,
         page_path: window.location.pathname,
-        ...event.data
+        ...event.data,
       });
     } catch (error) {
       // Silently fail - analytics should never block functionality
@@ -197,7 +203,7 @@ class AnalyticsStore {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(event),
-      }).catch(error => console.warn('Analytics endpoint error:', error));
+      }).catch((error) => console.warn('Analytics endpoint error:', error));
     }
   }
 
@@ -227,12 +233,12 @@ class AnalyticsStore {
     };
 
     const cutoff = now - (ranges[timeRange] || ranges['7days']);
-    const relevantEvents = this.events.filter(e => e.timestamp >= cutoff);
+    const relevantEvents = this.events.filter((e) => e.timestamp >= cutoff);
 
     return {
       timeRange,
       totalEvents: relevantEvents.length,
-      uniqueSessions: new Set(relevantEvents.map(e => e.sessionId)).size,
+      uniqueSessions: new Set(relevantEvents.map((e) => e.sessionId)).size,
       eventBreakdown: this.getEventBreakdown(relevantEvents),
       topSearches: this.getTopSearches(relevantEvents),
       topStations: this.getTopStations(relevantEvents),
@@ -247,7 +253,7 @@ class AnalyticsStore {
    */
   getEventBreakdown(events) {
     const breakdown = {};
-    events.forEach(event => {
+    events.forEach((event) => {
       breakdown[event.type] = (breakdown[event.type] || 0) + 1;
     });
     return breakdown;
@@ -258,12 +264,12 @@ class AnalyticsStore {
    */
   getTopSearches(events) {
     const searches = events
-      .filter(e => e.type === ANALYTICS_EVENTS.SEARCH_PERFORMED)
-      .map(e => e.data.query)
+      .filter((e) => e.type === ANALYTICS_EVENTS.SEARCH_PERFORMED)
+      .map((e) => e.data.query)
       .filter(Boolean);
 
     const counts = {};
-    searches.forEach(query => {
+    searches.forEach((query) => {
       counts[query] = (counts[query] || 0) + 1;
     });
 
@@ -278,12 +284,12 @@ class AnalyticsStore {
    */
   getTopStations(events) {
     const stations = events
-      .filter(e => e.type === ANALYTICS_EVENTS.STATION_VIEWED)
-      .map(e => e.data.stationId)
+      .filter((e) => e.type === ANALYTICS_EVENTS.STATION_VIEWED)
+      .map((e) => e.data.stationId)
       .filter(Boolean);
 
     const counts = {};
-    stations.forEach(id => {
+    stations.forEach((id) => {
       counts[id] = (counts[id] || 0) + 1;
     });
 
@@ -297,10 +303,13 @@ class AnalyticsStore {
    * Calculate conversion rate
    */
   calculateConversionRate(events) {
-    const views = events.filter(e => e.type === ANALYTICS_EVENTS.STATION_VIEWED).length;
-    const conversions = events.filter(e =>
-      e.type === ANALYTICS_EVENTS.DIRECTIONS_CLICKED ||
-      e.type === ANALYTICS_EVENTS.PHONE_CLICKED
+    const views = events.filter(
+      (e) => e.type === ANALYTICS_EVENTS.STATION_VIEWED
+    ).length;
+    const conversions = events.filter(
+      (e) =>
+        e.type === ANALYTICS_EVENTS.DIRECTIONS_CLICKED ||
+        e.type === ANALYTICS_EVENTS.PHONE_CLICKED
     ).length;
 
     return views > 0 ? ((conversions / views) * 100).toFixed(2) : 0;
@@ -310,10 +319,15 @@ class AnalyticsStore {
    * Calculate average time on page
    */
   calculateAvgTimeOnPage(events) {
-    const timeEvents = events.filter(e => e.type === ANALYTICS_EVENTS.TIME_ON_PAGE);
+    const timeEvents = events.filter(
+      (e) => e.type === ANALYTICS_EVENTS.TIME_ON_PAGE
+    );
     if (timeEvents.length === 0) return 0;
 
-    const totalTime = timeEvents.reduce((sum, e) => sum + (e.data.duration || 0), 0);
+    const totalTime = timeEvents.reduce(
+      (sum, e) => sum + (e.data.duration || 0),
+      0
+    );
     return Math.round(totalTime / timeEvents.length / 1000); // Convert to seconds
   }
 
@@ -322,12 +336,12 @@ class AnalyticsStore {
    */
   getPopularFilters(events) {
     const filters = events
-      .filter(e => e.type === ANALYTICS_EVENTS.FILTER_APPLIED)
-      .map(e => e.data.filterType)
+      .filter((e) => e.type === ANALYTICS_EVENTS.FILTER_APPLIED)
+      .map((e) => e.data.filterType)
       .filter(Boolean);
 
     const counts = {};
-    filters.forEach(filter => {
+    filters.forEach((filter) => {
       counts[filter] = (counts[filter] || 0) + 1;
     });
 
@@ -340,10 +354,11 @@ class AnalyticsStore {
    * Export analytics data as CSV
    */
   exportToCSV() {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return;
-    
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return;
+
     const headers = ['Timestamp', 'Event Type', 'Session ID', 'Page', 'Data'];
-    const rows = this.events.map(e => [
+    const rows = this.events.map((e) => [
       new Date(e.timestamp).toISOString(),
       e.type,
       e.sessionId,
@@ -351,7 +366,7 @@ class AnalyticsStore {
       JSON.stringify(e.data),
     ]);
 
-    const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
+    const csv = [headers, ...rows].map((row) => row.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
 
@@ -399,7 +414,7 @@ export const trackEvent = (eventType, data = {}) => {
 export const trackPageView = (pageName) => {
   try {
     trackEvent(ANALYTICS_EVENTS.PAGE_VIEW, { pageName });
-  } catch (error) {
+  } catch {
     // Fail silently
   }
 };
@@ -412,7 +427,7 @@ export const trackPageView = (pageName) => {
 export const trackSearch = (query, resultsCount = 0) => {
   try {
     trackEvent(ANALYTICS_EVENTS.SEARCH_PERFORMED, { query, resultsCount });
-  } catch (error) {
+  } catch {
     // Fail silently
   }
 };
@@ -425,7 +440,7 @@ export const trackSearch = (query, resultsCount = 0) => {
 export const trackFilter = (filterType, filterValue) => {
   try {
     trackEvent(ANALYTICS_EVENTS.FILTER_APPLIED, { filterType, filterValue });
-  } catch (error) {
+  } catch {
     // Fail silently
   }
 };
@@ -446,9 +461,9 @@ export const trackStationInteraction = (stationId, action, metadata = {}) => {
 
     trackEvent(eventMap[action] || ANALYTICS_EVENTS.STATION_CLICKED, {
       stationId,
-      ...metadata
+      ...metadata,
     });
-  } catch (error) {
+  } catch {
     // Fail silently
   }
 };
@@ -476,4 +491,3 @@ export const clearAnalytics = () => {
 };
 
 export default analyticsStore;
-

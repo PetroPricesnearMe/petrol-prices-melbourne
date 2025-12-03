@@ -51,7 +51,8 @@ class PerformanceMonitor {
       });
       longTaskObserver.observe({ entryTypes: ['longtask'] });
       this.observers.push(longTaskObserver);
-    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_e) {
       // Long task API not supported
     }
 
@@ -78,7 +79,8 @@ class PerformanceMonitor {
       });
       layoutShiftObserver.observe({ entryTypes: ['layout-shift'] });
       this.observers.push(layoutShiftObserver);
-    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_e) {
       // Layout shift API not supported
     }
   }
@@ -100,8 +102,10 @@ class PerformanceMonitor {
 
     // Log in development
     if (process.env.NODE_ENV === 'development' && metric.value > 100) {
-       
-      console.warn(`[Performance] ${metric.name}: ${metric.value}${metric.unit}`, metric.metadata);
+      console.warn(
+        `[Performance] ${metric.name}: ${metric.value}${metric.unit}`,
+        metric.metadata
+      );
     }
   }
 
@@ -141,7 +145,7 @@ class PerformanceMonitor {
    * Disconnect all observers
    */
   disconnect(): void {
-    this.observers.forEach(observer => observer.disconnect());
+    this.observers.forEach((observer) => observer.disconnect());
     this.observers = [];
   }
 }
@@ -153,10 +157,7 @@ class PerformanceMonitor {
 /**
  * Measure function execution time
  */
-export function measureExecutionTime<T>(
-  fn: () => T,
-  label: string
-): T {
+export function measureExecutionTime<T>(fn: () => T, label: string): T {
   const monitor = PerformanceMonitor.getInstance();
   const start = performance.now();
 
@@ -230,7 +231,11 @@ export function markPerformance(name: string): void {
 /**
  * Measure between two performance marks
  */
-export function measurePerformance(name: string, startMark: string, endMark: string): number {
+export function measurePerformance(
+  name: string,
+  startMark: string,
+  endMark: string
+): number {
   if (typeof performance !== 'undefined' && performance.measure) {
     performance.measure(name, startMark, endMark);
     const measure = performance.getEntriesByName(name)[0];
@@ -277,7 +282,6 @@ export function trackComponentRender(
 
   // Warn about slow renders
   if (renderTime > 16.67 && process.env.NODE_ENV === 'development') {
-     
     console.warn(
       `[Performance] Slow render detected: ${componentName} took ${renderTime.toFixed(2)}ms`
     );
@@ -302,7 +306,7 @@ export function usePerformanceTracking(
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     const renderTime = performance.now() - renderStart.current;
     trackComponentRender(componentName, renderTime, props || {});
     renderStart.current = performance.now();
@@ -352,7 +356,9 @@ export function getResourceTimings(): PerformanceResourceTiming[] {
     return [];
   }
 
-  return performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+  return performance.getEntriesByType(
+    'resource'
+  ) as PerformanceResourceTiming[];
 }
 
 /**
@@ -366,8 +372,11 @@ export function analyzeResourcePerformance(): {
   const resources = getResourceTimings();
   const slowThreshold = 1000; // 1 second
 
-  const slowResources = resources.filter(r => r.duration > slowThreshold);
-  const totalSize = resources.reduce((sum, r) => sum + (r.transferSize || 0), 0);
+  const slowResources = resources.filter((r) => r.duration > slowThreshold);
+  const totalSize = resources.reduce(
+    (sum, r) => sum + (r.transferSize || 0),
+    0
+  );
   const totalDuration = resources.reduce((sum, r) => sum + r.duration, 0);
 
   return {
@@ -399,7 +408,10 @@ export function getMemoryUsage(): {
   totalJSHeapSize: number;
   jsHeapSizeLimit: number;
 } | null {
-  if (typeof performance === 'undefined' || !(performance as PerformanceWithMemory).memory) {
+  if (
+    typeof performance === 'undefined' ||
+    !(performance as PerformanceWithMemory).memory
+  ) {
     return null;
   }
 
@@ -430,8 +442,10 @@ export function trackMemoryUsage(): void {
   });
 
   if (usagePercent > 90) {
-     
-    console.warn('[Performance] High memory usage detected:', usagePercent.toFixed(2) + '%');
+    console.warn(
+      '[Performance] High memory usage detected:',
+      usagePercent.toFixed(2) + '%'
+    );
   }
 }
 
@@ -441,6 +455,4 @@ export function trackMemoryUsage(): void {
 
 export default PerformanceMonitor;
 
-export {
-  PerformanceMonitor,
-};
+export { PerformanceMonitor };

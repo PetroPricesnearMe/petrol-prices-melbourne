@@ -83,7 +83,10 @@ export function getRating(
 /**
  * Check if metric meets "good" threshold
  */
-export function isGoodScore(metricName: WebVitalsMetric['name'], value: number): boolean {
+export function isGoodScore(
+  metricName: WebVitalsMetric['name'],
+  value: number
+): boolean {
   return value <= WEB_VITALS_THRESHOLDS[metricName].good;
 }
 
@@ -140,17 +143,24 @@ class WebVitalsReporter {
    */
   private sendToAnalytics(metric: WebVitalsMetric) {
     // Google Analytics 4
-    if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-      (window as Window & { gtag: (...args: unknown[]) => void }).gtag('event', metric.name, {
-        value: Math.round(metric.value),
-        metric_id: metric.id,
-        metric_value: metric.value,
-        metric_delta: metric.delta,
-        metric_rating: metric.rating,
-        event_category: 'Web Vitals',
-        event_label: metric.id,
-        non_interaction: true,
-      });
+    if (
+      typeof window !== 'undefined' &&
+      (window as Window & { gtag?: (...args: unknown[]) => void }).gtag
+    ) {
+      (window as Window & { gtag: (...args: unknown[]) => void }).gtag(
+        'event',
+        metric.name,
+        {
+          value: Math.round(metric.value),
+          metric_id: metric.id,
+          metric_value: metric.value,
+          metric_delta: metric.delta,
+          metric_rating: metric.rating,
+          event_category: 'Web Vitals',
+          event_label: metric.id,
+          non_interaction: true,
+        }
+      );
     }
 
     // Custom endpoint
@@ -197,7 +207,7 @@ class WebVitalsReporter {
         timestamp: Date.now(),
       };
       localStorage.setItem(key, JSON.stringify(data));
-    } catch (error) {
+    } catch {
       // Ignore localStorage errors
     }
   }
@@ -223,16 +233,20 @@ class WebVitalsReporter {
     const metrics = this.getMetrics();
     return {
       total: metrics.length,
-      good: metrics.filter(m => m.rating === 'good').length,
-      needsImprovement: metrics.filter(m => m.rating === 'needs-improvement').length,
-      poor: metrics.filter(m => m.rating === 'poor').length,
-      metrics: metrics.reduce((acc, metric) => {
-        acc[metric.name] = {
-          value: metric.value,
-          rating: metric.rating,
-        };
-        return acc;
-      }, {} as Record<string, { value: number; rating: string }>),
+      good: metrics.filter((m) => m.rating === 'good').length,
+      needsImprovement: metrics.filter((m) => m.rating === 'needs-improvement')
+        .length,
+      poor: metrics.filter((m) => m.rating === 'poor').length,
+      metrics: metrics.reduce(
+        (acc, metric) => {
+          acc[metric.name] = {
+            value: metric.value,
+            rating: metric.rating,
+          };
+          return acc;
+        },
+        {} as Record<string, { value: number; rating: string }>
+      ),
     };
   }
 }
@@ -267,11 +281,14 @@ export function getWebVitalsReporter(): WebVitalsReporter {
 /**
  * Preload critical images for LCP optimization
  */
-export function preloadLCPImage(src: string, options?: {
-  as?: 'image';
-  type?: string;
-  fetchPriority?: 'high' | 'low' | 'auto';
-}) {
+export function preloadLCPImage(
+  src: string,
+  options?: {
+    as?: 'image';
+    type?: string;
+    fetchPriority?: 'high' | 'low' | 'auto';
+  }
+) {
   if (typeof document === 'undefined') return;
 
   const link = document.createElement('link');
@@ -296,7 +313,7 @@ export function preloadLCPImage(src: string, options?: {
 export function preconnect(domains: string[]) {
   if (typeof document === 'undefined') return;
 
-  domains.forEach(domain => {
+  domains.forEach((domain) => {
     const link = document.createElement('link');
     link.rel = 'preconnect';
     link.href = domain;
@@ -311,7 +328,7 @@ export function preconnect(domains: string[]) {
 export function dnsPrefetch(domains: string[]) {
   if (typeof document === 'undefined') return;
 
-  domains.forEach(domain => {
+  domains.forEach((domain) => {
     const link = document.createElement('link');
     link.rel = 'dns-prefetch';
     link.href = domain;
@@ -333,7 +350,11 @@ export function calculateAspectRatio(width: number, height: number): string {
 /**
  * Get placeholder for images to prevent CLS
  */
-export function getImagePlaceholder(width: number, height: number, color = '#e0e0e0'): string {
+export function getImagePlaceholder(
+  width: number,
+  height: number,
+  color = '#e0e0e0'
+): string {
   return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${width} ${height}'%3E%3Crect width='${width}' height='${height}' fill='${color}'/%3E%3C/svg%3E`;
 }
 
@@ -426,7 +447,7 @@ export function monitorLongTasks(callback: (duration: number) => void) {
 
   try {
     observer.observe({ entryTypes: ['longtask'] });
-  } catch (error) {
+  } catch {
     // Long task API not supported
   }
 
@@ -448,7 +469,7 @@ export function monitorLayoutShifts(callback: (shift: number) => void) {
 
   try {
     observer.observe({ entryTypes: ['layout-shift'] });
-  } catch (error) {
+  } catch {
     // Layout shift API not supported
   }
 
@@ -523,7 +544,8 @@ export function checkPerformanceBudget(metrics: {
 
   Object.entries(metrics).forEach(([metric, value]) => {
     if (value !== undefined) {
-      const budget = PERFORMANCE_BUDGET.time[metric as keyof typeof PERFORMANCE_BUDGET.time];
+      const budget =
+        PERFORMANCE_BUDGET.time[metric as keyof typeof PERFORMANCE_BUDGET.time];
       results[metric] = value <= budget;
     }
   });
