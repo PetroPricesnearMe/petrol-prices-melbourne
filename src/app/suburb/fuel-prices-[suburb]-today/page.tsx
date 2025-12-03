@@ -42,6 +42,10 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { suburb } = await params;
 
+  if (!suburb) {
+    return { title: 'Fuel Prices Today' };
+  }
+
   const suburbName = suburb
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -52,6 +56,10 @@ export async function generateMetadata({
 
 export default async function SuburbTodayPricesPage({ params }: PageProps) {
   const { suburb } = await params;
+
+  if (!suburb) {
+    notFound();
+  }
 
   // Normalize suburb name
   const suburbName = suburb

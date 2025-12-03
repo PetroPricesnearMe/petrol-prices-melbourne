@@ -75,6 +75,11 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const slug = (await params)['brand-suburb'];
+
+  if (!slug) {
+    return { title: 'Servo Not Found' };
+  }
+
   const parsed = parseBrandSuburbSlug(slug);
 
   if (!parsed) {
@@ -96,6 +101,11 @@ export async function generateMetadata({
 
 export default async function ServoBrandSuburbPage({ params }: PageProps) {
   const slug = (await params)['brand-suburb'];
+
+  if (!slug) {
+    notFound();
+  }
+
   const parsed = parseBrandSuburbSlug(slug);
 
   if (!parsed) {
