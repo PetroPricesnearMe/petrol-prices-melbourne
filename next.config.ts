@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
     qualities: [75, 80, 85, 90, 95, 100],
     // Note: Image quality is set per-image using the quality prop on Image component
     // Default is 75, can be overridden per image: <Image quality={85} ... />
+    // Loader configuration for better error handling
+    loader: 'default',
+    loaderFile: undefined,
   },
 
   // Experimental features for better performance
@@ -44,10 +47,13 @@ const nextConfig: NextConfig = {
 
   // SWC compiler options for better optimization
   compiler: {
-    // Remove console.log in production
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn'],
-    } : false,
+    // Remove console statements in production (except error and warn)
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? {
+            exclude: ['error', 'warn'],
+          }
+        : false,
   },
 
   // Headers for caching and performance
@@ -81,11 +87,24 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: '/_next/static/css/:path*.css',
+        source: '/_next/static/css/:path*',
         headers: [
           {
             key: 'Content-Type',
             value: 'text/css; charset=utf-8',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/chunks/:path*',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/javascript; charset=utf-8',
           },
           {
             key: 'Cache-Control',
@@ -256,7 +275,7 @@ const nextConfig: NextConfig = {
         config.externals.push({
           'mapbox-gl': 'commonjs mapbox-gl',
           'maplibre-gl': 'commonjs maplibre-gl',
-          'leaflet': 'commonjs leaflet',
+          leaflet: 'commonjs leaflet',
         });
       }
     }
