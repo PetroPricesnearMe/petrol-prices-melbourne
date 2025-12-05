@@ -212,7 +212,7 @@ export default async function SuburbDirectoryPage({ params }: Props) {
                 {/* Footer */}
                 <div className="p-6 border-t border-gray-200 dark:border-gray-700">
                   <a
-                    href={`https://www.google.com/maps/search/${encodeURIComponent((station.address || '') + ' ' + (station.suburb || ''))}`}
+                    href={station.latitude && station.longitude ? `https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}` : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent((station.address || '') + ', ' + (station.suburb || ''))}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-primary w-full btn-sm"

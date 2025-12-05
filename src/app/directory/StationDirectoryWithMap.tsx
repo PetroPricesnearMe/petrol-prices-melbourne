@@ -546,7 +546,7 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
                               🗺️ Map
                             </button>
                             <a
-                              href={`https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`}
+                              href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="btn btn-primary btn-sm flex-1"

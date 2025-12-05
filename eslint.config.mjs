@@ -35,6 +35,8 @@ export default tseslint.config(
             "**/*.md",
             "!**/README.md",
             "lib/**", // Ignore legacy lib/ directory outside src/
+            "**/playwright-report/**", // Ignore Playwright test reports
+            "**/test-results/**", // Ignore test results
         ],
     },
     ...compat.extends("next/core-web-vitals"),

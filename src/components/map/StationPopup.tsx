@@ -114,9 +114,7 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
           View Details
         </Link>
         <a
-          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-            `${station.latitude},${station.longitude}`
-          )}`}
+          href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1 rounded-lg bg-gray-600 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-gray-700"

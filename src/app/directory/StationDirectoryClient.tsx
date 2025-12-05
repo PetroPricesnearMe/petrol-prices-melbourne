@@ -7,7 +7,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState, useCallback, useMemo } from 'react';
 
 import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
@@ -103,17 +102,13 @@ interface SearchCategory {
 // Advanced Search Bar component (simplified for now)
 function AdvancedSearchBar({
   data,
-  searchKeys,
   placeholder,
   onSearch,
-  onCategoryChange,
-  categories,
-  selectedCategory,
-  maxSuggestions,
-  debounceDelay,
-  enableRecentSearches,
-  renderResult
-}: Record<string, unknown>) {
+}: {
+  data: unknown;
+  placeholder?: string;
+  onSearch: (query: string, data: unknown) => void;
+}) {
   const [query, setQuery] = useState('');
 
   const handleSearch = (value: string) => {
@@ -323,25 +318,8 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
             <div className="mb-4">
               <AdvancedSearchBar
                 data={initialStations}
-                searchKeys={getSearchKeys()}
                 placeholder="Search stations by name, brand, suburb, or address..."
                 onSearch={handleAdvancedSearch}
-                onCategoryChange={handleSearchCategoryChange}
-                categories={searchCategories}
-                selectedCategory={selectedSearchCategory}
-                maxSuggestions={8}
-                debounceDelay={150}
-                enableRecentSearches={true}
-                renderResult={(station) => (
-                  <div className="flex flex-col">
-                    <div className="font-semibold text-gray-900 dark:text-white">
-                      {station.name}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {station.address}, {station.suburb}
-                    </div>
-                  </div>
-                )}
               />
             </div>
 
@@ -605,7 +583,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                     {/* Footer */}
                     <div className="p-4 sm:p-5 lg:p-6 border-t border-gray-200 dark:border-gray-700 print-hidden flex-shrink-0">
                       <a
-                        href={`https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`}
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station.address + ', ' + station.suburb)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-primary w-full btn-sm text-xs sm:text-sm"

@@ -11,7 +11,6 @@
 
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Fragment } from 'react';
 import type { ReactNode } from 'react';
 
@@ -71,7 +70,6 @@ export function Modal({
   className,
   showCloseButton = true,
   closeOnOverlayClick = true,
-  closeOnEscape = true,
 }: ModalProps) {
   const sizeClasses = {
     sm: 'max-w-md',
@@ -368,7 +366,7 @@ export function StationDetailsModal({ isOpen, onClose, station }: StationDetails
         {/* Action Buttons */}
         <div className="flex space-x-3 pt-4">
           <button
-            onClick={() => window.open(`https://www.google.com/maps/search/${encodeURIComponent(station.address + ' ' + station.suburb)}`, '_blank')}
+            onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station.address + ', ' + station.suburb)}`, '_blank')}
             className="flex-1 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200"
           >
             🧭 Get Directions

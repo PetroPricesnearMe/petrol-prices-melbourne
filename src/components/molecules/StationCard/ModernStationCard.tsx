@@ -14,7 +14,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useState } from 'react';
 
 import { LazyImage } from '@/components/atoms/LazyImage';
@@ -45,7 +44,6 @@ interface StationCardProps {
 }
 
 export function ModernStationCard({
-  id,
   name,
   brand,
   address,
@@ -237,7 +235,7 @@ export function ModernStationCard({
       {/* Action Button */}
       <div className="card-actions">
         <a
-          href={`https://www.google.com/maps/search/${encodeURIComponent(address + ' ' + suburb)}`}
+          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address + ', ' + suburb)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="directions-button"

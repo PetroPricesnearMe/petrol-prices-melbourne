@@ -539,7 +539,7 @@ export default function MapLibreMapCore({
           <a href="/stations/${station.id}" style="flex: 1; background: #3b82f6; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">
             View Details
           </a>
-          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${station.latitude},${station.longitude}`)}" target="_blank" rel="noopener noreferrer" style="flex: 1; background: #6b7280; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">
+          <a href="https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}" target="_blank" rel="noopener noreferrer" style="flex: 1; background: #6b7280; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">
             Directions
           </a>
         </div>

@@ -1,14 +1,14 @@
 /**
  * Station Detail Page
- * 
+ *
  * Dynamic route: /stations/[id]
- * 
+ *
  * Features:
  * - ISR (Incremental Static Regeneration) with 1-hour revalidation
  * - SEO-optimized metadata with canonical URLs
  * - Comprehensive station information display
  * - Nearby stations recommendations
- * 
+ *
  * @module app/stations/[id]/page
  */
 
@@ -21,7 +21,11 @@ import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { HeroSection } from '@/components/molecules/HeroSection';
 import { Tabs } from '@/components/molecules/Tabs';
 import { StructuredData } from '@/components/StructuredData';
-import { getAllStationIds, getStationById, getNearbyStations } from '@/lib/data/stations';
+import {
+  getAllStationIds,
+  getStationById,
+  getNearbyStations,
+} from '@/lib/data/stations';
 import { generateStationPageSchemas } from '@/lib/schema';
 import { generateStationCanonicalUrl } from '@/lib/seo/canonical';
 import { generateBaseMetadata } from '@/lib/seo/metadata';
@@ -69,7 +73,7 @@ export async function generateMetadata({
 
   const title = `${station.name} - Fuel Prices & Information`;
   const description = `Find real-time fuel prices and information for ${station.name} in ${station.suburb || 'Melbourne'}. ${station.address ? `Located at ${station.address}` : 'Compare prices and save on your next fill-up.'}`;
-  
+
   const keywords = [
     `${station.name} fuel prices`,
     `${station.suburb} petrol station`,
@@ -79,7 +83,7 @@ export async function generateMetadata({
     station.address || '',
   ].filter(Boolean);
 
-  const imageUrl = station.image 
+  const imageUrl = station.image
     ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}${station.image}`
     : `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}/api/og/station/${station.id}`;
 
@@ -124,7 +128,7 @@ export default async function StationPage({ params }: StationPageProps) {
     if (station.image) {
       return station.image;
     }
-    
+
     // Try brand-specific image with various naming conventions
     if (station.brand) {
       const brandSlug = station.brand.toLowerCase().replace(/\s+/g, '-');
@@ -133,23 +137,24 @@ export default async function StationPage({ params }: StationPageProps) {
         `/images/stations/${brandSlug}.jpg`,
         `/images/stations/${brandSlug.replace('-', '')}.jpg`,
         // Handle 7-eleven specifically
-        brandSlug.includes('7') || brandSlug.includes('eleven') 
+        brandSlug.includes('7') || brandSlug.includes('eleven')
           ? '/images/stations/seven-eleven.jpg'
           : null,
       ].filter(Boolean);
-      
+
       // Return first variation (will use fallback if none exist)
       return brandVariations[0] || '/images/fuel-nozzles.jpg';
     }
-    
+
     // Default fallback to existing image
     return '/images/fuel-nozzles.jpg';
   };
-  
+
   const heroImageUrl = getHeroImageUrl();
 
   // Generate structured data
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
   const structuredDataSchemas = generateStationPageSchemas(station, baseUrl);
 
   return (
@@ -160,21 +165,21 @@ export default async function StationPage({ params }: StationPageProps) {
       {/* Internal Linking Section */}
       <div className="container mx-auto px-4 py-6">
         <div className="mx-auto max-w-6xl">
-          <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 p-6">
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
             <h2 className="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
               Related Resources
             </h2>
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/directory"
-                className="text-blue-600 hover:underline dark:text-blue-400"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
               >
                 → Browse All Stations
               </Link>
               {station.brand && (
                 <Link
                   href={`/directory?brand=${encodeURIComponent(station.brand)}`}
-                  className="text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
                   → More {station.brand} Stations
                 </Link>
@@ -182,20 +187,20 @@ export default async function StationPage({ params }: StationPageProps) {
               {station.suburb && (
                 <Link
                   href={`/directory/${station.suburb.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
                 >
                   → Stations in {station.suburb}
                 </Link>
               )}
               <Link
                 href="/fuel-brands"
-                className="text-blue-600 hover:underline dark:text-blue-400"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
               >
                 → Compare Fuel Brands
               </Link>
               <Link
                 href="/blog"
-                className="text-blue-600 hover:underline dark:text-blue-400"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
               >
                 → Fuel Saving Tips
               </Link>
@@ -223,21 +228,25 @@ export default async function StationPage({ params }: StationPageProps) {
             height="lg"
             contentPosition="left"
           >
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href={`/directions?station=${id}`}
-                className="btn btn-primary btn-lg"
-              >
-                📍 Get Directions
-              </Link>
-              <button className="btn btn-outline btn-lg text-white border-white hover:bg-white hover:text-gray-900">
+            <div className="flex flex-col gap-4 sm:flex-row">
+              {station.latitude && station.longitude && (
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary btn-lg btn"
+                >
+                  📍 Get Directions
+                </a>
+              )}
+              <button className="btn-outline btn-lg btn border-white text-white hover:bg-white hover:text-gray-900">
                 ⭐ Save Favorite
               </button>
             </div>
           </HeroSection>
 
           {/* Quick Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <QuickInfoCard
               title="Current Prices"
               icon="⛽"
@@ -251,7 +260,9 @@ export default async function StationPage({ params }: StationPageProps) {
             <QuickInfoCard
               title="Nearby Stations"
               icon="🗺️"
-              content={<NearbyStationsSummary stations={nearbyStations.slice(0, 3)} />}
+              content={
+                <NearbyStationsSummary stations={nearbyStations.slice(0, 3)} />
+              }
             />
           </div>
 
@@ -275,7 +286,9 @@ export default async function StationPage({ params }: StationPageProps) {
                   id: 'map',
                   label: 'Map & Location',
                   icon: '🗺️',
-                  content: <MapTab station={station} nearbyStations={nearbyStations} />,
+                  content: (
+                    <MapTab station={station} nearbyStations={nearbyStations} />
+                  ),
                 },
                 {
                   id: 'prices',
@@ -290,21 +303,22 @@ export default async function StationPage({ params }: StationPageProps) {
           </div>
 
           {/* Additional Sections */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Amenities */}
-            {station.amenities && Object.values(station.amenities).some(Boolean) && (
-              <div className="card p-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                  Amenities
-                </h2>
-                <AmenitiesGrid amenities={station.amenities} />
-              </div>
-            )}
+            {station.amenities &&
+              Object.values(station.amenities).some(Boolean) && (
+                <div className="card p-6">
+                  <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
+                    Amenities
+                  </h2>
+                  <AmenitiesGrid amenities={station.amenities} />
+                </div>
+              )}
 
             {/* Operating Hours */}
             {station.operatingHours && (
               <div className="card p-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
                   Operating Hours
                 </h2>
                 <OperatingHoursTable hours={station.operatingHours} />
@@ -330,8 +344,8 @@ function QuickInfoCard({
   content: React.ReactNode;
 }) {
   return (
-    <div className="card p-6 hover:shadow-lg transition-shadow duration-200">
-      <div className="flex items-center gap-3 mb-4">
+    <div className="card p-6 transition-shadow duration-200 hover:shadow-lg">
+      <div className="mb-4 flex items-center gap-3">
         <span className="text-2xl">{icon}</span>
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           {title}
@@ -356,7 +370,7 @@ function FuelPriceSummary({ station: _station }: { station: Station }) {
   return (
     <div className="space-y-3">
       {fuelPrices.map((fuel, index) => (
-        <div key={index} className="flex justify-between items-center">
+        <div key={index} className="flex items-center justify-between">
           <span className="text-sm text-gray-600 dark:text-gray-400">
             {fuel.type}
           </span>
@@ -366,13 +380,17 @@ function FuelPriceSummary({ station: _station }: { station: Station }) {
             </span>
             <span className="text-sm">
               {fuel.trend === 'up' && <span className="text-red-500">↗</span>}
-              {fuel.trend === 'down' && <span className="text-green-500">↘</span>}
-              {fuel.trend === 'stable' && <span className="text-gray-500">→</span>}
+              {fuel.trend === 'down' && (
+                <span className="text-green-500">↘</span>
+              )}
+              {fuel.trend === 'stable' && (
+                <span className="text-gray-500">→</span>
+              )}
             </span>
           </div>
         </div>
       ))}
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+      <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
         Updated {new Date().toLocaleTimeString()}
       </p>
     </div>
@@ -396,7 +414,7 @@ function StationInfoSummary({ station }: { station: Station }) {
           <span className="text-gray-600 dark:text-gray-400">Phone:</span>
           <a
             href={`tel:${station.phoneNumber}`}
-            className="font-medium text-primary-600 dark:text-primary-400 hover:underline"
+            className="font-medium text-primary-600 hover:underline dark:text-primary-400"
           >
             {station.phoneNumber}
           </a>
@@ -425,8 +443,11 @@ function NearbyStationsSummary({ stations }: { stations: Station[] }) {
   return (
     <div className="space-y-2">
       {stations.map((station) => (
-        <div key={station.id} className="flex justify-between items-center text-sm">
-          <span className="text-gray-600 dark:text-gray-400 truncate">
+        <div
+          key={station.id}
+          className="flex items-center justify-between text-sm"
+        >
+          <span className="truncate text-gray-600 dark:text-gray-400">
             {station.name}
           </span>
           <span className="font-medium text-primary-600 dark:text-primary-400">
@@ -450,20 +471,20 @@ function DescriptionTab({ station }: { station: Station }) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
           About {station.name}
         </h3>
         <div className="prose prose-gray dark:prose-invert max-w-none">
-          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+          <p className="leading-relaxed text-gray-700 dark:text-gray-300">
             {station.locationDetails ||
               `${station.name} is a ${station.brand || 'petrol station'} located in ${station.suburb || 'Melbourne'}. We provide quality fuel services and competitive prices to help you save on your fuel costs.`}
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+          <h4 className="mb-3 font-semibold text-gray-900 dark:text-white">
             Contact Information
           </h4>
           <div className="space-y-2 text-gray-700 dark:text-gray-300">
@@ -501,7 +522,7 @@ function DescriptionTab({ station }: { station: Station }) {
         </div>
 
         <div>
-          <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+          <h4 className="mb-3 font-semibold text-gray-900 dark:text-white">
             Station Details
           </h4>
           <div className="space-y-2 text-gray-700 dark:text-gray-300">
@@ -520,7 +541,10 @@ function DescriptionTab({ station }: { station: Station }) {
             {station.lastUpdated && (
               <p className="flex items-center gap-2">
                 <span className="text-lg">🕐</span>
-                <span>Last Updated: {new Date(station.lastUpdated).toLocaleDateString()}</span>
+                <span>
+                  Last Updated:{' '}
+                  {new Date(station.lastUpdated).toLocaleDateString()}
+                </span>
               </p>
             )}
           </div>
@@ -541,7 +565,8 @@ function ReviewsTab({ station }: { station: Station }) {
       author: 'Sarah M.',
       rating: 5,
       date: '2024-01-15',
-      comment: 'Great prices and friendly staff. Always clean and well-maintained.',
+      comment:
+        'Great prices and friendly staff. Always clean and well-maintained.',
     },
     {
       id: 2,
@@ -567,18 +592,20 @@ function ReviewsTab({ station }: { station: Station }) {
             Customer Reviews
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
-            {station.reviewCount || reviews.length} reviews • Average rating: {station.rating || 4.5}/5
+            {station.reviewCount || reviews.length} reviews • Average rating:{' '}
+            {station.rating || 4.5}/5
           </p>
         </div>
-        <button className="btn btn-primary">
-          Write Review
-        </button>
+        <button className="btn-primary btn">Write Review</button>
       </div>
 
       <div className="space-y-4">
         {reviews.map((review) => (
-          <div key={review.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
+          <div
+            key={review.id}
+            className="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
+          >
+            <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="font-medium text-gray-900 dark:text-white">
                   {review.author}
@@ -589,7 +616,9 @@ function ReviewsTab({ station }: { station: Station }) {
                       key={i}
                       className={cn(
                         'text-sm',
-                        i < review.rating ? 'text-yellow-500' : 'text-gray-300 dark:text-gray-600'
+                        i < review.rating
+                          ? 'text-yellow-500'
+                          : 'text-gray-300 dark:text-gray-600'
                       )}
                     >
                       ⭐
@@ -601,9 +630,7 @@ function ReviewsTab({ station }: { station: Station }) {
                 {new Date(review.date).toLocaleDateString()}
               </span>
             </div>
-            <p className="text-gray-700 dark:text-gray-300">
-              {review.comment}
-            </p>
+            <p className="text-gray-700 dark:text-gray-300">{review.comment}</p>
           </div>
         ))}
       </div>
@@ -624,45 +651,50 @@ function MapTab({
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
           Location & Map
         </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
+        <p className="mb-6 text-gray-600 dark:text-gray-400">
           Find {station.name} and compare with nearby stations
         </p>
       </div>
 
       {/* Map Placeholder */}
-      <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 mb-6">
+      <div className="mb-6 flex aspect-video items-center justify-center rounded-lg bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
         <div className="text-center">
-          <div className="text-4xl mb-2">🗺️</div>
+          <div className="mb-2 text-4xl">🗺️</div>
           <p>Interactive Map</p>
-          <p className="text-sm">Coordinates: {station.latitude}, {station.longitude}</p>
+          <p className="text-sm">
+            Coordinates: {station.latitude}, {station.longitude}
+          </p>
         </div>
       </div>
 
       {/* Nearby Stations */}
       <div>
-        <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
+        <h4 className="mb-4 font-semibold text-gray-900 dark:text-white">
           Nearby Stations ({nearbyStations.length})
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {nearbyStations.slice(0, 6).map((nearbyStation) => (
-            <div key={nearbyStation.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start mb-2">
+            <div
+              key={nearbyStation.id}
+              className="rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md dark:border-gray-700"
+            >
+              <div className="mb-2 flex items-start justify-between">
                 <h5 className="font-medium text-gray-900 dark:text-white">
                   {nearbyStation.name}
                 </h5>
-                <span className="text-sm text-primary-600 dark:text-primary-400 font-medium">
+                <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
                   {nearbyStation.distance?.toFixed(1)}km
                 </span>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
                 {nearbyStation.address}
               </p>
               <Link
                 href={`/stations/${nearbyStation.id}`}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+                className="text-sm text-primary-600 hover:underline dark:text-primary-400"
               >
                 View Details →
               </Link>
@@ -680,9 +712,24 @@ function MapTab({
 function PricesTab({ station }: { station: Station }) {
   // Mock fuel prices - replace with actual data
   const fuelPrices = [
-    { type: 'Unleaded 91', price: '169.9', trend: 'up', lastUpdated: '2 hours ago' },
-    { type: 'Unleaded 95', price: '179.9', trend: 'stable', lastUpdated: '1 hour ago' },
-    { type: 'Unleaded 98', price: '189.9', trend: 'down', lastUpdated: '3 hours ago' },
+    {
+      type: 'Unleaded 91',
+      price: '169.9',
+      trend: 'up',
+      lastUpdated: '2 hours ago',
+    },
+    {
+      type: 'Unleaded 95',
+      price: '179.9',
+      trend: 'stable',
+      lastUpdated: '1 hour ago',
+    },
+    {
+      type: 'Unleaded 98',
+      price: '189.9',
+      trend: 'down',
+      lastUpdated: '3 hours ago',
+    },
     { type: 'Diesel', price: '174.9', trend: 'up', lastUpdated: '1 hour ago' },
     { type: 'LPG', price: '89.9', trend: 'stable', lastUpdated: '4 hours ago' },
   ];
@@ -690,7 +737,7 @@ function PricesTab({ station }: { station: Station }) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
           Current Fuel Prices
         </h3>
         <p className="text-gray-600 dark:text-gray-400">
@@ -702,16 +749,16 @@ function PricesTab({ station }: { station: Station }) {
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200 dark:border-gray-700">
-              <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">
+              <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
                 Fuel Type
               </th>
-              <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">
+              <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-white">
                 Price (¢/L)
               </th>
-              <th className="text-center py-3 px-4 font-semibold text-gray-900 dark:text-white">
+              <th className="px-4 py-3 text-center font-semibold text-gray-900 dark:text-white">
                 Trend
               </th>
-              <th className="text-right py-3 px-4 font-semibold text-gray-900 dark:text-white">
+              <th className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-white">
                 Last Updated
               </th>
             </tr>
@@ -720,22 +767,28 @@ function PricesTab({ station }: { station: Station }) {
             {fuelPrices.map((fuel, index) => (
               <tr
                 key={index}
-                className="border-b border-gray-100 dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                className="border-b border-gray-100 last:border-0 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/50"
               >
-                <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
+                <td className="px-4 py-4 text-gray-700 dark:text-gray-300">
                   {fuel.type}
                 </td>
-                <td className="py-4 px-4 text-right">
+                <td className="px-4 py-4 text-right">
                   <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                     {fuel.price}
                   </span>
                 </td>
-                <td className="py-4 px-4 text-center">
-                  {fuel.trend === 'up' && <span className="text-red-500 text-lg">↗</span>}
-                  {fuel.trend === 'down' && <span className="text-green-500 text-lg">↘</span>}
-                  {fuel.trend === 'stable' && <span className="text-gray-500 text-lg">→</span>}
+                <td className="px-4 py-4 text-center">
+                  {fuel.trend === 'up' && (
+                    <span className="text-red-500 text-lg">↗</span>
+                  )}
+                  {fuel.trend === 'down' && (
+                    <span className="text-green-500 text-lg">↘</span>
+                  )}
+                  {fuel.trend === 'stable' && (
+                    <span className="text-lg text-gray-500">→</span>
+                  )}
                 </td>
-                <td className="py-4 px-4 text-right text-sm text-gray-500 dark:text-gray-400">
+                <td className="px-4 py-4 text-right text-sm text-gray-500 dark:text-gray-400">
                   {fuel.lastUpdated}
                 </td>
               </tr>
@@ -744,16 +797,16 @@ function PricesTab({ station }: { station: Station }) {
         </table>
       </div>
 
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 rounded-lg border p-4">
         <div className="flex items-start gap-3">
           <span className="text-blue-500 text-lg">ℹ️</span>
           <div>
-            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+            <h4 className="text-blue-900 dark:text-blue-100 mb-1 font-semibold">
               Price Information
             </h4>
-            <p className="text-sm text-blue-800 dark:text-blue-200">
-              Prices are updated in real-time from multiple sources.
-              Last full update: {new Date().toLocaleString()}
+            <p className="text-blue-800 dark:text-blue-200 text-sm">
+              Prices are updated in real-time from multiple sources. Last full
+              update: {new Date().toLocaleString()}
             </p>
           </div>
         </div>
@@ -779,17 +832,18 @@ function AmenitiesGrid({ amenities }: { amenities: Station['amenities'] }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
       {amenityItems.map((item) => {
-        const hasAmenity = amenities && (amenities as Record<string, unknown>)[item.key];
+        const hasAmenity =
+          amenities && (amenities as Record<string, unknown>)[item.key];
         return (
           <div
             key={item.key}
             className={cn(
-              'flex items-center gap-3 p-3 rounded-lg border transition-colors',
+              'flex items-center gap-3 rounded-lg border p-3 transition-colors',
               hasAmenity
                 ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200'
-                : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
+                : 'border-gray-200 bg-gray-50 text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400'
             )}
           >
             <span className="text-lg">{item.icon}</span>
@@ -820,10 +874,10 @@ function OperatingHoursTable({ hours }: { hours: Station['operatingHours'] }) {
       <table className="w-full">
         <thead>
           <tr className="border-b border-gray-200 dark:border-gray-700">
-            <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">
+            <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
               Day
             </th>
-            <th className="text-left py-3 px-4 font-semibold text-gray-900 dark:text-white">
+            <th className="px-4 py-3 text-left font-semibold text-gray-900 dark:text-white">
               Hours
             </th>
           </tr>
@@ -834,12 +888,12 @@ function OperatingHoursTable({ hours }: { hours: Station['operatingHours'] }) {
             return (
               <tr
                 key={day.key}
-                className="border-b border-gray-100 dark:border-gray-800 last:border-0"
+                className="border-b border-gray-100 last:border-0 dark:border-gray-800"
               >
-                <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">
+                <td className="px-4 py-3 font-medium text-gray-900 dark:text-white">
                   {day.label}
                 </td>
-                <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
+                <td className="px-4 py-3 text-gray-700 dark:text-gray-300">
                   {(hoursData?.[day.key] as string) || 'Closed'}
                 </td>
               </tr>

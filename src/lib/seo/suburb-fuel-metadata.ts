@@ -217,3 +217,5 @@ export function generateSuburbTodayMetadata(suburb: string): Metadata {
     },
   };
 }
+
+
