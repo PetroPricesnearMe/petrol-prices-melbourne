@@ -117,6 +117,9 @@ export default async function StationPage({ params }: StationPageProps) {
       ? await getNearbyStations(station.latitude, station.longitude, 5)
       : [];
 
+  // Generate SEO-friendly slug for canonical URL (must be before breadcrumbs)
+  const stationSlug = generateStationSlug(station);
+
   const breadcrumbs = [
     { label: 'Home', href: '/' },
     { label: 'Directory', href: '/directory' },
@@ -158,15 +161,12 @@ export default async function StationPage({ params }: StationPageProps) {
 
   // Generate enhanced structured data with new SEO schemas
   const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricesnearme.com.au';
   const structuredDataSchemas = [
     generateStationStructuredData(station),
     generateStationBreadcrumbs(station),
     ...generateStationPageSchemas(station, baseUrl),
   ];
-
-  // Generate SEO-friendly slug for canonical URL
-  const stationSlug = generateStationSlug(station);
 
   return (
     <>

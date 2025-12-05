@@ -4,20 +4,22 @@
  * Optimized for Google Rich Results
  */
 
-
 interface LocalBusinessSchemaProps {
   station: Record<string, unknown>; // Using simplified station type
   fuelPrices?: Record<string, unknown>;
 }
 
-export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchemaProps) {
+export function LocalBusinessSchema({
+  station,
+  fuelPrices,
+}: LocalBusinessSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'GasStation',
-    '@id': `https://petrolpricenearme.com.au/stations/${station.id}`,
+    '@id': `https://petrolpricesnearme.com.au/stations/${station.id}`,
     name: station.name,
     description: `${station.brand || ''} petrol station located at ${station.address}, ${station.suburb}. Find current fuel prices and station details.`,
-    url: `https://petrolpricenearme.com.au/stations/${station.id}`,
+    url: `https://petrolpricesnearme.com.au/stations/${station.id}`,
 
     // Brand information
     ...(station.brand && {
@@ -38,13 +40,14 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
     },
 
     // Geo coordinates
-    ...(station.latitude && station.longitude && {
-      geo: {
-        '@type': 'GeoCoordinates',
-        latitude: station.latitude,
-        longitude: station.longitude,
-      },
-    }),
+    ...(station.latitude &&
+      station.longitude && {
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: station.latitude,
+          longitude: station.longitude,
+        },
+      }),
 
     // Contact info
     ...(station.phoneNumber && {
@@ -58,26 +61,42 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
 
     // Amenities
     amenityFeature: [
-      ...(station.amenities?.carWash ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'Car Wash',
-        value: true,
-      }] : []),
-      ...(station.amenities?.cafe ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'Cafe',
-        value: true,
-      }] : []),
-      ...(station.amenities?.toilets ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'Restrooms',
-        value: true,
-      }] : []),
-      ...(station.amenities?.atm ? [{
-        '@type': 'LocationFeatureSpecification',
-        name: 'ATM',
-        value: true,
-      }] : []),
+      ...(station.amenities?.carWash
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'Car Wash',
+              value: true,
+            },
+          ]
+        : []),
+      ...(station.amenities?.cafe
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'Cafe',
+              value: true,
+            },
+          ]
+        : []),
+      ...(station.amenities?.toilets
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'Restrooms',
+              value: true,
+            },
+          ]
+        : []),
+      ...(station.amenities?.atm
+        ? [
+            {
+              '@type': 'LocationFeatureSpecification',
+              name: 'ATM',
+              value: true,
+            },
+          ]
+        : []),
     ].filter(Boolean),
 
     // Price range (if available)
@@ -90,7 +109,7 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
 
     // Image
     ...(station.brandLogo && {
-      image: `https://petrolpricenearme.com.au${station.brandLogo}`,
+      image: `https://petrolpricesnearme.com.au${station.brandLogo}`,
     }),
 
     // Aggregate rating (mock - replace with real data)
@@ -123,7 +142,11 @@ export function LocalBusinessSchema({ station, fuelPrices }: LocalBusinessSchema
 /**
  * Breadcrumb List Schema
  */
-export function BreadcrumbSchema({ items }: { items: Array<{ name: string; url: string }> }) {
+export function BreadcrumbSchema({
+  items,
+}: {
+  items: Array<{ name: string; url: string }>;
+}) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -146,7 +169,10 @@ export function BreadcrumbSchema({ items }: { items: Array<{ name: string; url: 
 /**
  * Offer Schema for Fuel Prices
  */
-export function FuelPriceSchema({ station, fuelPrices }: LocalBusinessSchemaProps) {
+export function FuelPriceSchema({
+  station,
+  fuelPrices,
+}: LocalBusinessSchemaProps) {
   if (!fuelPrices || Object.keys(fuelPrices).length === 0) return null;
 
   const offers = Object.entries(fuelPrices)
