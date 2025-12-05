@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   robots: 'noindex, nofollow',
 };
 
+// Force dynamic rendering to prevent static generation issues
+export const dynamic = 'force-dynamic';
+
 export default function SearchTestPage() {
   return <SearchTestClient />;
 }

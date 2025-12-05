@@ -2,12 +2,16 @@ import type { Metadata } from 'next';
 
 import { PerformanceOptimizedLandingPage } from '@/components/pages/PerformanceOptimizedLandingPage';
 import { StructuredData } from '@/components/StructuredData';
-import { generateWebsiteSchema, generatePlatformLocalBusinessSchema, generateOrganizationSchema } from '@/lib/seo/schema-generator';
+import {
+  generateWebsiteSchema,
+  generatePlatformLocalBusinessSchema,
+  generateOrganizationSchema,
+} from '@/lib/seo/schema-generator';
 
 export const metadata: Metadata = {
-  title: 'Petrol Prices Near Me Melbourne | Live Fuel Prices & Cheapest Stations 2024',
+  title: 'Petrol Prices Near Me Melbourne | Live Fuel Prices 2024',
   description:
-    'Find cheapest petrol prices near me in Melbourne. Compare live fuel prices from 250+ stations across 50+ suburbs. Save up to 20c/L on unleaded, diesel & premium. Free, no registration required.',
+    'Find cheapest petrol prices in Melbourne. Compare live fuel prices from 250+ stations across 50+ suburbs. Save up to 20c/L. Free, no registration.',
   keywords: [
     'petrol prices near me',
     'cheap fuel melbourne',
@@ -31,15 +35,16 @@ export const metadata: Metadata = {
     'melbourne fuel app',
   ],
   openGraph: {
-    title: 'Petrol Prices Near Me Melbourne | Live Fuel Prices & Cheapest Stations 2024',
-    description: 'Find cheapest petrol prices near me in Melbourne. Compare live fuel prices from 250+ stations across 50+ suburbs. Save up to 20c/L on unleaded, diesel & premium. Free, no registration required.',
+    title: 'Petrol Prices Near Me Melbourne | Live Fuel Prices 2024',
+    description:
+      'Find cheapest petrol prices in Melbourne. Compare live fuel prices from 250+ stations across 50+ suburbs. Save up to 20c/L. Free, no registration.',
     type: 'website',
     locale: 'en_AU',
-    url: 'https://petrolpricenearme.com.au',
+    url: 'https://petrolpricesnearme.com.au',
     siteName: 'Petrol Price Near Me',
     images: [
       {
-        url: '/images/og-landing-page.jpg',
+        url: 'https://petrolpricesnearme.com.au/images/og-landing-page.jpg',
         width: 1200,
         height: 630,
         alt: 'Find Cheapest Petrol Prices in Melbourne - Save Money on Fuel',
@@ -48,12 +53,15 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Petrol Prices Near Me Melbourne | Live Fuel Prices & Cheapest Stations 2024',
-    description: 'Find cheapest petrol prices near me in Melbourne. Compare live fuel prices from 250+ stations across 50+ suburbs. Save up to 20c/L on unleaded, diesel & premium.',
-    images: ['/images/twitter-landing-page.jpg'],
+    title: 'Petrol Prices Near Me Melbourne | Live Fuel Prices 2024',
+    description:
+      'Find cheapest petrol prices in Melbourne. Compare live fuel prices from 250+ stations across 50+ suburbs. Save up to 20c/L.',
+    images: [
+      'https://petrolpricesnearme.com.au/images/twitter-landing-page.jpg',
+    ],
   },
   alternates: {
-    canonical: '/',
+    canonical: 'https://petrolpricesnearme.com.au/',
   },
   robots: {
     index: true,
@@ -69,7 +77,8 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricesnearme.com.au';
   const structuredDataSchemas = [
     generateOrganizationSchema(baseUrl),
     generateWebsiteSchema(baseUrl),

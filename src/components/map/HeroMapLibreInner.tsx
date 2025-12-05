@@ -286,10 +286,10 @@ export function HeroMapLibreInner({
         markersRef.current.push(marker);
       }
     });
-  }, [stations, mapLoaded, onStationClick, currentZoom]);
+  }, [stations, mapLoaded, onStationClick, currentZoom, createPopupHTML]);
 
   // Create popup HTML
-  function createPopupHTML(station: Station): string {
+  const createPopupHTML = useCallback((station: Station): string => {
     const fuelPrices = station.fuelPrices || {};
     const hasAnyPrice = Object.values(fuelPrices).some(
       (price) => price != null
@@ -401,7 +401,7 @@ export function HeroMapLibreInner({
         </div>
       </div>
     `;
-  }
+  }, []);
 
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl shadow-2xl">

@@ -145,10 +145,11 @@ class AnalyticsStore {
       // Send to external analytics if configured
       this.sendToExternalAnalytics(event);
 
-      // Log in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('📊 Analytics Event:', event);
-      }
+      // Log in development (disabled for production)
+      // Uncomment for debugging:
+      // if (process.env.NODE_ENV === 'development') {
+      //   console.debug('📊 Analytics Event:', event);
+      // }
     } catch (error) {
       // Analytics should never break functionality
       if (process.env.NODE_ENV === 'development') {

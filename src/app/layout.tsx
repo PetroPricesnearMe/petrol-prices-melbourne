@@ -46,8 +46,16 @@ export const metadata: Metadata = {
     default: 'Fuel Finder - Find the Cheapest Petrol Near You',
     template: '%s | Fuel Finder',
   },
-  description: 'Find the cheapest petrol prices near you with real-time updates from 250+ stations across Melbourne.',
-  keywords: ['petrol', 'fuel', 'prices', 'gas station', 'melbourne', 'australia'],
+  description:
+    'Find the cheapest petrol prices near you with real-time updates from 250+ stations across Melbourne.',
+  keywords: [
+    'petrol',
+    'fuel',
+    'prices',
+    'gas station',
+    'melbourne',
+    'australia',
+  ],
   authors: [{ name: 'Fuel Finder Team' }],
   creator: 'Fuel Finder',
   publisher: 'Fuel Finder',
@@ -56,20 +64,25 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://petrolpricenearme.com.au'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      'https://petrolpricesnearme.com.au'
+  ),
   alternates: {
-    canonical: '/',
+    canonical: 'https://petrolpricesnearme.com.au/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_AU',
-    url: '/',
+    url: 'https://petrolpricesnearme.com.au/',
     siteName: 'Fuel Finder',
     title: 'Fuel Finder - Find the Cheapest Petrol Near You',
-    description: 'Find the cheapest petrol prices near you with real-time updates.',
+    description:
+      'Find the cheapest petrol prices near you with real-time updates.',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: 'https://petrolpricesnearme.com.au/images/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Fuel Finder',
@@ -79,8 +92,9 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Fuel Finder - Find the Cheapest Petrol Near You',
-    description: 'Find the cheapest petrol prices near you with real-time updates.',
-    images: ['/images/twitter-image.jpg'],
+    description:
+      'Find the cheapest petrol prices near you with real-time updates.',
+    images: ['https://petrolpricesnearme.com.au/images/twitter-image.jpg'],
   },
   robots: {
     index: true,
@@ -101,7 +115,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // Generate Organization and WebSite schemas for all pages
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    'https://petrolpricesnearme.com.au';
   const schemas = [
     generateOrganizationSchema(baseUrl),
     generateWebsiteSchema(baseUrl),
@@ -122,23 +139,21 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`antialiased ${inter.className}`} suppressHydrationWarning>
+      <body
+        className={`antialiased ${inter.className}`}
+        suppressHydrationWarning
+      >
         {/* Structured Data - Organization and WebSite schemas */}
         <StructuredData data={schemas} />
 
         {/* Critical CSS loaded inline above the fold */}
 
         {/* Main content */}
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
 
         {/* Performance Monitoring - After Interactive */}
         {process.env.NODE_ENV === 'production' && (
-          <Script
-            id="web-vitals"
-            strategy="afterInteractive"
-          >
+          <Script id="web-vitals" strategy="afterInteractive">
             {`
               (function() {
                 if (typeof window === 'undefined') return;

@@ -23,14 +23,12 @@ import { Tabs } from '@/components/molecules/Tabs';
 import { StructuredData } from '@/components/StructuredData';
 import {
   getAllStations,
-  getAllStationIds,
   getStationById,
   getNearbyStations,
 } from '@/lib/data/stations';
 import { generateStationPageSchemas } from '@/lib/schema';
 import { generateStationCanonicalUrl } from '@/lib/seo/canonical';
-import { generateBaseMetadata } from '@/lib/seo/metadata';
-import { 
+import {
   generateStationSEOMetadata,
   generateStationSlug,
   parseStationSlug,
@@ -50,14 +48,14 @@ interface StationPageProps {
  * Generate static params for ISR
  * Pre-generates the first 100 stations at build time with SEO-friendly slugs
  * Others will be generated on-demand
- * 
+ *
  * Supports both URL formats:
  * - New: /stations/bp-thomastown-456 (SEO-friendly)
  * - Legacy: /stations/456 (backwards compatible)
  */
 export async function generateStaticParams() {
   const stations = await getAllStations();
-  
+
   // Generate slug-based params for the first 100 stations
   return stations.slice(0, 100).map((station) => ({
     id: generateStationSlug(station),
@@ -73,7 +71,7 @@ export const revalidate = 3600;
 /**
  * Generate dynamic metadata for SEO
  * Supports both URL formats: /stations/456 and /stations/bp-thomastown-456
- * 
+ *
  * Enhanced with:
  * - SEO-optimized title template: {brand} {suburb} – Today's Fuel Prices | Unleaded 91, Diesel, E10
  * - Comprehensive meta description with fuel types and services
@@ -83,7 +81,7 @@ export async function generateMetadata({
   params,
 }: StationPageProps): Promise<Metadata> {
   const { id } = await params;
-  
+
   // Support both slug format (bp-thomastown-456) and ID format (456)
   const stationId = parseStationSlug(id);
   const station = await getStationById(stationId);
@@ -104,7 +102,7 @@ export async function generateMetadata({
  */
 export default async function StationPage({ params }: StationPageProps) {
   const { id } = await params;
-  
+
   // Support both slug format (bp-thomastown-456) and ID format (456)
   const stationId = parseStationSlug(id);
   const station = await getStationById(stationId);

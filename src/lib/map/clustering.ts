@@ -11,8 +11,8 @@ export interface ClusterPoint {
   type: 'Feature';
   properties: {
     cluster: boolean;
-    stationId: string | number;
-    station: Station;
+    stationId?: string | number;
+    station?: Station;
     point_count?: number;
     cluster_id?: number;
   };
@@ -22,7 +22,7 @@ export interface ClusterPoint {
   };
 }
 
-export interface ClusterFeature extends ClusterPoint {
+export interface ClusterFeature extends Omit<ClusterPoint, 'properties'> {
   properties: {
     cluster: true;
     point_count: number;
@@ -30,7 +30,7 @@ export interface ClusterFeature extends ClusterPoint {
   };
 }
 
-export interface StationFeature extends ClusterPoint {
+export interface StationFeature extends Omit<ClusterPoint, 'properties'> {
   properties: {
     cluster: false;
     stationId: string | number;
@@ -118,4 +118,3 @@ export function getClusterPoints(
 ): StationFeature[] {
   return cluster.getLeaves(clusterId, Infinity) as StationFeature[];
 }
-

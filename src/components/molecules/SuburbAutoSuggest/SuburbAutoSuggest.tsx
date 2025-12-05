@@ -1,17 +1,20 @@
 /**
  * Suburb Auto-Suggest Component
- * 
+ *
  * Dropdown component for suburb suggestions that integrates with search inputs
- * 
+ *
  * @module components/molecules/SuburbAutoSuggest
  */
 
 'use client';
 
 import Link from 'next/link';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 
-import { useSuburbSuggestions, type SuburbSuggestion } from '@/hooks/useSuburbSuggestions';
+import {
+  useSuburbSuggestions,
+  type SuburbSuggestion,
+} from '@/hooks/useSuburbSuggestions';
 
 import { cn } from '@/lib/utils';
 
@@ -47,18 +50,28 @@ export function SuburbAutoSuggest({
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | HTMLAnchorElement | null)[]>([]);
 
-  const { suggestions, loading, popularSuburbs, hasResults: _hasResults } = useSuburbSuggestions(
-    query,
-    {
-      minChars,
-      maxResults,
-      debounceMs: 200,
-      enabled: isOpen,
-    }
-  );
+  const {
+    suggestions,
+    loading,
+    popularSuburbs,
+    hasResults: _hasResults,
+  } = useSuburbSuggestions(query, {
+    minChars,
+    maxResults,
+    debounceMs: 200,
+    enabled: isOpen,
+  });
 
   // Show popular suburbs when query is empty
-  const displaySuggestions = query.length >= minChars ? suggestions : (showPopular ? popularSuburbs : []);
+  const displaySuggestions = useMemo(
+    () =>
+      query.length >= minChars
+        ? suggestions
+        : showPopular
+          ? popularSuburbs
+          : [],
+    [query.length, minChars, suggestions, showPopular, popularSuburbs]
+  );
 
   // Handle keyboard navigation
   const handleKeyDown = useCallback(
@@ -174,13 +187,13 @@ export function SuburbAutoSuggest({
       {!loading && (
         <>
           {query.length < minChars && showPopular && (
-            <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-200 dark:border-gray-700">
+            <div className="border-b border-gray-200 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-gray-700 dark:text-gray-400">
               Popular Suburbs
             </div>
           )}
 
           {query.length >= minChars && (
-            <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-200 dark:border-gray-700">
+            <div className="border-b border-gray-200 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-gray-700 dark:text-gray-400">
               Suburb Suggestions
             </div>
           )}
@@ -202,7 +215,8 @@ export function SuburbAutoSuggest({
                 <ItemComponent
                   key={suburb.name}
                   ref={(el) => {
-                    itemRefs.current[index] = el as HTMLButtonElement & HTMLAnchorElement;
+                    itemRefs.current[index] = el as HTMLButtonElement &
+                      HTMLAnchorElement;
                   }}
                   {...itemProps}
                   className={cn(
@@ -211,17 +225,20 @@ export function SuburbAutoSuggest({
                     'transition-colors duration-150',
                     'focus:outline-none',
                     isSelected
-                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-                      : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100',
-                    'border-b border-gray-100 dark:border-gray-700 last:border-0'
+                      ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/20 dark:text-primary-300'
+                      : 'text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700',
+                    'border-b border-gray-100 last:border-0 dark:border-gray-700'
                   )}
                   role="option"
                   aria-selected={isSelected}
                 >
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium truncate">{suburb.displayName}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                      {suburb.stationCount} station{suburb.stationCount !== 1 ? 's' : ''}
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate font-medium">
+                      {suburb.displayName}
+                    </div>
+                    <div className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                      {suburb.stationCount} station
+                      {suburb.stationCount !== 1 ? 's' : ''}
                     </div>
                   </div>
                   <div className="flex-shrink-0">
@@ -252,4 +269,3 @@ export function SuburbAutoSuggest({
 
 // Re-export type for convenience
 export type { SuburbSuggestion } from '@/hooks/useSuburbSuggestions';
-
