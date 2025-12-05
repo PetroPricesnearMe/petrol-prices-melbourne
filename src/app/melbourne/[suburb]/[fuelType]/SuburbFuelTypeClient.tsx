@@ -8,6 +8,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { getStationUrl } from '@/lib/seo/station-seo';
 import type { Station } from '@/types/station';
 
 interface SuburbFuelTypeClientProps {
@@ -217,7 +218,7 @@ export default function SuburbFuelTypeClient({
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     <Link
-                      href={`/stations/${station.id}`}
+                      href={getStationUrl(station)}
                       className="bg-blue-600 hover:bg-blue-700 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors"
                     >
                       View Details

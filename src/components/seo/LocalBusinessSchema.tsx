@@ -4,7 +4,6 @@
  * Optimized for Google Rich Results
  */
 
-import type { Station, FuelPrice } from '@/types/station';
 
 interface LocalBusinessSchemaProps {
   station: Record<string, unknown>; // Using simplified station type

@@ -22,6 +22,7 @@ import { HeroSection } from '@/components/molecules/HeroSection';
 import { Tabs } from '@/components/molecules/Tabs';
 import { StructuredData } from '@/components/StructuredData';
 import {
+  getAllStations,
   getAllStationIds,
   getStationById,
   getNearbyStations,
@@ -29,6 +30,13 @@ import {
 import { generateStationPageSchemas } from '@/lib/schema';
 import { generateStationCanonicalUrl } from '@/lib/seo/canonical';
 import { generateBaseMetadata } from '@/lib/seo/metadata';
+import { 
+  generateStationSEOMetadata,
+  generateStationSlug,
+  parseStationSlug,
+  generateStationStructuredData,
+  generateStationBreadcrumbs,
+} from '@/lib/seo/station-seo';
 import { cn } from '@/lib/utils';
 import type { Station } from '@/types/station';
 
@@ -40,13 +48,19 @@ interface StationPageProps {
 
 /**
  * Generate static params for ISR
- * Pre-generates the first 100 stations at build time
+ * Pre-generates the first 100 stations at build time with SEO-friendly slugs
  * Others will be generated on-demand
+ * 
+ * Supports both URL formats:
+ * - New: /stations/bp-thomastown-456 (SEO-friendly)
+ * - Legacy: /stations/456 (backwards compatible)
  */
 export async function generateStaticParams() {
-  const stationIds = await getAllStationIds();
-  return stationIds.slice(0, 100).map((id) => ({
-    id: id.toString(),
+  const stations = await getAllStations();
+  
+  // Generate slug-based params for the first 100 stations
+  return stations.slice(0, 100).map((station) => ({
+    id: generateStationSlug(station),
   }));
 }
 
@@ -58,12 +72,21 @@ export const revalidate = 3600;
 
 /**
  * Generate dynamic metadata for SEO
+ * Supports both URL formats: /stations/456 and /stations/bp-thomastown-456
+ * 
+ * Enhanced with:
+ * - SEO-optimized title template: {brand} {suburb} – Today's Fuel Prices | Unleaded 91, Diesel, E10
+ * - Comprehensive meta description with fuel types and services
+ * - Rich keywords targeting multiple search intents
  */
 export async function generateMetadata({
   params,
 }: StationPageProps): Promise<Metadata> {
   const { id } = await params;
-  const station = await getStationById(id);
+  
+  // Support both slug format (bp-thomastown-456) and ID format (456)
+  const stationId = parseStationSlug(id);
+  const station = await getStationById(stationId);
 
   if (!station) {
     return {
@@ -71,37 +94,20 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${station.name} - Fuel Prices & Information`;
-  const description = `Find real-time fuel prices and information for ${station.name} in ${station.suburb || 'Melbourne'}. ${station.address ? `Located at ${station.address}` : 'Compare prices and save on your next fill-up.'}`;
-
-  const keywords = [
-    `${station.name} fuel prices`,
-    `${station.suburb} petrol station`,
-    station.brand || '',
-    'fuel prices near me',
-    'petrol prices Melbourne',
-    station.address || '',
-  ].filter(Boolean);
-
-  const imageUrl = station.image
-    ? `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}${station.image}`
-    : `${process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au'}/api/og/station/${station.id}`;
-
-  return generateBaseMetadata({
-    title,
-    description,
-    path: `stations/${id}`,
-    image: imageUrl,
-    keywords,
-  });
+  // Use the new SEO-optimized metadata generator
+  return generateStationSEOMetadata(station);
 }
 
 /**
  * Station Detail Page Component
+ * Supports both URL formats: /stations/456 and /stations/bp-thomastown-456
  */
 export default async function StationPage({ params }: StationPageProps) {
   const { id } = await params;
-  const station = await getStationById(id);
+  
+  // Support both slug format (bp-thomastown-456) and ID format (456)
+  const stationId = parseStationSlug(id);
+  const station = await getStationById(stationId);
 
   if (!station) {
     notFound();
@@ -120,7 +126,7 @@ export default async function StationPage({ params }: StationPageProps) {
       label: station.suburb || 'Melbourne',
       href: `/directory/${station.suburb?.toLowerCase().replace(/\s+/g, '-') || 'melbourne'}`,
     },
-    { label: station.name, href: `/stations/${id}` },
+    { label: station.name, href: `/stations/${stationSlug}` },
   ];
 
   // Generate hero image URL with fallback
@@ -152,14 +158,21 @@ export default async function StationPage({ params }: StationPageProps) {
 
   const heroImageUrl = getHeroImageUrl();
 
-  // Generate structured data
+  // Generate enhanced structured data with new SEO schemas
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
-  const structuredDataSchemas = generateStationPageSchemas(station, baseUrl);
+  const structuredDataSchemas = [
+    generateStationStructuredData(station),
+    generateStationBreadcrumbs(station),
+    ...generateStationPageSchemas(station, baseUrl),
+  ];
+
+  // Generate SEO-friendly slug for canonical URL
+  const stationSlug = generateStationSlug(station);
 
   return (
     <>
-      {/* Structured Data for SEO */}
+      {/* Enhanced Structured Data for SEO */}
       <StructuredData data={structuredDataSchemas} />
 
       {/* Internal Linking Section */}
@@ -214,7 +227,7 @@ export default async function StationPage({ params }: StationPageProps) {
         description={`${station.address || ''} ${station.suburb ? `• ${station.suburb}` : ''}`}
         breadcrumbs={breadcrumbs}
         showSidebar={false}
-        canonicalUrl={generateStationCanonicalUrl(id)}
+        canonicalUrl={generateStationCanonicalUrl(stationSlug)}
         headerVariant="hero"
       >
         <div className="space-y-8">

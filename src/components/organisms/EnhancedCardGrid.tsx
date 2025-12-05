@@ -82,7 +82,7 @@ export function EnhancedCardGrid({
     };
   }, [shouldReduceMotion, animate, staggerDelay]);
 
-  const itemVariants = shouldReduceMotion || !animate ? undefined : staggerItem;
+  const _itemVariants = shouldReduceMotion || !animate ? undefined : staggerItem;
 
   return (
     <motion.div

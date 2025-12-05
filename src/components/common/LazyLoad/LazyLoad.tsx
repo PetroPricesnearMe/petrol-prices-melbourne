@@ -64,11 +64,13 @@ export function withLazyLoad<P extends object>(
   Component: ComponentType<P>,
   options?: Omit<LazyLoadProps, 'children'>
 ): React.FC<P> {
-  return (props: P) => (
+  const LazyLoadWrapper = (props: P) => (
     <LazyLoad {...options}>
       <Component {...props} />
     </LazyLoad>
   );
+  LazyLoadWrapper.displayName = `withLazyLoad(${Component.displayName || Component.name || 'Component'})`;
+  return LazyLoadWrapper;
 }
 
 /**

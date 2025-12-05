@@ -19,7 +19,7 @@ export interface OfflineNoticeProps {
  * Offline Notice Component
  */
 export function OfflineNotice({ className = '', onDismiss }: OfflineNoticeProps) {
-  const [isOffline, setIsOffline] = useState(false);
+  const [_isOffline, _setIsOffline] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

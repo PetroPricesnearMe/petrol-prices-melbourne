@@ -102,6 +102,6 @@ export function StationCardsIntegrationExample() {
 }
 
 // Mock components for example
-const StationCard = ({ station, className, ...props }: { station: Record<string, unknown>; className?: string; [key: string]: unknown }) => (
+const StationCard = ({ station: _station, className }: { station: Record<string, unknown>; className?: string; [key: string]: unknown }) => (
   <div className={className}>{/* Card content */}</div>
 );

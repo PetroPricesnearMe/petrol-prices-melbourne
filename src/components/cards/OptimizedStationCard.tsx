@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { memo } from 'react';
 
 import { ScaleTransition } from '@/components/transitions/SmoothTransitions';
+import { getStationUrl } from '@/lib/seo/station-seo';
 import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
 import { getBrandInfo, getBrandClass } from '@/utils/brandImages';
@@ -489,7 +490,7 @@ export const OptimizedStationCard = memo<OptimizedStationCardProps>(
         {/* Footer */}
         <div className="print-hidden flex-shrink-0 border-t border-gray-200 p-5 dark:border-gray-800 lg:p-6">
           <Link
-            href={`/stations/${station.id}`}
+            href={getStationUrl(station)}
             className="btn-primary btn-sm btn w-full"
             onClick={(e) => e.stopPropagation()}
             aria-label={`View full details for ${station.name || station.stationName}`}

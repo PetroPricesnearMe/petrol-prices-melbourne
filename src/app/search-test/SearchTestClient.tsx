@@ -49,7 +49,7 @@ export function SearchTestClient() {
   const [filteredStations, setFilteredStations] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [_loading, _setLoading] = useState(false);
 
   useEffect(() => {
     const mockData = generateMockStations();

@@ -271,7 +271,7 @@ export function AdvancedSearchBar<T = any>({
   const highlightMatch = (text: string, matches: unknown[] = []) => {
     if (!matches.length) return text;
 
-    const result = text;
+    const _result = text;
     const indices: Array<[number, number]> = [];
 
     matches.forEach((match) => {

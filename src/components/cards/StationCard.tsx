@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { memo } from 'react';
 
 import { ScaleTransition } from '@/components/transitions/SmoothTransitions';
+import { getStationUrl } from '@/lib/seo/station-seo';
 import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
 
@@ -187,7 +188,7 @@ export const StationCard = memo<StationCardProps>(({
   className,
   onCardClick,
 }) => {
-  const brandInfo = getBrandInfo(station.brand);
+  const _brandInfo = getBrandInfo(station.brand);
   const brandClass = getBrandClass(station.brand);
 
   const handleCardClick = () => {
@@ -263,7 +264,7 @@ export const StationCard = memo<StationCardProps>(({
       {/* Footer */}
       <div className="p-4 sm:p-5 lg:p-6 border-t border-gray-200 dark:border-gray-700 print-hidden flex-shrink-0">
         <Link
-          href={`/stations/${station.id}`}
+          href={getStationUrl(station)}
           className="btn btn-primary w-full btn-sm text-xs sm:text-sm"
           onClick={(e) => e.stopPropagation()}
         >

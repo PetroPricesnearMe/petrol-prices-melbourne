@@ -96,7 +96,7 @@ interface HeroSectionProps {
 /**
  * Individual tab component
  */
-function Tab({ id, label, icon, content, active, onClick }: TabProps) {
+function Tab({ id: _id, label, icon, content: _content, active, onClick }: TabProps) {
   return (
     <button
       onClick={onClick}

@@ -29,6 +29,7 @@ export default tseslint.config(
             "**/*.log",
             "**/.env*",
             "**/storybook-static/",
+            "**/.storybook/**", // Ignore Storybook config
             "**/jest.config.js",
             "**/jest.setup.js",
             "**/scripts/",
@@ -37,6 +38,7 @@ export default tseslint.config(
             "lib/**", // Ignore legacy lib/ directory outside src/
             "**/playwright-report/**", // Ignore Playwright test reports
             "**/test-results/**", // Ignore test results
+            "**/next-env.d.ts", // Ignore Next.js auto-generated type file
         ],
     },
     ...compat.extends("next/core-web-vitals"),

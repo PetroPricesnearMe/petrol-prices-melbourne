@@ -12,7 +12,7 @@
 
 import L from 'leaflet';
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 import 'leaflet/dist/leaflet.css';
@@ -68,7 +68,7 @@ const MapController: React.FC<{
   center: [number, number];
   zoom: number;
   selectedStation?: Station | null;
-}> = memo(({ center, zoom, selectedStation }) => {
+}> = memo(({ center: _center, zoom: _zoom, selectedStation }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -265,8 +265,8 @@ export const InteractiveStationMap: React.FC<InteractiveStationMapProps> = ({
   const [locationError, setLocationError] = useState<string | null>(null);
   const [isLocating, setIsLocating] = useState(false);
   const [mapCenter, setMapCenter] = useState<[number, number]>(initialCenter || [-37.8136, 144.9631]);
-  const [currentZoom, setCurrentZoom] = useState(initialZoom);
-  const [isMapReady, setIsMapReady] = useState(false);
+  const [_currentZoom, _setCurrentZoom] = useState(initialZoom);
+  const [_isMapReady, _setIsMapReady] = useState(false);
   const mapRef = useRef<L.Map | null>(null);
   const locationWatchId = useRef<number | null>(null);
 

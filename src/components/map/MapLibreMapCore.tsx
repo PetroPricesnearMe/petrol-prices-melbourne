@@ -6,6 +6,7 @@ import Supercluster from 'supercluster';
 
 import { getBrandColor } from '@/lib/utils/colors';
 import { getBrandInitial, getMarkerIconUrl } from '@/lib/map/marker-utils';
+import { generateStationSlug } from '@/lib/seo/station-seo';
 import type { Coordinates } from '@/types/common';
 import type { Station } from '@/types/station';
 
@@ -24,7 +25,7 @@ interface MapLibreMapCoreProps {
 
 // Protomaps vector tile URL (free, no API key needed)
 // Alternative: Use OpenStreetMap raster tiles as fallback
-const PROTOMAPS_TILE_URL = 'https://api.protomaps.com/tiles/v3/{z}/{x}/{y}.mvt';
+const _PROTOMAPS_TILE_URL = 'https://api.protomaps.com/tiles/v3/{z}/{x}/{y}.mvt';
 const OSM_TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 // Cluster configuration
@@ -68,7 +69,7 @@ export default function MapLibreMapCore({
   const markersRef = useRef<Map<string, Marker>>(new Map());
   const popupRef = useRef<Popup | null>(null);
   const clusterRef = useRef<Supercluster | null>(null);
-  const [selectedPopupStation, setSelectedPopupStation] = useState<Station | null>(null);
+  const [_selectedPopupStation, _setSelectedPopupStation] = useState<Station | null>(null);
   const [hoveredStation, setHoveredStation] = useState<Station | null>(null);
 
   // Initialize Supercluster for marker clustering
@@ -536,7 +537,7 @@ export default function MapLibreMapCore({
         </div>
         ` : ''}
         <div style="padding: 16px; display: flex; gap: 8px;">
-          <a href="/stations/${station.id}" style="flex: 1; background: #3b82f6; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">
+          <a href="/stations/${generateStationSlug(station)}" style="flex: 1; background: #3b82f6; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">
             View Details
           </a>
           <a href="https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}" target="_blank" rel="noopener noreferrer" style="flex: 1; background: #6b7280; color: white; text-align: center; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; min-height: 44px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">

@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { formatPriceCentsPerLiter } from '@/lib/utils/price';
 import { getCheapestPrice } from '@/lib/map/marker-utils';
+import { getStationUrl } from '@/lib/seo/station-seo';
 import type { Station } from '@/types/station';
 
 interface StationPopupProps {
@@ -108,7 +109,7 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
       {/* Actions */}
       <div className="flex gap-2 p-4">
         <Link
-          href={`/stations/${station.id}`}
+          href={getStationUrl(station)}
           className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
         >
           View Details

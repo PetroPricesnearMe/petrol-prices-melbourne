@@ -145,7 +145,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   const [selectedSearchCategory, setSelectedSearchCategory] = useState('all');
 
   // Search categories for advanced search bar
-  const searchCategories: SearchCategory[] = [
+  const _searchCategories: SearchCategory[] = [
     { id: 'all', label: 'All', icon: '🔍' },
     { id: 'name', label: 'Name', icon: '🏪' },
     { id: 'brand', label: 'Brand', icon: '🏢' },
@@ -153,7 +153,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   ];
 
   // Get search keys based on category
-  const getSearchKeys = useCallback(() => {
+  const _getSearchKeys = useCallback(() => {
     switch (selectedSearchCategory) {
       case 'name':
         return ['name'];
@@ -243,7 +243,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   }, []);
 
   // Handle search category change
-  const handleSearchCategoryChange = useCallback((categoryId: string) => {
+  const _handleSearchCategoryChange = useCallback((categoryId: string) => {
     setSelectedSearchCategory(categoryId);
   }, []);
 

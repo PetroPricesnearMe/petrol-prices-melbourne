@@ -17,6 +17,7 @@ import { useState, useRef, useCallback } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl/mapbox';
 import type { MapRef } from 'react-map-gl/mapbox';
 
+import { getStationUrl } from '@/lib/seo/station-seo';
 import { cn } from '@/styles/system/css-in-js';
 
 // Import Mapbox CSS
@@ -186,7 +187,7 @@ const StationPopup = ({ station, onClose }: { station: Station; onClose: () => v
       {/* Actions */}
       <div className="p-4 flex gap-2">
         <Link
-          href={`/stations/${station.id}`}
+          href={getStationUrl(station)}
           className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
         >
           View Details

@@ -15,7 +15,7 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, DollarSign, Navigation } from 'lucide-react';
-import React, { type ReactNode, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { EnhancedCardGrid, GridItem } from '../organisms/EnhancedCardGrid';
 
@@ -174,7 +174,7 @@ interface StationCardProps {
 }
 
 const StationCard = React.forwardRef<HTMLButtonElement, StationCardProps>(
-  ({ station, index, isFocused, onClick, onFocus }, ref) => {
+  ({ station, index: _index, isFocused, onClick, onFocus }, ref) => {
     const [isPressed, setIsPressed] = useState(false);
 
     const cheapestPrice = station.Fuel_Prices

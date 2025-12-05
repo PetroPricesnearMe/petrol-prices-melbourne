@@ -24,6 +24,7 @@ import {
   getClusterSizePx,
   type ClusterFeature,
 } from '@/components/map/clustering';
+import { generateStationSlug } from '@/lib/seo/station-seo';
 
 interface FuelPrices {
   unleaded: number | null;
@@ -247,7 +248,7 @@ export function MapView({
                   : ''
               }
               <div style="display: flex; gap: 8px;">
-                <a href="/stations/${station.id}" style="flex: 1; background: #2563eb; color: white; padding: 6px 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 13px;">
+                <a href="/stations/${generateStationSlug(station)}" style="flex: 1; background: #2563eb; color: white; padding: 6px 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 13px;">
                   View Details
                 </a>
               </div>

@@ -8,6 +8,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { getStationUrl } from '@/lib/seo/station-seo';
 import type { Station } from '@/types/station';
 
 interface SuburbTodayPricesClientProps {
@@ -339,7 +340,7 @@ export default function SuburbTodayPricesClient({
 
                   <div className="flex flex-wrap gap-2">
                     <Link
-                      href={`/stations/${station.id}`}
+                      href={getStationUrl(station)}
                       className="bg-green-600 hover:bg-green-700 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors"
                     >
                       View Station Details

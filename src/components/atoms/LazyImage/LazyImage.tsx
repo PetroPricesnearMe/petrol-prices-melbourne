@@ -66,7 +66,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   aspectRatio,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isInView, setIsInView] = useState(priority);
+  const [_isInView, _setIsInView] = useState(priority);
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(priority ? src : placeholder);
   const imgRef = useRef<HTMLImageElement>(null);

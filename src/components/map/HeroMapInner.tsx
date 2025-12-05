@@ -13,6 +13,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import Link from 'next/link';
 import type { Station } from '@/types';
+import { getStationUrl } from '@/lib/seo/station-seo';
 
 // Import Leaflet CSS
 import 'leaflet/dist/leaflet.css';
@@ -232,7 +233,7 @@ const StationMarker = memo(
             {/* Actions */}
             <div className="flex gap-2">
               <Link
-                href={`/stations/${station.id}`}
+                href={getStationUrl(station)}
                 className="bg-blue-600 hover:bg-blue-700 flex-1 rounded-lg px-3 py-2 text-center text-sm font-medium text-white transition-colors"
               >
                 View Details

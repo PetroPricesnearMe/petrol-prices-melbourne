@@ -19,6 +19,7 @@ import {
   getClusterSizePx,
   type ClusterFeature,
 } from './clustering';
+import { generateStationSlug } from '@/lib/seo/station-seo';
 
 interface HeroMapLibreInnerProps {
   stations: Station[];
@@ -380,7 +381,7 @@ export function HeroMapLibreInner({
         <!-- Actions -->
         <div style="display: flex; gap: 8px; margin-top: 12px;">
           <a
-            href="/stations/${station.id}"
+            href="/stations/${generateStationSlug(station)}"
             style="flex: 1; text-align: center; background: #2563eb; color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; transition: background 0.2s;"
             onmouseover="this.style.background='#1d4ed8'"
             onmouseout="this.style.background='#2563eb'"

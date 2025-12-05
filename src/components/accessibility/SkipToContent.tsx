@@ -29,7 +29,7 @@ interface SkipToContentProps {
 }
 
 export function SkipToContent({ links = defaultSkipLinks, className = '' }: SkipToContentProps) {
-  const [isVisible, setIsVisible] = useState(false);
+  const [_isVisible, _setIsVisible] = useState(false);
 
   useEffect(() => {
     // Check if target elements exist

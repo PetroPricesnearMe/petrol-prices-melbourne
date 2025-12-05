@@ -9,7 +9,6 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 
 // SEO Components
 import { SEOImage, HeroImage, GalleryImage } from '@/components/seo/SEOImage';

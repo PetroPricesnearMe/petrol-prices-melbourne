@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { StructuredData } from '@/components/StructuredData';
 import { generateSuburbMetadata } from '@/lib/seo/metadata';
 import { generateDirectoryPageSchemas } from '@/lib/schema';
+import { getStationUrl } from '@/lib/seo/station-seo';
 
 import type { Station } from '@/types/station';
 
@@ -123,7 +124,7 @@ function LivePriceFeed({ stations, suburb }: LivePriceFeedProps) {
               itemProp="itemListElement"
             >
               <Link
-                href={`/stations/${station.id}`}
+                href={getStationUrl(station)}
                 className="block border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow hover:border-primary-300 dark:hover:border-primary-700"
                 itemProp="url"
               >

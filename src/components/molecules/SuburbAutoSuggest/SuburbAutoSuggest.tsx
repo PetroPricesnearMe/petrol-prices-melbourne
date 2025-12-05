@@ -47,7 +47,7 @@ export function SuburbAutoSuggest({
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | HTMLAnchorElement | null)[]>([]);
 
-  const { suggestions, loading, popularSuburbs, hasResults } = useSuburbSuggestions(
+  const { suggestions, loading, popularSuburbs, hasResults: _hasResults } = useSuburbSuggestions(
     query,
     {
       minChars,

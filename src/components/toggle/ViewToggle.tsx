@@ -12,6 +12,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 
+import { getStationUrl } from '@/lib/seo/station-seo';
 import type { Station } from '@/types/station';
 import { cn } from '@/utils/cn';
 
@@ -238,7 +239,7 @@ export function StationCardGrid({ station, onCardClickAction }: { station: Stati
   };
 
   return (
-    <Link href={`/stations/${station.id}`} className="block h-full group">
+    <Link href={getStationUrl(station)} className="block h-full group">
       <motion.div
         className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:shadow-primary-500/10 dark:hover:shadow-primary-500/20 hover:-translate-y-2 cursor-pointer transition-all duration-300 ease-out h-full flex flex-col"
         onClick={handleCardClick}
@@ -332,7 +333,7 @@ export function StationCardList({ station, onCardClickAction }: { station: Stati
   };
 
   return (
-    <Link href={`/stations/${station.id}`} className="block">
+    <Link href={getStationUrl(station)} className="block">
       <motion.div
         className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg cursor-pointer transition-all duration-300"
         onClick={handleCardClick}
