@@ -66,6 +66,10 @@ export function OptimizedImage({
     typeof window !== 'undefined' && 
     window.location.hostname !== 'localhost' && 
     window.location.hostname !== '127.0.0.1';
+  
+  // Use unoptimized for fallback images to avoid 400 errors from image optimization API
+  // when the original image fails
+  const shouldUseUnoptimized = hasError || isNetworkIP || imgSrc === fallbackSrc;
 
   // Use Next.js Image component (unoptimized on network IP to avoid API errors)
   if (fill) {
@@ -80,7 +84,7 @@ export function OptimizedImage({
             priority={priority}
             quality={quality}
             sizes={sizes}
-            unoptimized={isNetworkIP}
+            unoptimized={shouldUseUnoptimized}
             onError={handleError}
             onLoad={handleLoad}
             style={{ objectFit: 'cover' }}
