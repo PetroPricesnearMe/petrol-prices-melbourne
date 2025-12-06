@@ -1,16 +1,22 @@
 /**
- * MapView Client Component
+ * MapView Client Component - SEO Pillar Page
  * Interactive map with search, filtering, and station management
  * Features:
  * - Mapbox integration with clustering
  * - Search and filter integration
  * - Station selection and popovers
  * - Mobile responsive design
+ * - SEO-optimized pillar page structure
+ * - Live fuel price snapshots
+ * - Suburb quick links for internal linking
+ * - FAQ section with JSON-LD schema
+ * - Internal linking hub
  */
 
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState, useCallback, useMemo } from 'react';
 
@@ -21,6 +27,32 @@ import {
 } from '@/components/molecules/SortDropdown';
 import { getStationUrl } from '@/lib/seo/station-seo';
 import { cn, patterns } from '@/styles/system/css-in-js';
+
+// Lazy load SEO sections for performance
+const LiveFuelPriceSnapshot = dynamic(
+  () => import('@/components/map/LiveFuelPriceSnapshot').then(mod => ({ default: mod.LiveFuelPriceSnapshot })),
+  { ssr: true }
+);
+
+const SuburbQuickLinks = dynamic(
+  () => import('@/components/map/SuburbQuickLinks').then(mod => ({ default: mod.SuburbQuickLinks })),
+  { ssr: true }
+);
+
+const MapFAQs = dynamic(
+  () => import('@/components/map/MapFAQs').then(mod => ({ default: mod.MapFAQs })),
+  { ssr: true }
+);
+
+const InternalLinkingHub = dynamic(
+  () => import('@/components/map/InternalLinkingHub').then(mod => ({ default: mod.InternalLinkingHub })),
+  { ssr: true }
+);
+
+const LocationToggle = dynamic(
+  () => import('@/components/map/LocationToggle').then(mod => ({ default: mod.LocationToggle })),
+  { ssr: false }
+);
 
 interface FuelPrices {
   unleaded: number | null;
@@ -85,6 +117,9 @@ export function MapViewClient({ initialStations, metadata }: Props) {
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [mapView, setMapView] = useState<'map' | 'list'>('map');
+  const [mapCenter, setMapCenter] = useState<[number, number]>([144.9631, -37.8136]);
+  const [mapZoom, setMapZoom] = useState(10);
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
 
   // Filter and sort stations
   const filteredStations = useMemo(() => {
@@ -190,24 +225,87 @@ export function MapViewClient({ initialStations, metadata }: Props) {
     setSelectedStation(station);
   }, []);
 
+  const handleUseLocation = useCallback(() => {
+    setIsLocationLoading(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setMapCenter([longitude, latitude]);
+          setMapZoom(14);
+          setIsLocationLoading(false);
+        },
+        (error) => {
+          console.error('Geolocation error:', error);
+          setIsLocationLoading(false);
+        }
+      );
+    } else {
+      setIsLocationLoading(false);
+    }
+  }, []);
+
+  const handleSearchSuburb = useCallback((query: string) => {
+    // Find suburb in metadata
+    const matchingSuburb = metadata.suburbs.find(
+      s => s.toLowerCase().includes(query.toLowerCase()) ||
+      query.toLowerCase().includes(s.toLowerCase())
+    );
+    
+    if (matchingSuburb) {
+      setFilters((prev) => ({ ...prev, suburb: matchingSuburb }));
+      // Find a station in that suburb to center map
+      const stationInSuburb = initialStations.find(s => s.suburb === matchingSuburb);
+      if (stationInSuburb) {
+        setMapCenter([stationInSuburb.longitude, stationInSuburb.latitude]);
+        setMapZoom(13);
+      }
+    } else {
+      // Try to find by postcode
+      const stationByPostcode = initialStations.find(s => s.postcode === query);
+      if (stationByPostcode) {
+        setMapCenter([stationByPostcode.longitude, stationByPostcode.latitude]);
+        setMapZoom(13);
+        setFilters((prev) => ({ ...prev, suburb: stationByPostcode.suburb }));
+      }
+    }
+  }, [initialStations, metadata.suburbs]);
+
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="print-hidden bg-gradient-primary py-8 text-white">
+      {/* Breadcrumbs */}
+      <nav className="print-hidden bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-2">
+        <div className={patterns.container()}>
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <Link href="/" className="hover:text-primary-600 dark:hover:text-primary-400">
+              Home
+            </Link>
+            <span>/</span>
+            <span className="text-gray-900 dark:text-white">Live Petrol Prices Near Me – Melbourne Fuel Price Map</span>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section - SEO Optimized */}
+      <header className="print-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 py-12 text-white">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter}>
-            <h1 className={cn(patterns.text.h1, 'mb-4 text-center text-white')}>
-              Melbourne Petrol Stations Map
+            <h1 className={cn(patterns.text.h1, 'mb-4 text-center text-white max-w-4xl')}>
+              Live Petrol Prices Near Me – Melbourne Fuel Price Map
             </h1>
-            <p
-              className={cn(
-                patterns.text.body,
-                'mb-6 max-w-2xl text-center text-white/90'
-              )}
-            >
-              Explore {metadata.totalStations}+ stations across{' '}
-              {metadata.suburbs.length}+ suburbs on our interactive map
-            </p>
+            <h2 className="text-xl md:text-2xl mb-6 max-w-3xl text-center text-white/90 font-normal">
+              Find the cheapest fuel prices in Melbourne today. Compare {metadata.totalStations}+ petrol stations across {metadata.suburbs.length}+ suburbs with real-time price data.
+            </h2>
+            
+            {/* Location Toggle */}
+            <div className="w-full max-w-2xl mb-6">
+              <LocationToggle
+                onUseLocation={handleUseLocation}
+                onSearchSuburb={handleSearchSuburb}
+                isLocationLoading={isLocationLoading}
+              />
+            </div>
+            
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <strong>{metadata.totalStations}</strong> Total Stations
@@ -449,8 +547,8 @@ export function MapViewClient({ initialStations, metadata }: Props) {
               selectedStation={selectedStation}
               onStationSelect={handleStationSelect}
               showClustering={true}
-              defaultZoom={10}
-              defaultCenter={[144.9631, -37.8136]}
+              defaultZoom={mapZoom}
+              defaultCenter={mapCenter}
             />
           </div>
         ) : (
@@ -490,6 +588,20 @@ export function MapViewClient({ initialStations, metadata }: Props) {
           </div>
         )}
       </section>
+
+      {/* SEO Content Sections - Below the fold, lazy loaded */}
+      
+      {/* Section 2: Live Fuel Price Snapshot */}
+      <LiveFuelPriceSnapshot stations={initialStations} />
+
+      {/* Section 3: Suburb Quick Links */}
+      <SuburbQuickLinks suburbs={metadata.suburbs} maxLinks={50} />
+
+      {/* Section 5: FAQs */}
+      <MapFAQs />
+
+      {/* Section 6: Internal Linking Hub */}
+      <InternalLinkingHub />
     </div>
   );
 }
