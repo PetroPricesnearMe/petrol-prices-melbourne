@@ -30,27 +30,42 @@ import { cn, patterns } from '@/styles/system/css-in-js';
 
 // Lazy load SEO sections for performance
 const LiveFuelPriceSnapshot = dynamic(
-  () => import('@/components/map/LiveFuelPriceSnapshot').then(mod => ({ default: mod.LiveFuelPriceSnapshot })),
+  () =>
+    import('@/components/map/LiveFuelPriceSnapshot').then((mod) => ({
+      default: mod.LiveFuelPriceSnapshot,
+    })),
   { ssr: true }
 );
 
 const SuburbQuickLinks = dynamic(
-  () => import('@/components/map/SuburbQuickLinks').then(mod => ({ default: mod.SuburbQuickLinks })),
+  () =>
+    import('@/components/map/SuburbQuickLinks').then((mod) => ({
+      default: mod.SuburbQuickLinks,
+    })),
   { ssr: true }
 );
 
 const MapFAQs = dynamic(
-  () => import('@/components/map/MapFAQs').then(mod => ({ default: mod.MapFAQs })),
+  () =>
+    import('@/components/map/MapFAQs').then((mod) => ({
+      default: mod.MapFAQs,
+    })),
   { ssr: true }
 );
 
 const InternalLinkingHub = dynamic(
-  () => import('@/components/map/InternalLinkingHub').then(mod => ({ default: mod.InternalLinkingHub })),
+  () =>
+    import('@/components/map/InternalLinkingHub').then((mod) => ({
+      default: mod.InternalLinkingHub,
+    })),
   { ssr: true }
 );
 
 const LocationToggle = dynamic(
-  () => import('@/components/map/LocationToggle').then(mod => ({ default: mod.LocationToggle })),
+  () =>
+    import('@/components/map/LocationToggle').then((mod) => ({
+      default: mod.LocationToggle,
+    })),
   { ssr: false }
 );
 
@@ -117,7 +132,9 @@ export function MapViewClient({ initialStations, metadata }: Props) {
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [mapView, setMapView] = useState<'map' | 'list'>('map');
-  const [mapCenter, setMapCenter] = useState<[number, number]>([144.9631, -37.8136]);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([
+    144.9631, -37.8136,
+  ]);
   const [mapZoom, setMapZoom] = useState(10);
   const [isLocationLoading, setIsLocationLoading] = useState(false);
 
@@ -245,43 +262,59 @@ export function MapViewClient({ initialStations, metadata }: Props) {
     }
   }, []);
 
-  const handleSearchSuburb = useCallback((query: string) => {
-    // Find suburb in metadata
-    const matchingSuburb = metadata.suburbs.find(
-      s => s.toLowerCase().includes(query.toLowerCase()) ||
-      query.toLowerCase().includes(s.toLowerCase())
-    );
-    
-    if (matchingSuburb) {
-      setFilters((prev) => ({ ...prev, suburb: matchingSuburb }));
-      // Find a station in that suburb to center map
-      const stationInSuburb = initialStations.find(s => s.suburb === matchingSuburb);
-      if (stationInSuburb) {
-        setMapCenter([stationInSuburb.longitude, stationInSuburb.latitude]);
-        setMapZoom(13);
+  const handleSearchSuburb = useCallback(
+    (query: string) => {
+      // Find suburb in metadata
+      const matchingSuburb = metadata.suburbs.find(
+        (s) =>
+          s.toLowerCase().includes(query.toLowerCase()) ||
+          query.toLowerCase().includes(s.toLowerCase())
+      );
+
+      if (matchingSuburb) {
+        setFilters((prev) => ({ ...prev, suburb: matchingSuburb }));
+        // Find a station in that suburb to center map
+        const stationInSuburb = initialStations.find(
+          (s) => s.suburb === matchingSuburb
+        );
+        if (stationInSuburb) {
+          setMapCenter([stationInSuburb.longitude, stationInSuburb.latitude]);
+          setMapZoom(13);
+        }
+      } else {
+        // Try to find by postcode
+        const stationByPostcode = initialStations.find(
+          (s) => s.postcode === query
+        );
+        if (stationByPostcode) {
+          setMapCenter([
+            stationByPostcode.longitude,
+            stationByPostcode.latitude,
+          ]);
+          setMapZoom(13);
+          setFilters((prev) => ({ ...prev, suburb: stationByPostcode.suburb }));
+        }
       }
-    } else {
-      // Try to find by postcode
-      const stationByPostcode = initialStations.find(s => s.postcode === query);
-      if (stationByPostcode) {
-        setMapCenter([stationByPostcode.longitude, stationByPostcode.latitude]);
-        setMapZoom(13);
-        setFilters((prev) => ({ ...prev, suburb: stationByPostcode.suburb }));
-      }
-    }
-  }, [initialStations, metadata.suburbs]);
+    },
+    [initialStations, metadata.suburbs]
+  );
 
   return (
     <div className="min-h-screen">
       {/* Breadcrumbs */}
-      <nav className="print-hidden bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-2">
+      <nav className="print-hidden border-b border-gray-200 bg-gray-100 py-2 dark:border-gray-700 dark:bg-gray-800">
         <div className={patterns.container()}>
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <Link href="/" className="hover:text-primary-600 dark:hover:text-primary-400">
+            <Link
+              href="/"
+              className="hover:text-primary-600 dark:hover:text-primary-400"
+            >
               Home
             </Link>
             <span>/</span>
-            <span className="text-gray-900 dark:text-white">Live Petrol Prices Near Me – Melbourne Fuel Price Map</span>
+            <span className="text-gray-900 dark:text-white">
+              Cheapest Petrol Near Me – Melbourne Fuel Price Map
+            </span>
           </div>
         </div>
       </nav>
@@ -290,22 +323,30 @@ export function MapViewClient({ initialStations, metadata }: Props) {
       <header className="print-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 py-12 text-white">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter}>
-            <h1 className={cn(patterns.text.h1, 'mb-4 text-center text-white max-w-4xl')}>
-              Live Petrol Prices Near Me – Melbourne Fuel Price Map
+            <h1
+              className={cn(
+                patterns.text.h1,
+                'mb-4 max-w-4xl text-center text-white'
+              )}
+            >
+              Cheapest Petrol Near Me – Live Melbourne Fuel Price Map
             </h1>
-            <h2 className="text-xl md:text-2xl mb-6 max-w-3xl text-center text-white/90 font-normal">
-              Find the cheapest fuel prices in Melbourne today. Compare {metadata.totalStations}+ petrol stations across {metadata.suburbs.length}+ suburbs with real-time price data.
+            <h2 className="mb-6 max-w-3xl text-center text-xl font-normal text-white/90 md:text-2xl">
+              Find the cheapest petrol near me in Melbourne today. Compare{' '}
+              {metadata.totalStations}+ petrol stations across{' '}
+              {metadata.suburbs.length}+ suburbs with real-time price data.
+              Search by your location to find the best fuel prices.
             </h2>
-            
+
             {/* Location Toggle */}
-            <div className="w-full max-w-2xl mb-6">
+            <div className="mb-6 w-full max-w-2xl">
               <LocationToggle
                 onUseLocation={handleUseLocation}
                 onSearchSuburb={handleSearchSuburb}
                 isLocationLoading={isLocationLoading}
               />
             </div>
-            
+
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <strong>{metadata.totalStations}</strong> Total Stations
@@ -559,7 +600,7 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                   <Link
                     key={station.id}
                     href={getStationUrl(station)}
-                    className="card card-hover cursor-pointer block h-full"
+                    className="card card-hover block h-full cursor-pointer"
                     onClick={() => handleStationSelect(station)}
                   >
                     <div className="p-4">
@@ -590,7 +631,7 @@ export function MapViewClient({ initialStations, metadata }: Props) {
       </section>
 
       {/* SEO Content Sections - Below the fold, lazy loaded */}
-      
+
       {/* Section 2: Live Fuel Price Snapshot */}
       <LiveFuelPriceSnapshot stations={initialStations} />
 

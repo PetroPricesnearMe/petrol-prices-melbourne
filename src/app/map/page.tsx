@@ -20,9 +20,10 @@ import stationsData from '@/data/stations.json';
 import { generateWebsiteSchema } from '@/lib/seo/schema-generator';
 
 export const metadata: Metadata = {
-  title: `Live Petrol Prices Near Me – Melbourne Fuel Price Map | Cheapest Fuel Today`,
-  description: `Find the cheapest petrol prices near you in Melbourne today. Compare ${metadataJson.totalStations}+ stations across ${metadataJson.suburbs.length}+ suburbs. Real-time fuel price map for Unleaded 91, Premium 95/98, Diesel, and LPG. Search by location or suburb.`,
+  title: `Cheapest Petrol Near Me – Live Melbourne Fuel Price Map | Find Best Prices Today`,
+  description: `Find the cheapest petrol near me in Melbourne today. Compare ${metadataJson.totalStations}+ stations across ${metadataJson.suburbs.length}+ suburbs. Real-time fuel price map showing cheapest Unleaded 91, Premium 95/98, Diesel, and LPG prices. Search by your location or suburb.`,
   keywords: [
+    'cheapest petrol near me',
     'petrol prices near me',
     'fuel prices Melbourne',
     'cheapest fuel near me',
@@ -46,8 +47,8 @@ export const metadata: Metadata = {
     'cheapest diesel near me',
   ],
   openGraph: {
-    title: `Live Petrol Prices Near Me – Melbourne Fuel Price Map | ${metadataJson.totalStations}+ Stations`,
-    description: `Find the cheapest fuel prices in Melbourne today. Interactive map with ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ suburbs. Compare Unleaded 91, Premium 95/98, Diesel prices.`,
+    title: `Cheapest Petrol Near Me – Live Melbourne Fuel Price Map | ${metadataJson.totalStations}+ Stations`,
+    description: `Find the cheapest petrol near me in Melbourne today. Interactive map with ${metadataJson.totalStations}+ petrol stations across ${metadataJson.suburbs.length}+ suburbs. Compare cheapest Unleaded 91, Premium 95/98, Diesel prices.`,
     type: 'website',
     url: 'https://petrolpricesnearme.com.au/map',
     siteName: 'Petrol Prices Near Me',
@@ -56,14 +57,14 @@ export const metadata: Metadata = {
         url: 'https://petrolpricesnearme.com.au/images/og-map.jpg',
         width: 1200,
         height: 630,
-        alt: 'Melbourne Fuel Price Map',
+        alt: 'Cheapest Petrol Near Me - Melbourne Fuel Price Map',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: `Live Petrol Prices Near Me – Melbourne Fuel Price Map`,
-    description: `Find the cheapest fuel prices in Melbourne today. ${metadataJson.totalStations}+ stations, ${metadataJson.suburbs.length}+ suburbs.`,
+    title: `Cheapest Petrol Near Me – Live Melbourne Fuel Price Map`,
+    description: `Find the cheapest petrol near me in Melbourne today. ${metadataJson.totalStations}+ stations, ${metadataJson.suburbs.length}+ suburbs.`,
   },
   alternates: {
     canonical: 'https://petrolpricesnearme.com.au/map',

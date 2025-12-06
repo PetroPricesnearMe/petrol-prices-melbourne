@@ -1,6 +1,6 @@
 /**
  * Suburb Quick Links Component
- * 
+ *
  * Generates a grid of 30-50 suburb category links for internal linking and SEO
  * Routes to existing listing pages or map filters
  */
@@ -71,77 +71,80 @@ export function SuburbQuickLinks({ suburbs, maxLinks = 50 }: Props) {
       'NARRE WARREN',
       'ENDEAVOUR HILLS',
     ];
-    
+
     // Combine priority suburbs with remaining suburbs
-    const prioritySet = new Set(prioritySuburbs.map(s => s.toUpperCase()));
+    const prioritySet = new Set(prioritySuburbs.map((s) => s.toUpperCase()));
     const priority = suburbs
-      .filter(s => prioritySet.has(s.toUpperCase()))
+      .filter((s) => prioritySet.has(s.toUpperCase()))
       .sort((a, b) => {
-        const aIndex = prioritySuburbs.findIndex(p => p.toUpperCase() === a.toUpperCase());
-        const bIndex = prioritySuburbs.findIndex(p => p.toUpperCase() === b.toUpperCase());
+        const aIndex = prioritySuburbs.findIndex(
+          (p) => p.toUpperCase() === a.toUpperCase()
+        );
+        const bIndex = prioritySuburbs.findIndex(
+          (p) => p.toUpperCase() === b.toUpperCase()
+        );
         return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
       });
-    
+
     const remaining = suburbs
-      .filter(s => !prioritySet.has(s.toUpperCase()))
+      .filter((s) => !prioritySet.has(s.toUpperCase()))
       .sort()
       .slice(0, maxLinks - priority.length);
-    
+
     return [...priority, ...remaining].slice(0, maxLinks);
   }, [suburbs, maxLinks]);
-  
+
   const getSuburbSlug = (suburb: string) => {
     return suburb.toLowerCase().replace(/\s+/g, '-');
   };
-  
+
   const getSuburbDisplayName = (suburb: string) => {
     // Handle special cases
     if (suburb === 'MELBOURNE') return 'Melbourne CBD';
     return suburb.charAt(0) + suburb.slice(1).toLowerCase();
   };
-  
+
   return (
-    <section className="py-12 bg-gray-50 dark:bg-gray-800">
+    <section className="bg-gray-50 py-12 dark:bg-gray-800">
       <div className={patterns.container()}>
         <div className="mb-8 text-center">
           <h2 className={cn(patterns.text.h2, 'mb-3')}>
-            Petrol Prices by Suburb – Melbourne & Victoria
+            Cheapest Petrol Near Me by Suburb – Melbourne & Victoria
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Find the cheapest fuel prices in your suburb. Click any suburb below to view today&apos;s prices and station locations.
+          <p className="mx-auto max-w-2xl text-gray-600 dark:text-gray-400">
+            Find the cheapest petrol near me in your suburb. Click any suburb
+            below to view today&apos;s cheapest prices and station locations.
           </p>
         </div>
-        
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {popularSuburbs.map((suburb) => {
             const slug = getSuburbSlug(suburb);
             const displayName = getSuburbDisplayName(suburb);
-            
+
             return (
               <Link
                 key={suburb}
                 href={`/suburb/fuel-prices-${slug}-today`}
-                className="group block p-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-400 hover:shadow-md transition-all duration-200 text-center"
+                className="group block rounded-lg border border-gray-200 bg-white p-3 text-center transition-all duration-200 hover:border-primary-500 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-primary-400"
               >
-                <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                <div className="text-sm font-medium text-gray-900 transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
                   {displayName}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                   View Prices →
                 </div>
               </Link>
             );
           })}
         </div>
-        
+
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Can&apos;t find your suburb? Search all {suburbs.length}+ locations on our map.
+          <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+            Can&apos;t find your suburb? Search all {suburbs.length}+ locations
+            on our map.
           </p>
-          <Link
-            href="/directory"
-            className="btn btn-outline"
-          >
+          <Link href="/directory" className="btn-outline btn">
             View All Suburbs →
           </Link>
         </div>
@@ -149,4 +152,3 @@ export function SuburbQuickLinks({ suburbs, maxLinks = 50 }: Props) {
     </section>
   );
 }
-
