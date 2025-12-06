@@ -191,24 +191,27 @@ export const StationCard = memo<StationCardProps>(({
   const _brandInfo = getBrandInfo(station.brand);
   const brandClass = getBrandClass(station.brand);
 
-  const handleCardClick = () => {
+  const handleCardClick = (e: React.MouseEvent) => {
     if (onCardClick) {
       onCardClick(station);
     }
   };
 
   const cardContent = (
-    <article
-      className={cn(
-        'bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200',
-        'hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all duration-300',
-        'print-avoid-break h-full flex flex-col',
-        className
-      )}
-      itemScope
-      itemType="https://schema.org/GasStation"
+    <Link
+      href={getStationUrl(station)}
+      className={cn('block h-full', className)}
       onClick={handleCardClick}
     >
+      <article
+        className={cn(
+          'bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200',
+          'hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all duration-300',
+          'print-avoid-break h-full flex flex-col',
+        )}
+        itemScope
+        itemType="https://schema.org/GasStation"
+      >
       {/* Brand Header */}
       <BrandHeader
         brand={station.brand}
@@ -263,15 +266,12 @@ export const StationCard = memo<StationCardProps>(({
 
       {/* Footer */}
       <div className="p-4 sm:p-5 lg:p-6 border-t border-gray-200 dark:border-gray-700 print-hidden flex-shrink-0">
-        <Link
-          href={getStationUrl(station)}
-          className="btn btn-primary w-full btn-sm text-xs sm:text-sm"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="btn btn-primary w-full btn-sm text-xs sm:text-sm pointer-events-none">
           View Details →
-        </Link>
+        </div>
       </div>
     </article>
+    </Link>
   );
 
   if (showTransition) {

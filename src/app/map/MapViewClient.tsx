@@ -11,6 +11,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { useState, useCallback, useMemo } from 'react';
 
 import { MapView } from '@/components/molecules/MapView/MapViewMapLibre';
@@ -18,6 +19,7 @@ import {
   SortDropdown,
   type SortOption,
 } from '@/components/molecules/SortDropdown';
+import { getStationUrl } from '@/lib/seo/station-seo';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
 interface FuelPrices {
@@ -456,9 +458,10 @@ export function MapViewClient({ initialStations, metadata }: Props) {
             <div className={patterns.container()}>
               <div className={patterns.grid(4, 'md')}>
                 {filteredStations.map((station) => (
-                  <div
+                  <Link
                     key={station.id}
-                    className="card card-hover cursor-pointer"
+                    href={getStationUrl(station)}
+                    className="card card-hover cursor-pointer block h-full"
                     onClick={() => handleStationSelect(station)}
                   >
                     <div className="p-4">
@@ -480,7 +483,7 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                         </div>
                       )}
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

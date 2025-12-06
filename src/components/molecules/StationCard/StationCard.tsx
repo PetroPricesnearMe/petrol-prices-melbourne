@@ -1,8 +1,10 @@
 'use client';
 
+import Link from 'next/link';
 
 import { Badge } from '@/components/atoms/Badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
+import { getStationUrl } from '@/lib/seo/station-seo';
 import type { PetrolStation } from '@/types/index';
 import { formatDistance } from '@/lib/utils/distance';
 import { formatPriceCentsPerLiter } from '@/lib/utils/price';
@@ -34,8 +36,15 @@ export function StationCard({ station, onClick }: StationCardProps) {
     ? Math.min(...station.fuelPrices.map((fp) => fp.pricePerLiter))
     : null;
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <Card hover className="cursor-pointer touch-manipulation" onClick={onClick}>
+    <Link href={getStationUrl(station)} className="block h-full" onClick={handleClick}>
+      <Card hover className="cursor-pointer touch-manipulation h-full">
       <CardHeader>
         <div className="flex items-start justify-between gap-3">
           <CardTitle className="text-base sm:text-lg">{station.stationName}</CardTitle>
@@ -76,6 +85,7 @@ export function StationCard({ station, onClick }: StationCardProps) {
         </div>
       </CardContent>
     </Card>
+    </Link>
   );
 }
 

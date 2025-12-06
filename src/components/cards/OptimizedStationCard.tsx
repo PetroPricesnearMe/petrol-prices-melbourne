@@ -381,35 +381,30 @@ export const OptimizedStationCard = memo<OptimizedStationCardProps>(
     const allBadges = determineStationBadges(attributes);
     const displayBadges = limitBadges(allBadges, maxBadges);
 
-    const handleCardClick = () => {
+    const handleCardClick = (e: React.MouseEvent) => {
       if (onCardClick) {
         onCardClick(station);
       }
     };
 
     const cardContent = (
-      <article
-        className={cn(
-          'overflow-hidden rounded-2xl bg-white dark:bg-gray-900',
-          'border border-gray-200 shadow-sm dark:border-gray-800',
-          'hover:-translate-y-1 hover:shadow-2xl',
-          'cursor-pointer transition-all duration-300',
-          'print-avoid-break flex h-full flex-col',
-          className
-        )}
-        itemScope
-        itemType="https://schema.org/GasStation"
+      <Link
+        href={getStationUrl(station)}
+        className={cn('block h-full', className)}
         onClick={handleCardClick}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleCardClick();
-          }
-        }}
         aria-label={`View details for ${station.name || station.stationName}`}
       >
+        <article
+          className={cn(
+            'overflow-hidden rounded-2xl bg-white dark:bg-gray-900',
+            'border border-gray-200 shadow-sm dark:border-gray-800',
+            'hover:-translate-y-1 hover:shadow-2xl',
+            'cursor-pointer transition-all duration-300',
+            'print-avoid-break flex h-full flex-col',
+          )}
+          itemScope
+          itemType="https://schema.org/GasStation"
+        >
         {/* Schema.org JSON-LD for SEO */}
         <SchemaData station={station} brandInfo={brandInfo} />
 
@@ -489,16 +484,12 @@ export const OptimizedStationCard = memo<OptimizedStationCardProps>(
 
         {/* Footer */}
         <div className="print-hidden flex-shrink-0 border-t border-gray-200 p-5 dark:border-gray-800 lg:p-6">
-          <Link
-            href={getStationUrl(station)}
-            className="btn-primary btn-sm btn w-full"
-            onClick={(e) => e.stopPropagation()}
-            aria-label={`View full details for ${station.name || station.stationName}`}
-          >
+          <div className="btn-primary btn-sm btn w-full pointer-events-none">
             View Details →
-          </Link>
+          </div>
         </div>
       </article>
+      </Link>
     );
 
     if (showTransition) {
