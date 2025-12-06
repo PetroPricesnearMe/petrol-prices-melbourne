@@ -133,6 +133,13 @@ export default function RootLayout({
           Removing unnecessary preconnect improves Core Web Vitals (FCP, LCP).
         */}
 
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7058906610673320"
+          crossOrigin="anonymous"
+        ></script>
+
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />

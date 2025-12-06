@@ -156,16 +156,7 @@ export function SearchTestClient() {
                 🧪 How to Test
               </h2>
               <ul className="text-blue-800 dark:text-blue-200 space-y-2 text-sm">
-              Refused to execute script from 'https://petrolpricesnearme.com.au/_next/static/css/081a0afca5a9bd20.css?dpl=dpl_8RXdQ7V1oUQiRVipHo5dthrfJLPF' because its MIME type ('text/css') is not executable, and strict MIME type checking is enabled.Understand this error
-/_next/image?url=%2Fimages%2Ffuel-nozzles.jpg&w=750&q=85:1  Failed to load resource: the server responded with a status of 400 ()Understand this error
-/_next/image?url=%2Fimages%2Ffuel-nozzles.jpg&w=750&q=85:1  Failed to load resource: the server responded with a status of 400 ()Understand this error
-/privacy?_rsc=3lb4g:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
-/_next/image?url=%2Fimages%2Ffuel-nozzles.jpg&w=750&q=85:1  Failed to load resource: the server responded with a status of 400 ()Understand this error
-/_next/image?url=%2Fimages%2Ffuel-nozzles.jpg&w=750&q=85:1  Failed to load resource: the server responded with a status of 400 ()Understand this error
-/_next/image?url=%2Fimages%2Ffuel-nozzles.jpg&w=750&q=85:1  Failed to load resource: the server responded with a status of 400 ()Understand this error
-/_next/image?url=%2Fimages%2Ffuel-nozzles.jpg&w=750&q=85:1  Failed to load resource: the server responded with a status of 400 ()Understand this error
-/_next/image?url=%2Fimages%2Ffuel-nozzles.jpg&w=750&q=85:1  Failed to load resource: the server responded with a status of 400 ()Understand this error
-image:1  Failed to load resource: the server responded with a status of 400 ()                <li>
+                <li>
                   <strong>Autocomplete:</strong> Start typing &quot;Shell&quot;
                   or &quot;Carlton&quot; - suggestions appear
                 </li>
@@ -196,7 +187,7 @@ image:1  Failed to load resource: the server responded with a status of 400 ()  
               <AdvancedSearchBar
                 data={stations}
                 searchKeys={getSearchKeys()}
-                placeholder="Try typing: Shell, Carlton, BP, or even typos like 'Carton'..."
+                placeholder="Try typing: Shell, Carlton, BP, or even typos like &apos;Carton&apos;..."
                 onSearch={handleSearch}
                 onCategoryChange={handleCategoryChange}
                 categories={categories}
