@@ -26,9 +26,11 @@ import '../styles/globals.css';
 
 const inter = Inter({
   subsets: ['latin'],
-  display: 'swap',
+  display: 'swap', // Prevents invisible text during font load
   variable: '--font-inter',
-  preload: true,
+  preload: true, // Preloads font for faster rendering
+  adjustFontFallback: true, // Prevents layout shift during font load
+  fallback: ['system-ui', '-apple-system', 'sans-serif'], // System font fallback
 });
 
 export const viewport: Viewport = {
@@ -133,12 +135,13 @@ export default function RootLayout({
           Removing unnecessary preconnect improves Core Web Vitals (FCP, LCP).
         */}
 
-        {/* Google AdSense */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7058906610673320"
+        {/* Resource hints for external domains - non-blocking */}
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link
+          rel="preconnect"
+          href="https://pagead2.googlesyndication.com"
           crossOrigin="anonymous"
-        ></script>
+        />
 
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -157,6 +160,14 @@ export default function RootLayout({
 
         {/* Main content */}
         <Providers>{children}</Providers>
+
+        {/* Google AdSense - Load after page is interactive to avoid blocking render */}
+        <Script
+          id="adsbygoogle"
+          strategy="lazyOnload"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7058906610673320"
+          crossOrigin="anonymous"
+        />
 
         {/* Performance Monitoring - After Interactive */}
         {process.env.NODE_ENV === 'production' && (

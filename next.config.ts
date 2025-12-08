@@ -43,6 +43,7 @@ const nextConfig: NextConfig = {
       'zod',
     ],
     // Note: SWC minification is now default in Next.js 13+, no need to specify
+    // Note: CSS optimization is handled automatically by Next.js
   },
 
   // SWC compiler options for better optimization
