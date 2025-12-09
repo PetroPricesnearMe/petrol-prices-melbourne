@@ -85,7 +85,7 @@ export function generateLocationKeywords(location?: string): string[] {
 export function generateLocationTitle(location?: string): string {
   if (location) {
     const formattedLocation = formatLocationName(location);
-    return `${formattedLocation} petrol prices today | Cheapest fuel near me | ${SITE_NAME}`;
+    return `${formattedLocation} petrol prices today | Cheapest petrol near me Melbourne | ${SITE_NAME}`;
   }
   return `Petrol prices today | Cheapest fuel near me | ${SITE_NAME}`;
 }
@@ -96,18 +96,12 @@ export function generateLocationTitle(location?: string): string {
  */
 export function generateLocationDescription(
   location?: string,
-  stationCount?: number,
-  averagePrice?: number
+  _stationCount?: number,
+  _averagePrice?: number
 ): string {
   if (location) {
     const formattedLocation = formatLocationName(location);
-    const stationText = stationCount
-      ? `${stationCount} stations`
-      : 'multiple stations';
-    const priceText = averagePrice
-      ? ` Average price: ${averagePrice.toFixed(1)}¢/L.`
-      : '';
-    return `Find live petrol prices in ${formattedLocation} today. Compare cheapest fuel prices from ${stationText}.${priceText} Save money on unleaded, diesel, and premium fuel. Updated daily.`;
+    return `Live petrol prices updated daily for ${formattedLocation}, Melbourne. Find the cheapest fuel near you including Unleaded 91, E10 and Diesel.`;
   }
   return 'Find live petrol prices near you today. Compare cheapest fuel prices from stations across Australia. Save money on unleaded, diesel, and premium fuel. Updated daily.';
 }

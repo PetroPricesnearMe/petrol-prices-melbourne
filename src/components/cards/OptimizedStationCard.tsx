@@ -381,7 +381,7 @@ export const OptimizedStationCard = memo<OptimizedStationCardProps>(
     const allBadges = determineStationBadges(attributes);
     const displayBadges = limitBadges(allBadges, maxBadges);
 
-    const handleCardClick = (e: React.MouseEvent) => {
+    const handleCardClick = (_e: React.MouseEvent) => {
       if (onCardClick) {
         onCardClick(station);
       }

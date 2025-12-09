@@ -36,7 +36,7 @@ export function StationCard({ station, onClick }: StationCardProps) {
     ? Math.min(...station.fuelPrices.map((fp) => fp.pricePerLiter))
     : null;
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (_e: React.MouseEvent) => {
     if (onClick) {
       onClick();
     }

@@ -191,7 +191,7 @@ export const StationCard = memo<StationCardProps>(({
   const _brandInfo = getBrandInfo(station.brand);
   const brandClass = getBrandClass(station.brand);
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = (_e: React.MouseEvent) => {
     if (onCardClick) {
       onCardClick(station);
     }

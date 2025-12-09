@@ -117,6 +117,39 @@ async function getDirectoryUrls(): Promise<MetadataRoute.Sitemap> {
 }
 
 /**
+ * Get location/suburb URLs for SEO pages
+ * Includes all SEO suburbs from comprehensive list
+ */
+async function getLocationUrls(): Promise<MetadataRoute.Sitemap> {
+  try {
+    const { getAllSuburbSlugs } = await import('@/data/melbourne-suburbs');
+    const suburbSlugs = getAllSuburbSlugs();
+
+    return suburbSlugs
+      .map((suburb) => {
+        const url = `${baseUrl}/locations/${suburb}`;
+        // Validate URL doesn't contain localhost
+        if (url.includes('localhost')) {
+          console.warn(
+            `Warning: Skipping location ${suburb} - URL contains localhost`
+          );
+          return null;
+        }
+        return {
+          url,
+          lastModified: new Date(),
+          changeFrequency: 'hourly' as const,
+          priority: 0.9, // Very high priority for SEO location pages
+        };
+      })
+      .filter((entry): entry is MetadataRoute.Sitemap[0] => entry !== null);
+  } catch (error) {
+    console.error('Error fetching location URLs for sitemap:', error);
+    return [];
+  }
+}
+
+/**
  * Get region URLs
  */
 async function getRegionUrls(): Promise<MetadataRoute.Sitemap> {
@@ -466,6 +499,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [
     stationUrls,
     directoryUrls,
+    locationUrls,
     regionUrls,
     brandUrls,
     fuelTypeUrls,
@@ -475,6 +509,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ] = await Promise.all([
     getStationUrls(),
     getDirectoryUrls(),
+    getLocationUrls(),
     getRegionUrls(),
     getFuelBrandUrls(),
     getFuelTypeUrls(),
@@ -486,6 +521,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Combine all routes and filter out any localhost URLs
   const allRoutes = [
     ...staticRoutes,
+    ...locationUrls, // SEO location pages (high priority)
     ...directoryUrls,
     ...regionUrls,
     ...brandUrls,

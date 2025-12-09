@@ -27,6 +27,7 @@ import {
   formatLocationName,
 } from '@/lib/seo/keyword-strategy';
 import { getAllSuburbs, getStationsBySuburb } from '@/lib/data/stations';
+import { getAllSuburbSlugs } from '@/data/melbourne-suburbs';
 import type { Station } from '@/types/station';
 
 interface PageProps {
@@ -44,12 +45,23 @@ const isFuelPricesRecord = (
 };
 
 // Generate static paths for ISR
+// Uses comprehensive Melbourne suburbs list + dynamic suburbs from stations
 export async function generateStaticParams() {
-  const suburbs = await getAllSuburbs();
+  // Get SEO suburbs from comprehensive list
+  const seoSuburbs = getAllSuburbSlugs();
+  
+  // Also get dynamic suburbs from stations (for suburbs not in our list)
+  const dynamicSuburbs = await getAllSuburbs();
+  const dynamicSlugs = dynamicSuburbs
+    .map((suburb) => suburb.toLowerCase().replace(/\s+/g, '-'))
+    .filter((slug) => !seoSuburbs.includes(slug));
 
-  // Limit to top 200 suburbs for static generation
-  return suburbs.slice(0, 200).map((suburb) => ({
-    suburb: suburb.toLowerCase().replace(/\s+/g, '-'),
+  // Combine both lists (SEO suburbs first, then dynamic)
+  const allSuburbs = [...seoSuburbs, ...dynamicSlugs];
+
+  // Return all suburbs for static generation (up to 500)
+  return allSuburbs.slice(0, 500).map((suburb) => ({
+    suburb,
   }));
 }
 
