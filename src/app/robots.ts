@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || 'https://petrolpricenearme.com.au';
 
   // Reject localhost URLs
   const finalBaseUrl = baseUrl.includes('localhost')
@@ -36,6 +37,7 @@ export default function robots(): MetadataRoute.Robots {
           '/admin/',
           '/auth/',
           '/private/',
+          '/sign-in',
           '/hero-example',
           '/map-demo',
           '/test/',
@@ -67,14 +69,10 @@ export default function robots(): MetadataRoute.Robots {
           '/regions/*',
           '/map',
           '/fuel-price-trends',
+          '/station-amenities',
+          '/how-pricing-works',
         ],
-        disallow: [
-          '/api/',
-          '/_next/',
-          '/admin/',
-          '/hero-example',
-          '/map-demo',
-        ],
+        disallow: ['/api/', '/_next/', '/admin/', '/hero-example', '/map-demo'],
         crawlDelay: 0.5,
       },
       {
@@ -91,14 +89,10 @@ export default function robots(): MetadataRoute.Robots {
           '/regions/*',
           '/map',
           '/fuel-price-trends',
+          '/station-amenities',
+          '/how-pricing-works',
         ],
-        disallow: [
-          '/api/',
-          '/_next/',
-          '/admin/',
-          '/hero-example',
-          '/map-demo',
-        ],
+        disallow: ['/api/', '/_next/', '/admin/', '/hero-example', '/map-demo'],
         crawlDelay: 1,
       },
       {
@@ -117,4 +111,3 @@ export default function robots(): MetadataRoute.Robots {
     host: finalBaseUrl,
   };
 }
-
