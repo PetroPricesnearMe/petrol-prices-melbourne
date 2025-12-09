@@ -323,19 +323,21 @@ export function MapViewClient({ initialStations, metadata }: Props) {
       <header className="print-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 py-12 text-white">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter}>
+            {/* SEO: Updated H1 with keyword-rich heading */}
             <h1
               className={cn(
                 patterns.text.h1,
                 'mb-4 max-w-4xl text-center text-white'
               )}
             >
-              Cheapest Petrol Near Me – Live Melbourne Fuel Price Map
+              Cheap Fuel Prices Near Me Today – Live Petrol Prices Melbourne
             </h1>
+            {/* SEO: Updated H2 with keyword-rich heading */}
             <h2 className="mb-6 max-w-3xl text-center text-xl font-normal text-white/90 md:text-2xl">
-              Find the cheapest petrol near me in Melbourne today. Compare{' '}
-              {metadata.totalStations}+ petrol stations across{' '}
-              {metadata.suburbs.length}+ suburbs with real-time price data.
-              Search by your location to find the best fuel prices.
+              Find live petrol prices near you today. Compare cheapest fuel
+              prices from {metadata.totalStations}+ petrol stations across{' '}
+              {metadata.suburbs.length}+ suburbs. Petrol prices today, fuel
+              prices today, live petrol prices Melbourne.
             </h2>
 
             {/* Location Toggle */}

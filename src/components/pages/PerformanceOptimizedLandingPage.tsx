@@ -126,7 +126,7 @@ function OptimizedHeroSection() {
                 Live Fuel Prices Available
               </motion.div>
 
-              {/* Main Heading - Critical for LCP */}
+              {/* SEO: Main Heading - Updated with keyword-rich H1 */}
               <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                 <motion.span
                   initial={{ opacity: 0, y: 30 }}
@@ -134,7 +134,7 @@ function OptimizedHeroSection() {
                   transition={{ duration: 0.8, delay: 0.3 }}
                 >
                   <span className="from-yellow-400 to-orange-500 bg-gradient-to-r bg-clip-text text-transparent">
-                    Petrol Prices Near Me Melbourne
+                    Cheap Fuel Prices Near Me Today
                   </span>
                 </motion.span>
               </h1>
@@ -545,8 +545,9 @@ function OptimizedSEOContentSection() {
             itemScope
             itemType="https://schema.org/Article"
           >
+            {/* SEO: Updated H2 with keyword-rich heading */}
             <h2 className="mb-8 text-3xl font-extrabold text-gray-900 dark:text-gray-900 sm:text-4xl md:text-5xl md:leading-tight">
-              Find Cheapest Petrol Prices Near Me in Melbourne
+              Cheap Fuel Prices Near Me Today
             </h2>
 
             <div className="prose prose-lg max-w-none text-gray-800 dark:text-gray-700">
@@ -998,8 +999,9 @@ function OptimizedFeaturesSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
+            {/* SEO: Updated H2 with keyword-rich heading */}
             <h2 className="mb-6 text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl md:text-5xl md:leading-tight">
-              Compare Petrol Prices Across Melbourne Suburbs & Fuel Types
+              Compare Fuel Prices Near Me
             </h2>
             <p className="mx-auto max-w-3xl text-lg leading-relaxed text-gray-700 dark:text-gray-300 sm:text-xl sm:leading-relaxed">
               Our comprehensive platform provides all the tools you need to find

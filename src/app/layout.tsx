@@ -43,20 +43,31 @@ export const viewport: Viewport = {
   ],
 };
 
+// SEO: Updated root layout metadata with keyword strategy
 export const metadata: Metadata = {
   title: {
-    default: 'Fuel Finder - Find the Cheapest Petrol Near You',
-    template: '%s | Fuel Finder',
+    default: 'Petrol prices today | Cheapest fuel near me | PetrolPricesNearMe',
+    template: '%s | PetrolPricesNearMe',
   },
   description:
-    'Find the cheapest petrol prices near you with real-time updates from 250+ stations across Melbourne.',
+    'Find live petrol prices near you today. Compare cheapest fuel prices from 250+ stations across Australia. Petrol prices today, fuel prices today, live petrol prices Melbourne. Updated daily.',
   keywords: [
-    'petrol',
-    'fuel',
-    'prices',
-    'gas station',
-    'melbourne',
-    'australia',
+    // General keywords
+    'petrol prices Melbourne',
+    'fuel prices Melbourne',
+    'petrol prices near me',
+    'fuel prices near me',
+    'petrol price comparison',
+    // Live/Today keywords
+    'petrol prices today',
+    'fuel prices today',
+    'live petrol prices Melbourne',
+    'cheap fuel prices today',
+    // Fuel type keywords
+    'unleaded price near me',
+    'diesel price near me',
+    'premium petrol price near me',
+    'E10 prices near me',
   ],
   authors: [{ name: 'Fuel Finder Team' }],
   creator: 'Fuel Finder',
@@ -76,12 +87,12 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'en_AU',
-    url: 'https://petrolpricesnearme.com.au/',
-    siteName: 'Fuel Finder',
-    title: 'Fuel Finder - Find the Cheapest Petrol Near You',
+    locale: 'en_AU', // og:locale
+    url: 'https://petrolpricesnearme.com.au/', // og:url
+    siteName: 'PetrolPricesNearMe',
+    title: 'Petrol prices today | Cheapest fuel near me | PetrolPricesNearMe', // og:title
     description:
-      'Find the cheapest petrol prices near you with real-time updates.',
+      'Find live petrol prices near you today. Compare cheapest fuel prices from 250+ stations across Australia. Updated daily.', // og:description
     images: [
       {
         url: 'https://petrolpricesnearme.com.au/images/og-image.jpg',
@@ -93,9 +104,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Fuel Finder - Find the Cheapest Petrol Near You',
+    title: 'Petrol prices today | Cheapest fuel near me | PetrolPricesNearMe',
     description:
-      'Find the cheapest petrol prices near you with real-time updates.',
+      'Find live petrol prices near you today. Compare cheapest fuel prices from 250+ stations across Australia.',
     images: ['https://petrolpricesnearme.com.au/images/twitter-image.jpg'],
   },
   robots: {

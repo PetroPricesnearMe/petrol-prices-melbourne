@@ -9,16 +9,22 @@
 // Always use production URL - never localhost
 const getSiteUrl = () => {
   const envUrl = process.env.NEXT_PUBLIC_APP_URL;
-  
+  const isProduction = process.env.NODE_ENV === 'production';
+
   // Reject localhost URLs
   if (envUrl && envUrl.includes('localhost')) {
-    console.warn('Warning: NEXT_PUBLIC_APP_URL contains localhost, using production URL instead');
+    // Only warn in production - localhost is expected in development
+    if (isProduction) {
+      console.warn(
+        'Warning: NEXT_PUBLIC_APP_URL contains localhost, using production URL instead'
+      );
+    }
     return 'https://petrolpricesnearme.com.au';
   }
-  
+
   // Use environment variable if set and valid, otherwise use production URL
-  return envUrl && !envUrl.includes('localhost') 
-    ? envUrl 
+  return envUrl && !envUrl.includes('localhost')
+    ? envUrl
     : 'https://petrolpricesnearme.com.au';
 };
 
@@ -33,23 +39,23 @@ module.exports = {
 
   // Exclude patterns - admin, API, static assets, and non-indexable pages
   exclude: [
-    '/api/*',           // API routes
-    '/_next/*',         // Next.js internal files
-    '/admin/*',         // Admin pages
-    '/auth/*',          // Authentication pages
-    '/private/*',       // Private pages
+    '/api/*', // API routes
+    '/_next/*', // Next.js internal files
+    '/admin/*', // Admin pages
+    '/auth/*', // Authentication pages
+    '/private/*', // Private pages
     '/server-sitemap.xml',
     '/server-sitemap-index.xml',
-    '/hero-example',    // Demo pages
-    '/map-demo',        // Demo pages
-    '/test/*',          // Test pages
-    '/debug/*',         // Debug pages
-    '/*.json',          // JSON files
-    '/*.xml',           // XML files (except sitemap)
-    '/favicon.ico',     // Favicon
-    '/robots.txt',      // Robots.txt (handled separately)
-    '/*?*',             // Exclude all URLs with query parameters (filters, search, pagination)
-    '/404',             // Error pages
+    '/hero-example', // Demo pages
+    '/map-demo', // Demo pages
+    '/test/*', // Test pages
+    '/debug/*', // Debug pages
+    '/*.json', // JSON files
+    '/*.xml', // XML files (except sitemap)
+    '/favicon.ico', // Favicon
+    '/robots.txt', // Robots.txt (handled separately)
+    '/*?*', // Exclude all URLs with query parameters (filters, search, pagination)
+    '/404', // Error pages
     '/500',
     '/_error',
   ],
@@ -231,7 +237,10 @@ module.exports = {
     ];
 
     for (const fuelType of fuelTypes) {
-      const transformed = await config.transform(config, `/fuel-types/${fuelType}`);
+      const transformed = await config.transform(
+        config,
+        `/fuel-types/${fuelType}`
+      );
       if (transformed) {
         result.push(transformed);
       }

@@ -10,12 +10,16 @@ import type { MetadataRoute } from 'next';
 // Always use production URL - never localhost
 const getBaseUrl = (): string => {
   const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+  const isProduction = process.env.NODE_ENV === 'production';
 
   // Reject localhost URLs in production
   if (envUrl && envUrl.includes('localhost')) {
-    console.warn(
-      'Warning: NEXT_PUBLIC_APP_URL contains localhost, using production URL instead'
-    );
+    // Only warn in production - localhost is expected in development
+    if (isProduction) {
+      console.warn(
+        'Warning: NEXT_PUBLIC_APP_URL contains localhost, using production URL instead'
+      );
+    }
     return 'https://petrolpricesnearme.com.au';
   }
 
