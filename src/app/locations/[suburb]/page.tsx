@@ -193,29 +193,27 @@ export default async function LocationPage({ params }: PageProps) {
         {/* Hero Section with SEO-optimized H1 */}
         <header className="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 py-12 text-white">
           <div className="container mx-auto px-4">
-            {/* Breadcrumb Navigation */}
+            {/* Breadcrumb Navigation with "near me" keywords */}
             <nav className="mb-4 text-sm" aria-label="Breadcrumb">
               <Link href="/" className="hover:underline">
-                Home
+                Petrol Prices Near Me
               </Link>
               <span className="mx-2">/</span>
               <Link href="/locations" className="hover:underline">
-                Locations
+                Petrol Near Me Locations
               </Link>
               <span className="mx-2">/</span>
-              <span aria-current="page">{formattedLocation}</span>
+              <span aria-current="page">{formattedLocation} Petrol Near Me</span>
             </nav>
 
-            {/* SEO-optimized H1 Heading */}
+            {/* SEO-optimized H1 Heading with "near me" keywords */}
             <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">
               {h1Heading}
             </h1>
 
-            {/* Description */}
+            {/* Description with "near me" keywords */}
             <p className="mb-6 max-w-3xl text-lg text-white/90 md:text-xl">
-              Compare live petrol prices from {stations.length} stations in{' '}
-              {formattedLocation}. Find the cheapest fuel prices today and save
-              money on unleaded, diesel, and premium fuel.
+              Find cheap petrol near me in {formattedLocation}. Compare cheap fuel near me from {stations.length} stations. Petrol prices near me, fuel prices near me updated daily.
             </p>
 
             {/* Stats */}
@@ -381,27 +379,27 @@ export default async function LocationPage({ params }: PageProps) {
                 })}
             </div>
 
-            {/* SEO Content Section */}
+            {/* SEO Content Section with "near me" keywords */}
             <div className="prose dark:prose-invert mt-16 max-w-none">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Petrol Prices in {formattedLocation} Today
+                Petrol Prices Near Me in {formattedLocation} Today
               </h2>
               <p className="text-gray-700 dark:text-gray-300">
-                Find the cheapest petrol prices in {formattedLocation} today.
-                Compare live fuel prices from {stations.length} petrol stations
-                across {formattedLocation}. Our platform provides real-time
-                updates on unleaded, diesel, and premium fuel prices to help you
+                Find cheap petrol near me in {formattedLocation} today.
+                Compare petrol prices near me from {stations.length} petrol stations
+                across {formattedLocation}. Our platform provides live petrol prices near me
+                updated daily on unleaded, diesel, and premium fuel to help you
                 save money on every fill-up.
               </p>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                Why Compare Fuel Prices in {formattedLocation}?
+                Why Compare Petrol Prices Near Me in {formattedLocation}?
               </h3>
               <p className="text-gray-700 dark:text-gray-300">
                 With {stations.length} petrol stations in {formattedLocation},
-                prices can vary significantly. By comparing prices before you
+                prices can vary significantly. Find cheap fuel near me by comparing prices before you
                 fill up, you can save up to 20 cents per liter. Our platform
-                updates prices daily to ensure you always have access to the
-                latest fuel prices in {formattedLocation}.
+                updates petrol prices near me daily to ensure you always have access to the
+                latest fuel prices near me in {formattedLocation}.
               </p>
             </div>
           </div>

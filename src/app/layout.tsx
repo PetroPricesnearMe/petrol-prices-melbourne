@@ -43,27 +43,31 @@ export const viewport: Viewport = {
   ],
 };
 
-// SEO: Updated root layout metadata with keyword strategy
+// SEO: Updated root layout metadata with "near me" keywords prioritized
 export const metadata: Metadata = {
   title: {
-    default: 'Petrol prices today | Cheapest fuel near me | PetrolPricesNearMe',
+    default: 'Live Petrol Prices Near Me Today | Cheap Fuel Melbourne',
     template: '%s | PetrolPricesNearMe',
   },
   description:
-    'Find live petrol prices near you today. Compare cheapest fuel prices from 250+ stations across Australia. Petrol prices today, fuel prices today, live petrol prices Melbourne. Updated daily.',
+    'Live petrol prices near me updated daily. Compare cheap fuel in Melbourne including E10, Unleaded 91, Premium and Diesel. Find cheap petrol near me today.',
   keywords: [
-    // General keywords
-    'petrol prices Melbourne',
-    'fuel prices Melbourne',
+    // PRIMARY KEYWORDS - "near me" patterns (prioritized)
+    'petrol near me',
+    'cheap fuel near me',
+    'cheap petrol near me',
+    'petrol near me price',
     'petrol prices near me',
     'fuel prices near me',
-    'petrol price comparison',
-    // Live/Today keywords
+    'fuel price near me',
+    // SECONDARY KEYWORDS
+    'petrol prices',
+    'fuel melbourne prices',
+    'cheap petrol',
+    // Additional keywords
     'petrol prices today',
     'fuel prices today',
     'live petrol prices Melbourne',
-    'cheap fuel prices today',
-    // Fuel type keywords
     'unleaded price near me',
     'diesel price near me',
     'premium petrol price near me',
@@ -90,9 +94,9 @@ export const metadata: Metadata = {
     locale: 'en_AU', // og:locale
     url: 'https://petrolpricesnearme.com.au/', // og:url
     siteName: 'PetrolPricesNearMe',
-    title: 'Petrol prices today | Cheapest fuel near me | PetrolPricesNearMe', // og:title
+    title: 'Live Petrol Prices Near Me Today | Cheap Fuel Melbourne', // og:title
     description:
-      'Find live petrol prices near you today. Compare cheapest fuel prices from 250+ stations across Australia. Updated daily.', // og:description
+      'Live petrol prices near me updated daily. Compare cheap fuel in Melbourne including E10, Unleaded 91, Premium and Diesel.', // og:description
     images: [
       {
         url: 'https://petrolpricesnearme.com.au/images/og-image.jpg',
@@ -104,9 +108,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Petrol prices today | Cheapest fuel near me | PetrolPricesNearMe',
+    title: 'Live Petrol Prices Near Me Today | Cheap Fuel Melbourne',
     description:
-      'Find live petrol prices near you today. Compare cheapest fuel prices from 250+ stations across Australia.',
+      'Live petrol prices near me updated daily. Compare cheap fuel in Melbourne including E10, Unleaded 91, Premium and Diesel.',
     images: ['https://petrolpricesnearme.com.au/images/twitter-image.jpg'],
   },
   robots: {

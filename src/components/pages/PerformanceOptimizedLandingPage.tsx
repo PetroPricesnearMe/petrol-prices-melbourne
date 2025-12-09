@@ -126,7 +126,7 @@ function OptimizedHeroSection() {
                 Live Fuel Prices Available
               </motion.div>
 
-              {/* SEO: Main Heading - Updated with keyword-rich H1 */}
+              {/* SEO: Main Heading - Updated with "near me" H1 pattern */}
               <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                 <motion.span
                   initial={{ opacity: 0, y: 30 }}
@@ -134,20 +134,19 @@ function OptimizedHeroSection() {
                   transition={{ duration: 0.8, delay: 0.3 }}
                 >
                   <span className="from-yellow-400 to-orange-500 bg-gradient-to-r bg-clip-text text-transparent">
-                    Cheap Fuel Prices Near Me Today
+                    Live Petrol Prices Near Me (Updated Today)
                   </span>
                 </motion.span>
               </h1>
 
-              {/* Value Proposition - Concise 1-2 sentence pitch */}
+              {/* Value Proposition - Updated subtitle with "near me" keywords */}
               <motion.p
                 className="mb-6 text-lg leading-relaxed text-white/95 sm:text-xl md:text-2xl md:leading-relaxed"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                Find the cheapest petrol prices in Melbourne with real-time
-                updates from 250+ stations. Save up to 20c/L on every fill-up.
+                Find cheap petrol near me with live prices updated daily. Compare cheap fuel near me in Melbourne from 250+ stations. Save up to 20c/L on every fill-up.
               </motion.p>
 
               {/* Benefits List - 3 key benefits */}
@@ -545,9 +544,9 @@ function OptimizedSEOContentSection() {
             itemScope
             itemType="https://schema.org/Article"
           >
-            {/* SEO: Updated H2 with keyword-rich heading */}
+            {/* SEO: Updated H2 with "near me" keywords */}
             <h2 className="mb-8 text-3xl font-extrabold text-gray-900 dark:text-gray-900 sm:text-4xl md:text-5xl md:leading-tight">
-              Cheap Fuel Prices Near Me Today
+              Cheap Petrol Near Me Today
             </h2>
 
             <div className="prose prose-lg max-w-none text-gray-800 dark:text-gray-700">

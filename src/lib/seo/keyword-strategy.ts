@@ -32,17 +32,23 @@ export function generateLocationSlug(location: string): string {
 
 /**
  * Generate comprehensive keyword list for a location
- * Includes all required keywords from the strategy
+ * Prioritizes "near me" patterns first as per SEO strategy
  */
 export function generateLocationKeywords(location?: string): string[] {
   const baseKeywords = [
-    // General keywords
-    'petrol prices Melbourne',
-    'fuel prices Melbourne',
+    // PRIMARY KEYWORDS - "near me" patterns (prioritized)
+    'petrol near me',
+    'cheap fuel near me',
+    'cheap petrol near me',
+    'petrol near me price',
     'petrol prices near me',
     'fuel prices near me',
-    'petrol price comparison',
-    // Live/Today keywords
+    'fuel price near me',
+    // SECONDARY KEYWORDS
+    'petrol prices',
+    'fuel melbourne prices',
+    'cheap petrol',
+    // Additional keywords
     'petrol prices today',
     'fuel prices today',
     'live petrol prices Melbourne',
@@ -80,19 +86,41 @@ export function generateLocationKeywords(location?: string): string[] {
 
 /**
  * Generate SEO title for location-based pages
- * Format: "{location} petrol prices today | Cheapest fuel near me | PetrolPricesNearMe"
+ * Optimized to 50-60 characters with "near me" keywords prioritized
+ * Format: "Live Petrol Prices Near Me Today | Cheap Fuel Prices Melbourne"
  */
 export function generateLocationTitle(location?: string): string {
   if (location) {
     const formattedLocation = formatLocationName(location);
-    return `${formattedLocation} petrol prices today | Cheapest petrol near me Melbourne | ${SITE_NAME}`;
+    // Use "near me" pattern: "{location} Petrol Prices Near Me | Cheap Fuel"
+    const baseTitle = ' Petrol Prices Near Me | Cheap Fuel';
+    const baseLength = baseTitle.length; // 35 chars
+    
+    let locationTitle = formattedLocation;
+    const maxLocationLength = 60 - baseLength; // 25 chars max for location
+    
+    // If location is too long, use shorter format
+    if (locationTitle.length > maxLocationLength) {
+      // Use shorter format: "{location} Petrol Near Me | Cheap Fuel"
+      const shortBase = ' Petrol Near Me | Cheap Fuel';
+      const shortBaseLength = shortBase.length; // 30 chars
+      const shortMaxLocation = 60 - shortBaseLength; // 30 chars max
+      
+      if (locationTitle.length > shortMaxLocation) {
+        locationTitle = locationTitle.substring(0, shortMaxLocation - 3) + '...';
+      }
+      return `${locationTitle}${shortBase}`;
+    }
+    
+    return `${locationTitle}${baseTitle}`;
   }
-  return `Petrol prices today | Cheapest fuel near me | ${SITE_NAME}`;
+  // Homepage title with "near me" keywords: 58 characters (optimal range: 50-60)
+  return 'Live Petrol Prices Near Me Today | Cheap Fuel Melbourne';
 }
 
 /**
  * Generate meta description for location-based pages
- * Based on "live petrol prices" and suburb names
+ * Prioritizes "near me" keywords in description
  */
 export function generateLocationDescription(
   location?: string,
@@ -101,25 +129,27 @@ export function generateLocationDescription(
 ): string {
   if (location) {
     const formattedLocation = formatLocationName(location);
-    return `Live petrol prices updated daily for ${formattedLocation}, Melbourne. Find the cheapest fuel near you including Unleaded 91, E10 and Diesel.`;
+    return `Live petrol prices near me updated daily for ${formattedLocation}, Melbourne. Compare cheap fuel near me including E10, Unleaded 91, Premium and Diesel.`;
   }
-  return 'Find live petrol prices near you today. Compare cheapest fuel prices from stations across Australia. Save money on unleaded, diesel, and premium fuel. Updated daily.';
+  // Homepage meta description with "near me" keywords
+  return 'Live petrol prices near me updated daily. Compare cheap fuel in Melbourne including E10, Unleaded 91, Premium and Diesel. Find cheap petrol near me today.';
 }
 
 /**
  * Generate keyword-rich H1 heading
- * Examples: "Live Petrol Prices in Sunbury Today" or "Cheap Fuel Prices Near Me Today"
+ * Prioritizes "near me" patterns: "Live Petrol Prices Near Me (Updated Today)"
  */
 export function generateH1Heading(location?: string): string {
   if (location) {
     const formattedLocation = formatLocationName(location);
-    return `Live Petrol Prices in ${formattedLocation} Today`;
+    return `Live Petrol Prices Near Me in ${formattedLocation} (Updated Today)`;
   }
-  return 'Cheap Fuel Prices Near Me Today';
+  return 'Live Petrol Prices Near Me (Updated Today)';
 }
 
 /**
  * Generate keyword-rich H2 heading variations
+ * Prioritizes "near me" patterns in all headings
  */
 export function generateH2Heading(
   type: 'prices' | 'stations' | 'comparison' | 'nearby',
@@ -130,22 +160,22 @@ export function generateH2Heading(
   switch (type) {
     case 'prices':
       return location
-        ? `Cheapest Petrol Prices in ${formattedLocation} Today`
-        : 'Cheap Fuel Prices Near Me Today';
+        ? `Cheap Petrol Near Me in ${formattedLocation} Today`
+        : 'Cheap Petrol Near Me Today';
     case 'stations':
       return location
-        ? `Petrol Stations in ${formattedLocation}`
+        ? `Petrol Stations Near Me in ${formattedLocation}`
         : 'Petrol Stations Near Me';
     case 'comparison':
       return location
-        ? `Compare Fuel Prices in ${formattedLocation}`
-        : 'Compare Fuel Prices Near Me';
+        ? `Compare Petrol Prices Near Me in ${formattedLocation}`
+        : 'Compare Petrol Prices Near Me';
     case 'nearby':
       return location
-        ? `Nearby Petrol Stations to ${formattedLocation}`
-        : 'Nearby Petrol Stations';
+        ? `Petrol Near Me in ${formattedLocation}`
+        : 'Petrol Near Me';
     default:
-      return 'Fuel Prices';
+      return 'Petrol Prices Near Me';
   }
 }
 
