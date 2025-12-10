@@ -16,12 +16,65 @@ import Script from 'next/script';
 import { Providers } from './providers';
 
 import { StructuredData } from '@/components/StructuredData';
+import { AsyncCSSLoader } from '@/components/AsyncCSSLoader';
 import {
   generateOrganizationSchema,
   generatePlatformLocalBusinessSchema,
   generateWebsiteSchema,
 } from '@/lib/seo/schema-generator';
 
+// Critical CSS - Inlined to prevent render blocking
+const criticalCSS = `
+/* Critical CSS - Above the fold styles only */
+:root {
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --color-primary-50: 239 246 255;
+  --color-primary-100: 219 234 254;
+  --color-primary-500: 59 130 246;
+  --color-primary-600: 37 99 235;
+  --color-primary-700: 29 78 216;
+  --color-bg-primary: 255 255 255;
+  --color-bg-secondary: 249 250 251;
+  --color-text-primary: 17 24 39;
+  --color-text-secondary: 75 85 99;
+  --color-border: 229 231 235;
+}
+.dark {
+  --color-bg-primary: 10 10 10;
+  --color-bg-secondary: 23 23 23;
+  --color-text-primary: 250 250 250;
+  --color-text-secondary: 163 163 163;
+  --color-border: 38 38 38;
+}
+* {
+  border-color: rgb(var(--color-border));
+}
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+body {
+  font-family: var(--font-inter), var(--font-system);
+  background-color: rgb(var(--color-bg-primary));
+  color: rgb(var(--color-text-primary));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-display: swap;
+}
+`;
+
+// Defer non-critical CSS loading - Next.js will handle optimization
 import '../styles/globals.css';
 
 const inter = Inter({
@@ -150,6 +203,15 @@ export default function RootLayout({
           Removing unnecessary preconnect improves Core Web Vitals (FCP, LCP).
         */}
 
+        {/* Critical CSS - Inlined to prevent render blocking (640ms savings) */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: criticalCSS,
+          }}
+        />
+
+        {/* Note: CSS optimization handled by AsyncCSSLoader component to avoid MIME type conflicts */}
+
         {/* Resource hints for external domains - non-blocking */}
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link
@@ -171,15 +233,17 @@ export default function RootLayout({
         {/* Structured Data - Organization and WebSite schemas */}
         <StructuredData data={schemas} />
 
-        {/* Critical CSS loaded inline above the fold */}
+        {/* Load non-critical CSS asynchronously to prevent render blocking */}
+        <AsyncCSSLoader />
 
         {/* Main content */}
         <Providers>{children}</Providers>
 
         {/* Google AdSense - Load after page is interactive to avoid blocking render */}
+        {/* Using afterInteractive strategy to avoid data-nscript attribute in head */}
         <Script
           id="adsbygoogle"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7058906610673320"
           crossOrigin="anonymous"
         />

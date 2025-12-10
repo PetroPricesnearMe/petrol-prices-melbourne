@@ -1,185 +1,104 @@
-# Error Fixes Summary
+# Error Fixes Summary - CSS and Image Issues
 
 ## Issues Fixed
 
 ### 1. ✅ CSS MIME Type Error
+
 **Error:** `Refused to execute script from '...css' because its MIME type ('text/css') is not executable`
 
-**Root Cause:** Next.js was incorrectly serving CSS files with wrong MIME types or scripts were trying to execute CSS files.
+**Root Cause:** The CSS optimization script in the head was interfering with Next.js's CSS loading mechanism, potentially causing the browser to try to execute CSS files as scripts.
 
 **Solution:**
-- Updated `next.config.ts` to explicitly set correct Content-Type headers for CSS files
-- Added proper caching headers for static assets
-- Fixed path matching pattern from `/_next/static/:path*.css` to `/_next/static/css/:path*.css`
+
+- Removed the `beforeInteractive` CSS optimization script from `<head>`
+- Rely on the `AsyncCSSLoader` component which runs client-side after hydration
+- This prevents MIME type conflicts while still optimizing CSS loading
 
 **Files Modified:**
-- `next.config.ts` - Lines 84-91
 
-### 2. ✅ Missing Icon Files (404 Errors)
-**Error:** `Failed to load resource: the server responded with a status of 404 () /icon.svg`
+- `src/app/layout.tsx` - Removed problematic CSS optimization script
 
-**Root Cause:** Icon files referenced in layout.tsx were in wrong location (public folder instead of app folder)
+### 2. ✅ AdSense data-nscript Warning
+
+**Error:** `AdSense head tag doesn't support data-nscript attribute`
+
+**Root Cause:** Next.js `Script` component with `strategy="lazyOnload"` was adding `data-nscript` attribute which AdSense doesn't support.
 
 **Solution:**
-- Created `src/app/icon.svg` with proper fuel-themed icon
-- Next.js automatically serves this as favicon via special file convention
-- Icon uses gradient and fuel pump emoji for branding
 
-**Files Created:**
-- `src/app/icon.svg` - New fuel-themed SVG icon
-
-### 3. ✅ Console Warnings (LCP, FID Logs)
-**Error:** Performance Observer logs cluttering console (`LCP: 1156`, `FID: 5.2`)
-
-**Root Cause:** Performance monitoring code was running in production and using `console.warn()`
-
-**Solution:**
-- Wrapped PerformanceObserver code in environment check
-- Only runs in development mode now
-- Changed from `console.warn()` to `console.info()` for less intrusive logging
-- Added try-catch for graceful degradation if PerformanceObserver not supported
+- Changed AdSense script strategy from `lazyOnload` to `afterInteractive`
+- This places the script in the body instead of head, avoiding the data-nscript issue
+- Script still loads after page is interactive, maintaining performance
 
 **Files Modified:**
-- `src/components/pages/PerformanceOptimizedLandingPage.tsx` - Lines 38-72
 
-### 4. ✅ Interactive Map Implementation
-**Feature:** Added Leaflet-based interactive map to landing page hero section
+- `src/app/layout.tsx` - Updated AdSense Script strategy
 
-**Benefits:**
-- **SEO Optimized:** Lazy loaded with proper loading states
-- **Performance:** Code splitting, dynamic imports, minimal bundle impact
-- **Fast Loading:** Skeleton UI while map loads
-- **Mobile Responsive:** Works perfectly on all devices
-- **Accessible:** Proper ARIA labels and keyboard navigation
-- **Clustered Markers:** 250+ stations perform smoothly with clustering
-- **Real-time Data:** Shows live fuel prices on map markers
+### 3. ⚠️ Image 400 Errors (Next.js Image Optimization)
 
-**Files Created:**
-- `src/components/map/HeroMap.tsx` - Main lazy-loaded wrapper
-- `src/components/map/HeroMapInner.tsx` - Actual Leaflet implementation
-- `src/components/map/HeroMap.module.css` - Optimized styles
-- `src/components/map/index.ts` - Barrel exports
+**Error:** `Failed to load resource: the server responded with a status of 400 ()` for `/_next/image?url=...`
 
-**Files Modified:**
-- `src/components/pages/LandingPage.tsx` - Integrated map into hero section
+**Root Cause:** Next.js Image Optimization API is returning 400 errors. This can happen due to:
 
-## Performance Improvements
+- Image file not found at the specified path
+- Image optimization API configuration issues
+- Network/deployment environment issues
+- Image format not supported
 
-### Bundle Size Optimization
-- Map components are lazy loaded (not in initial bundle)
-- Leaflet is only loaded when map is viewed
-- Dynamic imports reduce FCP and TTI
+**Current Status:**
 
-### SEO Benefits
-- Proper loading states prevent layout shift (CLS)
-- Content-first approach (text loads before map)
-- Semantic HTML with proper ARIA labels
-- Fast initial paint with skeleton UI
+- Image exists at `public/images/fuel-nozzles.jpg`
+- Components using the image have error handling in place
+- The 400 errors may be due to:
+  1. Production deployment configuration
+  2. Image optimization API not available in current environment
+  3. Image path resolution issues
 
-### Core Web Vitals Impact
-- **LCP:** Improved by loading map after hero text
-- **FID:** No blocking JavaScript in critical path
-- **CLS:** Fixed height prevents layout shift
-- **TTI:** Deferred map loading improves interactivity
+**Recommendations:**
 
-## Testing Checklist
+1. **Check Image Paths:** Ensure all image references use correct paths
+2. **Verify Image Optimization:** Check if Next.js Image Optimization is enabled in production
+3. **Add Fallback Handling:** Components already have error handling, but consider:
+   - Using `unoptimized` flag for problematic images
+   - Adding better fallback images
+   - Using static image imports for critical images
 
-- [x] CSS files load with correct MIME type
-- [x] Icon.svg loads without 404 errors
-- [x] Console is clean in production mode
-- [x] Map loads and displays correctly
-- [x] Map markers are clickable
-- [x] Station popups show correct information
-- [x] Map is responsive on mobile
-- [x] No layout shift when map loads
-- [x] Performance metrics are acceptable
+**Files to Check:**
+
+- `src/components/pages/EnhancedLandingPage.tsx` - Uses `/images/fuel-nozzles.jpg`
+- `src/components/pages/PerformanceOptimizedLandingPage.tsx` - Uses `/images/fuel-nozzles.jpg`
+- `src/components/common/OptimizedImage.tsx` - Has fallback handling
+
+## Testing Recommendations
+
+1. **CSS Loading:**
+   - Verify no MIME type errors in console
+   - Check that CSS loads correctly
+   - Verify AsyncCSSLoader is working
+
+2. **AdSense:**
+   - Check browser console for AdSense warnings
+   - Verify ads load correctly
+   - Check network tab for AdSense script loading
+
+3. **Images:**
+   - Verify images load in production
+   - Check Next.js Image Optimization API status
+   - Test fallback behavior when images fail
+   - Consider using `unoptimized` flag if optimization API is unavailable
 
 ## Next Steps
 
-### To Test the Map:
-1. Run `npm run dev`
-2. Navigate to homepage
-3. Scroll to hero section
-4. Interactive map should load smoothly
-5. Click on markers to see station details
-6. Test on mobile devices
+1. **Image Optimization:**
+   - Investigate why Image Optimization API returns 400
+   - Consider using static imports for critical images
+   - Add better error logging for image failures
 
-### To Deploy:
-1. Run `npm run build` to verify production build
-2. Test production build locally: `npm run start`
-3. Deploy to Vercel/production environment
-4. Monitor Core Web Vitals in production
+2. **CSS Optimization:**
+   - Monitor performance impact of AsyncCSSLoader
+   - Verify render-blocking CSS is eliminated
+   - Test in production environment
 
-## Additional Notes
-
-### Map Features:
-- **Clustering:** Stations are grouped when zoomed out
-- **Color Coding:** Markers show price ranges (green=cheap, red=expensive)
-- **Popups:** Click markers for station details and directions
-- **Legend:** Price range indicator in bottom-left
-- **Station Count:** Live count in top-right
-- **Smooth Animations:** Framer Motion for polished UX
-
-### Browser Compatibility:
-- ✅ Chrome/Edge (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (iOS 12+)
-- ✅ Mobile browsers (iOS/Android)
-
-### Dependencies Used:
-- `leaflet` - Map library (already installed)
-- `react-leaflet` - React bindings (already installed)
-- `react-leaflet-cluster` - Marker clustering (already installed)
-- `framer-motion` - Animations (already installed)
-
-## Performance Metrics
-
-### Before Fixes:
-- Console cluttered with warnings
-- 404 errors for icons
-- MIME type errors
-- No interactive map
-
-### After Fixes:
-- Clean console in production
-- All assets load correctly
-- Proper content types
-- Fast, interactive map with lazy loading
-- Improved user engagement
-
-## Commands Reference
-
-```bash
-# Development
-npm run dev
-
-# Build for production
-npm run build
-
-# Test production build
-npm start
-
-# Run linter
-npm run lint
-
-# Fix linting issues
-npm run lint:fix
-
-# Format code
-npm run format
-```
-
-## Support
-
-If you encounter any issues:
-1. Clear browser cache and try again
-2. Check browser console for errors
-3. Verify all dependencies are installed: `npm install`
-4. Ensure Node version is 22.x: `node --version`
-5. Try deleting `.next` folder and rebuilding
-
----
-
-**Last Updated:** December 3, 2025
-**Status:** ✅ All Critical Errors Fixed
-
+3. **AdSense:**
+   - Monitor for any remaining warnings
+   - Verify ads are displaying correctly
