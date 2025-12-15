@@ -20,13 +20,24 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState, useCallback, useMemo } from 'react';
 
-import { MapView } from '@/components/molecules/MapView/MapViewMapLibre';
 import {
   SortDropdown,
   type SortOption,
 } from '@/components/molecules/SortDropdown';
 import { getStationUrl } from '@/lib/seo/station-seo';
 import { cn, patterns } from '@/styles/system/css-in-js';
+
+// Lazy load heavy MapView component (maplibre-gl is ~200KB+)
+const MapView = dynamic(
+  () =>
+    import('@/components/molecules/MapView/MapViewMapLibre').then((mod) => ({
+      default: mod.MapView,
+    })),
+  {
+    ssr: false, // Maps don't need SSR
+    loading: () => <MapViewSkeleton />,
+  }
+);
 
 // Lazy load SEO sections for performance
 const LiveFuelPriceSnapshot = dynamic(
@@ -334,8 +345,10 @@ export function MapViewClient({ initialStations, metadata }: Props) {
             </h1>
             {/* SEO: Updated H2 with "near me" keywords */}
             <h2 className="mb-6 max-w-3xl text-center text-xl font-normal text-white/90 md:text-2xl">
-              Find cheap petrol near me with live prices updated daily. Compare cheap fuel near me from {metadata.totalStations}+ petrol stations across{' '}
-              {metadata.suburbs.length}+ suburbs. Petrol prices near me, fuel prices near me, cheap petrol near me.
+              Find cheap petrol near me with live prices updated daily. Compare
+              cheap fuel near me from {metadata.totalStations}+ petrol stations
+              across {metadata.suburbs.length}+ suburbs. Petrol prices near me,
+              fuel prices near me, cheap petrol near me.
             </h2>
 
             {/* Location Toggle */}
@@ -643,6 +656,38 @@ export function MapViewClient({ initialStations, metadata }: Props) {
 
       {/* Section 6: Internal Linking Hub */}
       <InternalLinkingHub />
+    </div>
+  );
+}
+
+/**
+ * Map View Skeleton - Prevents layout shift while map loads
+ */
+function MapViewSkeleton() {
+  return (
+    <div className="flex h-[calc(100vh-200px)] min-h-[500px] flex-col items-center justify-center rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:border-gray-800 dark:from-gray-900 dark:to-gray-800">
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10">
+        <svg
+          className="h-6 w-6 animate-pulse"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+          />
+        </svg>
+      </div>
+      <p className="text-base font-medium text-gray-700 dark:text-gray-300">
+        Loading interactive map...
+      </p>
+      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        Visualising all Melbourne petrol stations
+      </p>
     </div>
   );
 }

@@ -428,11 +428,18 @@ async function fetchStationByIdFromBaserow(
 }
 
 async function fetchFuelPricesFromBaserow(): Promise<FuelPrice[]> {
+  const REQUEST_TIMEOUT_MS = 10_000; // 10 seconds timeout
+  const MIN_TIMEOUT = 1_000;
+  const timeout = Math.max(REQUEST_TIMEOUT_MS, MIN_TIMEOUT);
+  const controller = new AbortController();
+  const timeoutHandle = setTimeout(() => controller.abort(), timeout);
+
   try {
     const response = await fetch(
       `${BASEROW_BASE_ENDPOINT}/${BASEROW_PRICES_TABLE_ID}/?size=200`,
       {
         headers: BASEROW_HEADERS,
+        signal: controller.signal,
         next: {
           revalidate: 300,
           tags: ['fuel-prices'],
@@ -441,13 +448,75 @@ async function fetchFuelPricesFromBaserow(): Promise<FuelPrice[]> {
     );
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch fuel prices: ${response.statusText}`);
+      // Safe body reading for error responses
+      let errorBody: string | null = null;
+      try {
+        const text = await response.text();
+        errorBody = text?.slice(0, 500) || null;
+      } catch {
+        // Ignore body reading errors
+      }
+
+      // Better error messages for different status codes
+      let errorMessage = `Failed to fetch fuel prices from Baserow: ${response.status} ${response.statusText}`;
+      if (errorBody) {
+        errorMessage += ` - ${errorBody}`;
+      }
+
+      if (response.status === 401) {
+        errorMessage =
+          'Baserow API authentication failed. Please check API token.';
+      } else if (response.status === 403) {
+        errorMessage =
+          'Baserow API access forbidden. Please check permissions.';
+      } else if (response.status === 404) {
+        errorMessage = 'Baserow fuel prices table not found.';
+      } else if (response.status === 429) {
+        errorMessage =
+          'Baserow API rate limit exceeded. Please try again later.';
+      } else if (response.status >= 500) {
+        errorMessage = 'Baserow API server error. Please try again later.';
+      }
+
+      logger.error(`[Baserow] ${errorMessage}`);
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
+
+    // Validate response structure
+    if (!data || !Array.isArray(data.results)) {
+      logger.warn(
+        '[Baserow] Invalid response structure, expected array in results field'
+      );
+      return [];
+    }
+
     return transformBaserowToFuelPrices(data.results);
   } catch (error) {
+    // Handle timeout errors
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      const message = `[Baserow] Request timed out after ${timeout}ms`;
+      logger.error(message);
+      return [];
+    }
+
+    // Handle network errors
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      logger.error(
+        '[Baserow] Network error - Unable to connect to Baserow API'
+      );
+      return [];
+    }
+
+    // Re-throw if it's our custom error (already logged)
+    if (error instanceof Error && error.message.includes('Baserow')) {
+      return [];
+    }
+
     logger.error('Error fetching fuel prices from Baserow:', error);
     return [];
+  } finally {
+    clearTimeout(timeoutHandle);
   }
 }

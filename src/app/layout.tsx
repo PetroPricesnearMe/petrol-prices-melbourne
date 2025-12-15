@@ -15,6 +15,7 @@ import Script from 'next/script';
 
 import { Providers } from './providers';
 
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { StructuredData } from '@/components/StructuredData';
 import { AsyncCSSLoader } from '@/components/AsyncCSSLoader';
 import {
@@ -238,6 +239,9 @@ export default function RootLayout({
 
         {/* Main content */}
         <Providers>{children}</Providers>
+
+        {/* Google Analytics - Non-blocking, privacy-focused, loads after page is interactive */}
+        <GoogleAnalytics />
 
         {/* Google AdSense - Load after page is interactive to avoid blocking render */}
         {/* Using afterInteractive strategy to avoid data-nscript attribute in head */}

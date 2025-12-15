@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 
 /**
  * Navbar Component - Fully Responsive with Tailwind CSS
@@ -13,6 +13,8 @@ const Navbar = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const menuButtonRef = useRef(null);
+  const firstLinkRef = useRef(null);
 
   // Handle scroll effects
   useEffect(() => {
@@ -38,6 +40,28 @@ const Navbar = React.memo(() => {
     }
     return () => {
       document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  // Keyboard navigation and focus management
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    // Focus first link when menu opens
+    setTimeout(() => {
+      firstLinkRef.current?.focus();
+    }, 100);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
@@ -86,7 +110,7 @@ const Navbar = React.memo(() => {
           {/* Logo - Responsive */}
           <Link
             href="/"
-            className="group flex min-h-[44px] items-center space-x-2 transition-transform duration-300 hover:scale-105"
+            className="group flex min-h-[44px] items-center space-x-2 rounded-md transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
             aria-label="Home - Melbourne Fuel"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 shadow-md transition-shadow duration-300 group-hover:shadow-lg sm:h-10 sm:w-10">
@@ -108,6 +132,7 @@ const Navbar = React.memo(() => {
                 className={`
                   relative rounded-lg px-4 py-2 text-sm font-semibold
                   transition-all duration-300 hover:-translate-y-0.5
+                  focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
                   ${
                     isActive(path)
                       ? 'bg-primary-50 text-primary-600'
@@ -126,8 +151,9 @@ const Navbar = React.memo(() => {
 
           {/* Mobile Menu Button - Touch-Friendly */}
           <button
+            ref={menuButtonRef}
             onClick={handleToggle}
-            className="relative flex h-11 w-11 touch-manipulation flex-col items-center justify-center rounded-xl bg-gray-100 transition-all duration-300 hover:bg-gray-200 active:scale-95 lg:hidden"
+            className="relative flex h-11 w-11 touch-manipulation flex-col items-center justify-center rounded-xl bg-gray-100 transition-all duration-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 active:scale-95 lg:hidden"
             aria-label="Toggle navigation menu"
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
@@ -170,10 +196,11 @@ const Navbar = React.memo(() => {
         id="mobile-menu"
         className={`
           shadow-strong ease-out fixed bottom-0 right-0 top-0 z-50 w-[280px]
-          overflow-y-auto bg-white transition-transform
+          overflow-y-auto overflow-x-hidden bg-white transition-transform
           duration-300 sm:w-[320px] lg:hidden
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
+        aria-hidden={!isOpen}
       >
         {/* Mobile Menu Header */}
         <div className="sticky top-0 z-10 bg-gradient-to-r from-primary-500 to-secondary-500 p-6 shadow-md">
@@ -188,7 +215,7 @@ const Navbar = React.memo(() => {
             </div>
             <button
               onClick={handleToggle}
-              className="flex h-10 w-10 touch-manipulation items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/30 active:scale-95"
+              className="flex h-10 w-10 touch-manipulation items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm transition-all duration-300 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 active:scale-95"
               aria-label="Close menu"
             >
               <span className="text-2xl font-light text-white">×</span>
@@ -201,11 +228,13 @@ const Navbar = React.memo(() => {
           {navLinks.map(({ path, label }, index) => (
             <Link
               key={path}
+              ref={index === 0 ? firstLinkRef : null}
               href={path}
               onClick={handleLinkClick}
               className={`
-                flex min-h-[56px] items-center justify-between border-l-4 px-6 py-5
-                text-base font-semibold transition-all duration-300 touch-manipulation active:bg-gray-100
+                flex min-h-[56px] touch-manipulation items-center justify-between border-l-4 px-6
+                py-5 text-base font-semibold transition-all duration-300 focus:outline-none
+                focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 active:bg-gray-100
                 ${
                   isActive(path)
                     ? 'border-primary-500 bg-primary-50 text-primary-600'

@@ -1,6 +1,6 @@
 /**
  * Location Toggle Component
- * 
+ *
  * Toggle for "Use My Location" and "Search Suburb or Postcode"
  */
 
@@ -16,10 +16,14 @@ interface Props {
   isLocationLoading?: boolean;
 }
 
-export function LocationToggle({ onUseLocation, onSearchSuburb, isLocationLoading }: Props) {
+export function LocationToggle({
+  onUseLocation,
+  onSearchSuburb,
+  isLocationLoading,
+}: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
-  
+
   const handleUseLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -27,7 +31,9 @@ export function LocationToggle({ onUseLocation, onSearchSuburb, isLocationLoadin
           onUseLocation();
         },
         (error) => {
-          alert('Unable to get your location. Please enable location services.');
+          alert(
+            'Unable to get your location. Please enable location services.'
+          );
           console.error('Geolocation error:', error);
         }
       );
@@ -35,23 +41,23 @@ export function LocationToggle({ onUseLocation, onSearchSuburb, isLocationLoadin
       alert('Geolocation is not supported by your browser.');
     }
   }, [onUseLocation]);
-  
-  const handleSearch = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      onSearchSuburb(searchQuery.trim());
-    }
-  }, [searchQuery, onSearchSuburb]);
-  
+
+  const handleSearch = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+        onSearchSuburb(searchQuery.trim());
+      }
+    },
+    [searchQuery, onSearchSuburb]
+  );
+
   return (
-    <div className="flex flex-col sm:flex-row gap-3">
+    <div className="flex flex-col gap-3 sm:flex-row">
       <button
         onClick={handleUseLocation}
         disabled={isLocationLoading}
-        className={cn(
-          'btn btn-primary btn-sm',
-          isLocationLoading && 'loading'
-        )}
+        className={cn('btn-primary btn-sm btn', isLocationLoading && 'loading')}
       >
         {isLocationLoading ? (
           <>
@@ -60,23 +66,28 @@ export function LocationToggle({ onUseLocation, onSearchSuburb, isLocationLoadin
           </>
         ) : (
           <>
-            📍 Use My Location
+            <span aria-hidden="true">📍</span> Use My Location
           </>
         )}
       </button>
-      
-      <div className="flex gap-2 flex-1">
+
+      <div className="flex flex-1 gap-2">
         {showSearch ? (
-          <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+          <form onSubmit={handleSearch} className="flex flex-1 gap-2">
+            <label htmlFor="suburb-search" className="sr-only">
+              Search suburb or postcode
+            </label>
             <input
+              id="suburb-search"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search suburb or postcode..."
               className="input input-sm flex-1"
+              aria-label="Search suburb or postcode"
               autoFocus
             />
-            <button type="submit" className="btn btn-primary btn-sm">
+            <button type="submit" className="btn-primary btn-sm btn">
               Search
             </button>
             <button
@@ -85,7 +96,7 @@ export function LocationToggle({ onUseLocation, onSearchSuburb, isLocationLoadin
                 setShowSearch(false);
                 setSearchQuery('');
               }}
-              className="btn btn-ghost btn-sm"
+              className="btn-ghost btn-sm btn"
             >
               Cancel
             </button>
@@ -93,13 +104,13 @@ export function LocationToggle({ onUseLocation, onSearchSuburb, isLocationLoadin
         ) : (
           <button
             onClick={() => setShowSearch(true)}
-            className="btn btn-outline btn-sm flex-1"
+            className="btn-outline btn-sm btn flex-1"
+            aria-label="Search suburb or postcode"
           >
-            🔍 Search Suburb or Postcode
+            <span aria-hidden="true">🔍</span> Search Suburb or Postcode
           </button>
         )}
       </div>
     </div>
   );
 }
-

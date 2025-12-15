@@ -7,9 +7,14 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 
-import { SortDropdown, QuickSortBar, type SortOption } from '@/components/molecules/SortDropdown';
+import {
+  SortDropdown,
+  QuickSortBar,
+  type SortOption,
+} from '@/components/molecules/SortDropdown';
+import { useDebounce } from '@/hooks/usePerformance';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
 interface FuelPrices {
@@ -65,29 +70,79 @@ const ITEMS_PER_PAGE = 24;
 
 // Brand utility functions
 const getBrandInfo = (brand: string) => {
-  const brandMap: Record<string, { name: string; logo: string; color: string; fallback: string }> = {
-    'BP': { name: 'BP', logo: '/images/brands/bp.png', color: '#00A651', fallback: '#00A651' },
-    'Shell': { name: 'Shell', logo: '/images/brands/shell.png', color: '#FFD700', fallback: '#FFD700' },
-    'Caltex': { name: 'Caltex', logo: '/images/brands/caltex.png', color: '#FF6B35', fallback: '#FF6B35' },
-    '7-Eleven': { name: '7-Eleven', logo: '/images/brands/7eleven.png', color: '#FF6900', fallback: '#FF6900' },
-    'Coles Express': { name: 'Coles Express', logo: '/images/brands/coles.png', color: '#E31837', fallback: '#E31837' },
-    'Woolworths': { name: 'Woolworths', logo: '/images/brands/woolworths.png', color: '#1B5E20', fallback: '#1B5E20' },
-    'United': { name: 'United', logo: '/images/brands/united.png', color: '#1976D2', fallback: '#1976D2' },
-    'Puma': { name: 'Puma', logo: '/images/brands/puma.png', color: '#E91E63', fallback: '#E91E63' },
+  const brandMap: Record<
+    string,
+    { name: string; logo: string; color: string; fallback: string }
+  > = {
+    BP: {
+      name: 'BP',
+      logo: '/images/brands/bp.png',
+      color: '#00A651',
+      fallback: '#00A651',
+    },
+    Shell: {
+      name: 'Shell',
+      logo: '/images/brands/shell.png',
+      color: '#FFD700',
+      fallback: '#FFD700',
+    },
+    Caltex: {
+      name: 'Caltex',
+      logo: '/images/brands/caltex.png',
+      color: '#FF6B35',
+      fallback: '#FF6B35',
+    },
+    '7-Eleven': {
+      name: '7-Eleven',
+      logo: '/images/brands/7eleven.png',
+      color: '#FF6900',
+      fallback: '#FF6900',
+    },
+    'Coles Express': {
+      name: 'Coles Express',
+      logo: '/images/brands/coles.png',
+      color: '#E31837',
+      fallback: '#E31837',
+    },
+    Woolworths: {
+      name: 'Woolworths',
+      logo: '/images/brands/woolworths.png',
+      color: '#1B5E20',
+      fallback: '#1B5E20',
+    },
+    United: {
+      name: 'United',
+      logo: '/images/brands/united.png',
+      color: '#1976D2',
+      fallback: '#1976D2',
+    },
+    Puma: {
+      name: 'Puma',
+      logo: '/images/brands/puma.png',
+      color: '#E91E63',
+      fallback: '#E91E63',
+    },
   };
-  return brandMap[brand] || { name: brand, logo: '/images/brands/default-logo.svg', color: '#6B7280', fallback: '#6B7280' };
+  return (
+    brandMap[brand] || {
+      name: brand,
+      logo: '/images/brands/default-logo.svg',
+      color: '#6B7280',
+      fallback: '#6B7280',
+    }
+  );
 };
 
 const getBrandClass = (brand: string) => {
   const brandClassMap: Record<string, string> = {
-    'BP': 'badge-success',
-    'Shell': 'badge-warning',
-    'Caltex': 'badge-error',
+    BP: 'badge-success',
+    Shell: 'badge-warning',
+    Caltex: 'badge-error',
     '7-Eleven': 'badge-primary',
     'Coles Express': 'badge-error',
-    'Woolworths': 'badge-success',
-    'United': 'badge-primary',
-    'Puma': 'badge-secondary',
+    Woolworths: 'badge-success',
+    United: 'badge-primary',
+    Puma: 'badge-secondary',
   };
   return brandClassMap[brand] || 'badge-secondary';
 };
@@ -110,22 +165,81 @@ function AdvancedSearchBar({
   onSearch: (query: string, data: unknown) => void;
 }) {
   const [query, setQuery] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSearch = (value: string) => {
-    setQuery(value);
-    onSearch(value, data);
-  };
+  // Debounce search to reduce re-renders
+  const debouncedQuery = useDebounce(query, 300);
+
+  // Memoize the search handler
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setQuery(e.target.value);
+    },
+    []
+  );
+
+  // Call onSearch with debounced value
+  useEffect(() => {
+    onSearch(debouncedQuery, data);
+  }, [debouncedQuery, data, onSearch]);
+
+  // Memoize clear handler
+  const handleClear = useCallback(() => {
+    setQuery('');
+    inputRef.current?.focus();
+  }, []);
+
+  // Memoize keyboard handler
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Escape') {
+        setQuery('');
+        inputRef.current?.blur();
+      }
+    },
+    []
+  );
 
   return (
-    <div className="relative">
+    <div className="relative" role="search" aria-label="Search stations">
       <input
+        ref={inputRef}
         type="search"
         placeholder={placeholder}
         value={query}
-        onChange={(e) => handleSearch(e.target.value)}
+        onChange={handleSearchChange}
+        onKeyDown={handleKeyDown}
         className="input w-full"
         aria-label="Search stations"
+        aria-autocomplete="list"
+        aria-describedby="search-description"
       />
+      {query && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:hover:text-gray-300"
+          aria-label="Clear search"
+        >
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      )}
+      <p id="search-description" className="sr-only">
+        Search for stations. Results update as you type.
+      </p>
     </div>
   );
 }
@@ -141,7 +255,8 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-  const [searchResults, setSearchResults] = useState<Station[]>(initialStations);
+  const [searchResults, setSearchResults] =
+    useState<Station[]>(initialStations);
   const [selectedSearchCategory, setSelectedSearchCategory] = useState('all');
 
   // Search categories for advanced search bar
@@ -194,9 +309,10 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
     // ONLY filter by fuel type when user is actively sorting by price or filtering by max price
     // This ensures all stations show by default instead of just those with the selected fuel type
-    const isPriceSorting = filters.sortBy === 'price-low' || filters.sortBy === 'price-high';
+    const isPriceSorting =
+      filters.sortBy === 'price-low' || filters.sortBy === 'price-high';
     const hasPriceFilter = filters.priceMax !== '';
-    
+
     if (isPriceSorting || hasPriceFilter) {
       // Only show stations with selected fuel type when price sorting/filtering is active
       result = result.filter((s) => s.fuelPrices[filters.fuelType] !== null);
@@ -225,7 +341,9 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
           return priceB - priceA;
         }
         case 'suburb':
-          return a.suburb.localeCompare(b.suburb) || a.name.localeCompare(b.name);
+          return (
+            a.suburb.localeCompare(b.suburb) || a.name.localeCompare(b.name)
+          );
         case 'name':
         default:
           return a.name.localeCompare(b.name);
@@ -236,11 +354,14 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   }, [searchResults, filters]);
 
   // Handle advanced search
-  const handleAdvancedSearch = useCallback((query: string, results: Station[]) => {
-    setSearchResults(results);
-    setFilters((prev) => ({ ...prev, search: query }));
-    setCurrentPage(1);
-  }, []);
+  const handleAdvancedSearch = useCallback(
+    (query: string, results: Station[]) => {
+      setSearchResults(results);
+      setFilters((prev) => ({ ...prev, search: query }));
+      setCurrentPage(1);
+    },
+    []
+  );
 
   // Handle search category change
   const _handleSearchCategoryChange = useCallback((categoryId: string) => {
@@ -254,10 +375,13 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
     currentPage * ITEMS_PER_PAGE
   );
 
-  const handleFilterChange = useCallback((key: keyof SearchFilters, value: string) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-    setCurrentPage(1);
-  }, []);
+  const handleFilterChange = useCallback(
+    (key: keyof SearchFilters, value: string) => {
+      setFilters((prev) => ({ ...prev, [key]: value }));
+      setCurrentPage(1);
+    },
+    []
+  );
 
   const clearFilters = useCallback(() => {
     setFilters({
@@ -272,7 +396,13 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   }, []);
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => value && value !== 'all' && value !== 'unleaded' && value !== 'price-low' && key !== 'sortBy' && key !== 'fuelType'
+    ([key, value]) =>
+      value &&
+      value !== 'all' &&
+      value !== 'unleaded' &&
+      value !== 'price-low' &&
+      key !== 'sortBy' &&
+      key !== 'fuelType'
   ).length;
 
   // Get price color based on value
@@ -286,24 +416,31 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-gradient-primary text-white py-12 print-hidden">
+      <header className="print-hidden bg-gradient-primary py-12 text-white">
         <div className={patterns.container()}>
           <div className={patterns.flex.colCenter}>
-            <h1 className={cn(patterns.text.h1, 'text-white mb-4 text-center')}>
+            <h1 className={cn(patterns.text.h1, 'mb-4 text-center text-white')}>
               Melbourne Petrol Stations Directory
             </h1>
-            <p className={cn(patterns.text.body, 'text-white/90 text-center max-w-2xl mb-6')}>
-              Browse {metadata.totalStations}+ stations across {metadata.suburbs.length}+ suburbs with live fuel prices
+            <p
+              className={cn(
+                patterns.text.body,
+                'mb-6 max-w-2xl text-center text-white/90'
+              )}
+            >
+              Browse {metadata.totalStations}+ stations across{' '}
+              {metadata.suburbs.length}+ suburbs with live fuel prices
             </p>
-            <div className="flex gap-4 flex-wrap justify-center text-sm">
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <strong>{metadata.totalStations}</strong> Total Stations
               </div>
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
+              <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
                 <strong>{metadata.suburbs.length}+</strong> Suburbs
               </div>
-              <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
-                Average Price: <strong>{metadata.priceRange.unleaded.average}¢/L</strong>
+              <div className="rounded-lg bg-white/10 px-4 py-2 backdrop-blur-sm">
+                Average Price:{' '}
+                <strong>{metadata.priceRange.unleaded.average}¢/L</strong>
               </div>
             </div>
           </div>
@@ -311,9 +448,9 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
       </header>
 
       {/* Filters */}
-      <section className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 print-hidden sticky top-0 z-10 shadow-sm">
+      <section className="print-hidden sticky top-0 z-10 border-b border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <div className={patterns.container()}>
-          <div className="py-6 space-y-4">
+          <div className="space-y-4 py-6">
             {/* Advanced Search Bar */}
             <div className="mb-4">
               <AdvancedSearchBar
@@ -324,9 +461,10 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
             </div>
 
             {/* Filters Toggle */}
-            <div className="flex gap-4 flex-wrap items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                {filteredStations.length} station{filteredStations.length !== 1 ? 's' : ''} found
+                {filteredStations.length} station
+                {filteredStations.length !== 1 ? 's' : ''} found
                 {filters.search && (
                   <span className="ml-2">
                     for <strong>&quot;{filters.search}&quot;</strong>
@@ -343,24 +481,34 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
               >
                 ⚙️ Filters
                 {activeFilterCount > 0 && (
-                  <span className="badge badge-secondary ml-2">{activeFilterCount}</span>
+                  <span className="badge badge-secondary ml-2">
+                    {activeFilterCount}
+                  </span>
                 )}
               </button>
             </div>
 
             {/* Advanced Filters */}
             {showFilters && (
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 space-y-4 animate-fade-in">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="animate-fade-in space-y-4 rounded-xl bg-gray-50 p-6 dark:bg-gray-900">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                   {/* Fuel Type */}
                   <div>
-                    <label htmlFor="fuel-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="fuel-type"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
                       ⛽ Fuel Type
                     </label>
                     <select
                       id="fuel-type"
                       value={filters.fuelType}
-                      onChange={(e) => handleFilterChange('fuelType', e.target.value as keyof FuelPrices)}
+                      onChange={(e) =>
+                        handleFilterChange(
+                          'fuelType',
+                          e.target.value as keyof FuelPrices
+                        )
+                      }
                       className="input w-full"
                     >
                       <option value="unleaded">Unleaded 91</option>
@@ -373,16 +521,23 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                   {/* Brand */}
                   <div>
-                    <label htmlFor="brand" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="brand"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
                       🏪 Brand
                     </label>
                     <select
                       id="brand"
                       value={filters.brand}
-                      onChange={(e) => handleFilterChange('brand', e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange('brand', e.target.value)
+                      }
                       className="input w-full"
                     >
-                      <option value="all">All Brands ({metadata.brands.length})</option>
+                      <option value="all">
+                        All Brands ({metadata.brands.length})
+                      </option>
                       {metadata.brands.map((brand) => (
                         <option key={brand} value={brand}>
                           {brand}
@@ -393,16 +548,23 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                   {/* Suburb */}
                   <div>
-                    <label htmlFor="suburb" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label
+                      htmlFor="suburb"
+                      className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
                       📍 Suburb
                     </label>
                     <select
                       id="suburb"
                       value={filters.suburb}
-                      onChange={(e) => handleFilterChange('suburb', e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange('suburb', e.target.value)
+                      }
                       className="input w-full"
                     >
-                      <option value="all">All Suburbs ({metadata.suburbs.length})</option>
+                      <option value="all">
+                        All Suburbs ({metadata.suburbs.length})
+                      </option>
                       {metadata.suburbs.map((suburb) => (
                         <option key={suburb} value={suburb}>
                           {suburb}
@@ -413,7 +575,7 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                   {/* Sort */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                       🔄 Sort By
                     </label>
                     <SortDropdown
@@ -426,26 +588,37 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
                 {/* Price Range */}
                 <div>
-                  <label htmlFor="price-max" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    htmlFor="price-max"
+                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
                     💰 Maximum Price (¢/L)
-                    </label>
+                  </label>
                   <input
                     id="price-max"
                     type="number"
                     placeholder="e.g., 210"
                     step="0.1"
                     value={filters.priceMax}
-                    onChange={(e) => handleFilterChange('priceMax', e.target.value)}
+                    onChange={(e) =>
+                      handleFilterChange('priceMax', e.target.value)
+                    }
                     className="input max-w-xs"
                   />
                 </div>
 
                 {/* Filter Actions */}
-                <div className="flex gap-3 justify-end border-t border-gray-200 dark:border-gray-700 pt-4">
-                  <button onClick={clearFilters} className="btn btn-ghost btn-sm">
+                <div className="flex justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
+                  <button
+                    onClick={clearFilters}
+                    className="btn-ghost btn-sm btn"
+                  >
                     Clear All
                   </button>
-                  <button onClick={() => setShowFilters(false)} className="btn btn-primary btn-sm">
+                  <button
+                    onClick={() => setShowFilters(false)}
+                    className="btn-primary btn-sm btn"
+                  >
                     Apply Filters
                   </button>
                 </div>
@@ -472,13 +645,13 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
 
           {/* Station Grid */}
           {filteredStations.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="text-6xl mb-4">🔍</div>
+            <div className="py-20 text-center">
+              <div className="mb-4 text-6xl">🔍</div>
               <h3 className={patterns.text.h3}>No stations found</h3>
-              <p className={patterns.text.body + ' mt-2 mb-6'}>
+              <p className={patterns.text.body + ' mb-6 mt-2'}>
                 Try adjusting your filters or search criteria
               </p>
-              <button onClick={clearFilters} className="btn btn-primary">
+              <button onClick={clearFilters} className="btn-primary btn">
                 Clear Filters
               </button>
             </div>
@@ -490,119 +663,152 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                   const brandClass = getBrandClass(station.brand);
 
                   return (
-                  <article
-                    key={station.id}
-                    className="card card-hover print-avoid-break overflow-hidden h-full flex flex-col"
-                    itemScope
-                    itemType="https://schema.org/GasStation"
-                  >
-                    {/* Brand Header with Logo */}
-                    <div
-                      className={cn(
-                        "relative h-20 sm:h-24 flex items-center justify-center flex-shrink-0",
-                        "bg-gradient-to-br from-gray-50 to-gray-100",
-                        "dark:from-gray-800 dark:to-gray-900",
-                        brandClass
-                      )}
-                      style={{
-                        background: `linear-gradient(135deg, ${brandInfo.color}15 0%, ${brandInfo.fallback}05 100%)`
-                      }}
+                    <article
+                      key={station.id}
+                      className="card card-hover print-avoid-break flex h-full flex-col overflow-hidden"
+                      itemScope
+                      itemType="https://schema.org/GasStation"
                     >
-                      <div className="relative w-24 sm:w-32 h-12 sm:h-16">
-                        <Image
-                          src={brandInfo.logo}
-                          alt={`${brandInfo.name} logo`}
-                          fill
-                          className="object-contain"
-                          onError={(e) => {
-                            // Fallback to default logo
-                            e.currentTarget.src = '/images/brands/default-logo.svg';
-                          }}
-                        />
-                      </div>
-                      {station.verified && (
-                        <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 bg-white dark:bg-gray-800 rounded-full p-0.5 sm:p-1 shadow-sm">
-                          <span className="text-success-600 text-sm sm:text-lg" title="Verified">✓</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Station Info */}
-                    <div className="p-4 sm:p-5 lg:p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
-                      <div className="flex items-start justify-between gap-3 mb-3">
-                        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-tight" itemProp="name">
-                          {station.name}
-                        </h3>
-                      </div>
-                      <span className={cn("badge text-xs", brandClass)}>{station.brand}</span>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4 flex-grow">
-                      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-                        <p itemProp="streetAddress">📍 {station.address}</p>
-                        <p className="mt-1">
-                          <span itemProp="addressLocality">{station.suburb}</span> <span itemProp="postalCode">{station.postcode}</span>
-                        </p>
-                      </div>
-
-                      {/* Fuel Prices */}
-                      <div>
-                        <h4 className="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                          Current Prices
-                        </h4>
-                        <div className="space-y-1.5 sm:space-y-2">
-                          {Object.entries(station.fuelPrices).map(([type, price]) => {
-                            if (price === null) return null;
-                            const isSelected = type === filters.fuelType;
-                            return (
-                              <div
-                                key={type}
-                                className={cn(
-                                  'flex justify-between items-center',
-                                  isSelected && 'font-semibold'
-                                )}
-                              >
-                                <span className="text-gray-600 dark:text-gray-400 capitalize text-xs sm:text-sm">
-                                  {type === 'premium95' ? 'Premium 95' : type === 'premium98' ? 'Premium 98' : type}
-                                </span>
-                                <span className={cn('text-sm sm:text-lg font-bold', getPriceColor(price))}>
-                                  {price.toFixed(1)}¢
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
-                        Updated: {new Date(station.lastUpdated).toLocaleDateString()}
-                      </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="p-4 sm:p-5 lg:p-6 border-t border-gray-200 dark:border-gray-700 print-hidden flex-shrink-0">
-                      <a
-                        href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station.address + ', ' + station.suburb)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-primary w-full btn-sm text-xs sm:text-sm"
+                      {/* Brand Header with Logo */}
+                      <div
+                        className={cn(
+                          'relative flex h-20 flex-shrink-0 items-center justify-center sm:h-24',
+                          'bg-gradient-to-br from-gray-50 to-gray-100',
+                          'dark:from-gray-800 dark:to-gray-900',
+                          brandClass
+                        )}
+                        style={{
+                          background: `linear-gradient(135deg, ${brandInfo.color}15 0%, ${brandInfo.fallback}05 100%)`,
+                        }}
                       >
-                        🧭 Get Directions
-                      </a>
-                    </div>
-                  </article>
-                )}
-                )}
+                        <div className="relative h-12 w-24 sm:h-16 sm:w-32">
+                          <Image
+                            src={brandInfo.logo}
+                            alt={`${brandInfo.name} logo`}
+                            fill
+                            className="object-contain"
+                            onError={(e) => {
+                              // Fallback to default logo
+                              e.currentTarget.src =
+                                '/images/brands/default-logo.svg';
+                            }}
+                          />
+                        </div>
+                        {station.verified && (
+                          <div className="absolute right-1.5 top-1.5 rounded-full bg-white p-0.5 shadow-sm dark:bg-gray-800 sm:right-2 sm:top-2 sm:p-1">
+                            <span
+                              className="text-sm text-success-600 sm:text-lg"
+                              title="Verified"
+                            >
+                              ✓
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Station Info */}
+                      <div className="flex-shrink-0 border-b border-gray-200 p-4 dark:border-gray-700 sm:p-5 lg:p-6">
+                        <div className="mb-3 flex items-start justify-between gap-3">
+                          <h3
+                            className="text-base font-bold leading-tight text-gray-900 dark:text-white sm:text-lg"
+                            itemProp="name"
+                          >
+                            {station.name}
+                          </h3>
+                        </div>
+                        <span className={cn('badge text-xs', brandClass)}>
+                          {station.brand}
+                        </span>
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-grow space-y-3 p-4 sm:space-y-4 sm:p-5 lg:p-6">
+                        <div
+                          className="text-xs text-gray-600 dark:text-gray-400 sm:text-sm"
+                          itemProp="address"
+                          itemScope
+                          itemType="https://schema.org/PostalAddress"
+                        >
+                          <p itemProp="streetAddress">📍 {station.address}</p>
+                          <p className="mt-1">
+                            <span itemProp="addressLocality">
+                              {station.suburb}
+                            </span>{' '}
+                            <span itemProp="postalCode">
+                              {station.postcode}
+                            </span>
+                          </p>
+                        </div>
+
+                        {/* Fuel Prices */}
+                        <div>
+                          <h4 className="mb-2 text-xs font-semibold text-gray-700 dark:text-gray-300 sm:text-sm">
+                            Current Prices
+                          </h4>
+                          <div className="space-y-1.5 sm:space-y-2">
+                            {Object.entries(station.fuelPrices).map(
+                              ([type, price]) => {
+                                if (price === null) return null;
+                                const isSelected = type === filters.fuelType;
+                                return (
+                                  <div
+                                    key={type}
+                                    className={cn(
+                                      'flex items-center justify-between',
+                                      isSelected && 'font-semibold'
+                                    )}
+                                  >
+                                    <span className="text-xs capitalize text-gray-600 dark:text-gray-400 sm:text-sm">
+                                      {type === 'premium95'
+                                        ? 'Premium 95'
+                                        : type === 'premium98'
+                                          ? 'Premium 98'
+                                          : type}
+                                    </span>
+                                    <span
+                                      className={cn(
+                                        'text-sm font-bold sm:text-lg',
+                                        getPriceColor(price)
+                                      )}
+                                    >
+                                      {price.toFixed(1)}¢
+                                    </span>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          Updated:{' '}
+                          {new Date(station.lastUpdated).toLocaleDateString()}
+                        </div>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="print-hidden flex-shrink-0 border-t border-gray-200 p-4 dark:border-gray-700 sm:p-5 lg:p-6">
+                        <a
+                          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station.address + ', ' + station.suburb)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-primary btn-sm btn w-full text-xs sm:text-sm"
+                        >
+                          🧭 Get Directions
+                        </a>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-8 sm:mt-10 lg:mt-12 flex items-center justify-center gap-2 print-hidden">
+                <div className="print-hidden mt-8 flex items-center justify-center gap-2 sm:mt-10 lg:mt-12">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="btn btn-outline btn-sm"
+                    className="btn-outline btn-sm btn"
                     aria-label="Previous page"
                   >
                     ← Previous
@@ -626,11 +832,13 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                           key={page}
                           onClick={() => setCurrentPage(page)}
                           className={cn(
-                            'btn btn-sm',
+                            'btn-sm btn',
                             currentPage === page ? 'btn-primary' : 'btn-ghost'
                           )}
                           aria-label={`Page ${page}`}
-                          aria-current={currentPage === page ? 'page' : undefined}
+                          aria-current={
+                            currentPage === page ? 'page' : undefined
+                          }
                         >
                           {page}
                         </button>
@@ -639,9 +847,11 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
                   </div>
 
                   <button
-                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
                     disabled={currentPage === totalPages}
-                    className="btn btn-outline btn-sm"
+                    className="btn-outline btn-sm btn"
                     aria-label="Next page"
                   >
                     Next →
@@ -650,11 +860,14 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
               )}
 
               {/* SEO Content */}
-              <div className="mt-16 prose dark:prose-invert max-w-none">
+              <div className="prose dark:prose-invert mt-16 max-w-none">
                 <h2>Melbourne Petrol Station Directory</h2>
                 <p>
-                  Find the cheapest fuel prices across Melbourne with our comprehensive directory of {metadata.totalStations}+ petrol stations.
-                  Compare prices from major brands including BP, Shell, Caltex, 7-Eleven, and independent operators across {metadata.suburbs.length}+ suburbs.
+                  Find the cheapest fuel prices across Melbourne with our
+                  comprehensive directory of {metadata.totalStations}+ petrol
+                  stations. Compare prices from major brands including BP,
+                  Shell, Caltex, 7-Eleven, and independent operators across{' '}
+                  {metadata.suburbs.length}+ suburbs.
                 </p>
                 <h3>Why Use Our Directory?</h3>
                 <ul>

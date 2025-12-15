@@ -7,7 +7,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { cn, patterns, animations } from '@/styles/system/css-in-js';
@@ -27,6 +27,9 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // Handle scroll
   useEffect(() => {
@@ -55,10 +58,36 @@ export function Navigation() {
     };
   }, [isOpen]);
 
+  // Keyboard navigation and focus management
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    // Focus first link when menu opens
+    firstLinkRef.current?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <nav
+      role="navigation"
+      aria-label="Main navigation"
       className={cn(
-        'sticky top-0 z-sticky bg-white dark:bg-gray-900 print-hidden transition-shadow',
+        'print-hidden sticky top-0 z-sticky bg-white transition-shadow dark:bg-gray-900',
         scrolled && 'shadow-md'
       )}
     >
@@ -70,7 +99,7 @@ export function Navigation() {
             className={cn(
               'text-2xl font-bold',
               'text-primary-600 dark:text-primary-400',
-              'hover:opacity-80 transition-opacity',
+              'transition-opacity hover:opacity-80',
               'focus-primary'
             )}
           >
@@ -79,7 +108,7 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden items-center gap-6 lg:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -89,7 +118,7 @@ export function Navigation() {
                   'focus-primary rounded-md px-3 py-2',
                   pathname === link.href
                     ? 'text-primary-600 dark:text-primary-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
+                    : 'text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400'
                 )}
               >
                 {link.label}
@@ -100,13 +129,15 @@ export function Navigation() {
 
           {/* Mobile Menu Button - Touch-Friendly */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden btn btn-ghost btn-sm min-h-[44px] min-w-[44px] touch-manipulation"
+            ref={menuButtonRef}
+            onClick={handleToggle}
+            className="btn-ghost btn-sm focus-primary btn min-h-[44px] min-w-[44px] touch-manipulation lg:hidden"
             aria-label="Toggle menu"
             aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
             <svg
-              className="w-6 h-6"
+              className="h-6 w-6"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -124,35 +155,42 @@ export function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        {isOpen && (
-          <div
-            className={cn(
-              'lg:hidden pb-4',
-              animations.safe('animate-slide-down')
-            )}
-          >
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    'block px-4 py-3 rounded-lg text-sm font-medium transition-colors',
-                    'min-h-[44px] flex items-center touch-manipulation',
-                    pathname === link.href
-                      ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                  )}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="px-4 py-2">
-                <ThemeToggle showLabel />
+        <div
+          id="mobile-menu"
+          ref={menuRef}
+          className={cn(
+            'max-h-[calc(100vh-80px)] overflow-y-auto lg:hidden',
+            !isOpen && 'hidden'
+          )}
+          aria-hidden={!isOpen}
+        >
+          {isOpen && (
+            <div className={cn('pb-4', animations.safe('animate-slide-down'))}>
+              <div className="flex flex-col gap-2">
+                {navLinks.map((link, index) => (
+                  <Link
+                    key={link.href}
+                    ref={index === 0 ? firstLinkRef : null}
+                    href={link.href}
+                    className={cn(
+                      'block rounded-lg px-4 py-3 text-sm font-medium transition-colors',
+                      'focus-primary flex min-h-[44px] touch-manipulation items-center',
+                      pathname === link.href
+                        ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
+                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                    )}
+                    aria-current={pathname === link.href ? 'page' : undefined}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <div className="px-4 py-2">
+                  <ThemeToggle showLabel />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </nav>
   );

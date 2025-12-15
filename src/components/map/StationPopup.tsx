@@ -14,10 +14,10 @@ interface StationPopupProps {
 
 /**
  * Station popup component for map markers
- * 
+ *
  * Displays a detailed popup when a user clicks on a station marker on the map.
  * Shows station name, brand, address, cheapest fuel price, and action buttons.
- * 
+ *
  * Current behavior:
  * - Automatically calculates and displays the cheapest price from all available fuel types
  * - Conditionally renders address section only if address or suburb data exists
@@ -30,13 +30,17 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
   const cheapestPrice = getCheapestPrice(station);
 
   return (
-    <div className="station-popup min-w-[280px] max-w-[320px]">
+    <div className="station-popup w-[280px] min-w-0 max-w-[320px] sm:min-w-[280px]">
       {/* Header */}
       <div className="border-b border-gray-200 p-4">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <h3 className="mb-1 text-lg font-bold text-gray-900">{station.name}</h3>
-            <p className="text-sm text-gray-600">{station.brand || 'Station'}</p>
+        <div className="flex min-w-0 items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <h3 className="mb-1 truncate text-lg font-bold text-gray-900">
+              {station.name}
+            </h3>
+            <p className="truncate text-sm text-gray-600">
+              {station.brand || 'Station'}
+            </p>
           </div>
           <button
             onClick={onClose}
@@ -83,9 +87,11 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            <div className="text-sm text-gray-600">
-              {station.address && <p className="m-0">{station.address}</p>}
-              <p className="mt-1">
+            <div className="min-w-0 flex-1 text-sm text-gray-600">
+              {station.address && (
+                <p className="m-0 line-clamp-2">{station.address}</p>
+              )}
+              <p className="mt-1 truncate">
                 {station.suburb}
                 {station.postcode && ` ${station.postcode}`}
               </p>
@@ -100,7 +106,7 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
           <h4 className="mb-3 text-sm font-semibold text-gray-900">
             Current Prices
           </h4>
-          <div className="text-lg font-bold text-green-600">
+          <div className="text-green-600 text-lg font-bold">
             From {formatPriceCentsPerLiter(cheapestPrice)}
           </div>
         </div>
@@ -110,7 +116,7 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
       <div className="flex gap-2 p-4">
         <Link
           href={getStationUrl(station)}
-          className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
+          className="bg-blue-600 hover:bg-blue-700 flex-1 rounded-lg px-4 py-2.5 text-center text-sm font-medium text-white transition-colors"
         >
           View Details
         </Link>
@@ -140,4 +146,3 @@ export function StationPopup({ station, onClose }: StationPopupProps) {
     </div>
   );
 }
-

@@ -6,6 +6,7 @@ import {
   generateWebsiteSchema,
   generatePlatformLocalBusinessSchema,
   generateOrganizationSchema,
+  generateWebPageSchema,
 } from '@/lib/seo/schema-generator';
 
 // SEO: Updated metadata with "near me" keywords prioritized
@@ -49,6 +50,7 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: 'Petrol Prices Today - Find Cheapest Fuel Near Me',
+        type: 'image/jpeg',
       },
     ],
   },
@@ -83,6 +85,13 @@ export default function HomePage() {
   const structuredDataSchemas = [
     generateOrganizationSchema(baseUrl),
     generateWebsiteSchema(baseUrl),
+    generateWebPageSchema(baseUrl, {
+      title: 'Live Petrol Prices Near Me Today | Cheap Fuel Melbourne',
+      description:
+        'Live petrol prices near me updated daily. Compare cheap fuel in Melbourne including E10, Unleaded 91, Premium and Diesel. Find cheap petrol near me today.',
+      path: '/',
+      image: `${baseUrl}/images/og-landing-page.jpg`,
+    }),
     generatePlatformLocalBusinessSchema(baseUrl),
   ];
 

@@ -400,95 +400,97 @@ export const OptimizedStationCard = memo<OptimizedStationCardProps>(
             'border border-gray-200 shadow-sm dark:border-gray-800',
             'hover:-translate-y-1 hover:shadow-2xl',
             'cursor-pointer transition-all duration-300',
-            'print-avoid-break flex h-full flex-col',
+            'print-avoid-break flex h-full flex-col'
           )}
           itemScope
           itemType="https://schema.org/GasStation"
         >
-        {/* Schema.org JSON-LD for SEO */}
-        <SchemaData station={station} brandInfo={brandInfo} />
+          {/* Schema.org JSON-LD for SEO */}
+          <SchemaData station={station} brandInfo={brandInfo} />
 
-        {/* Brand Header */}
-        <BrandHeader
-          brand={station.brand || ''}
-          brandLogo={station.logoUrl}
-          verified={verified}
-        />
+          {/* Brand Header */}
+          <BrandHeader
+            brand={station.brand || ''}
+            brandLogo={station.logoUrl}
+            verified={verified}
+          />
 
-        {/* Station Info */}
-        <div className="flex-shrink-0 border-b border-gray-200 p-5 dark:border-gray-800 lg:p-6">
-          <div className="mb-3 flex items-start justify-between gap-3">
-            <h3
-              className="flex-1 text-lg font-bold leading-tight text-gray-900 dark:text-white"
-              itemProp="name"
+          {/* Station Info */}
+          <div className="flex-shrink-0 border-b border-gray-200 p-5 dark:border-gray-800 lg:p-6">
+            <div className="mb-3 flex min-w-0 items-start justify-between gap-3">
+              <h3
+                className="min-w-0 flex-1 truncate text-lg font-bold leading-tight text-gray-900 dark:text-white"
+                itemProp="name"
+              >
+                {station.name || station.stationName}
+              </h3>
+            </div>
+
+            {/* Badges */}
+            <BadgeDisplay badges={displayBadges} className="mb-3" />
+
+            {/* Brand Badge */}
+            <span
+              className={cn('badge text-xs', brandClass)}
+              style={{
+                backgroundColor: `${brandInfo.color}20`,
+                color: brandInfo.color,
+              }}
             >
-              {station.name || station.stationName}
-            </h3>
+              {brandInfo.name}
+            </span>
           </div>
 
-          {/* Badges */}
-          <BadgeDisplay badges={displayBadges} className="mb-3" />
+          {/* Content */}
+          <div className="flex-grow space-y-4 p-5 lg:p-6">
+            {/* Address */}
+            <address
+              className="text-sm not-italic text-gray-600 dark:text-gray-400"
+              itemProp="address"
+              itemScope
+              itemType="https://schema.org/PostalAddress"
+            >
+              <p itemProp="streetAddress" className="line-clamp-2">
+                📍 {station.address}
+              </p>
+              <p className="mt-1">
+                <span itemProp="addressLocality">{station.suburb}</span>
+                {station.postcode && (
+                  <span itemProp="postalCode"> {station.postcode}</span>
+                )}
+              </p>
+            </address>
 
-          {/* Brand Badge */}
-          <span
-            className={cn('badge text-xs', brandClass)}
-            style={{
-              backgroundColor: `${brandInfo.color}20`,
-              color: brandInfo.color,
-            }}
-          >
-            {brandInfo.name}
-          </span>
-        </div>
+            {/* Fuel Prices */}
+            {station.fuelPrices && (
+              <div>
+                <h4 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                  Current Prices
+                </h4>
+                <FuelPriceDisplay fuelPrices={station.fuelPrices} />
+              </div>
+            )}
 
-        {/* Content */}
-        <div className="flex-grow space-y-4 p-5 lg:p-6">
-          {/* Address */}
-          <address
-            className="text-sm not-italic text-gray-600 dark:text-gray-400"
-            itemProp="address"
-            itemScope
-            itemType="https://schema.org/PostalAddress"
-          >
-            <p itemProp="streetAddress">📍 {station.address}</p>
-            <p className="mt-1">
-              <span itemProp="addressLocality">{station.suburb}</span>
-              {station.postcode && (
-                <span itemProp="postalCode"> {station.postcode}</span>
-              )}
-            </p>
-          </address>
-
-          {/* Fuel Prices */}
-          {station.fuelPrices && (
-            <div>
-              <h4 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Current Prices
-              </h4>
-              <FuelPriceDisplay fuelPrices={station.fuelPrices} />
-            </div>
-          )}
-
-          {/* Last Updated */}
-          {station.lastUpdated && (
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              Updated:{' '}
-              {new Date(station.lastUpdated).toLocaleDateString('en-AU', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="print-hidden flex-shrink-0 border-t border-gray-200 p-5 dark:border-gray-800 lg:p-6">
-          <div className="btn-primary btn-sm btn w-full pointer-events-none">
-            View Details →
+            {/* Last Updated */}
+            {station.lastUpdated && (
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                Updated:{' '}
+                {new Date(station.lastUpdated).toLocaleDateString('en-AU', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </div>
+            )}
           </div>
-        </div>
-      </article>
+
+          {/* Footer */}
+          <div className="print-hidden flex-shrink-0 border-t border-gray-200 p-5 dark:border-gray-800 lg:p-6">
+            <div className="btn-primary btn-sm btn pointer-events-none w-full">
+              View Details →
+            </div>
+          </div>
+        </article>
       </Link>
     );
 
