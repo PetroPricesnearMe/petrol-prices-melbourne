@@ -255,8 +255,8 @@ export const StationCard = memo<StationCardProps>(
     className,
     onCardClick,
   }) => {
-    const _brandInfo = getBrandInfo(station.brand);
-    const brandClass = getBrandClass(station.brand);
+    const _brandInfo = getBrandInfo(station.brand || '');
+    const brandClass = getBrandClass(station.brand || '');
 
     const handleCardClick = (_e: React.MouseEvent) => {
       if (onCardClick) {
@@ -281,9 +281,9 @@ export const StationCard = memo<StationCardProps>(
         >
           {/* Brand Header */}
           <BrandHeader
-            brand={station.brand}
-            brandLogo={station.brandLogo}
-            verified={station.verified}
+            brand={station.brand || ''}
+            brandLogo={station.logoUrl}
+            verified={false}
           />
 
           {/* Station Info */}
@@ -328,9 +328,11 @@ export const StationCard = memo<StationCardProps>(
             </div>
 
             {/* Last Updated */}
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              Updated: {new Date(station.lastUpdated).toLocaleDateString()}
-            </div>
+            {station.lastUpdated && (
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                Updated: {new Date(station.lastUpdated).toLocaleDateString()}
+              </div>
+            )}
           </div>
 
           {/* Footer */}
@@ -405,5 +407,6 @@ StationGrid.displayName = 'StationGrid';
 // EXPORTS
 // ============================================================================
 
-export { StationCard, StationGrid, BrandHeader, FuelPriceDisplay };
+// Re-export components and types (components already exported above)
+export { BrandHeader, FuelPriceDisplay };
 export type { StationCardProps, StationGridProps };

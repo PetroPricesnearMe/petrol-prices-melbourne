@@ -213,18 +213,14 @@ const FuelPriceDisplay = memo<FuelPriceDisplayProps>(
   ({ fuelPrices, selectedFuelType, className }) => {
     if (!fuelPrices) return null;
 
-    const prices = Array.isArray(fuelPrices)
-      ? fuelPrices
-      : Object.entries(fuelPrices);
-
     return (
       <div
         className={cn('space-y-2', className)}
         role="table"
         aria-label="Fuel prices"
       >
-        {Array.isArray(prices)
-          ? prices.map((price: any) => (
+        {Array.isArray(fuelPrices)
+          ? fuelPrices.map((price) => (
               <div
                 key={price.fuelType}
                 className="flex items-center justify-between"
@@ -247,8 +243,8 @@ const FuelPriceDisplay = memo<FuelPriceDisplayProps>(
                 </span>
               </div>
             ))
-          : prices.map(([type, price]) => {
-              if (price === null) return null;
+          : Object.entries(fuelPrices).map(([type, price]) => {
+              if (price === null || typeof price !== 'number') return null;
               const isSelected = type === selectedFuelType;
 
               return (

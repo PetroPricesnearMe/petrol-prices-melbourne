@@ -108,14 +108,18 @@ async function fetchFairFuelPriceDetails(): Promise<FairFuelPriceResponse> {
       const message = `[FairFuel] Request timed out after ${timeout}ms`;
       logger.error(message);
       // Create a more user-friendly error
-      const timeoutError = new Error('Request timeout - The server took too long to respond. Please try again.');
+      const timeoutError = new Error(
+        'Request timeout - The server took too long to respond. Please try again.'
+      );
       timeoutError.name = 'TimeoutError';
       throw timeoutError;
     }
 
     // Check for network errors
     if (error instanceof TypeError && error.message.includes('fetch')) {
-      const networkError = new Error('Network error - Unable to connect to the server. Please check your internet connection.');
+      const networkError = new Error(
+        'Network error - Unable to connect to the server. Please check your internet connection.'
+      );
       networkError.name = 'NetworkError';
       logger.error('[FairFuel] Network error', error);
       throw networkError;
@@ -226,6 +230,15 @@ async function fetchFairFuelBrands(): Promise<FairFuelBrandsResponse> {
 
     if (!response.ok) {
       const errorBody = await safeReadBody(response);
+
+      // Handle 403 Forbidden as a non-critical error (endpoint may not be available)
+      if (response.status === 403) {
+        const message = `[FairFuel] Brands endpoint not available (403) - This endpoint may require additional permissions or may not be accessible with the current consumer ID.`;
+        logger.warn(message);
+        // Return empty brands array instead of throwing
+        return { brands: [] } as FairFuelBrandsResponse;
+      }
+
       const message = `[FairFuel] Brands request failed (${response.status}) ${response.statusText}${
         errorBody ? ` - ${errorBody}` : ''
       }`;
@@ -280,6 +293,15 @@ async function fetchFairFuelFuelTypes(): Promise<FairFuelFuelTypesResponse> {
 
     if (!response.ok) {
       const errorBody = await safeReadBody(response);
+
+      // Handle 403 Forbidden as a non-critical error (endpoint may not be available)
+      if (response.status === 403) {
+        const message = `[FairFuel] Fuel types endpoint not available (403) - This endpoint may require additional permissions or may not be accessible with the current consumer ID.`;
+        logger.warn(message);
+        // Return empty fuel types array instead of throwing
+        return { fuelTypes: [] } as FairFuelFuelTypesResponse;
+      }
+
       const message = `[FairFuel] Fuel types request failed (${response.status}) ${response.statusText}${
         errorBody ? ` - ${errorBody}` : ''
       }`;

@@ -73,16 +73,22 @@ export function AccessibleForm({
     if (
       field.type === 'email' &&
       value &&
+      typeof value === 'string' &&
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
     ) {
       return 'Please enter a valid email address';
     }
 
-    if (field.type === 'tel' && value && !/^[\d\s\-+()]+$/.test(value)) {
+    if (
+      field.type === 'tel' &&
+      value &&
+      typeof value === 'string' &&
+      !/^[\d\s\-+()]+$/.test(value)
+    ) {
       return 'Please enter a valid phone number';
     }
 
-    if (field.validation) {
+    if (field.validation && typeof value === 'string') {
       return field.validation(value);
     }
 
@@ -357,7 +363,7 @@ function FormField({ field, value, error, onChange, onBlur }: FormFieldProps) {
         <textarea
           id={fieldId}
           name={field.name}
-          value={value}
+          value={typeof value === 'string' ? value : ''}
           onChange={(e) => onChange(e.target.value)}
           onBlur={(e) => onBlur(e.target.value)}
           placeholder={field.placeholder}
@@ -372,7 +378,7 @@ function FormField({ field, value, error, onChange, onBlur }: FormFieldProps) {
         <select
           id={fieldId}
           name={field.name}
-          value={value}
+          value={typeof value === 'string' ? value : ''}
           onChange={(e) => onChange(e.target.value)}
           onBlur={(e) => onBlur(e.target.value)}
           required={isRequired}
@@ -392,7 +398,7 @@ function FormField({ field, value, error, onChange, onBlur }: FormFieldProps) {
           id={fieldId}
           name={field.name}
           type={field.type}
-          value={value}
+          value={typeof value === 'string' ? value : ''}
           onChange={(e) => onChange(e.target.value)}
           onBlur={(e) => onBlur(e.target.value)}
           placeholder={field.placeholder}

@@ -354,14 +354,12 @@ export function StationDirectoryClient({ initialStations, metadata }: Props) {
   }, [searchResults, filters]);
 
   // Handle advanced search
-  const handleAdvancedSearch = useCallback(
-    (query: string, results: Station[]) => {
-      setSearchResults(results);
-      setFilters((prev) => ({ ...prev, search: query }));
-      setCurrentPage(1);
-    },
-    []
-  );
+  const handleAdvancedSearch = useCallback((query: string, data: unknown) => {
+    const results = Array.isArray(data) ? (data as Station[]) : [];
+    setSearchResults(results);
+    setFilters((prev) => ({ ...prev, search: query }));
+    setCurrentPage(1);
+  }, []);
 
   // Handle search category change
   const _handleSearchCategoryChange = useCallback((categoryId: string) => {

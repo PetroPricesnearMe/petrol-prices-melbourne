@@ -63,6 +63,23 @@ interface Station {
   verified: boolean;
 }
 
+// Convert local Station to InteractiveStationMap Station format
+function toMapStation(station: Station) {
+  if (station.latitude === null || station.longitude === null) {
+    return null;
+  }
+  return {
+    id: station.id,
+    name: station.name,
+    address: station.address,
+    city: station.suburb,
+    latitude: station.latitude,
+    longitude: station.longitude,
+    brand: station.brand,
+    fuelPrices: [],
+  };
+}
+
 interface Metadata {
   totalStations: number;
   suburbs: string[];
@@ -484,9 +501,23 @@ export function StationDirectoryWithMap({ initialStations, metadata }: Props) {
             )}
 
             <InteractiveStationMap
-              stations={mapStations}
-              onStationClick={handleStationClick}
-              selectedStation={selectedStation}
+              stations={mapStations
+                .map(toMapStation)
+                .filter((s): s is NonNullable<typeof s> => s !== null)}
+              onStationClick={(station) => {
+                // Find the original station from the local Station type
+                const originalStation = filteredStations.find(
+                  (s) => s.id === station.id
+                );
+                if (originalStation) {
+                  handleStationClick(
+                    originalStation as unknown as Record<string, unknown>
+                  );
+                }
+              }}
+              selectedStation={
+                selectedStation ? toMapStation(selectedStation) : null
+              }
               height={isMapFullScreen ? '100vh' : 600}
               fullScreen={isMapFullScreen}
               onFullScreenToggle={handleMapFullScreenToggle}

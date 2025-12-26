@@ -190,7 +190,7 @@ export function generatePlatformLocalBusinessSchema(baseUrl: string) {
 export function generateBreadcrumbSchema(
   baseUrl: string,
   breadcrumbs: Array<{ name: string; url: string }>
-) {
+): object {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -521,7 +521,7 @@ export function generatePageSchema(
     breadcrumbs?: Array<{ name: string; url: string }>;
   }
 ): object {
-  const schemas = [
+  const schemas: object[] = [
     generateOrganizationSchema(baseUrl),
     generateWebsiteSchema(baseUrl),
   ];

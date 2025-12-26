@@ -84,13 +84,9 @@ export function StationCard({ station, onClick }: StationCardProps) {
               </div>
             )}
 
-            {station.brand && station.brand.length > 0 && (
+            {station.brand && (
               <div className="flex flex-wrap gap-2 sm:gap-1">
-                {station.brand.map((b, idx) => (
-                  <Badge key={idx} size="sm">
-                    {b}
-                  </Badge>
-                ))}
+                <Badge size="sm">{station.brand}</Badge>
               </div>
             )}
           </div>

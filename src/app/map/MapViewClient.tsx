@@ -25,6 +25,7 @@ import {
   type SortOption,
 } from '@/components/molecules/SortDropdown';
 import { getStationUrl } from '@/lib/seo/station-seo';
+import type { Station as StationType } from '@/types/station';
 import { cn, patterns } from '@/styles/system/css-in-js';
 
 // Lazy load heavy MapView component (maplibre-gl is ~200KB+)
@@ -102,6 +103,25 @@ interface Station {
   verified: boolean;
   latitude: number;
   longitude: number;
+}
+
+// Helper to convert local Station to StationType for getStationUrl
+function toStationType(station: Station): StationType {
+  return {
+    id: station.id,
+    name: station.name,
+    stationName: station.name,
+    brand: station.brand,
+    address: station.address,
+    suburb: station.suburb,
+    city: station.suburb,
+    postcode: station.postcode,
+    region: station.region,
+    latitude: station.latitude,
+    longitude: station.longitude,
+    fuelPrices: [],
+    lastUpdated: station.lastUpdated,
+  };
 }
 
 interface Metadata {
@@ -612,7 +632,7 @@ export function MapViewClient({ initialStations, metadata }: Props) {
                 {filteredStations.map((station) => (
                   <Link
                     key={station.id}
-                    href={getStationUrl(station)}
+                    href={getStationUrl(toStationType(station))}
                     className="card card-hover block h-full cursor-pointer"
                     onClick={() => handleStationSelect(station)}
                   >

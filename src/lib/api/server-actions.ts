@@ -102,7 +102,7 @@ export const getStationById = cache(
       return null;
     }
 
-    return fetchStationByIdFromBaserow(validationResult.data);
+    return fetchStationByIdFromBaserow(validationResult.data as number);
   }
 );
 

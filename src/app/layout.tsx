@@ -12,6 +12,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import { Suspense } from 'react';
 
 import { Providers } from './providers';
 
@@ -241,7 +242,9 @@ export default function RootLayout({
         <Providers>{children}</Providers>
 
         {/* Google Analytics - Non-blocking, privacy-focused, loads after page is interactive */}
-        <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
 
         {/* Google AdSense - Load after page is interactive to avoid blocking render */}
         {/* Using afterInteractive strategy to avoid data-nscript attribute in head */}

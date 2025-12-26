@@ -7,6 +7,7 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 import DirectoryLayout from '@/components/layouts/DirectoryLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -140,128 +141,139 @@ export default async function ListingPage({ params }: ListingPageProps) {
     <>
       <StructuredData data={structuredDataSchemas} />
 
-      <DirectoryLayout
-        title={station.name}
-        description={`${station.address || ''} ${
-          station.suburb ? `• ${station.suburb}` : ''
-        }`}
-        breadcrumbs={breadcrumbs}
-        showSidebar={false}
-        canonicalUrl={generateListingCanonicalUrl(listing)}
-        headerVariant="hero"
-      >
-        <div className="space-y-8">
-          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Station Information
-            </h2>
-            <div className="space-y-4">
-              {station.brand && (
-                <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Brand:
-                  </span>
-                  <span className="ml-2 font-medium">{station.brand}</span>
-                </div>
-              )}
-              {station.address && (
-                <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Address:
-                  </span>
-                  <span className="ml-2 font-medium">{station.address}</span>
-                </div>
-              )}
-              {station.suburb && (
-                <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Suburb:
-                  </span>
-                  <span className="ml-2 font-medium">{station.suburb}</span>
-                </div>
-              )}
-              {station.phoneNumber && (
-                <div>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Phone:
-                  </span>
-                  <a
-                    href={`tel:${station.phoneNumber}`}
-                    className="ml-2 font-medium text-primary-600 dark:text-primary-400 hover:underline"
-                  >
-                    {station.phoneNumber}
-                  </a>
-                </div>
-              )}
+      <Suspense
+        fallback={
+          <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+            <div className="text-center">
+              <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-primary-600"></div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Loading station details...
+              </p>
             </div>
           </div>
-
-          {station.fuelPrices && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Fuel Prices
+        }
+      >
+        <DirectoryLayout
+          title={station.name}
+          description={`${station.address || ''} ${
+            station.suburb ? `• ${station.suburb}` : ''
+          }`}
+          breadcrumbs={breadcrumbs}
+          showSidebar={false}
+          canonicalUrl={generateListingCanonicalUrl(listing)}
+          headerVariant="hero"
+        >
+          <div className="space-y-8">
+            <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+              <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                Station Information
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {Array.isArray(station.fuelPrices) ? (
-                  station.fuelPrices.map((price) => (
-                    <div
-                      key={price.id}
-                      className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+              <div className="space-y-4">
+                {station.brand && (
+                  <div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Brand:
+                    </span>
+                    <span className="ml-2 font-medium">{station.brand}</span>
+                  </div>
+                )}
+                {station.address && (
+                  <div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Address:
+                    </span>
+                    <span className="ml-2 font-medium">{station.address}</span>
+                  </div>
+                )}
+                {station.suburb && (
+                  <div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Suburb:
+                    </span>
+                    <span className="ml-2 font-medium">{station.suburb}</span>
+                  </div>
+                )}
+                {station.phoneNumber && (
+                  <div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Phone:
+                    </span>
+                    <a
+                      href={`tel:${station.phoneNumber}`}
+                      className="ml-2 font-medium text-primary-600 hover:underline dark:text-primary-400"
                     >
-                      <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                        {price.fuelType}
-                      </div>
-                      <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                        {price.pricePerLiter?.toFixed(1)}¢/L
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  Object.entries(station.fuelPrices).map(([type, price]) =>
-                    price !== null ? (
-                      <div
-                        key={type}
-                        className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
-                      >
-                        <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                          {type.charAt(0).toUpperCase() + type.slice(1)}
-                        </div>
-                        <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                          {price.toFixed(1)}¢/L
-                        </div>
-                      </div>
-                    ) : null
-                  )
+                      {station.phoneNumber}
+                    </a>
+                  </div>
                 )}
               </div>
             </div>
-          )}
 
-          {station.amenities && Object.values(station.amenities).some(Boolean) && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Amenities
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {Object.entries(station.amenities).map(([key, value]) =>
-                  value ? (
-                    <div
-                      key={key}
-                      className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg"
-                    >
-                      <span className="text-lg">✓</span>
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">
-                        {key.replace(/([A-Z])/g, ' $1').trim()}
-                      </span>
-                    </div>
-                  ) : null
-                )}
+            {station.fuelPrices && (
+              <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+                <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                  Fuel Prices
+                </h2>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                  {Array.isArray(station.fuelPrices)
+                    ? station.fuelPrices.map((price) => (
+                        <div
+                          key={price.id}
+                          className="rounded-lg bg-gray-50 p-4 text-center dark:bg-gray-700"
+                        >
+                          <div className="mb-1 text-sm text-gray-600 dark:text-gray-400">
+                            {price.fuelType}
+                          </div>
+                          <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                            {price.pricePerLiter?.toFixed(1)}¢/L
+                          </div>
+                        </div>
+                      ))
+                    : Object.entries(station.fuelPrices).map(([type, price]) =>
+                        price !== null ? (
+                          <div
+                            key={type}
+                            className="rounded-lg bg-gray-50 p-4 text-center dark:bg-gray-700"
+                          >
+                            <div className="mb-1 text-sm text-gray-600 dark:text-gray-400">
+                              {type.charAt(0).toUpperCase() + type.slice(1)}
+                            </div>
+                            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                              {price.toFixed(1)}¢/L
+                            </div>
+                          </div>
+                        ) : null
+                      )}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </DirectoryLayout>
+            )}
+
+            {station.amenities &&
+              Object.values(station.amenities).some(Boolean) && (
+                <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+                  <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+                    Amenities
+                  </h2>
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+                    {Object.entries(station.amenities).map(([key, value]) =>
+                      value ? (
+                        <div
+                          key={key}
+                          className="bg-green-50 dark:bg-green-900/20 flex items-center gap-2 rounded-lg p-3"
+                        >
+                          <span className="text-lg">✓</span>
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            {key.replace(/([A-Z])/g, ' $1').trim()}
+                          </span>
+                        </div>
+                      ) : null
+                    )}
+                  </div>
+                </div>
+              )}
+          </div>
+        </DirectoryLayout>
+      </Suspense>
     </>
   );
 }
-

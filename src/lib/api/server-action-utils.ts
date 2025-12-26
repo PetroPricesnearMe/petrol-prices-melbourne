@@ -1,4 +1,5 @@
 import type { Station, FuelPrice } from '@/types/station';
+import type { ID } from '@/types/common';
 import { StationCategory } from '@/types/station';
 import logger from '@/utils/logger';
 
@@ -30,9 +31,11 @@ export function transformBaserowToStation(
       ? (String(data.Category) as StationCategory)
       : StationCategory.PETROL_STATION;
 
+    const stationName = (data['Station Name'] as string) || '';
     return {
       id: Number(data.id) || 0,
-      name: (data['Station Name'] as string) || '',
+      name: stationName,
+      stationName: stationName,
       brand: Array.isArray(data.brand) ? (data.brand[0] as string) || '' : '',
       address: (data.Address as string) || '',
       suburb: (data.City as string) || '',
@@ -101,12 +104,12 @@ export function transformBaserowToFuelPrices(
         (item['Last Updated'] as string) || new Date().toISOString();
 
       return {
-        id,
-        stationId,
+        id: id as ID,
+        stationId: stationId as ID,
         fuelType,
         pricePerLiter,
         lastUpdated,
-      };
+      } as FuelPrice;
     })
     .filter((price): price is FuelPrice => price !== null);
 }
